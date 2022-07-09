@@ -217,23 +217,23 @@ function setupToDHTMLandData(){
 		var color = (["red", "green", "blue"])[c]
 		var shorthand = (["r", "g", "b"])[c]
 		var branchUpgrades = ["Gain <span id='" + color + "UpgPow1'></span>x " + color + " quark spins, but " + color + " quarks decay <span id='" + color + "UpgSpeed1'></span>x faster.",
-				      "The gain of " + color + " <span id='" + color + "UpgName2'></span> quarks is multiplied by x and then raised to the power of x.",
-				      (["Red", "Green", "Blue"])[c]+" <span id='" + color + "UpgName3'></span> quarks decay<span id='" + color + "UpgEffDesc'> 4x</span> slower."] //might need to change this to just "slower" once we have 1000+ upgrade 3's
+				      "Boost " + color + " quarks.",
+				      (["Red", "Green", "Blue"])[c]+" quarks decay <span id='" + color + "UpgEffDesc'>4x</span> slower."] //might need to change this to just "slower" once we have 1000+ upgrade 3's
 
-		var html = 'You have <span class="' + color + '" id="' + color + 'QuarksToD" style="font-size: 35px">0</span> ' + color + ' quarks.<br>'
+		var html = '<span class="' + color + '" id="' + color + 'QuarksToD" style="font-size: 25px">0</span> ' + color + ' quarks<br>'
 		html += '<button class="storebtn" id="' + color + 'UnstableGain" style="width: 240px; height: 80px" onclick="unstableQuarks(\'' + shorthand + '\')"></button><br>'
-		html += 'You have <span class="' + color + '" id="' + color + 'QuarkSpin" style="font-size: 35px">0.0</span> ' + color + ' quark spin.'
-		html += '<span class="' + color + '" id="' + color + 'QuarkSpinProduction" style="font-size: 25px">+0/s</span><br>'
-		html += "You have <span class='" + color + "' id='" + color + "UnstableQuarks' style='font-size: 35px'>0</span> " + color + " <span id='" + shorthand + "UQName'></span> quarks.<br>"
-		html += "<span id='" + color + "QuarksDecayRate'></span>.<br>"
-		html += "They will last <span id='" + color + "QuarksDecayTime'></span>."
+		html += "<span class='" + color + "' id='" + color + "UnstableQuarks' style='font-size: 20px'>0</span> " + color + " <span id='" + shorthand + "UQName'></span> quarks<br>"
+		html += "<span id='" + color + "QuarksDecayRate'></span><br>"
+		html += "(Duration: <span id='" + color + "QuarksDecayTime'></span>)<br>"
+		html += '<span class="' + color + '" id="' + color + 'QuarkSpin" style="font-size: 25px">0.0</span> ' + color + ' spin '
+		html += '<span class="' + color + '" id="' + color + 'QuarkSpinProduction" style="font-size: 15px">+0/s</span>'
 		el("todRow").insertCell(c).innerHTML = html
 		el("todRow").cells[c].className = shorthand + "qC"
 		
 		html = "<table class='table' align='center' style='margin: auto'><tr>"
 		for (var u = 1; u <= 3; u++) {
 			html += "<td style='vertical-align: 0'><button class='gluonupgrade unavailablebtn' id='" + color + "upg" + u + "' onclick='buyBranchUpg(\"" + shorthand + "\", " + u + ")' style='font-size:10px'>" + branchUpgrades[u - 1] + "<br>" 
-			html += "Currently: <span id='" + color + "upg" + u + "current'>1</span>x<br><span id='" + color + "upg" + u + "cost'>?</span></button>"
+			html += "Currently: <span id='" + color + "upg" + u + "current'>1</span><br><span id='" + color + "upg" + u + "cost'>?</span></button>"
 			html += (u == 2 ? "<br><button class='storebtn' style='width: 190px' onclick='maxBranchUpg(\"" + shorthand + "\")'>Max all upgrades</button>" + "<br><button class='storebtn' style='width: 190px; font-size:10px' onclick='maxBranchUpg(\"" + shorthand + "\", true)'>Max 2nd and 3rd upgrades</button>":"")+"</td>"
 		}
 		html += "</tr></tr><td></td><td><button class='gluonupgrade unavailablebtn' id='" + shorthand + "RadioactiveDecay' style='font-size:9px' onclick='radioactiveDecay(\"" + shorthand + "\")'>Reset to strengthen the 1st upgrade, but nerf this branch.<br><span id='" + shorthand + "RDReq'></span><br>Radioactive Decays: <span id='" + shorthand + "RDLvl'></span></button></td><td></td>"
@@ -285,7 +285,7 @@ function setupQuantumChallenges(){
 }
 
 function setupBraveMilestones(){
-	for (var m = 1; m < 17; m++) el("braveMilestone" + m).textContent=getFullExpansion(tmp.bm[m - 1])+"x quantumed"
+	for (var m = 1; m <= 16; m++) el("braveMilestone" + m).textContent=getFullExpansion(tmp.bm[m - 1])+"x quantumed"+(m==1?" or lower":"")
 }
 
 function setupBosonicExtraction(){
@@ -2847,7 +2847,7 @@ function notifyGhostifyMilestones(){
 	if (typeof notifyId2 == "undefined") notifyId2 = 16
 	if (notifyId2 <= 0) notifyId2 = 0
 	if (ghSave.milestones > notifyId2) {
-		$.notify("You became a ghost in at most "+getFullExpansion(tmp.bm[notifyId2])+" quantumed stat! "+(["You now start with all Speedrun Milestones and all "+shorten(Number.MAX_VALUE)+" QK assignation features unlocked, all Paired Challenges completed, all Big Rip upgrades bought, Nanofield is 2x faster until you reach 16 rewards, and you get quarks based on your best MA this quantum", "From now on, colored quarks do not cancel, you keep your gluon upgrades, you can quick Big Rip, and completing an Eternity Challenge doesn't respec your Time Studies.", "You now keep your Electron upgrades", "From now on, Quantum doesn't reset your Tachyon particles unless you are in a QC, unstabilizing quarks doesn't lose your colored quarks, and you start with 5 of 1st upgrades of each Tree Branch", "From now on, Quantum doesn't reset your Meta-Dimension Boosts unless you are in a QC or undoing Big Rip", "From now on, Quantum doesn't reset your normal duplicants unless you are in a QC or undoing Big Rip", "You now start with 10 worker duplicants and Ghostify now doesn't reset Neutrinos.", "You are now gaining ^0.5 amount of quarks, ^0.5 amount of gluons, and 1% of Space Shards gained on Quantum per second.", "You now start with 10 Emperor Dimensions of each tier up to the second tier"+(aarMod.ngudpV?", and from now on, start Big Rips with the 3rd row of Eternity Upgrades":""), "You now start with 10 Emperor Dimensions of each tier up to the fourth tier", "You now start with 10 Emperor Dimensions of each tier up to the sixth tier, and the IP multiplier no longer costs IP", "You now start with 10 of each Emperor Dimension", "You now start with 16 Nanofield rewards", "You now start with "+shortenCosts(1e25)+" quark spins, and Branches are faster based on your spins", "You now start with Break Eternity unlocked and all Break Eternity upgrades bought and generate 1% of Eternal Matter gained on Eternity per second", "From now on, you gain 1% of quarks you will gain per second and you keep your Tachyon particles on Quantum and Ghostify outside of Big Rip."])[notifyId2]+".","success")
+		$.notify("You became a ghost in at most "+getFullExpansion(tmp.bm[notifyId2])+" quantumed stat! "+(["You now start with all Speedrun Milestones and all "+shorten(Number.MAX_VALUE)+" QK assignation features unlocked, all Paired Challenges completed, all Big Rip upgrades bought, Nanofield is 2x faster until you reach 16 rewards, and you get quarks based on your best MA this quantum", "From now on, colored quarks do not cancel, you keep your gluon upgrades, you can quick Big Rip, and completing an Eternity Challenge doesn't respec your Time Studies.", "You now keep your Electron upgrades", "From now on, Quantum doesn't reset your Tachyon particles unless you are in a QC, unstabilizing quarks doesn't lose your colored quarks, and you start with 5 of 1st upgrades of each Tree Branch", "From now on, Quantum doesn't reset your Meta-Dimension Boosts unless you are in a QC or undoing Big Rip", "From now on, Quantum doesn't reset your normal duplicants unless you are in a QC or undoing Big Rip", "You now start with 10 worker duplicants and Ghostify now doesn't reset Neutrinos.", "You are now gaining ^0.5 amount of quarks, ^0.5 amount of gluons, and 1% of Space Shards gained on Quantum per second.", "You now start with 10 Emperor Dimensions of each tier up to the second tier"+(aarMod.ngudpV?", and from now on, start Big Rips with the 3rd row of Eternity Upgrades":""), "You now start with 10 Emperor Dimensions of each tier up to the fourth tier", "You now start with 10 Emperor Dimensions of each tier up to the sixth tier, and the IP multiplier no longer costs IP", "You now start with 10 of each Emperor Dimension", "You now start with 16 Nanorewards", "You now start with "+shortenCosts(1e25)+" quark spins, and Branches are faster based on your spins", "You now start with Break Eternity unlocked and all Break Eternity upgrades bought and generate 1% of Eternal Matter gained on Eternity per second", "From now on, you gain 1% of quarks you will gain per second and you keep your Tachyon particles on Quantum and Ghostify outside of Big Rip."])[notifyId2]+".","success")
 		notifyId2++
 	}
 }

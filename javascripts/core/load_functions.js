@@ -2047,7 +2047,7 @@ function updateNGp3DisplayStuff(){
         el('autoReset').textContent="Auto: O"+(quSave.autoOptions.replicantiReset?"N":"FF")
         el("antTabs").style.display=player.masterystudies.includes("d11")?"":"none"
         el("edtabbtn_dim").style.display=player.masterystudies.includes("d11")?"":"none"
-		NANOFIELD.shown()
+		NF.shown()
         el("riptabbtn").style.display=player.masterystudies.includes("d14")?"":"none"
         el("ghostifyAnimBtn").textContent="Ghostify: O"+(player.options.animations.ghostify?"N":"FF")
         for (var u=5;u<13;u++) {

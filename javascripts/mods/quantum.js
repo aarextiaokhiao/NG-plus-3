@@ -672,7 +672,7 @@ function quantumReset(force, auto, challid, bigRip, implode = false) {
 	el("masterystudyunlock").style.display = (bigRip ? !hasRipUpg(12) : speedrunMilestonesReached < 14 || !isRewardEnabled(4)) ? "none" : ""
 	if (speedrunMilestonesReached < 14 || !isRewardEnabled(4)) {
 		el("anttabs").style.display = "none"
-		NANOFIELD.shown()
+		NF.shown()
 		el("edtabbtn_dim").style.display = "none"
 		el("todtabbtn").style.display = "none"
 		el("riptabbtn").style.display = "none"

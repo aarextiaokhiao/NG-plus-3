@@ -1677,7 +1677,7 @@
 				<br><br>
 				(Update v2.41R: Gravitional Relativity)
 				<br>
-				<b class="red">(Beta: 7/7/22 Build)</b>
+				<b class="red">(Beta: 7/8/22 Build)</b>
 				<br><br>
 			</p>
 			<div id="footercontainer">
@@ -2471,7 +2471,7 @@
 								<div id="Really?" class="achievement achievementlocked" style="background-image: url(images/154.png)"></div>
 							</td>
 							<td>
-								<div id="But I don't want to grind!" class="achievement achievementlocked" style="background-image: url(images/155.png)" ach-tooltip="Get the 21st Nanofield reward without having Tree Upgrades. Reward: Gain more quarks based on radioactive decays."></div>
+								<div id="But I don't want to grind!" class="achievement achievementlocked" style="background-image: url(images/155.png)" ach-tooltip="Get the 21st Nanoreward without having Tree Upgrades. Reward: Gain more quarks based on radioactive decays."></div>
 							</td>
 							<td>
 								<div id="I rather oppose the theory of everything" class="achievement achievementlocked" style="background-image: url(images/156.png)"></div>
@@ -2595,7 +2595,7 @@
 								ach-tooltip="Get 80,000,000,000 tickspeed upgrades from time shards.">Scammed Tickspeed</div>
 							</td><td>
 								<div id="Microfield" class="achievement achievementlocked" style="background-image: url(images/none.png)"
-								ach-tooltip="Get 200 Nanofield rewards. Reward: Reduce preon power threshold by 50%">Microfield</div>
+								ach-tooltip="Get 200 Nanorewards. Reward: Reduce preon power threshold by 50%">Microfield</div>
 							</td><td>
 								<div id="none" class="achievement achievementlocked" style="background-image: url(images/none.png)"
 								></div>
@@ -4841,18 +4841,17 @@
 					You have <span id="quarksNanofield"></span> preons.<br>
 					<span id="ns"></span>
 					<table class="qtable"><tr><td>
-						You have <span id="preonEnergy" style="font-size:35px"></span> preon energy.<br>
-						You have <span id="quarkPower" style="font-size:35px"></span> preon power. Next at <span id="quarkPowerThreshold" style="font-size:35px"></span> preon energy.<br>
-						You are getting <span id="quarkEnergyRate"></span> preon energy per second if your preon anti-energy didn't reach its limit.
+						<span id="preonEnergy" style="font-size:25px"></span> Preon Energy (<span id="quarkEnergyRate"></span>/s)<br>
 					</td><td>
-						You have <span id="quarkCharge" style="font-size:35px"></span> preon charge.<br>
+						<span id="quarkCharge" style="font-size:25px"></span> Preon Charge<br>
 						<button class="storebtn" id="produceQuarkCharge" onclick="startProduceQuarkCharge()"></button><br>
-						You are getting <span id="quarkChargeRate"></span> preon charge per second, but losing <span id="quarkLoss"></span> preons per second.
+						(<span id="quarkChargeRate"></span>/s, -<span id="quarkLoss"></span> preons/s)
 					</td><td>
-						You have <span id="quarkAntienergy" style="font-size:35px"></span> preon anti-energy. At <span id="quarkChargeProductionCap" style="font-size:35px"></span>, your preon charge will stop producing energy and anti-energy.<br>
-						You are getting <span id="quarkAntienergyRate"></span> preon anti-energy per second.
+						<span id="quarkAntienergy" style="font-size:25px"></span> Preon Anti-energy (<span id="quarkAntienergyRate"></span>/s)<br>
+						Stops producing at <span id="quarkChargeProductionCap" style="font-size:25px"></span>
 					</td></tr></table>
-					You have <span id="rewards" style="font-size:35px"></span> rewards.
+					<span id="quarkPower" style="font-size:25px"></span> Preon Power (Next: <span id="quarkPowerThreshold" style="font-size:15px"></span> Energy)<br>
+					<span id="rewards" style="font-size:35px"></span> Nanorewards
 					<table class="table" align=center style="margin: auto" id="nfRewards"></table>
 					<br><br>
 				</div>
@@ -4892,15 +4891,15 @@
 				<div class="branchtab" id="upgradesBranch">
 					<span id="treeUpgradeEff"></span>
 					<table class="table" align="center" style="margin: auto"><tr>
-						<td><button class='gluonupgrade unavailablebtn' id='treeupg1' onclick='buyTreeUpg(1)'>Meta Dimension Boosts are cheaper.<br>Level: <span id='treeupg1lvl'>?</span><br>Currently: -<span id='treeupg1current'>?</span><br><span id="treeupg1cost"></span></button></td>
-						<td><button class='gluonupgrade unavailablebtn' id='treeupg2' onclick='buyTreeUpg(2)'>The TP gain formula exponent is increased.<br>Level: <span id='treeupg2lvl'>?</span><br>Currently: <span id='treeupg2current'>?</span><br><span id="treeupg2cost"></span></button></td>
-						<td><button class='gluonupgrade unavailablebtn' id='treeupg3' onclick='buyTreeUpg(3)'>All branches are faster based on how many Tree upgrades have been bought.<br>Level: <span id='treeupg3lvl'>?</span><br>Currently: <span id='treeupg3current'>?</span>x<br><span id="treeupg3cost"></span></button></td>
-						<td><button class='gluonupgrade unavailablebtn' id='treeupg4' onclick='buyTreeUpg(4)'>Electron effect is increased.<br>Level: <span id='treeupg4lvl'>?</span><br>Currently: <span id='treeupg4current'>?</span><br><span id="treeupg4cost"></span></button></td>
+						<td><button class='gluonupgrade unavailablebtn' id='treeupg1' onclick='buyTreeUpg(1)'>Cheapen Meta-Dimension Boosts.<br>Level: <span id='treeupg1lvl'>?</span><br>Currently: -<span id='treeupg1current'>?</span><br><span id="treeupg1cost"></span></button></td>
+						<td><button class='gluonupgrade unavailablebtn' id='treeupg2' onclick='buyTreeUpg(2)'>Increase TP gain exponent.<br>Level: <span id='treeupg2lvl'>?</span><br>Currently: <span id='treeupg2current'>?</span><br><span id="treeupg2cost"></span></button></td>
+						<td><button class='gluonupgrade unavailablebtn' id='treeupg3' onclick='buyTreeUpg(3)'>Tree Upgrades speed up Branches.<br>Level: <span id='treeupg3lvl'>?</span><br>Currently: <span id='treeupg3current'>?</span>x<br><span id="treeupg3cost"></span></button></td>
+						<td><button class='gluonupgrade unavailablebtn' id='treeupg4' onclick='buyTreeUpg(4)'>Strengthen Electrons.<br>Level: <span id='treeupg4lvl'>?</span><br>Currently: <span id='treeupg4current'>?</span><br><span id="treeupg4cost"></span></button></td>
 					</tr><tr>
-						<td><button class='gluonupgrade unavailablebtn' id='treeupg5' onclick='buyTreeUpg(5)'>All branches are faster based on your best-ever meta-antimatter.<br>Level: <span id='treeupg5lvl'>?</span><br>Currently: <span id='treeupg5current'>?</span>x<br><span id="treeupg5cost"></span></button></td>
+						<td><button class='gluonupgrade unavailablebtn' id='treeupg5' onclick='buyTreeUpg(5)'>Best meta-antimatter speeds up Branches.<br>Level: <span id='treeupg5lvl'>?</span><br>Currently: <span id='treeupg5current'>?</span>x<br><span id="treeupg5cost"></span></button></td>
 						<td><button class='gluonupgrade unavailablebtn' id='treeupg6' onclick='buyTreeUpg(6)'>Emperor Dimensions produce faster.<br>Level: <span id='treeupg6lvl'>?</span><br>Currently: <span id='treeupg6current'>?</span>x<br><span id="treeupg6cost"></span></button></td>
-						<td><button class='gluonupgrade unavailablebtn' id='treeupg7' onclick='buyTreeUpg(7)'>Replicantis boost dilated time production.<br>Level: <span id='treeupg7lvl'>?</span><br>Currently: <span id='treeupg7current'>?</span>x<br><span id="treeupg7cost"></span></button></td>
-						<td><button class='gluonupgrade unavailablebtn' id='treeupg8' onclick='buyTreeUpg(8)' style='font-size:9px'>Your best-in-this-quantum meta-antimatter makes the meta-antimatter effect stronger.<br>Level: <span id='treeupg8lvl'>?</span><br>Currently: +<span id='treeupg8current'>?</span> to exponent<br><span id="treeupg8cost"></span></button></td>
+						<td><button class='gluonupgrade unavailablebtn' id='treeupg7' onclick='buyTreeUpg(7)'>Replicantis boost dilated time.<br>Level: <span id='treeupg7lvl'>?</span><br>Currently: <span id='treeupg7current'>?</span>x<br><span id="treeupg7cost"></span></button></td>
+						<td><button class='gluonupgrade unavailablebtn' id='treeupg8' onclick='buyTreeUpg(8)' style='font-size:9px'>Your best-in-this-quantum meta-antimatter strengthens meta-antimatter.<br>Level: <span id='treeupg8lvl'>?</span><br>Currently: +<span id='treeupg8current'>?</span> to exponent<br><span id="treeupg8cost"></span></button></td>
 					</tr></table>
 					<button class="storebtn" onclick="maxTreeUpg()" style="width: 190px">Max all upgrades</button>
 				</div>
@@ -4925,25 +4924,25 @@
 							<td><button class='gluonupgrade unavailablebtn' id="bigripupg1" onclick='buyBigRipUpg(1)' style='font-size: 10px'>Infinity Points boost Normal Dimensions, but buying other upgrades except for the 2nd nullify it.<br>Currently: <span id="bigripupg1current">1.00</span>x<br>Cost: <span id="bigripupg1cost"></span> Space Shards</button></td>
 							<td><button class='gluonupgrade unavailablebtn' id="bigripupg2" onclick='buyBigRipUpg(2)'>Start with all ECs completed, and 100,000 eternities.<br>Cost: <span id="bigripupg2cost"></span> Space Shards</button></td>
 							<td><button class='gluonupgrade unavailablebtn' id="bigripupg3" onclick='buyBigRipUpg(3)'>Gain 5 Time Theorems.<br>Cost: <span id="bigripupg3cost"></span> Space Shards</button></td>
-							<td><button class='gluonupgrade unavailablebtn' id="bigripupg4" style='font-size: 10px' onclick='buyBigRipUpg(4)'>Replicantis multiply the gain of Infinity Points at a reduced rate, and replicates 10x faster.<br>Cost: <span id="bigripupg4cost"></span> Space Shards</button></td>
+							<td><button class='gluonupgrade unavailablebtn' id="bigripupg4" onclick='buyBigRipUpg(4)'>Replicantis boost Infinity Points, and replicates 10x faster.<br>Cost: <span id="bigripupg4cost"></span> Space Shards</button></td>
 						</tr>
 						<tr>
 							<td><button class='gluonupgrade unavailablebtn' id="bigripupg5" onclick='buyBigRipUpg(5)'>Gain 20 Time Theorems.<br>Cost: <span id="bigripupg5cost"></span> Space Shards</button></td>
 							<td><button class='gluonupgrade unavailablebtn' id="bigripupg6" onclick='buyBigRipUpg(6)'>Space Shards boost Eternity Point gain.<br>Cost: <span id="bigripupg6cost"></span> Space Shards</button></td>
-							<td><button class='gluonupgrade unavailablebtn' id="bigripupg7" onclick='buyBigRipUpg(7)'>You start with Time Study 192.<br>Cost: <span id="bigripupg7cost"></span> Space Shards</button></td>
-							<td><button class='gluonupgrade unavailablebtn' id="bigripupg8" onclick='buyBigRipUpg(8)' style='font-size: 10px'>Each replicated galaxy doubles your EP gain.<br>Currently: <span id="bigripupg8current"></span><br>Cost: <span id="bigripupg8cost"></span> Space Shards</button></td>
+							<td><button class='gluonupgrade unavailablebtn' id="bigripupg7" onclick='buyBigRipUpg(7)'>Start with Time Study 192.<br>Cost: <span id="bigripupg7cost"></span> Space Shards</button></td>
+							<td><button class='gluonupgrade unavailablebtn' id="bigripupg8" onclick='buyBigRipUpg(8)'>Replicated Galaxies boost Eternity Points.<br>Currently: <span id="bigripupg8current"></span><br>Cost: <span id="bigripupg8cost"></span> Space Shards</button></td>
 						</tr>
 						<tr>
-							<td><button class='gluonupgrade unavailablebtn' id="bigripupg9" onclick='buyBigRipUpg(9)' style='font-size: 10px'>Gain 1,350 Time Theorems, but reset the study tree, and nullify upgrades 3 & 5 - 8.<br>Cost: <span id="bigripupg9cost"></span> Space Shards</button></td>
-							<td><button class='gluonupgrade unavailablebtn' id="bigripupg10" onclick='buyBigRipUpg(10)'>Start with dilation unlocked, but activate the 9th Big Rip upgrade.<br>Cost: <span id="bigripupg10cost"></span> Space Shards</button></td>
-							<td><button class='gluonupgrade unavailablebtn' id="bigripupg11" style='font-size: 10px' onclick='buyBigRipUpg(11)'>Start with Tachyon particles, but reset the study tree, all upgrades can boost dilation except your best TP, and nullify upgrade 4.<br>Cost: <span id="bigripupg11cost"></span> Space Shards</button></td>
-							<td><button class='gluonupgrade unavailablebtn' id="bigripupg12" style='font-size: 10px' onclick='buyBigRipUpg(12)'>You keep your time studies, dilation upgrades, eternity upgrades, and mastery studies.<br>Cost: <span id="bigripupg12cost"></span> Space Shards</button></td>
+							<td><button class='gluonupgrade unavailablebtn' id="bigripupg9" onclick='buyBigRipUpg(9)'>Gain 1,350 Time Theorems, but reset study tree and nullify upgrades 3 & 5 - 8.<br>Cost: <span id="bigripupg9cost"></span> Space Shards</button></td>
+							<td><button class='gluonupgrade unavailablebtn' id="bigripupg10" onclick='buyBigRipUpg(10)'>Start with Dilation, but activate the 9th Big Rip upgrade.<br>Cost: <span id="bigripupg10cost"></span> Space Shards</button></td>
+							<td><button class='gluonupgrade unavailablebtn' id="bigripupg11" style='font-size: 10px' onclick='buyBigRipUpg(11)'>Start with Tachyon Particles, but reset the study tree and nullify upgrade 4.<br>(Some boosts only work)<br>Cost: <span id="bigripupg11cost"></span> Space Shards</button></td>
+							<td><button class='gluonupgrade unavailablebtn' id="bigripupg12" onclick='buyBigRipUpg(12)'>Keep all your studies, eternity upgrades, and dilation upgrades.<br>Cost: <span id="bigripupg12cost"></span> Space Shards</button></td>
 						</tr>
 						<tr>
 							<td><button class='gluonupgrade unavailablebtn' id="bigripupg13" onclick='buyBigRipUpg(13)'>Replicantis boost Time Dimensions at a greatly reduced rate.<br>Cost: <span id="bigripupg13cost"></span> Space Shards</button></td>
-							<td><button class='gluonupgrade unavailablebtn' id="bigripupg14" style='font-size: 10px' onclick='buyBigRipUpg(14)'>TS101 is stronger based on your Space Shards while outside of dilation runs.<br>Currently: ^<span id="bigripupg14current">1.00</span><br>Cost: <span id="bigripupg14cost"></span> Space Shards</button></td>
+							<td><button class='gluonupgrade unavailablebtn' id="bigripupg14" style='font-size: 10px' onclick='buyBigRipUpg(14)'>Outside of Dilation, Space Shards strengthen TS101.<br>Currently: ^<span id="bigripupg14current">1.00</span><br>Cost: <span id="bigripupg14cost"></span> Space Shards</button></td>
 							<td><button class='gluonupgrade unavailablebtn' id="bigripupg15" style='font-size: 10px' onclick='buyBigRipUpg(15)'>Eternity Points make the Distant Antimatter Galaxies scaling start later.<br>Currently: +<span id="bigripupg15current">0</span><br>Cost: <span id="bigripupg15cost"></span> Space Shards</button></td>
-							<td><button class='gluonupgrade unavailablebtn' id="bigripupg16" style='font-size: 10px' onclick='buyBigRipUpg(16)'>Dilated time boosts the Seventh Time Dimension.<br>Currently: <span id="bigripupg16current">1.00</span>x<br>Cost: <span id="bigripupg16cost"></span> Space Shards</button></td>
+							<td><button class='gluonupgrade unavailablebtn' id="bigripupg16" onclick='buyBigRipUpg(16)'>Dilated time boosts Seventh Time Dimension.<br>Currently: <span id="bigripupg16current">1.00</span>x<br>Cost: <span id="bigripupg16cost"></span> Space Shards</button></td>
 						</tr>
 					</table>
 					<table class="table" align="center" style="margin: auto">
@@ -4951,7 +4950,7 @@
 							<td><button class='gluonupgrade unavailablebtn' id="bigripupg17" onclick='buyBigRipUpg(17)'>Reactivate the first upgrade, and make its effect <span id="bigripupg17current">3</span>x stronger.<br>Cost: <span id="bigripupg17cost"></span> Space Shards</button></td>
 							<td><button class='gluonupgrade unavailablebtn' id="bigripupg18" onclick='buyBigRipUpg(18)'>Space Shards boost quark spin production.<br>Currently: <span id="bigripupg18current"></span>x<br>Cost: <span id="bigripupg18cost"></span> Space Shards</button></td>
 							<td><button class='gluonupgrade unavailablebtn' id="bigripupg19" onclick='buyBigRipUpg(19)'>Time Shards speed up Branches.<br>Currently: <span id="bigripupg19current"></span>x<br>Cost: <span id="bigripupg19cost"></span> Space Shards</button></td>
-							<td><button class='gluonupgrade unavailablebtn' id="bigripupg20" onclick='buyBigRipUpg(20)'>In Big Rip, you gain Tachyon particles without dilating time.<br>Cost: <span id="bigripupg20cost"></span> Space Shards</button></td>
+							<td><button class='gluonupgrade unavailablebtn' id="bigripupg20" onclick='buyBigRipUpg(20)'>In Big Rip, passively generate Tachyon Particles.<br>Cost: <span id="bigripupg20cost"></span> Space Shards</button></td>
 						</tr>
 					</table>
 				</div>
@@ -4970,40 +4969,40 @@
 							</tr>
 							<tr>
 								<td>
-									<button id="breakUpg1" class="eternityupbtnlocked" onclick="buyBreakUpg(1)">Boost the first 4 Time Dimensions based on your Eternity Points and Eternal Matter.<br>Currently: <span id="breakUpg1Mult">1.0</span>x<br>Cost: <span id="breakUpg1Cost"></span> Eternal Matter</button>
+									<button id="breakUpg1" class="eternityupbtnlocked" onclick="buyBreakUpg(1)">Eternity Points and Eternal Matter boost Time Dimensions 1 - 4.<br>Currently: <span id="breakUpg1Mult">1.0</span>x<br>Cost: <span id="breakUpg1Cost"></span> Eternal Matter</button>
 								</td>
 								<td>
-									<button id="breakUpg2" class="eternityupbtnlocked" onclick="buyBreakUpg(2)">Divide the normal galaxy cost based on your Eternity Points.<br>Currently: <span id="breakUpg2Mult">1.0</span>x cheaper<br>Cost: <span id="breakUpg2Cost"></span> Eternal Matter</button>
+									<button id="breakUpg2" class="eternityupbtnlocked" onclick="buyBreakUpg(2)">Eternity Points cheapen Antimatter Galaxies.<br>Currently: /<span id="breakUpg2Mult">1.0</span><br>Cost: <span id="breakUpg2Cost"></span> Eternal Matter</button>
 								</td>
 								<td>
-									<button id="breakUpg3" class="eternityupbtnlocked" onclick="buyBreakUpg(3)">You gain more Space Shards based on your Eternity Points.<br>Currently: <span id="breakUpg3Mult">1.0</span>x<br>Cost: <span id="breakUpg3Cost"></span> Eternal Matter</button>
+									<button id="breakUpg3" class="eternityupbtnlocked" onclick="buyBreakUpg(3)">Eternity Points boost Space Shards.<br>Currently: <span id="breakUpg3Mult">1.0</span>x<br>Cost: <span id="breakUpg3Cost"></span> Eternal Matter</button>
 								</td>
 							</tr>
 							<tr>
 								<td>
-									<button id="breakUpg4" class="eternityupbtnlocked" onclick="buyBreakUpg(4)">Boost Time Dimensions 4 - 6 based on your Eternity Points and Space Shards.<br>Currently: <span id="breakUpg4Mult">1.0</span>x<br>Cost: <span id="breakUpg4Cost"></span> Eternal Matter</button>
+									<button id="breakUpg4" class="eternityupbtnlocked" onclick="buyBreakUpg(4)">Eternity Points and Space Shards boost Time Dimensions 4 - 6.<br>Currently: <span id="breakUpg4Mult">1.0</span>x<br>Cost: <span id="breakUpg4Cost"></span> Eternal Matter</button>
 								</td>
 								<td>
-									<button id="breakUpg5" class="eternityupbtnlocked" onclick="buyBreakUpg(5)">Boost the tickspeed reduction based on your Eternity Points and Time Shards.<br>Currently: <span id="breakUpg5Mult">1.0</span>x<br>Cost: <span id="breakUpg5Cost"></span> Eternal Matter</button>
+									<button id="breakUpg5" class="eternityupbtnlocked" onclick="buyBreakUpg(5)">Eternity Points and Time Shards multiply Tickspeed Reduction.<br>Currently: <span id="breakUpg5Mult">1.0</span>x<br>Cost: <span id="breakUpg5Cost"></span> Eternal Matter</button>
 								</td>
 								<td>
-									<button id="breakUpg6" class="eternityupbtnlocked" onclick="buyBreakUpg(6)">You gain more Space Shards based on your Eternity Points and Eternal Matter.<br>Currently: <span id="breakUpg6Mult">1.0</span>x<br>Cost: <span id="breakUpg6Cost"></span> Eternal Matter</button>
+									<button id="breakUpg6" class="eternityupbtnlocked" onclick="buyBreakUpg(6)">Eternity Points and Eternal Matter boost Space Shards.<br>Currently: <span id="breakUpg6Mult">1.0</span>x<br>Cost: <span id="breakUpg6Cost"></span> Eternal Matter</button>
 								</td>
 							</tr>
 							<tr id="breakUpgR3">
 								<td>
-									<button id="breakUpg8" class="eternityupbtnlocked" onclick="buyBreakUpg(8)">The Infinite Time reward is stronger in non-Dilation runs based on your Tachyon Particles.<br>Currently: <span id="breakUpg8Mult">???</span>%<br>Cost: <span id="breakUpg8Cost"></span> Eternal Matter</button>
+									<button id="breakUpg8" class="eternityupbtnlocked" onclick="buyBreakUpg(8)">Outside of Dilation, Tachyon Particles strengthen Infinite Time.<br>Currently: <span id="breakUpg8Mult">???</span>%<br>Cost: <span id="breakUpg8Cost"></span> Eternal Matter</button>
 								</td>
 								<td>
-									<button id="breakUpg9" class="eternityupbtnlocked" onclick="buyBreakUpg(9)">Divide the Normal Galaxy cost in Eternity Challenge 10 based on your Eternal Matter.<br>Currently: /<span id="breakUpg9Mult">???</span><br>Cost: <span id="breakUpg9Cost"></span> Eternal Matter</button>
+									<button id="breakUpg9" class="eternityupbtnlocked" onclick="buyBreakUpg(9)">In Eternity Challenge 10, Eternal Matter cheapens Antimatter Galaxies.<br>Currently: /<span id="breakUpg9Mult">???</span><br>Cost: <span id="breakUpg9Cost"></span> Eternal Matter</button>
 								</td>
 								<td>
-									<button id="breakUpg10" class="eternityupbtnlocked" onclick="buyBreakUpg(10)">Eternity Points multiply the normal galaxy amount in "Intergalactic" in Dilation runs.<br>Currently: <span id="breakUpg10Mult">???</span>x<br>Cost: <span id="breakUpg10Cost"></span> Eternal Matter</button>
+									<button id="breakUpg10" class="eternityupbtnlocked" onclick="buyBreakUpg(10)">In Dilation, Eternity Points multiply galaxy efficiency for Intergalactic.<br>Currently: <span id="breakUpg10Mult">???</span>x<br>Cost: <span id="breakUpg10Cost"></span> Eternal Matter</button>
 								</td>
 							</tr>
 							<tr id="breakUpgR4">
 								<td>
-									<button id="breakUpg11" class="eternityupbtnlocked" onclick="buyBreakUpg(11)">In Big Rip, start with sacrifice unlocked, and sacrifice boost time dimensions at a reduced rate.<br>Currently: <span id="breakUpg11Mult">???</span>x<br>Cost: <span id="breakUpg11Cost"></span> Eternal Matter</button>
+									<button id="breakUpg11" class="eternityupbtnlocked" onclick="buyBreakUpg(11)">Unlock Sacrifice which boosts Time Dimensions.<br>Currently: <span id="breakUpg11Mult">???</span>x<br>Cost: <span id="breakUpg11Cost"></span> Eternal Matter</button>
 								</td>
 							</tr>
 							<tr id="breakUpgRS">
@@ -5020,7 +5019,7 @@
 							<tr>
 								<td></td>
 								<td>
-									<button id="breakUpg7" class="eternityupbtnlocked" onclick="buyBreakUpg(7)">You gain <span id="breakUpg7MultIncrease"></span>x more Eternity Points.<br>Currently: <span id="breakUpg7Mult">1</span>x<br>Cost: <span id="breakUpg7Cost"></span> Eternal Matter</button><br><button class="storebtn" style="width: 190px" onclick="maxBuyBEEPMult()">Max EP mult</button>
+									<button id="breakUpg7" class="eternityupbtnlocked" onclick="buyBreakUpg(7)">Gain <span id="breakUpg7MultIncrease"></span>x more Eternity Points.<br>Currently: <span id="breakUpg7Mult">1</span>x<br>Cost: <span id="breakUpg7Cost"></span> Eternal Matter</button><br><button class="storebtn" style="width: 190px" onclick="maxBuyBEEPMult()">Max EP mult</button>
 								</td>
 								<td></td>
 							</tr>
@@ -5097,18 +5096,18 @@
 						<td id="neutrinoBoostCell12">Higgs boost Bosons by <span class="neutrinos" id="neutrinoBoost12"></span>.</td>
 					</tr>
 					<tr>
-						<td><button id="neutrinoUnlock" class="gluonupgrade unavailablebtn" onclick="unlockNeutrinoBoost()">Unlock a new boost based on your neutrinos.<br>Cost: <span id="neutrinoUnlockCost">2</span> ElP</button></td>
-						<td><button id="neutrinoMultUpg" class="gluonupgrade unavailablebtn" onclick="buyNeutrinoMult()">You gain 5x more neutrinos.<br>Currently: <span id="neutrinoMult">1</span>x<br>Cost: <span id="neutrinoMultUpgCost">3</span> ElP</button><br><button class="storebtn" onclick='maxNeutrinoMult()' style='width:190px'>Max Neutrino mult</button></td>
-						<td><button id="ghpMultUpg" class="gluonupgrade unavailablebtn" onclick="buyGHPMult()">You gain 3x more ElP.<br>Currently: <span id="ghpMult"></span>x<br>Cost: <span id="ghpMultUpgCost"></span> of any neutrinos</button><br><button class="storebtn" onclick='maxGHPMult()' style='width:190px'>Max ElP mult</button></td>
+						<td><button id="neutrinoUnlock" class="gluonupgrade unavailablebtn" onclick="unlockNeutrinoBoost()">Unlock a new boost.<br>Cost: <span id="neutrinoUnlockCost">2</span> ElP</button></td>
+						<td><button id="neutrinoMultUpg" class="gluonupgrade unavailablebtn" onclick="buyNeutrinoMult()">Gain 5x more neutrinos.<br>Currently: <span id="neutrinoMult">1</span>x<br>Cost: <span id="neutrinoMultUpgCost">3</span> ElP</button><br><button class="storebtn" onclick='maxNeutrinoMult()' style='width:190px'>Max Neutrino mult</button></td>
+						<td><button id="ghpMultUpg" class="gluonupgrade unavailablebtn" onclick="buyGHPMult()">Gain 3x more ElP.<br>Currently: <span id="ghpMult"></span>x<br>Cost: <span id="ghpMultUpgCost"></span> of any neutrinos</button><br><button class="storebtn" onclick='maxGHPMult()' style='width:190px'>Max ElP mult</button></td>
 					</tr>
 					<tr>
 						<td><button class="gluonupgrade unavailablebtn" id="neutrinoUpg1" onclick="buyNeutrinoUpg(1)" style="font-size: 10px">Meta-Dimension Boosts cost cheaper.<br>Currently: -<span id="neutrinoUpg1Pow"></span><br>Cost: <span id="neutrinoUpg1Cost"></span> of any neutrinos</button></td>
 						<td><button class="gluonupgrade unavailablebtn" id="neutrinoUpg2" onclick="buyNeutrinoUpg(2)">Eggons hatch instantly.<br>Cost: <span id="neutrinoUpg2Cost"></span> of any neutrinos</button></td>
-						<td><button class="gluonupgrade unavailablebtn" id="neutrinoUpg3" onclick="buyNeutrinoUpg(3)">Blue power boosts preon charge production.<br>Currently: <span id="neutrinoUpg3Pow"></span>x<br>Cost: <span id="neutrinoUpg3Cost"></span> of any neutrinos</button></td>
+						<td><button class="gluonupgrade unavailablebtn" id="neutrinoUpg3" onclick="buyNeutrinoUpg(3)">Blue power boosts preon charge.<br>Currently: <span id="neutrinoUpg3Pow"></span>x<br>Cost: <span id="neutrinoUpg3Cost"></span> of any neutrinos</button></td>
 					</tr>
 					<tr>
-						<td><button class="gluonupgrade unavailablebtn" id="neutrinoUpg4" onclick="buyNeutrinoUpg(4)" style="font-size: 10px">Gain quark spins faster and all branches are faster based on your tickspeed.<br>Currently: <span id="neutrinoUpg4Pow">1.0</span>x<br>Cost: <span id="neutrinoUpg4Cost"></span> of any neutrinos</button></td>
-						<td><button class="gluonupgrade unavailablebtn" id="neutrinoUpg5" onclick="buyNeutrinoUpg(5)">Triple the Electron gain.<br>Cost: <span id="neutrinoUpg5Cost"></span> of any neutrinos</button></td>
+						<td><button class="gluonupgrade unavailablebtn" id="neutrinoUpg4" onclick="buyNeutrinoUpg(4)" style="font-size: 10px">Tickspeed speeds up Branches and Quark Spins.<br>Currently: <span id="neutrinoUpg4Pow">1.0</span>x<br>Cost: <span id="neutrinoUpg4Cost"></span> of any neutrinos</button></td>
+						<td><button class="gluonupgrade unavailablebtn" id="neutrinoUpg5" onclick="buyNeutrinoUpg(5)">Triple Electrons.<br>Cost: <span id="neutrinoUpg5Cost"></span> of any neutrinos</button></td>
 						<td><button class="gluonupgrade unavailablebtn" id="neutrinoUpg6" onclick="buyNeutrinoUpg(6)">Disable Remote Antimatter Galaxies scaling!<br>Cost: <span id="neutrinoUpg6Cost"></span> of any neutrinos</button></td>
 					</tr>
 					<tr>
@@ -5124,11 +5123,11 @@
 					<tr id="gphRow">
 						<td><button class="gluonupgrade unavailablebtn" id="neutrinoUpg13" onclick="buyNeutrinoUpg(13)">100 RG upgrade doesn't nerf the 100 BR upgrade.<br>Cost: <span id="neutrinoUpg13Cost"></span> of any neutrinos</button></td>
 						<td><button class="gluonupgrade unavailablebtn" id="neutrinoUpg14" onclick="buyNeutrinoUpg(14)">Elementary Particles boost Photonic Sources.<br>Currently: <span id="neutrinoUpg14Pow"></span>x<br>Cost: <span id="neutrinoUpg14Cost"></span> of any neutrinos</button></td>
-						<td><button class="gluonupgrade unavailablebtn" id="neutrinoUpg15" onclick="buyNeutrinoUpg(15)">Your Nanofield rewards speed up Nanofield.<br>Currently: <span id="neutrinoUpg15Pow"></span>x<br>Cost: <span id="neutrinoUpg15Cost"></span> of any neutrinos</button></td>
+						<td><button class="gluonupgrade unavailablebtn" id="neutrinoUpg15" onclick="buyNeutrinoUpg(15)">Nanorewards speed up Nanofield.<br>Currently: <span id="neutrinoUpg15Pow"></span>x<br>Cost: <span id="neutrinoUpg15Cost"></span> of any neutrinos</button></td>
 					</tr>
 					<tr id="gravRow">
 						<td><button class="gluonupgrade unavailablebtn" id="neutrinoUpg16" onclick="buyNeutrinoUpg(16)" style="font-size: 10px">Fundaments boosts Gravitons gain. Gravitons effect base is increased by 1.<br>Currently: <span id="neutrinoUpg16Pow"></span>x<br>Cost: <span id="neutrinoUpg16Cost"></span> of any neutrinos</button></td>
-						<td><button class="gluonupgrade unavailablebtn" id="neutrinoUpg17" onclick="buyNeutrinoUpg(17)">Free Nanofield rewards also makes the Anti-Preon Ghost wake 1/3 later.<br>Cost: <span id="neutrinoUpg17Cost"></span> of any neutrinos</button></td>
+						<td><button class="gluonupgrade unavailablebtn" id="neutrinoUpg17" onclick="buyNeutrinoUpg(17)">Free Nanorewards also makes the Anti-Preon Ghost wake 1/3 later.<br>Cost: <span id="neutrinoUpg17Cost"></span> of any neutrinos</button></td>
 					</tr>
 				</table>
 			</div>
@@ -5144,147 +5143,139 @@
 				<table style="margin: 0 auto">
 					<tr>
 						<td id="autoGhost1"><div class="autoBuyerDiv" style="display:block">
-							<b>Auto-Red Unstabilize</b><br>
-							(unstabilizes if you have no red unstable quarks)<br>
-							Power usage: 0.75<br>
-							Is active: <input id="isAutoGhostOn1" type="checkbox" onchange="toggleAutoGhost(1)"></input>
+							<b>Auto-Red Unstabilize</b>
+							<input id="isAutoGhostOn1" type="checkbox" onchange="toggleAutoGhost(1)"></input><br>
+							Power: 0.75
 						</div></td>
 						<td id="autoGhost2"><div class="autoBuyerDiv" style="display:block">
-							<b>Auto-Green Unstabilize</b><br>
-							(unstabilizes if you have no green unstable quarks)<br>
-							Power usage: 0.75<br>
-							Is active: <input id="isAutoGhostOn2" type="checkbox" onchange="toggleAutoGhost(2)"></input>
+							<b>Auto-Green Unstabilize</b>
+							<input id="isAutoGhostOn2" type="checkbox" onchange="toggleAutoGhost(2)"></input><br>
+							Power: 0.75
 						</div></td>
 						<td id="autoGhost3"><div class="autoBuyerDiv" style="display:block">
-							<b>Auto-Blue Unstabilize</b><br>
-							(unstabilizes if you have no blue unstable quarks)<br>
-							Power usage: 0.75<br>
-							Is active: <input id="isAutoGhostOn3" type="checkbox" onchange="toggleAutoGhost(3)"></input>
+							<b>Auto-Blue Unstabilize</b>
+							<input id="isAutoGhostOn3" type="checkbox" onchange="toggleAutoGhost(3)"></input><br>
+							Power: 0.75
 						</div></td>
 						<td id="autoGhost4"><div class="autoBuyerDiv" style="display:block">
-							<b>Auto-Unstable Rotate</b><br>
-							Power usage: 1<br>
-							Auto-rotate: <button class="storebtn" id="autoGhostMod4" onclick="changeAutoGhost('4m')" style="font-size: 100%; width: 120px; height: 20px">Every quantum</button><br>
-							Direction: <button class="storebtn" id="autoGhostRotate4" onclick="changeAutoGhost('4r')" style="font-size: 100%; width: 120px; height: 20px">Right</button><br>
-							Is active: <input id="isAutoGhostOn4" type="checkbox" onchange="toggleAutoGhost(4)"></input>
+							<b>Auto-Unstable Rotate</b>
+							<input id="isAutoGhostOn4" type="checkbox" onchange="toggleAutoGhost(4)"></input><br>
+							Power: 1<br>
+							Rotate: <button class="storebtn" id="autoGhostMod4" onclick="changeAutoGhost('4m')" style="font-size: 100%; width: 120px; height: 20px">Every quantum</button><br>
+							Direction: <button class="storebtn" id="autoGhostRotate4" onclick="changeAutoGhost('4r')" style="font-size: 100%; width: 120px; height: 20px">Right</button>
 						</div></td>
 						<td id="autoGhost5"><div class="autoBuyerDiv" style="display:block">
-							<b>Auto-Branch Upgrade</b><br>
-							(buys if possible)<br>
-							Power usage: 2<br>
-							Is active: <input id="isAutoGhostOn5" type="checkbox" onchange="toggleAutoGhost(5)"></input>
+							<b>Auto-Branch Upgrade</b>
+							<input id="isAutoGhostOn5" type="checkbox" onchange="toggleAutoGhost(5)"></input><br>
+							Power: 2
 						</div></td>
 					</tr>
 					<tr>
 						<td id="autoGhost6"><div class="autoBuyerDiv" style="display:block">
-							<b>Auto-Tree Upgrade</b><br>
-							(buys if possible)<br>
-							Power usage: 2<br>
-							Is active: <input id="isAutoGhostOn6" type="checkbox" onchange="toggleAutoGhost(6)"></input>
+							<b>Auto-Tree Upgrade</b>
+							<input id="isAutoGhostOn6" type="checkbox" onchange="toggleAutoGhost(6)"></input><br>
+							Power: 2
 						</div></td>
 						<td id="autoGhost7"><div class="autoBuyerDiv" style="display:block">
-							<b>Auto-QK Mult</b><br>
-							(buys if possible)<br>
-							Power usage: 0.5<br>
-							Is active: <input id="isAutoGhostOn7" type="checkbox" onchange="toggleAutoGhost(7)"></input>
+							<b>Auto-QK Mult</b>
+							<input id="isAutoGhostOn7" type="checkbox" onchange="toggleAutoGhost(7)"></input><br>
+							Power: 0.5
 						</div></td>
 						<td id="autoGhost8"><div class="autoBuyerDiv" style="display:block">
-							<b>Auto-Food</b><br>
-							(buys if possible)<br>
-							Power usage: 0.5<br>
-							Is active: <input id="isAutoGhostOn8" type="checkbox" onchange="toggleAutoGhost(8)"></input>
+							<b>Auto-Food</b>
+							<input id="isAutoGhostOn8" type="checkbox" onchange="toggleAutoGhost(8)"></input><br>
+							Power: 0.5
 						</div></td>
 						<td id="autoGhost9"><div class="autoBuyerDiv" style="display:block">
-							<b>Auto-Worker</b><br>
-							(feeds if possible)<br>
-							Power usage: 0.5<br>
-							Is active: <input id="isAutoGhostOn9" type="checkbox" onchange="toggleAutoGhost(9)"></input>
+							<b>Auto-Worker</b>
+							<input id="isAutoGhostOn9" type="checkbox" onchange="toggleAutoGhost(9)"></input><br>
+							Power: 0.5
 						</div></td>
 						<td id="autoGhost10"><div class="autoBuyerDiv" style="display:block">
-							<b>Auto-Worker Limit</b><br>
-							(buys if possible)<br>
-							Power usage: 1<br>
-							Is active: <input id="isAutoGhostOn10" type="checkbox" onchange="toggleAutoGhost(10)"></input>
+							<b>Auto-Worker Limit</b>
+							<input id="isAutoGhostOn10" type="checkbox" onchange="toggleAutoGhost(10)"></input><br>
+							Power: 1
 						</div></td>
 					</tr>
 					<tr>
 						<td id="autoGhost11"><div class="autoBuyerDiv" style="display:block">
-							<b>Auto-Nanofield</b><br>
-							Power usage: 0.5<br>
-							Every <input id="autoGhost11pw" onchange="changeAutoGhost('11pw')"></input> seconds, producing preon charge for <input id="autoGhost11cw" type="text" onchange="changeAutoGhost('11cw')"></input> seconds.<br>
-							Is active: <input id="isAutoGhostOn11" type="checkbox" onchange="toggleAutoGhost(11)"></input>
+							<b>Auto-Nanofield</b>
+							<input id="isAutoGhostOn11" type="checkbox" onchange="toggleAutoGhost(11)"></input><br>
+							Power: 0.5<br>
+							Wait: <input id="autoGhost11pw" onchange="changeAutoGhost('11pw')"></input>s<br>
+							Produce: <input id="autoGhost11cw" type="text" onchange="changeAutoGhost('11cw')"></input>s
 						</div></td>
 						<td id="autoGhost12"><div class="autoBuyerDiv" style="display:block">
-							<b>Auto-Radioactive Decay</b><br>
-							(buys if possible)<br>
-							Power usage: 0.5<br>
-							Is active: <input id="isAutoGhostOn12" type="checkbox" onchange="toggleAutoGhost(12)"></input>
+							<b>Auto-Radioactive Decay</b>
+							<input id="isAutoGhostOn12" type="checkbox" onchange="toggleAutoGhost(12)"></input><br>
+							Power: 0.5
 						</div></td>
 						<td id="autoGhost13"><div class="autoBuyerDiv" style="display:block">
-							<b>Auto-Big Rip</b><br>
-							Power usage: 0.5<br>
-							Big Rip in <input id="autoGhost13t" onchange="changeAutoGhost('13t')"></input> seconds and undo after <input id="autoGhost13u" onchange="changeAutoGhost('13u')"></input> seconds.<br>
-							Stop after <input id="autoGhost13o" onchange="changeAutoGhost('13o')"></input> times.<br>(0 = always)<br>
-							Is active: <input id="isAutoGhostOn13" type="checkbox" onchange="toggleAutoGhost(13)"></input>
+							<b>Auto-Big Rip</b>
+							<input id="isAutoGhostOn13" type="checkbox" onchange="toggleAutoGhost(13)"></input><br>
+							Power: 0.5<br>
+							Rip in: <input id="autoGhost13t" onchange="changeAutoGhost('13t')"></input>s<br>
+							Undo: <input id="autoGhost13u" onchange="changeAutoGhost('13u')"></input>s<br>
+							Stop: <input id="autoGhost13o" onchange="changeAutoGhost('13o')"></input> times<br>(0 = always)
 						</div></td>
 						<td id="autoGhost14"><div class="autoBuyerDiv" style="display:block">
-							<b>Auto-BE Mult</b><br>
-							Power usage: 0.5<br>
-							Is active: <input id="isAutoGhostOn14" type="checkbox" onchange="toggleAutoGhost(14)"></input>
+							<b>Auto-BE Mult</b>
+							<input id="isAutoGhostOn14" type="checkbox" onchange="toggleAutoGhost(14)"></input><br>
+							Power: 0.5
 						</div></td>
 						<td id="autoGhost15"><div class="autoBuyerDiv" style="display:block">
-							<b>Auto-Fundament</b><br>
-							Power usage: 0.5<br>
-							Amount of ElP to wait until reset: <input id="autoGhost15a" onchange="changeAutoGhost('15a')"></input><br>
-							Is active: <input id="isAutoGhostOn15" type="checkbox" onchange="toggleAutoGhost(15)"></input>
+							<b>Auto-Fundament</b>
+							<input id="isAutoGhostOn15" type="checkbox" onchange="toggleAutoGhost(15)"></input><br>
+							Power: 0.5<br>
+							Amount of ElP to wait until reset: <input id="autoGhost15a" onchange="changeAutoGhost('15a')"></input>
 						</div></td>
 					</tr>
 					<tr>
 						<td id="autoGhost16"><div class="autoBuyerDiv" style="display:block">
-							<b>Auto-Neutrino Mult</b><br>
-							Power usage: 6<br>
-							Is active: <input id="isAutoGhostOn16" type="checkbox" onchange="toggleAutoGhost(16)"></input>
+							<b>Auto-Neutrino Mult</b>
+							<input id="isAutoGhostOn16" type="checkbox" onchange="toggleAutoGhost(16)"></input><br>
+							Power: 6
 						</div></td>
 						<td id="autoGhost17"><div class="autoBuyerDiv" style="display:block">
-							<b>Auto-Experiment</b><br>
-							Power usage: 3<br>
+							<b>Auto-Experiment</b>
+							<input id="isAutoGhostOn17" type="checkbox" onchange="toggleAutoGhost(17)"></input><br>
+							Power: 3<br>
 							Changes hypotheses at a complete experiment on 2s after last change<br>
-							or change immediately at X seconds remaining: <input id="autoGhost17s" onchange="changeAutoGhost('17s')"></input><br>
-							Is active: <input id="isAutoGhostOn17" type="checkbox" onchange="toggleAutoGhost(17)"></input>
+							or change immediately at X seconds remaining: <input id="autoGhost17s" onchange="changeAutoGhost('17s')"></input>
 						</div></td>
 						<td id="autoGhost18"><div class="autoBuyerDiv" style="display:block">
-							<b>Auto-Electron Mult</b><br>
-							Power usage: 6<br>
-							Is active: <input id="isAutoGhostOn18" type="checkbox" onchange="toggleAutoGhost(18)"></input>
+							<b>Auto-Electron Mult</b>
+							<input id="isAutoGhostOn18" type="checkbox" onchange="toggleAutoGhost(18)"></input><br>
+							Power: 6
 						</div></td>
 						<td id="autoGhost19"><div class="autoBuyerDiv" style="display:block">
-							<b>Auto-Enchanter</b><br>
+							<b>Auto-Enchanter</b>
+							<input id="isAutoGhostOn19" type="checkbox" onchange="toggleAutoGhost(19)"></input><br>
 							(doesn't consume your Hypotheses, enchant per 2 seconds)<br>
-							Power usage: 3<br>
-							Is active: <input id="isAutoGhostOn19" type="checkbox" onchange="toggleAutoGhost(19)"></input>
+							Power: 3
 						</div></td>
 						<td id="autoGhost20"><div class="autoBuyerDiv" style="display:block">
-							<b>Auto-Bosonic Upgrader</b><br>
-							Power usage: 9<br>
-							Is active: <input id="isAutoGhostOn20" type="checkbox" onchange="toggleAutoGhost(20)"></input>
+							<b>Auto-Bosonic Upgrader</b>
+							<input id="isAutoGhostOn20" type="checkbox" onchange="toggleAutoGhost(20)"></input><br>
+							Power: 9
 						</div></td>
 					</tr>
 					<tr>
 						<td id="autoGhost21"><div class="autoBuyerDiv" style="display:block">
-							<b>Auto-W & Z Boson</b><br>
-							Power usage: 3<br>
-							Is active: <input id="isAutoGhostOn21" type="checkbox" onchange="toggleAutoGhost(21)"></input>
+							<b>Auto-W & Z Boson</b>
+							<input id="isAutoGhostOn21" type="checkbox" onchange="toggleAutoGhost(21)"></input><br>
+							Power: 3
 						</div></td>
 						<td id="autoGhost22"><div class="autoBuyerDiv" style="display:block">
-							<b>Auto-Spectral Ions</b><br>
-							Power usage: 3<br>
-							Is active: <input id="isAutoGhostOn22" type="checkbox" onchange="toggleAutoGhost(22)"></input>
+							<b>Auto-Spectral Ions</b>
+							<input id="isAutoGhostOn22" type="checkbox" onchange="toggleAutoGhost(22)"></input><br>
+							Power: 3
 						</div></td>
 					</tr>
 				</table>
 			</div>
 			<div id="bravemilestones" class="ghostifytab">
-				<div>Get # of quantumed stat at or below the requirement and then fundament for a reward!</div>
+				Fundament with least Quantum stats for a Reward!
 				<table style="margin: auto">
 					<tr id="braveRow1">
 						<td><div id="braveMilestone1" class="achievement achievementlocked"></div></td>
@@ -5301,7 +5292,7 @@
 						<td><div id="braveMilestone10" class="achievement achievementlocked" ach-tooltip="Reward: Start Fundaments with 10 of each one of the first 4 Emperor Dimensions."></div></td>
 						<td><div id="braveMilestone11" class="achievement achievementlocked" ach-tooltip="Reward: Start Fundaments with 10 of each one of the first 6 Emperor Dimensions."></div></td>
 						<td><div id="braveMilestone12" class="achievement achievementlocked" ach-tooltip="Reward: Start Fundaments with 10 of each Emperor Dimension."></div></td>
-						<td><div id="braveMilestone13" class="achievement achievementlocked" ach-tooltip="Reward: Start Fundaments with 16 Nanofield rewards."></div></td>
+						<td><div id="braveMilestone13" class="achievement achievementlocked" ach-tooltip="Reward: Start Fundaments with 16 Nanorewards."></div></td>
 						<td><div id="braveMilestone14" class="achievement achievementlocked"></div></td>
 						<td><div id="braveMilestone15" class="achievement achievementlocked" ach-tooltip="Reward: Start Fundaments with Break Eternity unlocked, you keep Break Eternity upgrades, and you produce 1% of Eternal Matter gained on Eternity per second."></div></td>
 						<td><div id="braveMilestone16" class="achievement achievementlocked" ach-tooltip="Reward: Passively generate 1% of Quarks per second."></div></td>
@@ -5361,10 +5352,10 @@
 							Strengthen Red Light by <span class="orange" id="lightStrength1" style="font-size:20px"></span>x and reduce Preon Power scaling by <span class="orange" id="lightBoost2" style="font-size:20px"></span>th root.
 						</td>
 						<td>
-							Strengthen Orange Light by <span class="yellow" id="lightStrength2" style="font-size:20px"></span>x and make Electron softcap scales <span class="yellow" id="lightBoost3" style="font-size:20px"></span> later.
+							Strengthen Orange Light by <span class="yellow" id="lightStrength2" style="font-size:20px"></span>x and Electron softcap scales <span class="yellow" id="lightBoost3" style="font-size:20px"></span> later.
 						</td>
 						<td>
-							Strengthen Yelllow Light by <span class="green" id="lightStrength3" style="font-size:20px"></span>x and increase Green Power effect by <span class="green" id="lightBoost4" style="font-size:20px"></span>.
+							Strengthen Yellow Light by <span class="green" id="lightStrength3" style="font-size:20px"></span>x and increase Green Power effect by <span class="green" id="lightBoost4" style="font-size:20px"></span>.
 						</td>
 					</tr><tr>
 						<td id="le3">
@@ -5374,7 +5365,7 @@
 							Anti-Preonius wakes up <span class="orange" id="leBoost9" style="font-size:20px"></span> later.
 						</td>
 						<td id="le6">
-							Time Theorems produces <span class="yellow" id="leBoost6" style="font-size:20px"></span>x faster.
+							Produce Time Theorems <span class="yellow" id="leBoost6" style="font-size:20px"></span>x faster.
 						</td>
 						<td id="le1">
 							Green Power effect adds <span class="green" id="leBoost1" style="font-size:20px"></span> to TS431's galaxies.

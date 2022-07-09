@@ -1030,7 +1030,7 @@ function doQuantumGhostifyResetStuff(implode, bm){
 		el("electronstabbtn").style.display = "none"
 		el("anttabs").style.display = "none"
 		el("edtabbtn_dim").style.display = "none"
-		NANOFIELD.shown()
+		NF.shown()
 		el("riptabbtn").style.display = "none"
 	}
 	el('bestTP').textContent = "Your best Tachyon particles in this Ghostify was " + shorten(player.dilation.bestTP) + "."

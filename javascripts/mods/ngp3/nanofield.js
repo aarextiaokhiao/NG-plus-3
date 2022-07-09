@@ -1,7 +1,15 @@
-// OLD
+let NF = {
+	unl() {
+		return player.masterystudies && player.masterystudies.includes("d12")
+	},
+	shown() {
+		el("nanofieldtabbtn").style.display=NF.unl()?"":"none"
+	},
+}
+
 function getNanospeedText(){
 	s = getNanofieldSpeedText()
-	if (!shiftDown) s = ghostified || nanospeed != 1 ? "Your Nanofield speed is currently " + (nanospeed == 1 ? "" : shorten(tmp.ns) + " * " + shorten(nanospeed) + " = ") + shorten(getNanofieldFinalSpeed()) + "x (hold shift for details)" : ""
+	if (!shiftDown) s = ghostified || nanospeed != 1 ? "Nanospeed: " + (nanospeed == 1 ? "" : shorten(tmp.ns) + " * " + shorten(nanospeed) + " = ") + shorten(getNanofieldFinalSpeed()) + "x (hold shift for details)" : ""
 	return s
 }
 
@@ -25,7 +33,7 @@ function updateNanoverseTab(){
 	for (var reward = 1; reward < 9; reward++) {
 		el("nfReward" + reward).className = reward > total ? "nfRewardlocked" : "nfReward"
 		el("nfReward" + reward).textContent = wordizeList(nanoRewards.effectsUsed[reward].map(x => nanoRewards.effectDisplays[x](tmp.nf.effects[x])), true) + "."
-		el("nfRewardHeader" + reward).textContent = (total % 8 + 1 == reward ? "Next" : DISPLAY_NAMES[reward]) + " reward"
+		el("nfRewardHeader" + reward).textContent = (total % 8 + 1 == reward ? "Next" : DISPLAY_NAMES[reward]) + " Effect"
 		el("nfRewardTier" + reward).textContent = "Tier " + getFullExpansion(Math.ceil((total + 1 - reward) / 8)) + " / Power: " + tmp.nf.powers[reward].toFixed(1)
 	}
 	el("nfReward5").textContent = (tmp.nf.powers[5] > 15 ? nanoRewards.effectDisplays.light_threshold_speed(tmp.nf.effects.light_threshold_speed) : nanoRewards.effectDisplays.dil_effect_exp(tmp.nf.effects.dil_effect_exp)) + "."
@@ -153,22 +161,22 @@ var nanoRewards = {
 			return "in dilation, raise Normal Dimension multipliers and Tickspeed by ^" + x.toFixed(2)
 		},
 		meta_boost_power: function(x) {
-			return "each Meta-Dimension Boost gives a " + x.toFixed(2) + "x boost"
+			return "each Meta-Dimension Boost gives " + x.toFixed(2) + "x boost"
 		},
 		remote_start: function(x) {
-			return "Remote Antimatter Galaxies start " + getFullExpansion(Math.floor(x)) + " later"
+			return "Remote Antimatter Galaxies scale " + getFullExpansion(Math.floor(x)) + " later"
 		},
 		preon_charge: function(x) {
-			return "produce " + shorten(x) + "x more preon charge"
+			return "produce preon charge " + shorten(x) + "x faster"
 		},
 		per_10_power: function(x) {
-			return "multiplier per ten dimensions is increased by " + x.toFixed(2) + "x before the electrons effect"
+			return "before Electrons, add " + shorten(x) + "x to multiplier per ten Dimensions"
 		},
 		preon_energy: function(x) {
-			return "produce " + shorten(x) + "x more preon energy"
+			return "produce preon energy " + shorten(x) + "x faster"
 		},
 		supersonic_start: function(x) {
-			return "Dimension Supersonic starts " + getFullExpansion(Math.floor(x)) + " later"
+			return "Dimension Supersonic scales " + getFullExpansion(Math.floor(x)) + " later"
 		},
 		neutrinos: function(x) {
 			return "gain " + shorten(x) + "x more Neutrinos"
@@ -274,71 +282,3 @@ function updateNextPreonEnergyThreshold(){
 	nfSave.power += toSkip
 	nfSave.powerThreshold = getNanoRewardReq(1)
 }
-
-// NEW | DIFFICULTY : MEDIUM
-let NF = {
-	unl() {
-		return player.masterystudies && player.masterystudies.includes("d12")
-	},
-	setup() {
-		return {
-			reduce: 0,
-			charges: [ E(0), E(0), E(0), E(0), E(0), E(0), E(0), E(0), E(0) ],
-			directs: {}
-		}
-	},
-	shown() {
-		el("nanofieldtabbtn").style.display=NF.unl()?"":"none"
-	},
-
-	active(x) {
-		return NF.unl() && NF.eff(x) !== undefined
-	},
-	eff(x) {
-		return tmp.nf && tmp.nf.new_eff && tmp.nf.new_eff[x]
-	},
-
-	rows() {
-		let r = 3
-		return r
-	},
-	data: {
-		1: {
-			eff: (x) => 1,
-			desc: (x) => "Meta Dimension Boost scaling starts " + shorten(x) + " later.",
-		},
-		2: {
-			eff: (x) => 1,
-			desc: (x) => "Preons boost all color powers by ^" + shorten(x) + ".",
-		},
-		3: {
-			eff: (x) => 0.1,
-			desc: (x) => "Dilated time gives ^" + shorten(x) + " boost to Meta Dimensions.",
-		},
-		4: {
-			eff: (x) => Math.floor(x),
-			desc: (x) => "Electron softcap starts " + getFullExpansion(x) + " later.",
-		},
-		5: {
-			eff: (x) => 1,
-			desc: (x) => "Emperor Dimensions produce " + shorten(x) + "x faster.",
-		},
-		6: {
-			eff: (x) => 1,
-			desc: (x) => "3x TP upgrade scales ^" + shorten(x) + " slower.", //not implemented
-		},
-		7: {
-			eff: (x) => 1,
-			desc: (x) => "TP formula upgrade scales ^" + shorten(x) + " slower.", //not implemented
-		},
-		8: {
-			eff: (x) => 1,
-			desc: (x) => "Replicantis boost dilated time by " + shorten(x) + "x.",
-		},
-		9: {
-			eff: (x) => 1,
-			desc: (x) => "Red power is ^" + shorten(x) + " stronger.",
-		},
-	}
-}
-let NANOFIELD = NF

@@ -9,7 +9,6 @@ function getMetaAntimatterStart(bigRip) {
 function getDilationMetaDimensionMultiplier() {
 	let pow = 0.1
 	let div = 1e40
-	if (NF.active(3)) pow = NF.eff(3)
 	if (isNanoEffectUsed("dt_to_ma_exp") && tmp.nf.effects.dt_to_ma_exp) pow = tmp.nf.effects.dt_to_ma_exp //this is a quick fix, but we need to fix this bug
 	if (aarMod.nguspV !== undefined) div = 1e50
 
@@ -149,7 +148,6 @@ function getMetaShiftRequirement() {
 	if (ghostified) if (hasNU(1)) data.amount -= tmp.nu[0]
 
 	data.scalingStart = inQC4 ? 55 : 15
-	if (NF.active(1)) data.scalingStart += NF.eff(1)
 	if (player.meta.resets >= data.scalingStart) {
 		var multAdded = inQC4 ? 14.5 : 5
 		data.mult += multAdded

@@ -190,7 +190,6 @@ colorBoosts={
 
 function getCPLog(c) {
 	var x = Decimal.add(quSave.colorPowers[c], 1).log10()
-	if (NF.active(2)) x *= NF.eff(2)
 	return x
 }
 
@@ -209,7 +208,6 @@ function updateColorPowers(log) {
 	//Red
 	let div6 = 4
 	if (!player.dilation.active) div6--
-	if (NF.active(9)) div6 += NF.eff(9)
 
 	colorBoosts.r = Math.pow(log.r,div6 / 6) / 10 + 1
 	if (colorBoosts.r>1.3) colorBoosts.r = Math.sqrt(colorBoosts.r * 1.3)

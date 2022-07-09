@@ -33,21 +33,23 @@ function updateTreeOfDecayTab(){
 		el(color + "UnstableGain").innerHTML = "Gain " + shortenMoney(getUnstableGain(shorthand)) + " " + name + (ghSave.milestones > 3 ? "." : ", but lose all your " + color + " quarks.")
 		el(color + "QuarkSpin").innerHTML = shortenMoney(branch.spin)
 		el(color + "UnstableQuarks").innerHTML = shortenMoney(branch.quarks)
-		el(color + "QuarksDecayRate").innerHTML = branch.quarks.lt(linear) && rate.lt(1) ? "You are losing " + shorten(linear.times(rate)) + " " + name + " per second" : "Their half-life is " + timeDisplayShort(Decimal.div(10,rate), true, 2) + (linear.eq(1) ? "" : " until their amount reaches " + shorten(linear))
+		el(color + "QuarksDecayRate").innerHTML = branch.quarks.lt(linear) && rate.lt(1) ? "(-" + shorten(linear.times(rate)) + " " + name + "/s)" : "(Half-life: " + timeDisplayShort(Decimal.div(10,rate), true, 2) + (linear.eq(1) ? "" : " until " + shorten(linear)) + ")"
 		el(color + "QuarksDecayTime").innerHTML = timeDisplayShort(Decimal.div(10, rate).times(branch.quarks.gt(linear) ? branch.quarks.div(linear).log(2) + 1 : branch.quarks.div(linear)))
 		let ret = getQuarkSpinProduction(shorthand)
-		el(color + "QuarkSpinProduction").innerHTML = "+" + shortenMoney(ret) + "/s"
+		el(color + "QuarkSpinProduction").innerHTML = "(+" + shortenMoney(ret) + "/s)"
 		if (branchNum == c + 1) {
-			var decays = getRadioactiveDecays(shorthand)
-			var power = Math.floor(getBU1Power(shorthand) / 120 + 1)			
+			let decays = getRadioactiveDecays(shorthand)
+			let power = Math.floor(getBU1Power(shorthand) / 120 + 1)			
 			el(color + "UpgPow1").innerHTML = decays || power > 1 ? shorten(pow2((1 + decays * .1) / power)) : 2
 			el(color + "UpgSpeed1").innerHTML = decays > 2 || power > 1 ? shorten(pow2(Math.max(.8 + decays * .1, 1) / power)) : 2
-			lvl = getBranchUpgLevel(shorthand, 3)
+
+			let lvl = getBranchUpgLevel(shorthand, 3)
 			let s = getBranchUpg3SoftcapStart()
 			if (lvl >= s) eff = E_pow(4, (Math.sqrt((lvl + 1) / s) - Math.sqrt(lvl / s)) * s).toFixed(2)
 			else eff = "4"
-			el(color + "UpgEffDesc").innerHTML =  " " + eff + "x"
-			for (var u = 1; u < 4; u++) el(color + "upg" + u).className = "gluonupgrade " + (branch.spin.lt(getBranchUpgCost(shorthand, u)) ? "unavailablebtn" : shorthand)
+			el(color + "UpgEffDesc").innerHTML = " " + eff + "x"
+
+			for (var u = 1; u <= 3; u++) el(color + "upg" + u).className = "gluonupgrade " + (branch.spin.lt(getBranchUpgCost(shorthand, u)) ? "unavailablebtn" : shorthand)
 			if (ghostified) el(shorthand+"RadioactiveDecay").className = "gluonupgrade "  +(branch.quarks.lt(pow10(Math.pow(2, 50))) ? "unavailablebtn" : shorthand)
 		}
 	} //for loop
@@ -76,6 +78,19 @@ function updateTreeOfDecayTab(){
 	updateToDSpeedDisplay()
 }
 
+function updateBranchUpgrade(b, u) {
+	var clr = {r: "red", g: "green", b: "blue"}[b]
+	var bData = todSave[b]
+	var eff = shortenDimensions(getBranchUpgMult(b, u))
+
+	var extra = bData.spin.log10() > 200
+	var start = extra ? "" : "Cost: "
+	var end = extra ? clr : clr + " spin"
+
+	el(clr + "upg" + u + "current").innerHTML = u == 2 ? eff + "n^" + eff : eff + "x"
+	el(clr + "upg" + u + "cost").innerHTML = start + shortenMoney(getBranchUpgCost(b, u)) + " " + end
+}
+
 function updateTODStuff() {
 	if (player.masterystudies ? !player.masterystudies.includes("d13") : true) {
 		el("todtabbtn").style.display = "none"
@@ -89,20 +104,13 @@ function updateTODStuff() {
 	for (var c = 0; c < 3; c++) {
 		var color = colors[c]
 		var shorthand = shorthands[c]
-		var branch = todSave[shorthand]
 		var name = getUQName(shorthand)
-		el(shorthand+"UQName").innerHTML = name
-		extra = branch.spin.log10() > 200
-		start = extra ? "" : "Cost: "
-		end = extra ? color : color + " quark spin"
-		for (var b = 1; b < 4; b++) {
-			el(color + "upg" + b + "current").innerHTML = shortenDimensions(getBranchUpgMult(shorthand, b))
-			el(color + "upg" + b + "cost").innerHTML = start + shortenMoney(getBranchUpgCost(shorthand, b)) + " " + end
-			if (b > 1) el(color + "UpgName" + b).innerHTML=name
-		}
+		el(shorthand + "UQName").innerHTML = name
+
+		for (var b = 1; b <= 3; b++) updateBranchUpgrade(shorthand, b)
 		if (ghostified) {
 			el(shorthand+"RadioactiveDecay").parentElement.parentElement.style.display = ""
-			el(shorthand+"RDReq").innerHTML = "(requires "+shorten(pow10(Math.pow(2, 50))) + " of " + color + " " + getUQName(shorthand) + " quarks)"
+			el(shorthand+"RDReq").innerHTML = "(requires "+shorten(pow10(Math.pow(2, 50))) + " of " + color + " " + name + " quarks)"
 			el(shorthand+"RDLvl").innerHTML = getFullExpansion(getRadioactiveDecays(shorthand))
 		} else el(shorthand+"RadioactiveDecay").parentElement.parentElement.style.display = "none"
 	}
@@ -309,17 +317,12 @@ function getBranchUpgCost(branch, upg) {
 }
 
 function buyBranchUpg(branch, upg) {
-	var colors = {r: "red", g: "green", b: "blue"}
 	var bData = todSave[branch]
 	if (bData.spin.lt(getBranchUpgCost(branch,upg))) return
 	bData.spin = bData.spin.sub(getBranchUpgCost(branch, upg))
 	if (bData.upgrades[upg] == undefined) bData.upgrades[upg] = 0
 	bData.upgrades[upg]++
-	extra = bData.spin.log10() > 200
-	start = extra ? "" : "Cost: "
-	end = extra ? colors[branch] : colors[branch] + " quark spin"
-	el(colors[branch] + "upg" + upg + "current").innerHTML = shortenDimensions(getBranchUpgMult(branch, upg))
-	el(colors[branch] + "upg" + upg + "cost").innerHTML = start + shortenMoney(getBranchUpgCost(branch, upg)) + " " + end
+	updateBranchUpgrade(branch, upg)
 }
 
 function getBranchUpgLevel(branch,upg) {
@@ -491,13 +494,7 @@ function maxBranchUpg(branch, weak) {
 			if (bData.upgrades[u] === undefined) bData.upgrades[u] = 0
 			bData.upgrades[u] += toAdd
 		}
-		if (bData.upgrades[u] > oldLvl) {
-			el(colors[branch] + "upg" + u + "current").innerHTML=shortenDimensions(getBranchUpgMult(branch, u))
-			extra = bData.spin.log10() > 200
-			start = extra ? "" : "Cost: "
-			end = extra ? colors[branch] : colors[branch] + " quark spin"
-			el(colors[branch] + "upg" + u + "cost").innerHTML = start + shortenMoney(getBranchUpgCost(branch, u)) + " " + end
-		}
+		if (bData.upgrades[u] > oldLvl) updateBranchUpgrade(branch, u)
 	}
 }
 

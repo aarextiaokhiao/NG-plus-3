@@ -188,7 +188,6 @@ function getEmperorDimensionGlobalMultiplier() {
 	if (player.masterystudies.includes("t392")) ret = getMTSMult(392)
 	if (player.masterystudies.includes("t402")) ret = ret.times(30)
 	if (player.masterystudies.includes("d13")) ret = ret.times(getTreeUpgradeEffect(6))
-	if (NF.active(5)) ret = ret.times(NF.eff(5))
 	if (hasBU(35)) ret = ret.times(tmp.blu[35].eds)
 	return ret
 }

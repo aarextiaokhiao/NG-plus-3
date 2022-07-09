@@ -35,9 +35,6 @@ function getBrandNewBDData() {
 }
 
 function conToDeciPostNGP3() {
-	if (nfSave) {
-        quSave.nf = deepUndefinedAndDecimal(quSave.nf, NANOFIELD.setup())
-	}
     if (ghSave) {
         if (ghSave.breakDilation===undefined) ghSave.breakDilation={}
         ghSave.breakDilation = deepUndefinedAndDecimal(ghSave.breakDilation, getBrandNewBDData())

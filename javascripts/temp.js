@@ -559,7 +559,7 @@ function updateNanoEffectUsages() {
 	var data2 = [hasBU(22) ? "neutrinos" : "remote_start", "preon_charge"]
 	nanoRewards.effectsUsed[7] = data2
 
-	//Used Nanofield rewards
+	//Used Nanorewards
 	for (var x = 1; x <= 8; x++) {
 		var rewards = nanoRewards.effectsUsed[x]
 		for (var r = 0; r < rewards.length; r++) {

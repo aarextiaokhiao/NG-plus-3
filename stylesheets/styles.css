@@ -2401,8 +2401,15 @@ br {
 	background: rgba(0, 0, 0, 0.25)
 }
 
-#autoGhost11pw, #autoGhost11lw, #autoGhost11cw {
+#automaticghosts .autoBuyerDiv {
+	width: 175px;
+	height: 120px
+}
+#automaticghosts input {
 	width: 50px
+}
+#automaticghosts input[type="checkbox"] {
+	width: 12px
 }
 
 .gluonupgrade.gph {

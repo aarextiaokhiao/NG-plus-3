@@ -876,7 +876,7 @@ var ngp3Features = {
 	},
 	tod: {
 		name: "Tree of Decay",
-		threshold: () => "Get " + getFullExpansion(16) + " Nanofield rewards",
+		threshold: () => "Get " + getFullExpansion(16) + " Nanorewards",
 		next: "br",
 		tab() {
 			showTab("quantumtab")
@@ -911,7 +911,7 @@ var ngp3Features = {
 	},
 	bl: {
 		name: "Bosonic Lab",
-		threshold: () => "Get " + shortenCosts(pow10(5e10)) + " " + getUQNameFromDecays(5) + " quarks and 3 Spectral Ions",
+		threshold: () => "Get 4 Spectral Ions",
 		next: "gw",
 		tab() {
 			showTab("ghostify")

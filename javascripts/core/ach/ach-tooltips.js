@@ -377,7 +377,7 @@ function setR18Tooltip(){
 	let dying = el("Are you currently dying?")
 
 	//ACHIEVEMENT ROW 18
-	notrelative.setAttribute('ach-tooltip', "Get " + shorten(pow10(411))+" dilated time without gaining tachyon particles. Reward: You gain more DT based on the amount of Nanofield rewards.")
+	notrelative.setAttribute('ach-tooltip', "Get " + shorten(pow10(411))+" dilated time without gaining tachyon particles. Reward: You gain more DT based on the amount of Nanorewards.")
 	error404.setAttribute('ach-tooltip', "Get " + shorten(pow10(1.6e12))+" antimatter while having only the 1st Dimensions of each type of Dimension and at least 2 normal galaxies.")
 	ie.setAttribute('ach-tooltip', "Get " + shorten(pow10(8e6)) + " antimatter in a paired challenge with the PC6+8 combination. Reward: Automatically buy the Quark multiplier to dimensions every second if you have the 8th brave milestone.")
 	wasted.setAttribute('ach-tooltip', "Get " + shorten(1.1e7) + " TT without having TT generation, keeping your previous TT, and respeccing studies. Reward: While you have less than 1 hour worth of TT production, you gain 10x as much TT.")
@@ -425,7 +425,7 @@ function setR20Tooltip(){
 	//ACHIEVEMENT ROW 20
 	finite.setAttribute('ach-tooltip', "Get " + shortenCosts(1e33) + " Space Shards without Breaking Eternity within this Fundament. Reward: Outside of Big Rips, Tree Upgrades are 10% stronger. In Big Rips, 8th Time Dimensions gain an small exponent boost based on your current Fundament time.")
 	really.setAttribute('ach-tooltip', "Reach " + shortenCosts(pow10(5000)) + " matter in Big Rip. Reward: Buying Electron upgrades doesn't consume Meta-Dimension Boosts.")
-	grind.setAttribute('ach-tooltip', "Get the 21st Nanofield reward without having Tree Upgrades. Reward: Gain more Quarks based on Radioactive Decays.")
+	grind.setAttribute('ach-tooltip', "Get the 21st Nanoreward without having Tree Upgrades. Reward: Gain more Quarks based on Radioactive Decays.")
 	willenough.setAttribute('ach-tooltip', "Reach " + shortenCosts(pow10(aarMod.ngudpV ? 268435456 : 36000000))+" replicanti." + (willenoughReward != "" ? " Reward: " + willenoughReward + "." : ""))
 	oppose.setAttribute('ach-tooltip', "Become a ghost with at most 1x quantumed stat. Reward: You gain more Quarks based on your quantumed stat.")
 	pls.setAttribute('ach-tooltip', "Reach " + shortenCosts(pow10(9.5e5)) + " IP in Big Rip while dilated, with no EP multiplier upgrades, time studies, and Break Eternity within this Fundament. Reward: Gain "+shortenDimensions(2e3)+" galaxies worth of Neutrinos on Fundament. (multiplied by best galaxies in Big Rip)")
@@ -477,7 +477,7 @@ function setR22Tooltip(){
 	//ACHIEVEMENT ROW 22
 	ghostierthanbefore.setAttribute("ach-tooltip", "Unlock Bosonic Lab. Reward: Meta-antimatter effect uses best MA in current Fundament, and obtain achievements prior to Photons.")
 	ee.setAttribute('ach-tooltip', "Get "+shorten(Number.MAX_VALUE)+" eternities. Reward: Spectral Ions boost Quarks.")
-	oc.setAttribute('ach-tooltip', "Become a ghost with at least "+shortenCosts(pow10(3.75e5)) + " EP while Big Ripped within Anti-Dilation modifier. Reward: Remove the second Nanofield reward scaling.")
+	oc.setAttribute('ach-tooltip', "Become a ghost with at least "+shortenCosts(pow10(3.75e5)) + " EP while Big Ripped within Anti-Dilation modifier. Reward: Remove the second Nanoreward scaling.")
 	btco.setAttribute('ach-tooltip', "Complete Paired Challenge 1 after getting "+shortenCosts(pow10(1.65e9)) + " antimatter in Quantum Challenges 6 and 8. Reward: Fundaments lose 25% of Radioactive Decays.")
 	tdc.setAttribute('ach-tooltip', "Complete Eternity Challenge 11 with "+shortenCosts(pow10(15500)) + " IP in a Paired Challenge with the Quantum Challenges 6 and 8 combination and the Anti-Dilation modifier. Reward: Remove the quadratic cost scaling and the level softcap of fifth Tree of Decay upgrade and make it based on best meta-antimatter over Fundaments, instead of over quantums.")
 	igu.setAttribute('ach-tooltip', "Reach " + shortenCosts(pow10(2.25e4)) + " IP while dilated and Big Ripped with Anti-Dilation modifier and without having studies, EP mult upgrades, Tree Upgrades, and Break Eternity within this Fundament.")

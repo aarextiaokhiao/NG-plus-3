@@ -80,7 +80,7 @@ var masteryStudies = {
 			return getFullExpansion(10) + " Eighth Emperor Dimensions"
 		},
 		13: function() {
-			return getFullExpansion(16) + " Nanofield rewards"
+			return getFullExpansion(16) + " Nanorewards"
 		},
 		14: function() {
 			return "Get 'The Challenging Day' achievement"
@@ -564,7 +564,7 @@ function buyingDilStudyNanofield(){
 	showTab("quantumtab")
 	showQuantumTab("replicants")
 	showQuantumTab("nanofield")
-	NANOFIELD.shown()
+	NF.shown()
 	updateNanoRewardTemp()
 }
 
