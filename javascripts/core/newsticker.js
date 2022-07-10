@@ -503,7 +503,7 @@ newsArray = [//always true
 ["There's a rumor that Study 999 is darkness.", "hasAch('ng3p71')", "am302"],
 ["NG+Pi: The continuation fork of NG+3.1. It seems like underworldly for NG+3R players.", "tmp.ngp3", "am303"],
 ["By now, you might have Gamma Rays infested inside.", "tmp.ngp3 && ghSave.ghostlyPhotons.enpowerments >= 20", "am303"],
-["Player, it seems that you have been before. Or not... Whatever.", "aarMod.ngp4V", "am305"],
+["Player, it seems that you have been before. Or not... Whatever.", "!aarMod.ngp4V", "am305"],
 ["You have scrolled through 600 news-tickers! You might setup a lighthouse library really soon...", "player.newsArray.length >= 600", "am306"],
 ];}
 
