@@ -505,6 +505,8 @@ newsArray = [//always true
 ["By now, you might have Gamma Rays infested inside.", "tmp.ngp3 && ghSave.ghostlyPhotons.enpowerments >= 20", "am303"],
 ["Player, it seems that you have been before. Or not... Whatever.", "!aarMod.ngp4V", "am305"],
 ["You have scrolled through 600 news-tickers! You might setup a lighthouse library really soon...", "player.newsArray.length >= 600", "am306"],
+["Soon, this game will have a lot of layers with NG-5 and NG+Pi...", "true", "am307"],
+["This news ticker has 'am308' id on it! Meta^-1-Infinity, or Preludity?", "true", "am308"],
 ];}
 
 document.addEventListener("visibilitychange", function() {if (!document.hidden) {scrollNextMessage();}}, false);
