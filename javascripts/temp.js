@@ -88,7 +88,7 @@ let tmp = {
 	bm: [200,175,150,100,50,40,30,25,20,15,10,5,4,3,2,1],
 	nbc: [1,2,4,6,15,50,1e3,1e14,1e35,"1e500","1e2500","1e20000"],
 	nu: [],
-	nuc: [null,1e6,1e7,1e8,2e8,5e8,2e9,5e9,75e8,1e10,7e12,1e18,1e45,1e100,1e150,1e280,"e10000","e13000"],
+	nuc: [null,1e6,1e7,1e8,2e8,5e8,2e9,5e9,75e8,1e10,7e12,1e18,1e45,1e100,1e80,1e280,"e10000","e13000"],
 	lt: [100,3e3,1e5,1e6,1e7,1e8,1e9,1e10],
 	lti: [2,4,1.5,10,4,1e3,2.5,3],
 	effL: [0,0,0,0,0,0,0],
@@ -364,7 +364,7 @@ function updateNU12Temp(){
 
 function updateNU14Temp(){
 	var base = ghSave.ghostParticles.add(1).log10()
-	tmp.nu[5] = Math.max(base / 75, 1) //NU14
+	tmp.nu[5] = Decimal.pow(2, base / 60 - 1).max(1).min(1e4)
 }
 
 function updateNU15Temp(){
