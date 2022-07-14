@@ -138,10 +138,7 @@ function updateBlueLightBoostTemp(){
 }
 
 function updateIndigoLightBoostTemp(){
-	var loglighteffect5 = tmp.effL[5] > 25 ? Math.sqrt(tmp.effL[5]*10+375) : tmp.effL[5]
-	loglighteffect5 *= tmp.newNGP3E ? 20 : 10
-	if (loglighteffect5 > 729) loglighteffect5 = Math.pow(loglighteffect5 * 27, 2 / 3)
-	tmp.le[5] = pow10(loglighteffect5) 
+	tmp.le[5] = E(1)
 }
 
 function updateVioletLightBoostTemp(){

@@ -121,7 +121,7 @@ function updateLightBoostDisplay(){
 	el("lightBoost2").textContent = tmp.le[1].toFixed(2)
 	el("lightBoost3").textContent = getFullExpansion(Math.floor(tmp.le[2]))
 	el("lightBoost4").textContent = "+"+(tmp.le[3] * 100 - 100).toFixed(1)+"%"
-	el("lightBoost5").textContent = (tmp.le[4] * 100).toFixed(1) + (hasBU(11) ? "+" + (tmp.blu[11] * 100).toFixed(1) : "")
+	el("lightBoost5").textContent = shorten(tmp.le[4])
 	el("lightBoost6").textContent = shorten(tmp.le[5])
 	el("lightBoost7").textContent = shorten(tmp.le[6])
 }
