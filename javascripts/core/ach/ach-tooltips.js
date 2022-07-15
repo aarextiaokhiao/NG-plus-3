@@ -439,9 +439,9 @@ function setBMTooltip(){
 	let bm14 = el("braveMilestone14")
 
 	//BRAVE MILESTONES
-	bm1.setAttribute('ach-tooltip', "Reward: Start Fundaments with all Speedrun Milestones and all "+shorten(Number.MAX_VALUE)+" QK assignation features unlocked, all Paired Challenges completed, all Big Rip upgrades bought, Nanofield is 2x faster until you reach 16 rewards, and you get quarks based on your best MA this quantum.")
-	bm10.setAttribute('ach-tooltip', "Reward: Start Fundaments with 10 Fourth Emperor Dimensions" + (aarMod.ngudpV ? ", and start Big Rips with the 3rd row of Eternity upgrades." : "."))
-	bm14.setAttribute('ach-tooltip', "Reward: Start Fundaments with " + shortenCosts(1e25) + " Quark Spins and Branches are faster based on spins (at least 10x).")
+	bm1.setAttribute('ach-tooltip', "Reward: Keep Speedrun Milestones, Paired Challenges, Big Rip Upgrades, and assignation features. Also, Nanofield is 2x faster until you reach 16 rewards, and gain quarks based on your best MA for this Quantum.")
+	bm10.setAttribute('ach-tooltip', "Reward: Start with 10 Fourth Emperor Dimensions" + (aarMod.ngudpV ? ", and start Big Rips with the 3rd row of Eternity upgrades." : "."))
+	bm14.setAttribute('ach-tooltip', "Reward: Start with " + shortenCosts(1e25) + " Quark Spins and Spins speed up Branches.")
 }
 
 function setR21Tooltip(){
