@@ -361,7 +361,7 @@ function updateNU12Temp(){
 
 function updateNU14Temp(){
 	var base = ghSave.ghostParticles.add(1).log10()
-	tmp.nu[5] = Decimal.pow(2, base / 60 - 1).max(1).min(1e4)
+	tmp.nu[5] = Decimal.pow(2, base / 60 - 0.5).max(1).min(1e4)
 }
 
 function updateNU15Temp(){
