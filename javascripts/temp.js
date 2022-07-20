@@ -365,7 +365,7 @@ function updateNU14Temp(){
 }
 
 function updateNU15Temp(){
-	tmp.nu[6] = pow2((nfSave.rewards>90?Math.sqrt(90*nfSave.rewards):nfSave.rewards) / 2.5) 
+	tmp.nu[6] = pow2(Math.sqrt(nfSave.rewards + 4) - 1) 
 	//NU15
 }
 
