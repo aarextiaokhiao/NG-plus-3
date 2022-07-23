@@ -1,3 +1,83 @@
+function updateRedLightBoostTemp(){
+	var light0multiplier = tmp.newNGP3E ? .1 : .07
+	var lighteffect0 = Math.log2(tmp.effL[0].best + 1) * light0multiplier + 1
+	tmp.le[0] = lighteffect0
+}
+
+function updateOrangeLightBoostTemp(){
+	tmp.le[1] = Math.pow(Math.log10(tmp.effL[1] + 1) + 1, 1.5)
+}
+
+function updateYellowLightBoostTemp(){
+	var lighteffect2 = 0 // changed later no matter what
+	if (tmp.effL[2] > 60 && !tmp.newNGP3E) lighteffect2 = (Math.log10(tmp.effL[2] / 6) + 2) / 3 * Math.sqrt(1200)
+	else lighteffect2 = tmp.effL[2] > 20 ? Math.sqrt(tmp.effL[2] * 20) : tmp.effL[2]
+	tmp.le[2] = Math.sqrt(lighteffect2) * 45e3
+}
+
+function updateGreenLightBoostTemp(){
+	var lighteffect3 = 1
+	if (tmp.ngp3l) lighteffect3 = tmp.effL[3] > 8 ? Math.log10(tmp.effL[3] / 8) + Math.sqrt(12) + 1 : Math.sqrt(tmp.effL[3] * 1.5) + 1
+	else lighteffect3 = Math.log10(tmp.effL[3] + 1) / 5 + 1
+	tmp.le[3] = lighteffect3
+}
+
+function updateBlueLightBoostTemp(){
+	var light4mult = tmp.newNGP3E ? 1.3 : 5/4
+	var lighteffect4 = Math.log10(Math.sqrt(tmp.effL[4] * 2) + 1) * light4mult + 1
+	tmp.le[4] = lighteffect4
+}
+
+function updateIndigoLightBoostTemp(){
+	tmp.le[5] = E(1)
+}
+
+function updateVioletLightBoostTemp(){
+	var lightexp6 = tmp.newNGP3E ? .36 : 1/3
+	var loglighteffect6 = Math.pow(player.postC3Reward.log10() * tmp.effL[6], lightexp6) * 2 
+	if (loglighteffect6 > 15e3) loglighteffect6 = 15e3 * Math.pow(loglighteffect6 / 15e3, .6)
+	tmp.le[6] = pow10(loglighteffect6)
+}
+
+function updateEffectiveLightAmountsTemp(){
+	let leBonus5Unl = isLEBoostUnlocked(5)
+	for (var c = 7; c >= 0; c--) {
+		var x = ghSave.ghostlyPhotons.lights[c]+tmp.free_lights
+		var y = tmp.leBoost
+		if ((c == 6 && !isLEBoostUnlocked(4)) || c == 7) y += 1
+		else if (leBonus5Unl) y += Math.pow(tmp.effL[c + 1] * tmp.leBonus[5].mult + 1, tmp.leBonus[5].exp)
+		else y += Math.sqrt(tmp.effL[c + 1] / 2 + 1)
+		tmp.ls[c] = y
+		if (c == 0) {
+			tmp.effL[0] = {
+				normal: x * y, // Without best red Light
+				best: (ghSave.ghostlyPhotons.maxRed + x * 2) / 3 * y //With best red Light
+			}
+		} else tmp.effL[c] = x * y
+	}
+	tmp.leBonus[4] = tmp.ls[6]
+}
+
+function updateFixedLightTemp() {
+	if (isLEBoostUnlocked(5)) tmp.leBonus[5] = leBoosts.effects[5]()
+	updateLightEmpowermentReq()
+	updateEffectiveLightAmountsTemp()
+	updateRedLightBoostTemp()
+	updateOrangeLightBoostTemp()
+	updateYellowLightBoostTemp()
+	updateGreenLightBoostTemp()
+	updateBlueLightBoostTemp()
+	updateVioletLightBoostTemp()
+	if (isLEBoostUnlocked(1)) tmp.leBonus[1] = {effect: leBoosts.effects[1]()}
+	for (var b = 2; b <= leBoosts.max; b++) {
+		if (!isLEBoostUnlocked(b)) break
+		if (b != 4 && b != 5) {
+			tmp.leBonus[b] = leBoosts.effects[b]()
+			if (b == 8) tmp.apgw += Math.floor(tmp.leBonus[9])
+		}
+	}
+}
+
 function updateLightEmpowermentReq() {
 	tmp.leReq = getLightEmpowermentReq()
 }
