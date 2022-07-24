@@ -176,6 +176,7 @@ function getBranchSpeed() { // idea: when you hold shift you can see where the m
 		if (hasAch("ng3p48")) x = x.times(Math.sqrt(player.meta.resets + 1))
 	}
 	if (ghSave.milestones >= 14) x = x.times(getMilestone14SpinMult())
+	if (ghSave.ghostlyPhotons.unl) x = x.times(tmp.le[5] || 1)
 	return x
 }
 

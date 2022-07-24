@@ -235,8 +235,8 @@ function updateColorPowers(log) {
 
 	//Blue
 	var bLog = log.b
-	if (tmp.ngp3l) bLog = Math.sqrt(bLog)
-	else bLog = Math.sqrt(log.b + 1.5) - 1.5
+	bLog = Math.sqrt(log.b + 1.5) - 1.5
+	if (ghSave.ghostlyPhotons.unl) bLog *= tmp.le[4] || 1
 
 	let softcapStartLog = 3
 	let softcapPower = 1
