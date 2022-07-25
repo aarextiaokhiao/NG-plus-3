@@ -331,7 +331,7 @@ newsArray = [//always true
 ["I mean, seriously, go find something else to play.", 'player.totalTimePlayed >= 63072e4', "am120"],
 ["no cheating", '(player.bestInfinityTime < 1 || player.bestEterTime < 1 || (player.masterystudies !== undefined ? quSave.best < 1 || ghSave.best < 1 : false))', "am121"],
 ["Don't click this news", true, "am122"],
-["TIANAMEN SQUARE 6/4/1989 TIANAMEN SQUARE 6/4/1989 TIANAMEN SQUARE 6/4/1989", "new Date().getMonth() == 6 && new Date().getDate() == 4", "am123"],
+["TIANAMEN SQUARE 6/4/1989 TIANAMEN SQUARE 6/4/1989 TIANAMEN SQUARE 6/4/1989", "new Date().getMonth() == 5 && new Date().getDate() == 4", "am123"],
 ["You chose poorly.", "quantumed && !ghostified ? quSave.times < 2 && quSave.usedQuarks.b.gt(0) : false", "am124"],
 ["Eternity Challenge 10 is confirmed to be a boost!", "ghostified && (ghSave.ghostlyPhotons.lights[0] > 3 || ghSave.ghostlyPhotons.enpowerments)", "am125"],
 ["When will Trio Challenges be released?!", "hasAch('ng3p25')", "am126"],
