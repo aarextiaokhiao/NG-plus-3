@@ -830,7 +830,7 @@
 							<button id="dil11" onclick="buyDilationUpgrade(11)">Double dilated time production.<br><span id="dil11cost"></span></button>
 						</td>
 						<td>
-							<button id="dil12" onclick="buyDilationUpgrade(12)">Decrease the galaxy threshold multiplier, but reset free galaxies and dilated time.<br><span id="dil12cost"></span></button>
+							<button id="dil12" onclick="buyDilationUpgrade(12)">Decrease the galaxy threshold multiplier, but reset Tachyonic Galaxies and dilated time.<br><span id="dil12cost"></span></button>
 						</td>
 						<td>
 							<button id="dil13" onclick="buyDilationUpgrade(13)"><span id="dil13desc"></span><br><span id="dil13cost"></span></button>
@@ -865,7 +865,7 @@
 				<table>
 					<tr>
 						<td>
-							<button id="dil21" onclick="buyDilationUpgrade(21)">Gain twice as many free galaxies.<br><span id="dil21cost"></span></button>
+							<button id="dil21" onclick="buyDilationUpgrade(21)">Gain twice as many Tachyonic Galaxies.<br><span id="dil21cost"></span></button>
 						</td>
 						<td>
 							<button id="dil22" onclick="buyDilationUpgrade(22)">Time Dimensions are affected by replicanti multiplier ^ 0.1.<br><span id="dil22cost"></span></button>
@@ -874,7 +874,7 @@
 							<button id="dil23" onclick="buyDilationUpgrade(23)">Normal Dimensions gain a multiplier based on Dilated Time, unaffected by Time Dilation.<br><span id="dil23cost"></span></button>
 						</td>
 						<td>
-							<button id="dil25" onclick="buyDilationUpgrade(25)">Gain twice as many free galaxies again.<br><span id="dil25cost"></span></button>
+							<button id="dil25" onclick="buyDilationUpgrade(25)">Gain twice as many Tachyonic Galaxies again.<br><span id="dil25cost"></span></button>
 						</td>
 						<td>
 							<button id="dil24" onclick="buyDilationUpgrade(24)">Replicanti increases faster based on Dilated Time.<br><span id="dil24cost"></span></button>
@@ -950,7 +950,7 @@
 							<button id="dil43" onclick="buyDilationUpgrade(43)">Further increase the exponent of all normal dimensions by ^0.1.<br><span id="dil43cost"></span></button>
 						</td>
 						<td id="n3">
-							<button id="dil44" onclick="buyDilationUpgrade(44)" style='font-size:9px'>Increase the exponent of Infinity Power effect based on your free galaxies.<br><span id="dil44desc">Currently: ???</span><br><span id="dil44cost"></span></button>
+							<button id="dil44" onclick="buyDilationUpgrade(44)" style='font-size:9px'>Increase the exponent of Infinity Power effect based on your Tachyonic Galaxies.<br><span id="dil44desc">Currently: ???</span><br><span id="dil44cost"></span></button>
 						</td>
 						<td id="n4">
 							<button id="dil45" onclick="buyDilationUpgrade(45)" style='font-size:10px'>Replicantis boost per-10 Infinity Dimensions multiplier.<br><span id="dil45desc">Currently: ???</span><br><span id="dil45cost"></span></button>
@@ -2373,7 +2373,7 @@
 								<div id="Infinity Morals" class="achievement achievementlocked" style="background-image: url(images/118.png)"><br></div>
 							</td>
 							<td>
-								<div id="Intergalactic" class="achievement achievementlocked" style="background-image: url(images/119.png)" ach-tooltip="Reach 4,000,000 Eighth Dimensions without any replicated or free galaxies. Reward: Eighth Dimensions are stronger based on your normal galaxies."><br></div>
+								<div id="Intergalactic" class="achievement achievementlocked" style="background-image: url(images/119.png)" ach-tooltip="Reach 4,000,000 Eighth Dimensions without any replicated or Tachyonic Galaxies. Reward: Eighth Dimensions are stronger based on your normal galaxies."><br></div>
 							</td>
 							<td>
 								<div id="Seriously, I already got rid of you." class="achievement achievementlocked" style="background-image: url(images/120.png)"><br></div>
@@ -3533,7 +3533,7 @@
 									<br>
 									<span id="qc2cost"></span><br>
 									<span id="qc2goal"></span><br>
-									Reward: Gain more free galaxies for each threshold. Currently: <span id="qc2reward"></span>%
+									Reward: Gain more Tachyonic Galaxies for each threshold. Currently: <span id="qc2reward"></span>%
 								</div>
 							</div>
 						</td>
@@ -4677,7 +4677,7 @@
 					<td colspan=2><button class="gluonupgrade br" id="generateBRGluons" onclick="generateGluons('br')">Generate <span id="generateBRGluonsAmount">0</span> blue-red gluons from blue quarks</button></td>
 				</tr><tr>
 					<td><button id='rgupg1' onclick='buyGluonUpg("rg",1)'>Remote Antimatter Galaxy cost scaling is approximately 2x slower.<br>Cost: 1 RG gluons</button></td>
-					<td><button id='rgupg2' onclick='buyGluonUpg("rg",2)'>Galaxies are more effective based on your free galaxies.<br><span id='rgupg2current'></span><br>Cost: 2 RG gluons</button></td>
+					<td><button id='rgupg2' onclick='buyGluonUpg("rg",2)'>Galaxies are more effective based on your Tachyonic Galaxies.<br><span id='rgupg2current'></span><br>Cost: 2 RG gluons</button></td>
 					<td><button id='gbupg1' onclick='buyGluonUpg("gb",1)' style='font-size:8.5px'>You gain replicanti faster based on your tickspeed reduction multiplier.<br><span id='gbupg1current'></span><br>Cost: 1 GB gluons</button></td>
 					<td><button id='gbupg2' onclick='buyGluonUpg("gb",2)'>Replicate interval scaling is 2x slower.<br>Cost: 2 GB gluons</button></td>
 					<td><button id='brupg1' onclick='buyGluonUpg("br",1)'>You gain more tachyon particles based on your dilated time.<br><span id='brupg1current'></span><br>Cost: 1 BR gluons</button></td>
@@ -5088,7 +5088,7 @@
 					<tr class="neutrinoBoosts" id="neutrinoBoostRow3">
 						<td>In Big Rips, strengthen Tree upgrades by <span class="neutrinos" id="neutrinoBoost7">0.0</span>%.<br><span style="font-size: 8px">(<span id="preNeutrinoBoost7Eff">100.0</span>% to <span id="neutrinoBoost7Eff">100.0</span>%)</span></td>
 						<td id="neutrinoBoostCell8">Strengthen the first Big Rip upgrade by <span class="neutrinos" id="neutrinoBoost8">0.0</span>%.</td>
-						<td id="neutrinoBoostCell9">In Big Rips, multiply IC3 base effect by <span class="neutrinos" id="neutrinoBoost9">1.00</span>x.</td>
+						<td id="neutrinoBoostCell9">In Big Rips, multiply IC3 effect base by <span class="neutrinos" id="neutrinoBoost9">1.00</span>x.</td>
 					</tr>
 					<tr class="neutrinoBoosts2" id="neutrinoBoostRow4">
 						<td>Decrease free tickspeed threshold by <span class="neutrinos" id="neutrinoBoost10"></span>.</td>

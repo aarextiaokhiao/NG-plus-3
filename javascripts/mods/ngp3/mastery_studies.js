@@ -263,7 +263,7 @@ var masteryStudies = {
 	timeStudyDescs: {
 		241: "The IP mult multiplies IP gain by 2.2x per upgrade.",
 		251: "Remote galaxy scaling starts 1 galaxy later per 3,000 dimension boosts.",
-		252: "Remote galaxy scaling starts 1 galaxy later per 7 free galaxies.",
+		252: "Remote galaxy scaling starts 1 galaxy later per 7 Tachyonic Galaxies.",
 		253: function() {
 			return "Remote galaxy scaling starts "+(tmp.ngp3l?"20 galaxies later per 9 extra replicated galaxies.":"1 galaxy later per 4 total replicated galaxies.")
 		},
@@ -292,7 +292,7 @@ var masteryStudies = {
 		332: "You gain replicanti faster based on your normal galaxies.",
 		341: "Preons boost dilated time production at reduced rate.",
 		342: "All replicated galaxies are stronger and use the same formula.",
-		343: "Free galaxies are as strong as a normal replicated galaxy.",
+		343: "Tachyonic Galaxies are as strong as a normal replicated galaxy.",
 		344: "Replicated galaxies are more effective based on your preons.",
 		351: "Time Shards boost all Meta Dimensions.",
 		361: "Hatch speed is faster based on your tachyon particles.",
@@ -317,7 +317,7 @@ var masteryStudies = {
 			return tmp.ngp3l ? "Preon effect is 25% stronger." : "Further reduce the softcap of preon boost."
 		},
 		421: "Tickspeed boosts preon energy production.",
-		431: "DT production and branches are faster based on your free galaxies."
+		431: "DT production and branches are faster based on your Tachyonic Galaxies."
 	},
 	hasStudyEffect: [251, 252, 253, 262, 263, 264, 273, 281, 282, 301, 303, 322, 332, 341, 344, 351, 361, 371, 372, 373, 381, 382, 383, 391, 392, 393, 401, 411, 421, 431],
 	studyEffectDisplays: {

@@ -41,7 +41,7 @@ function updateNeutrinoUpgradeDisplay(){
 	if (ghSave.times > 9) el("neutrinoUpg12").setAttribute('ach-tooltip',
 		"Normal galaxy effect: " + shorten(tmp.nu[4].normal) + "x to quark spin production, "+
 		"Replicated galaxy effect: " + shorten(tmp.nu[4].replicated) + "x to EC14 reward, "+
-		"Free galaxy effect: " + shorten(tmp.nu[4].free) + "x to IC3 reward"
+		"Tachyonic galaxy effect: " + shorten(tmp.nu[4].free) + "x to IC3 base"
 	)
 	if (ghSave.ghostlyPhotons.unl) {
 		el("neutrinoUpg14Pow").textContent=shorten(tmp.nu[5])

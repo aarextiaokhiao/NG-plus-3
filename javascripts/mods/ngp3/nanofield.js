@@ -152,7 +152,7 @@ var nanoRewards = {
 			return "meta-antimatter effect is ^" + x.toFixed(2)
 		},
 		dil_gal_gain: function(x) {
-			return "gain " + (x * 100 - 100).toFixed(2) + "% more free galaxies"
+			return "gain " + (x * 100 - 100).toFixed(2) + "% more Tachyonic Galaxies"
 		},
 		dt_to_ma_exp: function(x) {
 			return "dilated time gives ^" + x.toFixed(3) + " boost to Meta Dimensions"

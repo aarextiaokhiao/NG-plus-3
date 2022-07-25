@@ -742,7 +742,7 @@ var bu = {
 		11: "Bosons increases blue Light effect.",
 		12: "Decrease the free galaxy threshold based on Green Power.",
 		13: "Radioactive Decays boost Spectral Ions.",
-		14: "Sacrificed galaxies cancel less based on your free galaxies.",
+		14: "Sacrificed galaxies cancel less based on your Tachyonic Galaxies.",
 		15: "Fundaments and dilated time power up each other.",
 		21: "Replace first Nanoreward with a boost to weaken Dimension Supersonic.",
 		22: "Replace seventh Nanoreward with a boost to Neutrinos and Preon Charge.",
