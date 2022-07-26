@@ -211,7 +211,7 @@ function updateLightThresholdStrengthDisplay(){
 	for (var c = 0; c < 8; c++) {
 		el("light" + (c + 1)).textContent = getFullExpansion(gphData.lights[c])+(tmp.free_lights>0?" + "+getFullExpansion(tmp.free_lights):"")
 		el("lightThreshold" + (c + 1)).textContent = shorten(getLightThreshold(c))
-		if (c > 0) el("lightStrength" + c).textContent = shorten(tmp.ls[c-1])
+		if (c > 0) el("lightStrength" + c).textContent = "("+shorten(tmp.ls[c-1])+"x)"
 	}
 }
 
