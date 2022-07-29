@@ -32,6 +32,7 @@ function getMetaDimensionMultiplier(tier) {
 	let ret = E_pow(getPerTenMetaPower(), Math.floor(player.meta[tier].bought / 10))
 	ret = ret.times(E_pow(getMetaBoostPower(), Math.max(player.meta.resets + 1 - tier, 0)))
 	ret = ret.times(tmp.mdgm) //Global multiplier of all Meta Dimensions
+
 	//Quantum upgrades
 	if (tier == 1 && GUBought("rg3")) ret = ret.times(getRG3Effect())
 
@@ -64,6 +65,7 @@ function getMetaDimensionGlobalMultiplier() {
 		if (player.masterystudies.includes("t393")) ret = ret.times(getMTSMult(393))
 		//Qunatum Upgrades
 		if (GUBought("br4")) ret = ret.times(E_pow(getDimensionPowerMultiplier(), 0.0003).max(1))
+		if (GUBought("br5")) ret = ret.times(3)
 		//QC Rewards
 		ret = ret.times(tmp.qcRewards[3])
 		ret = ret.times(tmp.qcRewards[6])
