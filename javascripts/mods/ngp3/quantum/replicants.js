@@ -74,10 +74,10 @@ function updateReplicantsSubtab(){
 var antTabs = {
 	tabIds: ["antcore", "emperordimensions", "nanofield", "antipreon"],
 	update: {
-		antcore: updateReplicantsSubtab,
-		emperordimensions: updateEmperorDimensions,
-		nanofield: updateNanoverseTab,
-		antipreon: updateNanofieldAntipreon
+		antcore: () => updateReplicantsSubtab(),
+		emperordimensions: () => updateEmperorDimensions(),
+		nanofield: () => updateNanoverseTab(),
+		antipreon: () => updateNanofieldAntipreon()
 	}
 }
 
@@ -419,3 +419,77 @@ function getSpinToReplicantiSpeed(){
 	return r * g * b
 }
 
+//UPDATES
+function replicantOverallUpdating(diff){
+	replicantEggonUpdating(diff)
+	replicantBabyHatchingUpdating(diff)
+	if (quSave.replicants.eggons.lt(1)) quSave.replicants.babyProgress = E(0)
+	replicantBabiesGrowingUpUpdating(diff)
+	if (quSave.replicants.babies.lt(1)) quSave.replicants.ageProgress = E(0)
+	if (!nfSave.producingCharge) quSave.replicants.quarks = quSave.replicants.quarks.add(getGatherRate().total.max(0).times(diff))
+}
+
+function replicantEggonUpdating(diff){
+	var newBabies = tmp.twr.times(getEmperorDimensionMultiplier(1)).times(getSpinToReplicantiSpeed()).times(diff/200)
+	if (hasAch("ng3p35")) newBabies = newBabies.times(10)
+	quSave.replicants.eggonProgress = quSave.replicants.eggonProgress.add(newBabies)
+	var toAdd = quSave.replicants.eggonProgress.floor()
+	if (toAdd.gt(0)) {
+		if (toAdd.gt(quSave.replicants.eggonProgress)) quSave.replicants.eggonProgress = E(0)
+		else quSave.replicants.eggonProgress = quSave.replicants.eggonProgress.sub(toAdd)
+		quSave.replicants.eggons = quSave.replicants.eggons.add(toAdd).round()
+	}
+}
+
+function replicantBabyHatchingUpdating(diff){
+	if (quSave.replicants.eggons.gt(0)) {
+		quSave.replicants.babyProgress = quSave.replicants.babyProgress.add(diff/getHatchSpeed()/10)
+		var toAdd = hasNU(2) ? quSave.replicants.eggons : quSave.replicants.babyProgress.floor().min(quSave.replicants.eggons)
+		if (toAdd.gt(0)) {
+			if (toAdd.gt(quSave.replicants.eggons)) quSave.replicants.eggons = E(0)
+			else quSave.replicants.eggons = quSave.replicants.eggons.sub(toAdd).round()
+			if (toAdd.gt(quSave.replicants.babyProgress)) quSave.replicants.babyProgress = E(0)
+			else quSave.replicants.babyProgress = quSave.replicants.babyProgress.sub(toAdd)
+			quSave.replicants.babies = quSave.replicants.babies.add(toAdd).round()
+		}
+	}
+}
+
+function replicantBabiesGrowingUpUpdating(diff){
+	if (quSave.replicants.babies.gt(0)&&tmp.tra.gt(0)) {
+		quSave.replicants.ageProgress = quSave.replicants.ageProgress.add(getGrowupRatePerMinute().div(60).times(diff)).min(quSave.replicants.babies)
+		var toAdd = quSave.replicants.ageProgress.floor()
+		if (toAdd.gt(0)) {
+			if (!hasAch("ng3p71")) {
+				if (toAdd.gt(quSave.replicants.babies)) quSave.replicants.babies = E(0)
+				else quSave.replicants.babies = quSave.replicants.babies.sub(toAdd).round()
+			}
+			if (toAdd.gt(quSave.replicants.ageProgress)) quSave.replicants.ageProgress = E(0)
+			else quSave.replicants.ageProgress = quSave.replicants.ageProgress.sub(toAdd)
+			quSave.replicants.amount = quSave.replicants.amount.add(toAdd).round()
+		}
+	}
+}
+
+function emperorDimUpdating(diff){
+	for (dim=8;dim>1;dim--) {
+		var promote = hasNU(2) ? 1/0 : getWorkerAmount(dim-2)
+		if (canFeedReplicant(dim-1,true)) {
+			if (dim>2) promote = EDsave[dim-2].workers.sub(10).round().min(promote)
+			EDsave[dim-1].progress = EDsave[dim-1].progress.add(EDsave[dim].workers.times(getEmperorDimensionMultiplier(dim)).times(diff/200)).min(promote)
+			var toAdd = EDsave[dim-1].progress.floor()
+			if (toAdd.gt(0)) {
+				if (!hasAch("ng3p52")) {
+					if (dim>2 && toAdd.gt(getWorkerAmount(dim-2))) EDsave[dim-2].workers = E(0)
+					else if (dim>2) EDsave[dim-2].workers = EDsave[dim-2].workers.sub(toAdd).round()
+					else if (toAdd.gt(quSave.replicants.amount)) quSave.replicants.amount = E(0)
+					else quSave.replicants.amount = quSave.replicants.amount.sub(toAdd).round()
+				}
+				if (toAdd.gt(EDsave[dim-1].progress)) EDsave[dim-1].progress = E(0)
+				else EDsave[dim-1].progress = EDsave[dim-1].progress.sub(toAdd)
+				EDsave[dim-1].workers = EDsave[dim-1].workers.add(toAdd).round()
+			}
+		}
+		if (!canFeedReplicant(dim-1,true)) EDsave[dim-1].progress = E(0)
+	}
+}

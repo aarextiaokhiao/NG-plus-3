@@ -63,19 +63,20 @@ function getMetaDimensionGlobalMultiplier() {
 		if (player.masterystudies.includes("t382")) ret = ret.times(getMTSMult(382))
 		if (player.masterystudies.includes("t383")) ret = ret.times(getMTSMult(383))
 		if (player.masterystudies.includes("t393")) ret = ret.times(getMTSMult(393))
-		//Qunatum Upgrades
+
+		//Quantum Upgrades
 		if (GUBought("br4")) ret = ret.times(E_pow(getDimensionPowerMultiplier(), 0.0003).max(1))
 		if (GUBought("br5")) ret = ret.times(3)
+
 		//QC Rewards
 		ret = ret.times(tmp.qcRewards[3])
 		ret = ret.times(tmp.qcRewards[6])
+
 		//Achievement Rewards
-		if (!tmp.ngp3l) {
-			var ng3p13exp = Math.pow(Decimal.plus(quantumWorth, 1).log10(), 0.75)
-			if (ng3p13exp > 1000) ng3p13exp = Math.pow(7 + Math.log10(ng3p13exp), 3)
-			if (hasAch("ng3p13")) ret = ret.times(E_pow(8, ng3p13exp))
-			if (hasAch("ng3p57")) ret = ret.times(1 + player.timeShards.plus(1).log10())
-		}
+		var ng3p13exp = Math.pow(Decimal.plus(quantumWorth, 1).log10(), 0.75)
+		if (ng3p13exp > 1000) ng3p13exp = Math.pow(7 + Math.log10(ng3p13exp), 3)
+		if (hasAch("ng3p13")) ret = ret.times(E_pow(8, ng3p13exp))
+		if (hasAch("ng3p57")) ret = ret.times(1 + player.timeShards.plus(1).log10())
 	}
 	
 	return ret
@@ -438,4 +439,15 @@ function getDil15Bonus() {
 function getMetaUnlCost() {
 	if (aarMod.nguspV) return 1e21
 	return 1e24
+}
+
+function metaDimsUpdating(diff){
+	player.meta.antimatter = player.meta.antimatter.plus(getMetaDimensionProduction(1).times(diff))
+	if (inQC(4)) player.meta.antimatter = player.meta.antimatter.plus(getMetaDimensionProduction(1).times(diff))
+	if (tmp.ngp3 && inQC(0)) gainQuarkEnergy(player.meta.bestAntimatter, player.meta.antimatter)
+	player.meta.bestAntimatter = player.meta.bestAntimatter.max(player.meta.antimatter)
+	if (tmp.ngp3) {
+		player.meta.bestOverQuantums = player.meta.bestOverQuantums.max(player.meta.antimatter)
+		player.meta.bestOverGhostifies = player.meta.bestOverGhostifies.max(player.meta.antimatter)
+	}
 }

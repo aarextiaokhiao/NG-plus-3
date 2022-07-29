@@ -7,13 +7,13 @@ let NF = {
 	},
 }
 
-function getNanospeedText(){
+function getNanospeedText() {
 	s = getNanofieldSpeedText()
 	if (!shiftDown) s = ghostified || nanospeed != 1 ? "Nanospeed: " + (nanospeed == 1 ? "" : shorten(tmp.ns) + " * " + shorten(nanospeed) + " = ") + shorten(getNanofieldFinalSpeed()) + "x (hold shift for details)" : ""
 	return s
 }
 
-function updateNanoverseTab(){
+function updateNanoverseTab() {
 	var rewards = nfSave.rewards
 	var free = tmp.nanofield_free_rewards
 	var total = rewards + free
@@ -281,4 +281,42 @@ function updateNextPreonEnergyThreshold(){
 	}
 	nfSave.power += toSkip
 	nfSave.powerThreshold = getNanoRewardReq(1)
+}
+
+//UPDATES
+function nanofieldUpdating(diff){
+	var AErate = getQuarkAntienergyProduction()
+	var toAddAE = AErate.times(diff).min(getQuarkChargeProductionCap().sub(nfSave.antienergy))
+	if (nfSave.producingCharge) nanofieldProducingChargeUpdating(diff)
+	if (toAddAE.gt(0)) {
+		nfSave.antienergy = nfSave.antienergy.add(toAddAE).min(getQuarkChargeProductionCap())
+		nfSave.energy = nfSave.energy.add(toAddAE.div(AErate).times(getQuarkEnergyProduction()))
+		tmp.nanofield_free_rewards = 0
+		updateNextPreonEnergyThreshold()
+		if (nfSave.power > nfSave.rewards) {
+			nfSave.rewards = nfSave.power
+			
+			if (!nfSave.apgWoke && nfSave.rewards >= tmp.apgw) {
+				nfSave.apgWoke = tmp.apgw
+				$.notify("You reached " + getFullExpansion(tmp.apgw) + " rewards... The Anti-Preonius has woken up and took over the Nanoverse! Be careful!")
+				showTab("quantumtab")
+				showQuantumTab("replicants")
+				showAntTab("antipreon")
+			}
+		}
+	}
+}
+
+function nanofieldProducingChargeUpdating(diff){
+	var rate = getQuarkChargeProduction()
+	var loss = getQuarkLossProduction()
+	var toSub = loss.times(diff).min(quSave.replicants.quarks)
+	if (toSub.eq(0)) {
+		nfSave.producingCharge = false
+		el("produceQuarkCharge").innerHTML="Start production of preon charge.<br>(You will not get preons when you do this.)"
+	} else {
+		let chGain = toSub.div(loss).times(rate)
+		if (!hasAch("ng3p71")) quSave.replicants.quarks = quSave.replicants.quarks.sub(toSub)
+		nfSave.charge = nfSave.charge.add(chGain)
+	}
 }

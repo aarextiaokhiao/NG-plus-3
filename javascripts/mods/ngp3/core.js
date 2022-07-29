@@ -393,9 +393,7 @@ function getGHPGain() {
 	if (!ghostified) return E(1)
 	let log = brSave && brSave.bestThisRun.log10() / getQCGoal(undefined,true) - 1
 	if (log < 0) return E(0)
-	if (tmp.ngp3l) {
-		log *= 2
-	} else if (hasAch("ng3p58")) { 
+	if (hasAch("ng3p58")) { 
 		//the square part of the formula maxes at e10, and gets weaker after ~e60 total
 		let x = Math.min(7, log / 2) + Math.min(3, log / 2)
 		y = ghSave.ghostParticles.plus(pow10(log)).plus(10).log10()
@@ -570,7 +568,10 @@ function showGhostifyTab(tabName) {
 
 function updateGhostifyTabs() {
 	if (el("neutrinos").style.display == "block") updateNeutrinosTab()
-	if (el("automaticghosts").style.display == "block") if (ghSave.milestones > 7) updateQuantumWorth("display")
+	if (el("automaticghosts").style.display == "block") {
+		if (ghSave.milestones > 7) updateQuantumWorth("display")
+		updateAutomatorHTML()
+	}
 	if (el("gphtab").style.display == "block" && ghSave.ghostlyPhotons.unl) updatePhotonsTab()
 	if (el("bltab").style.display == "block" && ghSave.wzb.unl) updateBosonicLabTab()
 }
@@ -600,120 +601,6 @@ function maxGHPMult() {
 	el("autoGhost15a").value = formatValue("Scientific", ghSave.automatorGhosts[15].a, 2, 1)
 	el("ghpMult").textContent = shortenDimensions(getGHPBaseMult())
 	el("ghpMultUpgCost").textContent = shortenDimensions(getGHPMultCost())
-}
-
-function setupAutomaticGhostsData() {
-	var data = {power: 0, ghosts: 3}
-	for (var ghost=1; ghost <= getMaxAutoGhosts(); ghost++) data[ghost] = {on: false}
-	data[4].mode = "q"
-	data[4].rotate = "r"
-	data[11].pw = 1
-	data[11].lw = 1
-	data[11].cw = 1
-	data[15].a = 1
-	data[17].a = 60
-	data[17].t = 0
-	return data
-}
-
-var autoGhostRequirements=[2,4,4,4.5,5,5,6,6.5,7,7,7.5,8,20,24,28,32,36,40,45]
-var powerConsumed
-var powerConsumptions=[0,0.75,0.75,0.75,1,2,1.5,0.5,0.5,0.5,1,0.5,0.5,0.5,0.5,0.5,6,3,6,3,9,3,3]
-function updateAutoGhosts(load) {
-	var data = ghSave.automatorGhosts
-	if (load) {
-		for (var x = 1; x <= getMaxAutoGhosts(); x++) if (data[x] === undefined) data[x] = {on: false}
-		if (data.ghosts >= getMaxAutoGhosts()) el("nextAutomatorGhost").parentElement.style.display="none"
-		else {
-			el("nextAutomatorGhostDiv").style.display=""
-			el("nextAutomatorGhost").textContent=autoGhostRequirements[data.ghosts-3].toFixed(2)
-		}
-	}
-	powerConsumed=0
-	for (var ghost = 1; ghost <= getMaxAutoGhosts(); ghost++) {
-		if (ghost>data.ghosts) {
-			if (load) el("autoGhost"+ghost).style.display="none"
-		} else {
-			if (load) {
-				el("autoGhost"+ghost).style.display=""
-				el("isAutoGhostOn"+ghost).checked=data[ghost].on
-			}
-			if (data[ghost].on) powerConsumed+=powerConsumptions[ghost]
-		}
-	}
-	if (load) {
-		el("autoGhostMod4").textContent = "Every " + (data[4].mode == "t" ? "second" : "Quantum")
-		el("autoGhostRotate4").textContent = data[4].rotate == "l" ? "Left" : "Right"
-		el("autoGhost11pw").value = data[11].pw
-		el("autoGhost11cw").value = data[11].cw
-		el("autoGhost13t").value = data[13].t
-		el("autoGhost13u").value = data[13].u
-		el("autoGhost13o").value = data[13].o
-		el("autoGhost15a").value = formatValue("Scientific", data[15].a, 2, 1)
-		el("autoGhost17s").value = data[17].s || 60
-	}
-	el("consumedPower").textContent = powerConsumed.toFixed(2)
-	isAutoGhostsSafe = data.power >= powerConsumed
-	el("tooMuchPowerConsumed").style.display = isAutoGhostsSafe ? "none" : ""
-}
-
-function toggleAutoGhost(id) {
-	ghSave.automatorGhosts[id].on = el("isAutoGhostOn" + id).checked
-	updateAutoGhosts()
-}
-
-function isAutoGhostActive(id) {
-	if (!ghostified) return
-	return ghSave.automatorGhosts[id].on
-}
-
-function changeAutoGhost(o) {
-	if (o == "4m") {
-		ghSave.automatorGhosts[4].mode = ghSave.automatorGhosts[4].mode == "t" ? "q" : "t"
-		el("autoGhostMod4").textContent = "Every " + (ghSave.automatorGhosts[4].mode == "t" ? "second" : "Quantum")
-	} else if (o == "4r") {
-		ghSave.automatorGhosts[4].rotate = ghSave.automatorGhosts[4].rotate == "l" ? "r" : "l"
-		el("autoGhostRotate4").textContent = ghSave.automatorGhosts[4].rotate == "l" ? "Left" : "Right"
-	} else if (o == "11pw") {
-		var num = parseFloat(el("autoGhost11pw").value)
-		if (!isNaN(num) && num > 0) ghSave.automatorGhosts[11].pw = num
-	} else if (o == "11cw") {
-		var num = parseFloat(el("autoGhost11cw").value)
-		if (!isNaN(num) && num > 0) ghSave.automatorGhosts[11].cw = num
-	} else if (o == "13t") {
-		var num = parseFloat(el("autoGhost13t").value)
-		if (!isNaN(num) && num >= 0) ghSave.automatorGhosts[13].t = num
-	} else if (o == "13u") {
-		var num = parseFloat(el("autoGhost13u").value)
-		if (!isNaN(num) && num > 0) ghSave.automatorGhosts[13].u = num
-	} else if (o == "13o") {
-		var num = parseInt(getEl("autoGhost13o").value)
-		if (!isNaN(num) && num >= 0) player.ghostify.automatorGhosts[13].o = num
-	} else if (o == "15a") {
-		var num = fromValue(el("autoGhost15a").value)
-		if (!isNaN(break_infinity_js ? num : num.l)) ghSave.automatorGhosts[15].a = num
-	} else if (o == "17a") {
-		var num = fromValue(el("autoGhost17s").value)
-		if (!isNaN(break_infinity_js ? num : num.l)) ghSave.automatorGhosts[17].s = num
-	}
-}
-
-function rotateAutoUnstable() {
-	var tg=ghSave.automatorGhosts[3].on
-	if (ghSave.automatorGhosts[4].rotate=="l") {
-		ghSave.automatorGhosts[3].on = ghSave.automatorGhosts[1].on
-		ghSave.automatorGhosts[1].on = ghSave.automatorGhosts[2].on
-		ghSave.automatorGhosts[2].on = tg
-	} else {
-		ghSave.automatorGhosts[3].on = ghSave.automatorGhosts[2].on
-		ghSave.automatorGhosts[2].on = ghSave.automatorGhosts[1].on
-		ghSave.automatorGhosts[1].on = tg
-	}
-	for (var g = 1; g < 4; g++) el("isAutoGhostOn" + g).checked = ghSave.automatorGhosts[g].on
-}
-
-function getMaxAutoGhosts() {
-	return tmp.ngp3l ? 15 : 22
 }
 
 //v2.1
@@ -980,4 +867,93 @@ function ngp3_feature_notify(k) {
 		el("ngp3_feature_ani_2b").style.height = "0"
 		el("ngp3_feature_ani_3").style.right = "150%"
 	}, 6000)
+}
+
+//v2.4: Moved from old functions...
+function doPerSecondNGP3Stuff(){
+	if (!tmp.ngp3) return
+
+	//Post-NG+3
+	doPostNGP3UnlockStuff()
+
+	//NG+3: Automators
+	automatorPerSec()
+
+	if (quSave.autoECN !== undefined) {
+		justImported = true
+		if (quSave.autoECN > 12) buyMasteryStudy("ec", quSave.autoECN,true)
+		else el("ec" + quSave.autoECN + "unl").onclick()
+		justImported = false
+	}
+	if (quSave.autoOptions.assignQK && ghSave.milestones > 7) assignAll(true) 
+	if (hasAch("ng3p43") && ghSave.milestones >= 8) maxUpgradeColorDimPower()
+
+	//NG+3: Others
+	doNGP3UnlockStuff()
+	notifyGhostifyMilestones()
+	givePerSecondNeuts()
+}
+
+function doGhostifyUnlockStuff(){
+	ghSave.reached = true
+	if (el("welcome").style.display != "flex") el("welcome").style.display = "flex"
+	else aarMod.popUpId = ""
+	el("welcomeMessage").innerHTML = "You are finally able to complete PC6+8 in Big Rip! However, because of the unstability of this universe, the only way to go further is to fundament. This allows to unlock new stuff in exchange for everything that you have."
+}
+
+function doReachAMGoalStuff(chall){
+	if (el("welcome").style.display != "flex") el("welcome").style.display = "flex"
+	else aarMod.popUpId = ""
+	el("welcomeMessage").innerHTML = "You reached the antimatter goal (" + shorten(pow10(getQCGoal())) + "), but you didn't reach the meta-antimatter goal yet! Get " + shorten(getQuantumReq()) + " meta-antimatter" + (brSave.active ? " and then you can fundament!" : " and then go Quantum to complete your challenge!")
+	quSave.nonMAGoalReached.push(chall)
+}
+
+function doQuantumUnlockStuff(){
+	quSave.reached = true
+	if (el("welcome").style.display != "flex") el("welcome").style.display = "flex"
+	else aarMod.popUpId = ""
+	el("welcomeMessage").innerHTML = "Congratulations! You reached " + shorten(getQuantumReq()) + " MA and completed EC14 for the first time! This allows you to go Quantum (the 5th layer), giving you a quark in exchange for everything up to this point, which can be used to get more powerful upgrades. This allows you to get gigantic numbers!"
+}
+
+function doNGP3UnlockStuff(){
+	var chall = tmp.inQCs
+	if (chall.length < 2) chall = chall[0]
+	else if (chall[0] > chall[1]) chall = chall[1] * 10 + chall[0]
+	else chall = chall[0] * 10 + chall[1]
+	if (!quSave.reached && isQuantumReached()) doQuantumUnlockStuff()
+	let MAbool = player.meta.bestAntimatter.lt(getQuantumReq())
+	let DONEbool = !quSave.nonMAGoalReached.includes(chall)
+	let TIMEbool = quSave.time > 10
+	if (chall && player.money.gt(pow10(getQCGoal())) && MAbool && DONEbool && TIMEbool) {
+		doReachAMGoalStuff(chall)
+	}
+	if (!ghSave.reached && brSave.active) if (brSave.bestThisRun.gte(pow10(getQCGoal(undefined, true)))) {
+		doGhostifyUnlockStuff()
+	}
+	var inEasierModeCheck = !inEasierMode()
+	if (player.masterystudies && (player.masterystudies.includes("d14")||hasAch("ng3p51")) && !metaSave.ngp4 && !inEasierModeCheck) doNGP4UnlockStuff()
+	if (player.eternityPoints.gte("1e1200") && brSave.active && !beSave.unlocked) doBreakEternityUnlockStuff()
+	if (player.money.gte(pow10(4.7e9)) && brSave.active && !ghSave.ghostlyPhotons.unl) doPhotonsUnlockStuff()
+	if (canUnlockBosonicLab() && !ghSave.wzb.unl) doBosonsUnlockStuff()
+	if (!tmp.ng3l) unlockHiggs()
+}
+
+function quantumOverallUpdating(diff){
+	var colorShorthands=["r","g","b"]
+	//Color Powers
+	for (var c=0;c<3;c++) quSave.colorPowers[colorShorthands[c]]=quSave.colorPowers[colorShorthands[c]].add(getColorPowerProduction(colorShorthands[c]).times(diff))
+	updateColorPowers()
+	if (player.masterystudies.includes("d10")) replicantOverallUpdating(diff)
+	if (player.masterystudies.includes("d11")) emperorDimUpdating(diff)
+	if (NF.unl()) nanofieldUpdating(diff)
+	if (player.masterystudies.includes("d13")) treeOfDecayUpdating(diff)
+	
+	if (speedrunMilestonesReached>5) {
+		quSave.metaAutobuyerWait+=diff*10
+		var speed=speedrunMilestonesReached>20?10/3:10
+		if (quSave.metaAutobuyerWait>speed) {
+			quSave.metaAutobuyerWait=quSave.metaAutobuyerWait%speed
+			doAutoMetaTick()
+		}
+	}
 }

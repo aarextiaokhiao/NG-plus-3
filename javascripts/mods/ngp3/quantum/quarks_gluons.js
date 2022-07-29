@@ -3,27 +3,15 @@ var quantumWorth
 function updateQuantumWorth(mode) {
 	if (!tmp.ngp3) return
 	if (ghSave.milestones<8) {
-		if (mode != "notation") mode=undefined
+		if (mode != "notation") mode = undefined
 	} else if (mode == "notation") return
+
 	if (mode != "notation") {
 		if (mode != "display") {
 			quantumWorth = quSave.quarks.add(quSave.usedQuarks.r).add(quSave.usedQuarks.g).add(quSave.usedQuarks.b).add(quSave.gluons.rg).add(quSave.gluons.gb).add(quSave.gluons.br).round()
 			if (!tmp.ngp3l) colorCharge.qwBonus = quantumWorth.pow(.8).div(100)
 		}
-		if (ghSave.times) {
-			var automaticCharge = Math.max(Math.log10(quantumWorth.add(1).log10() / 150) / Math.log10(2), 0) + Math.max(brSave.spaceShards.add(1).log10() / 15 - 0.5, 0)
-			ghSave.automatorGhosts.power = Math.max(automaticCharge, ghSave.automatorGhosts.power)
-			if (mode != "quick") {
-				el("automaticCharge").textContent = automaticCharge.toFixed(2)
-				el("automaticPower").textContent = ghSave.automatorGhosts.power.toFixed(2)
-			}
-			while (ghSave.automatorGhosts.ghosts<getMaxAutoGhosts()&&ghSave.automatorGhosts.power>=autoGhostRequirements[ghSave.automatorGhosts.ghosts-3]) {
-				ghSave.automatorGhosts.ghosts++
-				el("autoGhost"+ghSave.automatorGhosts.ghosts).style.display=""
-				if (ghSave.automatorGhosts.ghosts>=getMaxAutoGhosts()) el("nextAutomatorGhost").parentElement.style.display="none"
-				else el("nextAutomatorGhostDiv").style.display=""
-			}
-		}
+		if (ghostified) updateAutomatorStuff(mode)
 	}
 	if (mode != "quick") for (var e=1;e<4;e++) el("quantumWorth"+e).textContent = shortenDimensions(quantumWorth)
 }
@@ -340,6 +328,15 @@ function generateGluons(mix) {
 	quSave.gluons[mix] = quSave.gluons[mix].add(toConsume).round()
 	updateColorCharge()
 	updateGluonsTabOnUpdate()
+}
+
+function checkGluonRounding(){
+	if (!tmp.ngp3) return
+	if (ghSave.milestones > 7 || !quantumed) return
+	if (quSave.gluons.rg.lt(101)) quSave.gluons.rg = quSave.gluons.rg.round()
+	if (quSave.gluons.gb.lt(101)) quSave.gluons.gb = quSave.gluons.gb.round()
+	if (quSave.gluons.br.lt(101)) quSave.gluons.br = quSave.gluons.br.round()
+	if (quSave.quarks.lt(101)) quSave.quarks = quSave.quarks.round()
 }
 
 GUCosts = [null, 1, 2, 4, 100, 7e15, 4e19, 3e28, "1e570"]

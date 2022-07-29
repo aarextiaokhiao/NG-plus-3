@@ -112,3 +112,8 @@ function toggle_mod(id) {
 		toggle_mod("ngud")
 	}
 }
+
+//CONDITIONS
+function inEasierMode() {
+	return aarMod.newGameMult || aarMod.newGameExpVersion || aarMod.ngudpV || aarMod.ngumuV || aarMod.nguepV || aarMod.aau
+}

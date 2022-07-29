@@ -2072,9 +2072,6 @@ function updateNGp3DisplayStuff(){
         updateGPHUnlocks()
         updateBLUnlocks()
         updateBosonicStuffCosts()
-        if (!tmp.ngp3l) {
-                el("nextParticle").textContent = "To unlock the next particle (Higgs), you need to get " + shortenCosts(pow10(2e17)) + " antimatter and " + shortenCosts(getHiggsRequirement()) + " Bosons first."
-        }
         updateBLParticleUnlocks()
 }
 
@@ -2097,7 +2094,6 @@ function setSomeQuantumAutomationDisplay(){
         el('sacrificeAuto').style.display=speedrunMilestonesReached>24?"":"none"
         el('toggleautoquantummode').style.display=(player.masterystudies?quSave.reachedInfQK||hasAch("ng3p25"):false)?"":"none"
         var autoAssignUnl = tmp.ngp3 && (ghostified || quSave.reachedInfQK)
-        el('assignAll').style.display = !tmp.ngp3l || autoAssignUnl ? "" : "none"
         el('autoAssign').style.display = autoAssignUnl ? "" : "none"
         el('autoAssignRotate').style.display = autoAssignUnl ? "" : "none"
         el('autoReset').style.display=hasAch("ng3p47")?"":"none"

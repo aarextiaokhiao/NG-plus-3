@@ -598,3 +598,22 @@ function getBranchUpgMult(branch, upg) {
 		return E_pow(4, l)
 	}
 } 
+
+function treeOfDecayUpdating(diff){
+	var colorShorthands=["r","g","b"]
+	for (var c = 0; c < 3; c++) {
+		var shorthand = colorShorthands[c]
+		var branch = todSave[shorthand]
+		var decayRate = getDecayRate(shorthand)
+		var decayPower = getRDPower(shorthand)
+				
+		var mult = pow2(decayPower)
+		var power = Decimal.div(branch.quarks.gt(mult)?branch.quarks.div(mult).log(2)+1:branch.quarks.div(mult),decayRate)
+		var decayed = power.min(diff)
+		power = power.sub(decayed).times(decayRate)
+
+		var sProd = getQuarkSpinProduction(shorthand)
+		branch.quarks = power.gt(1) ? pow2(power-1).times(mult) : power.times(mult)	
+		branch.spin = branch.spin.add(sProd.times(decayed))	
+	}
+}

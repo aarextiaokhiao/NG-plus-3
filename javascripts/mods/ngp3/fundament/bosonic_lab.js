@@ -23,6 +23,23 @@ function getBosonicWattGain() {
 	return E(r)
 }
 
+function WZBosonsUpdating(diff) {
+	ghSave.automatorGhosts[17].t += diff
+
+	var data = ghSave.bl
+	var wattGain = getBosonicWattGain()
+	if (wattGain.gt(data.watt)) {
+		if (wattGain.gt(data.speed)) data.speed = wattGain.sub(data.watt).times(10).add(data.speed).min(wattGain)
+		data.watt = wattGain
+	}
+
+	if (E(data.speed).gt(0)) {
+		var limitDiff = data.speed.times(14400).min(diff).toNumber()
+		bosonicTick(data.speed.sub(limitDiff / 28800).times(limitDiff))
+		data.speed = data.speed.max(limitDiff / 14400).sub(limitDiff / 14400)
+	}
+}
+
 function bosonicTick(diff) {
 	let lDiff //Mechanic-local diff
 	let lData //Mechanic-local data
@@ -601,10 +618,12 @@ function buyBosonicUpgrade(id, quick) {
 	if (!canBuyBosonicUpg(id)) return false
 	ghSave.bl.upgrades.push(id)
 	ghSave.bl.am = ghSave.bl.am.sub(getBosonicFinalCost(bu.reqData[id][0]))
+
 	if (!quick) updateTemp()
 	if (id == 21 || id == 22) updateNanoRewardTemp()
 	if (id == 32) tmp.updateLights = true
-	if (!tmp.ngp3l) delete ghSave.hb.bosonicSemipowerment
+	delete ghSave.hb.bosonicSemipowerment
+
 	return true
 }
 
@@ -818,7 +837,7 @@ var bu = {
 			if (tmp.newNGP3E){
 				div = 2e3
 				add = 1.5
-			} else if (tmp.ngp3l) exp = 0.5
+			}
 			return Math.pow(quSave.electrons.amount + 1, exp) / div + add
 		},
 		31: function() {

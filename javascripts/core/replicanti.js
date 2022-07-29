@@ -314,3 +314,8 @@ function toggleReplAuto(i) {
 		}
 	}
 }
+
+function updateReplicantiGalaxyToggels(){
+	if (player.replicanti.galaxybuyer === undefined || player.boughtDims) el("replicantiresettoggle").style.display = "none"
+	else el("replicantiresettoggle").style.display = "inline-block"
+}

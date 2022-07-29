@@ -301,3 +301,17 @@ function getLightEmpowermentReq(le) {
 	tmp.leReqScale = scale
 	return Math.floor(x)
 }
+
+function ghostlyPhotonsUpdating(diff){
+	var data = ghSave.ghostlyPhotons
+	var type = brSave && brSave.active ? "amount" : "darkMatter"
+	data[type] = data[type].add(getGPHProduction().times(diff))
+	data.ghostlyRays = data.ghostlyRays.add(getWVProduction().times(diff)).min(getWVCap())
+	for (var c = 0; c < 8; c++) {
+		if (data.ghostlyRays.gte(getLightThreshold(c))) {
+			data.lights[c] += Math.floor(data.ghostlyRays.div(getLightThreshold(c)).log(getLightThresholdIncrease(c)) + 1)
+			tmp.updateLights = true
+		}
+	}
+	data.maxRed = Math.max(data.lights[0], data.maxRed)
+}

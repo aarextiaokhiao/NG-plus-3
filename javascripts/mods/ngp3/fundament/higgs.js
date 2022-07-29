@@ -8,11 +8,7 @@ function setupHiggsSave() {
 }
 
 function unlockHiggs() {
-	if (tmp.ngp3l) { // higgs isn't a thing in legacy mode
-		return
-	} 
 	if (ghSave.hb.unl) return
-	if (!ghSave.wzb.unl) return
 	if (!canUnlockHiggs()) return
 	$.notify("Congratulations! You have unlocked Higgs!", "success")
 	ghSave.hb.unl = true

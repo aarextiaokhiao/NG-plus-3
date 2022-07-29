@@ -65,6 +65,20 @@ function getDarkMatterPerSecond() {
 	return player.singularity.singularityPower.times(pow2(player.singularity.upgraded))
 }
 
+function infinityRespeccedDMUpdating(diff){
+	var prod = getDarkMatterPerSecond()
+	player.singularity.darkMatter = player.singularity.darkMatter.add(getDarkMatterPerSecond().times(diff))
+	if (prod.gt(0)) tmp.tickUpdate = true
+	if (player.singularity.darkMatter.gte(getNextDiscounts())) {
+		player.dimtechs.discounts++
+		for (d=1;d<9;d++) {
+			var name = TIER_NAMES[d]
+			player[name+"Cost"] = player[name+"Cost"].div(getDiscountMultiplier("dim" + d))
+		}
+		player.tickSpeedCost = player.tickSpeedCost.div(getDiscountMultiplier("tick"))
+	}
+}
+
 function getDarkMatterMult() {
 	return player.singularity.darkMatter.add(1).pow(4)
 }

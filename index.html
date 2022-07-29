@@ -1677,7 +1677,7 @@
 				<br><br>
 				(Update v2.41R: Gravitional Relativity)
 				<br>
-				<b class="red">(Beta: 7/28/22 Build)</b>
+				<b class="red">(Beta: 7/29/22 Build)</b>
 				<br><br>
 			</p>
 			<div id="footercontainer">
@@ -5135,8 +5135,8 @@
 				<div>Your quantum worth (sum of quarks, colored quarks, and gluons) is currently <b class="QKAmount" id="quantumWorth3">0</b>.</div>
 				<table class='qtable'>
 					<tr>
-						<td><span id="automaticCharge" style="font-size:25px">0.0</span> Automator Charge</td>
-						<td><span id="automaticPower" style="font-size:25px">0.0</span> Automator Power<br><span id="consumedPower" style="font-size:15px">0.0</span> used<br><b id="tooMuchPowerConsumed" class="warning">WARNING: NOT ENOUGH POWER TO AUTOMATE!</b></td>
+						<td><span id="automatorCharge" style="font-size:25px">0.0</span> Automator Charge</td>
+						<td><span id="automatorPower" style="font-size:25px">0.0</span> Automator Power<br><span id="consumedPower" style="font-size:15px">0.0</span> used<br><b id="tooMuchPowerConsumed" class="warning">WARNING: NOT ENOUGH POWER TO AUTOMATE!</b></td>
 						<td id="nextAutomatorGhostDiv">Next Automator: <span id="nextAutomatorGhost" style="font-size:25px">?.?</span> Charge</td>
 					</tr>
 				</table>
@@ -5232,9 +5232,14 @@
 					</tr>
 					<tr>
 						<td id="autoGhost16"><div class="autoBuyerDiv" style="display:block">
-							<b>Auto-Neutrino Mult</b>
+							<b>Auto-Neutrino Repeatable</b>
 							<input id="isAutoGhostOn16" type="checkbox" onchange="toggleAutoGhost(16)"></input><br>
-							Power: 6
+							Power: 1
+						</div></td>
+						<td id="autoGhost18"><div class="autoBuyerDiv" style="display:block">
+							<b>Auto-Electron Mult</b>
+							<input id="isAutoGhostOn18" type="checkbox" onchange="toggleAutoGhost(18)"></input><br>
+							Power: 1
 						</div></td>
 						<td id="autoGhost17"><div class="autoBuyerDiv" style="display:block">
 							<b>Auto-Experiment</b>
@@ -5242,11 +5247,6 @@
 							Power: 3<br>
 							Changes hypotheses at a complete experiment on 2s after last change<br>
 							or change immediately at X seconds remaining: <input id="autoGhost17s" onchange="changeAutoGhost('17s')"></input>
-						</div></td>
-						<td id="autoGhost18"><div class="autoBuyerDiv" style="display:block">
-							<b>Auto-Electron Mult</b>
-							<input id="isAutoGhostOn18" type="checkbox" onchange="toggleAutoGhost(18)"></input><br>
-							Power: 6
 						</div></td>
 						<td id="autoGhost19"><div class="autoBuyerDiv" style="display:block">
 							<b>Auto-Enchanter</b>
@@ -5831,29 +5831,32 @@
 <script type="text/javascript" src="javascripts/core/ach/achievements.js"></script>
 <script type="text/javascript" src="javascripts/core/ach/ach-tooltips.js"></script>
 
+<!-- NG+3 SCRIPTS -->
+<script type="text/javascript" src="javascripts/mods/ngp3/mastery_studies.js"></script>
+<script type="text/javascript" src="javascripts/mods/ngp3/quantum/quantum_speedruns.js"></script>
+<script type="text/javascript" src="javascripts/mods/ngp3/quantum/quarks_gluons.js"></script>
+<script type="text/javascript" src="javascripts/mods/ngp3/quantum/quantum_challenges.js"></script>
+<script type="text/javascript" src="javascripts/mods/ngp3/quantum/replicants.js"></script>
+<script type="text/javascript" src="javascripts/mods/ngp3/quantum/nanofield.js"></script>
+<script type="text/javascript" src="javascripts/mods/ngp3/quantum/tod.js"></script>
+<script type="text/javascript" src="javascripts/mods/ngp3/quantum/big_rip.js"></script>
+<script type="text/javascript" src="javascripts/mods/ngp3/quantum/electrons.js"></script>
+<script type="text/javascript" src="javascripts/mods/ngp3/fundament/auto.js"></script>
+<script type="text/javascript" src="javascripts/mods/ngp3/fundament/neutrinos.js"></script>
+<script type="text/javascript" src="javascripts/mods/ngp3/fundament/photons.js"></script>
+<script type="text/javascript" src="javascripts/mods/ngp3/fundament/bosonic_lab.js"></script>
+<script type="text/javascript" src="javascripts/mods/ngp3/fundament/higgs.js"></script>
+<script type="text/javascript" src="javascripts/mods/ngp3/core.js"></script>
+
 <script type="text/javascript" src="javascripts/mods/pngp3/bd.js"></script>
 <script type="text/javascript" src="javascripts/mods/pngp3/gravitons.js"></script>
-<script type="text/javascript" src="javascripts/mods/pngp3/main.js"></script>
+<script type="text/javascript" src="javascripts/mods/pngp3/core.js"></script>
 
-<script type="text/javascript" src="javascripts/mods/ngp3/big_rip.js"></script>
-<script type="text/javascript" src="javascripts/mods/ngp3/bosonic_lab.js"></script>
-<script type="text/javascript" src="javascripts/mods/ngp3/electrons.js"></script>
-<script type="text/javascript" src="javascripts/mods/ngp3/photons.js"></script>
-<script type="text/javascript" src="javascripts/mods/ngp3/higgs.js"></script>
-<script type="text/javascript" src="javascripts/mods/ngp3/mastery_studies.js"></script>
-<script type="text/javascript" src="javascripts/mods/ngp3/nanofield.js"></script>
-<script type="text/javascript" src="javascripts/mods/ngp3/neutrinos.js"></script>
-<script type="text/javascript" src="javascripts/mods/ngp3/quantum_challenges.js"></script>
-<script type="text/javascript" src="javascripts/mods/ngp3/quantum_speedruns.js"></script>
-<script type="text/javascript" src="javascripts/mods/ngp3/quarks_gluons.js"></script>
-<script type="text/javascript" src="javascripts/mods/ngp3/replicants.js"></script>
-<script type="text/javascript" src="javascripts/mods/ngp3/tod.js"></script>
-
+<!-- MODS AND OTHERS -->
 <script type="text/javascript" src="javascripts/mods/core.js"></script>
 <script type="text/javascript" src="javascripts/mods/ers.js"></script>
 <script type="text/javascript" src="javascripts/mods/meta.js"></script>
 <script type="text/javascript" src="javascripts/mods/quantum.js"></script>
-<script type="text/javascript" src="javascripts/mods/ngppp.js"></script>
 <script type="text/javascript" src="javascripts/mods/ngmmm.js"></script>
 <script type="text/javascript" src="javascripts/mods/ngud.js"></script>
 <script type="text/javascript" src="javascripts/mods/irs.js"></script>

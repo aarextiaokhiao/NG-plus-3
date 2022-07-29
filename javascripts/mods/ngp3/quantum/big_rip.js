@@ -169,6 +169,11 @@ function hasRipUpg(x) {
 	return brSave.upgrades.includes(x)
 }
 
+function getMaxBigRipUpgrades() {
+	if (ghSave.ghostlyPhotons.unl) return 20
+	return 17
+}
+
 function isBigRipUpgradeActive(id, bigRipped) {
 	if (player.masterystudies == undefined) return false
 	if (bigRipped === undefined ? !brSave.active : !bigRipped) return false
@@ -178,6 +183,7 @@ function isBigRipUpgradeActive(id, bigRipped) {
 	return hasRipUpg(id)
 }
 
+//BREAK ETERNITY
 function updateBreakEternity() {
 	if (!tmp.ngp3) return
 	if (beSave && beSave.unlocked) {
@@ -199,11 +205,10 @@ function updateBreakEternity() {
 	}
 }
 
-function getBEUnls() {
-	let x = 8
-	if (ghSave.ghostlyPhotons.unl) x += 3
-	if (ghSave.breakDilation.unl) x += 1
-	return x
+function doBreakEternityUnlockStuff(){
+	beSave.unlocked = true
+	$.notify("Congratulations! You have unlocked Break Eternity!", "success")
+	updateBreakEternity()
 }
 
 function breakEternity() {
@@ -280,7 +285,10 @@ function maxBuyBEEPMult() {
 	el("breakUpg7Cost").textContent = shortenDimensions(getBreakUpgCost(7))
 }
 
-function getMaxBigRipUpgrades() {
-	if (ghSave.ghostlyPhotons.unl) return tmp.ngp3l ? 19 : 20
-	return 17
+function getBEUnls() {
+	//Upgrades
+	let x = 8
+	if (ghSave.ghostlyPhotons.unl) x += 3
+	if (ghSave.breakDilation.unl) x += 1
+	return x
 }

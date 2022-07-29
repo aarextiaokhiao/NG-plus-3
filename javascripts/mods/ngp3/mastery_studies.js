@@ -18,11 +18,11 @@ var masteryStudies = {
 	ecReqs: {
 		13: function() {
 			let comps = ECComps("eterc13")
-			return 728e3 + (tmp.ngp3l ? 6000 : (1500 + 3000 * comps)) * comps
+			return 728e3 + (1500 + 3e3 * comps) * comps
 		},
 		14: function() {
 			let comps = ECComps("eterc14")
-			return 255e5 + (tmp.ngp3l ? 9e5 : (4e6 + 2e6 * comps)) * comps
+			return 255e5 + (4e6 + 2e6 * comps) * comps
 		}
 	},
 	ecReqsStored: {},
@@ -100,17 +100,12 @@ var masteryStudies = {
 		},
 		253: function(){
 			if (ghSave.neutrinos.upgrades.includes(6)) return 0
-			if (tmp.ngp3l) return Math.floor(extraReplGalaxies / 9) * 20
 			return Math.floor(getTotalRG()/4)
 		},
 		262: function(){
-			let r = 1
-			let exp = 1
-			if (tmp.ngp3l) r = Math.max(player.resets / 15e3 - 19, 1)
-			else {
-				r = Math.max(player.resets / 5e4 - 10, 1)
-				exp = Math.sqrt(Math.max(player.resets / 1e5 - 5.5, 1))
-			}
+			let r = Math.max(player.resets / 5e4 - 10, 1)
+			let exp = Math.sqrt(Math.max(player.resets / 1e5 - 5.5, 1))
+
 			if (r > 1e4) r = Math.pow(6 + Math.log10(r), 4)
 			if (aarMod.newGameExpVersion) exp *= 2
 			return E_pow(r, exp)

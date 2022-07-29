@@ -240,6 +240,7 @@ var neutrinoBoosts = {
 	}
 }
 
+//GAIN
 function gainNeutrinos(bulk,type) {
 	let gain = getNeutrinoGain().times(bulk)
 	let gens = ["electron", "mu", "tau"]
@@ -252,6 +253,15 @@ function gainNeutrinos(bulk,type) {
 		var gen = gens[ghSave.neutrinos.generationGain - 1]
 		ghSave.neutrinos[gen] = ghSave.neutrinos[gen].add(gain).round()
 	}
+}
+
+function givePerSecondNeuts(){
+	if (!hasAch("ng3p75") || tmp.ngp3l) return
+	var mult = 1 //in case you want to buff in the future
+	var n = getNeutrinoGain().times(mult)
+	ghSave.neutrinos.electron = ghSave.neutrinos.electron.plus(n)
+	ghSave.neutrinos.mu       = ghSave.neutrinos.mu.plus(n)
+	ghSave.neutrinos.tau      = ghSave.neutrinos.tau.plus(n)
 }
 
 function subNeutrinos(sub) {

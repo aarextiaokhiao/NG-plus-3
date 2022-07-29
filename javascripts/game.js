@@ -2884,60 +2884,6 @@ function doPhotonsUnlockStuff(){
 	updateGPHUnlocks()
 }
 
-function inEasierMode() {
-	return aarMod.newGameMult || aarMod.newGameExpVersion || aarMod.ngudpV || aarMod.ngumuV || aarMod.nguepV || aarMod.aau
-}
-
-function doBreakEternityUnlockStuff(){
-	beSave.unlocked = true
-	$.notify("Congratulations! You have unlocked Break Eternity!", "success")
-	updateBreakEternity()
-}
-
-function doGhostifyUnlockStuff(){
-	ghSave.reached = true
-	if (el("welcome").style.display != "flex") el("welcome").style.display = "flex"
-	else aarMod.popUpId = ""
-	el("welcomeMessage").innerHTML = "You are finally able to complete PC6+8 in Big Rip! However, because of the unstability of this universe, the only way to go further is to fundament. This allows to unlock new stuff in exchange for everything that you have."
-}
-
-function doReachAMGoalStuff(chall){
-	if (el("welcome").style.display != "flex") el("welcome").style.display = "flex"
-	else aarMod.popUpId = ""
-	el("welcomeMessage").innerHTML = "You reached the antimatter goal (" + shorten(pow10(getQCGoal())) + "), but you didn't reach the meta-antimatter goal yet! Get " + shorten(getQuantumReq()) + " meta-antimatter" + (brSave.active ? " and then you can fundament!" : " and then go Quantum to complete your challenge!")
-	quSave.nonMAGoalReached.push(chall)
-}
-
-function doQuantumUnlockStuff(){
-	quSave.reached = true
-	if (el("welcome").style.display != "flex") el("welcome").style.display = "flex"
-	else aarMod.popUpId = ""
-	el("welcomeMessage").innerHTML = "Congratulations! You reached " + shorten(getQuantumReq()) + " MA and completed EC14 for the first time! This allows you to go Quantum (the 5th layer), giving you a quark in exchange for everything up to this point, which can be used to get more powerful upgrades. This allows you to get gigantic numbers!"
-}
-
-function doNGP3UnlockStuff(){
-	var chall = tmp.inQCs
-	if (chall.length < 2) chall = chall[0]
-	else if (chall[0] > chall[1]) chall = chall[1] * 10 + chall[0]
-	else chall = chall[0] * 10 + chall[1]
-	if (!quSave.reached && isQuantumReached()) doQuantumUnlockStuff()
-	let MAbool = player.meta.bestAntimatter.lt(getQuantumReq())
-	let DONEbool = !quSave.nonMAGoalReached.includes(chall)
-	let TIMEbool = quSave.time > 10
-	if (chall && player.money.gt(pow10(getQCGoal())) && MAbool && DONEbool && TIMEbool) {
-		doReachAMGoalStuff(chall)
-	}
-	if (!ghSave.reached && brSave.active) if (brSave.bestThisRun.gte(pow10(getQCGoal(undefined, true)))) {
-		doGhostifyUnlockStuff()
-	}
-	var inEasierModeCheck = !inEasierMode()
-	if (player.masterystudies && (player.masterystudies.includes("d14")||hasAch("ng3p51")) && !metaSave.ngp4 && !inEasierModeCheck) doNGP4UnlockStuff()
-	if (player.eternityPoints.gte("1e1200") && brSave.active && !beSave.unlocked) doBreakEternityUnlockStuff()
-	if (player.money.gte(pow10(4.7e9)) && brSave.active && !ghSave.ghostlyPhotons.unl) doPhotonsUnlockStuff()
-	if (canUnlockBosonicLab() && !ghSave.wzb.unl) doBosonsUnlockStuff()
-	if (!tmp.ng3l) unlockHiggs()
-}
-
 function updateResetTierButtons(){
 	var postBreak = getEternitied()!=0||(player.infinityPoints.gte(Number.MAX_VALUE)&&player.infDimensionsUnlocked[7])||player.break
 	var preQuantumEnd = quantumed
@@ -2983,61 +2929,6 @@ function updateResetTierButtons(){
 
 function updateOrderGoals(){
 	if (order) for (var i=0; i<order.length; i++) el(order[i]+"goal").textContent = "Goal: "+shortenCosts(getGoal(order[i]))
-}
-
-function updateReplicantiGalaxyToggels(){
-	if (player.replicanti.galaxybuyer === undefined || player.boughtDims) el("replicantiresettoggle").style.display = "none"
-	else el("replicantiresettoggle").style.display = "inline-block"
-}
-
-function givePerSecondNeuts(){
-	if (!hasAch("ng3p75") || tmp.ngp3l) return
-	var mult = 1 //in case you want to buff in the future
-	var n = getNeutrinoGain().times(mult)
-	ghSave.neutrinos.electron = ghSave.neutrinos.electron.plus(n)
-	ghSave.neutrinos.mu       = ghSave.neutrinos.mu.plus(n)
-	ghSave.neutrinos.tau      = ghSave.neutrinos.tau.plus(n)
-}
-
-function doPerSecondNGP3Stuff(){
-	if (!tmp.ngp3) return
-
-	//Post-NG+3
-	doPostNGP3UnlockStuff()
-
-	//NG+3
-	if (quSave.autoECN !== undefined) {
-		justImported = true
-		if (quSave.autoECN > 12) buyMasteryStudy("ec", quSave.autoECN,true)
-		else el("ec" + quSave.autoECN + "unl").onclick()
-		justImported = false
-	}
-	if (isAutoGhostActive(14)) maxBuyBEEPMult()
-	if (isAutoGhostActive(4) && ghSave.automatorGhosts[4].mode=="t") rotateAutoUnstable()
-	if (isAutoGhostActive(10)) maxBuyLimit()
-	if (isAutoGhostActive(9) && quSave.replicants.quantumFood > 0) {
-		for (d = 1;d < 9; d++) if (canFeedReplicant(d) && (d == quSave.replicants.limitDim || (!EDsave[d + 1].perm && EDsave[d].workers.lt(11)))) {
-			feedReplicant(d, true);
-			break;
-		} 
-	}
-	if (isAutoGhostActive(8)) buyMaxQuantumFood()
-	if (isAutoGhostActive(7)) maxQuarkMult()
-	doNGP3UnlockStuff()
-	notifyGhostifyMilestones()
-	if (quSave.autoOptions.assignQK && ghSave.milestones > 7) assignAll(true) 
-
-	if (hasAch("ng3p43")) if (ghSave.milestones >= 8) maxUpgradeColorDimPower()
-	givePerSecondNeuts()
-}
-
-function checkGluonRounding(){
-	if (!tmp.ngp3) return
-	if (ghSave.milestones > 7 || !quantumed) return
-	if (quSave.gluons.rg.lt(101)) quSave.gluons.rg = quSave.gluons.rg.round()
-	if (quSave.gluons.gb.lt(101)) quSave.gluons.gb = quSave.gluons.gb.round()
-	if (quSave.gluons.br.lt(101)) quSave.gluons.br = quSave.gluons.br.round()
-	if (quSave.quarks.lt(101)) quSave.quarks = quSave.quarks.round()
 }
 
 let autoSaveSeconds=0
@@ -3191,20 +3082,6 @@ function passiveInfinitiesUpdating(diff){
 	}
 }
 
-function infinityRespeccedDMUpdating(diff){
-	var prod = getDarkMatterPerSecond()
-	player.singularity.darkMatter = player.singularity.darkMatter.add(getDarkMatterPerSecond().times(diff))
-	if (prod.gt(0)) tmp.tickUpdate = true
-	if (player.singularity.darkMatter.gte(getNextDiscounts())) {
-		player.dimtechs.discounts++
-		for (d=1;d<9;d++) {
-			var name = TIER_NAMES[d]
-			player[name+"Cost"] = player[name+"Cost"].div(getDiscountMultiplier("dim" + d))
-		}
-		player.tickSpeedCost = player.tickSpeedCost.div(getDiscountMultiplier("tick"))
-	}
-}
-
 function incrementTimesUpdating(diffStat){
 	player.totalTimePlayed += diffStat
 	if (tmp.ngp3) ghSave.time += diffStat
@@ -3272,273 +3149,6 @@ function dimensionButtonDisplayUpdating(){
 	el("pdtabbtn").style.display = pSacrificed() ? "" : "none"
 	el("tdtabbtn").style.display = ((player.eternities > 0 || quantumed || aarMod.ngmX > 3) && (!inQC(8) || tmp.be)) ? "" : "none"
 	el("mdtabbtn").style.display = player.dilation.studies.includes(6) ? "" : "none"
-}
-
-function ghostifyAutomationUpdating(diff){
-	if (!ghostified) return
-	if (!isAutoGhostsSafe) return
-
-	//Ghostify Layer
-	if (player.ghostify.wzb.unl) {
-		if (isAutoGhostActive(17)) {
-			let ag = player.ghostify.automatorGhosts[17]
-
-			let change = getRemainingExtractTime().gte(ag.s || 60)
-			if (!change) change = ag.oc && ag.t >= 2 / (hasAch("ng3p103") ? 10 : 1)
-			if (change) changeTypeToExtract(tmp.bl.typeToExtract % br.limit + 1)
-
-			if (!tmp.bl.extracting) extract()
-		}
-		if (isAutoGhostActive(20)) buyMaxBosonicUpgrades()
-		if (isAutoGhostActive(21)) {
-			let data = player.ghostify.wzb
-			let hasWNB = data.wnb.gt(0)
-
-			if (data.dPUse == 0 && data.dP.gt(0)) useAntiPreon(hasWNB ? 3 : 1)
-			if (data.dPUse == 1) useAntiPreon(hasWNB ? 3 : 2)
-			if (data.dPUse == 2) useAntiPreon(1)
-			if (data.dPUse == 3 && !hasWNB) useAntiPreon(2)
-		}
-	}
-	if (isAutoGhostActive(19)) {
-		let ag = player.ghostify.automatorGhosts[19]
-		let perSec = 1/2
-		ag.t = (ag.t || 0) + diff * perSec
-		let times = Math.floor(ag.t)
-		if (times > 0) {
-			let max = times
-			if (isEnchantUsed(35)) max = tmp.bEn[35].times(max)
-			autoMaxAllEnchants(max)
-			ag.t = ag.t - times
-		}
-	}
-	if (isAutoGhostActive(22)) {
-		lightEmpowerment(true)
-	}
-	if (isAutoGhostActive(15)) if ((hasNU(16) || inBigRip()) && getGHPGain().gte(player.ghostify.automatorGhosts[15].a)) ghostify(true)
-
-	//Quantum Layer
-	let limit = player.ghostify.automatorGhosts[13].o || 1 / 0
-	if (player.masterystudies.includes("d13") && isAutoGhostActive(13)) {
-		if (brSave.active) {
-			if (quSave.time >= player.ghostify.automatorGhosts[13].u * 10 && brSave.times <= limit) quantumReset(true, true)
-		} else if (quSave.time >= player.ghostify.automatorGhosts[13].t * 10 && brSave.times < limit) bigRip(true)
-	}
-	if (NF.unl()) {
-		let colorShorthands = ["r", "g", "b"]
-		for (let c = 1; c <= 3; c++) {
-			let shorthand = colorShorthands[c - 1]
-			if (isAutoGhostActive(c) && quSave.usedQuarks[shorthand].gt(0) && todSave[shorthand].quarks.eq(0)) unstableQuarks(shorthand)
-			if (isAutoGhostActive(12) && getUnstableGain(shorthand).max(todSave[shorthand].quarks).gte(Decimal.pow(10, Math.pow(2, 50)))) {
-				unstableQuarks(shorthand)
-				radioactiveDecay(shorthand)
-			}
-			if (isAutoGhostActive(5)) maxBranchUpg(shorthand)
-		}
-		if (isAutoGhostActive(6)) maxTreeUpg()
-	}
-	if (player.masterystudies.includes("d11") && isAutoGhostActive(11)) {
-		let ag = player.ghostify.automatorGhosts[11]
-		ag.t = (ag.t || 0) + diff
-
-		let start = nfSave.producingCharge ? ag.t <= ag.cw : ag.t >= ag.pw
-		if (nfSave.producingCharge != start) {
-			startProduceQuarkCharge()
-			if (start) ag.t = 0
-		}
-	}
-}
-
-function WZBosonsUpdating(diff){
-	ghSave.automatorGhosts[17].t += diff
-
-	var data = ghSave.bl
-	var wattGain = getBosonicWattGain()
-	if (wattGain.gt(data.watt)) {
-		if (wattGain.gt(data.speed)) data.speed = wattGain.sub(data.watt).times(10).add(data.speed).min(wattGain)
-		data.watt = wattGain
-	}
-
-	if (E(data.speed).gt(0)) {
-		var limitDiff = data.speed.times(14400).min(diff).toNumber()
-		bosonicTick(data.speed.sub(limitDiff / 28800).times(limitDiff))
-		data.speed = data.speed.max(limitDiff / 14400).sub(limitDiff / 14400)
-	}
-}
-
-function ghostlyPhotonsUpdating(diff){
-	var data = ghSave.ghostlyPhotons
-	var type = brSave && brSave.active ? "amount" : "darkMatter"
-	data[type] = data[type].add(getGPHProduction().times(diff))
-	data.ghostlyRays = data.ghostlyRays.add(getWVProduction().times(diff)).min(getWVCap())
-	for (var c = 0; c < 8; c++) {
-		if (data.ghostlyRays.gte(getLightThreshold(c))) {
-			data.lights[c] += Math.floor(data.ghostlyRays.div(getLightThreshold(c)).log(getLightThresholdIncrease(c)) + 1)
-			tmp.updateLights = true
-		}
-	}
-	data.maxRed = Math.max(data.lights[0], data.maxRed)
-}
-
-function nanofieldProducingChargeUpdating(diff){
-	var rate = getQuarkChargeProduction()
-	var loss = getQuarkLossProduction()
-	var toSub = loss.times(diff).min(quSave.replicants.quarks)
-	if (toSub.eq(0)) {
-		nfSave.producingCharge = false
-		el("produceQuarkCharge").innerHTML="Start production of preon charge.<br>(You will not get preons when you do this.)"
-	} else {
-		let chGain = toSub.div(loss).times(rate)
-		if (!hasAch("ng3p71")) quSave.replicants.quarks = quSave.replicants.quarks.sub(toSub)
-		nfSave.charge = nfSave.charge.add(chGain)
-	}
-}
-
-function nanofieldUpdating(diff){
-	var AErate = getQuarkAntienergyProduction()
-	var toAddAE = AErate.times(diff).min(getQuarkChargeProductionCap().sub(nfSave.antienergy))
-	if (nfSave.producingCharge) nanofieldProducingChargeUpdating(diff)
-	if (toAddAE.gt(0)) {
-		nfSave.antienergy = nfSave.antienergy.add(toAddAE).min(getQuarkChargeProductionCap())
-		nfSave.energy = nfSave.energy.add(toAddAE.div(AErate).times(getQuarkEnergyProduction()))
-		tmp.nanofield_free_rewards = 0
-		updateNextPreonEnergyThreshold()
-		if (nfSave.power > nfSave.rewards) {
-			nfSave.rewards = nfSave.power
-			
-			if (!nfSave.apgWoke && nfSave.rewards >= tmp.apgw) {
-				nfSave.apgWoke = tmp.apgw
-				$.notify("You reached " + getFullExpansion(tmp.apgw) + " rewards... The Anti-Preonius has woken up and took over the Nanoverse! Be careful!")
-				showTab("quantumtab")
-				showQuantumTab("replicants")
-				showAntTab("antipreon")
-			}
-		}
-	}
-}
-
-function treeOfDecayUpdating(diff){
-	var colorShorthands=["r","g","b"]
-	for (var c = 0; c < 3; c++) {
-		var shorthand = colorShorthands[c]
-		var branch = todSave[shorthand]
-		var decayRate = getDecayRate(shorthand)
-		var decayPower = getRDPower(shorthand)
-				
-		var mult = pow2(decayPower)
-		var power = Decimal.div(branch.quarks.gt(mult)?branch.quarks.div(mult).log(2)+1:branch.quarks.div(mult),decayRate)
-		var decayed = power.min(diff)
-		power = power.sub(decayed).times(decayRate)
-
-		var sProd = getQuarkSpinProduction(shorthand)
-		branch.quarks = power.gt(1) ? pow2(power-1).times(mult) : power.times(mult)	
-		branch.spin = branch.spin.add(sProd.times(decayed))	
-	}
-}
-
-function emperorDimUpdating(diff){
-	for (dim=8;dim>1;dim--) {
-		var promote = hasNU(2) ? 1/0 : getWorkerAmount(dim-2)
-		if (canFeedReplicant(dim-1,true)) {
-			if (dim>2) promote = EDsave[dim-2].workers.sub(10).round().min(promote)
-			EDsave[dim-1].progress = EDsave[dim-1].progress.add(EDsave[dim].workers.times(getEmperorDimensionMultiplier(dim)).times(diff/200)).min(promote)
-			var toAdd = EDsave[dim-1].progress.floor()
-			if (toAdd.gt(0)) {
-				if (!hasAch("ng3p52")) {
-					if (dim>2 && toAdd.gt(getWorkerAmount(dim-2))) EDsave[dim-2].workers = E(0)
-					else if (dim>2) EDsave[dim-2].workers = EDsave[dim-2].workers.sub(toAdd).round()
-					else if (toAdd.gt(quSave.replicants.amount)) quSave.replicants.amount = E(0)
-					else quSave.replicants.amount = quSave.replicants.amount.sub(toAdd).round()
-				}
-				if (toAdd.gt(EDsave[dim-1].progress)) EDsave[dim-1].progress = E(0)
-				else EDsave[dim-1].progress = EDsave[dim-1].progress.sub(toAdd)
-				EDsave[dim-1].workers = EDsave[dim-1].workers.add(toAdd).round()
-			}
-		}
-		if (!canFeedReplicant(dim-1,true)) EDsave[dim-1].progress = E(0)
-	}
-}
-
-function replicantEggonUpdating(diff){
-	var newBabies = tmp.twr.times(getEmperorDimensionMultiplier(1)).times(getSpinToReplicantiSpeed()).times(diff/200)
-	if (hasAch("ng3p35")) newBabies = newBabies.times(10)
-	quSave.replicants.eggonProgress = quSave.replicants.eggonProgress.add(newBabies)
-	var toAdd = quSave.replicants.eggonProgress.floor()
-	if (toAdd.gt(0)) {
-		if (toAdd.gt(quSave.replicants.eggonProgress)) quSave.replicants.eggonProgress = E(0)
-		else quSave.replicants.eggonProgress = quSave.replicants.eggonProgress.sub(toAdd)
-		quSave.replicants.eggons = quSave.replicants.eggons.add(toAdd).round()
-	}
-}
-
-function replicantBabyHatchingUpdating(diff){
-	if (quSave.replicants.eggons.gt(0)) {
-		quSave.replicants.babyProgress = quSave.replicants.babyProgress.add(diff/getHatchSpeed()/10)
-		var toAdd = hasNU(2) ? quSave.replicants.eggons : quSave.replicants.babyProgress.floor().min(quSave.replicants.eggons)
-		if (toAdd.gt(0)) {
-			if (toAdd.gt(quSave.replicants.eggons)) quSave.replicants.eggons = E(0)
-			else quSave.replicants.eggons = quSave.replicants.eggons.sub(toAdd).round()
-			if (toAdd.gt(quSave.replicants.babyProgress)) quSave.replicants.babyProgress = E(0)
-			else quSave.replicants.babyProgress = quSave.replicants.babyProgress.sub(toAdd)
-			quSave.replicants.babies = quSave.replicants.babies.add(toAdd).round()
-		}
-	}
-}
-
-function replicantBabiesGrowingUpUpdating(diff){
-	if (quSave.replicants.babies.gt(0)&&tmp.tra.gt(0)) {
-		quSave.replicants.ageProgress = quSave.replicants.ageProgress.add(getGrowupRatePerMinute().div(60).times(diff)).min(quSave.replicants.babies)
-		var toAdd = quSave.replicants.ageProgress.floor()
-		if (toAdd.gt(0)) {
-			if (!hasAch("ng3p71")) {
-				if (toAdd.gt(quSave.replicants.babies)) quSave.replicants.babies = E(0)
-				else quSave.replicants.babies = quSave.replicants.babies.sub(toAdd).round()
-			}
-			if (toAdd.gt(quSave.replicants.ageProgress)) quSave.replicants.ageProgress = E(0)
-			else quSave.replicants.ageProgress = quSave.replicants.ageProgress.sub(toAdd)
-			quSave.replicants.amount = quSave.replicants.amount.add(toAdd).round()
-		}
-	}
-}
-
-function replicantOverallUpdating(diff){
-	replicantEggonUpdating(diff)
-	replicantBabyHatchingUpdating(diff)
-	if (quSave.replicants.eggons.lt(1)) quSave.replicants.babyProgress = E(0)
-	replicantBabiesGrowingUpUpdating(diff)
-	if (quSave.replicants.babies.lt(1)) quSave.replicants.ageProgress = E(0)
-	if (!nfSave.producingCharge) quSave.replicants.quarks = quSave.replicants.quarks.add(getGatherRate().total.max(0).times(diff))
-}
-
-function quantumOverallUpdating(diff){
-	var colorShorthands=["r","g","b"]
-	//Color Powers
-	for (var c=0;c<3;c++) quSave.colorPowers[colorShorthands[c]]=quSave.colorPowers[colorShorthands[c]].add(getColorPowerProduction(colorShorthands[c]).times(diff))
-	updateColorPowers()
-	if (player.masterystudies.includes("d10")) replicantOverallUpdating(diff)
-	if (player.masterystudies.includes("d11")) emperorDimUpdating(diff)
-	if (NF.unl()) nanofieldUpdating(diff)
-	if (player.masterystudies.includes("d13")) treeOfDecayUpdating(diff)
-	
-	if (speedrunMilestonesReached>5) {
-		quSave.metaAutobuyerWait+=diff*10
-		var speed=speedrunMilestonesReached>20?10/3:10
-		if (quSave.metaAutobuyerWait>speed) {
-			quSave.metaAutobuyerWait=quSave.metaAutobuyerWait%speed
-			doAutoMetaTick()
-		}
-	}
-}
-
-function metaDimsUpdating(diff){
-	player.meta.antimatter = player.meta.antimatter.plus(getMetaDimensionProduction(1).times(diff))
-	if (inQC(4)) player.meta.antimatter = player.meta.antimatter.plus(getMetaDimensionProduction(1).times(diff))
-	if (tmp.ngp3 && inQC(0)) gainQuarkEnergy(player.meta.bestAntimatter, player.meta.antimatter)
-	player.meta.bestAntimatter = player.meta.bestAntimatter.max(player.meta.antimatter)
-	if (tmp.ngp3) {
-		player.meta.bestOverQuantums = player.meta.bestOverQuantums.max(player.meta.antimatter)
-		player.meta.bestOverGhostifies = player.meta.bestOverGhostifies.max(player.meta.antimatter)
-	}
 }
 
 function infinityTimeMetaBlackHoleDimUpdating(diff){
@@ -3699,7 +3309,7 @@ function IPMultBuyUpdating() {
 		if (dif > 0) {
 			player.infMult = player.infMult.times(E_pow(getIPMultPower(), dif))
 			player.infMultCost = player.infMultCost.times(E_pow(ipMultCostIncrease, dif))
-			if (tmp.ngp3l || player.infinityPoints.lte(pow10(1e9))) {
+			if (player.infinityPoints.lte(pow10(1e9))) {
 				if (ghostified) {
 					if (ghSave.milestones < 11) player.infinityPoints = player.infinityPoints.minus(player.infMultCost.dividedBy(aarMod.newGameExpVersion?4:10).min(player.infinityPoints))
 				}
@@ -4200,7 +3810,7 @@ function gameLoop(diff) {
 	passiveIPperMUpdating(diff)
 	incrementTimesUpdating(diffStat)
 	dimensionButtonDisplayUpdating()
-	ghostifyAutomationUpdating(diff)
+	automatorTick(diff)
 
 	if (player.meta) metaDimsUpdating(diff)
 	infinityTimeMetaBlackHoleDimUpdating(diff) //production of those dims
@@ -4802,7 +4412,7 @@ window.addEventListener('keydown', function(event) {
 	if (keySequence2 == 0 && event.keyCode == 49) keySequence2++
 	else if (keySequence2 == 1 && event.keyCode == 55) keySequence2++
 	else if (keySequence2 == 2 && event.keyCode == 55) keySequence2++
-	else if (keySequence2 == 3 && event.keyCode == 54) if (!tmp.ngp3l) giveAchievement("Revolution, when?")
+	else if (keySequence2 == 3 && event.keyCode == 54) giveAchievement("Revolution, when?")
 	else keySequence2 = 0
 	
 	if (event.keyCode == 17) controlDown = true;
