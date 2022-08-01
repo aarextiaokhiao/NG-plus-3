@@ -35,6 +35,7 @@ function quantum(auto, force, challid, bigRip = false, quick) {
 					if (!quSave.pairedChallenges.order[pcFocus]) quSave.pairedChallenges.order[pcFocus]=[challid]
 					else {
 						quSave.pairedChallenges.order[pcFocus].push(challid)
+						showChallengesTab("pChalls")
 						pcFocus=0
 					}
 					updateQuantumChallenges()
@@ -42,6 +43,7 @@ function quantum(auto, force, challid, bigRip = false, quick) {
 				return
 			} else if (pcFocus != pc) {
 				pcFocus = pc
+				showChallengesTab("quantumchallenges")
 				updateQuantumChallenges()
 				return
 			} else {
