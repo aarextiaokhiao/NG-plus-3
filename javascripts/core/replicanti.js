@@ -189,7 +189,7 @@ function updateExtraReplGalaxies() {
 		if (player.masterystudies.includes("t412")) exp=.5
 
 		tmp.pe=Math.pow(quSave.replicants.quarks.add(1).log10(),exp)*0.8
-		if (ghSave.ghostlyPhotons.unl) tmp.pe*=tmp.le[3]
+		if (ghSave.ghostlyPhotons.unl) tmp.pe *= tmp.le[3]
 		extraReplGalaxies*=colorBoosts.g+tmp.pe
 	}
 	extraReplGalaxies = Math.floor(extraReplGalaxies)
