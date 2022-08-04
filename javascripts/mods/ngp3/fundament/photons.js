@@ -15,9 +15,7 @@ function updateYellowLightBoostTemp(){
 
 function updateGreenLightBoostTemp(){
 	var lighteffect3 = 1
-	if (tmp.ngp3l) lighteffect3 = tmp.effL[3] > 8 ? Math.log10(tmp.effL[3] / 8) + Math.sqrt(12) + 1 : Math.sqrt(tmp.effL[3] * 1.5) + 1
-	else lighteffect3 = Math.log10(tmp.effL[3] + 1) / 5 + 1
-	tmp.le[3] = lighteffect3
+	tmp.le[3] = Math.log2(tmp.effL[3] + 1) / 5 + 1
 }
 
 function updateBlueLightBoostTemp(){
