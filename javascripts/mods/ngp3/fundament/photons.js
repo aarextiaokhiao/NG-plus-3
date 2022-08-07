@@ -19,8 +19,7 @@ function updateGreenLightBoostTemp(){
 }
 
 function updateBlueLightBoostTemp(){
-	var light4mult = tmp.newNGP3E ? 1.3 : 5/4
-	var lighteffect4 = Math.log10(Math.sqrt(tmp.effL[4] * 2) + 1) * light4mult + 1
+	var lighteffect4 = Math.log10(tmp.effL[4] + 1) / 2 + 1
 	tmp.le[4] = lighteffect4
 }
 
