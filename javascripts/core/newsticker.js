@@ -507,6 +507,8 @@ newsArray = [//always true
 ["You have scrolled through 600 news-tickers! You might setup a lighthouse library really soon...", "player.newsArray.length >= 600", "am306"],
 ["Soon, this game will have a lot of layers with NG-5 and NG+Pi...", "true", "am307"],
 ["This news ticker has 'am308' id on it! Meta^-1-Infinity, or Preludity?", "true", "am308"],
+["Pata-Infinity when? (ee1.79e308)", "true", "am309"],
+["This might be extended by a lot, to disthrone 'The Longest Incremental.'", "true", "am310"],
 ];}
 
 document.addEventListener("visibilitychange", function() {if (!document.hidden) {scrollNextMessage();}}, false);
