@@ -509,6 +509,7 @@ newsArray = [//always true
 ["This news ticker has 'am308' id on it! Meta^-1-Infinity, or Preludity?", "true", "am308"],
 ["Pata-Infinity when? (ee1.79e308)", "true", "am309"],
 ["This might be extended by a lot, to disthrone 'The Longest Incremental.'", "true", "am310"],
+["This isn't the longest game you are looking for.", "true", "am311"],
 ];}
 
 document.addEventListener("visibilitychange", function() {if (!document.hidden) {scrollNextMessage();}}, false);
