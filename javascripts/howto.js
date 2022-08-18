@@ -107,8 +107,8 @@ function updateSpoilers() {
 						if (i == 35 && ghSave.times > 0) displayed = 1
 						if (i == 36 && ghSave.ghostlyPhotons && ghSave.ghostlyPhotons.unl) displayed = 1
 						if (i == 37 && ghSave.wzb && ghSave.wzb.unl) displayed = 1
-						if (i == 38 && ghSave.gravitons && ghSave.gravitons.unl) displayed = 1
-						if (i == 39 && ghSave.hb && ghSave.hb.higgs >= 60) displayed = 1
+						if (i == 38 && ghSave.hb && ghSave.hb.higgs) displayed = 1
+						if (i == 39 && ghSave.gravitons && ghSave.gravitons.unl) displayed = 1
 						if (i == 40 && ghSave.breakDilation && ghSave.breakDilation.unl) displayed = 1
 					}
 				}
