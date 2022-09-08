@@ -52,7 +52,7 @@ function assignQuark(color) {
 	var mult = getQuarkAssignMult()
 	quSave.usedQuarks[color] = quSave.usedQuarks[color].add(usedQuarks.times(mult)).round()
 	quSave.quarks = quSave.quarks.sub(usedQuarks)
-	el("quarks").innerHTML = "You have <b class='QKAmount'>0</b> quarks."
+	updateQuarkDisplay()
 	if (!mult.eq(1)) updateQuantumWorth()
 	updateColorCharge()
 	if (ghSave.another > 0) ghSave.another--
