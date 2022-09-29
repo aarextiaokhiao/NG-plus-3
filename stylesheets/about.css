@@ -5,7 +5,7 @@
 
 body {
 	font-family: Typewriter;
-	color: rgba(63, 63, 0, 0.75);
+	color: #bfdfff;
 	text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.125);
 }
 
@@ -16,13 +16,14 @@ body {
 	height: 100%;
 	width: 100%;
 	z-index: -1;
-	background: linear-gradient(#ffbf00, #00bfff)
+	background: radial-gradient(ellipse at top, #00000f, #00003f);
 }
 
 h1 {
 	font-size: 72px;
-	background: #1f1f1f;
-	color: #efefef
+	background: radial-gradient(ellipse at top, #00f7, #0073);
+	box-shadow: 0 6px 6px #007fff;
+	color: #bfdfff
 }
 
 #aarMod {
@@ -45,7 +46,7 @@ h1, h2 {
 .hr {
 	height: 2px;
 	width: 100%;
-	background: rgba(63, 63, 0, 0.625);
+	background: radial-gradient(ellipse at top, #00f7, #00f3);
 	margin: 6px
 }
 
