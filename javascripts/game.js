@@ -220,12 +220,12 @@ function setupToDHTMLandData(){
 				      "Boost " + color + " quarks.",
 				      (["Red", "Green", "Blue"])[c]+" quarks decay <span id='" + color + "UpgEffDesc'>4x</span> slower."] //might need to change this to just "slower" once we have 1000+ upgrade 3's
 
-		var html = '<span class="' + color + '" id="' + color + 'QuarksToD" style="font-size: 25px">0</span> ' + color + ' quarks<br>'
-		html += '<button class="storebtn" id="' + color + 'UnstableGain" style="width: 240px; height: 80px" onclick="unstableQuarks(\'' + shorthand + '\')"></button><br>'
+		var html = '<span class="' + color + '" id="' + color + 'QuarksToD" style="font-size: 35px">0</span> ' + color + ' quarks<br>'
+		html += '<button class="storebtn" id="' + color + 'UnstableGain" style="width: 210px; height: 120px" onclick="unstableQuarks(\'' + shorthand + '\')"></button><br>'
 		html += "<span class='" + color + "' id='" + color + "UnstableQuarks' style='font-size: 20px'>0</span> " + color + " <span id='" + shorthand + "UQName'></span> quarks<br>"
 		html += "<span id='" + color + "QuarksDecayRate'></span><br>"
 		html += "(Duration: <span id='" + color + "QuarksDecayTime'></span>)<br>"
-		html += '<span class="' + color + '" id="' + color + 'QuarkSpin" style="font-size: 25px">0.0</span> ' + color + ' spin '
+		html += '<span class="' + color + '" id="' + color + 'QuarkSpin" style="font-size: 25px">0.0</span> ' + color + ' spins '
 		html += '<span class="' + color + '" id="' + color + 'QuarkSpinProduction" style="font-size: 15px">+0/s</span>'
 		el("todRow").insertCell(c).innerHTML = html
 		el("todRow").cells[c].className = shorthand + "qC"
