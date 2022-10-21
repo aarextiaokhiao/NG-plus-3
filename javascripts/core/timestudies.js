@@ -153,7 +153,6 @@ function buyDilationStudy(name, cost) {
 			if (player.eternityUpgrades.length < 1) giveAchievement("Work harder.")
 			if (player.blackhole != undefined) updateEternityUpgrades()
 		} else if (name > 5) {
-			giveAchievement("I'm so meta")
 			updateDilationUpgradeCosts()
 			if (quantumed || !tmp.ngp3) {
 				showTab("dimensions")

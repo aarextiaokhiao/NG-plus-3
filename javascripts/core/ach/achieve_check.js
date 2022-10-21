@@ -173,6 +173,7 @@ function checkOtherPreNGp3Achieve(){
 		if (player.exdilation.unspent.gt(1e5)) giveAchievement("Finally I'm out of that channel");
 		if (ableToGetRid2 && player.infinityPoints.log10() >= 20000) giveAchievement("I already got rid of you.")
 	}
+	if (player.meta && player.dilation.studies.includes(5)) giveAchievement("I'm so meta")
 	checkUniversalHarmony()
 	if (infchallengeTimes < 7.5) giveAchievement("Never again")
 	if (player.totalTimePlayed >= 10 * 60 * 60 * 24 * 8) giveAchievement("One for each dimension")
