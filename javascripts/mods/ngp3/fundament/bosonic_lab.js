@@ -6,8 +6,7 @@ function canUnlockBosonicLab() {
 function updateBLUnlocks() {
 	let unl = ghSave.wzb.unl
 	el("blUnl").style.display = unl ? "none" : ""
-	el("blDiv").style.display = unl ? "" : "none"
-	el("aptabbtn").style.display = unl ? "" : "none"
+	el("bltabbtn").style.display = unl ? "" : "none"
 	if (!unl) updateBLUnlockDisplay()
 }
 

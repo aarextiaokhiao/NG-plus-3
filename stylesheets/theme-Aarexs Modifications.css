@@ -637,7 +637,7 @@ strong { color: #0072e5 }
 .uv {
 	color: #ac00e5
 }
-#bltabbtn button, .gluonupgrade.bl {
+.gluonupgrade.bl {
 	background: repeating-linear-gradient(#620d65, transparent 50%, #620d65 100%), repeating-linear-gradient(90deg, transparent, #c73415 50%, transparent 100%), #191919 !important;
 	background-size: 200% 200% !important;
 	border: 2px solid transparent !important;
@@ -645,7 +645,7 @@ strong { color: #0072e5 }
 	text-shadow: 0px 0px 3px #191919, 0px 0px 6px #e5e5e5;
 	animation: bl 5s linear infinite
 }
-#bltabbtn button:hover, .gluonupgrade.bl:hover {
+.gluonupgrade.bl:hover {
 	box-shadow: inset 0px 0px 24px #38cbea;
 	border-color: #38cbea !important
 }

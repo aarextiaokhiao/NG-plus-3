@@ -573,7 +573,6 @@ function updateGhostifyTabs() {
 		updateAutomatorHTML()
 	}
 	if (el("gphtab").style.display == "block" && ghSave.ghostlyPhotons.unl) updatePhotonsTab()
-	if (el("bltab").style.display == "block" && ghSave.wzb.unl) updateBosonicLabTab()
 }
 
 function buyGHPMult() {

@@ -107,6 +107,7 @@
 			<button id="eternitystorebtn" style="font-family: Typewriter; font-size: 20px; display: none" class="eternitytabbtn" onclick="showTab('eternitystore')">Eternity</button>
 			<button id="quantumtabbtn" style="font-family: Typewriter; font-size: 20px; display: none" class="quantumbtn" onclick='showTab("quantumtab")'>Quantum</button>
 			<button id="ghostifytabbtn" style="font-family: Typewriter; font-size: 20px" class="ghostifybtn" onclick='showTab("ghostify")'>Fundament</button>
+			<button id="bltabbtn" style="font-family: Typewriter; font-size: 20px" class="bltabbtn" onclick='showTab("bltab")'>Bosonic Lab</button>
 		</div>
 		<div id="emptiness" class="tab" style="font-size: 150%">
 			<br>
@@ -1669,7 +1670,7 @@
 				<br><br>
 				(Update v2.41R: Gravitional Relativity)
 				<br>
-				<b class="red">(Beta: 8/31/22 Build)</b>
+				<b class="red">(Beta: 10/24/22 Build)</b>
 				<br><br>
 			</p>
 			<div id="footercontainer">
@@ -5043,7 +5044,6 @@
 				<tr>
 					<td><button class="secondarytabbtn" onclick="showGhostifyTab('neutrinos')">Neutrinos</button></td>
 					<td id="gphtabbtn"><button class="secondarytabbtn" onclick="showGhostifyTab('gphtab')">Photons</button></td>
-					<td id="bltabbtn"><button class="secondarytabbtn" onclick="showGhostifyTab('bltab')">Bosonic Lab</button></td>
 					<td><button class="secondarytabbtn" onclick="showGhostifyTab('bravemilestones')">Brave Milestones</button></td>
 					<td><button class="secondarytabbtn" onclick="showGhostifyTab('automaticghosts')">Automators</button></td>
 				</tr>
@@ -5411,147 +5411,158 @@
 						<td></td>
 					</tr></table>
 				</div>
-			</div>
-			<div id="bltab" class="ghostifytab">
 				<div id="blUnl"></div>
-				<div id="blDiv">
-					<table class='qtable'><tr>
+			</div>
+			<div id="footercontainer">
+				<table id="footer">
+					<tr>
 						<td>
-							<span id="bWatt" style="font-size:25px"></span> Bosonic Force<br>
+							<div style="text-align:center">
+								<a href="howto.html" target="_newtab">Help</a> |
+								<a href="about.html" onclick="giveAchievement('A sound financial decision')" target="_newtab">About</a> |
+								<a href="http://discord.gg/KsjcgskgTj" target="_newtab">Discord</a>
+							</div>
 						</td>
-						<td>
-							<span id="bBt" style="font-size:25px"></span> Heavy Force <span id="bBtProduction" style="font-size:15px"></span><br>
-							Overdrive: <span id="odSpeed" style="font-size:25px"></span><span id="odSpeedWBBt"></span><br>
-							<input id="odSlider" style="width: 180px;" type="range" min="0" max="30" class="slider" oninput="changeOverdriveSpeed()">
-						</td>
-						<td>
-							<span id="bSpeed" style="font-size:35px"></span>x Speed<br>(total: <span id="bTotalSpeed" style="font-size:15px"></span>x)
-						</td>
-					<tr></tr>
-						<td>
-							<span id="bAM" style="font-size:25px"></span> Bosons <span id="bAMProduction" style="font-size:15px"></span>
-						</td>
-						<td id="bosonicResets">
-							<span class="yellow" id="hb" style="font-size:25px">0</span> Higgs
-							<br>
-							<button class="gluonupgrade hb" id="hbReset" onclick="higgsReset()"><span id="hbResetDesc"></span><br>(Requires <span id="hbResetReq"></span> Bosons)</button>
-						</td>
-						<td></td>
-					</tr></table>
-					<span id="nextParticle"></span><br>
-					<table class="table" align="center" style="margin: auto">
-						<tr>
-							<td><button class="secondarytabbtn" onclick="showBLTab('bextab')">Experiments</button></td>
-							<td><button class="secondarytabbtn" onclick="showBLTab('butab')">Upgrades</button></td>
-							<td><button class="secondarytabbtn" onclick="showBLTab('wzbtab')">W & Z Bosons</button></td>
-							<td id="hftabbtn"><button class="secondarytabbtn" onclick="showBLTab('hf')">Higgs Field</button></td>
-							<td id="gravtabbtn"><button class="secondarytabbtn" onclick="showBLTab('gravtab')">Gravity Well</button></td>
-							<td id="breakDilationTabbtn2"><button class="secondarytabbtn" onclick="toBDTab()">Break Dilation</button></td>
-						</tr>
-					</table>
-					<div id="bRunesDiv">
-						<b style="font-size: 20px">Hypotheses</b><br>
-						<table id="bRunes" align="center"><tr></tr></table>
-					</div>
-					<div id="bextab" class="bltab">
-						<span id="typeToExtract"></span>
-						<button class="storebtn" id="extract" onclick="extract()" style="width: 120px"></button><br>
-						<span id="extractTime"></span>
+					</tr>
+				</table>
+			</div>
+		</div>
+		<div class="tab" id="bltab">
+			<table class='qtable'><tr>
+				<td>
+					<span id="bWatt" style="font-size:25px"></span> Bosonic Force<br>
+				</td>
+				<td>
+					<span id="bBt" style="font-size:25px"></span> Heavy Force <span id="bBtProduction" style="font-size:15px"></span><br>
+					Overdrive: <span id="odSpeed" style="font-size:25px"></span><span id="odSpeedWBBt"></span><br>
+					<input id="odSlider" style="width: 180px;" type="range" min="0" max="30" class="slider" oninput="changeOverdriveSpeed()">
+				</td>
+				<td>
+					<span id="bSpeed" style="font-size:35px"></span>x Speed<br>(total: <span id="bTotalSpeed" style="font-size:15px"></span>x)
+				</td>
+			<tr></tr>
+				<td>
+					<span id="bAM" style="font-size:25px"></span> Bosons <span id="bAMProduction" style="font-size:15px"></span>
+				</td>
+				<td id="bosonicResets">
+					<span class="yellow" id="hb" style="font-size:25px">0</span> Higgs
+					<br>
+					<button class="gluonupgrade hb" id="hbReset" onclick="higgsReset()"><span id="hbResetDesc"></span><br>(Requires <span id="hbResetReq"></span> Bosons)</button>
+				</td>
+				<td></td>
+			</tr></table>
+			<span id="nextParticle"></span><br>
+			<table class="table" align="center" style="margin: auto">
+				<tr>
+					<td><button class="secondarytabbtn" onclick="showBLTab('bextab')">Experiments</button></td>
+					<td><button class="secondarytabbtn" onclick="showBLTab('butab')">Upgrades</button></td>
+					<td><button class="secondarytabbtn" onclick="showBLTab('wzbtab')">W & Z Bosons</button></td>
+					<td id="hftabbtn"><button class="secondarytabbtn" onclick="showBLTab('hf')">Higgs Field</button></td>
+					<td id="gravtabbtn"><button class="secondarytabbtn" onclick="showBLTab('gravtab')">Gravity Well</button></td>
+					<td id="breakDilationTabbtn2"><button class="secondarytabbtn" onclick="toBDTab()">Break Dilation</button></td>
+				</tr>
+			</table>
+			<div id="bRunesDiv">
+				<b style="font-size: 20px">Hypotheses</b><br>
+				<table id="bRunes" align="center"><tr></tr></table>
+			</div>
+			<div id="bextab" class="bltab">
+				<span id="typeToExtract"></span>
+				<button class="storebtn" id="extract" onclick="extract()" style="width: 120px"></button><br>
+				<span id="extractTime"></span>
 
-						<br><br>
-						<button class="storebtn" onclick="changeEnchantAction(1)">Upgrade</button>
-						<button class="storebtn" onclick="changeEnchantAction(2)">Max</button>
-						<button class="storebtn" onclick="changeEnchantAction(3)">Toggle</button>
+				<br><br>
+				<button class="storebtn" onclick="changeEnchantAction(1)">Upgrade</button>
+				<button class="storebtn" onclick="changeEnchantAction(2)">Max</button>
+				<button class="storebtn" onclick="changeEnchantAction(3)">Toggle</button>
 
-						<br>
-						<button class="storebtn" onclick="$.notify('Soon.')">Export</button>
-						<button class="storebtn" onclick="$.notify('Soon.')">Import</button>
+				<br>
+				<button class="storebtn" onclick="$.notify('Soon.')">Export</button>
+				<button class="storebtn" onclick="$.notify('Soon.')">Import</button>
 
-						<br>
-						<span id="usedEnchants"></span><br>
-						<table class="table" id="enchants" align="center" style="margin: auto"></table>
-					</div>
-					<div id="butab" class="bltab"><table class="table" id="bUpgs" align="center" style="margin: auto"></table></div>
-					<div id="wzbtab" class="bltab">
-						<!--<span id="wzbSpeed"></span>-->
-						<span id="ap" style="font-size:35px"></span> Anti-Preons. <span id="apProduction" style="font-size:25px"></span><br>
-						<span id="apUse"></span><br>
-						<button class="storebtn" style="width:150px" onclick="useAntiPreon(0)">Gain Anti-Preons</button> <button class="storebtn" onclick="useAntiPreon(1)">Decay W Boson</button> <button class="storebtn" style="width:150px" onclick="useAntiPreon(3)">Convert W- to W+</button> <button class="storebtn" style="width:180px" onclick="useAntiPreon(2)">Oscillate Z Boson</button>
-						<table class="table_fix" align="center">
-							<tr>
-								<td>
-									<span id="wpb" style="font-size:35px"></span> W+ Bosons and <span id="wnb" style="font-size:35px"></span> W- Bosons
-								</td>
-								<td>
-									<span id="zb" style="font-size:35px"></span> Z Bosons
-								</td>
-							</tr>
-							<tr>
-								<td>
-									<span id="wbTime" style="font-size:25px"></span>x experiment speed, <span id="wbOscillate" style="font-size:25px"></span>x faster oscillation, <span id="wbProduction" style="font-size:25px"></span>x Bosons production.
-								</td>
-								<td>
-									<span id="zbSpeed" style="font-size:25px"></span>x faster decay and conversion.
-								</td>
-							</tr>
-							<tr>
-								<td>
-									<div id="wQk"><span id="wQkSymbol"></span></div><br>
-									W Boson is currently <span id="wQkType"></span>.<br>
-									<span id="wQkProgress"></span>
-								</td>
-								<td>
-									<div id="zNe"><span id="zNeSymbol"></span></div><br>
-									Z Boson is currently <span id="zNeGen">electron</span>.<br>
-									<span id="zNeProgress"></span><br>
-									<span id="zNeReq"></span><br>
-									<span id="zbGain"></span>
-								</td>
-							</tr>
-						</table>
-					</div>
-					<div id="hftab" class="bltab">
-						Soon.
-					</div>
-					<div id="gravtab" class="bltab">
-						<span style="font-size: 18px">You have <b id="gravAmt" class="gv" style="font-size: 24px">0</b> best Gravitons.</span><br>
-						(current: <span style="font-size:15px">0</span>)
-						<br><br>
-						<button class="storebtn" id="gw_rollback" onclick="rollbackGrav()">Rollback</button>
-						<button class="storebtn" id="gw_exit" onclick="exitGrav()">Exit</button>
-						<button class="storebtn" id="gw_replace" onclick="exchangeGrav()">Exchange</button>
-						<table style="margin: auto">
-							<tr>
-								<td><button class="storebtn gw" ach-tooltip="W Bosons have a weaker effect." onclick="pullGrav(0)">Enter Newtonian Depth 1</button></td>
-								<td><button class="storebtn gw" ach-tooltip="Placeholder." onclick="pullGrav(1)">Enter Relativity Depth 1</button></td>
-								<td><button class="storebtn gw" ach-tooltip="Placeholder." onclick="pullGrav(2)">Enter Intergalactic Depth 1</button></td>
-							</tr>
-						</table>
-					</div>
-					<div id="gravtab_old" class="bltab">
-						<span style="font-size: 18px">You have <b id="gravAmt" class="gv" style="font-size: 24px">0</b> Gravitons.</span><br>
-						(+<span id="gravGain">0</span>/s, best of <span id="gravBest" class="gv">0</span>)<br><br>
-						You have <span id="gravLeft" class="gv"></span> activations left. (Next at <span id="gravNext"></span> Gravitons)<br>
-						<button class="storebtn" onclick="respecGv()">Respec</button>
-						<table style="margin: auto">
-							<tr>
-								<td><button class="storebtn gw" id="gv_0" onclick="clickGv(0)"><b id="gv_0_data"></b><br><span id="gv_0_eff"></span></button></td>
-								<td><button class="storebtn gw" id="gv_1" onclick="clickGv(1)"><b id="gv_1_data"></b><br><span id="gv_1_eff"></span></button></td>
-								<td><button class="storebtn gw" id="gv_2" onclick="clickGv(2)"><b id="gv_2_data"></b><br><span id="gv_2_eff"></span></button></td>
-							</tr>
-							<tr>
-								<td><button class="storebtn gw" id="gv_7" onclick="clickGv(7)"><b id="gv_7_data"></b><br><span id="gv_7_eff"></span></button></td>
-								<td><button class="gluonupgrade gw" id="gv_upg" onclick="upgGv()" style="font-size: 12px !important">Cancel the disadvantages.<br>Requirement: <span id="gv_upg_req"></span> Higgs</button></td>
-								<td><button class="storebtn gw" id="gv_3" onclick="clickGv(3)"><b id="gv_3_data"></b><br><span id="gv_3_eff"></span></button></td>
-							</tr>
-							<tr>
-								<td><button class="storebtn gw" id="gv_6" onclick="clickGv(6)"><b id="gv_6_data"></b><br><span id="gv_6_eff"></span></button></td>
-								<td><button class="storebtn gw" id="gv_5" onclick="clickGv(5)"><b id="gv_5_data"></b><br><span id="gv_5_eff"></span></button></td>
-								<td><button class="storebtn gw" id="gv_4" onclick="clickGv(4)"><b id="gv_4_data"></b><br><span id="gv_4_eff"></span></button></td>
-							</tr>
-						</table>
-					</div>
-				</div>
+				<br>
+				<span id="usedEnchants"></span><br>
+				<table class="table" id="enchants" align="center" style="margin: auto"></table>
+			</div>
+			<div id="butab" class="bltab"><table class="table" id="bUpgs" align="center" style="margin: auto"></table></div>
+			<div id="wzbtab" class="bltab">
+				<!--<span id="wzbSpeed"></span>-->
+				<span id="ap" style="font-size:35px"></span> Anti-Preons. <span id="apProduction" style="font-size:25px"></span><br>
+				<span id="apUse"></span><br>
+				<button class="storebtn" style="width:150px" onclick="useAntiPreon(0)">Gain Anti-Preons</button> <button class="storebtn" onclick="useAntiPreon(1)">Decay W Boson</button> <button class="storebtn" style="width:150px" onclick="useAntiPreon(3)">Convert W- to W+</button> <button class="storebtn" style="width:180px" onclick="useAntiPreon(2)">Oscillate Z Boson</button>
+				<table class="table_fix" align="center">
+					<tr>
+						<td>
+							<span id="wpb" style="font-size:35px"></span> W+ Bosons and <span id="wnb" style="font-size:35px"></span> W- Bosons
+						</td>
+						<td>
+							<span id="zb" style="font-size:35px"></span> Z Bosons
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<span id="wbTime" style="font-size:25px"></span>x experiment speed, <span id="wbOscillate" style="font-size:25px"></span>x faster oscillation, <span id="wbProduction" style="font-size:25px"></span>x Bosons production.
+						</td>
+						<td>
+							<span id="zbSpeed" style="font-size:25px"></span>x faster decay and conversion.
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<div id="wQk"><span id="wQkSymbol"></span></div><br>
+							W Boson is currently <span id="wQkType"></span>.<br>
+							<span id="wQkProgress"></span>
+						</td>
+						<td>
+							<div id="zNe"><span id="zNeSymbol"></span></div><br>
+							Z Boson is currently <span id="zNeGen">electron</span>.<br>
+							<span id="zNeProgress"></span><br>
+							<span id="zNeReq"></span><br>
+							<span id="zbGain"></span>
+						</td>
+					</tr>
+				</table>
+			</div>
+			<div id="hftab" class="bltab">
+				Soon.
+			</div>
+			<div id="gravtab" class="bltab">
+				<span style="font-size: 18px">You have <b id="gravAmt" class="gv" style="font-size: 24px">0</b> best Gravitons.</span><br>
+				(current: <span style="font-size:15px">0</span>)
+				<br><br>
+				<button class="storebtn" id="gw_rollback" onclick="rollbackGrav()">Rollback</button>
+				<button class="storebtn" id="gw_exit" onclick="exitGrav()">Exit</button>
+				<button class="storebtn" id="gw_replace" onclick="exchangeGrav()">Exchange</button>
+				<table style="margin: auto">
+					<tr>
+						<td><button class="storebtn gw" ach-tooltip="W Bosons have a weaker effect." onclick="pullGrav(0)">Enter Newtonian Depth 1</button></td>
+						<td><button class="storebtn gw" ach-tooltip="Placeholder." onclick="pullGrav(1)">Enter Relativity Depth 1</button></td>
+						<td><button class="storebtn gw" ach-tooltip="Placeholder." onclick="pullGrav(2)">Enter Intergalactic Depth 1</button></td>
+					</tr>
+				</table>
+			</div>
+			<div id="gravtab_old" class="bltab">
+				<span style="font-size: 18px">You have <b id="gravAmt" class="gv" style="font-size: 24px">0</b> Gravitons.</span><br>
+				(+<span id="gravGain">0</span>/s, best of <span id="gravBest" class="gv">0</span>)<br><br>
+				You have <span id="gravLeft" class="gv"></span> activations left. (Next at <span id="gravNext"></span> Gravitons)<br>
+				<button class="storebtn" onclick="respecGv()">Respec</button>
+				<table style="margin: auto">
+					<tr>
+						<td><button class="storebtn gw" id="gv_0" onclick="clickGv(0)"><b id="gv_0_data"></b><br><span id="gv_0_eff"></span></button></td>
+						<td><button class="storebtn gw" id="gv_1" onclick="clickGv(1)"><b id="gv_1_data"></b><br><span id="gv_1_eff"></span></button></td>
+						<td><button class="storebtn gw" id="gv_2" onclick="clickGv(2)"><b id="gv_2_data"></b><br><span id="gv_2_eff"></span></button></td>
+					</tr>
+					<tr>
+						<td><button class="storebtn gw" id="gv_7" onclick="clickGv(7)"><b id="gv_7_data"></b><br><span id="gv_7_eff"></span></button></td>
+						<td><button class="gluonupgrade gw" id="gv_upg" onclick="upgGv()" style="font-size: 12px !important">Cancel the disadvantages.<br>Requirement: <span id="gv_upg_req"></span> Higgs</button></td>
+						<td><button class="storebtn gw" id="gv_3" onclick="clickGv(3)"><b id="gv_3_data"></b><br><span id="gv_3_eff"></span></button></td>
+					</tr>
+					<tr>
+						<td><button class="storebtn gw" id="gv_6" onclick="clickGv(6)"><b id="gv_6_data"></b><br><span id="gv_6_eff"></span></button></td>
+						<td><button class="storebtn gw" id="gv_5" onclick="clickGv(5)"><b id="gv_5_data"></b><br><span id="gv_5_eff"></span></button></td>
+						<td><button class="storebtn gw" id="gv_4" onclick="clickGv(4)"><b id="gv_4_data"></b><br><span id="gv_4_eff"></span></button></td>
+					</tr>
+				</table>
 			</div>
 			<div id="footercontainer">
 				<table id="footer">

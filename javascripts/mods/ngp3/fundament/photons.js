@@ -155,7 +155,6 @@ function updateGPHUnlocks() {
 	el("gphDiv").style.display = unl ? "" : "none"
 	el("gphRow").style.display = unl ? "" : "none"
 	el("breakUpgR3").style.display = unl ? "" : "none"
-	el("bltabbtn").style.display = unl ? "" : "none"
 }
 
 function getGPHProduction() {

@@ -653,10 +653,11 @@ function updateDimensionsDisplay() {
 	}
 	tickspeedDisplay()
 	if (el("stats").style.display == "block" && el("statistics").style.display == "block") STATSDisplay()
-   	if (el("infinity").style.display == "block") INFINITYUPGRADESDisplay()
+	if (el("infinity").style.display == "block") INFINITYUPGRADESDisplay()
 	if (el("eternitystore").style.display == "block") ETERNITYSTOREDisplay()
-   	if (el("quantumtab").style.display == "block") updateQuantumTabs()
-   	if (el("ghostify").style.display == "block") updateGhostifyTabs()
+	if (el("quantumtab").style.display == "block") updateQuantumTabs()
+	if (el("ghostify").style.display == "block") updateGhostifyTabs()
+	if (el("bltab").style.display == "block") updateBosonicLabTab()
 }
 
 function replicantiDisplay() {
