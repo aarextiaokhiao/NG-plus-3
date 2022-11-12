@@ -67,7 +67,7 @@ function updateNeutrinosTab(){
 	var neutrinoGain = getNeutrinoGain()
 	var sum = ghSave.neutrinos.electron.add(ghSave.neutrinos.mu).add(ghSave.neutrinos.tau).round()
 	el("neutrinosGain").textContent="Gain " + shortenDimensions(neutrinoGain) + " " + generations[ghSave.neutrinos.generationGain - 1] + " Neutrino" + (neutrinoGain.eq(1) ? "" : "s") + " per 1 normal galaxy."
-	setAndMaybeShow("neutrinosGainGhostify",hasAch("ng3p68"),'"Gain "+shortenDimensions(Decimal.times(\''+neutrinoGain.toString()+'\',brSave.bestGals*2e3))+" Neutrinos on Fundamenting."')
+	setAndMaybeShow("neutrinosGainGhostify",hasAch("ng3p68"),'"Gain "+shortenDimensions(Decimal.times(\''+neutrinoGain.toString()+'\',brSave.bestGals*2e3))+" Neutrinos of every type on Fundamenting."')
 	
 	updateNeutrinoAmountDisplay()
 	updateNeutrinoBoostDisplay()
