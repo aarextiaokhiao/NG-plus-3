@@ -64,7 +64,7 @@ function bosonicTick(diff) {
 		if (lData.dP.eq(0)) lData.dPUse = 0
 
 		if (lData.dPUse == 1) {
-			lData.wQkProgress = lData.wQkProgress.add(apDiff.times(tmp.wzb.zbs))
+			lData.wQkProgress = lData.wQkProgress.add(apDiff.times(tmp.wzb.zbs).mul(2))
 			if (lData.wQkProgress.gt(1)) {
 				let toSub = lData.wQkProgress.floor()
 				lData.wpb = lData.wpb.add(toSub.add(lData.wQkUp ? 1 : 0).div(2).floor())
