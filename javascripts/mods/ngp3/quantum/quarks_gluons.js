@@ -511,7 +511,6 @@ function updateQuarksTabOnUpdate(mode) {
 	el("redQuarks").textContent = shortenDimensions(quSave.usedQuarks.r)
 	el("greenQuarks").textContent = shortenDimensions(quSave.usedQuarks.g)
 	el("blueQuarks").textContent = shortenDimensions(quSave.usedQuarks.b)
-	el("boost").style.display = player.dilation.active ? "" : "none"
 
 	var assortAmount = getAssortAmount()
 	var canAssign = assortAmount.gt(0)
