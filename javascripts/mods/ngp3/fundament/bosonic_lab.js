@@ -463,7 +463,7 @@ var bEn = {
 		56: [1/0,1]
 	},
 	descs: {
-		12: "You automatically experiment.",
+		12: "Automatically experiment.",
 		13: "Speed up the production and use of Anti-Preons.",
 		23: "Bosons boosts oscillate speed.",
 		14: "Divide the requirement of Higgs and start with some Bosonic Upgrades even it is inactive.",
