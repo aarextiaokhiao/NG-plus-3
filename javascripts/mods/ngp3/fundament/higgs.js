@@ -97,7 +97,7 @@ function higgsReset() {
 	if (!hasAch("future")) {
 		var oldHiggs = ghSave.hb.higgs
 		if (!ghSave.bl.am.gte(getHiggsRequirement())) return
-		if (!aarMod.higgsNoConf && !confirm("You will exchange all your Bosonic Lab stuff for Higgs. Everything that Spectral Ions resets initally will be reset. Are you ready to proceed?")) return
+		if (!aarMod.higgsNoConf && !confirm("Everything that Spectral Ions resets, as well as Bosonic Lab.  Are you ready to proceed?")) return
 	}
 	addHiggs(getHiggsGain())
 	if (!hasAch("future")) bosonicLabReset()
