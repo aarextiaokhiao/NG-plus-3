@@ -465,7 +465,7 @@ var bEn = {
 	descs: {
 		12: "Automatically experiment.",
 		13: "Speed up the production and use of Anti-Preons.",
-		23: "Bosons boosts oscillate speed.",
+		23: "Bosons boost oscillate speed.",
 		14: "Divide the requirement of Higgs and start with some Bosonic Upgrades even it is inactive.",
 		24: "You gain more Bosonic Battery.",
 		34: "Higgs produce more Bosons.",
