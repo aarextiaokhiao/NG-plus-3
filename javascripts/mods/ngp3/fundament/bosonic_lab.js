@@ -765,7 +765,7 @@ var bu = {
 		21: "Replace first Nanoreward with a boost to weaken Dimension Supersonic.",
 		22: "Replace seventh Nanoreward with a boost to Neutrinos and Preon Charge.",
 		23: "Meta-antimatter multiplies colored quarks.",
-		24: "Gain Space Shards outside of Big Rips, but reduce boosts to it.",
+		24: "Produce Space Shards outside of Big Rips, but reduced.",
 		25: "Electrons boost the per-ten Meta Dimensions multiplier.",
 		31: "Bosons strengthen Nanofield.",
 		32: "Unlock a new boost for every 3rd LE from LE7 until LE25.",
