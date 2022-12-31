@@ -128,7 +128,7 @@ function getNGP3p1totalQKMult(){
 	if (hasAch("ng3p16")) log += getEPtoQKMult()
 	if (hasAch("ng3p33")) log += Math.log10(getQCtoQKEffect())
 	if (hasAch("ng3p53")) log += brSave && brSave.spaceShards.plus(1).log10()
-	if (hasAch("ng3p65")) log += getTotalRadioactiveDecays()
+	if (hasAch("ng3p65")) log += getRadioactiveDecays('r') * 3
 	if (hasAch("ng3p85")) log += Math.pow(ghSave.ghostlyPhotons.enpowerments, 2)
 	return log
 }
@@ -161,7 +161,7 @@ function quarkGain() {
 }
 
 function getQuarkMult() {
-	x = pow2(quSave.multPower.total)
+	x = pow2(quSave.multPower)
 	if (hasAch("ng3p93")) x = x.times(500)
 	return x
 }
@@ -293,12 +293,7 @@ function quantumReset(force, auto, challid, bigRip, implode = false) {
 			el("bestAntimatterType").textContent = "Your best meta-antimatter for this quantum"
 			el("quarksAnimBtn").style.display="inline-block"
 		}
-		if (isEmptiness) {
-			showTab("dimensions")
-			isEmptiness = false
-			el("quantumtabbtn").style.display = "inline-block"
-			if (ghostified) el("ghostifytabbtn").style.display = "inline-block"
-		}
+		if (isEmptiness) showTab("dimensions")
 	}
 	el("quantumbtn").style.display = "none"
 	el("bigripbtn").style.display = "none"
@@ -523,6 +518,7 @@ function quantumReset(force, auto, challid, bigRip, implode = false) {
 		if (challid == 0) {
 			quSave.electrons.amount = 0
 			quSave.electrons.sacGals = 0
+			if (speedrunMilestonesReached < 25 && player.quantum.autoOptions.sacrifice) toggleAutoQuantumContent('sacrifice')
 			quSave.challenge = []
 			tmp.aeg = 0
 		} else if (pc < 1) quSave.challenge = [challid]
@@ -554,7 +550,6 @@ function quantumReset(force, auto, challid, bigRip, implode = false) {
 		}
 		el("metaAntimatterEffectType").textContent = inQC(3) ? "multiplier on all Infinity Dimensions" : "extra multiplier per Dimension Boost"
 		updateColorCharge()
-		updateColorDimPowers()
 		updateGluonsTabOnUpdate()
 		updateElectrons()
 		updateBankedEter()
@@ -655,9 +650,8 @@ function quantumReset(force, auto, challid, bigRip, implode = false) {
 	var shortenedIP = shortenDimensions(player.infinityPoints)
 	el("infinityPoints1").innerHTML = "You have <span class=\"IPAmount1\">" + shortenedIP + "</span> Infinity points."
 	el("infinityPoints2").innerHTML = "You have <span class=\"IPAmount2\">" + shortenedIP + "</span> Infinity points."
-	el("eternitybtn").style.display = player.infinityPoints.gte(player.eternityChallGoal) ? "inline-block" : "none"
+	el("eternitybtn").style.display = "none"
 	el("eternityPoints2").style.display = "inline-block"
-	el("eternitystorebtn").style.display = "inline-block"
 	updateEternityUpgrades()
 	el("totaltickgained").textContent = "You've gained "+player.totalTickGained.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")+" tickspeed upgrades."
 	hideDimensions()

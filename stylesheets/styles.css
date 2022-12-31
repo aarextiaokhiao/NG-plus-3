@@ -1033,25 +1033,17 @@ button b, button span {
 
 #welcomeMessage { font-size:12px; }
 
-#footercontainer {
-    bottom: 0;
-    position: fixed;
-    width: 100%;
-    z-index: 1;
-    pointer-events: none;
-}
-
 #footer {
-    height: 50px;
+    position: fixed;
     margin: auto;
-    text-align:center;
-    font-size: 15px;
+    left: 0;
+    bottom: 0;
+
+    width: 100%;
+
+    text-align: center;
     font-family: Typewriter;
 	display: var(--footer)
-}
-
-#footer tr td div {
-    pointer-events: all !important;
 }
 
 #progress {
@@ -2148,6 +2140,19 @@ br {
     animation: dilationBtnGlow 10s infinite
 }
 
+#anttabbtn {
+	background: black;
+	border: 2px solid #4c4c4c;
+	border-radius: 4px;
+	color: #727272;
+	text-shadow: 0px 0px 1px #4c4c4c, 0px 0px 2px #4c4c4c, 0px 0px 3px #4c4c4c;
+    font-weight: bold;
+	transition-duration: 0.2s
+}
+#anttabbtn:hover {
+	background: #333;
+	cursor: pointer
+}
 #produceQuarkCharge {
 	background: black !important;
 	border: 2px solid #4c4c4c;
@@ -2158,11 +2163,9 @@ br {
 	font-size: 12px;
 	animation: nanofieldanimation 5s infinite
 }
-
 #produceQuarkCharge:hover {
 	color: #999999
 }
-
 .nfReward {
 	background: black !important;
 	border: 1px solid #4c4c4c;
@@ -2177,7 +2180,6 @@ br {
 	animation: nanofieldanimation 5s infinite;
 	transition-duration: 0.2s
 }
-
 .nfRewardlocked {
     background: #A3A3A3;
     border: 1px solid #B84B5F;
@@ -2194,7 +2196,6 @@ br {
 #upgradesBranch .gluonupgrade {
 	font-size: 10px
 }
-
 .gluonupgrade.r {
 	background-color: #1f0000 !important;
 	border: 1px solid #3f0000;
@@ -2216,7 +2217,6 @@ br {
 	text-shadow: 0px 0px 2px #00001f, 0px 0px 2px #0000ff;
 	color: #0000ff
 }
-
 .gluonupgrade.r:hover {
 	background-color: #bf0000 !important;
 	border: 1px solid #3f0000;
@@ -2238,35 +2238,7 @@ br {
 	color: #00001f;
 	cursor: pointer
 }
-#autoEternityTable tr {
-	height: 300px
-}
-#autoEternityTable td {
-	min-width: 450px;
-	width: 450px;
-	max-width: 450px;
-	text-align: center;
-	vertical-align: top
-}
-#autoEternityTable div {
-	overflow-x: hidden
-}
-#autoEternityTable div tr {
-	height: 0
-}
-#autoEternityTable div td {
-	padding: 0
-}
-#autoEternityTable div td:nth-child(1) {
-	min-width: 20px;
-	width: 20px;
-	max-width: 20px
-}
-#automatedPresets td:nth-child(2) {
-	min-width: 380px;
-	width: 380px;
-	max-width: 380px
-}
+
 .bigripbtn {
 	width:150px;
 	height: 30px;
@@ -2765,23 +2737,6 @@ td.subFactorH {
 	background-color: rgba(191, 191, 0, 0.25)
 }
 
-#antipreon {
-	position: relative
-}
-
-#apgInfo {
-	position: relative;
-	width: 100%;
-	background: #e55be5;
-	box-shadow: 0px 0px 12px #e55be5;
-	color: white;
-	animation: apgInfo 5s ease infinite
-}
-
-#apgInfo .warning {
-	color: #bf0000
-}
-
 .h1 {
     font-size: 35px;
     color: black;
@@ -3237,18 +3192,6 @@ screen and (max-width: 480px) {
 	}
 }
 
-@keyframes apgInfo { 
-	0%{
-		top: 0px
-	}
-	50%{
-		top: 6px
-	}
-	100%{
-		top: 0px
-	}
-}
-
 @keyframes hb { 
 	0%{
 		background-size: 100% 100%, 100% 100%, 100% 100%, 100% 100%
@@ -3315,7 +3258,7 @@ screen and (max-width: 480px) {
 }
 #ngp3_feature_ani_3 {
 	position: absolute;
-	background: linear-gradient(#9fff00, transparent), linear-gradient(90deg, #ff00df, #00dfff);
+	background: linear-gradient(90deg, #ff0, #7f0);
 	width: 100%;
 	height: 60px;
 	right: 150%;

@@ -6,7 +6,6 @@ function canUnlockBosonicLab() {
 function updateBLUnlocks() {
 	let unl = ghSave.wzb.unl
 	el("blUnl").style.display = unl ? "none" : ""
-	el("bltabbtn").style.display = unl ? "" : "none"
 	if (!unl) updateBLUnlockDisplay()
 }
 
@@ -28,15 +27,11 @@ function WZBosonsUpdating(diff) {
 	var data = ghSave.bl
 	var wattGain = getBosonicWattGain()
 	if (wattGain.gt(data.watt)) {
-		if (wattGain.gt(data.speed)) data.speed = wattGain.sub(data.watt).times(10).add(data.speed).min(wattGain)
+		data.speed = wattGain
 		data.watt = wattGain
 	}
 
-	if (E(data.speed).gt(0)) {
-		var limitDiff = data.speed.times(14400).min(diff).toNumber()
-		bosonicTick(data.speed.sub(limitDiff / 28800).times(limitDiff))
-		data.speed = data.speed.max(limitDiff / 14400).sub(limitDiff / 14400)
-	}
+	if (E(data.speed).gt(0)) bosonicTick(data.speed.times(diff))
 }
 
 function bosonicTick(diff) {
@@ -214,8 +209,7 @@ function getEstimatedNetBatteryGain(){
 }
 
 function toBLTab() {
-	showTab("ghostify")
-	showGhostifyTab("bltab")
+	showTab("bltab")
 }
 
 function updateBosonicLabTab(){

@@ -81,30 +81,6 @@ function bigRipUpgradeUpdating(){
 	}
 }
 
-function updateRipTabs() {
-	if (el("riptab").style.display == "block") updateBigRipTab()
-	if (el("breakEternity").style.display == "block") breakEternityDisplay()
-	if (el("breakDilation").style.display == "block") updateBDTab()
-}
-
-function showRipTab(tabName) {
-	//iterate over all elements in div_tab class. Hide everything that's not tabName and show tabName
-	var tabs = document.getElementsByClassName('riptab');
-	var tab;
-	var oldTab
-	for (var i = 0; i < tabs.length; i++) {
-		tab = tabs.item(i);
-		if (tab.style.display == 'block') oldTab = tab.id
-		if (tab.id === tabName) {
-			tab.style.display = 'block';
-		} else {
-			tab.style.display = 'none';
-		}
-	}
-	if (oldTab !== tabName) aarMod.tabsSave.tabRip = tabName
-	closeToolTip()
-}
-
 let bigRipUpgCosts = [0, 2, 3, 5, 20, 30, 45, 60, 150, 300, 2000, 1e9, 3e14, 1e17, 3e18, 3e20, 5e22, 1e32, 1e145, 1e150, 1e90]
 function buyBigRipUpg(id) {
 	if (brSave.spaceShards.lt(bigRipUpgCosts[id]) || hasRipUpg(id)) return
@@ -186,9 +162,13 @@ function isBigRipUpgradeActive(id, bigRipped) {
 //BREAK ETERNITY
 function updateBreakEternity() {
 	if (!tmp.ngp3) return
-	if (beSave && beSave.unlocked) {
-		el("breakEternityReq").style.display = "none"
-		el("breakEternityShop").style.display = ""
+
+	let unl = beSave && beSave.unlocked
+	el("betabbtn").style.display = unl ? "" : "none"
+	el("breakEternityReq").style.display = unl ? "none" : ""
+	el("breakEternityShop").style.display = unl ? "" : "none"
+
+	if (unl) {
 		el("breakEternityNoBigRip").style.display = brSave && brSave.active ? "none" : ""
 		el("breakEternityBtn").style.display = brSave && brSave.active ? "" : "none"
 		el("breakEternityBtn").textContent = (beSave.break ? "FIX" : "BREAK") + " ETERNITY"
@@ -198,11 +178,25 @@ function updateBreakEternity() {
 		el("breakUpgRS").style.display = brSave && brSave.active ? "" : "none"
 		el("breakUpgR4").style.display = ghSave.breakDilation.unl ? "" : "none"
 	} else {
-		el("breakEternityReq").style.display = ""
 		el("breakEternityReq").textContent = "You need to get " + shorten(E("1e1200")) + " EP before you can Break Eternity."
 		el("breakEternityNoBigRip").style.display = "none"
-		el("breakEternityShop").style.display = "none"
 	}
+}
+
+
+function breakEternityDisplay(){
+	el("eternalMatter").textContent = shortenDimensions(beSave.eternalMatter)
+	for (var u = 1; u < getBEUnls(); u++) {
+		el("breakUpg" + u).className = (beSave.upgrades.includes(u) && u != 7) ? "eternityupbtnbought" : beSave.eternalMatter.gte(getBreakUpgCost(u)) ? "eternityupbtn" : "eternityupbtnlocked"
+		if (u == 8) el("breakUpg8Mult").textContent = (getBreakUpgMult(8) * 100 - 100).toFixed(1)
+		else if (u != 7 && el("breakUpg" + u + "Mult")) el("breakUpg" + u + "Mult").textContent = shortenMoney(getBreakUpgMult(u))
+	}
+	if (brSave.active) {
+		el("eterShortcutEM").textContent=shortenDimensions(beSave.eternalMatter)
+		el("eterShortcutEP").textContent=shortenDimensions(player.eternityPoints)
+		el("eterShortcutTP").textContent=shortenMoney(player.dilation.tachyonParticles)
+	}
+	updateBDInBE()
 }
 
 function doBreakEternityUnlockStuff(){

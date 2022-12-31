@@ -13,7 +13,7 @@ function updateQuantumWorth(mode) {
 		}
 		if (ghostified) updateAutomatorStuff(mode)
 	}
-	if (mode != "quick") for (var e=1;e<4;e++) el("quantumWorth"+e).textContent = shortenDimensions(quantumWorth)
+	if (mode != "quick") for (var e=1;e<=2;e++) el("quantumWorth"+e).textContent = shortenDimensions(quantumWorth)
 }
 
 //Quark Assertment Machine (Quark Assignation: NG+3L)
@@ -237,99 +237,9 @@ function updateColorPowers(log) {
 	}
 	if (bLog < 0) bLog = 0
 	colorBoosts.b = pow10(bLog)
-
-	//Dimensions
-	updateColorDimPowers(log)
-}
-
-function updateColorDimPowers(log) {
-	if (tmp.ngp3l) return
-	if (log == undefined) log = getCPLogs()
-	
-	var rexp = Math.sqrt(player.money.add(1).log10()) * Math.pow(getColorDimPowerBase("r", log), 4/7) * (inQC(6) ? 1 : 35)
-	var gexp = Math.sqrt(player.infinityPower.add(1).log10()) * Math.pow(getColorDimPowerBase("g", log), 4/7) * 5
-	var bexp = Math.sqrt(player.timeShards.add(1).log10()) * Math.pow(getColorDimPowerBase("b", log), 8/21)
-	
-	if (rexp > 1e12) rexp = Math.sqrt(rexp * 1e12)
-	if (rexp > 1e15) rexp = Math.sqrt(rexp * 1e15)
-
-	if (gexp > 1e9) gexp = Math.sqrt(gexp * 1e9)
-	if (gexp > 1e12) gexp = Math.sqrt(gexp * 1e12)
-
-	if (bexp > 1e6) bexp = Math.sqrt(bexp * 1e6)
-	if (bexp > 1e9) bexp = Math.sqrt(bexp * 1e9)
-
-	colorBoosts.dim.r = pow10(rexp)
-	colorBoosts.dim.g = pow10(gexp)
-	colorBoosts.dim.b = pow10(bexp)
-}
-
-function getColorDimPowerBase(color, log) {
-	if (log == undefined) log = getCPLogs()
-	let ret = Math.pow(log[color], 3/5)
-	ret *= Math.pow((quSave.colorDimPower || 0) + 1, 2/5)
-	return ret
-}
-
-function getColorDimPowerUpgradeCost() {
-	return E_pow(5, quSave.colorDimPower || 0).times(3)
-}
-
-function upgradeColorDimPower() {
-	let cost = getColorDimPowerUpgradeCost()
-	if (!quSave.quarks.gte(cost)) return
-	quSave.quarks = quSave.quarks.sub(cost).round()
-	quSave.colorDimPower = (quSave.colorDimPower || 0) + 1
-	updateQuantumWorth()
-	updateQuarksTabOnUpdate()
-}
-
-function maxUpgradeColorDimPower(){
-	var currCost = getColorDimPowerUpgradeCost()
-	var quarks = quSave.quarks
-	if (!quarks.gte(currCost)) return
-	var log105 = Math.log10(5)
-	
-	var tobuy = Math.floor(quarks.times(4).plus(currCost).div(currCost).log10()/log105-1)
-	//log_5(4*totalquarks+currentcost)-1
-	var costToBuy = E_pow(5,tobuy).minus(1).div(4).times(currCost).min(pow2(1024)) 
-	//only costs quarks if you have less than e308 of them
-	
-	quSave.colorDimPower = (quSave.colorDimPower || 0) + tobuy
-	quSave.quarks = quarks.sub(costToBuy).round()
-	updateQuantumWorth()
-	updateQuarksTabOnUpdate()
-	upgradeColorDimPower() //in case there are some rounding issues, we will check and buy one more (if possible)
 }
 
 //Gluons
-function gainQuarkEnergy(ma_old, ma_new) {
-	if (!ma_new.gte(ma_old)) return
-	quSave.quarkEnergy = quSave.quarkEnergy.add(getQuarkEnergyGain(ma_new).sub(getQuarkEnergyGain(ma_old)).times(getQuarkEnergyGainMult()))
-}
-
-function getQuarkEnergyGain(ma) {
-	let x = (ma.log10() - Math.log10(Number.MAX_VALUE) * 1.4) / 280
-	if (x < 0) x = -Math.pow(-x, 1.5)
-	else x = Math.pow(x, 1.5)
-	return pow10(x)
-}
-
-function getQuarkEnergyGainMult() {
-	return 0.75
-}
-
-function generateGluons(mix) {
-	let firstColor = mix[0]
-	let toConsume = quSave.usedQuarks[firstColor].min(quSave.quarkEnergy.floor())
-	if (toConsume.eq(0)) return
-	quSave.usedQuarks[firstColor] = quSave.usedQuarks[firstColor].sub(toConsume).round()
-	quSave.quarkEnergy = quSave.quarkEnergy.sub(toConsume)
-	quSave.gluons[mix] = quSave.gluons[mix].add(toConsume).round()
-	updateColorCharge()
-	updateGluonsTabOnUpdate()
-}
-
 function checkGluonRounding(){
 	if (!tmp.ngp3) return
 	if (ghSave.milestones > 7 || !quantumed) return
@@ -339,8 +249,7 @@ function checkGluonRounding(){
 	if (quSave.quarks.lt(101)) quSave.quarks = quSave.quarks.round()
 }
 
-GUCosts = [null, 1, 2, 4, 100, 7e15, 4e19, 3e28, "1e570"]
-
+const GUCosts = [null, 1, 2, 4, 100, 7e15, 4e19, 3e28, "1e570"]
 function buyGluonUpg(color, id) {
 	var name = color + id
 	if (quSave.upgrades.includes(name) || quSave.gluons[color].plus(0.001).lt(GUCosts[id])) return
@@ -365,51 +274,38 @@ function GUBought(id) {
 	return tmp.ngp3 && quSave.upgrades.includes(id)
 }
 
-function buyQuarkMult(name) {
-	var cost = E_pow(100, quSave.multPower[name] + Math.max(quSave.multPower[name] - 467, 0)).times(500)
-	if (quSave.gluons[name].lt(cost)) return
-	quSave.gluons[name] = quSave.gluons[name].sub(cost).round()
-	quSave.multPower[name]++
-	quSave.multPower.total++
-	updateGluonsTab("spend")
-	if (quSave.autobuyer.mode === 'amount') {
-		quSave.autobuyer.limit = Decimal.times(quSave.autobuyer.limit, 2)
-		el("priorityquantum").value = formatValue("Scientific", quSave.autobuyer.limit, 2, 0);
-	}
+function getQuarkMultReq() {
+	let lvl = quSave.multPower / 3
+	if (lvl > 467) lvl = lvl * 2 - 467
+	return E_pow(100, lvl).times(500)
+}
+
+function getQuarkMultBulk() {
+	let bulk = E(quantumWorth).max(1).div(500).log(100)
+	bulk *= 3
+	if (bulk < 0) return 0
+	if (bulk > 467) bulk = (bulk + 467) / 2
+	return Math.floor(bulk + 1)
+}
+
+function getQuarkMult() {
+	if (E(quantumWorth).lt(getQuarkMultReq())) return
+	increaseQuarkMult(1)
 }
 
 function maxQuarkMult() {
-	var names = ["rg", "gb", "br"]
-	var bought = 0
-	for (let c = 0; c < 3; c++) {
-		var name = names[c]
-		var buying = true
-		while (buying) {
-			var cost = E_pow(100, quSave.multPower[name] + Math.max(quSave.multPower[name] - 467, 0)).times(500)
-			if (quSave.gluons[name].lt(cost)) buying = false
-			else if (quSave.multPower[name] < 468) {
-				var toBuy = Math.min(Math.floor(quSave.gluons[name].div(cost).times(99).add(1).log(100)),468-quSave.multPower[name])
-				var toSpend = E_pow(100, toBuy).sub(1).div(99).times(cost)
-				if (toSpend.gt(quSave.gluons[name])) quSave.gluons[name]=E(0)
-				else quSave.gluons[name] = quSave.gluons[name].sub(toSpend).round()
-				quSave.multPower[name] += toBuy
-				bought += toBuy
-			} else {
-				var toBuy=Math.floor(quSave.gluons[name].div(cost).times(9999).add(1).log(1e4))
-				var toSpend=E_pow(1e4, toBuy).sub(1).div(9999).times(cost)
-				if (toSpend.gt(quSave.gluons[name])) quSave.gluons[name]=E(0)
-				else quSave.gluons[name] = quSave.gluons[name].sub(toSpend).round()
-				quSave.multPower[name] += toBuy
-				bought += toBuy
-			}
-		}
-	}
-	quSave.multPower.total += bought
+	let bulk = getQuarkMultBulk()
+	if (bulk <= quSave.multPower) return
+	increaseQuarkMult(bulk - quSave.multPower)
+}
+
+function increaseQuarkMult(toAdd) {
+	quSave.multPower += toAdd
 	if (quSave.autobuyer.mode === 'amount') {
-		quSave.autobuyer.limit = Decimal.times(quSave.autobuyer.limit, pow2(bought))
+		quSave.autobuyer.limit = Decimal.times(quSave.autobuyer.limit, pow2(toAdd))
 		el("priorityquantum").value = formatValue("Scientific", quSave.autobuyer.limit, 2, 0)
 	}
-	updateGluonsTabOnUpdate("spend")
+	updateGluonsTab("spend")
 }
 
 function getGB1Effect() {
@@ -442,22 +338,24 @@ function updateQuarksTab(tab) {
 	var msg = getFullExpansion(Math.round((colorBoosts.g-1)*100))+(tmp.pe>0?"+"+getFullExpansion(Math.round(tmp.pe*100)):"")
 	el("greenTranslation").textContent=msg
 	el("blueTranslation").textContent=shortenMoney(colorBoosts.b)
-	if (!tmp.ngp3l) {
-		el("redDimTranslation").textContent=shortenMoney(colorBoosts.dim.r)
-		el("greenDimTranslation").textContent=shortenMoney(colorBoosts.dim.g)
-		el("blueDimTranslation").textContent=shortenMoney(colorBoosts.dim.b)
-	}
+
 	if (player.masterystudies.includes("t383")) el("blueTranslationMD").textContent=shorten(getMTSMult(383))
 	if (ghSave.milestones>7) {
 		var assortAmount=getAssortAmount()
-		if (!tmp.ngp3l) {
-			var colors=['r','g','b']
-			el("assort_amount").textContent = shortenDimensions(assortAmount.times(getQuarkAssignMult()))
-			for (c = 0; c < 3; c++) if (colorCharge[colors[c]].div(colorCharge.qwBonus).lte(1e16)) el(colors[c]+"PowerRate").textContent="+"+shorten(getColorPowerProduction(colors[c]))+"/s"
-		}
+		var colors=['r','g','b']
+		el("assort_amount").textContent = shortenDimensions(assortAmount.times(getQuarkAssignMult()))
+		for (c = 0; c < 3; c++) if (colorCharge[colors[c]].div(colorCharge.qwBonus).lte(1e16)) el(colors[c]+"PowerRate").textContent="+"+shorten(getColorPowerProduction(colors[c]))+"/s"
+
 		el("assignAllButton").className=(assortAmount.lt(1)?"unavailabl":"stor")+"ebtn"
-		updateQuantumWorth("display")
 	}
+
+	//UPGRADES
+	el("qk_mult_upg").className = "gluonupgrade " + (E(quantumWorth).gte(getQuarkMultReq()) ? "storebtn" : "unavailablebtn")
+	el("qk_mult_upg").innerHTML = `
+		<b>Double Quarks.</b><br>
+		Currently: ${shortenDimensions(getQuarkMult())}x<br>
+		(req: ${shortenDimensions(getQuarkMultReq())} quantum worth)
+	`
 }
 
 function updateGluonsTab() {
@@ -478,24 +376,7 @@ function updateGluonsTab() {
 		el("gbupg8current").textContent = "Currently: " + shorten(getGU8Effect("gb")) + "x"
 		el("brupg8current").textContent = "Currently: " + shorten(getGU8Effect("br")) + "x"
 	}
-	if (!tmp.ngp3l) {
-		let qkEnergy=quSave.quarkEnergy
-		let rgGain=qkEnergy.floor().min(quSave.usedQuarks.r)
-		let gbGain=qkEnergy.floor().min(quSave.usedQuarks.g)
-		let brGain=qkEnergy.floor().min(quSave.usedQuarks.b)
-		el("quarkEnergy").textContent = shortenMoney(qkEnergy)
-		el("quarkEnergyGluons").textContent = shortenDimensions(qkEnergy.floor())
-		el("generateRGGluons").className = "gluonupgrade " + (rgGain.gt(0) ? "rg" : "unavailablebtn")
-		el("generateRGGluonsAmount").textContent=shortenDimensions(rgGain)
-		el("generateGBGluons").className = "gluonupgrade " + (gbGain.gt(0) ? "gb" : "unavailablebtn")
-		el("generateGBGluonsAmount").textContent=shortenDimensions(gbGain)
-		el("generateBRGluons").className = "gluonupgrade " + (brGain.gt(0) ? "br" : "unavailablebtn")
-		el("generateBRGluonsAmount").textContent=shortenDimensions(brGain)
-	}
-	if (ghSave.milestones > 7) {
-		updateQuantumWorth("display")
-		updateGluonsTabOnUpdate("display")
-	}
+	if (ghSave.milestones > 7) updateGluonsTabOnUpdate("display")
 }
 
 //Display: On load
@@ -514,22 +395,10 @@ function updateQuarksTabOnUpdate(mode) {
 
 	var assortAmount = getAssortAmount()
 	var canAssign = assortAmount.gt(0)
-	el("quarkAssort").style.display = tmp.ngp3l ? "none" : ""
-	el("quarkAssign").style.display = tmp.ngp3l ? "" : "none"
-	el("colorDimTranslations").style.display = tmp.ngp3l ? "none" : ""
-	if (tmp.ngp3l) {
-		el("redAssign").className = canAssign ? "storebtn" : "unavailablebtn"
-		el("greenAssign").className = canAssign ? "storebtn" : "unavailablebtn"
-		el("blueAssign").className = canAssign ? "storebtn" : "unavailablebtn"
-	} else {
-		el("assort_amount").textContent = shortenDimensions(assortAmount.times(getQuarkAssignMult()))
-		el("redAssort").className = canAssign ? "storebtn" : "unavailablebtn"
-		el("greenAssort").className = canAssign ? "storebtn" : "unavailablebtn"
-		el("blueAssort").className = canAssign ? "storebtn" : "unavailablebtn"
-		el("colorDimPowerUpgLevel").textContent = getFullExpansion((quSave.colorDimPower||0)+1)
-		el("colorDimPowerUpgCost").textContent = shortenDimensions(getColorDimPowerUpgradeCost())
-		el("colorDimPowerUpg").className = "gluonupgrade " + (quSave.quarks.gte(getColorDimPowerUpgradeCost()) ? "storebtn" : "unavailablebtn")
-	}
+	el("assort_amount").textContent = shortenDimensions(assortAmount.times(getQuarkAssignMult()))
+	el("redAssort").className = canAssign ? "storebtn" : "unavailablebtn"
+	el("greenAssort").className = canAssign ? "storebtn" : "unavailablebtn"
+	el("blueAssort").className = canAssign ? "storebtn" : "unavailablebtn"
 
 	var uq = quSave.usedQuarks
 	var gl = quSave.gluons
@@ -541,11 +410,7 @@ function updateQuarksTabOnUpdate(mode) {
 	}
 	el("assignAllButton").className = canAssign ? "storebtn" : "unavailablebtn"
 	el("bluePowerMDEffect").style.display = player.masterystudies.includes("t383") ? "" : "none"
-	if (player.masterystudies.includes("d13")) {
-		el("redQuarksToD").textContent = shortenDimensions(quSave.usedQuarks.r)
-		el("greenQuarksToD").textContent = shortenDimensions(quSave.usedQuarks.g)
-		el("blueQuarksToD").textContent = shortenDimensions(quSave.usedQuarks.b)	
-	}
+	if (player.masterystudies.includes("d13")) el("redQuarksToD").textContent = shortenDimensions(quSave.usedQuarks.r)
 }
 
 function updateGluonsTabOnUpdate(mode) {
@@ -577,14 +442,14 @@ function updateGluonsTabOnUpdate(mode) {
 				else if (quSave.gluons[name].lt(GUCosts[u])) el(upg).className="gluonupgrade small unavailablebtn"
 				else el(upg).className="gluonupgrade small "+name
 			}
-			var upg = name + "qk"
+			/*var upg = name + "qk"
 			var cost = E_pow(100, quSave.multPower[name] + Math.max(quSave.multPower[name] - 467,0)).times(500)
 			el(upg+"cost").textContent = shortenDimensions(cost)
 			if (quSave.gluons[name].lt(cost)) el(upg+"btn").className = "gluonupgrade unavailablebtn"
-			else el(upg + "btn").className = "gluonupgrade " + name
+			else el(upg + "btn").className = "gluonupgrade " + name*/
 		}
 	}
-	if (mode == undefined || mode == "display") el("qkmultcurrent").textContent = shortenDimensions(pow2(quSave.multPower.total))
+	//if (mode == undefined || mode == "display") el("qkmultcurrent").textContent = shortenDimensions(pow2(quSave.multPower.total))
 }
 
 //Quarks animation

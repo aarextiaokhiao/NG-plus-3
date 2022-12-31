@@ -614,20 +614,6 @@ function mainDilationDisplay(){
 	el('freeGalaxyMult').textContent = fgm == 1 ? "Tachyonic Galaxy" : Math.round(fgm * 10) / 10 + " Tachyonic Galaxies"
 }
 
-function breakEternityDisplay(){
-	el("eternalMatter").textContent = shortenDimensions(beSave.eternalMatter)
-	for (var u = 1; u < getBEUnls(); u++) {
-		el("breakUpg" + u).className = (beSave.upgrades.includes(u) && u != 7) ? "eternityupbtnbought" : beSave.eternalMatter.gte(getBreakUpgCost(u)) ? "eternityupbtn" : "eternityupbtnlocked"
-		if (u == 8) el("breakUpg8Mult").textContent = (getBreakUpgMult(8) * 100 - 100).toFixed(1)
-		else if (u != 7 && el("breakUpg" + u + "Mult")) el("breakUpg" + u + "Mult").textContent = shortenMoney(getBreakUpgMult(u))
-	}
-	if (brSave.active) {
-		el("eterShortcutEM").textContent=shortenDimensions(beSave.eternalMatter)
-		el("eterShortcutEP").textContent=shortenDimensions(player.eternityPoints)
-		el("eterShortcutTP").textContent=shortenMoney(player.dilation.tachyonParticles)
-	}
-}
-
 function ETERNITYSTOREDisplay(){
 	if (el("TTbuttons").style.display == "block") updateTheoremButtons()
 	if (el("timestudies").style.display == "block" || el("ers_timestudies").style.display == "block") updateTimeStudyButtons()
@@ -656,6 +642,7 @@ function updateDimensionsDisplay() {
 	if (el("infinity").style.display == "block") INFINITYUPGRADESDisplay()
 	if (el("eternitystore").style.display == "block") ETERNITYSTOREDisplay()
 	if (el("quantumtab").style.display == "block") updateQuantumTabs()
+	if (el("replicants").style.display == "block") updateReplicantsTab()
 	if (el("ghostify").style.display == "block") updateGhostifyTabs()
 	if (el("bltab").style.display == "block") updateBosonicLabTab()
 }
@@ -779,10 +766,6 @@ function eterPoints2Display(){
 	el("eternityPoints2").innerHTML = "You have <span class=\"EPAmount2\">"+shortenDimensions(player.eternityPoints)+"</span> Eternity points."
 }
 
-function eternityBtnDisplayType(){
-	el("eternitybtn").style.display = (player.infinityPoints.gte(player.eternityChallGoal) && (player.infDimensionsUnlocked[7] || getEternitied() > 24) && (!player.dilation.active || !inQCModifier("ad"))) ? "inline-block" : "none"
-}
-
 function dimboostABTypeDisplay(){
 	if (getEternitied() > 9 || player.autobuyers[9].bulkBought) el("bulklabel").textContent = "Buy max dimboosts every X seconds:"
 	else el("bulklabel").textContent = "Bulk DimBoost Amount:"
@@ -870,18 +853,40 @@ function bankedInfinityDisplay(){
 	if (hasAch("ng3p73")) updateBankedEter(true)
 }
 
-function updateNGM2RewardDisplay(){
-	el("postcngmm_1reward").innerHTML = "Reward: Infinity upgrades based on time " + (aarMod.ngmX >= 4 ? "" : "or Infinities ") + "are applied post-dilation, and make the GP formula better based on galaxies."
-	el("postcngm3_1description").innerHTML = "Multiplier per ten Dimensions is 1x, Dimension Boosts have no effect," + (aarMod.ngmX >= 4 ? " have a much lower time dimension cost limit," : "") + " and Tickspeed Boost effect softcap starts immediately."
-	el("postcngm3_1reward").innerHTML = "Reward: Tickspeed boost effect softcap is softer" + (aarMod.ngmX >= 4 ? ", remote galaxy scaling starts .5 later and triple GP per IC completion" : "") + "."
-}
+function updateHeaders() {
+	//Show Header
+	let header = !isEmptiness
+	el("main_header").style.display = header ? "" : "none"
+	el("tab_header").style.display = header ? "" : "none"
 
-function updateGalaxyUpgradesDisplay(){
-	var text41 = aarMod.ngmX >= 4 ? "Square g11, and tickspeed boosts multiply GP gain." : "Galaxy points boost per-10 bought Infinity Dimensions multiplier."
-	el("galaxy41").innerHTML = text41 + "<br>Cost: <span id='galcost41'></span> GP"
-	var text42 = aarMod.ngmX >= 4 ? "Buff g12 and make it post dilation." : "Eternity points reduce Infinity Dimension cost multipliers."
-	el("galaxy42").innerHTML = text42 + "<br>Cost: <span id='galcost42'></span> GP"
-	var text43 = aarMod.ngmX >= 4 ? "Reduce Dimension Boost cost multiplier by 1, and Dimension Boosts multiply GP gain." : "Galaxy points boost Time Dimensions."
-	var curr43 = aarMod.ngmX >= 4 ? "" : "<br>Currently: <span id='galspan43'>?</span>x"
-	el("galaxy43").innerHTML = text43 + curr43 + "<br>Cost: <span id='galcost43'></span> GP"
+	//Blocks
+	var haveBlock = (player.galacticSacrifice!=undefined&&postBreak)||(player.pSac!=undefined&&player.infinitied>0)||quantumed||isQuantumReached()
+	var haveBlock2 = player.pSac!==undefined&&(ghostified||hasAch("ng3p51")||canBigRip)
+
+	el("bigcrunch").parentElement.style.top = haveBlock2 ? "259px" : haveBlock ? "139px" : "19px"
+	el("quantumBlock").style.display = haveBlock ? "" : "none"
+	el("quantumBlock").style.height = haveBlock2 ? "240px" : "120px"
+	if (!header) return
+
+	//Variables
+	let funda = ghostified
+	let quan = quantumed
+	let eter = player.eternities !== 0 || quan
+	let inf = player.infinitied > 0 || player.infinityPoints.gt(0) || eter
+	let chal = player.challenges.includes("challenge1") || inf
+
+	//NG-X Hell
+	el("automationbtn").style.display = aarMod.ngmX > 3 && chal ? "inline-block" : "none"
+
+	//Layers
+	el("challengesbtn").style.display = chal ? "inline-block" : "none"
+	el("infinitybtn").style.display = inf ? "inline-block" : "none"
+	el("eternitystorebtn").style.display = eter ? "inline-block" : "none"
+	el("quantumtabbtn").style.display = quan ? "inline-block" : "none"
+	el("fundatabbtn").style.display = funda ? "inline-block" : "none"
+
+	//Side-Tabs
+	el("anttabbtn").style.display = quan && player.masterystudies.includes("d10") ? "inline-block" : "none"
+	el("bltabbtn").style.display = funda && ghSave.wzb.unl ? "inline-block" : "none"
+	el("tab_break").style.display = funda ? "" : "none"
 }

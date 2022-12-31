@@ -213,7 +213,7 @@ function setupPCTableHTMLandData(){
 }
 
 function setupToDHTMLandData(){
-	for (var c = 0; c < 3; c++) {
+	for (var c = 0; c < 1; c++) {
 		var color = (["red", "green", "blue"])[c]
 		var shorthand = (["r", "g", "b"])[c]
 		var branchUpgrades = ["Gain <span id='" + color + "UpgPow1'></span>x " + color + " quark spins, but " + color + " quarks decay <span id='" + color + "UpgSpeed1'></span>x faster.",
@@ -227,8 +227,8 @@ function setupToDHTMLandData(){
 		html += "(Duration: <span id='" + color + "QuarksDecayTime'></span>)<br>"
 		html += '<span class="' + color + '" id="' + color + 'QuarkSpin" style="font-size: 25px">0.0</span> ' + color + ' spins '
 		html += '<span class="' + color + '" id="' + color + 'QuarkSpinProduction" style="font-size: 15px">+0/s</span>'
-		el("todRow").insertCell(c).innerHTML = html
-		el("todRow").cells[c].className = shorthand + "qC"
+		el("todRow").innerHTML = html
+		el("todRow").className = shorthand + "qC"
 		
 		html = "<table class='table' align='center' style='margin: auto'><tr>"
 		for (var u = 1; u <= 3; u++) {
@@ -540,6 +540,11 @@ function showTab(tabName, init) {
 			if (el('uquarks') !== "none") resizeCanvas()
 			if (el("uquarks") !== "none") requestAnimationFrame(drawQuarkAnimation)
 		}
+        showHideFooter(tabName)
+
+		var oldEmpty = isEmptiness
+		isEmptiness = tabName=="emptiness" || tabName==""
+		if (oldEmpty != isEmptiness) updateHeaders()
 	}
 	if (!init) closeToolTip();
 }
@@ -1184,10 +1189,10 @@ function togglePerformanceTicks() {
 	updatePerformanceTicks()
 }
 
-function showHideFooter(toggle) {
+function showHideFooter(tab, toggle) {
 	if (toggle) aarMod.noFooter = !aarMod.noFooter
-	el("footerBtn").textContent = (aarMod.noFooter ? "Show" : "Hide") + " footer"
-	document.documentElement.style.setProperty('--footer', aarMod.noFooter ? "none" : "")
+	el("nofooterbtn").textContent = (aarMod.noFooter ? "Show" : "Hide") + " footer"
+	el("footer").style.display = tab == "options" || !aarMod.noFooter ? "" : "none"
 }
 
 el("newsbtn").onclick = function(force) {
@@ -2059,13 +2064,7 @@ function bigCrunch(autoed) {
 	if (player.currentChallenge.includes("post") && player.infchallengeTimes[challNumber-1] > player.thisInfinityTime) player.infchallengeTimes[challNumber-1] = player.thisInfinityTime
 	if (player.currentChallenge == "postc5" && player.thisInfinityTime <= 100) giveAchievement("Hevipelle did nothing wrong")
 	if (player.tickspeedBoosts != undefined && player.thisInfinityTime <= 100 && player.currentChallenge == "postc7") giveAchievement("Hevipelle did nothing wrong")
-	if (isEmptiness) {
-		showTab("dimensions")
-		isEmptiness = false
-		if (player.eternities > 0 || quantumed) el("eternitystorebtn").style.display = "inline-block"
-		if (quantumed) el("quantumtabbtn").style.display = "inline-block"
-		if (ghostified) el("ghostifytabbtn").style.display = "inline-block"
-	}
+	if (isEmptiness) showTab("dimensions")
 	if (player.currentChallenge != "" && !player.challenges.includes(player.currentChallenge)) player.challenges.push(player.currentChallenge);
 	if (player.currentChallenge == "postc8") giveAchievement("Anti-antichallenged");
 	var add = getIPMult()
@@ -2136,12 +2135,20 @@ function doCheckECCompletionStuff(){
 	return forceRespec
 }
 
+function canEternity() {
+	var eter25 = getEternitied() >= 25
+	var dilLocked = !inQCModifier("ad") && player.dilation.active
+
+	var id7unlocked = player.infDimensionsUnlocked[7]
+	if (eter25) id7unlocked = true
+	if (tmp.ngp3 && brSave.active) id7unlocked = true
+
+	return player.infinityPoints.gte(player.eternityChallGoal || Number.MAX_VALUE) && id7unlocked && !dilLocked
+}
 
 function eternity(force, auto, presetLoad, dil) {
-	var id7unlocked = player.infDimensionsUnlocked[7]
-	if (tmp.ngp3) if (brSave.active) id7unlocked = true
-	var canEternity = force || (player.infinityPoints.gte(Number.MAX_VALUE) && id7unlocked && (auto || !player.options.eternityconfirm || confirm("Eternity will reset everything except achievements and challenge records. You will also gain an Eternity point and unlock various upgrades.")))
-	if (!canEternity) return
+	if (!force && !canEternity()) return
+	if (!auto && player.options.eternityconfirm && !confirm("Eternity will reset everything except achievements and challenge records. You will also gain an Eternity point and unlock various upgrades.")) return
 	
 	if (force) player.currentEternityChall = "";
 	if (player.currentEternityChall !== "" && player.infinityPoints.lt(player.eternityChallGoal)) return false
@@ -2156,12 +2163,7 @@ function eternity(force, auto, presetLoad, dil) {
 	if (player.infinitied <= 1 && !force) giveAchievement("Do I really need to infinity")
 	if (gainedEternityPoints().gte("1e600") && player.thisEternity <= 600 && player.dilation.active && !force) giveAchievement("Now you're thinking with dilation!")
 	if (ghostified && player.currentEternityChall == "eterc11" && inQC(6) && inQC(8) && inQCModifier("ad") && player.infinityPoints.e >= 15500) giveAchievement("The Deep Challenge")
-	if (isEmptiness) {
-		showTab("dimensions")
-		isEmptiness = false
-		if (quantumed) el("quantumtabbtn").style.display = "inline-block"
-		if (ghostified) el("ghostifytabbtn").style.display = "inline-block"
-	}
+	if (isEmptiness) showTab("dimensions")
 	temp = []
 	if (gainedEternityPoints().gte(player.eternityPoints) && player.eternityPoints.gte("1e1185") && (tmp.ngp3 ? player.dilation.active && brSave.active : false)) giveAchievement("Gonna go fast")
 	var oldEP = player.eternityPoints
@@ -2281,9 +2283,8 @@ function eternity(force, auto, presetLoad, dil) {
 		el("infmultbuyer").textContent = "Autobuy IP mult O" + (player.infMultBuyer ? "N" : "FF")
 	}
 	hideMaxIDButton()
-	el("eternitybtn").style.display = player.infinityPoints.gte(player.eternityChallGoal) ? "inline-block" : "none"
+	el("eternitybtn").style.display = "none"
 	el("eternityPoints2").style.display = "inline-block"
-	el("eternitystorebtn").style.display = "inline-block"
 	updateEternityUpgrades()
 	el("totaltickgained").textContent = "You've gained "+getFullExpansion(player.totalTickGained)+" tickspeed upgrades."
 	hideDimensions()
@@ -2690,9 +2691,8 @@ function startEternityChallenge(n) {
 		el("infmultbuyer").textContent = "Autobuy IP mult O" + (player.infMultBuyer?"N":"FF")
 	}
 	hideMaxIDButton()
-	el("eternitybtn").style.display = player.infinityPoints.gte(player.eternityChallGoal) ? "inline-block" : "none"
+	el("eternitybtn").style.display = "none"
 	el("eternityPoints2").style.display = "inline-block"
-	el("eternitystorebtn").style.display = "inline-block"
 	updateEternityUpgrades()
 	el("totaltickgained").textContent = "You've gained "+player.totalTickGained.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")+" tickspeed upgrades."
 	hideDimensions()
@@ -2905,10 +2905,6 @@ function updateResetTierButtons(){
 	} else el("galaxyPoints2").style.display = "none"
 	el("sacpos").className = preQuantumEnd?"sacpos":postBreak?"quantumpos":"eterpos"
 
-	el("bigcrunch").parentElement.style.top = haveBlock2 ? "259px" : haveBlock ? "139px" : "19px"
-	el("quantumBlock").style.display = haveBlock ? "" : "none"
-	el("quantumBlock").style.height = haveBlock2 ? "240px" : "120px"
-
 	var showQuantumBtn = false
 	var bigRipped = false
 	if (player.meta !== undefined && isQuantumReached()) showQuantumBtn = true
@@ -2962,7 +2958,6 @@ function updatePerSecond() {
 	infPoints2Display()
 	eterPoints2Display()
 	updateResetTierButtons()
-	eternityBtnDisplayType()
 	updateQuarkDisplay()
 	primaryStatsDisplayResetLayers()
 	crunchAnimationBtn()
@@ -2976,6 +2971,7 @@ function updatePerSecond() {
  	failedEC12Check()
 
 	// Other 
+	updateHeaders()
 	updateChallTabDisplay()
 	updateOrderGoals()
 	bankedInfinityDisplay()
@@ -3225,10 +3221,7 @@ function bigCrunchButtonUpdating(){
 	if (tmp.ri) {
 		el("bigcrunch").style.display = 'inline-block';
 		if ((player.currentChallenge == "" || player.options.retryChallenge) && (player.bestInfinityTime <= 600 || player.break)) {}
-		else {
-			isEmptiness = true
-			showTab('emptiness')
-		}
+		else showTab('emptiness')
 	} else if ((player.break && player.currentChallenge == "") || player.infinityUpgradesRespecced != undefined) {
 		if (player.money.gte(Number.MAX_VALUE)) {
 			el("postInfinityButton").style.display = "inline-block"
@@ -3240,16 +3233,6 @@ function bigCrunchButtonUpdating(){
 				el("postInfinityButton").innerHTML = "<b>" + (IPminpeak.log10() > 3e5 ? "Gain " : "Big Crunch for ") + shortenDimensions(gainedInfinityPoints()) + " Infinity points.</b>" + IPminpart
 			}
 		}
-	}
-}
-
-function eternityButtonUpdating(){
-	if ((player.eternities == 0 && !quantumed) || isEmptiness) {
-		el("eternityPoints2").style.display = "none"
-		el("eternitystorebtn").style.display = "none"
-	} else {
-		el("eternityPoints2").style.display = "inline-block"
-		el("eternitystorebtn").style.display = "inline-block"
 	}
 }
 
@@ -3322,31 +3305,34 @@ function IPMultBuyUpdating() {
 }
 
 function doEternityButtonDisplayUpdating(diff){
+	var unl = canEternity()
+	el("eternitybtn").style.display = unl ? "" : "none"
+	if (!unl) return
+
 	var isSmartPeakActivated = tmp.ngp3 && getEternitied() >= 1e13 && player.dilation.upgrades.includes("ngpp6")
 	var EPminpeakUnits = isSmartPeakActivated ? (player.dilation.active ? 'TP' : tmp.be ? 'EM' : 'EP') : 'EP'
 	var currentEPmin = updateEPminpeak(diff, EPminpeakUnits)
 	EPminpeakUnits = (EPminpeakType == 'logarithm' ? ' log(' + EPminpeakUnits + ')' : ' ' + EPminpeakUnits) + '/min'
-	if (el("eternitybtn").style.display == "inline-block") {
-		el("eternitybtnFlavor").textContent = (((!player.dilation.active&&gainedEternityPoints().lt(1e6))||player.eternities<1||player.currentEternityChall!==""||(player.options.theme=="Aarex's Modifications"&&player.options.notation!="Morse code"))
-									    ? ((player.currentEternityChall!=="" ? "Other challenges await..." : player.eternities>0 ? "" : "Other times await...") + " I need to become Eternal.") : "")
-		if (player.dilation.active && player.dilation.totalTachyonParticles.gte(getDilGain())) el("eternitybtnEPGain").innerHTML = "Reach " + shortenMoney(getReqForTPGain()) + " antimatter to gain more Tachyon Particles."
-		else {
-			if ((EPminpeak.lt(pow10(9)) && EPminpeakType == "logarithm") || (EPminpeakType == 'normal' && EPminpeak.lt(pow10(1e9)))) {
-				el("eternitybtnEPGain").innerHTML = ((player.eternities > 0 && (player.currentEternityChall==""||player.options.theme=="Aarex's Modifications"))
-											  ? "Gain <b>"+(player.dilation.active?shortenMoney(getDilGain().sub(player.dilation.totalTachyonParticles)):shortenDimensions(gainedEternityPoints()))+"</b> "+(player.dilation.active?"Tachyon particles.":tmp.be?"EP and <b>"+shortenDimensions(getEMGain())+"</b> Eternal Matter.":"Eternity points.") : "")
-			} else {
-				el("eternitybtnEPGain").innerHTML = "Go Eternal"
-			}
-		}
-		var showEPmin=(player.currentEternityChall===""||player.options.theme=="Aarex's Modifications")&&EPminpeak>0&&player.eternities>0&&player.options.notation!='Morse code'&&player.options.notation!='Spazzy'&&(!(player.dilation.active||tmp.be)||isSmartPeakActivated)
-		if (EPminpeak.log10() < 1e5) {
-			el("eternitybtnRate").textContent = (showEPmin&&(EPminpeak.lt("1e30003")||player.options.theme=="Aarex's Modifications")
-										  ? (EPminpeakType == "normal" ? shortenDimensions(currentEPmin) : shorten(currentEPmin))+EPminpeakUnits : "")
-			el("eternitybtnPeak").textContent = showEPmin ? "Peaked at "+(EPminpeakType == "normal" ? shortenDimensions(EPminpeak) : shorten(EPminpeak))+EPminpeakUnits : ""
+
+	el("eternitybtnFlavor").textContent = (((!player.dilation.active&&gainedEternityPoints().lt(1e6))||player.eternities<1||player.currentEternityChall!==""||(player.options.theme=="Aarex's Modifications"&&player.options.notation!="Morse code"))
+									? ((player.currentEternityChall!=="" ? "Other challenges await..." : player.eternities>0 ? "" : "Other times await...") + " I need to become Eternal.") : "")
+	if (player.dilation.active && player.dilation.totalTachyonParticles.gte(getDilGain())) el("eternitybtnEPGain").innerHTML = "Reach " + shortenMoney(getReqForTPGain()) + " antimatter to gain more Tachyon Particles."
+	else {
+		if ((EPminpeak.lt(pow10(9)) && EPminpeakType == "logarithm") || (EPminpeakType == 'normal' && EPminpeak.lt(pow10(1e9)))) {
+			el("eternitybtnEPGain").innerHTML = ((player.eternities > 0 && (player.currentEternityChall==""||player.options.theme=="Aarex's Modifications"))
+										  ? "Gain <b>"+(player.dilation.active?shortenMoney(getDilGain().sub(player.dilation.totalTachyonParticles)):shortenDimensions(gainedEternityPoints()))+"</b> "+(player.dilation.active?"Tachyon particles.":tmp.be?"EP and <b>"+shortenDimensions(getEMGain())+"</b> Eternal Matter.":"Eternity points.") : "")
 		} else {
-			el("eternitybtnRate").textContent = ''
-			el("eternitybtnPeak").textContent = ''
+			el("eternitybtnEPGain").innerHTML = "Go Eternal"
 		}
+	}
+	var showEPmin=(player.currentEternityChall===""||player.options.theme=="Aarex's Modifications")&&EPminpeak>0&&player.eternities>0&&player.options.notation!='Morse code'&&player.options.notation!='Spazzy'&&(!(player.dilation.active||tmp.be)||isSmartPeakActivated)
+	if (EPminpeak.log10() < 1e5) {
+		el("eternitybtnRate").textContent = (showEPmin&&(EPminpeak.lt("1e30003")||player.options.theme=="Aarex's Modifications")
+									  ? (EPminpeakType == "normal" ? shortenDimensions(currentEPmin) : shorten(currentEPmin))+EPminpeakUnits : "")
+		el("eternitybtnPeak").textContent = showEPmin ? "Peaked at "+(EPminpeakType == "normal" ? shortenDimensions(EPminpeak) : shorten(EPminpeak))+EPminpeakUnits : ""
+	} else {
+		el("eternitybtnRate").textContent = ''
+		el("eternitybtnPeak").textContent = ''
 	}
 }
 
@@ -3391,8 +3377,8 @@ function doGhostifyButtonDisplayUpdating(diff){
 	var ghostifyGains = []
 	if (ghostified) ghostifyGains.push(shortenDimensions(getGHPGain()) + " Elementary Particles")
 	if (ghostified && hasAch("ng3p78")) ghostifyGains.push(shortenDimensions(Decimal.times(6e3 * brSave.bestGals, getGhostifiedGain()).times(getNeutrinoGain())) + " Neutrinos")
-	if (hasBU(15)) ghostifyGains.push(getFullExpansion(getGhostifiedGain()) + " Ghostifies")
-	el("ghostifybtnFlavor").textContent = ghostifyGains.length > 1 ? "" : (ghostifyGains.length ? "" : "Research time! ") + "I need to fundament."
+	if (hasBU(15)) ghostifyGains.push(getFullExpansion(getGhostifiedGain()) + " Fundaments")
+	el("ghostifybtnFlavor").textContent = ghostifyGains.length > 1 ? "" : (ghostifyGains.length ? "" : "Time to enlarge! ") + "I need to fundament."
 	el("GHPGain").textContent = ghostifyGains.length ? "Gain " + ghostifyGains[0] + (ghostifyGains.length > 2 ? ", " + ghostifyGains[1] + "," : "") + (ghostifyGains.length > 1 ? " and " + ghostifyGains[ghostifyGains.length-1] : "") + "." : ""
 	var showGHPPeakValue = GHPminpeakValue.lt(1e6) || player.options.theme=="Aarex's Modifications"
 	el("GHPRate").textContent = ghostifyGains.length == 1 && showGHPPeakValue ? getGHPRate(currentGHPmin) : ""
@@ -3444,31 +3430,10 @@ function galSacDisplay(){
 		el("galaxybtn").style.display = "inline-block"
 		el("galaxyPoints2").innerHTML = "You have <span class='GPAmount'>"+shortenDimensions(player.galacticSacrifice.galaxyPoints)+"</span> Galaxy point"+(player.galacticSacrifice.galaxyPoints.eq(1)?".":"s.")
 	} else el("galaxybtn").style.display = "none";
-	el("automationbtn").style.display = aarMod.ngmX > 3 && (player.challenges.includes("challenge1") || player.infinitied > 0 || player.eternities != 0 || quantumed) && !isEmptiness ? "inline-block" : "none"
 	if (el("paradox").style.display=='block') updatePUMults()
 	if (el("galaxy").style.display=='block') {
 		galacticUpgradeSpanDisplay()
 		galacticUpgradeButtonTypeDisplay()
-	}
-}
-
-function isEmptinessDisplayChanges(){
-	if (isEmptiness) {
-		el("dimensionsbtn").style.display = "none";
-		el("optionsbtn").style.display = "none";
-		el("statisticsbtn").style.display = "none";
-		el("achievementsbtn").style.display = "none";
-		el("tickSpeed").style.visibility = "hidden";
-		el("tickSpeedMax").style.visibility = "hidden";
-		el("tickLabel").style.visibility = "hidden";
-		el("tickSpeedAmount").style.visibility = "hidden";
-		el("quantumtabbtn").style.display = "none"
-		el("ghostifytabbtn").style.display = "none"
-	} else {
-		el("dimensionsbtn").style.display = "inline-block";
-		el("optionsbtn").style.display = "inline-block";
-		el("statisticsbtn").style.display = "inline-block";
-		el("achievementsbtn").style.display = "inline-block";
 	}
 }
 
@@ -3824,7 +3789,6 @@ function gameLoop(diff) {
 	infDimTabUpdating()
 	dimensionPageTabsUpdating()
 	bigCrunchButtonUpdating()
-	eternityButtonUpdating()
 	IRsetsUnlockUpdating()
 	nextICUnlockUpdating()
 
@@ -3866,10 +3830,6 @@ function gameLoop(diff) {
 	galSacDisplay()
 	d8SacDisplay()
 
-	el("challengesbtn").style.display = player.challenges.includes("challenge1") && !isEmptiness ? "inline-block" : "none"
-	el("infinitybtn").style.display = (player.infinitied > 0 || player.infinityPoints.gt(0) || player.eternities !== 0 || quantumed) && !isEmptiness ? "inline-block" : "none"
-
-	isEmptinessDisplayChanges()
 	DimBoostBulkDisplay()
 	el("epmult").className = player.eternityPoints.gte(player.epmultCost) ? "eternityupbtn" : "eternityupbtnlocked"
 
@@ -4590,7 +4550,6 @@ function resetUP() {
 	clearInterval(updatePowerInt)
 	updatePowers()
 	updateTemp()
-	updateColorDimPowers()
 	mult18 = 1
 	updatePowerInt = setInterval(updatePowers, 100)
 }

@@ -19,10 +19,7 @@ function updateTreeOfDecayTab(){
 	var branchNum
 	var colors = ["red", "green", "blue"]
 	var shorthands = ["r", "g", "b"]
-	if (el("redBranch").style.display == "block") branchNum = 1
-	if (el("greenBranch").style.display == "block") branchNum = 2
-	if (el("blueBranch").style.display == "block") branchNum = 3
-	for (var c = 0; c < 3; c++) {
+	for (var c = 0; c < 1; c++) {
 		var color = colors[c]
 		var shorthand = shorthands[c]
 		var branch = todSave[shorthand]
@@ -37,44 +34,43 @@ function updateTreeOfDecayTab(){
 		el(color + "QuarksDecayTime").innerHTML = timeDisplayShort(Decimal.div(10, rate).times(branch.quarks.gt(linear) ? branch.quarks.div(linear).log(2) + 1 : branch.quarks.div(linear)))
 		let ret = getQuarkSpinProduction(shorthand)
 		el(color + "QuarkSpinProduction").innerHTML = "(+" + shortenMoney(ret) + "/s)"
-		if (branchNum == c + 1) {
-			let decays = getRadioactiveDecays(shorthand)
-			let power = Math.floor(getBU1Power(shorthand) / 120 + 1)			
-			el(color + "UpgPow1").innerHTML = decays || power > 1 ? shorten(pow2((1 + decays * .1) / power)) : 2
-			el(color + "UpgSpeed1").innerHTML = decays > 2 || power > 1 ? shorten(pow2(Math.max(.8 + decays * .1, 1) / power)) : 2
 
-			let lvl = getBranchUpgLevel(shorthand, 3)
-			let s = getBranchUpg3SoftcapStart()
-			if (lvl >= s) eff = E_pow(4, (Math.sqrt((lvl + 1) / s) - Math.sqrt(lvl / s)) * s).toFixed(2)
-			else eff = "4"
-			el(color + "UpgEffDesc").innerHTML = " " + eff + "x"
+		let decays = getRadioactiveDecays(shorthand)
+		let power = Math.floor(getBU1Power(shorthand) / 120 + 1)			
+		el(color + "UpgPow1").innerHTML = decays || power > 1 ? shorten(pow2((1 + decays * .1) / power)) : 2
+		el(color + "UpgSpeed1").innerHTML = decays > 2 || power > 1 ? shorten(pow2(Math.max(.8 + decays * .1, 1) / power)) : 2
 
-			for (var u = 1; u <= 3; u++) el(color + "upg" + u).className = "gluonupgrade " + (branch.spin.lt(getBranchUpgCost(shorthand, u)) ? "unavailablebtn" : shorthand)
-			if (ghostified) el(shorthand+"RadioactiveDecay").className = "gluonupgrade "  +(branch.quarks.lt(pow10(Math.pow(2, 50))) ? "unavailablebtn" : shorthand)
-		}
+		let lvl = getBranchUpgLevel(shorthand, 3)
+		let s = getBranchUpg3SoftcapStart()
+		if (lvl >= s) eff = E_pow(4, (Math.sqrt((lvl + 1) / s) - Math.sqrt(lvl / s)) * s).toFixed(2)
+		else eff = "4"
+		el(color + "UpgEffDesc").innerHTML = " " + eff + "x"
+
+		for (var u = 1; u <= 3; u++) el(color + "upg" + u).className = "gluonupgrade " + (branch.spin.lt(getBranchUpgCost(shorthand, u)) ? "unavailablebtn" : shorthand)
+		if (ghostified) el(shorthand+"RadioactiveDecay").className = "gluonupgrade "  +(branch.quarks.lt(pow10(Math.pow(2, 50))) ? "unavailablebtn" : shorthand)
 	} //for loop
-	if (!branchNum) {
-		var start = getLogTotalSpin() > 200 ? "" : "Cost: "
-		var end = getLogTotalSpin() > 200 ? "" : " quark spin"
-		for (var u = 1; u <= 8; u++) {
-			var lvl = getTreeUpgradeLevel(u)
-			el("treeupg" + u).className = "gluonupgrade " + (canBuyTreeUpg(u) ? shorthands[getTreeUpgradeLevel(u) % 3] : "unavailablebtn")
-			el("treeupg" + u + "current").innerHTML = getTreeUpgradeEffectDesc(u)
-			el("treeupg" + u + "lvl").innerHTML = getFullExpansion(lvl) + (tmp.tue > 1 ? " -> " + getFullExpansion(Math.floor(lvl * tmp.tue)) : "")
-			el("treeupg" + u + "cost").innerHTML = start + shortenMoney(getTreeUpgradeCost(u)) + " " + colors[lvl % 3] + end
-		}
-		/*
-		if (ghostified){
-			el("treeUpgradeEff").innerHTML = getTreeUpgradeEfficiencyDisplayText()
-			el("treeUpgradeEff").style.display = ""
-		} else {
-			el("treeUpgradeEff").style.display = "none"
-		} 
-		// This currently isnt working so hm....
-		*/
-		setAndMaybeShow("treeUpgradeEff", ghostified, '"Tree upgrade efficiency: "+(tmp.tue*100).toFixed(1)+"%"')
-		// I want to make it getTreeUpgradeEfficiencyDisplay(), but that doesnt work, so leaveing it out for now
+
+	var start = getLogTotalSpin() > 200 ? "" : "Cost: "
+	var end = getLogTotalSpin() > 200 ? "" : " quark spin"
+	for (var u = 1; u <= 8; u++) {
+		var lvl = getTreeUpgradeLevel(u)
+		el("treeupg" + u).className = "gluonupgrade " + (canBuyTreeUpg(u) ? "r" : "unavailablebtn")
+		el("treeupg" + u + "current").innerHTML = getTreeUpgradeEffectDesc(u)
+		el("treeupg" + u + "lvl").innerHTML = getFullExpansion(lvl) + (tmp.tue > 1 ? " -> " + getFullExpansion(Math.floor(lvl * tmp.tue)) : "")
+		el("treeupg" + u + "cost").innerHTML = start + shortenMoney(getTreeUpgradeCost(u)) + " red" + end
 	}
+	/*
+	if (ghostified){
+		el("treeUpgradeEff").innerHTML = getTreeUpgradeEfficiencyDisplayText()
+		el("treeUpgradeEff").style.display = ""
+	} else {
+		el("treeUpgradeEff").style.display = "none"
+	} 
+	// This currently isnt working so hm....
+	*/
+	setAndMaybeShow("treeUpgradeEff", ghostified, '"Tree upgrade efficiency: "+(tmp.tue*100).toFixed(1)+"%"')
+	// I want to make it getTreeUpgradeEfficiencyDisplay(), but that doesnt work, so leaveing it out for now
+
 	updateToDSpeedDisplay()
 }
 
@@ -101,7 +97,7 @@ function updateTODStuff() {
 	}
 	var colors = ["red", "green", "blue"]
 	var shorthands = ["r", "g", "b"]
-	for (var c = 0; c < 3; c++) {
+	for (var c = 0; c < 1; c++) {
 		var color = colors[c]
 		var shorthand = shorthands[c]
 		var name = getUQName(shorthand)
@@ -114,24 +110,6 @@ function updateTODStuff() {
 			el(shorthand+"RDLvl").innerHTML = getFullExpansion(getRadioactiveDecays(shorthand))
 		} else el(shorthand+"RadioactiveDecay").parentElement.parentElement.style.display = "none"
 	}
-}
-
-function showBranchTab(tabName) {
-	//iterate over all elements in div_tab class. Hide everything that's not tabName and show tabName
-	var tabs = document.getElementsByClassName('branchtab');
-	var tab;
-	var oldTab
-	for (var i = 0; i < tabs.length; i++) {
-		tab = tabs.item(i);
-		if (tab.style.display == 'block') oldTab = tab.id
-		if (tab.id === tabName + "Branch") {
-			tab.style.display = 'block';
-		} else {
-			tab.style.display = 'none';
-		}
-	}
-	if (oldTab !== tabName) aarMod.tabsSave.tabBranch = tabName
-	closeToolTip()
 }
 
 function getUnstableGain(branch) {
@@ -237,15 +215,12 @@ function getTreeUpgradeCost(upg,add) {
 }
 
 function canBuyTreeUpg(upg) {
-	var shorthands = ["r", "g", "b"]
-	return getTreeUpgradeCost(upg).lte(todSave[shorthands[getTreeUpgradeLevel(upg) % 3]].spin)
+	return getTreeUpgradeCost(upg).lte(todSave.r.spin)
 }
 
 function buyTreeUpg(upg) {
 	if (!canBuyTreeUpg(upg)) return
-	var colors = ["red", "green", "blue"]
-	var shorthands = ["r", "g", "b"]
-	var branch = todSave[shorthands[getTreeUpgradeLevel(upg) % 3]]
+	var branch = todSave.r
 	branch.spin = branch.spin.sub(getTreeUpgradeCost(upg))
 	if (!todSave.upgrades[upg]) todSave.upgrades[upg] = 0
 	todSave.upgrades[upg]++
@@ -339,20 +314,6 @@ function rotateAutoAssign() {
 	el('autoAssignRotate').innerHTML = "Rotation: " + (quSave.autoOptions.assignQKRotate > 1 ? "Left" : quSave.autoOptions.assignQKRotate ? "Right" : "None")
 }
 
-function unstableAll() {
-	var colors = ["r", "g", "b"]
-	for (var c = 0; c < 3; c++) {
-		var bData = todSave[colors[c]]
-		if (quSave.usedQuarks[colors[c]].gt(0) && getUnstableGain(colors[c]).gt(bData.quarks)) {
-			bData.quarks = bData.quarks.max(getUnstableGain(colors[c]))
-			if (ghSave.milestones < 4) quSave.usedQuarks[colors[c]] = E(0)
-		}
-		player.unstableThisGhostify ++
-	}
-	updateColorCharge()
-	updateQuantumWorth()
-}
-
 var uq_names = {
 	standard(rds) {
 		let x = "unstable"
@@ -438,34 +399,31 @@ function maxTreeUpg() {
 	var todData = todSave
 	for (var u = 1; u <= 8; u++) {
 		var cost = getTreeUpgradeCost(u)
-		var newSpins = []
 		var lvl = getTreeUpgradeLevel(u)
-		var min
-		for (var c = 0; c < 3; c++) {
-			min = todData[colors[c]].spin.min(c ? min : 1/0)
-			newSpins[c] = todData[colors[c]].spin
-		}
-		if (newSpins[lvl % 3].gte(cost)) {
+		var min = todData.r.spin
+		var newSpins = todData.r.spin
+
+		if (newSpins.gte(cost)) {
 			var increment = 1
-			while (newSpins[(lvl + increment - 1) % 3].gte(getTreeUpgradeCost(u, increment - 1))) increment *= 2
+			while (newSpins.gte(getTreeUpgradeCost(u, increment - 1))) increment *= 2
 			var toBuy = 0
 			while (increment >= 1) {
-				if (newSpins[(lvl + toBuy + increment - 1) % 3].gte(getTreeUpgradeCost(u, toBuy + increment - 1))) toBuy += increment
+				if (newSpins.gte(getTreeUpgradeCost(u, toBuy + increment - 1))) toBuy += increment
 				increment /= 2
 			}
 			var cost = getTreeUpgradeCost(u, toBuy - 1)
 			var toBuy2 = toBuy
-			while (toBuy > 0 && newSpins[(lvl + toBuy - 1) % 3].div(cost).lt(1e16)) {
-				if (newSpins[(lvl + toBuy - 1) % 3].gte(cost)) newSpins[(lvl + toBuy - 1) % 3]=newSpins[(lvl + toBuy - 1) % 3].sub(cost)
+			while (toBuy > 0 && newSpins.div(cost).lt(1e16)) {
+				if (newSpins.gte(cost)) newSpins = newSpins.sub(cost)
 				else {
-					newSpins[(lvl + toBuy - 1) % 3] = todData[colors[(lvl + toBuy - 1) % 3]].spin.sub(cost)
+					newSpins = todData.r.spin.sub(cost)
 					toBuy2--
 				}
 				toBuy--
 				cost = getTreeUpgradeCost(u, toBuy - 1)
 			}
 			if (toBuy2) {
-				for (c = 0; c < 3; c++) todData[colors[c]].spin = isNaN(newSpins[c].e) ? E(0) : newSpins[c]
+				todData.r.spin = isNaN(newSpins.e) ? E(0) : newSpins
 				todData.upgrades[u] = toBuy2 + (todData.upgrades[u] === undefined ? 0 : todData.upgrades[u])
 				update = true
 			}
@@ -508,13 +466,8 @@ function radioactiveDecay(shorthand) {
 	if (ghSave.milestones > 3) data.upgrades[1] = 5
 	data.decays = data.decays === undefined ? 1 : data.decays + 1
 	let sum = 0
-	for (var c = 0; c < 3; c++) sum += getRadioactiveDecays((['r', 'g', 'b'])[c])
+	for (var c = 0; c < 1; c++) sum += getRadioactiveDecays((['r', 'g', 'b'])[c])
 	updateTODStuff()
-}
-
-
-function getTotalRadioactiveDecays(){
-	return getRadioactiveDecays('g') + getRadioactiveDecays('b') + getRadioactiveDecays('r')
 }
 
 function getRadioactiveDecays(shorthand) {
@@ -525,7 +478,7 @@ function getRadioactiveDecays(shorthand) {
 function getMinimumUnstableQuarks() {
 	let r={quarks:E(1/0),decays:1/0}
 	let c=["r","g","b"]
-	for (var i=0;i<3;i++) {
+	for (var i=0;i<1;i++) {
 		let b=todSave[c[i]]
 		let d=b.decays||0
 		if (r.decays>d||(r.decays==d&&b.quarks.lte(r.quarks))) r={quarks:b.quarks,decays:d}
@@ -536,7 +489,7 @@ function getMinimumUnstableQuarks() {
 function getMaximumUnstableQuarks() {
 	let r = {quarks:E(0),decays:0}
 	let c = ["r","g","b"]
-	for (var i = 0; i < 3; i++) {
+	for (var i=0;i<1;i++) {
 		let b = todSave[c[i]]
 		let d = b.decays || 0
 		if (r.decays < d || (r.decays == d && b.quarks.gte(r.quarks))) r = {quarks: b.quarks, decays: d}
@@ -601,7 +554,7 @@ function getBranchUpgMult(branch, upg) {
 
 function treeOfDecayUpdating(diff){
 	var colorShorthands=["r","g","b"]
-	for (var c = 0; c < 3; c++) {
+	for (var c = 0; c < 1; c++) {
 		var shorthand = colorShorthands[c]
 		var branch = todSave[shorthand]
 		var decayRate = getDecayRate(shorthand)

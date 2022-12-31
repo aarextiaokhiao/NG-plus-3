@@ -258,7 +258,7 @@ function automatorTick(diff) {
 	}
 	if (NF.unl()) {
 		let colorShorthands = ["r", "g", "b"]
-		for (let c = 1; c <= 3; c++) {
+		for (let c = 1; c <= 1; c++) {
 			let shorthand = colorShorthands[c - 1]
 			if (isAutoGhostActive(c) && quSave.usedQuarks[shorthand].gt(0) && todSave[shorthand].quarks.eq(0)) unstableQuarks(shorthand)
 			if (isAutoGhostActive(12) && getUnstableGain(shorthand).max(todSave[shorthand].quarks).gte(Decimal.pow(10, Math.pow(2, 50)))) {

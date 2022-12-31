@@ -11,7 +11,6 @@ function updateSpeedruns() {
 			speedrunMilestonesReached++
 		}
 	}
-	el('sacrificeAuto').style.display = speedrunMilestonesReached >= 25 ? "" : "none"
 	for (var i = 1; i <= 28; i++) el("speedrunMilestone"+i).className = "achievement achievement" + (speedrunMilestonesReached >= i ? "un" : "") + "locked"
 	for (var i = 1; i <= 4; i++) el("speedrunRow"+i).className = speedrunMilestonesReached < ( i > 3 ? 28 : i * 8) ? "" : "completedrow"
 	if (speedrunMilestonesReached >= 26) el('rebuyupgmax').style.display = "none"

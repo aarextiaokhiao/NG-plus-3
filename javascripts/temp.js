@@ -209,7 +209,6 @@ function updatePPTITemp(){
 
 function updateGhostifyTempStuff(){
 	updateBosonicLabTemp()
-	tmp.apgw = getAntiPreonGhostWake()
 	updatePPTITemp() //preon power threshold increase
 	if (ghSave.ghostlyPhotons.unl) {
 		var x = getLightEmpowermentBoost()

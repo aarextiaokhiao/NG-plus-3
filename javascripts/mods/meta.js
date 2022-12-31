@@ -444,7 +444,6 @@ function getMetaUnlCost() {
 function metaDimsUpdating(diff){
 	player.meta.antimatter = player.meta.antimatter.plus(getMetaDimensionProduction(1).times(diff))
 	if (inQC(4)) player.meta.antimatter = player.meta.antimatter.plus(getMetaDimensionProduction(1).times(diff))
-	if (tmp.ngp3 && inQC(0)) gainQuarkEnergy(player.meta.bestAntimatter, player.meta.antimatter)
 	player.meta.bestAntimatter = player.meta.bestAntimatter.max(player.meta.antimatter)
 	if (tmp.ngp3) {
 		player.meta.bestOverQuantums = player.meta.bestOverQuantums.max(player.meta.antimatter)

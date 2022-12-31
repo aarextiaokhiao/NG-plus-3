@@ -72,22 +72,18 @@ function updateReplicantsSubtab(){
 }
 
 var antTabs = {
-	tabIds: ["antcore", "emperordimensions", "nanofield", "antipreon"],
+	tabIds: ["antcore", "emperordimensions", "nanofield"],
 	update: {
 		antcore: () => updateReplicantsSubtab(),
 		emperordimensions: () => updateEmperorDimensions(),
-		nanofield: () => updateNanoverseTab(),
-		antipreon: () => updateNanofieldAntipreon()
+		nanofield: () => updateNanoverseTab()
 	}
 }
 
 function updateReplicants(mode) {
 	if (player.masterystudies == undefined ? true : ghSave.milestones < 8) mode = undefined
 	if (mode === undefined) {
-		if (player.masterystudies ? !player.masterystudies.includes("d10") : true) {
-			el("replicantstabbtn").style.display = "none"
-			return
-		} else el("replicantstabbtn").style.display = ""
+		if (player.masterystudies ? !player.masterystudies.includes("d10") : true) return
 	}
 	if (mode === undefined || mode === "display") {
 		el("quantumFoodAmount").textContent = getFullExpansion(quSave.replicants.quantumFood)
@@ -194,7 +190,7 @@ function getEmperorDimensionGlobalMultiplier() {
 
 function getEmperorDimensionRateOfChange(dim) {
 	if (!canFeedReplicant(dim, true)) return 0
-	let toGain = getEmperorDimensionMultiplier(dim + 1).times(EDsave[dim + 1].workers).div(20)
+	let toGain = getEmperorDimensionMultiplier(dim + 1).times(EDsave[dim + 1].workers).div(2)
 
 	var current = EDsave[dim].workers.add(EDsave[dim].progress).max(1)
 	if (aarMod.logRateChange) {
@@ -293,12 +289,12 @@ function getHatchSpeed() {
 	if (player.masterystudies.includes("t391")) speed /= getMTSMult(391)
 	if (player.masterystudies.includes("t402")) speed /= 30
 	if (isNanoEffectUsed("hatch_speed")) speed /= tmp.nf.effects.hatch_speed
+	speed /= 5
 	return speed
 }
 
 function teleportToEDs() {
-	showTab("quantumtab")
-	showQuantumTab("replicants")
+	showTab("replicants")
 	showAntTab("emperordimensions")
 }
 
@@ -430,7 +426,7 @@ function replicantOverallUpdating(diff){
 }
 
 function replicantEggonUpdating(diff){
-	var newBabies = tmp.twr.times(getEmperorDimensionMultiplier(1)).times(getSpinToReplicantiSpeed()).times(diff/200)
+	var newBabies = tmp.twr.times(getEmperorDimensionMultiplier(1)).times(getSpinToReplicantiSpeed()).times(diff/20)
 	if (hasAch("ng3p35")) newBabies = newBabies.times(10)
 	quSave.replicants.eggonProgress = quSave.replicants.eggonProgress.add(newBabies)
 	var toAdd = quSave.replicants.eggonProgress.floor()
@@ -476,7 +472,7 @@ function emperorDimUpdating(diff){
 		var promote = hasNU(2) ? 1/0 : getWorkerAmount(dim-2)
 		if (canFeedReplicant(dim-1,true)) {
 			if (dim>2) promote = EDsave[dim-2].workers.sub(10).round().min(promote)
-			EDsave[dim-1].progress = EDsave[dim-1].progress.add(EDsave[dim].workers.times(getEmperorDimensionMultiplier(dim)).times(diff/200)).min(promote)
+			EDsave[dim-1].progress = EDsave[dim-1].progress.add(EDsave[dim].workers.times(getEmperorDimensionMultiplier(dim)).times(diff/20)).min(promote)
 			var toAdd = EDsave[dim-1].progress.floor()
 			if (toAdd.gt(0)) {
 				if (!hasAch("ng3p52")) {

@@ -23,8 +23,8 @@ function updateBLParticleUnlocks() {
 	el("bosonicResets").style.display = ghSave.hb.unl ? "" : "none"
 	el("hftabbtn").style.display = ghSave.hb.higgs >= 60 ? "" : "none"
 	el("gravtabbtn").style.display = ghSave.gravitons.unl ? "" : "none"
-	el("breakDilationTabbtn").style.display = ghSave.gravitons.unl ? "" : "none"
-	el("breakDilationTabbtn2").style.display = ghSave.gravitons.unl ? "" : "none"
+	el("annitabbtn").style.display = ghSave.gravitons.unl ? "" : "none"
+	el("temptabbtn").style.display = ghSave.gravitons.unl ? "" : "none"
 	updateBLParticleDisplay()
 }
 
@@ -36,7 +36,6 @@ function updateBLParticleDisplay() {
 }
 
 function bosonicLabReset() {
-	delete nfSave.apgWoke
 	ghSave.neutrinos.electron = E(0)
 	ghSave.neutrinos.mu = E(0)
 	ghSave.neutrinos.tau = E(0)

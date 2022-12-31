@@ -40,20 +40,12 @@ function updateNanoverseTab() {
 	el("ns").textContent = getNanospeedText()
 }
 
-function updateNanofieldAntipreon(){
-	var rewards = nfSave.rewards
-	el("rewards_AP").textContent = getFullExpansion(rewards)
-	el("rewards_wake").textContent = getFullExpansion(tmp.apgw)
-	el("sleepy").style.display = nfSave.apgWoke ? "none" : ""
-	el("woke").style.display = nfSave.apgWoke ? "" : "none"
-}
 
 function getQuarkChargeProduction(noSpeed) {
 	let ret = E(1)
 	if (isNanoEffectUsed("preon_charge")) ret = tmp.nf.effects.preon_charge
 	if (hasNU(3)) ret = ret.times(tmp.nu[1])
 	if (hasNU(7)) ret = ret.times(tmp.nu[3])
-	if (nfSave.power > tmp.apgw) ret = ret.div(pow2((nfSave.power - tmp.apgw) / 2))
 	if (!noSpeed) ret = ret.times(getNanofieldFinalSpeed())
 	return ret
 }
@@ -69,7 +61,6 @@ function getQuarkLossProduction() {
 	if (retCube.gte("1e180")) retCube = retCube.pow(Math.pow(180 / retCube.log10(), 2 / 3))
 	ret = ret.times(retCube).times(4e25)
 	if (hasNU(3)) ret = ret.div(10)
-	if (nfSave.power > tmp.apgw) ret = ret.pow((nfSave.power - tmp.apgw) / 5 + 1)
 	ret = ret.times(getNanofieldFinalSpeed())
 	return ret
 }
@@ -86,7 +77,6 @@ function getQuarkEnergyProduction() {
 function getQuarkAntienergyProduction() {
 	let ret = nfSave.charge.sqrt()
 	if (player.masterystudies.includes("t401")) ret = ret.div(getMTSMult(401))
-	if (nfSave.power > tmp.apgw) ret = ret.times(pow2((nfSave.power - tmp.apgw) / 2))
 	ret = ret.times(getNanofieldFinalSpeed())
 	return ret
 }
@@ -225,12 +215,6 @@ function getNanofieldFinalSpeed() {
 
 function getNanoRewardPower(reward, rewards) {
 	let x = Math.ceil((rewards - reward + 1) / 8)
-	let apgw = tmp.apgw
-	if (rewards >= apgw) {
-		let sbsc = Math.ceil((apgw - reward + 1) / 8)
-		x = Math.sqrt((x / 2 + sbsc / 2) * sbsc)
-		if (reward == (rewards - 1) % 8 + 1) x += 0.5
-	}
 	return x * tmp.nf.powerEff
 }
 
@@ -293,17 +277,7 @@ function nanofieldUpdating(diff){
 		nfSave.energy = nfSave.energy.add(toAddAE.div(AErate).times(getQuarkEnergyProduction()))
 		tmp.nanofield_free_rewards = 0
 		updateNextPreonEnergyThreshold()
-		if (nfSave.power > nfSave.rewards) {
-			nfSave.rewards = nfSave.power
-			
-			if (!nfSave.apgWoke && nfSave.rewards >= tmp.apgw) {
-				nfSave.apgWoke = tmp.apgw
-				$.notify("You reached " + getFullExpansion(tmp.apgw) + " rewards... The Anti-Preonius has woken up and took over the Nanoverse! Be careful!")
-				showTab("quantumtab")
-				showQuantumTab("replicants")
-				showAntTab("antipreon")
-			}
-		}
+		if (nfSave.power > nfSave.rewards) nfSave.rewards = nfSave.power
 	}
 }
 

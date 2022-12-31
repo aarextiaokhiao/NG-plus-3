@@ -1,3 +1,13 @@
+//VERSION: 2.41R
+let ngp3_ver = 2.41
+let ngp3_build = 20221230
+function doPNGP3RUpdates() {
+	if (!aarMod.ngp3_build) aarMod.ngp3_build = 0
+	if (aarMod.ngp3_build < 20221230) quSave.multPower = 0
+	aarMod.newGame3PlusVersion = ngp3_ver
+	aarMod.ngp3_build = ngp3_build
+}
+
 //v1.5 
 function showQuantumTab(tabName) {
 	//iterate over all elements in div_tab class. Hide everything that's not tabName and show tabName
@@ -24,14 +34,14 @@ function showQuantumTab(tabName) {
 }
 
 var quantumTabs = {
-	tabIds: ["uquarks", "gluons", "electrons", "replicants", "tod", "bigrip"],
+	tabIds: ["uquarks", "gluons", "electrons", "replicants", "tod", "bigrip", "breakEternity"],
 	update: {
 		uquarks: updateQuarksTab,
 		gluons: updateGluonsTab,
 		electrons: updateElectronsTab,
-		replicants: updateReplicantsTab,
 		tod: updateTreeOfDecayTab,
-		bigrip: updateRipTabs
+		bigrip: updateBigRipTab,
+		breakEternity: () => breakEternityDisplay()
 	}
 }
 
@@ -40,6 +50,7 @@ function updateQuantumTabs() {
 		var id = quantumTabs.tabIds[i]
 		if (el(id).style.display == "block") quantumTabs.update[id]()
 	}
+	if (ghSave.milestones > 7) updateQuantumWorth("display")
 }
 
 function toggleAutoTT() {
@@ -420,7 +431,7 @@ function getGHPMult() {
 ghostified = false
 function ghostify(auto, force) {
 	if (!force&&(!isQuantumReached()||!brSave.active||implosionCheck)) return
-	if (!auto && !force && aarMod.ghostifyConf && !confirm("Becoming a ghost resets everything Quantum resets, and also resets your banked stats, best TP & MA, quarks, gluons, electrons, Quantum Challenges, Duplicants, Nanofield, and Tree of Decay to gain a Elementary Particle. Are you ready for this?")) {
+	if (!auto && !force && aarMod.ghostifyConf && !confirm("Becoming a ghost resets everything Quantum resets, and also resets your banked stats, best TP & MA, quarks, gluons, electrons, Quantum Challenges, Duplicants, Nanofield, and Quark Decay to gain a Elementary Particle. Are you ready for this?")) {
 		denyGhostify()
 		return
 	}
@@ -436,7 +447,6 @@ function ghostify(auto, force) {
 		implosionCheck=1
 		dev.ghostify(gain, amount, seconds)
 		setTimeout(function(){
-			isEmptiness = true
 			showTab("")
 		}, seconds * 250)
 		setTimeout(function(){
@@ -445,6 +455,7 @@ function ghostify(auto, force) {
 		}, seconds * 500)
 		setTimeout(function(){
 			implosionCheck=0
+			showTab("dimensions")
 		}, seconds * 1000)
 	} else ghostifyReset(false, 0, 0, force)
 	updateAutoQuantumMode()
@@ -501,7 +512,7 @@ function ghostifyReset(implode, gain, amount, force) {
 
 function toggleGhostifyConf() {
 	aarMod.ghostifyConf = !aarMod.ghostifyConf
-	el("ghostifyConfirmBtn").textContent = "Ghostify confirmation: O" + (aarMod.ghostifyConf ? "N" : "FF")
+	el("ghostifyConfirmBtn").textContent = "Fundament confirmation: O" + (aarMod.ghostifyConf ? "N" : "FF")
 }
 
 function getGHPRate(num) {
@@ -573,6 +584,7 @@ function updateGhostifyTabs() {
 		updateAutomatorHTML()
 	}
 	if (el("gphtab").style.display == "block" && ghSave.ghostlyPhotons.unl) updatePhotonsTab()
+	if (el("anni").style.display == "block" && ghSave.ghostlyPhotons.unl) updateBDTab()
 }
 
 function buyGHPMult() {
@@ -652,17 +664,7 @@ function toggleLEConf() {
 	el("leConfirmBtn").textContent = "Spectral Ion confirmation: O" + (aarMod.leNoConf ? "FF" : "N")
 }
 
-//Anti-Preonius' Lair
-function getAntiPreonGhostWake() {
-	let x = 104
-	if (hasNU(17)) x += tmp.nanofield_free_rewards/3
-	return Math.floor(x)
-}
-
 //v2.21: NG+3.1
-function setNonlegacyStuff() {
-}
-
 function displayNonlegacyStuff() {
 	//QC Modifiers
 	for (var m = 1; m < qcm.modifiers.length; m++) el("qcm_" + qcm.modifiers[m]).style.display = tmp.ngp3l ? "none" : ""
@@ -738,8 +740,7 @@ var ngp3Features = {
 		threshold: () => "Complete Paired Challenge 4",
 		next: "ed",
 		tab() {
-			showTab("quantumtab")
-			showQuantumTab('replicants')
+			showTab("replicants")
 		}
 	},
 	ed: {
@@ -755,13 +756,12 @@ var ngp3Features = {
 		threshold: () => "Get " + getFullExpansion(10) + " Eighth Emperor Dimensions",
 		next: "tod",
 		tab() {
-			showTab("quantumtab")
-			showQuantumTab('replicants')
+			showTab("replicants")
 			showAntTab('nanofield')
 		}
 	},
 	tod: {
-		name: "Tree of Decay",
+		name: "Quark Decay",
 		threshold: () => "Get " + getFullExpansion(16) + " Nanorewards",
 		next: "br",
 		tab() {
@@ -807,18 +807,17 @@ var ngp3Features = {
 	gw: {
 		name: "Gravity Well",
 		threshold: () => "Get " + shortenCosts(pow10(1e18)) + " antimatter",
-		next: "bd",
+		next: "an",
 		tab() {
-			showTab("ghostify")
-			showGhostifyTab('bltab')
+			showTab("bltab")
 			showBLTab('gravtab')
 		}
 	},
-	bd: {
-		name: "Break Dilation",
+	an: {
+		name: "Annihilation",
 		threshold: () => "Get " + shortenCosts(pow10(4e12)) + " antimatter in Big Rip",
 		tab() {
-			toBDTab()
+			toAnniTab()
 		}
 	},
 }
@@ -885,7 +884,6 @@ function doPerSecondNGP3Stuff(){
 		justImported = false
 	}
 	if (quSave.autoOptions.assignQK && ghSave.milestones > 7) assignAll(true) 
-	if (hasAch("ng3p43") && ghSave.milestones >= 8) maxUpgradeColorDimPower()
 
 	//NG+3: Others
 	doNGP3UnlockStuff()

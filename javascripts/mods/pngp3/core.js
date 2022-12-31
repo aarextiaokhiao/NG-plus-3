@@ -4,7 +4,7 @@ function updatePostNGp3TempStuff() {
 }
 
 function postNGp3Updating(dt) {
-    if (ghSave.breakDilation.break) {
+    if (brokeDilation()) {
         setTachyonParticles(player.dilation.tachyonParticles.max(getDilGain()));
         ghSave.breakDilation.cr = ghSave.breakDilation.cr.add(tmp.bd.crGain.mul(dt))
     }
@@ -61,13 +61,13 @@ function postNGp3AchsCheck() {
 
 function setPostR23Tooltip() {
     a = el("Mega Boo!")
-    a.setAttribute('ach-tooltip', "Get " + shorten(E("e6000")) + " Elementary Particles. Reward: Gain 100% of Elementary Particles, Ghostifies & Neutrions gained in Big Rip.")
+    a.setAttribute('ach-tooltip', "Get " + shorten(E("e6000")) + " Elementary Particles. Reward: Gain 100% of Elementary Particles, Fundaments & Neutrions gained in Big Rip.")
 
     a = el("Quantized Reproduction")
     a.setAttribute('ach-tooltip', "Get " + shorten(E(2).pow(1024)) + " of Replicate amount.")
 
     a = el("Spectral Phasing")
-    a.setAttribute('ach-tooltip', "Get " + shorten(E(2).pow(1024)) + " Ghostifies.")
+    a.setAttribute('ach-tooltip', "Get " + shorten(E(2).pow(1024)) + " Fundaments.")
 
     a = el("Temporality")
     a.setAttribute('ach-tooltip', "Get " + shorten(E("e1e11")) + " antimatter while Big Ripped whithout Breaking Eternity.")

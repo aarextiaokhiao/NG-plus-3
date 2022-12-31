@@ -303,6 +303,16 @@ function galacticUpgradeSpanDisplay () {
 	}
 }
 
+function updateGalaxyUpgradesDisplay(){
+	var text41 = aarMod.ngmX >= 4 ? "Square g11, and tickspeed boosts multiply GP gain." : "Galaxy points boost per-10 bought Infinity Dimensions multiplier."
+	el("galaxy41").innerHTML = text41 + "<br>Cost: <span id='galcost41'></span> GP"
+	var text42 = aarMod.ngmX >= 4 ? "Buff g12 and make it post dilation." : "Eternity points reduce Infinity Dimension cost multipliers."
+	el("galaxy42").innerHTML = text42 + "<br>Cost: <span id='galcost42'></span> GP"
+	var text43 = aarMod.ngmX >= 4 ? "Reduce Dimension Boost cost multiplier by 1, and Dimension Boosts multiply GP gain." : "Galaxy points boost Time Dimensions."
+	var curr43 = aarMod.ngmX >= 4 ? "" : "<br>Currently: <span id='galspan43'>?</span>x"
+	el("galaxy43").innerHTML = text43 + curr43 + "<br>Cost: <span id='galcost43'></span> GP"
+}
+
 function galacticUpgradeButtonTypeDisplay () {
 	let t = el("galTable")
 	for (let i = 1; i <= 5; i++) { //5 rows
@@ -724,3 +734,9 @@ function calcG13Exp(){
 	return exp
 }
 
+//Unknown versions
+function updateNGM2RewardDisplay(){
+	el("postcngmm_1reward").innerHTML = "Reward: Infinity upgrades based on time " + (aarMod.ngmX >= 4 ? "" : "or Infinities ") + "are applied post-dilation, and make the GP formula better based on galaxies."
+	el("postcngm3_1description").innerHTML = "Multiplier per ten Dimensions is 1x, Dimension Boosts have no effect," + (aarMod.ngmX >= 4 ? " have a much lower time dimension cost limit," : "") + " and Tickspeed Boost effect softcap starts immediately."
+	el("postcngm3_1reward").innerHTML = "Reward: Tickspeed boost effect softcap is softer" + (aarMod.ngmX >= 4 ? ", remote galaxy scaling starts .5 later and triple GP per IC completion" : "") + "."
+}

@@ -40,7 +40,7 @@ function getBaseDTProduction(){
 
 function getDilTimeGainPerSecond() {
 	let gain = getBaseDTProduction()
-	if (tmp.ngp3 && ghSave.breakDilation.break) gain = gain.div(tmp.bd.crEff)
+	if (brokeDilation()) gain = gain.div(tmp.bd.crEff)
 	return gain.times(pow2(getDilUpgPower(1)))	
 }
 
@@ -528,6 +528,7 @@ function resetDilationGalaxies() {
 
 var failsafeDilateTime = false
 function startDilatedEternity(auto, shortcut) {
+	if (brokeDilation()) return
 	if (shortcut && player.dilation.active) return
 	if (failsafeDilateTime) return
 	if (!player.dilation.studies.includes(1)) return
@@ -541,6 +542,7 @@ function startDilatedEternity(auto, shortcut) {
 
 function updateDilationDisplay() {
 	if (el("dilation").style.display == "block" && el("eternitystore").style.display == "block") {
+		el("enabledilation").style.display = brokeDilation() ? "none" : ""
 		el("tachyonParticleAmount").textContent = shortenMoney(player.dilation.tachyonParticles)
 		el("dilatedTimeAmount").textContent = shortenMoney(player.dilation.dilatedTime)
 		el("dilatedTimePerSecond").textContent = "+" + shortenMoney(getDilTimeGainPerSecond()) + "/s"

@@ -44,24 +44,17 @@ const BD_UPGS = [
 
 function breakDilation() {
     giveAchievement(allAchievements.ng3p111)
-    if (ghSave.breakDilation.break) {
-        ghSave.breakDilation.cr = E(0)
-
-        fixDilationReset()
-    }
-    ghSave.breakDilation.break = !ghSave.breakDilation.break
+    ghSave.breakDilation.break = true
+    player.dilation.active = false
 }
 
-function fixDilationReset() {
-    ghostifyReset(false, 0, 0, true)
-    player.dilation.tachyonParticles = E(0);
-    player.dilation.bestTP = E(0);
-    player.dilation.bestTPOverGhostifies = E(0);
+function brokeDilation() {
+	return tmp.ngp3 && ghSave.breakDilation.break
 }
 
 function getCRGain() {
     let x = E(0)
-    if (!ghSave.breakDilation.break) return x
+    if (!brokeDilation()) return x
     x = player.dilation.tachyonParticles.max(0).root(100).div(1e12)
 
     if (hasBDUpg(1)) x = x.mul(tmp.bd.upg_eff[1])
@@ -70,7 +63,7 @@ function getCRGain() {
 
 function getCREffect() {
     let x = E(1)
-    if (!ghSave.breakDilation.break || brSave.active) return x
+    if (!brokeDilation() || brSave.active) return x
     x = ghSave.breakDilation.cr.add(1).pow(10)
 
     if (hasBDUpg(2)) x = x.div(tmp.bd.upg_eff[2])
@@ -113,20 +106,19 @@ function updateBDTemp() {
     tmp.bd.crEff = getCREffect()
 }
 
-function toBDTab() {
-	showTab("quantumtab")
-	showQuantumTab("bigrip")
-	showRipTab("breakDilation")
+function toAnniTab() {
+	showTab("ghostify")
+	showGhostifyTab("anni")
 }
 
 function updateBDTab() {
     el("bdUnl").style.display = ghSave.breakDilation.unl ? "none" : ""
-    el("bdUnl").textContent = "To unlock Break Dilation, you need to get "+shortenCosts(pow10(4e12))+" antimatter while Big Ripped. (coming soon)"
+    el("bdUnl").textContent = "To unlock Annihilation, you need to get "+shortenCosts(pow10(4e12))+" antimatter while Big Ripped. (coming soon)"
     el("bdDiv").style.display = ghSave.breakDilation.unl ? "" : "none"
 
     if (ghSave.breakDilation.unl) {
         el("bd_tp").textContent = shortenMoney(player.dilation.tachyonParticles)
-        el("breakDilationBtn").textContent = (ghSave.breakDilation.break?"Fix":"Break")+" Dilation"
+        el("breakDilationBtn").style.display = brokeDilation() ? "none" : ""
         el("crAmt").textContent = shorten(ghSave.breakDilation.cr)
         el("crGain").textContent = shorten(tmp.bd.crGain)
         el("crEff").textContent = shorten(tmp.bd.crEff)
@@ -144,4 +136,13 @@ function updateBDTab() {
             }
         }
     }
+}
+
+function updateBDInBE() {
+	let unl = ghSave.breakDilation.unl
+	el("bd_be_cell").style.display = unl ? "" : "none"
+	if (unl) {
+        el("breakDilationBtnBE").style.display = brokeDilation() ? "none" : ""
+        el("anniTeleport").style.display = brokeDilation() ? "" : "none"
+	}
 }

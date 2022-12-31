@@ -528,7 +528,6 @@ function new_game(type) {
 	showInftab('preinf')
 	showEternityTab('timestudies', true)
 	showQuantumTab('uquarks')
-	showBranchTab('red')
 	showGhostifyTab('neutrinos')
 	showBLTab('bextab')
 }
@@ -1185,7 +1184,7 @@ function doNGPlusThreeNewPlayer(){
 	quSave.electrons = getBrandNewElectronData()
 	quSave.disabledRewards = {}
 	quSave.metaAutobuyerWait = 0
-	quSave.multPower = {rg : 0, gb : 0, br : 0, total : 0}
+	quSave.multPower = 0
 	player.eternitiesBank = 0
 	quSave.challenge = []
 	quSave.challenges = {}

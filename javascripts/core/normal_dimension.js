@@ -158,7 +158,6 @@ function getDimensionFinalMultiplier(tier) {
 	if (tier == 1 && player.tickspeedBoosts == undefined && player.infinityUpgrades.includes("postinfi60")) mult = mult.times(getNewB60Mult())
 	let useHigherNDReplMult = !player.dilation.active ? false : !player.masterystudies ? false : player.masterystudies.includes("t323")
 	if (useHigherNDReplMult) mult = mult.times(tmp.nrm)
-	if (quantumed) mult = mult.times(colorBoosts.dim.r)
 	if (player.dilation.active && isNanoEffectUsed("dil_effect_exp")) mult = mult.pow(tmp.nf.effects.dil_effect_exp)
 	if (isBigRipUpgradeActive(1)) mult = mult.times(tmp.bru[1])
 

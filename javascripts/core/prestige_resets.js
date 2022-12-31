@@ -662,12 +662,7 @@ function getQuantumOnGhostifyData(bm, nBRU, nBEU){
 			gb: E(0),
 			br: E(0)
 		},
-		multPower: {
-			rg: 0,
-			gb: 0,
-			br: 0,
-			total: 0
-		},
+		multPower: 0,
 		electrons: {
 			amount: 0,
 			sacGals: 0,
@@ -698,8 +693,7 @@ function getQuantumOnGhostifyData(bm, nBRU, nBEU){
 			power: 0,
 			powerThreshold: E(50),
 			rewards: bm>12?16:0,
-			producingCharge: false,
-			apgWoke: nfSave.apgWoke
+			producingCharge: false
 		},
 		reachedInfQK: bm,
 		tod: getToDOnGhostifyData(),
@@ -893,12 +887,7 @@ function doInfinityGhostifyResetStuff(implode, bm){
 	if (hasAch("r104")) player.infinityPoints = E(2e25)
 	player.challenges = challengesCompletedOnEternity()
 	IPminpeak = E(0)
-	if (isEmptiness) {
-		showTab("dimensions")
-		isEmptiness = false
-		el("quantumtabbtn").style.display = "inline-block"
-		el("ghostifytabbtn").style.display = "inline-block"
-	}
+	if (isEmptiness) showTab("dimensions")
 	el("infinityPoints1").innerHTML = "You have <span class=\"IPAmount1\">" + shortenDimensions(player.infinityPoints) + "</span> Infinity points."
 	el("infinityPoints2").innerHTML = "You have <span class=\"IPAmount2\">" + shortenDimensions(player.infinityPoints) + "</span> Infinity points."
 	el("infmultbuyer").textContent = "Max buy IP mult"
@@ -989,7 +978,6 @@ function doEternityGhostifyResetStuff(implode, bm){
 }
 
 function doQuantumGhostifyResetStuff(implode, bm){
-	if (!tmp.ngp3l) quSave.quarkEnergy = E(0)
 	quSave.qcsMods.current = []
 	quSave.replicants.amount = E(0)
 	quSave.replicants.requirement = E("1e3000000")
@@ -1037,7 +1025,6 @@ function doQuantumGhostifyResetStuff(implode, bm){
 	updateLastTenQuantums()
 	updateSpeedruns()
 	updateColorCharge()
-	updateColorDimPowers()
 	updateGluonsTabOnUpdate("prestige")
 	updateQuantumWorth("quick")
 	updateBankedEter()
@@ -1057,7 +1044,6 @@ function doGhostifyGhostifyResetStuff(bm, force){
 	if (!ghostified) {
 		ghostified = true
 		ngp3_feature_notify("gh")
-		el("ghostifytabbtn").style.display = "inline-block"
 		el("ghostparticles").style.display = ""
 		el("ghostifyAnimBtn").style.display = "inline-block"
 		el("ghostifyConfirmBtn").style.display = "inline-block"

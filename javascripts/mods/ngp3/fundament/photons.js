@@ -68,7 +68,6 @@ function updateFixedLightTemp() {
 		if (!isLEBoostUnlocked(b)) break
 		if (b != 4 && b != 5) {
 			tmp.leBonus[b] = leBoosts.effects[b]()
-			if (b == 8) tmp.apgw += Math.floor(tmp.leBonus[9])
 		}
 	}
 }

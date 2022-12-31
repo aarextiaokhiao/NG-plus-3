@@ -356,9 +356,8 @@ function setReplTSIfUndefined(){
 			studies: [],
 		}
 	}
-        if (getEternitied() == 0) {
+    if (getEternitied() == 0) {
 		el("eternityPoints2").style.display = "none";
-		el("eternitystorebtn").style.display = "none";
 		el("tdtabbtn").style.display = "none";
 	}
 }
@@ -444,7 +443,6 @@ function doNGp3Init1(){
         if (aarMod.newGame3PlusVersion >= 2.2) tmp.bl = ghSave.bl
 	tmp.ngp3=player.masterystudies!==undefined
 	tmp.newNGP3E=aarMod.newGameExpVersion!==undefined
-	setNonlegacyStuff()
 	transformSaveToDecimal();
 	tmp.tickUpdate = true;
 	updateAchievements();
@@ -660,7 +658,7 @@ function doNGP3NewPlayerStuff(){
         }
         quSave.disabledRewards = {}
         quSave.metaAutobuyerWait = 0
-        quSave.multPower = {rg:0,gb:0,br:0,total:0}
+        quSave.multPower = 0
         quSave.challenge = []
         quSave.challenges = {}
         quSave.nonMAGoalReached = []
@@ -1062,7 +1060,6 @@ function doQuantumUpdates(){
                         ageProgress: 0
                 }
         }
-        if (aarMod.newGame3PlusVersion < 1.9985)  quSave.multPower = {rg:Math.ceil(quSave.multPower/3),gb:Math.ceil((quSave.multPower-1)/3),br:Math.floor(quSave.multPower/3),total:quSave.multPower}
         if (aarMod.newGame3PlusVersion < 1.9986) {
                 player.respec=player.respecOptions.time
                 player.respecMastery=player.respecOptions.mastery
@@ -1319,8 +1316,6 @@ function doFundamentUpdates(){
 		skip++ //v2.41R reworks them
 		if (player.ghostify.times) giveAchievement("A ghost fate")
 	}
-	aarMod.newGame3PlusVersion = 2.41
-
 	if (skip > 1) giveAchievement("Waiting, I see...")
 }
 
@@ -1738,7 +1733,10 @@ function updateVersionsONLOAD(){
 	//NG+3
 	doQuantumRestore()
 	doQuantumUpdates()
-	doFundamentUpdates()
+	if (tmp.ngp3) {
+		doFundamentUpdates()
+		doPNGP3RUpdates()
+	}
 
 	doPostNGP3Versions()
 	doNGm2v11tov3()
@@ -1847,7 +1845,7 @@ function setConfirmationsDisplay(){
         el("exdilationConfirmBtn").textContent = "Reverse dilation confirmation: O" + (player.options.exdilationconfirm ? "N" : "FF")
         el("quantumConfirmBtn").textContent = "Quantum confirmation: O" + (aarMod.quantumConf ? "N" : "FF")
         el("bigRipConfirmBtn").textContent = "Big Rip confirmation: O" + ((player.masterystudies === undefined ? false : brSave.conf) ? "N" : "FF")
-        el("ghostifyConfirmBtn").textContent = "Ghostify confirmation: O" + (aarMod.ghostifyConf ? "N" : "FF")
+        el("ghostifyConfirmBtn").textContent = "Fundament confirmation: O" + (aarMod.ghostifyConf ? "N" : "FF")
         el("leConfirmBtn").textContent = "Spectral Ion confirmation: O" + (aarMod.leNoConf ? "FF" : "N")
 }
 
@@ -1863,9 +1861,6 @@ function setOptionsDisplaysStuff1(){
 
         el("quickMReset").style.display = pSacrificed() ? "" : "none"
         el("quickMReset").textContent = "Quick matter reset: O"+(aarMod.quickReset?"N":"FF")
-
-        el("quantumtabbtn").style.display = quantumed ? "" : "none"
-        el("ghostifytabbtn").style.display = ghostified ? "" : "none"
 
         el("chartDurationInput").value = player.options.chart.duration;
         el("chartUpdateRateInput").value = player.options.chart.updateRate;
@@ -2019,60 +2014,60 @@ function setTSDisplay(){
 }
 
 function updateNGp3DisplayStuff(){
-        displayNonlegacyStuff()
-        for (var i=0;i<masteryStudies.timeStudies.length;i++) {
-                var t=masteryStudies.timeStudies[i]
-                var d=masteryStudies.timeStudyDescs[t]
-                el("ts"+t+"Desc").innerHTML=(typeof(d)=="function"?d():d)||"Unknown desc."
-        }
-        updateMasteryStudyCosts()
-        if (quSave.best<=10) giveAchievement("Quantum doesn't take so long")
-        if (ghostified) giveAchievement("Kee-hee-hee!")
-        el('reward3disable').textContent="6 hours reward: O"+(quSave.disabledRewards[3]?"FF":"N")
-        el('reward4disable').textContent="4.5 hours reward: O"+(quSave.disabledRewards[4]?"FF":"N")
-        el('reward11disable').textContent="33.3 mins reward: O"+(quSave.disabledRewards[11]?"FF":"N")
-        el('reward27disable').textContent="10 seconds reward: O"+(quSave.disabledRewards[27]?"FF":"N")
-        el('rebuyupgauto').textContent="Rebuyable upgrade auto: O"+(player.autoEterOptions.rebuyupg?"N":"FF")
-        el('dilUpgsauto').textContent="Auto-buy dilation upgrades: O"+(player.autoEterOptions.dilUpgs?"N":"FF")
-        el('metaboostauto').textContent="Meta-boost auto: O"+(player.autoEterOptions.metaboost?"N":"FF")
-        el('priorityquantum').value=formatValue("Scientific", E(quSave.autobuyer.limit), 2, 0)
-        el("respecPC").className=quSave.pairedChallenges.respec?"quantumbtn":"storebtn"
-        el('sacrificeAuto').textContent="Auto: O"+(quSave.autoOptions.sacrifice?"N":"FF")
-        el("produceQuarkCharge").innerHTML="S" + (nfSave.producingCharge ? "top" : "tart") + " production of preon charge." + (nfSave.producingCharge ? "" : "<br>(You will not get preons when you do this.)")
-        el("ratio_r").value = quSave.assignAllRatios.r
-        el("ratio_g").value = quSave.assignAllRatios.g
-        el("ratio_b").value = quSave.assignAllRatios.b
-        el('autoAssign').textContent="Auto: O"+(quSave.autoOptions.assignQK?"N":"FF")
-        el('autoAssignRotate').textContent="Rotation: "+(quSave.autoOptions.assignQKRotate>1?"Left":quSave.autoOptions.assignQKRotate?"Right":"None")
-        el('autoReset').textContent="Auto: O"+(quSave.autoOptions.replicantiReset?"N":"FF")
-        el("antTabs").style.display=player.masterystudies.includes("d11")?"":"none"
-        el("edtabbtn_dim").style.display=player.masterystudies.includes("d11")?"":"none"
-		NF.shown()
-        el("riptabbtn").style.display=player.masterystudies.includes("d14")?"":"none"
-        el("ghostifyAnimBtn").textContent="Ghostify: O"+(player.options.animations.ghostify?"N":"FF")
-        for (var u=5;u<13;u++) {
-                if (u%3==1) el("neutrinoUpg"+u).parentElement.parentElement.style.display=u>ghSave.times+2?"none":""
-                else el("neutrinoUpg"+u).style.display=u>ghSave.times+2?"none":""
-        }
-        el("gphUnl").textContent="To unlock Photons, you need to get "+shortenCosts(pow10(4.7e9))+" antimatter while your universe is Big Ripped first."
-        updateBLUnlockDisplay()
-        el("bpc68").textContent=shortenMoney(quSave.pairedChallenges.pc68best)
-        el("odSlider").value=Math.round((tmp.bl.odSpeed-1)/4*50)
-        for (var g=1;g<=br.limit;g++) el("typeToExtract"+g).className=tmp.bl.typeToExtract==g?"chosenbtn":"storebtn"
-        updateAssortPercentage()
-        updateElectrons()
-        updateAutoQuantumMode()
-        updateColorCharge()
-        updateGluonsTabOnUpdate()
-        updateReplicants()
-        updateTODStuff()
-        updateBraveMilestones()
-        updateNeutrinoBoosts()
-        tmp.updateLights = true
-        updateGPHUnlocks()
-        updateBLUnlocks()
-        updateBosonicStuffCosts()
-        updateBLParticleUnlocks()
+	displayNonlegacyStuff()
+	for (var i=0;i<masteryStudies.timeStudies.length;i++) {
+			var t=masteryStudies.timeStudies[i]
+			var d=masteryStudies.timeStudyDescs[t]
+			el("ts"+t+"Desc").innerHTML=(typeof(d)=="function"?d():d)||"Unknown desc."
+	}
+	updateMasteryStudyCosts()
+	if (quSave.best<=10) giveAchievement("Quantum doesn't take so long")
+	if (ghostified) giveAchievement("Kee-hee-hee!")
+	el('reward3disable').textContent="6 hours reward: O"+(quSave.disabledRewards[3]?"FF":"N")
+	el('reward4disable').textContent="4.5 hours reward: O"+(quSave.disabledRewards[4]?"FF":"N")
+	el('reward11disable').textContent="33.3 mins reward: O"+(quSave.disabledRewards[11]?"FF":"N")
+	el('reward27disable').textContent="10 seconds reward: O"+(quSave.disabledRewards[27]?"FF":"N")
+	el('rebuyupgauto').textContent="Rebuyable upgrade auto: O"+(player.autoEterOptions.rebuyupg?"N":"FF")
+	el('dilUpgsauto').textContent="Auto-buy dilation upgrades: O"+(player.autoEterOptions.dilUpgs?"N":"FF")
+	el('metaboostauto').textContent="Meta-boost auto: O"+(player.autoEterOptions.metaboost?"N":"FF")
+	el('priorityquantum').value=formatValue("Scientific", E(quSave.autobuyer.limit), 2, 0)
+	el("respecPC").className=quSave.pairedChallenges.respec?"quantumbtn":"storebtn"
+	el('sacrificeAuto').textContent="Auto: O"+(quSave.autoOptions.sacrifice?"N":"FF")
+	el("produceQuarkCharge").innerHTML="S" + (nfSave.producingCharge ? "top" : "tart") + " production of preon charge." + (nfSave.producingCharge ? "" : "<br>(You will not get preons when you do this.)")
+	el("ratio_r").value = quSave.assignAllRatios.r
+	el("ratio_g").value = quSave.assignAllRatios.g
+	el("ratio_b").value = quSave.assignAllRatios.b
+	el('autoAssign').textContent="Auto: O"+(quSave.autoOptions.assignQK?"N":"FF")
+	el('autoAssignRotate').textContent="Rotation: "+(quSave.autoOptions.assignQKRotate>1?"Left":quSave.autoOptions.assignQKRotate?"Right":"None")
+	el('autoReset').textContent="Auto: O"+(quSave.autoOptions.replicantiReset?"N":"FF")
+	el("antTabs").style.display=player.masterystudies.includes("d11")?"":"none"
+	el("edtabbtn_dim").style.display=player.masterystudies.includes("d11")?"":"none"
+	NF.shown()
+	el("riptabbtn").style.display=player.masterystudies.includes("d14")?"":"none"
+	el("ghostifyAnimBtn").textContent="Fundament: O"+(player.options.animations.ghostify?"N":"FF")
+	for (var u=5;u<13;u++) {
+			if (u%3==1) el("neutrinoUpg"+u).parentElement.parentElement.style.display=u>ghSave.times+2?"none":""
+			else el("neutrinoUpg"+u).style.display=u>ghSave.times+2?"none":""
+	}
+	el("gphUnl").textContent="To unlock Photons, you need to get "+shortenCosts(pow10(4.7e9))+" antimatter while your universe is Big Ripped first."
+	updateBLUnlockDisplay()
+	el("bpc68").textContent=shortenMoney(quSave.pairedChallenges.pc68best)
+	el("odSlider").value=Math.round((tmp.bl.odSpeed-1)/4*50)
+	for (var g=1;g<=br.limit;g++) el("typeToExtract"+g).className=tmp.bl.typeToExtract==g?"chosenbtn":"storebtn"
+	updateAssortPercentage()
+	updateElectrons()
+	updateAutoQuantumMode()
+	updateColorCharge()
+	updateGluonsTabOnUpdate()
+	updateReplicants()
+	updateTODStuff()
+	updateBraveMilestones()
+	updateNeutrinoBoosts()
+	tmp.updateLights = true
+	updateGPHUnlocks()
+	updateBLUnlocks()
+	updateBosonicStuffCosts()
+	updateBLParticleUnlocks()
 }
 
 function setSomeQuantumAutomationDisplay(){
@@ -2091,7 +2086,6 @@ function setSomeQuantumAutomationDisplay(){
         el('replicantibulkmodetoggle').textContent="Mode: "+(player.galaxyMaxBulk?"Max":"Singles")
         el('versionMod').textContent = "Post-NG+3: Respecced"
         el('versionDesc').style.display = tmp.ngp3 ? "" : "none"
-        el('sacrificeAuto').style.display=speedrunMilestonesReached>24?"":"none"
         el('toggleautoquantummode').style.display=(player.masterystudies?quSave.reachedInfQK||hasAch("ng3p25"):false)?"":"none"
         var autoAssignUnl = tmp.ngp3 && (ghostified || quSave.reachedInfQK)
         el('autoAssign').style.display = autoAssignUnl ? "" : "none"
@@ -2238,6 +2232,7 @@ function onLoad(noOffline) {
         updateBreakEternity()
         updateLastTenGhostifies()
         onNotationChangeNeutrinos()
+        updateHeaders()
         setAchieveTooltip()
         if (player.boughtDims) {
                 if (el("timestudies").style.display=="block") showEternityTab("ers_timestudies",true)
@@ -2273,7 +2268,6 @@ function onLoad(noOffline) {
         }
         notifyId=speedrunMilestonesReached
         notifyId2=player.masterystudies===undefined?0:ghSave.milestones
-        showHideFooter()
         el("newsbtn").textContent=(player.options.newsHidden?"Show":"Hide")+" news ticker"
         el("game").style.display=player.options.newsHidden?"none":"block"
         var tabsSave = aarMod.tabsSave
@@ -2285,8 +2279,6 @@ function onLoad(noOffline) {
         showEternityTab((tabsSave.on && tabsSave.tabEternity) || 'timestudies', true)
         showQuantumTab((tabsSave.on && tabsSave.tabQuantum) || 'uquarks')
         showAntTab((tabsSave.on && tabsSave.tabAnt) || 'antcore')
-        showBranchTab((tabsSave.on && tabsSave.tabBranch) || 'red')
-        showRipTab((tabsSave.on && tabsSave.tabRip) || 'riptab')
         showGhostifyTab((tabsSave.on && tabsSave.tabGhostify) || 'neutrinos')
         showBLTab((tabsSave.on && tabsSave.tabBL) || 'bextab')
         if (!player.options.newsHidden) scrollNextMessage()
@@ -2461,7 +2453,6 @@ function conToDeciTD(){
 
 function conToDeciPreEter(){
         player.infinityPoints = E(player.infinityPoints)
-        el("eternitybtn").style.display = ((player.infinityPoints.gte(Number.MAX_VALUE) && player.infDimensionsUnlocked[7]) || getEternitied() > 0) ? "inline-block" : "none"
 
         conToDeciPreInf()
         player.infinitied = nP(player.infinitied)
@@ -2639,7 +2630,6 @@ function conToDeciMS(){
                         todSave.b.quarks = E(todSave.b.quarks)
                         todSave.b.spin = E(todSave.b.spin)
                 }
-                if (quSave) quSave.quarkEnergy = E(quSave.quarkEnergy)
         }
 }
 
