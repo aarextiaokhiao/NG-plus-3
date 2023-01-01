@@ -2033,7 +2033,7 @@ function updateNGp3DisplayStuff(){
 	el('priorityquantum').value=formatValue("Scientific", E(quSave.autobuyer.limit), 2, 0)
 	el("respecPC").className=quSave.pairedChallenges.respec?"quantumbtn":"storebtn"
 	el('sacrificeAuto').textContent="Auto: O"+(quSave.autoOptions.sacrifice?"N":"FF")
-	el("produceQuarkCharge").innerHTML="S" + (nfSave.producingCharge ? "top" : "tart") + " production of preon charge." + (nfSave.producingCharge ? "" : "<br>(You will not get preons when you do this.)")
+	el("produceQuarkCharge").innerHTML="S" + (nfSave.producingCharge ? "top" : "tart") + " production of nanocharge." + (nfSave.producingCharge ? "" : "<br>(You will not get pilons when you do this.)")
 	el("ratio_r").value = quSave.assignAllRatios.r
 	el("ratio_g").value = quSave.assignAllRatios.g
 	el("ratio_b").value = quSave.assignAllRatios.b

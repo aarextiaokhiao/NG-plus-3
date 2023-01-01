@@ -205,7 +205,7 @@ function setupPCTableHTMLandData(){
 		row.style["font-size"] = "15px"
 		var html = '<td id="empD' + d + '" width="41%">' + DISPLAY_NAMES[d] + ' Emperor Dimension x1</td>'
 		html += '<td id="empAmount' + d + '"></td>'
-		html += '<td><span class="empQuarks" id="empQuarks' + d + '">0</span> preons/s</td>'
+		html += '<td><span class="empQuarks" id="empQuarks' + d + '">0</span> pilons/s</td>'
 		html += '<td align="right" width="2.5%"><button id="empFeedMax' + d + '" style="color:black; width:70px; font-size:10px" class="storebtn" align="right" onclick="feedReplicant('+d+', true)">Max</button></td>'
 		html += '<td align="right" width="7.5%"><button id="empFeed' + d + '" style="color:black; width:195px; height:25px; font-size:10px" class="storebtn" align="right" onclick="feedReplicant('+d+')">Feed (0%)</button></td>'
 		row.innerHTML = html
@@ -216,16 +216,16 @@ function setupToDHTMLandData(){
 	for (var c = 0; c < 1; c++) {
 		var color = (["red", "green", "blue"])[c]
 		var shorthand = (["r", "g", "b"])[c]
-		var branchUpgrades = ["Gain <span id='" + color + "UpgPow1'></span>x " + color + " quark spins, but " + color + " quarks decay <span id='" + color + "UpgSpeed1'></span>x faster.",
-				      "Boost " + color + " quarks.",
-				      (["Red", "Green", "Blue"])[c]+" quarks decay <span id='" + color + "UpgEffDesc'>4x</span> slower."] //might need to change this to just "slower" once we have 1000+ upgrade 3's
+		var branchUpgrades = ["Gain <span id='" + color + "UpgPow1'></span>x preons, but preons decay <span id='" + color + "UpgSpeed1'></span>x faster.",
+				      "Boost preons.",
+				      "Preons decay <span id='" + color + "UpgEffDesc'>4x</span> slower."] //might need to change this to just "slower" once we have 1000+ upgrade 3's
 
 		var html = '<span class="' + color + '" id="' + color + 'QuarksToD" style="font-size: 35px">0</span> ' + color + ' quarks<br>'
 		html += '<button class="storebtn" id="' + color + 'UnstableGain" style="width: 210px; height: 120px" onclick="unstableQuarks(\'' + shorthand + '\')"></button><br>'
-		html += "<span class='" + color + "' id='" + color + "UnstableQuarks' style='font-size: 20px'>0</span> " + color + " <span id='" + shorthand + "UQName'></span> quarks<br>"
+		html += "<span class='" + color + "' id='" + color + "UnstableQuarks' style='font-size: 20px'>0</span> " + " <span id='" + shorthand + "UQName'></span> preons<br>"
 		html += "<span id='" + color + "QuarksDecayRate'></span><br>"
 		html += "(Duration: <span id='" + color + "QuarksDecayTime'></span>)<br>"
-		html += '<span class="' + color + '" id="' + color + 'QuarkSpin" style="font-size: 25px">0.0</span> ' + color + ' spins '
+		html += '<span class="' + color + '" id="' + color + 'QuarkSpin" style="font-size: 25px">0.0</span> ' + ' preonic spin '
 		html += '<span class="' + color + '" id="' + color + 'QuarkSpinProduction" style="font-size: 15px">+0/s</span>'
 		el("todRow").innerHTML = html
 		el("todRow").className = shorthand + "qC"

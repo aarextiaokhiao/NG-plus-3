@@ -24,7 +24,6 @@ function updateBLParticleUnlocks() {
 	el("hftabbtn").style.display = ghSave.hb.higgs >= 60 ? "" : "none"
 	el("gravtabbtn").style.display = ghSave.gravitons.unl ? "" : "none"
 	el("annitabbtn").style.display = ghSave.gravitons.unl ? "" : "none"
-	el("temptabbtn").style.display = ghSave.gravitons.unl ? "" : "none"
 	updateBLParticleDisplay()
 }
 

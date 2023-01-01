@@ -326,7 +326,7 @@ function getRG3Effect() {
 }
 
 function getGU8Effect(type) {
-	return Math.pow(quSave.gluons[type].div("1e565").add(1).log10() * 0.505 + 1, 1.5)
+	return Math.pow(quSave.gluons[type].div("1e565").add(1).log10() + 1, 0.5)
 }
 
 //Display

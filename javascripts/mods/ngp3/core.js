@@ -1,6 +1,6 @@
 //VERSION: 2.41R
 let ngp3_ver = 2.41
-let ngp3_build = 20221230
+let ngp3_build = 20221231
 function doPNGP3RUpdates() {
 	if (!aarMod.ngp3_build) aarMod.ngp3_build = 0
 	if (aarMod.ngp3_build < 20221230) quSave.multPower = 0
@@ -431,11 +431,15 @@ function getGHPMult() {
 ghostified = false
 function ghostify(auto, force) {
 	if (!force&&(!isQuantumReached()||!brSave.active||implosionCheck)) return
-	if (!auto && !force && aarMod.ghostifyConf && !confirm("Becoming a ghost resets everything Quantum resets, and also resets your banked stats, best TP & MA, quarks, gluons, electrons, Quantum Challenges, Duplicants, Nanofield, and Quark Decay to gain a Elementary Particle. Are you ready for this?")) {
+	if (!auto && !force && aarMod.ghostifyConf && !confirm("Fundament will reset everything up to this point, except achievements. Are you ready for this?")) {
 		denyGhostify()
 		return
 	}
-	if (!ghostified && (!confirm("Are you sure you want to do this? You will lose everything you have!") || !confirm("ARE YOU REALLY SURE YOU WANT TO DO THAT? YOU CAN'T UNDO THIS AFTER YOU BECAME A GHOST AND PASS THE UNIVERSE EVEN IT IS BIG RIPPED! THIS IS YOUR LAST CHANCE!"))) {
+	if (!ghostified && !confirm("Are you really sure? Do you want to enlarge yourself for particles, in exchange of everything?")) {
+		denyGhostify()
+		return
+	}
+	if (!ghostified && !confirm("Last chance. You will not be able to come back.")) {
 		denyGhostify()
 		return
 	}

@@ -23,7 +23,7 @@ function updateTreeOfDecayTab(){
 		var color = colors[c]
 		var shorthand = shorthands[c]
 		var branch = todSave[shorthand]
-		var name = color + " " + getUQName(shorthand) + " quarks"
+		var name = getUQName(shorthand) + " preons"
 		var rate = getDecayRate(shorthand)
 		var linear = pow2(getRDPower(shorthand))
 		el(color + "UnstableGain").className = quSave.usedQuarks[shorthand].gt(0) && getUnstableGain(shorthand).gt(branch.quarks) ? "storebtn" : "unavailablebtn"
@@ -51,13 +51,12 @@ function updateTreeOfDecayTab(){
 	} //for loop
 
 	var start = getLogTotalSpin() > 200 ? "" : "Cost: "
-	var end = getLogTotalSpin() > 200 ? "" : " quark spin"
 	for (var u = 1; u <= 8; u++) {
 		var lvl = getTreeUpgradeLevel(u)
 		el("treeupg" + u).className = "gluonupgrade " + (canBuyTreeUpg(u) ? "r" : "unavailablebtn")
 		el("treeupg" + u + "current").innerHTML = getTreeUpgradeEffectDesc(u)
 		el("treeupg" + u + "lvl").innerHTML = getFullExpansion(lvl) + (tmp.tue > 1 ? " -> " + getFullExpansion(Math.floor(lvl * tmp.tue)) : "")
-		el("treeupg" + u + "cost").innerHTML = start + shortenMoney(getTreeUpgradeCost(u)) + " red" + end
+		el("treeupg" + u + "cost").innerHTML = start + shortenMoney(getTreeUpgradeCost(u)) + " preonic spin"
 	}
 	/*
 	if (ghostified){
@@ -81,10 +80,9 @@ function updateBranchUpgrade(b, u) {
 
 	var extra = bData.spin.log10() > 200
 	var start = extra ? "" : "Cost: "
-	var end = extra ? clr : clr + " spin"
 
 	el(clr + "upg" + u + "current").innerHTML = u == 2 ? eff + "n^" + eff : eff + "x"
-	el(clr + "upg" + u + "cost").innerHTML = start + shortenMoney(getBranchUpgCost(b, u)) + " " + end
+	el(clr + "upg" + u + "cost").innerHTML = start + shortenMoney(getBranchUpgCost(b, u)) + " preonic spin"
 }
 
 function updateTODStuff() {
@@ -106,7 +104,7 @@ function updateTODStuff() {
 		for (var b = 1; b <= 3; b++) updateBranchUpgrade(shorthand, b)
 		if (ghostified) {
 			el(shorthand+"RadioactiveDecay").parentElement.parentElement.style.display = ""
-			el(shorthand+"RDReq").innerHTML = "(requires "+shorten(pow10(Math.pow(2, 50))) + " of " + color + " " + name + " quarks)"
+			el(shorthand+"RDReq").innerHTML = "(requires "+shorten(pow10(Math.pow(2, 50))) + " of " + name + " preons)"
 			el(shorthand+"RDLvl").innerHTML = getFullExpansion(getRadioactiveDecays(shorthand))
 		} else el(shorthand+"RadioactiveDecay").parentElement.parentElement.style.display = "none"
 	}
@@ -136,6 +134,7 @@ function getBranchSpeedText(){
 	if (E(getTreeUpgradeEffect(3)).gt(1)) text += "Tree Upgrade 3: " + shorten(getTreeUpgradeEffect(3)) + "x, "
 	if (E(getTreeUpgradeEffect(5)).gt(1)) text += "Tree Upgrade 5: " + shorten(getTreeUpgradeEffect(5)) + "x, "
 	if (player.masterystudies.includes("t431")) if (getMTSMult(431).gt(1)) text += "Mastery Study 431: " + shorten(getMTSMult(431)) + "x, "
+	if (getGluonBranchSpeed().gt(1)) text += "Gluon Upgrades: " + shorten(getGluonBranchSpeed()) + "x, "
 	if (brSave.active && isBigRipUpgradeActive(19)) text += "19th Big Rip upgrade: " + shorten(tmp.bru[19]) + "x, "
 	if (hasNU(4)) if (tmp.nu[2].gt(1)) text += "Fourth Neutrino Upgrade: " + shorten(tmp.nu[2]) + "x, "
 	if (!tmp.ngp3l) if (hasAch("ng3p48")) if (player.meta.resets > 1) text += "'Are you currently dying?' reward: " + shorten (Math.sqrt(player.meta.resets + 1)) + "x, "
@@ -145,9 +144,17 @@ function getBranchSpeedText(){
 	return text.slice(0, text.length-2)
 }
 
+function getGluonBranchSpeed() {
+	let x = E(1)
+	if (GUBought("rg8")) x = x.mul(getGU8Effect("rg"))
+	if (GUBought("gb8")) x = x.mul(getGU8Effect("gb"))
+	if (GUBought("br8")) x = x.mul(getGU8Effect("br"))
+	return x
+}
 function getBranchSpeed() { // idea: when you hold shift you can see where the multipliers of branch speed are
 	let x = Decimal.times(getTreeUpgradeEffect(3), getTreeUpgradeEffect(5))
 	if (player.masterystudies.includes("t431")) x = x.times(getMTSMult(431))
+	x = x.times(getGluonBranchSpeed())
 	if (brSave.active && isBigRipUpgradeActive(19)) x = x.times(tmp.bru[19])
 	if (hasNU(4)) x = x.times(tmp.nu[2])
 	if (!tmp.ngp3l) {
@@ -164,15 +171,6 @@ function getBranchFinalSpeed() {
 
 function getDecayRate(branch) {
 	let ret = pow2(getBU1Power(branch) * Math.max((getRadioactiveDecays(branch) - 8) / 10, 1)).div(getBranchUpgMult(branch, 3)).div(pow2(Math.max(0, getRDPower(branch) - 4)))
-	if (branch == "r") {
-		if (GUBought("rg8")) ret = ret.div(getGU8Effect("rg"))
-	}
-	if (branch == "g") {
-		if (GUBought("gb8")) ret = ret.div(getGU8Effect("gb"))
-	}
-	if (branch == "b") {
-		if (GUBought("br8")) ret = ret.div(getGU8Effect("br"))
-	}
 	ret = ret.times(getBranchFinalSpeed())
 	return ret.min(Math.pow(2, 40)).times(todspeed)
 }
@@ -316,7 +314,7 @@ function rotateAutoAssign() {
 
 var uq_names = {
 	standard(rds) {
-		let x = "unstable"
+		let x = ""
 		let roots_1 = ["", "radioactive", "infinity", "eternal", "quantum"]
 		let roots_2 = ["", "spectre", "disappearing", "reappearing", "ethereal"]
 
@@ -330,6 +328,8 @@ var uq_names = {
 			let c = Math.floor((rds - 5) / 5) % 10 + 1
 			x = roots_2[b] + (c > 1 ? "<sup>" + c + "</sup>" : "") + " " + x
 		}
+
+		if (rds == 0) x = "free"
 
 		return x
 	},
@@ -349,8 +349,7 @@ var uq_names = {
 			x = roots_2[b] + (c > 1 ? c : "") + "." + x
 		}
 
-		if (x !== "") x = x + " unstable" 
-		else x = "unstable"
+		if (rds == 0) x = "free"
 
 		return x
 	},
@@ -370,14 +369,14 @@ var uq_names = {
 		}
 		if (a >= (b > 0 ? 2 : 1)) x += "<sub>" + roots_1[a] + "</sub>"
 
-		if (rds > 0) x = x + " unstable" 
-		else x = "unstable"
+		if (rds == 0) x = "free"
 
 		return x
 	},
 	exponents(rds) {
-		if (rds == 0) return "unstable"
-		return "unstable<sup>" + getFullExpansion(rds + 1) + "</sup>"
+		if (rds == 0) return "free"
+		if (rds == 1) return "radioactive"
+		return "radioactive<sup>" + getFullExpansion(rds + 1) + "</sup>"
 	},
 	mixed(rds) {
 		if (rds > 5) return this.exponents(rds)

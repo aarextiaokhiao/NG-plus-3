@@ -52,7 +52,7 @@ function getQuarkChargeProduction(noSpeed) {
 
 function startProduceQuarkCharge() {
 	nfSave.producingCharge = !nfSave.producingCharge
-	el("produceQuarkCharge").innerHTML = (nfSave.producingCharge ? "Stop" : "Start") + " production of preon charge." + (nfSave.producingCharge ? "" : "<br>(You will not get preons when you do this.)")
+	el("produceQuarkCharge").innerHTML = (nfSave.producingCharge ? "Stop" : "Start") + " production of nanocharge." + (nfSave.producingCharge ? "" : "<br>(You will not get pilons when you do this.)")
 }
 
 function getQuarkLossProduction() {
@@ -157,13 +157,13 @@ var nanoRewards = {
 			return "Remote Antimatter Galaxies scale " + getFullExpansion(Math.floor(x)) + " later"
 		},
 		preon_charge: function(x) {
-			return "produce preon charge " + shorten(x) + "x faster"
+			return "produce nanocharge " + shorten(x) + "x faster"
 		},
 		per_10_power: function(x) {
 			return "before Electrons, add " + shorten(x) + "x to multiplier per ten Dimensions"
 		},
 		preon_energy: function(x) {
-			return "produce preon energy " + shorten(x) + "x faster"
+			return "produce nanoenergy " + shorten(x) + "x faster"
 		},
 		supersonic_start: function(x) {
 			return "Dimension Supersonic scales " + getFullExpansion(Math.floor(x)) + " later"
@@ -287,7 +287,7 @@ function nanofieldProducingChargeUpdating(diff){
 	var toSub = loss.times(diff).min(quSave.replicants.quarks)
 	if (toSub.eq(0)) {
 		nfSave.producingCharge = false
-		el("produceQuarkCharge").innerHTML="Start production of preon charge.<br>(You will not get preons when you do this.)"
+		el("produceQuarkCharge").innerHTML="Start production of nanocharge.<br>(You will not get pilons when you do this.)"
 	} else {
 		let chGain = toSub.div(loss).times(rate)
 		if (!hasAch("ng3p71")) quSave.replicants.quarks = quSave.replicants.quarks.sub(toSub)

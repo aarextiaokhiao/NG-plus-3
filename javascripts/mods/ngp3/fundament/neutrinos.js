@@ -148,7 +148,7 @@ function buyNeutrinoMult() {
 }
 
 function maxNeutrinoMult() {
-	let cost = E_pow(4, ghSave.neutrinos.multPower-1).times(2)
+	let cost = E_pow(4, ghSave.neutrinos.multPower - 1).times(2)
 	if (!ghSave.ghostParticles.gte(cost)) return
 	let toBuy = Math.floor(ghSave.ghostParticles.div(cost).times(3).add(1).log(4))
 	let toSpend = E_pow(4, toBuy).sub(1).div(3).times(cost)

@@ -149,7 +149,7 @@ function changeSaveDesc(saveId, placement) {
 				msg+="Quarks: "+shortenDimensions(Decimal.add(temp.quantum.quarks,temp.quantum.usedQuarks.r).add(temp.quantum.usedQuarks.g).add(temp.quantum.usedQuarks.b))
 				if (temp.quantum.gluons.rg) msg+=", Gluons: "+shortenDimensions(Decimal.add(temp.quantum.gluons.rg,temp.quantum.gluons.gb).add(temp.quantum.gluons.br))
 				if (temp.masterystudies.includes('d13')) msg+=", Quark Spins: "+shortenDimensions(Decimal.add(temp.quantum.tod.r.spin, temp.quantum.tod.g.spin).add(temp.quantum.tod.b.spin))
-				else if (temp.masterystudies.includes('d12')) msg+=", Preon charge: "+shortenDimensions(E(temp.quantum.nanofield.charge))+", Preon energy: "+shortenDimensions(E(temp.quantum.nanofield.energy))+", Preon anti-energy: "+shortenDimensions(E(temp.quantum.nanofield.antienergy))+", Nanofield Rewards: "+getFullExpansion(temp.quantum.nanofield.rewards)
+				else if (temp.masterystudies.includes('d12')) msg+=", Nanocharge: "+shortenDimensions(E(temp.quantum.nanofield.charge))+", Nanorewards: "+getFullExpansion(temp.quantum.nanofield.rewards)
 				else if (temp.masterystudies.includes('d10')) msg+=", Duplicants: "+shortenDimensions(getTotalDuplicants(temp))+", Worker duplicants: "+shortenDimensions(getTotalWorkers(temp))
 				else if (temp.masterystudies.includes('d9')) msg+=", Paired challenges: "+temp.quantum.pairedChallenges.completed
 				else if (temp.masterystudies.includes('d8')) {

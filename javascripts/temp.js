@@ -209,7 +209,7 @@ function updatePPTITemp(){
 
 function updateGhostifyTempStuff(){
 	updateBosonicLabTemp()
-	updatePPTITemp() //preon power threshold increase
+	updatePPTITemp() //pilon power threshold increase
 	if (ghSave.ghostlyPhotons.unl) {
 		var x = getLightEmpowermentBoost()
 		var y = hasBU(32)

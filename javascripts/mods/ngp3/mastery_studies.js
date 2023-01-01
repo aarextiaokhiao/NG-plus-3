@@ -288,30 +288,30 @@ var masteryStudies = {
 		341: "Preons boost dilated time production at reduced rate.",
 		342: "All replicated galaxies are stronger and use the same formula.",
 		343: "Tachyonic Galaxies are as strong as a normal replicated galaxy.",
-		344: "Replicated galaxies are more effective based on your preons.",
+		344: "Replicated galaxies are more effective based on your pilons.",
 		351: "Time Shards boost all Meta Dimensions.",
 		361: "Hatch speed is faster based on your tachyon particles.",
 		362: function() {
-			return "Reduce the softcap for the preon boost"+(aarMod.ngumuV?", but preons reduce the green power effect.":".")
+			return "Reduce the softcap for the pilon boost"+(aarMod.ngumuV?", but pilons reduce the green power effect.":".")
 		},
 		371: "Hatch speed is faster based on your extra replicated galaxies.",
 		372: "Hatch speed is faster based on your time shards.",
-		373: "You get more preons based on your galaxies.",
+		373: "You get more pilons based on your galaxies.",
 		381: "Hatch speed is faster based on your tickspeed reduction multiplier.",
 		382: "Eighth Dimensions boost Meta Dimensions.",
 		383: function() {
 			return "Blue power " + (tmp.ngp3l ? "boosts" : " and meta-antimatter boost") + " Meta Dimensions."
 		},
 		391: "Hatch speed is faster based on your meta-antimatter.",
-		392: "Preons boost all Emperor Dimensions.",
+		392: "Pilons boost all Emperor Dimensions.",
 		393: "Workers boost Meta Dimensions.",
-		401: "The production of preon anti-energy is slower based on your preons.",
+		401: "The production of anti-nanoenergy is slower based on your pilons.",
 		402: "Emperor Dimensions and hatch speed are 30x faster.",
-		411: "The production of preon energy is faster based on your duplicants.",
+		411: "The production of nanoenergy is faster based on your duplicants.",
 		412: function() {
-			return tmp.ngp3l ? "Preon effect is 25% stronger." : "Further reduce the softcap of preon boost."
+			return tmp.ngp3l ? "Pilon effect is 25% stronger." : "Further reduce the softcap of pilon boost."
 		},
-		421: "Tickspeed boosts preon energy production.",
+		421: "Tickspeed boosts nanoenergy.",
 		431: "DT production and branches are faster based on your Tachyonic Galaxies."
 	},
 	hasStudyEffect: [251, 252, 253, 262, 263, 264, 273, 281, 282, 301, 303, 322, 332, 341, 344, 351, 361, 371, 372, 373, 381, 382, 383, 391, 392, 393, 401, 411, 421, 431],
