@@ -2014,7 +2014,6 @@ function setTSDisplay(){
 }
 
 function updateNGp3DisplayStuff(){
-	displayNonlegacyStuff()
 	for (var i=0;i<masteryStudies.timeStudies.length;i++) {
 			var t=masteryStudies.timeStudies[i]
 			var d=masteryStudies.timeStudyDescs[t]

@@ -256,14 +256,12 @@ function ngP3AchieveCheck(){
 		let ableToGetRid7 = ableToGetRid2 && player.epmult.eq(1)
 		let ableToGetRid8 = ableToGetRid7 && !beSave.did
 		let ableToGetRid9 = ableToGetRid8 && noTree
-		let ableToGetRid10 = ableToGetRid9 && inQCModifier("ad")
 		if (player.currentEternityChall == "eterc7" && player.galaxies == 1 && player.money.log10() >= 8e7) giveAchievement("Time Immunity")
 		if (!player.timestudy.studies.includes(11) && player.timeShards.log10() >= 215) giveAchievement("You're not really smart.")
 		if (ableToGetRid7 && player.infinityPoints.log10() >= 3.5e5) giveAchievement("And so your life?")
 		if (beSave && beSave.eternalMatter.gte(9.999999e99)) giveAchievement("This achievement doesn't exist 4")
 		if (ableToGetRid8 && player.infinityPoints.log10() >= 9.5e5) giveAchievement("Please answer me why you are dying.")
 		if (ableToGetRid9 && player.infinityPoints.log10() >= 1.8e6) giveAchievement("Aren't you already dead?")
-		if (ableToGetRid10 && player.infinityPoints.log10() >= 2.25e4) giveAchievement("I give up.")
 		if (player.matter.log10() >= 5000) giveAchievement("Really?")
 	}
 	if (brSave.spaceShards.log10() >= 33 && !beSave.did) giveAchievement("Finite Time")
@@ -273,8 +271,6 @@ function ngP3AchieveCheck(){
 	if (player.options.secrets && player.options.secrets.ghostlyNews && !player.options.newsHidden) giveAchievement("Two tickers")
 	if (beSave && beSave.did) giveAchievement("Time Breaker")
 	if (masteryStudies.bought >= 48) giveAchievement("The Theory of Ultimate Studies")
-	if (ranking >= 165) giveAchievement("Pulling an All-Nighter")
-	if (ranking >= 190) giveAchievement("Not-so-very-challenging") 
 	if (tmp.pcc.normal >= 24) giveAchievement("The Challenging Day")
 	if (speedrunMilestonesReached >= 24) giveAchievement("And the winner is...")
 	if (speedrunMilestonesReached >= 28) giveAchievement("Special Relativity")

@@ -269,21 +269,6 @@ function setupNanofieldHTMLandData(){
 	el("nfReward8").style["font-size"] = "10px"
 }
 
-function setupQuantumChallenges(){
-	var modDiv = ""
-	for (var m = 0; m < qcm.modifiers.length; m++) {
-		var id = qcm.modifiers[m]
-		modDiv += ' <button id="qcm_' + id + '" onclick="toggleQCModifier(\'' + id + '\')">' + (qcm.names[id] || "???") + '</button>'
-	}
-	el("modifiers").innerHTML = modDiv
-	var modDiv = '<button class="storebtn" id="qcms_normal" onclick="showQCModifierStats(\'\')">Normal</button>'
-	for (var m = 0; m < qcm.modifiers.length; m++) {
-		var id = qcm.modifiers[m]
-		modDiv += ' <button class="storebtn" id="qcms_' + id + '" onclick="showQCModifierStats(\'' + id + '\')">'+(qcm.names[id] || "???")+'</button>'
-	}
-	el("modifiersStats").innerHTML=modDiv
-}
-
 function setupBraveMilestones(){
 	for (var m = 1; m <= 16; m++) el("braveMilestone" + m).textContent=getFullExpansion(tmp.bm[m - 1])+"x quantumed"+(m==1?" or lower":"")
 }
@@ -351,7 +336,6 @@ function setupHTMLAndData() {
 	setupPCTableHTMLandData()
 	setupToDHTMLandData()
 	setupNanofieldHTMLandData()
-	setupQuantumChallenges()
 	setupBraveMilestones()
 	setupBosonicExtraction()
 	setupBosonicUpgrades()
@@ -2137,13 +2121,11 @@ function doCheckECCompletionStuff(){
 
 function canEternity() {
 	var eter25 = getEternitied() >= 25
-	var dilLocked = !inQCModifier("ad") && player.dilation.active
-
 	var id7unlocked = player.infDimensionsUnlocked[7]
 	if (eter25) id7unlocked = true
 	if (tmp.ngp3 && brSave.active) id7unlocked = true
 
-	return player.infinityPoints.gte(player.eternityChallGoal || Number.MAX_VALUE) && id7unlocked && !dilLocked
+	return player.infinityPoints.gte(player.eternityChallGoal || Number.MAX_VALUE) && id7unlocked
 }
 
 function eternity(force, auto, presetLoad, dil) {
@@ -2162,7 +2144,7 @@ function eternity(force, auto, presetLoad, dil) {
 	if (player.dead && !force) giveAchievement("You're already dead.")
 	if (player.infinitied <= 1 && !force) giveAchievement("Do I really need to infinity")
 	if (gainedEternityPoints().gte("1e600") && player.thisEternity <= 600 && player.dilation.active && !force) giveAchievement("Now you're thinking with dilation!")
-	if (ghostified && player.currentEternityChall == "eterc11" && inQC(6) && inQC(8) && inQCModifier("ad") && player.infinityPoints.e >= 15500) giveAchievement("The Deep Challenge")
+	//achievement placeholder
 	if (isEmptiness) showTab("dimensions")
 	temp = []
 	if (gainedEternityPoints().gte(player.eternityPoints) && player.eternityPoints.gte("1e1185") && (tmp.ngp3 ? player.dilation.active && brSave.active : false)) giveAchievement("Gonna go fast")
@@ -3322,7 +3304,7 @@ function doEternityButtonDisplayUpdating(diff){
 			el("eternitybtnEPGain").innerHTML = ((player.eternities > 0 && (player.currentEternityChall==""||player.options.theme=="Aarex's Modifications"))
 										  ? "Gain <b>"+(player.dilation.active?shortenMoney(getDilGain().sub(player.dilation.totalTachyonParticles)):shortenDimensions(gainedEternityPoints()))+"</b> "+(player.dilation.active?"Tachyon particles.":tmp.be?"EP and <b>"+shortenDimensions(getEMGain())+"</b> Eternal Matter.":"Eternity points.") : "")
 		} else {
-			el("eternitybtnEPGain").innerHTML = "Go Eternal"
+			el("eternitybtnEPGain").innerHTML = "<b>Go eternal</b>"
 		}
 	}
 	var showEPmin=(player.currentEternityChall===""||player.options.theme=="Aarex's Modifications")&&EPminpeak>0&&player.eternities>0&&player.options.notation!='Morse code'&&player.options.notation!='Spazzy'&&(!(player.dilation.active||tmp.be)||isSmartPeakActivated)
@@ -3349,19 +3331,29 @@ function doQuantumButtonDisplayUpdating(diff){
 			} else quSave.autobuyer.peakTime += diff
 		}
 	}
-	
-	el("quantumbtnFlavor").textContent = ((quSave!==undefined?!quSave.times&&(ghSave!==undefined?!ghSave.milestones:true):false)||!inQC(0)?((tmp.ngp3 ? brSave.active : false)?"I am":inQC(0)?"My computer is":quSave.challenge.length>1?"These paired challenges are":"This challenge is")+" not powerful enough... ":"") + "I need to go quantum."
-	var showGain = ((quantumed && quSave.times) || (ghostified && ghSave.milestones)) && (inQC(0)||player.options.theme=="Aarex's Modifications") ? "QK" : ""
-	if (tmp.ngp3) if (brSave.active) showGain = "SS"
-	el("quantumbtnQKGain").textContent = showGain == "QK" ? "Gain "+shortenDimensions(quarkGain())+" quark"+(quarkGain().eq(1)?".":"s.") : ""
-	if (showGain == "SS") el("quantumbtnQKGain").textContent = "Gain " + shortenDimensions(getSpaceShardsGain()) + " Space Shards."
-	if (showGain == "QK" && currentQKmin.gt(pow10(1e5))) {
+
+	let flavor = "I need to go quantum."
+	if (!quantumed) flavor = "I am not powerful enough... " + flavor
+	if (!inQC(0)) flavor = "Challenges aren't enough... " + flavor
+	if (tmp.ngp3 && brSave.active) flavor = "The universe isn't potential enough..."
+	el("quantumbtnFlavor").textContent = flavor
+
+	var showGain = quantumed && inQC(0) ? "QK" : ""
+	if (tmp.ngp3 && brSave.active) showGain = "SS"
+
+	var gainMsg = ""
+	if (showGain == "QK") gainMsg += "+"+shortenDimensions(quarkGain())+" anti-quarks"
+	if (showGain == "SS") gainMsg += "+"+shortenDimensions(getSpaceShardsGain())+" Space Shards"
+	el("quantumbtnQKGain").textContent = gainMsg
+
+	var showPeak = showGain == "QK" && currentQKmin.lt(1e100)
+	if (showPeak) {
+		var showQKPeakValue = QKminpeakValue.lt(1e30)
+		el("quantumbtnRate").textContent = shortenMoney(currentQKmin)+" aQ/min"
+		el("quantumbtnPeak").textContent = (showQKPeakValue ? "" : "Peaked at ") + shortenMoney(QKminpeak)+" aQ/min" + (showQKPeakValue ? " at " + shortenDimensions(QKminpeakValue) + " aQ" : "")
+	} else {
 		el("quantumbtnRate").textContent = ''
 		el("quantumbtnPeak").textContent = ''
-	} else {
-		el("quantumbtnRate").textContent = showGain == "QK" ? shortenMoney(currentQKmin)+" QK/min" : ""
-		var showQKPeakValue = QKminpeakValue.lt(1e30) || player.options.theme=="Aarex's Modifications"
-		el("quantumbtnPeak").textContent = showGain == "QK" ? (showQKPeakValue ? "" : "Peaked at ") + shortenMoney(QKminpeak)+" QK/min" + (showQKPeakValue ? " at " + shortenDimensions(QKminpeakValue) + " QK" : "") : ""
 	}
 }
 

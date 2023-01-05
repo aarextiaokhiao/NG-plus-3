@@ -352,7 +352,7 @@ function updateQuarksTab(tab) {
 	//UPGRADES
 	el("qk_mult_upg").className = "gluonupgrade " + (E(quantumWorth).gte(getQuarkMultReq()) ? "storebtn" : "unavailablebtn")
 	el("qk_mult_upg").innerHTML = `
-		<b>Double Quarks.</b><br>
+		<b>Double anti-quarks.</b><br>
 		Currently: ${shortenDimensions(getQuarkMult())}x<br>
 		(req: ${shortenDimensions(getQuarkMultReq())} quantum worth)
 	`

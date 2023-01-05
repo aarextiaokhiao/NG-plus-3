@@ -1,6 +1,6 @@
 //VERSION: 2.41R
 let ngp3_ver = 2.41
-let ngp3_build = 20221231
+let ngp3_build = 20230105
 function doPNGP3RUpdates() {
 	if (!aarMod.ngp3_build) aarMod.ngp3_build = 0
 	if (aarMod.ngp3_build < 20221230) quSave.multPower = 0
@@ -423,7 +423,6 @@ function getGHPBaseMult() {
 function getGHPMult() {
 	let x = getGHPBaseMult()
 	if (hasAch("ng3p93")) x = x.times(500)
-	if (hasAch("ng3p83")) x = x.times(ranking + 1)
 	if (hasAch("ng3p97")) x = x.times(E_pow(ghSave.times + 1, 1/3))
 	return x
 }
@@ -497,7 +496,7 @@ function ghostifyReset(implode, gain, amount, force) {
 	if (bm > 6 && !force && hasAch("ng3p68")) gainNeutrinos(Decimal.times(2e3 * brSave.bestGals, bulk), "all")
 	if (bm > 15) giveAchievement("I rather oppose the theory of everything")
 	if (player.eternityPoints.e>=22e4&&ghSave.under) giveAchievement("Underchallenged")
-	if (player.eternityPoints.e>=375e3&&inQCModifier("ad")) giveAchievement("Overchallenged")
+	//achievement placeholder
 	if (ghSave.best<=6) giveAchievement("Running through Big Rips")
 	ghSave.time = 0
 	doGhostifyResetStuff(implode, gain, amount, force, bulk, nBRU, nBEU)
@@ -669,11 +668,6 @@ function toggleLEConf() {
 }
 
 //v2.21: NG+3.1
-function displayNonlegacyStuff() {
-	//QC Modifiers
-	for (var m = 1; m < qcm.modifiers.length; m++) el("qcm_" + qcm.modifiers[m]).style.display = tmp.ngp3l ? "none" : ""
-}
-
 function getOldAgeRequirement() {
 	let year = new Date().getFullYear() || 2022
 	return pow10(3 * 86400 * 365.2425 * year)

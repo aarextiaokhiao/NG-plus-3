@@ -28,7 +28,7 @@
 		</div>
 		<div style="position: relative">
 			<div class="IP" id="infinityPoints2"></div>
-			<button id="postInfinityButton" class="postinfcrunch" onclick="bigCrunch()">Big Crunch for x Infinity Points</button>
+			<button id="postInfinityButton" class="infinitybtn postinfcrunch" onclick="bigCrunch()">Big Crunch for x Infinity Points</button>
 		</div>
 		<div style="position: relative">
 			<div class="EP" id="eternityPoints2"></div>
@@ -106,7 +106,7 @@
 			<button id="bltabbtn" style="font-family: Typewriter; font-size: 20px" class="bltabbtn" onclick='showTab("bltab")'>Bosonic Lab</button>
 		</div>
 		<div style="position:absolute; left: 0; right: 0; margin-left: auto; margin-right: auto; width: 360px; top: 19px">
-			<button id="bigcrunch" style="font-family: Typewriter; font-size: 50px; width: 360px; height: 100px;" class="tabbtn" onclick="bigCrunch()">Big Crunch</button>
+			<button class="infinitybtn" id="bigcrunch" style="font-family: Typewriter; font-size: 50px; width: 360px; height: 100px;" onclick="bigCrunch()">Big Crunch</button>
 		</div><div id="emptiness" class="tab" style="font-size: 150%">
 			<br><br><br>
 			<br><br><br>
@@ -1562,7 +1562,7 @@
 				<br><br>
 
 				<b>(Update v2.41R: Gravitional Relativity)</b><br>
-				<b class="red">(Beta: 12/31/22 Build)</b>
+				<b class="red">(Beta: 1/5/23a Build)</b>
 				<br><br>
 
 				NG++ is by dan-simon, NG+3 is by Aarex, pg132, and usavictor, and NG+4 is by Soul147.
@@ -1720,7 +1720,6 @@
 				<br>
 				Lowest PC # done w/ every combination of PCs:
 				<table id="pccompletionstable"></table>
-				<div id="modifiersStats"></div>
 				Best PC w/ QC6 & 8: <span id="bpc68"></span><br>
 				<span id="upcc" style="display: block"></span>
 				<span id="udcc"></span>
@@ -2258,7 +2257,7 @@
 								<div id="I can’t get my multipliers higher!" class="achievement achievementlocked" style="background-image: url(images/132.png)"><br></div>
 							</td>
 							<td>
-								<div id="No dilation means no production." class="achievement achievementlocked" style="background-image: url(images/133.png)"><br></div>
+								<div id="No dilation means no production." class="achievement achievementlocked" style="background-image: url(images/placeholder.png)">No dilation means no production.</div>
 							</td>
 							<td>
 								<div id="I don't want you to live anymore." class="achievement achievementlocked" style="background-image: url(images/134.png)"></div>
@@ -2373,10 +2372,10 @@
 								<div id="Even Ghostlier than before" class="achievement achievementlocked" style="background-image: url(images/167.png)"></div>
 							</td>
 							<td>
-								<div id="Overchallenged" class="achievement achievementlocked" style="background-image: url(images/placeholder.png)">Overchallenged</div>
+								<div id="ng3p82" class="achievement achievementlocked" style="background-image: url(images/placeholder.png)" ach-tooltip="Placeholder. Reward: Remove the second Nanoreward scaling."></div>
 							</td>
 							<td>
-								<div id="Pulling an All-Nighter" class="achievement achievementlocked" style="background-image: url(images/169.png)" ach-tooltip="Get 165 Paired Challenges ranking. Reward: Paired Challenge ranking multiplies Elementary Particles."></div>
+								<div id="ng3p83" class="achievement achievementlocked" style="background-image: url(images/placeholder.png)" ach-tooltip="Placeholder."></div>
 							</td>
 							<td>
 								<div id="Big Rip isn't enough" class="achievement achievementlocked" style="background-image: url(images/170.png)"></div>
@@ -2388,10 +2387,10 @@
 								<div id="Back to Challenge One" class="achievement achievementlocked" style="background-image: url(images/placeholder.png)">Back to Challenge One</div>
 							</td>
 							<td>
-								<div id="The Deep Challenge" class="achievement achievementlocked" style="background-image: url(images/173.png)"></div>
+								<div id="ng3p87" class="achievement achievementlocked" style="background-image: url(images/placeholder.png)" ach-tooltip="Placeholder. Reward: Remove the quadratic cost scaling and the level softcap of fifth Quark Decay upgrade and make it based on best meta-antimatter over Fundaments, instead of over quantums."></div>
 							</td>
 							<td>
-								<div id="I give up." class="achievement achievementlocked" style="background-image: url(images/174.png)"></div>
+								<div id="ng3p88" class="achievement achievementlocked" style="background-image: url(images/placeholder.png)" ach-tooltip="Placeholder. Reward: Remove the cap of 'And so your life?'"></div>
 							</td>
 						</tr>
 						<tr id="achRowng3p9">
@@ -2411,7 +2410,7 @@
 								<div id="Bosonic Semipowerment" class="achievement achievementlocked" style="background-image: url(images/placeholder.png)" ach-tooltip="Reach 50% of Spectral Ion requirement without buying Bosonic Upgrades. Reward: Spectral Ions are 1 cheaper.">Bosonic Semipowerment</div>
 							</td>
 							<td>
-								<div id="Not-so-very-challenging" class="achievement achievementlocked" style="background-image: url(images/placeholder.png)" ach-tooltip="Get 190 Paired Challenges ranking. Reward: Decrease Quantum and Paired Challenge goals by 5%, except Big Rip.">Not-so-very-challenging</div>
+								<div id="ng3p96" class="achievement achievementlocked" style="background-image: url(images/placeholder.png)" ach-tooltip="Placeholder. Reward: Decrease Quantum and Paired Challenge goals by 5%, except Big Rip."></div>
 							</td>
 							<td>
 								<div id="The Ghostliest Side" class="achievement achievementlocked" style="background-image: url(images/placeholder.png)">The Ghostliest Side</div>
@@ -3475,10 +3474,6 @@
 				</table>
 			</div>
 			<div id="pChalls" class="challengeTab">
-				<div id="modifiersdiv">
-					<b style="font-size: 15px">Modifiers</b><br>
-					<div id="modifiers"></div>
-				</div>
 				<button class="storebtn" onclick="respecTogglePC()" id="respecPC" style="width:150px; height: 40px; font-size: 10px; border-width: 1px; margin: auto">Respec Paired Challenges on next quantum</button>
 				<button class="storebtn" onclick="$.notify('Soon.')" style="width:150px; height: 40px; font-size: 10px; border-width: 1px; margin: auto">Export Paired Challenges</button>
 				<button class="storebtn" onclick="$.notify('Soon.')" style="width:150px; height: 40px; font-size: 10px; border-width: 1px; margin: auto">Import Paired Challenges</button><br>
@@ -4293,10 +4288,10 @@
 		</div>
 		</div>
 		<div class='tab' id='quantumtab'>
-			Your quantum worth (sum of anti-quarks, colored anti-quarks, and anti-gluons) is currently <b class="QKAmount" id="quantumWorth1">0</b>.
+			Your quantum worth (sum of anti-quarks, colored anti-quarks, and gluons) is currently <b class="QKAmount" id="quantumWorth1">0</b>.
 			<table class="table" align="center" style="margin: auto">
 				<tr>
-					<td><button class="secondarytabbtn" onclick="showQuantumTab('uquarks')">Quarks</button></td>
+					<td><button class="secondarytabbtn" onclick="showQuantumTab('uquarks')">Anti-Quarks</button></td>
 					<td><button class="secondarytabbtn" onclick="showQuantumTab('gluons')">Gluons</button></td>
 					<td id='electronstabbtn'><button class="secondarytabbtn" onclick="showQuantumTab('electrons')">Electrons</button></td>
 					<td id='todtabbtn'><button class="secondarytabbtn" onclick="showQuantumTab('tod')">Decay</button></td>

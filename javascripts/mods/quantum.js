@@ -29,7 +29,6 @@ function quantum(auto, force, challid, bigRip = false, quick) {
 					if (player.options.challConf || (quSave.pairedChallenges.completions.length < 1 && !ghostified)) if (!confirm("You will start a Quantum Challenge, but as a Paired Challenge, there will be two challenges at once. Completing it boosts the rewards of the Quantum Challenges that you chose in this Paired Challenge. You will keep electrons & sacrificed galaxies, but they don't work in this Challenge.")) return
 				} else if (player.options.challConf || (QCIntensity(1) == 0 && !ghostified)) if (!confirm("You will do a Quantum reset, but you will not gain quarks, you keep your electrons & sacrificed galaxies, and you can't buy electron upgrades. You have to reach the set goal of antimatter while getting the meta-antimatter requirement to Quantum to complete this challenge. Electrons and banked eternities have no effect in Quantum Challenges and your electrons and sacrificed galaxies don't reset until you end the challenge.")) return
 				quSave.electrons.amount -= getQCCost(challid)
-				if (!quick) for (var m = 0; m < qcm.on.length; m++) if (ranking >= qcm.reqs[qcm.on[m]] || !qcm.reqs[qcm.on[m]]) quSave.qcsMods.current.push(qcm.on[m])
 			} else if (pcFocus && pc < 1) {
 				if (!assigned.includes(challid)) {
 					if (!quSave.pairedChallenges.order[pcFocus]) quSave.pairedChallenges.order[pcFocus]=[challid]
@@ -78,7 +77,12 @@ function getQuantumReq() {
 }
 
 function isQuantumReached() {
-	return player.money.log10() >= getQCGoal() && (player.meta.antimatter.max(hasAch("ng3p76") ? player.meta.bestOverQuantums : 0).gte(getQuantumReq(undefined, tmp.ngp3 && brSave.active))) && (!player.masterystudies || ECComps("eterc14")) && quarkGain().gt(0)
+	if (!player.meta) return
+
+	let ma = player.meta.antimatter.max(hasAch("ng3p76") ? player.meta.bestOverQuantums : 0)
+	let got = ma.gte(getQuantumReq(undefined, tmp.ngp3 && brSave.active))
+	if (tmp.ngp3) got = got && ECComps("eterc14") && quarkGain().gt(0)
+	return got
 }
 
 function getQuarkGain(){
@@ -181,14 +185,14 @@ function updateLastTenQuantums() {
 	for (var i = 0; i < 10; i++) {
 		if (quSave.last10[i][1].gt(0)) {
 			var qkpm = quSave.last10[i][1].dividedBy(quSave.last10[i][0] / 600)
-			var tempstring = shorten(qkpm) + " QK/min"
-			if (qkpm<1) tempstring = shorten(qkpm*60) + " QK/hour"
+			var tempstring = shorten(qkpm) + " aQ/min"
+			if (qkpm<1) tempstring = shorten(qkpm*60) + " aQ/hour"
 			var msg = "The quantum " + (i == 0 ? '1 quantum' : (i + 1) + ' quantums') + " ago took " + timeDisplayShort(quSave.last10[i][0], false, 3)
 			if (quSave.last10[i][2]) {
 				if (typeof(quSave.last10[i][2]) == "number") " in Quantum Challenge " + quSave.last10[i][2]
 				else msg += " in Paired Challenge " + quSave.last10[i][2][0] + " (QC" + quSave.last10[i][2][1][0] + "+" + quSave.last10[i][2][1][1] + ")"
 			}
-			msg += " and gave " + shortenDimensions(quSave.last10[i][1]) +" QK. "+ tempstring
+			msg += " and gave " + shortenDimensions(quSave.last10[i][1]) +" anti-Quarks. "+ tempstring
 			el("quantumrun"+(i+1)).textContent = msg
 			tempTime = tempTime.plus(quSave.last10[i][0])
 			tempQK = tempQK.plus(quSave.last10[i][1])
@@ -200,10 +204,10 @@ function updateLastTenQuantums() {
 		tempTime = tempTime.dividedBy(listed)
 		tempQK = tempQK.dividedBy(listed)
 		var qkpm = tempQK.dividedBy(tempTime / 600)
-		var tempstring = "(" + shorten(qkpm) + " QK/min)"
+		var tempstring = "(" + shorten(qkpm) + " aQ/min)"
 		averageQk = tempQK
-		if (qkpm < 1) tempstring = "(" + shorten(qkpm * 60) + " QK/hour"
-		el("averageQuantumRun").textContent = "Average time of the last " + listed + " Quantums: "+ timeDisplayShort(tempTime, false, 3) + " | Average QK gain: " + shortenDimensions(tempQK) + " QK. " + tempstring
+		if (qkpm < 1) tempstring = "(" + shorten(qkpm * 60) + " aQ/hour"
+		el("averageQuantumRun").textContent = "Average time of the last " + listed + " Quantums: "+ timeDisplayShort(tempTime, false, 3) + " | Average aQ gain: " + shortenDimensions(tempQK) + " aQ. " + tempstring
 	} else el("averageQuantumRun").textContent = ""
 }
 
@@ -369,24 +373,6 @@ function quantumReset(force, auto, challid, bigRip, implode = false) {
 			for (var s = 0; s < player.masterystudies.length; s++) if (player.masterystudies[s].indexOf("t") == 0) brSave.storedTS.studies.push(parseInt(player.masterystudies[s].split("t")[1]))
 		}
 		if (bigRip != brSave && brSave.active) switchAB()
-		if (inQCModifier("sm")) {
-			var count = 0
-			var newMS = []
-			for (var i = 0; i < player.masterystudies.length; i++) {
-				var study = player.masterystudies[i]
-				var split = study.split("t")
-				if (!split[1]) newMS.push(study)
-				else if (count < 20) {
-					newMS.push(study)
-					count++
-				} else {
-					if (study == "t373") updateColorCharge()
-					player.timestudy.theorem += masteryStudies.costs.time[split[1]]
-				}
-			}
-			player.masterystudies = newMS
-			respecUnbuyableTimeStudies()
-		}
 		if (!bigRip && brSave.active) if (player.galaxies == 9 && player.replicanti.galaxies == 9 && player.timeDimension4.amount.round().eq(9)) giveAchievement("We can really afford 9.")
 	} else quSave.gluons = 0;
 	if (player.tickspeedBoosts !== undefined) player.tickspeedBoosts = 0

@@ -678,7 +678,6 @@ function buyMasteryStudy(type, id, quick=false) {
 
 function canBuyMasteryStudy(type, id) {
 	if (type == 't') {
-		if (inQCModifier("sm") && masteryStudies.bought >= 20) return false
 		if (player.timestudy.theorem < masteryStudies.costs.time[id] || player.masterystudies.includes('t' + id) || player.eternityChallUnlocked > 12 || !masteryStudies.timeStudies.includes(id)) return false
 		if (masteryStudies.latestBoughtRow > Math.floor(id / 10)) return false
 		if (!masteryStudies.spentable.includes(id)) return false

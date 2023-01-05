@@ -101,7 +101,6 @@ function updateTheoremButtons() {
 }
 
 function buyTimeStudy(name, check, quickBuy) {
-	if (inQCModifier("sm")) return
 	var cost = studyCosts[all.indexOf(name)]
 	if (player.boughtDims) {
 		if (player.timestudy.theorem < player.timestudy.ers_studies[name] + 1) return
@@ -439,7 +438,7 @@ function respecUnbuyableTimeStudies() {
 	for (var t = 0; t < all.length; t++) {
 		var id = all[t]
 		if (player.timestudy.studies.includes(id)) {
-			if (!inQCModifier("sm") && (id < 120 || id > 150 || !secondSplitPick || secondSplitPick == id % 10 || player.masterystudies.includes("t272")) && (id < 220 || !earlyDLStudies.includes(id % 2 > 0 ? id + 1 : id - 1) || player.masterystudies.includes("t302"))) {
+			if ((id < 120 || id > 150 || !secondSplitPick || secondSplitPick == id % 10 || player.masterystudies.includes("t272")) && (id < 220 || !earlyDLStudies.includes(id % 2 > 0 ? id + 1 : id - 1) || player.masterystudies.includes("t302"))) {
 				respecedTS.push(id)
 				if (id > 120 && id < 130) secondSplitPick = id % 10
 				if (id > 220) earlyDLStudies.push(id)

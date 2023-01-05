@@ -112,9 +112,7 @@ function getTotalTachyonParticleGain(){
 }
 
 function getDilGain() {
-	if (inQCModifier("ad") || player.money.lt(10)) {
-		return E(0)
-	}
+	if (player.money.lt(10)) return E(0)
 	var log = Math.log10(player.money.log10() / 400) * getDilExp() + getDilPower().log10()
 	if (tmp.ngp3) if (!tmp.be && brSave.active) {
 		if (log > 100) log = Math.sqrt(100 * log)

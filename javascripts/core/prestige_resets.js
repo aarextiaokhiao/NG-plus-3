@@ -164,8 +164,8 @@ function doQuantumResetStuff(bigRip, challid){
 	player.dilation = {
 		studies: bigRip ? (hasRipUpg(12) ? [1,2,3,4,5,6] : hasRipUpg(10) ? [1] : []) : isRewardEnabled(4) ? (speedrunMilestonesReached > 5 ? [1,2,3,4,5,6] : [1]) : [],
 		active: false,
-		tachyonParticles: (((hasAch("ng3p37") && (!bigRip || hasRipUpg(11))) || hasAch("ng3p71")) && !inQCModifier("ad")) ? player.dilation.bestTP.pow((ghSave.milestones > 15 && (!bigRip || hasAch("ng3p71"))) || (!challid && ghSave.milestones > 3) ? 1 : 0.5) : E(0),
-		dilatedTime: E(speedrunMilestonesReached > 21 && isRewardEnabled(4) && !inQCModifier("ad") && !bigRip ? 1e100 : 0),
+		tachyonParticles: ((hasAch("ng3p37") && (!bigRip || hasRipUpg(11))) || hasAch("ng3p71")) ? player.dilation.bestTP.pow((ghSave.milestones > 15 && (!bigRip || hasAch("ng3p71"))) || (!challid && ghSave.milestones > 3) ? 1 : 0.5) : E(0),
+		dilatedTime: E(speedrunMilestonesReached > 21 && isRewardEnabled(4) && !bigRip ? 1e100 : 0),
 		bestTP: Decimal.max(player.dilation.bestTP || 0, player.dilation.tachyonParticles),
 		bestTPOverGhostifies: player.dilation.bestTPOverGhostifies,
 		nextThreshold: E(1000),

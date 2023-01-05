@@ -464,24 +464,21 @@ function setR21Tooltip(){
 }
 
 function setR22Tooltip(){
-	// Row 22 (ng3p8) (7/8)
+	// Row 22 (ng3p8) (4/8)
 	let ghostierthanbefore = el("Even Ghostlier than before")
-	let oc = el("Overchallenged")
+	//ng3p82/////
 	//ng3p83/////
 	let isnotenough = el("Big Rip isn't enough") 
 	let ee = el("Everlasting Eternities")
 	let btco = el("Back to Challenge One")
-	let tdc = el("The Deep Challenge")
-	let igu = el("I give up.")
+	//ng3p87/////
+	//ng3p88/////
 
 	//ACHIEVEMENT ROW 22
 	ghostierthanbefore.setAttribute("ach-tooltip", "Unlock Bosonic Lab. Reward: Meta-antimatter effect uses best MA in current Fundament, and obtain achievements prior to Photons.")
 	ee.setAttribute('ach-tooltip', "Get "+shorten(Number.MAX_VALUE)+" eternities. Reward: Spectral Ions boost Quarks.")
-	oc.setAttribute('ach-tooltip', "Become a ghost with at least "+shortenCosts(pow10(3.75e5)) + " EP while Big Ripped within Anti-Dilation modifier. Reward: Remove the second Nanoreward scaling.")
 	btco.setAttribute('ach-tooltip', "Complete Paired Challenge 1 after getting "+shortenCosts(pow10(1.65e9)) + " antimatter in Quantum Challenges 6 and 8. Reward: Fundaments lose 25% of Radioactive Decays.")
-	tdc.setAttribute('ach-tooltip', "Complete Eternity Challenge 11 with "+shortenCosts(pow10(15500)) + " IP in a Paired Challenge with the Quantum Challenges 6 and 8 combination and the Anti-Dilation modifier. Reward: Remove the quadratic cost scaling and the level softcap of fifth Quark Decay upgrade and make it based on best meta-antimatter over Fundaments, instead of over quantums.")
-	igu.setAttribute('ach-tooltip', "Reach " + shortenCosts(pow10(2.25e4)) + " IP while dilated and Big Ripped with Anti-Dilation modifier and without having studies, EP mult upgrades, Tree Upgrades, and Break Eternity within this Fundament.")
-	isnotenough.setAttribute('ach-tooltip', "Complete a Paired Challenge with Quantum Challenges 6 and 8 combinations. Reward: Remove the cap of 'And so your life?'")
+	isnotenough.setAttribute('ach-tooltip', "Complete a Paired Challenge with Quantum Challenges 6 and 8 combinations. ")
 }
 
 function setR23Tooltip(){

@@ -134,10 +134,8 @@ function tweakBigRip(id, reset) {
 			epcost: E(1),
 			studies: []
 		}
-		if (!inQCModifier("ad")) {
-			player.dilation.tachyonParticles = player.dilation.tachyonParticles.max(player.dilation.bestTP.sqrt())
-			player.dilation.totalTachyonParticles = player.dilation.totalTachyonParticles.max(player.dilation.bestTP.sqrt())
-		}
+		player.dilation.tachyonParticles = player.dilation.tachyonParticles.max(player.dilation.bestTP.sqrt())
+		player.dilation.totalTachyonParticles = player.dilation.totalTachyonParticles.max(player.dilation.bestTP.sqrt())
 	}
 }
 
