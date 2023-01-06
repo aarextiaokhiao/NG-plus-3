@@ -102,133 +102,6 @@ function paradoxDimDisplay(){
 	}
 }
 
-function mainStatsDisplay(){
-	el("totalmoney").textContent = 'You have made a total of ' + shortenMoney(player.totalmoney) + ' antimatter.'
-	el("totalresets").textContent = 'You have performed ' + getFullExpansion(player.resets) + ' Dimension Boosts/Shifts.'
-	setAndMaybeShow("lostResets", player.pSac && player.pSac.lostResets, '"You have lost a total of " + getFullExpansion(player.pSac.lostResets) + " Dimension Boosts/Shifts after matter resets."')
-	el("tdboosts").textContent = aarMod.ngmX > 3 ? 'You have performed ' + getFullExpansion(player.tdBoosts) + ' Time Dimension Boosts/Shifts.':""
-	var showBoosts=isTickspeedBoostPossible()
-	el("boosts").style.display = showBoosts ? '' : 'none'
-	if (showBoosts) el("boosts").textContent = 'You have performed '+getFullExpansion(player.tickspeedBoosts)+' Tickspeed Boosts.'
-	el("galaxies").textContent = 'You have ' + getFullExpansion(player.galaxies) + ' Antimatter Galaxies.'
-	var showCancer = player.spreadingCancer > 0 && player.galacticSacrifice
-	el("spreadingCancer").style.display = showCancer ? '' : 'none'
-	if (showCancer) el("spreadingCancer").textContent = 'You have made '+getFullExpansion(player.spreadingCancer)+' total galaxies while using Cancer notation.'
-	el("totalTime").textContent = "You have played for " + timeDisplay(player.totalTimePlayed) + "."
-}
-
-function paradoxSacDisplay(){
-	if (player.pSac && player.pSac.times) {
-		el("psStatistics").style.display = ""
-		el("pSacrificedNormal").textContent = "You have Paradox Sacrificed " + getFullExpansion(player.pSac.normalTimes) + " times."
-		el("pSacrificedForced").textContent = "You have been forced to do a Paradox Sacrifice " + getFullExpansion(player.pSac.forcedTimes) + " times."
-		el("pSacrificed").textContent = "You have Paradox Sacrificed a total of " + getFullExpansion(player.pSac.times) + " times."
-		el("thisPSac").textContent = "You have spent " + timeDisplay(player.pSac.time) + " in this Paradox Sacrifice."
-	} else el("psStatistics").style.display = "none"
-}
-
-function galaxySacDisplay(){
-	if (player.galacticSacrifice ? player.galacticSacrifice.times < 1 : true) el("gsStatistics").style.display = "none"
-	else {
-		el("gsStatistics").style.display = ""
-		el("sacrificed").textContent = "You have Galactic Sacrificed "+getFullExpansion(player.galacticSacrifice.times) + " times."
-		el("thisSacrifice").textContent = "You have spent " + timeDisplay(player.galacticSacrifice.time) + " in this Galactic Sacrifice."
-	}
-}
-
-function bestInfinityDisplay(){
-	el("infinityStatistics").style.display = "none"
-	if (player.bestInfinityTime >= 9999999999) {
-		el("bestInfinity").textContent = ""
-		el("thisInfinity").textContent = ""
-		el("infinitied").textContent = ""
-	} else {
-		el("infinityStatistics").style.display = ""
-		el("bestInfinity").textContent = "Your fastest Infinity is in " + timeDisplay(player.bestInfinityTime) + "."
-		el("thisInfinity").textContent = "You have spent " + timeDisplay(player.thisInfinityTime) + " in this Infinity."
-		el("infinitied").textContent = "You have Infinitied " + getFullExpansion(player.infinitied) + " time" + (player.infinitied == 1 ? "" : "s") + (player.eternities!==0||player.eternitiesBank>0 ? " this Eternity." : ".")
-	}
-	if (player.infinitiedBank>0) el("infinityStatistics").style.display = ""
-}
-
-function bestEternityDisplay(){
-	el("eternityStatistics").style.display = "none"
-	if (player.eternities == 0) {
-		el("besteternity").textContent = ""
-		el("thiseternity").textContent = ""
-		el("eternitied").textContent = ""
-	} else {
-		el("eternityStatistics").style.display = "inline-block"
-		if (player.bestEternity >= 9999999999) {
-			el("besteternity").textContent = ""
-		} else el("besteternity").textContent = "Your fastest Eternity is in "+timeDisplay(player.bestEternity)+"."
-		el("thiseternity").textContent = "You have spent " + timeDisplay(player.thisEternity) + " in this Eternity."
-		el("eternitied").textContent = "You have Eternitied " + getFullExpansion(player.eternities) + " time" + (player.eternities == 1 ? "" : "s") + (quantumed ? " this Quantum." : ".")
-	}
-	if (player.eternitiesBank > 0) el("eternityStatistics").style.display = ""
-}
-
-function bestQuantumDisplay(){
-	if (!quantumed) el("quantumStatistics").style.display = "none"
-	else {
-		el("quantumStatistics").style.display = ""
-		el("quantumed").textContent = "You have gone Quantum " + getFullExpansion(quSave.times) + " times."
-		el("thisQuantum").textContent = "You have spent " + timeDisplay(quSave.time) + " in this Quantum."
-		el("bestQuantum").textContent = "Your fastest Quantum is in " + timeDisplay(quSave.best) + "."
-	}
-}
-
-function bestGhostifyDisplay(){
-	if (!ghostified) el("ghostifyStatistics").style.display = "none"
-	else {
-		el("ghostifyStatistics").style.display = ""
-		el("ghostified").textContent = "You fundamented universes " + getFullExpansion(ghSave.times) + " times."
-		el("thisGhostify").textContent = "You have spent " + timeDisplay(ghSave.time) + " in this Fundament."
-		el("bestGhostify").textContent = "Your fastest Fundament is in " + timeDisplay(ghSave.best) + "."
-		el("bTicks").textContent = ghSave.wzb.unl ? "You have played Bosonic Lab for " + timeDisplay(ghSave.bl.ticks.mul(10).toNumber()) + ". (x" + shorten(getBosonicFinalSpeed()) + ")" : ""
-	}
-}
-
-function ng3p51Display(){
-	if (!hasAch("ng3p51"))  el("bigRipStatistics").style.display = "none"
-	else {
-		el("bigRipStatistics").style.display = ""
-		setAndMaybeShow("bigRipped", brSave.times, '"You have big ripped the universe " + getFullExpansion(brSave.times) + " times."')
-		setAndMaybeShow("bestmoneythisrip", brSave.active, "'Your best antimatter for this Big Rip is ' + shortenMoney(brSave.bestThisRun) + '.'")
-		el("totalmoneybigrip").textContent = 'You have made a total of ' + shortenMoney(brSave.totalAntimatter) + ' antimatter in all big rips.'
-		el("bestgalsbigrip").textContent = 'Your best amount of normal galaxies for all Big Rips is ' + getFullExpansion(brSave.bestGals) + "."
-	}
-}
-
-function dilationStatsDisplay(){
-	if (player.dilation.times) el("dilated").textContent = "You have succesfully dilated "+getFullExpansion(player.dilation.times)+" times."
-	else el("dilated").textContent = ""
-
-	if (player.exdilation == undefined ? false : player.exdilation.times > 1) el("exdilated").textContent = "You have reversed Dilation " + getFullExpansion(player.exdilation.times) + " times."
-	else el("exdilated").textContent = ""
-}
-
-function scienceNumberDisplay(){
-	var scale1 = [2.82e-45,1e-42,7.23e-30,5e-21,9e-17,6.2e-11,5e-8,3.555e-6,7.5e-4,1,2.5e3,2.6006e6,3.3e8,5e12,4.5e17,1.08e21,1.53e24,1.41e27,5e32,8e36,1.7e45,1.7e48,3.3e55,3.3e61,5e68,1e73,3.4e80,1e113,Number.MAX_VALUE,E("1e65000")];
-	var scale2 = [" protons."," nucleui."," Hydrogen atoms."," viruses."," red blood cells."," grains of sand."," grains of rice."," teaspoons."," wine bottles."," fridge-freezers."," Olympic-sized swimming pools."," Great Pyramids of Giza."," Great Walls of China."," large asteroids.",
-		      " dwarf planets."," Earths."," Jupiters."," Suns."," red giants."," hypergiant stars."," nebulas."," Oort clouds."," Local Bubbles."," galaxies."," Local Groups."," Sculptor Voids."," observable universes."," Dimensions.", " Infinity Dimensions.", " Time Dimensions."];
-	var id = 0;
-	if (player.money.times(4.22419).gt(2.82e60)) {
-		if (player.money.times(4.22419e-105).gt(scale1[scale1.length - 1])) id = scale1.length - 1;
-		else {
-			while (player.money.times(4.22419e-105).gt(scale1[id])) id++;
-			if (id > 0) id--;
-		}
-		if (id >= 7 && id < 11) el("infoScale").textContent = "If every antimatter were a planck volume, you would have enough to fill " + formatValue(player.options.notation, player.money * 4.22419e-105 / scale1[id], 2, 1) + scale2[id];
-		else el("infoScale").textContent = "If every antimatter were a planck volume, you would have enough to make " + formatValue(player.options.notation, player.money.times(4.22419e-105).dividedBy(scale1[id]), 2, 1) + scale2[id];
-	} else { //does this part work correctly? i doubt it does
-		if (player.money.lt(2.82e9)) el("infoScale").textContent = "If every antimatter were " + formatValue(player.options.notation, 2.82e9 / player.money, 2, 1) + " attometers cubed, you would have enough to make a proton."
-		else if (player.money.lt(2.82e18)) el("infoScale").textContent = "If every antimatter were " + formatValue(player.options.notation, 2.82e18 / player.money, 2, 1) + " zeptometers cubed, you would have enough to make a proton."
-		else if (player.money.lt(2.82e27)) el("infoScale").textContent = "If every antimatter were " + formatValue(player.options.notation, 2.82e27 / player.money, 2, 1) + " yoctometers cubed, you would have enough to make a proton."
-		else el("infoScale").textContent = "If every antimatter were " + formatValue(player.options.notation, (2.82e-45 / 4.22419e-105 / player.money), 2, 1) + " planck volumes, you would have enough to make a proton."
-	}
-}
-
 function infinityRespecedInfinityDisplay(){
 	if (setUnlocks.length > player.setsUnlocked) el("nextset").textContent = "Next set unlocks at " + formatValue(player.options.notation, setUnlocks[player.setsUnlocked], 2, 0, true) + "."
 	el("infi1pow").textContent = getFullExpansion(player.infinityUpgradesRespecced[1] * 10)
@@ -326,100 +199,6 @@ function preBreakUpgradeDisplay(){
 			el("infi" + u).className = player.infinityPoints.lt(pow10(player.infinityUpgradesRespecced[u] + powAdds[u])) ? "infinistorebtnlocked" : "infinimultbtn"
 		}	
 	}
-}
-
-function eventsTimeDisplay(years, thisYear){
-	var bc = years - thisYear + 1
-	var since
-	var sinceYears
-	var dates = [5.332e6, 3.5e6,  2.58e6, 7.81e5, 3.15e5, 
-		     2.5e5,   1.95e5, 1.6e5,  1.25e5, 7e4, 
-		     6.7e4,   5e4,   4.5e4,  4e4,   3.5e4, 
-		     3.3e4,   3.1e4,  2.9e4,  2.8e4,  2e4, 
-		     1.6e4,   1.5e4,  1.4e4,  11600, 1e4,
-		     8e3,    6e3,   5e3,   4e3,   3200,
-		     3000,   2600,  2500,  2300,  1800,
-		     1400,   1175,  800,   753,   653,
-		     539,    356,   200,   4,     0]
-	var events = ["start of Pliocene epoch", "birthdate of Lucy (typical Australopithicus afarensis female)", "Quaternary period", "Calabrian age", "Homo sapiens",
-		      "Homo neanderthalensis", "emergence of anatomically modern humans", "Homo sapiens idaltu", "peak of Eemian interglacial period", "earliest abstract/symbolic art",
-		      "Upper Paleolithic", "Late Stone Age", "European early modern humans", "first human settlement", "oldest known figurative art",
-		      "oldest known domesticated dog", "Last Glacial Maximum", "oldest ovens", "oldest known twisted rope", "oldest human permanent settlement (hamlet considering built of rocks and of mammoth bones)",
-		      "rise of Kerberan culture", "colonization of North America", "domestication of the pig", "prehistoric warfare", "Holocene",
-		      "death of other human breeds", "agricultural revolution", "farmers arrived in Europe", "first metal tools", "first horse",
-		      "Sumerian cuneiform writing system", "union of Egypt", "rise of Maya", "extinct of mammoths", "rise of Akkadian Empire",
-		      "first alphabetic writing", "rise of Olmec civilization", "end of bronze age", "rise of Greek city-states", "rise of Rome",
-		      "rise of Persian Empire", "fall of Babylonian Empire", "birth of Alexander the Great", "first paper", "birth of Jesus Christ"]
-	/*
-	"the homo sapiens" is weird, as is "the homo neanderthaliensis" and "the homo sapiens idaltu"
-	*/
-	var index = 0
-	for (var i = 0; i < dates.length; i++){
-		if (bc > dates[i]) {
-			index = i
-			break
-		}
-	} // dates[index] < bc <= dates[index-1] 
-	if (index > 0) { //bc is less than or equal to 5.332e6 (5332e3)
-		since = events[index - 1]
-		sinceYears = bc - dates[index]
-	}
-	var message = "<br>If you wanted to finish writing out your full antimatter amount at a rate of 3 digits per second, you would need to start it in " 
-	message += getFullExpansion(Math.floor(bc)) + " BC." + (since ? "<br>This is around " + getFullExpansion(Math.ceil(sinceYears)) + " years before the " + since + "." : "")
-	el("infoScale").innerHTML = message
-}
-
-function universesTimeDisplay(years){
-	var message = "<br>The time needed to finish writing your full antimatter amount at a rate of 3 digits per second would span "
-	let unis = years / 13.78e9 
-	// 13.78 Billion years as measured by the CMB (cosmic microwave background) and various models, feel free to change if more accurate data comes along
-	let timebit 
-	let end = "% of another."
-	if (unis < 1) timebit = (unis * 100).toFixed(3) + "% of a universe."
-	else if (unis < 2) timebit = "1 universe and " + (unis * 100 - 100).toFixed(3) + end
-	else timebit = getFullExpansion(Math.floor(unis)) + " universes and " + (unis * 100 - 100 * Math.floor(unis)).toFixed(3) + end
-	el("infoScale").innerHTML = message + timebit
-}
-
-function lifetimeTimeDisplay(years){
-	var message = "<br>If you wrote 3 digits of your full antimatter amount every second since you were born as an American,<br> you would "
-	if (years > 79.3) message += "be a ghost for " + ((years - 79.3) / years * 100).toFixed(3) + "% of the session."
-	else message += "waste " + (years / 0.793).toFixed(3) + "% of your projected average lifespan."
-	el("infoScale").innerHTML = message
-}
-
-function infoScaleDisplay(){
-	if (aarMod.hideRepresentation) el("infoScale").textContent=""
-	else if (player.money.gt(pow10(3 * 86400 * 365.2425 * 79.3 / 10))) {
-		var years = player.money.log10() / 3 / 86400 / 365.2425
-		var thisYear = new Date().getFullYear() || 2020
-		if (years >= 1e13){
-			el("infoScale").innerHTML = "<br>The time needed to finish writing your full antimatter amount at a rate of 3 digits per second would span " + Decimal.div(years, 1e12).toFixed(2) + " trillion years."
-		} else if (years >= 1e9) {
-			universesTimeDisplay(years)
-		} else if (years > 1e7) {
-			el("infoScale").innerHTML = "<br>The time needed to finish writing your full antimatter amount at a rate of 3 digits per second would span " + Decimal.div(years, 1e6).toFixed(2) + " million years."
-		} else if (years >= thisYear) { 
-			eventsTimeDisplay(years, thisYear)
-		} else {
-			lifetimeTimeDisplay(years)
-		}
-	}
-	else if (player.money.log10() > 1e5) el("infoScale").innerHTML = "<br>If you wrote 3 numbers a second, it would take you <br>" + timeDisplay(player.money.log10() * 10 / 3) + "<br> to write down your antimatter amount."
-	else scienceNumberDisplay()
-}
-
-function STATSDisplay(){
-	mainStatsDisplay()
-	paradoxSacDisplay()
-	galaxySacDisplay()
-	bestInfinityDisplay()
-	bestEternityDisplay()
-	bestQuantumDisplay()
-	bestGhostifyDisplay()
-	ng3p51Display()
-	dilationStatsDisplay()
-	infoScaleDisplay()
 }
 
 function breakInfinityUpgradeDisplay(){
@@ -638,7 +417,7 @@ function updateDimensionsDisplay() {
 		if (el("metadimensions").style.display == "block") updateMetaDimensions()
 	}
 	tickspeedDisplay()
-	if (el("stats").style.display == "block" && el("statistics").style.display == "block") STATSDisplay()
+	if (el("statistics").style.display == "block") displayStats()
 	if (el("infinity").style.display == "block") INFINITYUPGRADESDisplay()
 	if (el("eternitystore").style.display == "block") ETERNITYSTOREDisplay()
 	if (el("quantumtab").style.display == "block") updateQuantumTabs()
@@ -763,6 +542,7 @@ function updateChallTabDisplay(){
 }
 
 function eterPoints2Display(){
+	el("eternityPoints2").style.display = getEternitied() >= 0 || quantumed ? "inline-block" : ""
 	el("eternityPoints2").innerHTML = "You have <span class=\"EPAmount2\">"+shortenDimensions(player.eternityPoints)+"</span> Eternity points."
 }
 
@@ -794,20 +574,15 @@ function replicantiShopABDisplay(){
 	else el("replauto3").style.visibility = "hidden"
 }
 
-function primaryStatsDisplayResetLayers(){
-	if (getEternitied() == 0 && !quantumed) el("pasteternities").style.display = "none"
-	else el("pasteternities").style.display = "inline-block"
-	if (quantumed) el("pastquantums").style.display = "inline-block"
-	else el("pastquantums").style.display = "none"
-	if (ghostified) el("pastghostifies").style.display = "inline-block"
-	else el("pastghostifies").style.display = "none"
-	el("pastinfs").style.display = player.infinitied > 0 || getEternitied() > 0 || quantumed ? "" : "none"
+function primaryStatsDisplayResetLayers() {
+	el("stats_fund_tab").style.display = ghostified ? "" : "none"
+	el("stats_qu_tab").style.display = quantumed ? "" : "none"
+	el("stats_eter_tab").style.display = getEternitied() > 0 || quantumed ? "" : "none"
+	el("stats_inf_tab").style.display = player.infinitied > 0 || getEternitied() > 0 || quantumed ? "" : "none"
+
 	var showStats = player.challenges.length > 1 || player.infinitied > 0 || getEternitied() > 0 || quantumed ? "" : "none"
 	el("brfilter").style.display = showStats
 	el("statstabs").style.display = showStats
-	var display = aarMod.hideSecretAchs?"none":""
-	el("achTabButtons").style.display=display
-	el("secretachsbtn").style.display=display
 }
 
 function ECCompletionsDisplay(){
@@ -853,19 +628,51 @@ function bankedInfinityDisplay(){
 	if (hasAch("ng3p73")) updateBankedEter(true)
 }
 
+//PRESTIGES
+let PRESTIGES = {
+	px: {
+		modReq: _ => tmp.ngmX >= 5,
+		prequsite: _ => false,
+		reached: _ => canPSac(),
+		got: _ => pSacrificed(),
+	},
+	galSac: {
+		modReq: _ => tmp.ngmX >= 2,
+		prequsite: _ => false,
+		reached: _ => getGSAmount().gt(0),
+		got: _ => player.galacticSacrifice.times > 0 || player.infinitied > 0 || getEternitied() > 0,
+	},
+	inf: {
+		modReq: _ => true,
+		prequsite: _ => false,
+		reached: _ => tmp.ri,
+		got: _ => player.infinitied > 0 || getEternitied() > 0 || quantumed,
+	},
+	eter: {
+		modReq: _ => true,
+		prequsite: _ => player.break,
+		reached: _ => canEternity(),
+		got: _ => getEternitied() > 0 || quantumed,
+	},
+	qu: {
+		modReq: _ => player.meta !== undefined,
+		prequsite: _ => false,
+		reached: _ => isQuantumReached(),
+		got: _ => quantumed,
+	},
+	fund: {
+		modReq: _ => tmp.ngp3,
+		prequsite: _ => player.masterystudies.includes("d14"),
+		reached: _ => isQuantumReached() && brSave.active,
+		got: _ => ghostified,
+	},
+}
+
 function updateHeaders() {
 	//Show Header
 	let header = !isEmptiness
 	el("main_header").style.display = header ? "" : "none"
 	el("tab_header").style.display = header ? "" : "none"
-
-	//Blocks
-	var haveBlock = (player.galacticSacrifice!=undefined&&postBreak)||(player.pSac!=undefined&&player.infinitied>0)||quantumed||isQuantumReached()
-	var haveBlock2 = player.pSac!==undefined&&(ghostified||hasAch("ng3p51")||canBigRip)
-
-	el("bigcrunch").parentElement.style.top = haveBlock2 ? "259px" : haveBlock ? "139px" : "19px"
-	el("quantumBlock").style.display = haveBlock ? "" : "none"
-	el("quantumBlock").style.height = haveBlock2 ? "240px" : "120px"
 	if (!header) return
 
 	//Variables
@@ -889,4 +696,63 @@ function updateHeaders() {
 	el("anttabbtn").style.display = quan && player.masterystudies.includes("d10") ? "inline-block" : "none"
 	el("bltabbtn").style.display = funda && ghSave.wzb.unl ? "inline-block" : "none"
 	el("tab_break").style.display = funda ? "" : "none"
+}
+
+function updateResetTierButtons(){
+	let unls = 0
+	for (let [entry, data] of Object.entries(PRESTIGES)) {
+		let elm = el("layer_" + entry)
+		let shown = data.modReq() && (data.got() || data.reached() || (data.prequsite && data.prequsite()))
+		elm.style.display = shown ? "" : "none"
+		if (shown) {
+			elm.style.left = [75, 25, 50][unls % 3] + "%"
+			elm.style.top = Math.floor(unls / 3) * 120 + "px"
+			unls++
+		}
+	}
+
+	let blockLen = Math.floor(unls / 3)
+	el("quantumBlock").style.display = blockLen ? "" : "none"
+	el("quantumBlock").style.height = (blockLen * 120) + "px"
+	el("bigcrunch").parentElement.style.top = (blockLen * 120 + 19) + "px"
+
+	if (!player.meta) return
+
+	let bigRipped = tmp.ngp3 && brSave.active
+	el("quantumbtn").className = bigRipped ? "bigripbtn" : "quantumbtn"
+	el("quantumbtn").style.display = bigRipped || isQuantumReached() ? "" : "none"
+
+	el("bigripbtn").style.display = tmp.ngp3 && player.masterystudies.includes("d14") && !brSave.active ? "" : "none"
+	el("ghostifybtn").style.display = bigRipped && isQuantumReached() ? "" : "none"
+	el("ghostparticles").style.display = ghostified ? "" : "none"
+	if (ghostified) {
+		el("GHPAmount").textContent = shortenDimensions(ghSave.ghostParticles)
+		var showQuantumed = ghSave.times > 0 && ghSave.milestones < 16
+		el("quantumedBM").style.display = showQuantumed ? "" : "none"
+		if (showQuantumed) el("quantumedBMAmount").textContent = getFullExpansion(quSave.times)
+	}
+
+/*
+	var postBreak = getEternitied()!=0||(player.infinityPoints.gte(Number.MAX_VALUE)&&player.infDimensionsUnlocked[7])||player.break
+	var preQuantumEnd = quantumed
+	var canBigRip = canQuickBigRip()
+	
+	if (!preQuantumEnd && player.meta !== undefined) preQuantumEnd = isQuantumReached()
+	var haveBlock = (player.galacticSacrifice!=undefined&&postBreak)||(player.pSac!=undefined&&player.infinitied>0)||preQuantumEnd
+	var haveBlock2 = player.pSac!==undefined&&(ghostified||hasAch("ng3p51")||canBigRip)
+
+	el("px").style.display=pSacrificed()?"":"none"
+
+	if (player.galacticSacrifice===undefined?false:(postBreak||player.infinitied>0||player.galacticSacrifice.times>0)&&!isEmptiness) {
+		el("galaxyPoints2").style.display = ""
+	} else el("galaxyPoints2").style.display = "none"
+
+	var showQuantumBtn = false
+	var bigRipped = false
+	if (isQuantumReached()) showQuantumBtn = true
+	if (tmp.ngp3 && brSave.active) bigRipped = true
+	el("quantumbtn").style.display = showQuantumBtn || bigRipped ? "" : "none"
+
+	el("ghostifybtn").style.display = showQuantumBtn && bigRipped ? "" : "none"
+*/
 }

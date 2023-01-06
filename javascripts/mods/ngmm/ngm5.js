@@ -380,3 +380,16 @@ function quickMReset() {
 	aarMod.quickReset = !aarMod.quickReset
 	el("quickMReset").textContent = "Quick matter reset: O" + (aarMod.quickReset ? "N" : "FF")
 }
+
+//Unknown
+function displayParadoxStats(){
+	if (player.pSac && player.pSac.times) {
+		el("psStatistics").style.display = ""
+		el("pSacrificedNormal").textContent = "You have Paradox Sacrificed " + getFullExpansion(player.pSac.normalTimes) + " times."
+		el("pSacrificedForced").textContent = "You have been forced to do a Paradox Sacrifice " + getFullExpansion(player.pSac.forcedTimes) + " times."
+		el("pSacrificed").textContent = "You have Paradox Sacrificed a total of " + getFullExpansion(player.pSac.times) + " times."
+		el("thisPSac").textContent = "You have spent " + timeDisplay(player.pSac.time) + " in this Paradox Sacrifice."
+	} else el("psStatistics").style.display = "none"
+
+	setAndMaybeShow("lostResets", aarMod.ngmX >= 5 && player.pSac.lostResets, '"You have lost a total of " + getFullExpansion(player.pSac.lostResets) + " Dimension Boosts/Shifts after matter resets."')
+}

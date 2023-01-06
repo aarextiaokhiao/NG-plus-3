@@ -18,12 +18,6 @@ function changestate(n) {
 	}
 }
 
-if (localStorage.getItem("howToSpoilers") !== null) var spoilers = parseInt(localStorage.getItem("howToSpoilers"))
-else var spoilers = 0
-
-if (spoilers === 0) el("showspoilersbtn").innerHTML = "Show spoilers"
-else el("showspoilersbtn").innerHTML= "Avoid spoilers"
-
 function save() {
 	localStorage.setItem("howToSpoilers", spoilers)
 }
@@ -65,6 +59,7 @@ function hasAch(x) {
 }
 
 //Spoilers
+var spoilers = 0
 function showspoilers() {
 	if (spoilers === 0) {
 		if (!confirm("This will reveal the content you haven't got! Are you sure?")) return
@@ -74,7 +69,6 @@ function showspoilers() {
 		spoilers = 0;
 		el("showspoilersbtn").innerHTML = "Show spoilers"
 	}
-	save()
 	updateSpoilers();
 }
 
@@ -134,6 +128,5 @@ function updateSpoilers() {
 }
 
 //Loading
-load_game();
-save()
+load_game()
 updateSpoilers()

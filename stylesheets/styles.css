@@ -410,87 +410,6 @@ button b, button span {
     border-radius: 4px;
 }
 
-.GP {
-    right: 75%;
-    position: absolute;
-    top: 120px;
-    font-size: 12px;
-    width: 210px;
-}
-
-#sacrificebtn, #pSac {
-	width: 210px;
-	height: 70px;
-	font-family: Typewriter;
-	font-size: 11px
-}
-
-.infpos {
-	position: absolute;
-	left: 75%;
-	top: 40px;
-}
-
-.eterpos {
-	position: absolute;
-	right: 75%;
-	top: 40px;
-}
-
-.quantumpos {
-	position: absolute;
-	transform: translate(-50%,0);
-	top: 40px;
-}
-
-.sacpos {
-	position: absolute;
-	right: 75%;
-	top: 160px;
-}
-
-.ghostifyPos {
-	position: absolute;
-	left: 75%;
-	top: 160px;
-}
-
-.pSacPos {
-	position: absolute;
-	transform: translate(-50%,0);
-	top: 160px;
-}
-
-.postinfcrunch {
-    background: #E0E0E0;
-    border: 2px solid #4980CC;
-    border-radius: 4px;
-    transition-duration: 0.2s;
-    cursor: pointer;
-    position: absolute;
-    left: 75%;
-    top: 40px;
-    width: 210px;
-    height: 70px;
-    font-family: Typewriter;
-    font-size: 11px
-}
-
-.postinfcrunch br {
-    pointer-events: none;
-}
-
-.postinfcrunch b {
-    pointer-events: none;
-}
-
-.postinfcrunch:hover {
-    color: #FFFFFF;
-    background: #4980CC;
-    border: 2px solid #4980CC;
-    border-radius: 4px;
-}
-
 #IPmin {
     left: 81.5%;
     position: absolute;
@@ -501,22 +420,34 @@ button b, button span {
     font-weight: bold;
 }
 
-.IP {
-    left: 75%;
-    position: absolute;
-    font-size: 12px;
-    width: 210px;
+#pres_header {
+	position: relative
+}
+
+#pres_header > div {
+	position: absolute;
+	width: 210px;
+	transform: translate(-105px, 0);
+}
+
+#pres_header button {
+	position: absolute;
+	left: 0;
+	top: 40px;
+	width: 210px !important;
+	height: 70px !important;
+
+    font-family: Typewriter;
+	font-size: 11px !important;
+	text-align: center;
+
+	margin: 0;
+	border-radius: 4px !important;
+	cursor: pointer;
 }
 
 .IPAmount2 {
     font-weight: bold;
-}
-
-.EP {
-    right: 75%;
-    position: absolute;
-    font-size: 12px;
-    width: 210px;
 }
 
 .EPAmount2 {
@@ -528,55 +459,8 @@ button b, button span {
 	text-align:center;
 }
 
-.QK {
-	position:absolute;
-	right:50%;
-	transform:translate(105px,0);
-	width:210px;
-	font-size:12px;
-}
-
 .hideEmpty:empty {
    display: none;
-}
-
-#quantumbtn {
-	cursor: pointer;
-	position: absolute;
-	transform: translate(-50%, 0);
-	top: 40px;
-	width: 210px;
-	height: 70px;
-	border-radius: 4px;
-	font-size: 11px
-}
-
-.GHP {
-	position:absolute;
-	left: 75%;
-	top: 120px;
-	width:210px;
-	font-size:12px;
-}
-
-.PX {
-	position:absolute;
-	right:50%;
-	top: 120px;
-	transform:translate(105px,0);
-	width:210px;
-	font-size:12px;
-}
-
-#bigripbtn, #ghostifybtn {
-	cursor: pointer;
-	position: absolute;
-	left: 75%;
-	top: 160px;
-	width: 210px;
-	height: 70px;
-	border-radius: 4px;
-	font-size: 11px
 }
 
 .pxAmount, #GHPAmount, #quantumedBMAmount {
@@ -623,13 +507,10 @@ button b, button span {
     z-index: 1;
 }
 
-
-
 .newdim:hover {
     color: #FFF;
     background: #5AC467;
 }
-
 
 .newdimlocked {
     border-radius: 4px;
@@ -650,30 +531,6 @@ button b, button span {
 .newdimlocked:hover {
     color: #000000;
     background: #B84B5F;
-}
-
-.eternitybtn {
-    border-radius: 4px;
-    transition-duration: 0.2s;
-    cursor: pointer;
-    position: absolute;
-    right: 75%;
-    top: 40px;
-    width: 210px;
-    height: 70px;
-    font-family: Typewriter;
-    color: #b341e0;
-    background: black;
-    border: 2px solid #b341e0;
-    cursor: pointer;
-    font-size: 11px;
-}
-
-
-
-.eternitybtn:hover {
-    color: #511568;
-    background: white;
 }
 
 #paradoxbtn {
@@ -764,7 +621,7 @@ button b, button span {
     border-radius: 4px;
 }
 
-.eternitytabbtn {
+.eternitybtn {
     color: #b341e0;
     background: black;
     border: 2px solid #b341e0;
@@ -774,7 +631,7 @@ button b, button span {
     cursor: pointer;
 }
 
-.eternitytabbtn:hover {
+.eternitybtn:hover {
     color: #511568;
     background: white;
 }
@@ -2140,7 +1997,7 @@ br {
     animation: dilationBtnGlow 10s infinite
 }
 
-#anttabbtn {
+.anttabbtn {
 	background: black;
 	border: 2px solid #4c4c4c;
 	border-radius: 4px;
@@ -2149,7 +2006,7 @@ br {
     font-weight: bold;
 	transition-duration: 0.2s
 }
-#anttabbtn:hover {
+.anttabbtn:hover {
 	background: #333;
 	cursor: pointer
 }

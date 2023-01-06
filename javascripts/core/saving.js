@@ -445,7 +445,6 @@ function rename_save(id) {
 			autoSave: true,
 			progressBar: true,
 			logRateChange: false,
-			hideProductionTab: true,
 			eternityChallRecords: {},
 			popUpId: 0,
 			tabsSave: {on: false},
@@ -842,7 +841,6 @@ function updateNewPlayer(mode, preset) {
 			eternityconfirm: true,
 			commas: "Commas",
 			updateRate: 50,
-			hideProductionTab: false,
 			chart: {
 				updateRate: 1000,
 				duration: 10,
@@ -856,12 +854,12 @@ function updateNewPlayer(mode, preset) {
 			}
 		},
 		aarexModifications: {
+			hideSecretAchs: true,
 			dilationConf: false,
 			offlineProgress: true,
 			autoSave: true,
 			progressBar: true,
 			logRateChange: false,
-			hideProductionTab: false,
 			eternityChallRecords: {},
 			popUpId: 0,
 			tabsSave: {on: false},

@@ -955,7 +955,6 @@ function doEternityGhostifyResetStuff(implode, bm){
 	doNGUpdateGhostifyResetStuff()
 	doTOUSOnGhostify(bm) //thry of ultimate studies
 	el("eternitybtn").style.display = "none"
-	el("eternityPoints2").innerHTML = "You have <span class=\"EPAmount2\">"+shortenDimensions(player.eternityPoints)+"</span> Eternity point"+((player.eternityPoints.eq(1)) ? "." : "s.")
 	el("epmult").innerHTML = "You gain 5 times more EP<p>Currently: 1x<p>Cost: 500 EP"
 	if (((el("masterystudies").style.display == "block" || el("breakEternity").style.display == "block") && !bm) || implode) showEternityTab("timestudies", el("eternitystore").style.display == "none")
 	updateLastTenEternities()
@@ -1072,4 +1071,3 @@ function doGhostifyGhostifyResetStuff(bm, force){
 		ghSave.reference = 10
 	}
 }
-

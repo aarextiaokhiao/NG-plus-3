@@ -529,6 +529,8 @@ function updateAchievements() {
 		}
 	}
 	el("nothingnessSecret").style.display = rowsShown ? "none" : ""
+
+	achTabButtonsDisplay()
 }
 
 function getNormalAchAmount(){
@@ -558,14 +560,14 @@ function toggleAchRowNums() {
 	// 0 == not visible, 1 == visible
 	aarMod.showAchRowNums = !aarMod.showAchRowNums;
 	updateAchievements();
-	el("showAchRowNums").textContent = (aarMod.showAchRowNums ? "Hide" : "Show") + " achievement row info";
+	el("showAchRowNums").textContent = (aarMod.showAchRowNums ? "Hide" : "Show") + " info";
 }
 
 function toggleCompletedAchs() {
 	// 0 == visible, 1 == not visible
 	aarMod.hideCompletedAchs = !aarMod.hideCompletedAchs;
 	updateAchievements();
-	el("hideCompletedAchs").textContent = (aarMod.hideCompletedAchs ? "Show" : "Hide") + " completed achievement rows";
+	el("hideCompletedAchs").textContent = (aarMod.hideCompletedAchs ? "Show" : "Hide") + " completed rows";
 }
 
 function toggleSecretAchs() {
@@ -592,4 +594,10 @@ function metaAchMultLabelUpdate() {
         el("metaAchMultLabel").style.display = "inline-block"
         el("metaAchMultLabel").textContent = "Achievement multiplier to Meta Dimensions: " + shorten(metaMult) + "x"
     } else el("metaAchMultLabel").style.display = "none"
+}
+
+function achTabButtonsDisplay() {
+	var display = aarMod.hideSecretAchs?"none":""
+	el("achTabButtons").style.display=display
+	el("secretachsbtn").style.display=display
 }

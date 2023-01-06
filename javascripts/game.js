@@ -345,73 +345,6 @@ function setupHTMLAndData() {
 	setupPostNGp3HTML()
 }
 
-Chart.defaults.global.defaultFontColor = 'black';
-Chart.defaults.global.defaultFontFamily = 'Typewriter';
-var ctx2 = el("normalDimChart").getContext('2d');
-var normalDimChart = new Chart(ctx2, {
-	type: 'line',
-	data: {
-		labels: [],
-		datasets: [{
-			label: ['Exponents of antimatter per second'],
-			data: [],
-			backgroundColor: ['rgba(0,0,0,1)'],
-			borderColor: ['rgba(0,0,0,1)'],
-			fill: false,
-			lineTension: 0.1,
-			borderWidth: 3,
-			pointRadius: 0,
-			pointBorderWidth: 0,
-			pointHoverRadius: 0
-		}]
-	},
-	options: {
-		tooltips: {enabled: false},
-		hover: {mode: null},
-		legend: {
-			display: false,
-			labels: {
-				boxWidth: 0
-			}
-		},
-		scales: {
-			yAxes: [{
-				ticks: {
-					max: 100000000,
-					min: 1
-				}
-			}],
-			xAxes: [{
-				gridLines: {
-					display: false,
-					drawTicks: false
-				},
-				ticks: { fontSize: 0}
-			}]
-		},
-		layout: {padding: {top: 10}}
-	}
-});
-
-function updateChartValues() {
-	player.options.chart.duration = Math.min(Math.max(parseInt(el("chartDurationInput").value), 1), 300);
-	el("chartDurationInput").value = player.options.chart.duration;
-	player.options.chart.updateRate = Math.min(Math.max(parseInt(el("chartUpdateRateInput").value), 50), 10000);
-	el("chartUpdateRateInput").value = player.options.chart.updateRate;
-	if (Number.isInteger(player.options.chart.updateRate) === false) {
-		player.options.chart.updateRate = 1000;
-	}
-	if ((player.options.chart.updateRate <= 200 && player.options.chart.duration >= 30) && player.options.chart.warning === 0) {
-		alert("Warning: Setting the duration and update rate to more demanding values can cause performance issues.");
-		player.options.chart.warning = 1;
-	}
-	if (player.options.chart.duration / player.options.chart.updateRate * 1000 >= 1000 && player.options.chart.warning !== 2) {
-		alert("Warning: You have set the duration and update rate quite high, make sure you know what you're doing or have a good computer before using the chart.");
-		player.options.chart.warning = 2;
-	}
-}
-
-
 //Theme stuff
 function setTheme(name) {
 	document.querySelectorAll("link").forEach( function(e) {
@@ -421,33 +354,9 @@ function setTheme(name) {
 	player.options.theme=name
 	if(name !== undefined && name.length < 3) giveAchievement("Shhh... It's a secret")
 	var themeName=player.options.secretThemeKey
-	if(name === undefined) {
-		themeName="Normal"
-	} else if(name === "S1") {
-		Chart.defaults.global.defaultFontColor = 'black';
-		normalDimChart.data.datasets[0].borderColor = '#000'
-	} else if(name === "S2") {
-		Chart.defaults.global.defaultFontColor = 'black';
-		normalDimChart.data.datasets[0].borderColor = '#000'
-	} else if(name === "S3") {
-		Chart.defaults.global.defaultFontColor = 'black';
-		normalDimChart.data.datasets[0].borderColor = '#000'
-	} else if(name === "S4") {
-		Chart.defaults.global.defaultFontColor = 'black';
-		normalDimChart.data.datasets[0].borderColor = '#000'
-	} else if(name === "S5") {
-		Chart.defaults.global.defaultFontColor = 'black';
-		normalDimChart.data.datasets[0].borderColor = '#000'
-	} else if (name !== "S6") {
-		themeName=name;
-	}
-	if (theme=="Dark"||theme=="Dark Metro"||name === "S6") {
-		Chart.defaults.global.defaultFontColor = '#888';
-		normalDimChart.data.datasets[0].borderColor = '#888'
-	} else {
-		Chart.defaults.global.defaultFontColor = 'black';
-		normalDimChart.data.datasets[0].borderColor = '#000'
-		}
+	if(name === undefined) themeName="Normal"
+	else if (name !== "S6") themeName=name
+
 	el("theme").innerHTML="<p style='font-size:15px'>Themes</p>Current theme: " + themeName;
 	el("chosenTheme").textContent="Current theme: " + themeName;
 	
@@ -469,26 +378,6 @@ function setTheme(name) {
 el("theme").onclick = function () {
 	closeToolTip()
 	el('thememenu').style.display="flex"
-}
-
-function doWeakerPowerReductionSoftcapNumber(num,start,exp){
-	if (num < start || num < 1) return num
-	return start*(( (num/start)**exp -1)/exp+1)
-}
-
-function doWeakerPowerReductionSoftcapDecimal(num,start,exp){
-	if (num.lt(start) || num.lt(1)) return num
-	return start.times( num.div(start).pow(exp).minus(1).div(exp).plus(1) )
-}
-
-function doStrongerPowerReductionSoftcapNumber(num,start,exp){
-	if (num < start || num < 1) return num
-	return start*((num/start)**exp)
-}
-
-function doStrongerPowerReductionSoftcapDecimal(num,start,exp){
-	if (num.lt(start) || num.lt(1)) return num
-	return start.times(num.div(start).pow(exp))
 }
 
 function showTab(tabName, init) {
@@ -1039,13 +928,6 @@ function updateInfCosts() {
 	if (el("replicantis").style.display == "block" && el("infinity").style.display == "block") replicantiDisplay()
 	if (el("timestudies").style.display == "block" && el("eternitystore").style.display == "block") mainTimeStudyDisplay()
 	if (el("ers_timestudies").style.display == "block" && el("eternitystore").style.display == "block") updateERSTTDesc()
-}
-
-function toggleProductionTab() {
-	// 0 == visible, 1 == not visible
-	aarMod.hideProductionTab=!aarMod.hideProductionTab
-	el("hideProductionTab").textContent = (aarMod.hideProductionTab?"Show":"Hide")+" production tab"
-	if (el("production").style.display == "block") showDimTab("antimatterdimensions")
 }
 
 function toggleRepresentation() {
@@ -1823,7 +1705,6 @@ function updateChallengeTimes() {
 		tempcounter++
 	}
 	setAndMaybeShow("challengetimesum",tempcounter>1,'"Sum of completed challenge time records is "+timeDisplayShort('+temp+', false, 3)')
-	el("challengetimesbtn").style.display = tempcounter>0 ? "inline-block" : "none"
 
 	var temp=0
 	var tempcounter=0
@@ -1835,7 +1716,6 @@ function updateChallengeTimes() {
 		}
 	}
 	setAndMaybeShow("infchallengetimesum",tempcounter>1,'"Sum of completed infinity challenge time records is "+timeDisplayShort('+temp+', false, 3)')
-	el("infchallengesbtn").style.display = tempcounter>0 ? "inline-block" : "none"
 	updateWorstChallengeBonus();
 }
 
@@ -1852,7 +1732,6 @@ function updateEterChallengeTimes() {
 			tempcounter++
 		}
 	}
-	el("eterchallengesbtn").style.display = tempcounter > 0 ? "inline-block" : "none"
 	setAndMaybeShow("eterchallengetimesum",tempcounter>1,'"Sum of completed eternity challenge time records is "+timeDisplayShort('+temp+', false, 3)')
 }
 
@@ -2266,13 +2145,11 @@ function eternity(force, auto, presetLoad, dil) {
 	}
 	hideMaxIDButton()
 	el("eternitybtn").style.display = "none"
-	el("eternityPoints2").style.display = "inline-block"
 	updateEternityUpgrades()
 	el("totaltickgained").textContent = "You've gained "+getFullExpansion(player.totalTickGained)+" tickspeed upgrades."
 	hideDimensions()
 	tmp.tickUpdate = true;
 	playerInfinityUpgradesOnEternity()
-	el("eternityPoints2").innerHTML = "You have <span class=\"EPAmount2\">"+shortenDimensions(player.eternityPoints)+"</span> Eternity point"+((player.eternityPoints.eq(1)) ? "." : "s.")
 	updateEternityChallenges()
 	if (player.eternities <= 1) {
 		showTab("dimensions")
@@ -2674,13 +2551,11 @@ function startEternityChallenge(n) {
 	}
 	hideMaxIDButton()
 	el("eternitybtn").style.display = "none"
-	el("eternityPoints2").style.display = "inline-block"
 	updateEternityUpgrades()
 	el("totaltickgained").textContent = "You've gained "+player.totalTickGained.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")+" tickspeed upgrades."
 	hideDimensions()
 	tmp.tickUpdate = true;
 	playerInfinityUpgradesOnEternity()
-	el("eternityPoints2").innerHTML = "You have <span class=\"EPAmount2\">" + shortenDimensions(player.eternityPoints) + "</span> Eternity point" + ((player.eternityPoints.eq(1)) ? "." : "s.")
 	updateEternityChallenges()
 	Marathon2 = 0
 	doAutoEterTick()
@@ -2866,45 +2741,6 @@ function doPhotonsUnlockStuff(){
 	updateGPHUnlocks()
 }
 
-function updateResetTierButtons(){
-	var postBreak = getEternitied()!=0||(player.infinityPoints.gte(Number.MAX_VALUE)&&player.infDimensionsUnlocked[7])||player.break
-	var preQuantumEnd = quantumed
-	var canBigRip = canQuickBigRip()
-	
-	if (!preQuantumEnd && player.meta !== undefined) preQuantumEnd = isQuantumReached()
-	var haveBlock = (player.galacticSacrifice!=undefined&&postBreak)||(player.pSac!=undefined&&player.infinitied>0)||preQuantumEnd
-	var haveBlock2 = player.pSac!==undefined&&(ghostified||hasAch("ng3p51")||canBigRip)
-
-	if (player.pSac!==undefined) {
-		el("px").className = haveBlock2?"PX":postBreak?"GHP":player.infinitied>0?"QK":"IP"
-	}
-	el("px").style.display=pSacrificed()?"":"none"
-	el("pSacPos").className = haveBlock2?"pSacPos":postBreak?"ghostifyPos":player.infinitied>0?"quantumpos":"infpos"
-
-	if (player.galacticSacrifice===undefined?false:(postBreak||player.infinitied>0||player.galacticSacrifice.times>0)&&!isEmptiness) {
-		el("galaxyPoints2").style.display = ""
-		el("galaxyPoints2").className = preQuantumEnd?"GP":postBreak?"QK":"EP"
-	} else el("galaxyPoints2").style.display = "none"
-	el("sacpos").className = preQuantumEnd?"sacpos":postBreak?"quantumpos":"eterpos"
-
-	var showQuantumBtn = false
-	var bigRipped = false
-	if (player.meta !== undefined && isQuantumReached()) showQuantumBtn = true
-	if (tmp.ngp3 && brSave.active) bigRipped = true
-	el("quantumbtn").className = bigRipped ? "bigripbtn" : "quantumbtn"
-	el("quantumbtn").style.display = showQuantumBtn || bigRipped ? "" : "none"
-	el("bigripbtn").style.display = canBigRip ? "" : "none"
-
-	el("ghostparticles").style.display = ghostified ? "" : "none"
-	if (ghostified) {
-		el("GHPAmount").textContent = shortenDimensions(ghSave.ghostParticles)
-		var showQuantumed = ghSave.times > 0 && ghSave.milestones < 16
-		el("quantumedBM").style.display = showQuantumed ? "" : "none"
-		if (showQuantumed) el("quantumedBMAmount").textContent = getFullExpansion(quSave.times)
-	}
-	el("ghostifybtn").style.display = showQuantumBtn && bigRipped ? "" : "none"
-}
-
 function updateOrderGoals(){
 	if (order) for (var i=0; i<order.length; i++) el(order[i]+"goal").textContent = "Goal: "+shortenCosts(getGoal(order[i]))
 }
@@ -2970,7 +2806,6 @@ function updatePerSecond() {
 	if (!tmp.ngp3 || !quantumed) if (player.infinityPoints.lt(100)) player.infinityPoints = player.infinityPoints.round()
 	checkGluonRounding()
 }
-setInterval(updatePerSecond, 1000)
 
 var postC2Count = 0;
 var IPminpeak = E(0)
@@ -3143,15 +2978,8 @@ function infinityTimeMetaBlackHoleDimUpdating(diff){
 }
 
 function dimensionPageTabsUpdating(){
-	var showProdTab=false
 	el("dimTabButtons").style.display = "none"
-	if (player.infinitied > 0 || player.eternities !== 0 || quantumed) {
-		el("hideProductionTab").style.display = ""
-		showProdTab=!aarMod.hideProductionTab
-	} else el("hideProductionTab").style.display = "none"
-	if (player.infDimensionsUnlocked[0] || player.eternities !== 0 || quantumed || showProdTab || aarMod.ngmX > 3) el("dimTabButtons").style.display = "inline-block"
-	el("prodtabbtn").style.display=showProdTab ? "inline-block":"none"
-	if (!showProdTab) player.options.chart.on=false
+	if (player.infDimensionsUnlocked[0] || player.eternities !== 0 || quantumed || aarMod.ngmX > 3) el("dimTabButtons").style.display = "inline-block"
 }
 
 function otherDimsUpdating(diff){
@@ -3206,13 +3034,13 @@ function bigCrunchButtonUpdating(){
 		else showTab('emptiness')
 	} else if ((player.break && player.currentChallenge == "") || player.infinityUpgradesRespecced != undefined) {
 		if (player.money.gte(Number.MAX_VALUE)) {
-			el("postInfinityButton").style.display = "inline-block"
+			el("postInfinityButton").style.display = ""
 			var currentIPmin = gainedInfinityPoints().dividedBy(player.thisInfinityTime/600)
 			if (currentIPmin.gt(IPminpeak)) IPminpeak = currentIPmin
-			if (IPminpeak.log10() > 1e9) el("postInfinityButton").innerHTML = "Big Crunch"
+			if (IPminpeak.log10() > 1e6) el("postInfinityButton").innerHTML = "Big Crunch"
 			else {
-				var IPminpart = IPminpeak.log10() > 1e5 ? "" : "<br>" + shortenDimensions(currentIPmin) + " IP/min" + "<br>Peaked at " + shortenDimensions(IPminpeak) + " IP/min"
-				el("postInfinityButton").innerHTML = "<b>" + (IPminpeak.log10() > 3e5 ? "Gain " : "Big Crunch for ") + shortenDimensions(gainedInfinityPoints()) + " Infinity points.</b>" + IPminpart
+				var IPminpart = IPminpeak.log10() > 1e4 ? "" : "<br>" + shortenDimensions(currentIPmin) + " IP/min" + "<br>Peaked at " + shortenDimensions(IPminpeak) + " IP/min"
+				el("postInfinityButton").innerHTML = "<b>" + (IPminpeak.log10() > 1e4 ? "Gain " : "Big Crunch for ") + shortenDimensions(gainedInfinityPoints()) + " Infinity points.</b>" + IPminpart
 			}
 		}
 	}
@@ -3289,6 +3117,7 @@ function IPMultBuyUpdating() {
 function doEternityButtonDisplayUpdating(diff){
 	var unl = canEternity()
 	el("eternitybtn").style.display = unl ? "" : "none"
+	el("eternitybtn").className = player.dilation.active ? "dilationupg" : "eternitybtn"
 	if (!unl) return
 
 	var isSmartPeakActivated = tmp.ngp3 && getEternitied() >= 1e13 && player.dilation.upgrades.includes("ngpp6")
@@ -3953,11 +3782,6 @@ function enableChartDips() {
 	}
 }
 
-function updateChart(first) {
-	if (player.options.chart.on === true && first !== true) addData(normalDimChart, "0", getDimensionProductionPerSecond(1))
-	setTimeout(updateChart, player.options.chart.updateRate || 1000)
-}
-
 var slider = el("updaterateslider");
 var sliderText = el("updaterate");
 
@@ -4336,17 +4160,14 @@ function initGame() {
 	window.addEventListener("resize", resizeCanvas);
 
 	//On load
-	updatePerSecond()
-	updateChart(true)
 	setTimeout(function(){
 		el("container").style.display = "block"
 		el("loading").style.display = "none"
 	},100)
 	clearInterval(stuckTimeout)
 
-	//Update temp twice to make sure all values are correct
-	updateTemp()
-	updateTemp()
+	setInterval(updatePerSecond, 1000)
+	updatePerSecond()
 }
 
 window.addEventListener('keydown', function(event) {

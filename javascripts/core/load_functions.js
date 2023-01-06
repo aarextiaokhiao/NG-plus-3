@@ -33,13 +33,7 @@ function setOptionsIfUndefined(){
 	if (player.options.eternityconfirm === undefined) player.options.eternityconfirm = true
 	if (player.options.themes === undefined) player.options.themes = "Normal"
 	if (player.options.secretThemeKey === undefined) player.options.secretThemeKey = 0
-        if (player.options.commas === undefined) player.options.commas = true
-        if (player.options.chart === undefined) player.options.chart = {}
-	if (player.options.chart.updateRate === undefined) player.options.chart.updateRate = 1000
-	if (player.options.chart.duration === undefined) player.options.chart.duration = 10
-	if (player.options.chart.warning === undefined) player.options.chart.warning = 0
-	if (player.options.chart.on === undefined) player.options.chart.on = false
-	if (player.options.chart.dips === undefined) player.options.chart.dips = true
+    if (player.options.commas === undefined) player.options.commas = true
 	if (player.options.animations === undefined) player.options.animations = {floatingText: true, bigCrunch: true, eternity: true, tachyonParticles: true}
         if (player.options.notation == "Mixed") player.options.notation = "Mixed scientific"
         if (player.options.commas == "Default") {
@@ -356,10 +350,6 @@ function setReplTSIfUndefined(){
 			studies: [],
 		}
 	}
-    if (getEternitied() == 0) {
-		el("eternityPoints2").style.display = "none";
-		el("tdtabbtn").style.display = "none";
-	}
 }
 
 function setEverythingPreNGp3onLoad(){
@@ -419,7 +409,6 @@ function setAarexModIfUndefined(){
 	if (aarMod.autoSave === undefined) aarMod.autoSave = true
 	if (aarMod.progressBar === undefined) aarMod.progressBar = true
 	if (aarMod.logRateChange === undefined) aarMod.logRateChange = false
-	if (aarMod.hideProductionTab === undefined) aarMod.hideProductionTab = !(!player.boughtDims) && aarMod.ersVersion === undefined
 	if (aarMod.eternityChallRecords === undefined) aarMod.eternityChallRecords = {}
 	if (aarMod.popUpId === undefined) aarMod.popUpId = 0
 
@@ -1862,30 +1851,14 @@ function setOptionsDisplaysStuff1(){
         el("quickMReset").style.display = pSacrificed() ? "" : "none"
         el("quickMReset").textContent = "Quick matter reset: O"+(aarMod.quickReset?"N":"FF")
 
-        el("chartDurationInput").value = player.options.chart.duration;
-        el("chartUpdateRateInput").value = player.options.chart.updateRate;
-        if (player.options.chart.on) el("chartOnOff").checked = true
-        else el("chartOnOff").checked = false
-        if (player.options.chart.dips) el("chartDipsOnOff").checked = true
-        else el("chartDipsOnOff").checked = false
- 
-        if (player.options.theme == "Dark" || player.options.theme == "Dark Metro") {
-                Chart.defaults.global.defaultFontColor = '#888';
-                normalDimChart.data.datasets[0].borderColor = '#888'
-        } else {
-                Chart.defaults.global.defaultFontColor = 'black';
-                normalDimChart.data.datasets[0].borderColor = '#000'
-        }
-
         el("infmultbuyer").style.display = getEternitied()>0||player.masterystudies?"inline-block":"none"
         if (!player.options.hotkeys) el("hotkeys").textContent = "Enable hotkeys"
 
         document.getElementsByClassName("hideInMorse").display = player.options.notation == "Morse code" ? "none" : ""
 
-        el("hideProductionTab").textContent = (aarMod.hideProductionTab?"Show":"Hide")+" production tab"
         el("hideRepresentation").textContent=(aarMod.hideRepresentation?"Show":"Hide")+" antimatter representation"
-        el("showAchRowNums").textContent=(aarMod.showAchRowNums?"Hide":"Show")+" achievement row info"
-        el("hideCompletedAchs").textContent=(aarMod.hideCompletedAchs?"Show":"Hide")+" completed achievement rows"
+        el("showAchRowNums").textContent=(aarMod.showAchRowNums?"Hide":"Show")+" achievement info"
+        el("hideCompletedAchs").textContent=(aarMod.hideCompletedAchs?"Show":"Hide")+" completed rows"
         el("hideSecretAchs").textContent=(aarMod.hideSecretAchs?"Show":"Hide")+" secret achievements"
 }
 
@@ -2169,7 +2142,6 @@ function onLoad(noOffline) {
         setAarexModIfUndefined()
 	doNGp3Init1()
         setSaveStuffHTML()
-
 
 	setSomeEterEraStuff2()
         setSomeEterEraStuff()

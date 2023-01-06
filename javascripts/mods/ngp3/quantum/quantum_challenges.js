@@ -108,7 +108,6 @@ function QCIntensity(num) {
 }
 
 function updateQCTimes() {
-	el("qcsbtn").style.display = "none"
 	if (!player.masterystudies) return
 	var temp = 0
 	var tempcounter = 0
@@ -119,7 +118,6 @@ function updateQCTimes() {
 			tempcounter++
 		}
 	}
-	if (tempcounter > 0) el("qcsbtn").style.display = "inline-block"
 	setAndMaybeShow("qctimesum", tempcounter > 1, '"The sum of your completed Quantum Challenge time records is "+timeDisplayShort(' + temp + ', false, 3)')
 }
 

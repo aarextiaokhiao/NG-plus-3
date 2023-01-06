@@ -180,3 +180,24 @@ function softcap(x, id, max = 1/0) {
 	}
 	return x
 }
+
+/* Aarex is currently refactoring code... */
+function doWeakerPowerReductionSoftcapNumber(num,start,exp){
+	if (num < start || num < 1) return num
+	return start*(( (num/start)**exp -1)/exp+1)
+}
+
+function doWeakerPowerReductionSoftcapDecimal(num,start,exp){
+	if (num.lt(start) || num.lt(1)) return num
+	return start.times( num.div(start).pow(exp).minus(1).div(exp).plus(1) )
+}
+
+function doStrongerPowerReductionSoftcapNumber(num,start,exp){
+	if (num < start || num < 1) return num
+	return start*((num/start)**exp)
+}
+
+function doStrongerPowerReductionSoftcapDecimal(num,start,exp){
+	if (num.lt(start) || num.lt(1)) return num
+	return start.times(num.div(start).pow(exp))
+}

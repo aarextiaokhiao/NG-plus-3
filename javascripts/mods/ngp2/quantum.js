@@ -3,9 +3,11 @@ quantumed = false
 function quantum(auto, force, challid, bigRip = false, quick) {
 	if (player.masterystudies !== undefined) if (!auto && !force && brSave.active) force = true
 	if (!(isQuantumReached()||force)||implosionCheck) return
+
 	var headstart = aarMod.newGamePlusVersion > 0 && !tmp.ngp3
 	if (aarMod.quantumConf&&!(auto||force)) if (!confirm(player.masterystudies?"Quantum will reset everything Eternity resets, and "+(headstart?"other things like Dilation":"including Time Studies, Eternity Challenges, Dilation, "+(tmp.ngp3?"Meta Dimensions, and Mastery Studies":"and Meta Dimensions"))+". You will gain a quark and unlock various upgrades.":"WARNING! Quantum wasn't fully implemented in NG++, so if you go Quantum now, you will gain quarks, but they'll have no use. Everything up to and including Eternity features will be reset.")) return
-	if (!quantumed) if (!confirm("Are you sure you want to do this? You will lose everything you have!")) return
+	if (!quantumed && !confirm("Are you sure you want to do this? You will lose everything you have!")) return
+
 	var pc = challid - 8
 	if (tmp.ngp3) {
 		tmp.preQCMods=quSave.qcsMods.current
@@ -149,24 +151,16 @@ function quarkGain() {
 	let logBoostExp = tmp.ngp3l ? 2 : 1.5
 	if (log > logBoost) log = Math.pow(log / logBoost, logBoostExp) * logBoost
 	if (log > 738 && !hasNU(8)) log = Math.sqrt(log * 738)
-	if (!tmp.ngp3l) log += getNGP3p1totalQKMult()
 
-	var dlog = Math.log10(log)
-	let start = 5
-	if (dlog > start) {
-		let capped = Math.floor(Math.log10(Math.max(dlog + 2 - start, 1)) / Math.log10(2))
-		dlog = (dlog - Math.pow(2, capped) + 2 - start) / Math.pow(2, capped) + capped - 1 + start
-		log = Math.pow(10, dlog)
-	}
-
-	log += getQuarkMult().log10()
+	log += quSave.multPower * Math.log10(2)
+	log += getNGP3p1totalQKMult()
+	if (hasAch("ng3p93")) log += Math.log10(500)
 
 	return pow10(log).floor()
 }
 
 function getQuarkMult() {
-	x = pow2(quSave.multPower)
-	if (hasAch("ng3p93")) x = x.times(500)
+	x = E_pow(2, quSave.multPower)
 	return x
 }
 
@@ -637,7 +631,6 @@ function quantumReset(force, auto, challid, bigRip, implode = false) {
 	el("infinityPoints1").innerHTML = "You have <span class=\"IPAmount1\">" + shortenedIP + "</span> Infinity points."
 	el("infinityPoints2").innerHTML = "You have <span class=\"IPAmount2\">" + shortenedIP + "</span> Infinity points."
 	el("eternitybtn").style.display = "none"
-	el("eternityPoints2").style.display = "inline-block"
 	updateEternityUpgrades()
 	el("totaltickgained").textContent = "You've gained "+player.totalTickGained.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")+" tickspeed upgrades."
 	hideDimensions()

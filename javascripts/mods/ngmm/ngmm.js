@@ -734,9 +734,18 @@ function calcG13Exp(){
 	return exp
 }
 
-//Unknown versions
+//Unknown
 function updateNGM2RewardDisplay(){
 	el("postcngmm_1reward").innerHTML = "Reward: Infinity upgrades based on time " + (aarMod.ngmX >= 4 ? "" : "or Infinities ") + "are applied post-dilation, and make the GP formula better based on galaxies."
 	el("postcngm3_1description").innerHTML = "Multiplier per ten Dimensions is 1x, Dimension Boosts have no effect," + (aarMod.ngmX >= 4 ? " have a much lower time dimension cost limit," : "") + " and Tickspeed Boost effect softcap starts immediately."
 	el("postcngm3_1reward").innerHTML = "Reward: Tickspeed boost effect softcap is softer" + (aarMod.ngmX >= 4 ? ", remote galaxy scaling starts .5 later and triple GP per IC completion" : "") + "."
+}
+
+function displayGalSacStats(){
+	if (player.galacticSacrifice ? player.galacticSacrifice.times < 1 : true) el("gsStatistics").style.display = "none"
+	else {
+		el("gsStatistics").style.display = ""
+		el("sacrificed").textContent = "You have Galactic Sacrificed "+getFullExpansion(player.galacticSacrifice.times) + " times."
+		el("thisSacrifice").textContent = "You have spent " + timeDisplay(player.galacticSacrifice.time) + " in this Galactic Sacrifice."
+	}
 }

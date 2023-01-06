@@ -1,8 +1,3 @@
-var stuckTimeout
-stuckTimeout = setTimeout(function(){
-	showStuckPopup()
-},5000)
-
-function showStuckPopup() {
+var stuckTimeout = setTimeout(function() {
 	document.getElementById("stuck").style.display="block"
-}
+},5000)
