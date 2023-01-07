@@ -1,6 +1,6 @@
 function dimShiftDisplay(){
 	var shiftRequirement = getShiftRequirement(0);
-	var isShift = player.resets < (inNC(4) || player.currentChallenge == "postc1" || player.pSac !== undefined ? 2 : 4)
+	var isShift = getNormalDimensions() < getMaxNormalDimensions()
 	el("resetLabel").textContent = 'Dimension ' + (isShift ? "Shift" : player.resets < getSupersonicStart() ? "Boost" : "Supersonic") + ' ('+ getFullExpansion(Math.ceil(player.resets)) +'): requires ' + getFullExpansion(Math.ceil(shiftRequirement.amount)) + " " + DISPLAY_NAMES[shiftRequirement.tier] + " Dimensions"
 	el("softReset").textContent = "Reset the game for a " + (isShift ? "new Dimension" : "Boost")
 }
@@ -18,7 +18,7 @@ function galaxyReqDisplay(){
 	var nextGal = getGalaxyRequirement(0, true)
 	var totalReplGalaxies = getTotalRG()
 	var totalTypes = tmp.aeg ? 4 : player.dilation.freeGalaxies ? 3 : totalReplGalaxies ? 2 : 1
-	el("secondResetLabel").innerHTML = getGalaxyScaleName(nextGal.scaling) + (nextGal.scaling <= 3 ? "Antimatter " : "") + ' Galaxies ('+ getFullExpansion(player.galaxies) + (totalTypes > 1 ? ' + ' + getFullExpansion(totalReplGalaxies) : '') + (totalTypes > 2 ? ' + ' + getFullExpansion(Math.round(player.dilation.freeGalaxies)) : '') + (totalTypes > 3 ? ' + ' + getFullExpansion(tmp.aeg) : '') +'): requires ' + getFullExpansion(nextGal.amount) + ' '+DISPLAY_NAMES[inNC(4) || player.pSac != undefined ? 6 : 8]+' Dimensions'
+	el("secondResetLabel").innerHTML = getGalaxyScaleName(nextGal.scaling) + (nextGal.scaling <= 3 ? "Antimatter " : "") + ' Galaxies ('+ getFullExpansion(player.galaxies) + (totalTypes > 1 ? ' + ' + getFullExpansion(totalReplGalaxies) : '') + (totalTypes > 2 ? ' + ' + getFullExpansion(Math.round(player.dilation.freeGalaxies)) : '') + (totalTypes > 3 ? ' + ' + getFullExpansion(tmp.aeg) : '') +'): requires ' + getFullExpansion(nextGal.amount) + ' '+DISPLAY_NAMES[inNC(4) ? 6 : 8]+' Dimensions'
 }
 
 var galaxyScalings = ["", "Distant ", "Farther ", "Remote ", "Obscure ", "Dark ", "Spectre ", "Ethereal ", "Ethereal++ ", "Ethereal IV ", "Ethereal V "]
@@ -85,33 +85,6 @@ function tickspeedDisplay(){
 	}
 }
 
-function paradoxDimDisplay(){
-	el("pPow").textContent = shortenMoney(player.pSac.dims.power)
-	el("pPowProduction").textContent = "You are getting " + shortenDimensions(getPDProduction(1).div(getEC12Mult())) + " Paradox Power per second."
-	el("pPowEffect").textContent = getFullExpansion(Math.floor(getExtraTime() * getEC12Mult()))
-	var shown
-	for (let t = 8; t > 0; t--) {
-		shown = shown || isDimUnlocked(t)
-		el("pR"+t).style.display = shown ? "" : "none"
-		if (shown) {
-			el("pD"+t).textContent = DISPLAY_NAMES[t] + " Paradox Dimension x" + shortenMoney(getPDPower(t))
-			el("pB"+t).textContent = "Cost: " + shortenDimensions(player.pSac.dims[t].cost) + " Px"
-			el("pB"+t).className = (player.pSac.px.gte(player.pSac.dims[t].cost) ? "stor" : "unavailabl") + "ebtn"
-			el("pA"+t).textContent = getPDDesc(t)
-		}
-	}
-}
-
-function infinityRespecedInfinityDisplay(){
-	if (setUnlocks.length > player.setsUnlocked) el("nextset").textContent = "Next set unlocks at " + formatValue(player.options.notation, setUnlocks[player.setsUnlocked], 2, 0, true) + "."
-	el("infi1pow").textContent = getFullExpansion(player.infinityUpgradesRespecced[1] * 10)
-	el("infi1cost").textContent = shortenCosts(pow10(player.infinityUpgradesRespecced[1]))
-	el("infi1").className = player.infinityPoints.lt(pow10(player.infinityUpgradesRespecced[1])) ? "infinistorebtnlocked" : "infinimultbtn"
-	el("infi3pow").textContent = formatValue(player.options.notation, getLimit(), 2, 0, true)
-	el("infi3cost").textContent = shortenCosts(pow10(player.infinityUpgradesRespecced[3]))
-	el("infi3").className = player.infinityPoints.lt(pow10(player.infinityUpgradesRespecced[3])) ? "infinistorebtnlocked" : "infinimultbtn"
-}
-
 function infinityUpgradesDisplay(){
 	if (player.infinityUpgrades.includes("timeMult")) el("infi11").className = "infinistorebtnbought"
 	else if (player.infinityPoints.gte(1)) el("infi11").className = "infinistorebtn1"
@@ -176,29 +149,16 @@ function preBreakUpgradeDisplay(){
 	else el("infiMult").className = "infinistorebtnlocked"
 	var infiMultEnding = player.infinityPoints.lt(pow10(1e10)) ? "<br>Currently: " + shorten(getIPMult()) + "x<br>Cost: " + shortenCosts(player.infMultCost) + " IP" : ""
 	el("infiMult").innerHTML = "You get " + (Math.round(getIPMultPower() * 100) / 100) + "x more IP." + infiMultEnding
-	el("nextset").textContent = ""
-	if (player.infinityUpgradesRespecced != undefined) {
-		infinityRespecedInfinityDisplay()
-	} else {
-		infinityUpgradesDisplay()
-		if (player.galacticSacrifice) {
-			var base = player.tickspeedBoosts == undefined ? 2 : 1
-			if (aarMod.newGameExpVersion) base *= 10
-			el("infi21").innerHTML = "Increase the multiplier for buying 10 Dimensions based on Infinities<br>"+base+"x -> "+(infUpg12Pow()*base).toPrecision(4)+"x<br>Cost: 1 IP"
-			el("infi33").innerHTML = "Dimension Boosts are stronger based on Infinity Points<br>Currently: " + (1.2 + 0.05 * player.infinityPoints.max(1).log(10)).toFixed(2) + "x<br>Cost: 7 IP"
-		}
-		var infi34Middle = player.infinityPoints.lt(pow10(1e10)) ? "<br>Currently: " + shortenDimensions(getIPMult()) + " every " + timeDisplay(player.bestInfinityTime * 10) : ""
-		el("infi34").innerHTML = "Generate IP based on your fastest Infinity " + infi34Middle + "<br>Cost: 10 IP"
+
+	infinityUpgradesDisplay()
+	if (player.galacticSacrifice) {
+		var base = player.tickspeedBoosts == undefined ? 2 : 1
+		if (aarMod.newGameExpVersion) base *= 10
+		el("infi21").innerHTML = "Increase the multiplier for buying 10 Dimensions based on Infinities<br>"+base+"x -> "+(infUpg12Pow()*base).toPrecision(4)+"x<br>Cost: 1 IP"
+		el("infi33").innerHTML = "Dimension Boosts are stronger based on Infinity Points<br>Currently: " + (1.2 + 0.05 * player.infinityPoints.max(1).log(10)).toFixed(2) + "x<br>Cost: 7 IP"
 	}
-	el("lockedset1").style.display = "none"
-	if (player.setsUnlocked > 0) {
-		el("lockedset1").style.display = ""
-		for (let u = 4; u < 7; u++) {
-			el("infi" + u + "pow").textContent = u == 5 ? getInfUpgPow(5).toFixed(2) : getFullExpansion(getInfUpgPow(u))
-			el("infi" + u + "cost").textContent = shortenCosts(pow10(player.infinityUpgradesRespecced[u] + powAdds[u]))
-			el("infi" + u).className = player.infinityPoints.lt(pow10(player.infinityUpgradesRespecced[u] + powAdds[u])) ? "infinistorebtnlocked" : "infinimultbtn"
-		}	
-	}
+	var infi34Middle = player.infinityPoints.lt(pow10(1e10)) ? "<br>Currently: " + shortenDimensions(getIPMult()) + " every " + timeDisplay(player.bestInfinityTime * 10) : ""
+	el("infi34").innerHTML = "Generate IP based on your fastest Infinity " + infi34Middle + "<br>Cost: 10 IP"
 }
 
 function breakInfinityUpgradeDisplay(){
@@ -334,13 +294,6 @@ function INFINITYUPGRADESDisplay(){
 		if (player.galacticSacrifice && (player.infinityDimension4.amount.gt(0) || player.eternities > (aarMod.newGameMinusVersion ? -20 : 0) || quantumed)) {
 			breakNGm2UpgradeRow6Display()
 		} else el("postinfir6").style.display = "none"
-	} else if (el("singularity").style.display == "block" && el("singularitydiv").style.display == "") {
-		el("darkMatter").textContent = shortenMoney(player.singularity.darkMatter)
-		el("darkMatterMult").textContent = shortenMoney(getDarkMatterMult())
-	} else if (el("dimtechs").style.display == "block" && el("dimtechsdiv").style.display == "") {
-		el("darkMatterDT").textContent = shortenMoney(player.singularity.darkMatter)
-		el("nextDiscounts").textContent = shortenMoney(getNextDiscounts())
-		el("discounts").textContent = "You have gained a total of " + getFullExpansion(player.dimtechs.discounts) + " discount upgrades."
 	}
 }
 
@@ -537,10 +490,6 @@ function infPoints2Display(){
 	else el("infinityPoints2").style.display = "none"
 }
 
-function updateChallTabDisplay(){
-	if (player.postChallUnlocked > 0 || Object.keys(player.eternityChalls).length > 0 || player.eternityChallUnlocked !== 0 || quantumed) el("challTabButtons").style.display = "table"
-}
-
 function eterPoints2Display(){
 	el("eternityPoints2").style.display = getEternitied() >= 0 || quantumed ? "inline-block" : ""
 	el("eternityPoints2").innerHTML = "You have <span class=\"EPAmount2\">"+shortenDimensions(player.eternityPoints)+"</span> Eternity points."
@@ -575,11 +524,6 @@ function replicantiShopABDisplay(){
 }
 
 function primaryStatsDisplayResetLayers() {
-	el("stats_fund_tab").style.display = ghostified ? "" : "none"
-	el("stats_qu_tab").style.display = quantumed ? "" : "none"
-	el("stats_eter_tab").style.display = getEternitied() > 0 || quantumed ? "" : "none"
-	el("stats_inf_tab").style.display = player.infinitied > 0 || getEternitied() > 0 || quantumed ? "" : "none"
-
 	var showStats = player.challenges.length > 1 || player.infinitied > 0 || getEternitied() > 0 || quantumed ? "" : "none"
 	el("brfilter").style.display = showStats
 	el("statstabs").style.display = showStats
@@ -630,12 +574,6 @@ function bankedInfinityDisplay(){
 
 //PRESTIGES
 let PRESTIGES = {
-	px: {
-		modReq: _ => tmp.ngmX >= 5,
-		prequsite: _ => false,
-		reached: _ => canPSac(),
-		got: _ => pSacrificed(),
-	},
 	galSac: {
 		modReq: _ => tmp.ngmX >= 2,
 		prequsite: _ => false,
@@ -685,35 +623,35 @@ function updateHeaders() {
 	//NG-X Hell
 	el("automationbtn").style.display = aarMod.ngmX > 3 && chal ? "inline-block" : "none"
 
-	//Layers
-	el("challengesbtn").style.display = chal ? "inline-block" : "none"
-	el("infinitybtn").style.display = inf ? "inline-block" : "none"
-	el("eternitystorebtn").style.display = eter ? "inline-block" : "none"
-	el("quantumtabbtn").style.display = quan ? "inline-block" : "none"
-	el("fundatabbtn").style.display = funda ? "inline-block" : "none"
-
 	//Side-Tabs
-	el("anttabbtn").style.display = quan && player.masterystudies.includes("d10") ? "inline-block" : "none"
-	el("bltabbtn").style.display = funda && ghSave.wzb.unl ? "inline-block" : "none"
-	el("tab_break").style.display = funda ? "" : "none"
+	el("challengesbtn").style.display = chal ? "inline-block" : "none"
+	el("tab_ant").style.display = quan && player.masterystudies.includes("d10") ? "inline-block" : "none"
+	el("tab_bl").style.display = funda && ghSave.wzb.unl ? "inline-block" : "none"
 }
 
 function updateResetTierButtons(){
 	let unls = 0
 	for (let [entry, data] of Object.entries(PRESTIGES)) {
 		let elm = el("layer_" + entry)
-		let shown = data.modReq() && (data.got() || data.reached() || (data.prequsite && data.prequsite()))
+		let got = data.modReq() && data.got()
+		let shown = got || (data.modReq() && (data.reached() || data.prequsite()))
+
 		elm.style.display = shown ? "" : "none"
 		if (shown) {
-			elm.style.left = [75, 25, 50][unls % 3] + "%"
+			elm.style.left = [85, 15, 50][unls % 3] + "%"
 			elm.style.top = Math.floor(unls / 3) * 120 + "px"
 			unls++
 		}
+	
+		let stats = el("stats_tab_" + entry)
+		if (stats) stats.style.display = got ? "" : "none"
+		el("tab_" + entry).style.display = got ? "" : "none"
 	}
 
 	let blockLen = Math.floor(unls / 3)
-	el("quantumBlock").style.display = blockLen ? "" : "none"
-	el("quantumBlock").style.height = (blockLen * 120) + "px"
+	el("tab_break").style.display = blockLen ? "" : "none"
+	el("block_header").style.display = blockLen ? "" : "none"
+	el("block_header").style.height = (blockLen * 120) + "px"
 	el("bigcrunch").parentElement.style.top = (blockLen * 120 + 19) + "px"
 
 	if (!player.meta) return
@@ -731,28 +669,4 @@ function updateResetTierButtons(){
 		el("quantumedBM").style.display = showQuantumed ? "" : "none"
 		if (showQuantumed) el("quantumedBMAmount").textContent = getFullExpansion(quSave.times)
 	}
-
-/*
-	var postBreak = getEternitied()!=0||(player.infinityPoints.gte(Number.MAX_VALUE)&&player.infDimensionsUnlocked[7])||player.break
-	var preQuantumEnd = quantumed
-	var canBigRip = canQuickBigRip()
-	
-	if (!preQuantumEnd && player.meta !== undefined) preQuantumEnd = isQuantumReached()
-	var haveBlock = (player.galacticSacrifice!=undefined&&postBreak)||(player.pSac!=undefined&&player.infinitied>0)||preQuantumEnd
-	var haveBlock2 = player.pSac!==undefined&&(ghostified||hasAch("ng3p51")||canBigRip)
-
-	el("px").style.display=pSacrificed()?"":"none"
-
-	if (player.galacticSacrifice===undefined?false:(postBreak||player.infinitied>0||player.galacticSacrifice.times>0)&&!isEmptiness) {
-		el("galaxyPoints2").style.display = ""
-	} else el("galaxyPoints2").style.display = "none"
-
-	var showQuantumBtn = false
-	var bigRipped = false
-	if (isQuantumReached()) showQuantumBtn = true
-	if (tmp.ngp3 && brSave.active) bigRipped = true
-	el("quantumbtn").style.display = showQuantumBtn || bigRipped ? "" : "none"
-
-	el("ghostifybtn").style.display = showQuantumBtn && bigRipped ? "" : "none"
-*/
 }

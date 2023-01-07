@@ -7,10 +7,6 @@ function galaxyReset(bulk) {
 	doGalaxyResetStuff(bulk)
 
 	NC10NDCostsOnReset()
-	if (player.pSac) {
-		resetInfDimensions()
-		player.pSac.dims.extraTime = 0
-	}
 	resetTDs()
 	reduceDimCosts()
 	skipResets()
@@ -54,7 +50,7 @@ el("secondSoftReset").onclick = function() {
 	let bool4 = player.currentChallenge != "postc7"
 	let bool5 = (player.currentEternityChall == "eterc6" || inQC(6)) && !tmp.be
 	var bool = bool1 && bool2  && bool3 && bool4 && !bool5 && !tmp.ri && !cantReset()
-	if (getAmount(inNC(4) || player.pSac != undefined ? 6 : 8) >= getGalaxyRequirement() && bool) {
+	if (getAmount(inNC(4) ? 6 : 8) >= getGalaxyRequirement() && bool) {
 		if ((getEternitied() >= 7 || player.autobuyers[10].bulkBought) && !shiftDown && (!inNC(14) || !(aarMod.ngmX > 3))) maxBuyGalaxies(true);
 		else galaxyReset(1)
 	}
@@ -71,7 +67,7 @@ function getGalaxyRequirement(offset = 0, display) {
 	else if (inNC(6, 1) && aarMod.ngexV != undefined && tmp.grd.galaxies < 2) amount -= tmp.grd.galaxies == 1 ? 40 : 50
 	if (aarMod.ngmX > 3) amount -= 10
 	if (inNC(6, 1) && aarMod.ngexV != undefined && tmp.grd.galaxies >= 2) amount -= 2 * mult
-	if (inNC(4) || player.pSac !== undefined) amount = player.tickspeedBoosts == undefined ? 99 + base : amount + (aarMod.ngmX > 3 ? 20 : -30)
+	if (inNC(4)) amount = player.tickspeedBoosts == undefined ? 99 + base : amount + (aarMod.ngmX > 3 ? 20 : -30)
 	if (tmp.be) {
 		amount *= 50
 		if (beSave && beSave.upgrades.includes(2)) amount /= getBreakUpgMult(2)
@@ -119,7 +115,6 @@ function getGalaxyRequirement(offset = 0, display) {
 
 	if (player.infinityUpgrades.includes("resetBoost")) amount -= 9
 	if (player.challenges.includes("postc5")) amount -= 1
-	if (player.infinityUpgradesRespecced != undefined) amount -= getInfUpgPow(6)
 	if (display) return {amount: amount, scaling: scaling}
 	return amount
 }

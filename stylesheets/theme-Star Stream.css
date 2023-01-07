@@ -362,25 +362,17 @@ strong { color: #0072e5 }
     border-radius: 0px
 }
 
-#singularitytabbtn,
-#singularityunlock.storebtn,
-#sacrificeIP.storebtn,
 #blackholeunlock.storebtn,
 #blackholediv table .storebtn {
     border: 2px solid #333333 !important
 }
 
-
-#singularitytabbtn:hover,
-#singularityunlock.storebtn:hover,
-#sacrificeIP.storebtn:hover,
 #blackHoleTabbtn button:hover,
 #blackholeunlock.storebtn:hover,
 #blackholediv table .storebtn:hover {
     background-color: #333333 !important
 }
 
-#singularityPower,
 #darkMatter,
 #darkMatterPerSecond,
 #darkMatterDT,

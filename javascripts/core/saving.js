@@ -110,7 +110,6 @@ function changeSaveDesc(saveId, placement) {
 		else if (temp.aarexModifications.newGameMinusVersion) msg += "-"
 		var ex=temp.aarexModifications.ngexV
 		if (temp.boughtDims) msg = msg != "" || ex ? "ER" + msg : "Eternity Respecced"
-		else if (temp.singularity) msg = msg != "" || ex ? "IR" + msg : "Infinity Respecced"
 		else if (temp.masterystudies) msg = "Post-NG" + msg
 		else msg = "NG" + msg
 		if (temp.galacticSacrifice&&temp.aarexModifications.newGameMinusVersion) msg += ", NG-"
@@ -493,8 +492,6 @@ function new_save() {
 }
 
 function new_game(type) {
-	if (!type && modes.ngmm == 4 && !confirm("Warning: NG-5 is currently in work in progress! It is not recommended to play this mod until a more stable version has been released. However, if you want to help test NG+5, you can disregard this message. You can contribute by talking in the NG-5 channel on the NG+3 Discord Server.")) return
-
 	save_game(true)
 	clearInterval(gameLoopIntervalId)
 	updateNewPlayer(type ? "quick" : "new", type)
@@ -563,7 +560,7 @@ function updateNewPlayer(mode, preset) {
 			arrows: aarMod.newGameExpVersion !== undefined,
 			ngpp: player.meta == undefined ? false : tmp.ngp3 ? 2 : 1,
 			ngmm: aarMod.ngmX ? aarMod.ngmX - 1 : player.galacticSacrifice !== undefined ? 1 : 0,
-			rs: player.infinityUpgradesRespecced != undefined ? 2 : player.boughtDims !== undefined,
+			rs: player.boughtDims !== undefined,
 			ngud: aarMod.nguspV !== undefined ? 3 : aarMod.ngudpV !== undefined ? 2 : player.exdilation !== undefined ? 1 : 0,
 			nguep: aarMod.nguepV !== undefined,
 			ngmu: aarMod.newGameMult === 1,
@@ -877,13 +874,11 @@ function updateNewPlayer(mode, preset) {
 	if (modsChosen.ngmm > 1) doNGMinusThreeNewPlayer()
 	if (modsChosen.arrows) doNGEXPNewPlayer()
 	if (modsChosen.ngud) doNGUDNewPlayer()
-	if (modsChosen.rs == 2) doInfinityRespeccedNewPlayer()
 	if (modsChosen.ngp > 1) doNGPlusFourPlayer()
 	if (modsChosen.ngud == 2) aarMod.ngudpV = 1.12
 	if (modsChosen.ngud == 3) doNGUDSemiprimePlayer()
 	if (modsChosen.nguep) aarMod.nguepV = 1.03
 	if (modsChosen.ngmm > 2) doNGMinusFourPlayer()
-	if (modsChosen.ngmm > 3) doNGMinusFivePlayer()
 	if (modsChosen.ngmu) doNGMultipliedPlayer()
 	if (modsChosen.ngumu) aarMod.ngumuV = 1.03
 	if (modsChosen.ngex) aarMod.ngexV = 0.1
@@ -1273,27 +1268,6 @@ function doNGUDNewPlayer(){
 	player.options.exdilationconfirm = true
 }
 
-function doInfinityRespeccedNewPlayer(){
-	aarMod.irsVersion = 1.1
-	player.infinityUpgradesRespecced = {1: 0, 3: 0, 4: 0, 5: 0, 6: 0}
-	player.singularity = {
-		unlocked: false,
-		upgraded: 0,
-		sacrificed: 0,
-		singularityPower: 0,
-		darkMatter: 0
-	}
-	player.dimtechs = {
-		unlocked: false,
-		discounts: 0,
-		tickUpgrades: 0,
-		respec: false
-	}
-	for (dim = 1; dim < 9; dim++) player.dimtechs["dim" + dim + "Upgrades"] = 0
-	player.setsUnlocked = 0
-	player.infMultCost = 1
-}
-
 function doNGPlusFourPlayer(){
 	player.eternities = 1e13
 	for (var c = 13; c < 15; c++) player.eternityChalls["eterc" + c] = 5
@@ -1340,13 +1314,6 @@ function doNGMinusFourPlayer(){
 	player.autobuyers.push(15)
 	resetTDs()
 	reduceDimCosts()
-}
-
-function doNGMinusFivePlayer(){
-	aarMod.ngm5V = 0.52
-	aarMod.ngmX = 5
-	resetPSac()
-	resetIDs_ngm5()
 }
 
 function doNGMultipliedPlayer(){

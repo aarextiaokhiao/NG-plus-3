@@ -154,7 +154,6 @@ function galacticSacrifice(auto, force, chall) {
 	}
 	GPminpeak = E(0)
 	player.galacticSacrifice.time = 0
-	resetPSac()
 	galaxyReset(-player.galaxies)
 }
 
@@ -262,13 +261,6 @@ function reduceDimCosts(upg) {
 			if (aarMod.ngmX > 3) player["timeDimension" + d].cost = player["timeDimension" + d].cost.div(div)
 		}
 		if (hasAch('r48') && player.tickspeedBoosts == undefined) player.tickSpeedCost = player.tickSpeedCost.div(div)
-	}
-	if (player.infinityUpgradesRespecced != undefined) {
-		for (var d = 1; d < 9; d++) {
-			var name = TIER_NAMES[d]
-			player[name + "Cost"] = player[name + "Cost"].div(E_pow(getDiscountMultiplier("dim" + d), player.dimtechs.discounts))
-		}
-		player.tickSpeedCost = player.tickSpeedCost.div(E_pow(getDiscountMultiplier("tick"), player.dimtechs.discounts))
 	}
 }
 
@@ -747,5 +739,15 @@ function displayGalSacStats(){
 		el("gsStatistics").style.display = ""
 		el("sacrificed").textContent = "You have Galactic Sacrificed "+getFullExpansion(player.galacticSacrifice.times) + " times."
 		el("thisSacrifice").textContent = "You have spent " + timeDisplay(player.galacticSacrifice.time) + " in this Galactic Sacrifice."
+	}
+}
+
+function galSacDisplay(){
+	if ((player.galacticSacrifice ? (player.galacticSacrifice.times > 0 || player.infinitied > 0 || player.eternities != 0 || quantumed) : false) && !isEmptiness) {
+		el("galaxyPoints2").innerHTML = "You have <span class='GPAmount'>"+shortenDimensions(player.galacticSacrifice.galaxyPoints)+"</span> Galaxy point"+(player.galacticSacrifice.galaxyPoints.eq(1)?".":"s.")
+	}
+	if (el("galaxy").style.display=='block') {
+		galacticUpgradeSpanDisplay()
+		galacticUpgradeButtonTypeDisplay()
 	}
 }

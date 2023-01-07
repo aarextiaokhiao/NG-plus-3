@@ -49,7 +49,6 @@ button b, button span {
 }
 
 .challengesbtn {
-
     width:150px;
     height: 30px;
     color: black;
@@ -442,7 +441,6 @@ button b, button span {
 	text-align: center;
 
 	margin: 0;
-	border-radius: 4px !important;
 	cursor: pointer;
 }
 
@@ -2115,6 +2113,9 @@ br {
 .bigripbtn:hover {
 	background: #a0e5a6 !important;
 	color: #6b996e
+}
+#pres_header .bigripbtn {
+	border-radius: 4px
 }
 .gluonupgrade.bigrip {
 	background: #2d7233 !important;

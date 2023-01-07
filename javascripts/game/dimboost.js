@@ -55,10 +55,6 @@ function softReset(bulk, tier=1) {
 	player.chall11Pow = E(1)
 	player.postC4Tier = 1
 	player.postC8Mult = E(1)
-	if (player.pSac !== undefined) {
-		resetInfDimensions()
-		player.pSac.dims.extraTime = 0
-	}
 	resetTDs()
 	reduceDimCosts()
 	skipResets()
@@ -105,7 +101,6 @@ function setInitialDimensionPower() {
 	if (tmp.ngp3 && getEternitied() >= 1e9 && player.dilation.upgrades.includes("ngpp6")) player.dbPower = dimensionBoostPower
 
 	var tickspeedPower = player.totalTickGained
-	if (player.infinityUpgradesRespecced!=undefined) tickspeedPower += player.infinityUpgradesRespecced[1] * 10
 	player.tickspeed = E_pow(getTickSpeedMultiplier(), tickspeedPower).times(aarMod.newGameExpVersion ? 500 : 1e3)
 	
 	var ic3Power = player.totalTickGained * getECReward(14)
@@ -134,7 +129,7 @@ function setInitialDimensionPower() {
 }
 
 function maxBuyDimBoosts(manual) {
-	let tier = player.pSac != undefined ? 6 : 8
+	let tier = 8
 	if (inQC(6)) return
 	if (player.autobuyers[9].priority >= getAmount(tier) || player.galaxies >= player.overXGalaxies || getShiftRequirement(0).tier < tier || manual) {
 		var bought = Math.min(getAmount(getShiftRequirement(0).tier), (player.galaxies >= player.overXGalaxies || manual) ? 1/0 : player.autobuyers[9].priority)
@@ -168,9 +163,9 @@ function getShiftRequirement(bulk) {
 	let amount = 20
 	let mult = getDimboostCostIncrease()
 	var resetNum = player.resets + bulk
-	var maxTier = inNC(4) || player.pSac != undefined ? 6 : 8
+	var maxTier = inNC(4) ? 6 : 8
 	tier = Math.min(resetNum + 4, maxTier)
-	if (aarMod.ngmX > 3 && player.pSac == undefined) amount = 10
+	if (aarMod.ngmX > 3) amount = 10
 	if (tier == maxTier) amount += Math.max(resetNum + (player.galacticSacrifice && player.tickspeedBoosts === undefined && player.galacticSacrifice.upgrades.includes(21) ? 2 : 4) - maxTier, 0) * mult
 	var costStart = getSupersonicStart()
 	if (player.currentEternityChall == "eterc5") {
@@ -185,7 +180,6 @@ function getShiftRequirement(bulk) {
 
 	if (player.infinityUpgrades.includes("resetBoost")) amount -= 9;
 	if (player.challenges.includes("postc5")) amount -= 1
-	if (player.infinityUpgradesRespecced != undefined) amount -= getInfUpgPow(4)
 
 	return {tier: tier, amount: amount, mult: mult};
 }
@@ -238,7 +232,7 @@ el("softReset").onclick = function () {
 	if (tmp.ri || getAmount(req.tier) < req.amount) return;
 	auto = false;
 	var pastResets = player.resets
-	if ((player.infinityUpgrades.includes("bulkBoost") || (hasAch("r28") && player.tickspeedBoosts !== undefined) || player.autobuyers[9].bulkBought) && player.resets > (inNC(4) || player.pSac != undefined ? 1 : 3) && (!inNC(14) || !(aarMod.ngmX > 3))) maxBuyDimBoosts(true);
+	if ((player.infinityUpgrades.includes("bulkBoost") || (hasAch("r28") && player.tickspeedBoosts !== undefined) || player.autobuyers[9].bulkBought) && player.resets > (inNC(4) ? 1 : 3) && (!inNC(14) || aarMod.ngmX <= 3)) maxBuyDimBoosts(true);
 	else softReset(1)
 	if (player.resets <= pastResets) return
 	if (player.currentEternityChall=='eterc13') return

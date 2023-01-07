@@ -1,7 +1,6 @@
 function displayStats() {
 	if (el("stats").style.display == "block") {
 		displayMainStats()
-		displayParadoxStats()
 		displayGalSacStats()
 		infoScaleDisplay()
 	}

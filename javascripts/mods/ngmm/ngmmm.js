@@ -5,7 +5,7 @@ function getTickspeedBoostRequirement(bulk = 1) {
 		if (player.galacticSacrifice.upgrades.includes(34)) mult = 4
 		if (player.infinityUpgrades.includes("postinfi52")) mult = 3
 	}
-	return {tier: inNC(4) || player.pSac != undefined ? 6 : 8, amount: resets * mult + (inNC(15) && aarMod.ngmX > 3 ? 10 : 30), mult: mult}
+	return {tier: inNC(4) ? 6 : 8, amount: resets * mult + (inNC(15) && aarMod.ngmX > 3 ? 10 : 30), mult: mult}
 }
 
 function tickspeedBoost(bulk) {

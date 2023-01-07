@@ -56,7 +56,6 @@ function getNormalDimensionGalaxyUpgradesBonus(tier,mult){
 	if (!player.galacticSacrifice) return mult
 	
 	if (player.galacticSacrifice.upgrades.includes(12) && (!player.galacticSacrifice.upgrades.includes(42) || aarMod.ngmX < 4)) mult = mult.times(galMults.u12())
-	if (player.pSac !== undefined) if (tier == 2) mult = mult.pow(puMults[13](hasPU(13, true, true)))
 	if (player.galacticSacrifice.upgrades.includes(13) && ((!inNC(14) && player.currentChallenge != "postcngm3_3") || player.tickspeedBoosts == undefined || aarMod.ngmX > 3) && player.currentChallenge != "postcngm3_4") mult = mult.times(galMults.u13())
 	if (player.galacticSacrifice.upgrades.includes(15)) mult = mult.times(galMults.u15())
 	if (player.galacticSacrifice.upgrades.includes(35)) mult = mult.times(galMults.u35())
@@ -146,8 +145,7 @@ function getDimensionFinalMultiplier(tier) {
 	
 	if (player.currentEternityChall == "eterc10") mult = mult.times(ec10bonus)
 	
-	if (tier == 8 && hasAch("ng3p27")) mult = mult.times(tmp.ig)	
-
+	if (tier == 8 && hasAch("ng3p27")) mult = mult.times(tmp.ig)
 	
 	if (mult.gt(10)) mult = dilates(mult.max(1), 2)
 	mult = mult.times(getAfterDefaultDilationLayerAchBonus(tier))
@@ -164,9 +162,17 @@ function getDimensionFinalMultiplier(tier) {
 	return mult
 }
 
+function getNormalDimensions() {
+	return Math.min(player.resets + 4, getMaxNormalDimensions())
+}
+
+function getMaxNormalDimensions() {
+	return inQC(1) ? 2 : player.currentEternityChall == "eterc3" ? 4 : inNC(4) || player.currentChallenge == "postc1" ? 6 : 8
+}
+
 function getDimensionDescription(tier) {
 	var name = TIER_NAMES[tier];
-	if (tier > Math.min(inQC(1) ? 1 : player.currentEternityChall == "eterc3" ? 3 : inNC(4) || player.currentChallenge == "postc1" || player.pSac != undefined ? 5 : 7, player.resets + 3) - (inNC(7) || player.currentChallenge == "postcngm3_3" || inQC(4) || player.pSac !== undefined ? 1 : 0)) return getFullExpansion(inNC(11) ? getAmount(tier) : player[name + 'Bought']) + ' (' + dimBought(tier) + ')';
+	if (tier == getNormalDimensions()) return getFullExpansion(inNC(11) ? getAmount(tier) : player[name + 'Bought']) + ' (' + dimBought(tier) + ')';
 	else if (player.money.l > 1e9) return shortenND(player[name + 'Amount'])
 	else if (player.money.l > 1e6) return shortenND(player[name + 'Amount']) + '  (+' + formatValue(player.options.notation, getDimensionRateOfChange(tier), 2, 2) + dimDescEnd;
 	else return shortenND(player[name + 'Amount']) + ' (' + dimBought(tier) + ')  (+' + formatValue(player.options.notation, getDimensionRateOfChange(tier), 2, 2) + dimDescEnd;
@@ -179,11 +185,10 @@ function getDimensionRateOfChange(tier) {
 	if (tier == 7 && player.currentEternityChall == "eterc7") toGain = DimensionProduction(1).times(10)
 
 	var name = TIER_NAMES[tier];
-	if (inNC(7) || player.currentChallenge == "postcngm3_3" || inQC(4) || player.pSac !== undefined) {
+	if (inNC(7) || player.currentChallenge == "postcngm3_3" || inQC(4)) {
 		if (tier == 7) return 0
 		else toGain = getDimensionProductionPerSecond(tier + 2);
 	}
-	if (player.pSac !== undefined) toGain = toGain.div(getEC12Mult())
 	var current = player[name + 'Amount'].max(1);
 	if (aarMod.logRateChange) {
 		var change = current.add(toGain.div(10)).log10()-current.log10()
@@ -229,7 +234,7 @@ function multiplyPC5Costs(cost, tier) {
 	
 function canBuyDimension(tier) {
 	if (tmp.ri) return false
-	if (tier > Math.min(player.resets + 4, inNC(4) || player.currentChallenge == "postc1" || player.pSac != undefined ? 6 : 8)) return false
+	if (tier > getNormalDimensions()) return false
 	if (tier > 1 && getAmount(tier - 1) == 0 && getEternitied() < 30) return false
 
 	return true
@@ -305,9 +310,9 @@ function getDimensionCostMultiplier(tier) {
 	
 function onBuyDimension(tier) {
 	giveAchievement(allAchievements["r1"+tier])
-	if (inNC(2) || player.currentChallenge == "postc1" || player.pSac !== undefined) player.chall2Pow = 0
+	if (inNC(2) || player.currentChallenge == "postc1") player.chall2Pow = 0
 	if (inNC(8) || player.currentChallenge == "postc1") clearDimensions(tier-1)
-	if ((inNC(12) || player.currentChallenge == "postc1" || player.currentChallenge == "postc6" || inQC(6) || player.pSac !== undefined) && player.matter.equals(0)) player.matter = E(1)
+	if ((inNC(12) || player.currentChallenge == "postc1" || player.currentChallenge == "postc6" || inQC(6)) && player.matter.equals(0)) player.matter = E(1)
 	player.postC4Tier = tier;
 	player.postC8Mult = E(1)
 	if (tier != 8) player.dimlife = false
@@ -331,7 +336,7 @@ function recordBought (name, num) {
 }
 
 function costIncreaseActive(cost) {
-	if (inNC(10) || player.currentChallenge == "postc1" || player.infinityUpgradesRespecced != undefined) return false
+	if (inNC(10) || player.currentChallenge == "postc1") return false
 	return cost.gte(Number.MAX_VALUE) || player.currentChallenge === 'postcngmm_2';
 }
 
@@ -368,7 +373,6 @@ function buyOneDimension(tier) {
 	if (tier == 1 && getAmount(1) >= 1e150) giveAchievement("There's no point in doing that")
 	if (getAmount(8) == 99) giveAchievement("The 9th Dimension is a lie");
 	onBuyDimension(tier)
-	reduceMatter(1)
 	return true
 }
 
@@ -390,7 +394,6 @@ function buyManyDimension(tier, quick) {
 		floatText("D" + tier, "x" + shortenMoney(getDimensionPowerMultiplier()))
 		onBuyDimension(tier)
 	}
-	reduceMatter(toBuy)
 	return true
 }
 
@@ -410,7 +413,7 @@ function buyBulkDimension(tier, bulk, auto) {
 	if (((!inNC(5) && player.currentChallenge != "postc5") || player.tickspeedBoosts != undefined) && !inNC(9) && !costIncreaseActive(player[name + "Cost"])) {
 		let mult = getDimensionCostMultiplier(tier)
 		let max = Number.POSITIVE_INFINITY
-		if (!inNC(10) && player.currentChallenge != "postc1" && player.infinityUpgradesRespecced == undefined) max = Math.ceil(Decimal.div(Number.MAX_VALUE, cost).log(mult) + 1)
+		if (!inNC(10) && player.currentChallenge != "postc1") max = Math.ceil(Decimal.div(Number.MAX_VALUE, cost).log(mult) + 1)
 		var toBuy = Math.min(Math.min(Math.floor(resource.div(cost).times(mult-1).add(1).log(mult)), bulk-bought), max)
 		getOrSubResource(tier, E_pow(mult, toBuy).sub(1).div(mult-1).times(cost))
 		player[name + "Amount"] = player[name + "Amount"].add(toBuy * 10)
@@ -418,7 +421,6 @@ function buyBulkDimension(tier, bulk, auto) {
 		player[name + "Cost"] = player[name + "Cost"].times(E_pow(mult, toBuy))
 		if (costIncreaseActive(player[name + "Cost"])) player.costMultipliers[tier - 1] = player.costMultipliers[tier - 1].times(getDimensionCostMultiplierIncrease())
 		bought += toBuy
-		reduceMatter(toBuy * 10)
 	}
 	let stopped = !costIncreaseActive(player[name + "Cost"])
 	let failsafe = 0
@@ -452,7 +454,6 @@ function buyBulkDimension(tier, bulk, auto) {
 		player[name + "Cost"] = newCost.times(newMult)
 		player.costMultipliers[tier - 1] = newMult.times(mi)
 		bought += toBuy
-		reduceMatter(toBuy * 10)
 	}
 	if (!auto) floatText("D" + tier, "x" + shortenMoney(E_pow(getDimensionPowerMultiplier(), bought)))
 	onBuyDimension(tier)
@@ -517,11 +518,11 @@ function getDimensionProductionPerSecond(tier) {
 		else if (tier == 2) ret = ret.pow(1.5)
 	}
 	ret = ret.times(getDimensionFinalMultiplier(tier))
-	if (inNC(2) || player.currentChallenge == "postc1" || player.pSac !== undefined) ret = ret.times(player.chall2Pow)
+	if (inNC(2) || player.currentChallenge == "postc1") ret = ret.times(player.chall2Pow)
 	if (tier == 1 && (inNC(3) || player.currentChallenge == "postc1")) ret = ret.times(player.chall3Pow)
 	if (player.tickspeedBoosts != undefined) ret = ret.div(10)
 	if (aarMod.ngmX>3) ret = ret.div(100)
-	if (tier == 1 && (inNC(7) || player.currentChallenge == "postcngm3_3" || inQC(4) || player.pSac !== undefined)) ret = ret.plus(getDimensionProductionPerSecond(2))
+	if (tier == 1 && (inNC(7) || player.currentChallenge == "postcngm3_3" || inQC(4))) ret = ret.plus(getDimensionProductionPerSecond(2))
 	let tick = dilates(Decimal.div(1e3,getTickspeed()),"tick")
 	if (player.dilation.active && isNanoEffectUsed("dil_effect_exp")) tick = tick.pow(tmp.nf.effects.dil_effect_exp)
 	ret = ret.times(tick)

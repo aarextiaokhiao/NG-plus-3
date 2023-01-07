@@ -92,13 +92,13 @@ function getGalaxyTickSpeedMultiplier() {
 		return 1
 	}
 	if (inQC(2)) return 0.89
-	let inRS = player.boughtDims != undefined || player.infinityUpgradesRespecced != undefined
+	let inRS = player.boughtDims != undefined
 	let galaxies = getGalaxyPower(g, !inRS) * getGalaxyEff(true)
 	let baseMultiplier = 0.8
 	let linearGalaxies = 2
 	if (inNC(6, 1) && aarMod.ngexV) linearGalaxies += 2
 	let useLinear = g + player.replicanti.galaxies + player.dilation.freeGalaxies <= linearGalaxies
-	if (inNC(6, 1) || player.currentChallenge == "postc1" || player.pSac != undefined) baseMultiplier = 0.83
+	if (inNC(6, 1) || player.currentChallenge == "postc1") baseMultiplier = 0.83
 	if (inRS) {
 		linearGalaxies = Math.min(galaxies, linearGalaxies + 3)
 		useLinear = true
@@ -107,7 +107,7 @@ function getGalaxyTickSpeedMultiplier() {
 		baseMultiplier = 0.9;
 		if (inRS && galaxies == 0) baseMultiplier = 0.89
 		else if (g == 0) baseMultiplier = 0.89
-		if (inNC(6, 1) || player.currentChallenge == "postc1" || player.pSac != undefined) baseMultiplier = 0.93
+		if (inNC(6, 1) || player.currentChallenge == "postc1") baseMultiplier = 0.93
 		if (inRS) {
 			baseMultiplier -= linearGalaxies * 0.02
 		} else {
@@ -115,9 +115,8 @@ function getGalaxyTickSpeedMultiplier() {
 			return Math.max(baseMultiplier - (g * perGalaxy), 0.83)
 		}
 	}
-	let perGalaxy = player.infinityUpgradesRespecced != undefined ? 0.98 : 0.965
 
-	var log = Math.log10(perGalaxy)*(galaxies-linearGalaxies)+Math.log10(baseMultiplier)
+	var log = Math.log10(0.965) * (galaxies-linearGalaxies) + Math.log10(baseMultiplier)
 	if (log < 0) log = -softcap(-log, "ts_reduce_log")
 	return pow10(log)
 }
@@ -148,7 +147,6 @@ function getPostC3Base() {
 	let ret = getGalaxyPower(g) * perGalaxy + 1.05
 	if (inNC(6, 1) || player.currentChallenge == "postc1") ret -= aarMod.ngmX > 3 ? 0.02 : 0.05
 	else if (aarMod.ngmX == 3) ret -= 0.03
-	if (hasPU(33)) ret += puMults[33]()
 	if (tmp.be && ret > 1e8) ret = Math.pow(Math.log10(ret) + 2, 8)
 	return ret
 }
@@ -187,7 +185,6 @@ function buyTickSpeed() {
 	else multiplySameCosts(player.tickSpeedCost)
 	if (costIncreaseActive(player.tickSpeedCost)) player.tickspeedMultiplier = player.tickspeedMultiplier.times(getTickSpeedCostMultiplierIncrease())
 	if (inNC(2) || player.currentChallenge == "postc1") player.chall2Pow = 0
-	reduceMatter(1)
 	if (!tmp.be) {
 		player.tickspeed = player.tickspeed.times(tmp.tsReduce)
 		if (player.challenges.includes("postc3") || player.currentChallenge == "postc3" || isIC3Trapped()) player.postC3Reward = player.postC3Reward.times(getPostC3Mult())
@@ -226,7 +223,6 @@ function buyMaxPostInfTickSpeed(mult) {
 	var buying = Math.floor((Math.sqrt(Math.pow(b, 2) - (c *a *4))-b)/(2 * a))+1
 	if (buying <= 0) return false
 	if (inNC(2) || player.currentChallenge == "postc1") player.chall2Pow = 0
-	reduceMatter(buying)
 	if (!tmp.be || player.currentEternityChall == "eterc10") {
 		player.tickspeed = player.tickspeed.times(E_pow(mult, buying));
 		if (player.challenges.includes("postc3") || player.currentChallenge == "postc3" || isIC3Trapped()) player.postC3Reward = player.postC3Reward.times(E_pow(getPostC3Mult(), buying))
@@ -253,10 +249,9 @@ function buyMaxTickSpeed() {
 	let cost = player.tickSpeedCost
 	if (((!inNC(5) && player.currentChallenge != "postc5") || player.tickspeedBoosts != undefined) && !inNC(9) && !costIncreaseActive(player.tickSpeedCost)) {
 		let max = Number.POSITIVE_INFINITY
-		if (!inNC(10) && player.currentChallenge != "postc1" && player.infinityUpgradesRespecced == undefined) max = Math.ceil(Decimal.div(Number.MAX_VALUE, cost).log(10))
+		if (!inNC(10) && player.currentChallenge != "postc1") max = Math.ceil(Decimal.div(Number.MAX_VALUE, cost).log(10))
 		var toBuy = Math.min(Math.floor(player.money.div(cost).times(9).add(1).log(10)), max)
 		getOrSubResource(1, pow10(toBuy).sub(1).div(9).times(cost))
-		reduceMatter(toBuy)
 		if (!tmp.be || player.currentEternityChall == "eterc10") {
 			player.tickspeed = E_pow(tmp.tsReduce, toBuy).times(player.tickspeed)
 			if (player.challenges.includes("postc3") || player.currentChallenge == "postc3" || isIC3Trapped()) player.postC3Reward = player.postC3Reward.times(E_pow(getPostC3Mult(), toBuy))
@@ -266,14 +261,13 @@ function buyMaxTickSpeed() {
 		if (costIncreaseActive(player.tickSpeedCost)) player.tickspeedMultiplier = player.tickspeedMultiplier.times(getTickSpeedCostMultiplierIncrease())
 	}
 	var mult = tmp.tsReduce
-	if (inNC(2) || player.currentChallenge == "postc1" || player.pSac !== undefined) player.chall2Pow = 0
+	if (inNC(2) || player.currentChallenge == "postc1") player.chall2Pow = 0
 	if (cannotUsePostInfTickSpeed()) {
 		while (player.money.gt(player.tickSpeedCost) && (player.tickSpeedCost.lt(Number.MAX_VALUE) || player.tickSpeedMultDecrease > 2 || (player.currentChallenge == "postc5" && player.tickspeedBoosts == undefined))) {
 			player.money = player.money.minus(player.tickSpeedCost);
 			if (!inNC(5) && player.currentChallenge != "postc5") player.tickSpeedCost = player.tickSpeedCost.times(player.tickspeedMultiplier);
 			else multiplySameCosts(player.tickSpeedCost)
 			if (costIncreaseActive(player.tickSpeedCost)) player.tickspeedMultiplier = player.tickspeedMultiplier.times(getTickSpeedCostMultiplierIncrease())
-			reduceMatter(1)
 			if (!tmp.be || player.currentEternityChall == "eterc10") {
 				player.tickspeed = player.tickspeed.times(mult);
 				if (player.challenges.includes("postc3") || player.currentChallenge == "postc3" || isIC3Trapped()) player.postC3Reward = player.postC3Reward.times(getPostC3Mult())
@@ -288,21 +282,11 @@ function buyMaxTickSpeed() {
 	tmp.tickUpdate = true
 }
 
-function getWorkingTickspeed(){
+function getTickspeed() {
 	var log = -player.tickspeed.log10()
 	if (tmp.ngp3) log = softcap(log, "working_ts")
 	tick = pow10(-log)
 	return tick
-}
-
-function getTickspeed() {
-	if (player.infinityUpgradesRespecced != undefined) {
-		var ret = Decimal.div(1000, player.tickspeed)
-		if (ret.gt(1e25)) ret = pow10(Math.sqrt(ret.log10()) * 5)
-		if (player.singularity != undefined) ret = ret.times(getDarkMatterMult())
-		return Decimal.div(1000, ret)
-	}
-	return getWorkingTickspeed()
 }
 
 function updateTickspeed() {

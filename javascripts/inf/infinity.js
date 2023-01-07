@@ -37,8 +37,7 @@ function gainedInfinityPoints(next) {
 	else if (hasAch("r103")) div = 307.8;
 	if (player.galacticSacrifice && player.tickspeedBoosts == undefined) div -= galIP()
 
-	if (player.infinityUpgradesRespecced == undefined) var ret = pow10(player.money.e / div - 0.75).times(getIPMult())
-	else var ret = player.money.div(Number.MAX_VALUE).pow(2 * (1 - Math.log10(2)) / Decimal.log10(Number.MAX_VALUE)).times(getIPMult())
+	var ret = pow10(player.money.e / div - 0.75).times(getIPMult())
 	if (player.timestudy.studies.includes(41)) ret = ret.times(E_pow(tsMults[41](), player.galaxies + player.replicanti.galaxies))
 	if (player.timestudy.studies.includes(51)) ret = ret.times(aarMod.newGameExpVersion?1e30:1e15)
 	if (player.timestudy.studies.includes(141)) ret = ret.times(E(1e45).dividedBy(E_pow(15, Math.log(player.thisInfinityTime+1)*Math.pow(player.thisInfinityTime+1, 0.125))).max(1))
@@ -159,7 +158,6 @@ function startChallenge(name) {
 	NC10NDCostsOnReset()
 	
 	player.tdBoosts = resetTDBoosts()
-	resetPSac()
 	resetTDs()
 	reduceDimCosts()
 	if (player.currentChallenge == "postc1") player.costMultipliers = [E(1e3), E(5e3), E(1e4), E(1.2e4), E(1.8e4), E(2.6e4), E(3.2e4), E(4.2e4)];
@@ -169,13 +167,6 @@ function startChallenge(name) {
 		player.resets = 4;
 	}
 	updateNCVisuals()
-	
-	if (player.infinityUpgradesRespecced != undefined) {
-		player.singularity.darkMatter = E(0)
-		player.dimtechs.discounts = 0
-	}
-	updateSingularity()
-	updateDimTechs()
 	
 	if (player.replicanti.unl) player.replicanti.amount = E(1)
 	player.replicanti.galaxies = 0
@@ -222,14 +213,13 @@ function inNC(x, n) {
 		if (n == 1 && aarMod.ngexV && player.currentChallenge == "challenge6") return false
 		if (n == 2 && !aarMod.ngexV) return false
 	}
-	if (x == 0) return player.currentChallenge == "" && (!(aarMod.ngmX > 3) || !player.galacticSacrifice.chall) && inPxC(0)
-	return player.currentChallenge == "challenge" + x || (aarMod.ngmX > 3 && player.galacticSacrifice.chall == x) || inPxC(x)
+	if (x == 0) return player.currentChallenge == "" && (!(aarMod.ngmX > 3) || !player.galacticSacrifice.chall)
+	return player.currentChallenge == "challenge" + x || (aarMod.ngmX > 3 && player.galacticSacrifice.chall == x)
 }
 
 function getTotalNormalChallenges() {
 	let x = 11
 	if (player.galacticSacrifice) x += 2
-	else if (player.infinityUpgradesRespecced) x++
 	if (player.tickspeedBoosts != undefined) x++
 	if (aarMod.ngmX > 3) x++
 	return x
@@ -238,13 +228,13 @@ function getTotalNormalChallenges() {
 function updateNCVisuals() {
 	var chall = player.currentChallenge
 
-	if (inNC(2) || chall == "postc1" || player.pSac) el("chall2Pow").style.display = "inline-block"
+	if (inNC(2) || chall == "postc1") el("chall2Pow").style.display = "inline-block"
 	else el("chall2Pow").style.display = "none"
 
 	if (inNC(3) || chall == "postc1") el("chall3Pow").style.display = "inline-block"
 	else el("chall3Pow").style.display = "none"
 
-	if (inNC(12) || chall == "postc1" || chall == "postc6" || inQC(6) || player.pSac) el("matter").style.display = "block"
+	if (inNC(12) || chall == "postc1" || chall == "postc6" || inQC(6)) el("matter").style.display = "block"
 	else el("matter").style.display = "none"
 
 	if (isADSCRunning()) el("chall13Mult").style.display = "block"
@@ -253,7 +243,7 @@ function updateNCVisuals() {
 	if (inNC(14) && aarMod.ngmX > 3) el("c14Resets").style.display = "block"
 	else el("c14Resets").style.display = "none"
 
-	if (inNC(6, 2) || inNC(9) || inNC(12) || ((inNC(5) || inNC(14) || chall == "postc4" || chall == "postc5") && player.tickspeedBoosts == undefined) || player.pSac || chall == "postc1" || chall == "postc6" || chall == "postc8") el("quickReset").style.display = "inline-block"
+	if (inNC(6, 2) || inNC(9) || inNC(12) || ((inNC(5) || inNC(14) || chall == "postc4" || chall == "postc5") && player.tickspeedBoosts == undefined) || chall == "postc1" || chall == "postc6" || chall == "postc8") el("quickReset").style.display = "inline-block"
 	else el("quickReset").style.display = "none"
 }
 

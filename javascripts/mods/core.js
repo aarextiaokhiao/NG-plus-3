@@ -45,7 +45,7 @@ var modSubNames = {
 	ngp: ["OFF", "ON", "NG+4"],
 	ngpp: ["OFF", "ON", "Post-NG+++"/*, "NG+5R"*/],
 	arrows: ["Linear (↑⁰)", "Exponential (↑)"/*, "Tetrational (↑↑)"*/],
-	ngmm: ["OFF", "ON", "NG---", "NG-4", "NG-5"],
+	ngmm: ["OFF", "ON", "NG---", "NG-4"],
 	ngud: ["OFF", "ON", "Prime (')", "Semiprime (S')"/*, "Semiprime.1 (S'.1)"*/],
 	nguep: ["Linear' (↑⁰')", "Exponential' (↑')"/*, "Tetrational' (↑↑')"*/]
 	/*,

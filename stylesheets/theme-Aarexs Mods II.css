@@ -144,12 +144,12 @@ button, div.storebtn {
 	display: none
 }
 
-#bigcrunch, #infinitybtn, #pastinfs, .infinistorebtn1, .infinistorebtn2, .infinistorebtn3, .infinistorebtn4, .infinimultbtn, #challengetimesbtn, #postInfinityButton, .newdim, #idtabbtn button, #infinitydimensions td:nth-child(4) .storebtn, #challTabButtons td:nth-child(2) button, #infchallengesbtn, #replicantiunlock.storebtn, #replicantichance.storebtn, #replicantiinterval.storebtn, #replicantimax.storebtn {
+.infinitybtn, .infinistorebtn1, .infinistorebtn2, .infinistorebtn3, .infinistorebtn4, .infinimultbtn, .newdim, #infinitydimensions td:nth-child(4) .storebtn, #challTabButtons td:nth-child(2) button, #infchallengesbtn, #replicantiunlock.storebtn, #replicantichance.storebtn, #replicantiinterval.storebtn, #replicantimax.storebtn {
 	background-color: #e59900 !important;
 	color: #191919 !important
 }
 
-#bigcrunch:hover, #infinitybtn:hover, #pastinfs:hover, .infinistorebtn1:hover, .infinistorebtn2:hover, .infinistorebtn3:hover, .infinistorebtn4:hover, .infinimultbtn:hover, #challengetimesbtn:hover, #postInfinityButton:hover, .newdim:hover, #idtabbtn button:hover, #infinitydimensions td:nth-child(4) .storebtn:hover, #challTabButtons td:nth-child(2) button:hover, #infchallengesbtn:hover, #replicantiunlock.storebtn:hover, #replicantichance.storebtn:hover, #replicantiinterval.storebtn:hover, #replicantimax.storebtn:hover {
+.infinitybtn:hover, .infinistorebtn1:hover, .infinistorebtn2:hover, .infinistorebtn3:hover, .infinistorebtn4:hover, .infinimultbtn:hover, .newdim:hover, #infinitydimensions td:nth-child(4) .storebtn:hover, #challTabButtons td:nth-child(2) button:hover, #infchallengesbtn:hover, #replicantiunlock.storebtn:hover, #replicantichance.storebtn:hover, #replicantiinterval.storebtn:hover, #replicantimax.storebtn:hover {
 	background-color: #e5ac39 !important
 }
 
@@ -210,16 +210,16 @@ button, div.storebtn {
 	box-shadow: 1px 2px rgba(229,229,229,0.4)
 }
 
-#eternitybtn, #eternitystorebtn, #pasteternities, #tdtabbtn button, #timedimensions td:nth-child(4) .storebtn, .timetheorembtn, .timestudybought, .eternityupbtnbought, .milestonereward, #eterctabbtn, #eterchallengesbtn, #breakEternityTabbtn button, #autoEternityTabbtn button {
+.eternitybtn, #timedimensions td:nth-child(4) .storebtn, .timetheorembtn, .timestudybought, .eternityupbtnbought, .milestonereward, #breakEternityTabbtn button {
 	background-color: #7200e5 !important;
 	color: #191919 !important
 }
 
-#eternitybtn div {
+.eternitybtn div {
 	color: #191919 !important
 }
 
-#eternitybtn:hover, #eternitystorebtn:hover, #pasteternities:hover, #tdtabbtn button:hover, #timedimensions td:nth-child(4) .storebtn:hover, .timetheorembtn:hover, .timestudy, .timestudy.timedimstudy, .timestudy.passivestudy, .timestudybought.lightstudy, .eternityupbtn, #eterctabbtn:hover, #eterchallengesbtn:hover, #breakEternityTabbtn button:hover, #autoEternityTabbtn button:hover {
+.eternitybtn:hover, #timedimensions td:nth-child(4) .storebtn:hover, .timetheorembtn:hover, .timestudy, .timestudy.timedimstudy, .timestudy.passivestudy, .timestudybought.lightstudy, .eternityupbtn, #breakEternityTabbtn button:hover {
 	background-color: #8f39e5 !important;
 	color: #191919 !important;
 	animation: none !important;

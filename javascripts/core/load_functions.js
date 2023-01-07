@@ -535,8 +535,6 @@ function dov7tov10(){
 	el("Universal harmony").style["background-image"]="url(images/"+(player.masterystudies==undefined?104:"104-ngp3")+".png)"
 	el("Infinite time").style["background-image"]="url(images/"+(inERS?79:69)+".png)"
 
-	el("ec12Mult").style.display = player.pSac !== undefined ? "" : "none"
-
 	if (player.version < 9.5) {
 		player.version = 9.5
 		if (player.timestudy.studies.includes(191)) player.timestudy.theorem += 100
@@ -1624,28 +1622,6 @@ function doExdilationIfUndefined(){
         }
 }
 
-function doIRSv0tov12(){
-        if (aarMod.irsVersion < 1.1) {
-                player.singularity = {
-                        unlocked: false,
-                        sacrificed: 0,
-                        upgraded: 0,
-                        singularityPower: 0,
-                        darkMatter: 0
-                }
-        }
-        if (aarMod.irsVersion < 1.2) {
-                player.dimtechs = {
-                        unlocked: false,
-                        discounts: 0,
-                        tickUpgrades: 0,
-                        respec: false
-                }
-                for (dim=1;dim<9;dim++) player.dimtechs["dim"+dim+"Upgrades"] = 0
-                aarMod.irsVersion = 1.2
-        }
-}
-
 function doNGM4v0tov2111(){
         if (aarMod.newGame4MinusVersion<2) {
                 player.tdBoosts=0
@@ -1657,16 +1633,6 @@ function doNGM4v0tov2111(){
                 player.challengeTimes.push(600*60*24*31)
         }
         if (aarMod.newGame4MinusVersion<2.111) aarMod.newGame4MinusVersion=2.111
-}
-
-function doNGM5v0tov052(){
-        if (aarMod.ngm5V<0.1) aarMod.ngm5V=0.1
-        if (aarMod.ngm5V<0.5) {
-                player.infDimensionsUnlocked[0]=true
-                resetIDs_ngm5()
-                resetPDs(true)
-        }
-        if (aarMod.ngm5V<0.52) aarMod.ngm5V=0.52
 }
 
 function doNGSPUpdatingVersion(){
@@ -1736,9 +1702,7 @@ function updateVersionsONLOAD(){
 	doExdilationIfUndefined()
 	if (aarMod.ngudpV < 1.12) aarMod.ngudpV = 1.12
 	if (aarMod.nguepV < 1.03) aarMod.nguepV = 1.03
-	doIRSv0tov12()
 	doNGM4v0tov2111()
-	doNGM5v0tov052()
 	doNGSPUpdatingVersion()
 	doInitInfMultStuff()
 	dov12tov122()
@@ -1848,9 +1812,6 @@ function setOptionsDisplaysStuff1(){
         el("maxHighestTD").parentElement.parentElement.style.display = aarMod.ngmX > 3 ? "" : "none"
         el("maxHighestTD").textContent = "Max only highest Time Dimensions: O"+(aarMod.maxHighestTD?"N":"FF")
 
-        el("quickMReset").style.display = pSacrificed() ? "" : "none"
-        el("quickMReset").textContent = "Quick matter reset: O"+(aarMod.quickReset?"N":"FF")
-
         el("infmultbuyer").style.display = getEternitied()>0||player.masterystudies?"inline-block":"none"
         if (!player.options.hotkeys) el("hotkeys").textContent = "Enable hotkeys"
 
@@ -1895,11 +1856,10 @@ function setChallengeDisplay(){
         el("autoDSChallengeDesc").textContent=player.tickspeedBoosts==undefined?"Per-ten multiplier is always 1x, but the product of dimensions bought multiplies all dimensions.":"The product of amount is used instead of the product of bought."
         el("autoGSChallengeDesc").textContent=aarMod.ngmX>3?"You can hold up to 10 total Dimension Boosts, Time Dimension Boosts, Tickspeed Boosts, and Galaxies.":(aarMod.ngmX>2?"All galaxy upgrades from the third column are disabled and Tickspeed Boosts give 20 free tickspeed purchases each instead.":"You can only get 308 tickspeed upgrades. This count does not reset on resets.")
         el("autoTBChallengeDesc").textContent=aarMod.ngmX>3?"Dimension Boosts and Time Dimension Boosts divide Tickspeed Multiplier instead.":"Dimension Boosts and Galaxies only boost Galaxy point gain and Tickspeed Boosts are nerfed, but Galaxy points boost Tickspeed Boosts."
-        el("infPowEffectPowerDiv").innerHTML=player.galacticSacrifice&&player.pSac==undefined?"Raised to the power of <span id='infPowEffectPower' style='font-size:35px; color: black'></span>, t":"T"
+        el("infPowEffectPowerDiv").innerHTML=player.galacticSacrifice?"Raised to the power of <span id='infPowEffectPower' style='font-size:35px; color: black'></span>, t":"T"
         el("ngmmchalls").style.display=player.galacticSacrifice?"":"none"
         el("ngmmmchalls").style.display=player.tickspeedBoosts==undefined?"none":""
         el("ngm4chall").style.display=aarMod.ngmX>3?"":"none"
-        el("irschalls").style.display=player.infinityUpgradesRespecced==undefined?"none":""
 }
 
 function setInfChallengeDisplay(){
@@ -1955,12 +1915,7 @@ function setOtherChallDisplay(){
         el("galDesc23").textContent="Dimension "+(aarMod.ngmX>3?" Boosts and Time Dimension B":"B")+"oosts are stronger based on your Galaxy points."
         el("galcost31").textContent=galCosts[31]
         el("galcost32").textContent=galCosts[32]
-        el("preinfupgrades").style.display=player.infinityUpgradesRespecced?"none":""
-        el("infi1div").style.display=player.infinityUpgradesRespecced==undefined?"none":""
-        el("infi3div").style.display=player.infinityUpgradesRespecced==undefined?"none":""
-        el("postinfbtn").style.display=player.infinityUpgradesRespecced?"none":""
   
-        if (player.infinityUpgradesRespecced != undefined) order = []
         el("ic1desc").textContent="All the previous challenges (except for the Tickspeed challenge"+(player.galacticSacrifice?',':" and")+" Automatic Big Crunch challenge"+(player.galacticSacrifice?", and Automatic Galactic Sacrifice challenge":"")+") are applied at once."
         el("ic1reward").textContent="Reward: Get "+(player.galacticSacrifice?2:1.3)+"x on all Infinity Dimensions for each Infinity Challenge completed."
         el("ic2desc").textContent=(player.tickspeedBoosts==undefined?"":"Infinity Dimensions are disabled, but Sacrifice is way stronger. ")+"You automatically sacrifice every 8 ticks once you have the 8th Dimension."
@@ -1968,7 +1923,6 @@ function setOtherChallDisplay(){
         el("ic5desc").textContent=player.tickspeedBoosts==undefined?"When buying Normal Dimensions 1-4, everything with costs smaller or equal increases. When buying Normal Dimensions 5-8, everything with costs bigger or equal increases. When buying tickspeed, everything with the same cost increases.":"You can't get tickspeed upgrades and galaxies. Tickspeed Boosts boost tickspeed instead."
         el("ic7desc").textContent="You can't get Antimatter Galaxies, but the Dimension Boost multiplier "+(player.galacticSacrifice?"is cubed":"is increased to 10x")+"."
         el("ic7reward").textContent="Reward: The Dimension Boost multiplier "+(player.galacticSacrifice? "is squared":" is increased to 4x.")
-        el("replicantitabbtn").style.display=player.infinityUpgradesRespecced?"none":""
         el("replicantiresettoggle").textContent="Auto galaxy "+(player.replicanti.galaxybuyer?"ON":"OFF")+(player.timestudy.studies.includes(131)&&speedrunMilestonesReached<20?" (disabled)":"")
 }
 
@@ -2013,7 +1967,6 @@ function updateNGp3DisplayStuff(){
 	el('autoAssignRotate').textContent="Rotation: "+(quSave.autoOptions.assignQKRotate>1?"Left":quSave.autoOptions.assignQKRotate?"Right":"None")
 	el('autoReset').textContent="Auto: O"+(quSave.autoOptions.replicantiReset?"N":"FF")
 	el("antTabs").style.display=player.masterystudies.includes("d11")?"":"none"
-	el("edtabbtn_dim").style.display=player.masterystudies.includes("d11")?"":"none"
 	NF.shown()
 	el("riptabbtn").style.display=player.masterystudies.includes("d14")?"":"none"
 	el("ghostifyAnimBtn").textContent="Fundament: O"+(player.options.animations.ghostify?"N":"FF")
@@ -2104,11 +2057,9 @@ function updateNGModeMessage(){
                 } else if (player.masterystudies&&!aarMod.ngp3lV&&!aarMod.ngp3mpV) ngModeMessages.push("Welcome to Post-NG+3R, Aarex's fanmade rework to MrRedShark77's Post-NG+3; extending NG+2 and +3! " + (aarMod.ngp4V ? "If you haven't experienced NG+3 yet, do it without NG+4." : "You are now on the marathon of NG+3, I wish you dedication."))
                 else if (!aarMod.ngp4V) ngModeMessages.push("Welcome to NG++, made by dan-simon! In this mode, more Dilation upgrades and Meta Dimensions are added to push the endgame further. Disclaimer: This is not NG+3, there is no Quantum content available.")
         } else if (aarMod.newGamePlusVersion) ngModeMessages.push("Welcome to NG+ v2, made by usavictor and Aarex! You start with many things unlocked and given to you immediately to get through the early game faster.")
-        if (player.infinityUpgradesRespecced) ngModeMessages.push('Welcome to Infinity Respecced, created by Aarex! In this mode, all of infinity upgrades are replaced with new upgrades except for the 2x IP mult, Break Infinity is removed, but there is new content in Infinity.')
         if (player.boughtDims) ngModeMessages.push('Welcome to Eternity Respecced, created by dan-simon! In this mode, Eternity is changed to be balanced better without any scaling. Note: The port is not complete on this site, so you should search for the separate website for the mod itself to get the latest version.')
         if (player.galacticSacrifice) {
-                if (aarMod.ngmX>4) ngModeMessages.push('Welcome to NG-5, the nerfed version of NG-4! This is very hardcore because you are stuck in more challenges. You are also stuck in Automated Big Crunches Challenge which is a big impact on this mod. Good luck! This mod is made by Aarex.')
-                else if (aarMod.ngmX>3) ngModeMessages.push('Welcome to NG-4, the nerfed version of NG-3! This mode features even more changes from NG---, and is very hardcore. WIP by Nyan Cat and edited by Aarex.')
+                if (aarMod.ngmX>3) ngModeMessages.push('Welcome to NG-4, the nerfed version of NG-3! This mode features even more changes from NG---, and is very hardcore. WIP by Nyan Cat and edited by Aarex.')
                 else if (aarMod.newGame3MinusVersion) ngModeMessages.push('Welcome to NG-3, the nerfed version of NG--! This mode reduces tickspeed multiplier multiplier and nerfs galaxies, but has a new feature called \"Tickspeed Boosts\" and many more changes to NG--.')
                 else ngModeMessages.push('Welcome to NG--, created by Nyan cat! You are always in Dilation and IC3, but there is a new layer called Galactic Sacrifice.')
         }
@@ -2164,16 +2115,10 @@ function onLoad(noOffline) {
         setDisplaysStuff1()
         setChallengeDisplay()
         setInfChallengeDisplay()
-        updateSingularity()
-        updateDimTechs()
         setOtherChallDisplay()
         setTSDisplay()
         setReplAutoDisplay()
         setSomeQuantumAutomationDisplay()
-        if (player.pSac !== undefined) {
-                updateParadoxUpgrades()
-                updatePUCosts()
-        }
         if (tmp.ngp3) updateNGp3DisplayStuff()
         hideDimensions()
         updateChallenges()
@@ -2430,31 +2375,14 @@ function conToDeciPreEter(){
         player.infinitiedBank = nP(player.infinitiedBank)
         player.chall3Pow = E(player.chall3Pow)
         player.chall11Pow = E(player.chall11Pow)
-        if (player.galacticSacrifice !== undefined) {
-        player.galacticSacrifice.galaxyPoints = Decimal.round(player.galacticSacrifice.galaxyPoints)
-        if (player.dimPowerIncreaseCost !== undefined) player.dimPowerIncreaseCost = E(player.dimPowerIncreaseCost)
-        }
-        if (player.pSac !== undefined) {
-                player.pSac.px = E(player.pSac.px)
-                for (var d=1;d<9;d++) player["infinityDimension"+d].costAM = E(player["infinityDimension"+d].costAM)
-                if (player.pSac.dims !== undefined) {
-                        player.pSac.dims.power = E(player.pSac.dims.power)
-                        for (var d=1;d<9;d++) {
-                                player.pSac.dims[d].cost = E(player.pSac.dims[d].cost)
-                                player.pSac.dims[d].amount = E(player.pSac.dims[d].amount)
-                                player.pSac.dims[d].power = E(player.pSac.dims[d].power)
-                        }
-                }
-        }
+		if (player.galacticSacrifice !== undefined) {
+			player.galacticSacrifice.galaxyPoints = Decimal.round(player.galacticSacrifice.galaxyPoints)
+			if (player.dimPowerIncreaseCost !== undefined) player.dimPowerIncreaseCost = E(player.dimPowerIncreaseCost)
+		}
         player.costMultipliers = [E(player.costMultipliers[0]), E(player.costMultipliers[1]), E(player.costMultipliers[2]), E(player.costMultipliers[3]), E(player.costMultipliers[4]), E(player.costMultipliers[5]), E(player.costMultipliers[6]), E(player.costMultipliers[7])]
         player.tickspeedMultiplier = E(player.tickspeedMultiplier)
         player.matter = E(player.matter)
-        
-        if (player.singularity != undefined) {
-                player.singularity.sacrificed = E(player.singularity.sacrificed)
-                player.singularity.singularityPower = E(player.singularity.singularityPower)
-                player.singularity.darkMatter = E(player.singularity.darkMatter)
-        }
+
         player.infinityPower = E(player.infinityPower)
         player.infinityDimension1.amount = E(player.infinityDimension1.amount)
         player.infinityDimension2.amount = E(player.infinityDimension2.amount)

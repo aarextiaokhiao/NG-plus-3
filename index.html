@@ -26,12 +26,9 @@
 			<div id='news'>.</div>
 		</div>
 		<div id="pres_header">
-			<div id="layer_px">
-				<div id="px">You have <span class='pxAmount'>0</span> Paradoxes.</div>
-				<span id="pSacPos"><button id="pSac" class="storebtn" onclick="pSac()"></button></span>
-			</div><div id="layer_galSac">
+			<div id="layer_galSac">
 				<div id="galaxyPoints2">You have <span class='GPAmount'>0</span> Galaxy points.</div>
-				<span id="sacpos" class="eterpos"><button id="sacrificebtn" class="storebtn" onclick="galacticSacrifice()"></button></span>
+				<button id="sacrificebtn" class="storebtn" onclick="galacticSacrifice()"></button>
 			</div><div id="layer_inf">
 				<div id="infinityPoints2"></div>
 				<button id="postInfinityButton" class="infinitybtn" onclick="bigCrunch()">Big Crunch for x Infinity Points</button>
@@ -67,7 +64,7 @@
 				</button>
 			</div>
 		</div>
-		<div id='quantumBlock' style='height:120px'></div>
+		<div id='block_header' style='height:120px'></div>
 		<div id="bonus_header">
 			<div id="matter"></div>
 			<div id="chall13Mult"></div>
@@ -90,14 +87,13 @@
 			<button id="challengesbtn" style="font-family: Typewriter; font-size: 20px" class="tabbtn" onclick="showTab('challenges')">Challenges</button>
 			<button id="automationbtn" style="font-family: Typewriter; font-size: 20px" class="tabbtn" onclick='showTab("autobuyers")'>Automation</button>
 			<span id="tab_break"><br></span>
-			<button id="paradoxbtn" style="font-family: Typewriter; font-size: 20px; display: none" class="tabbtn" onclick='showTab("paradox")'>Paradox</button>
-			<button id="galaxybtn" style="font-family: Typewriter; font-size: 20px; display: none" onclick='showTab("galaxy")'>Galaxy</button>
-			<button id="infinitybtn" style="font-family: Typewriter; font-size: 20px; display: none" class="infinitybtn" onclick="showTab('infinity')">Infinity</button>
-			<button id="eternitystorebtn" style="font-family: Typewriter; font-size: 20px; display: none" class="eternitybtn" onclick="showTab('eternitystore')">Eternity</button>
-			<button id="quantumtabbtn" style="font-family: Typewriter; font-size: 20px; display: none" class="quantumbtn" onclick='showTab("quantumtab")'>Quantum</button>
-			<button id="anttabbtn" style="font-family: Typewriter; font-size: 20px" class="anttabbtn" onclick='showTab("replicants")'>Duplicants</button>
-			<button id="fundatabbtn" style="font-family: Typewriter; font-size: 20px" class="ghostifybtn" onclick='showTab("ghostify")'>Fundament</button>
-			<button id="bltabbtn" style="font-family: Typewriter; font-size: 20px" class="bltabbtn" onclick='showTab("bltab")'>Bosonic Lab</button>
+			<button id="tab_galSac" style="font-family: Typewriter; font-size: 20px; display: none" onclick='showTab("galaxy")'>Galaxy</button>
+			<button id="tab_inf" style="font-family: Typewriter; font-size: 20px; display: none" class="infinitybtn" onclick="showTab('infinity')">Infinity</button>
+			<button id="tab_eter" style="font-family: Typewriter; font-size: 20px; display: none" class="eternitybtn" onclick="showTab('eternitystore')">Eternity</button>
+			<button id="tab_qu" style="font-family: Typewriter; font-size: 20px; display: none" class="quantumbtn" onclick='showTab("quantumtab")'>Quantum</button>
+			<button id="tab_ant" style="font-family: Typewriter; font-size: 20px" class="anttabbtn" onclick='showTab("replicants")'>Duplicants</button>
+			<button id="tab_fund" style="font-family: Typewriter; font-size: 20px" class="ghostifybtn" onclick='showTab("ghostify")'>Fundament</button>
+			<button id="tab_bl" style="font-family: Typewriter; font-size: 20px" class="bltabbtn" onclick='showTab("bltab")'>Bosonic Lab</button>
 		</div>
 		<div style="position:absolute; left: 0; right: 0; margin-left: auto; margin-right: auto; width: 360px; top: 19px">
 			<button class="infinitybtn" id="bigcrunch" style="font-family: Typewriter; font-size: 50px; width: 360px; height: 100px;" onclick="bigCrunch()">Big Crunch</button>
@@ -111,7 +107,6 @@
 			<table class="table" align="center" style="margin: auto" id="dimTabButtons">
 				<tr>
 					<td><button class="secondarytabbtn" onclick="showDimTab('antimatterdimensions')">Dimensions</button></td>
-					<td id="pdtabbtn"><button class="secondarytabbtn" onclick="showDimTab('pdims')">Paradox Dimensions</button></td>
 					<td id="idtabbtn"><button class="secondarytabbtn infinitybtn" onclick="showDimTab('infinitydimensions')">Infinity Dimensions</button></td>
 					<td id="tdtabbtn"><button class="secondarytabbtn eternitybtn" onclick="showDimTab('timedimensions')">Time Dimensions</button></td>
 					<td id="mdtabbtn"><button class="secondarytabbtn quantumbtn" onclick="showDimTab('metadimensions')">Meta Dimensions</button></td>
@@ -633,8 +628,9 @@
 						<td><div><button id="performanceTicks" onclick="togglePerformanceTicks()" class="storebtn" style="color:black; width: 200px; height: 55px"></button></div></td>
 					</tr>
 					<tr>
-						<td><div><button id="quickMReset" onclick="quickMReset()" class="storebtn" style="color:black; width: 200px; height: 55px"></button></div></td>
+						<td></td>
 						<td><div><button id="maxHighestTD" onclick="maxHighestTD()" class="storebtn" style="color:black; width: 200px; height: 55px"></button></div></td>
+						<td></td>
 					</tr>
 				</table>
 			</div>
@@ -654,7 +650,7 @@
 				<br><br>
 
 				<b>(Update v2.41R: Gravitional Relativity)</b><br>
-				<b class="red">(Beta: 1/5/23b Build)</b>
+				<b class="red">(Beta: 1/6/23 Build)</b>
 				<br><br>
 
 				NG++ is by dan-simon, NG+3 is by Aarex, pg132, and usavictor, and NG+4 is by Soul147.
@@ -664,11 +660,11 @@
 			<div id='statstabs'>
 				<br>
 				<button class="secondarytabbtn" onclick="showStatsTab('stats')">General</button>
-				<button class="secondarytabbtn infinitybtn" onclick="showStatsTab('stats_inf')" id="stats_inf_tab">Infinity</button>
-				<button class="secondarytabbtn eternitybtn" onclick="showStatsTab('stats_eter')" id="stats_eter_tab">Eternity</button>
-				<button class="secondarytabbtn quantumbtn" onclick="showStatsTab('stats_qu')" id="stats_qu_tab">Quantum</button>
+				<button class="secondarytabbtn infinitybtn" onclick="showStatsTab('stats_inf')" id="stats_tab_inf">Infinity</button>
+				<button class="secondarytabbtn eternitybtn" onclick="showStatsTab('stats_eter')" id="stats_tab_eter">Eternity</button>
+				<button class="secondarytabbtn quantumbtn" onclick="showStatsTab('stats_qu')" id="stats_tab_qu">Quantum</button>
 				<button class="secondarytabbtn quantumbtn" onclick="showStatsTab('pccompletions')" id="pccompletionsbtn" style="display:none">Paired Challenges</button>
-				<button class="secondarytabbtn ghostifybtn" onclick="showStatsTab('stats_fund')" id="stats_fund_tab">Fundament</button>
+				<button class="secondarytabbtn ghostifybtn" onclick="showStatsTab('stats_fund')" id="stats_tab_fund">Fundament</button>
 			</div><br>
 			<div id="stats" class="statstab">
 				<div id='brfilter'><br></div>
@@ -683,13 +679,6 @@
 				<div id="gsStatistics">
 					<div id="sacrificed"></div>
 					<div id="thisSacrifice"></div>
-					<br>
-				</div>
-				<div id="psStatistics">
-					<div id="pSacrificedNormal"></div>
-					<div id="pSacrificedForced"></div>
-					<div id="pSacrificed"></div>
-					<div id="thisPSac"></div>
 					<br>
 				</div>
 				<div id="totalTime">You have played for </div>
@@ -1985,22 +1974,6 @@
 							</div>
 						</td>
 					</tr>
-					<tr id="irschalls">
-						<td>
-							<div class= "challengediv">
-								<span style="font-size: 110%">Dimension boosts are disabled.</span>
-								<br>
-								<br>
-
-								<div class="outer">
-
-									<button id="challenge16" class="challengesbtn">Start</button>
-									<br>
-									<span>Reward: Automated Dimensional Sacrifice</span>
-								</div>
-							</div>
-						</td>
-					</tr>
 				</table>
 			</div>
 			<div id="breakchallenges" class="challengeTab">
@@ -2640,7 +2613,6 @@
 			</div>
 		</div>
 		<div id="automation_ngm4_placement"></div>
-		<div id="paradox" class="tab"><table class="table" id="pUpgs" style="margin: 0 auto"></table></div>
 		<div id="galaxy" class="tab" align="center" style="display: none">
 			<div id="vanillaGalaxyPoints">
 				<br>
@@ -2761,38 +2733,11 @@
 				<td><button id="autobuyersbtn" class="secondarytabbtn" onclick="showInftab('autobuyers')">Autobuyers</button><td>
 				<td><button id="postinfbtn" class="secondarytabbtn" onclick="showInftab('postinf')" >Break Infinity</button><td>
 				<td><button id="replicantitabbtn" class="secondarytabbtn" onclick="showInftab('replicantis')">Replicantis</button><td>
-				<td><button id="singularitytabbtn" class="secondarytabbtn" onclick="showInftab('singularity')">Singularity</button><td>
-				<td><button id="dimtechstabbtn" class="secondarytabbtn" onclick="showInftab('dimtechs')">Dim-techs</button><td>
 			</tr>
 			<div id="preinf" class="inftab">
 			<br>
 			<table id="preinfupgrades" class="table" style="margin: 0 auto"></table>
-			<div id='nextset'></div>
-			<br>
-			<table class="table" style="margin: 0 auto">
-				<tr>
-					<td id="infi1div">
-						<button id="infi1" class="infinimultbtn" onclick="buyRepeatableInfinityUpgrade(1)">Gain 10 free tickspeed upgrades.<br>Currently: <span id="infi1pow"></span>x<br>Cost: <span id="infi1cost"></span> IP</button>
-					</td>
-					<td>
-						<button id="infiMult" class="infinimultbtn">You gain 2x more IP.<br>Currently: <br>Cost: 100 IP</button>
-					</td>
-					<td id="infi3div">
-						<button id="infi3" class="infinimultbtn" onclick="buyRepeatableInfinityUpgrade(3)">Increase the limit of Infinity.<br>Currently: <span id="infi3pow"></span><br>Cost: <span id="infi3cost"></span> IP</button>
-					</td>
-				</tr>
-				<tr id="lockedset1" style='display:none'>
-					<td>
-						<button id="infi4" class="infinimultbtn" onclick="buyRepeatableInfinityUpgrade(4)">Decrease the Dimension Boost cost by 30.<br>Currently: <span id="infi4pow"></span>x<br>Cost: <span id="infi4cost"></span> IP</button>
-					</td>
-					<td>
-						<button id="infi5" class="infinimultbtn" onclick="buyRepeatableInfinityUpgrade(5)">Sacrifice is stronger.<br>Currently: ^<span id="infi5pow"></span><br>Cost: <span id="infi5cost"></span> IP</button>
-					</td>
-					<td>
-						<button id="infi6" class="infinimultbtn" onclick="buyRepeatableInfinityUpgrade(6)">Decrease the Galaxy cost by 20.<br>Currently: <span id="infi6pow"></span>x<br>Cost: <span id="infi6cost"></span> IP</button>
-					</td>
-				</tr>
-			</table>
+			<button id="infiMult" class="infinimultbtn">You gain 2x more IP.<br>Currently: <br>Cost: 100 IP</button>
 			<div><button id="infmultbuyer" class="storebtn" onclick="infMultAutoToggle()" style="display:none; height: 25px; width: 190px; font-size:10px; margin-top: 3px;"></button></div>
 		</div>
 		<div id="automation_ng_placement"></div>
@@ -3305,80 +3250,6 @@
 				</div>
 			</div>
 		</div>
-		<div id="singularity" class="inftab">
-			<br>
-			<button class="storebtn" id="singularityunlock" onclick="unlockSingularity()" style="width:200px; height: 80px">Unlock Singularity<br>Cost: <span id="singularityunlcost"></span> IP</button>
-			<div id="singularitydiv" style="display: none;">
-				You have sacrificed <span id="sacrificedIP"></span> Infinity points.
-				<p>You have <span id="singularityPower" style="font-size:35px; color: black">0</span> singularity power.</p>
-				<button class="storebtn" id="sacrificeIP" onclick="sacrificeIP()" style="width: 200px; height: 70px; font-size: 12px">Sacrifice all of your infinity points, but gain <span id='singularityPowerGain'></span> singularity power.</button>
-				<p>You have <span id="darkMatter" style="font-size:35px; color: black">0.0</span> dark matter, translated to <span id="darkMatterMult" style="font-size:35px; color: black">1.0</span>x faster tickspeed.</p>
-				You are getting <span id="darkMatterPerSecond" style="font-size:35px; color: black">0</span> dark matter per second.<br>
-				Next 2x dark matter production unlocks at <span id="nextUpgrade"></span> sacrificed IP.
-			</div>
-		</div>
-		<div id="dimtechs" class="inftab">
-			<br>
-			<button class="storebtn" id="dimtechsunlock" onclick="unlockDimTechs()" style="width:200px; height: 80px">Unlock Dim-techs<br>Cost: <span id="dimtechsunlcost"></span> IP</button>
-			<div id="dimtechsdiv" style="display: none;">
-				<p>You have <span id="darkMatterDT" style="font-size:35px; color: black">0.0</span> dark matter. The next discount upgrade is at <span id="nextDiscounts" style="font-size:35px; color: black">0.0</span>.</p>
-				<p id="discounts"></p>
-				<button class="storebtn" id="respecDimTechs" style="width: 180px; height: 36px" onclick="respecDimTechs()">Respec Dim-techs on the next crunch</button>
-				<table align=center>
-					<tr>
-						<td class="dimtechdiv">
-							<p style="font-size: 16px">First Dimension Dim-tech</p>
-							First Dimension discount: <span id="dim1discount">1</span>x<br>
-							<button class="storebtn" id="dim1techbtn" onclick="buyDimTech(1)">Level 0<br>1x per discount upgrade<br><br>Cost: 1e95 IP</button>
-						</td>
-						<td class="dimtechdiv">
-							<p style="font-size: 16px">Second Dimension Dim-tech</p>
-							Second Dimension discount: <span id="dim2discount">1</span>x<br>
-							<button class="storebtn" id="dim2techbtn" onclick="buyDimTech(2)">Level 0<br>1x per discount upgrade<br><br>Cost: 1e95 IP</button>
-						</td>
-						<td class="dimtechdiv">
-							<p style="font-size: 16px">Third Dimension Dim-tech</p>
-							Third Dimension discount: <span id="dim3discount">1</span>x<br>
-							<button class="storebtn" id="dim3techbtn" onclick="buyDimTech(3)">Level 0<br>1x per discount upgrade<br><br>Cost: 1e95 IP</button>
-						</td>
-					</tr>
-					<tr>
-						<td class="dimtechdiv">
-							<p style="font-size: 16px">Fourth Dimension Dim-tech</p>
-							Fourth Dimension discount: <span id="dim4discount">1</span>x<br>
-							<button class="storebtn" id="dim4techbtn" onclick="buyDimTech(4)">Level 0<br>1x per discount upgrade<br><br>Cost: 1e95 IP</button>
-						</td>
-						<td class="dimtechdiv">
-							<p style="font-size: 16px">Fifth Dimension Dim-tech</p>
-							Fifth Dimension discount: <span id="dim5discount">1</span>x<br>
-							<button class="storebtn" id="dim5techbtn" onclick="buyDimTech(5)">Level 0<br>1x per discount upgrade<br><br>Cost: 1e95 IP</button>
-						</td>
-						<td class="dimtechdiv">
-							<p style="font-size: 16px">Sixth Dimension Dim-tech</p>
-							Sixth Dimension discount: <span id="dim6discount">1</span>x<br>
-							<button class="storebtn" id="dim6techbtn" onclick="buyDimTech(6)">Level 0<br>1x per discount upgrade<br><br>Cost: 1e95 IP</button>
-						</td>
-					</tr>
-					<tr>
-						<td class="dimtechdiv">
-							<p style="font-size: 16px">Seventh Dimension Dim-tech</p>
-							Seventh Dimension discount: <span id="dim7discount">1</span>x<br>
-							<button class="storebtn" id="dim7techbtn" onclick="buyDimTech(7)">Level 0<br>1x per discount upgrade<br><br>Cost: 1e95 IP</button>
-						</td>
-						<td class="dimtechdiv">
-							<p style="font-size: 16px">Tickspeed Dim-tech</p>
-							Tickspeed discount: <span id="tickdiscount">1</span>x<br>
-							<button class="storebtn" id="ticktechbtn" onclick="buyDimTech(0, true)">Level 0<br>1x per discount upgrade<br><br>Cost: 1e95 IP</button>
-						</td>
-						<td class="dimtechdiv">
-							<p style="font-size: 16px">Eighth Dimension Dim-tech</p>
-							Eighth Dimension discount: <span id="dim8discount">1</span>x<br>
-							<button class="storebtn" id="dim8techbtn" onclick="buyDimTech(8)">Level 0<br>1x per discount upgrade<br><br>Cost: 1e95 IP</button>
-						</td>
-					</tr>
-				</table>
-			</div>
-		</div>
 		</div><div id="eternitystore" class="tab" style="font-size: 15px; margin: 0 auto; display: none" align="center">
 			<table class="table" align="center" style="margin: auto">
 				<tr>
@@ -3643,7 +3514,7 @@
 						</td>
 					</tr>
 				</table>
-				<table class="table" style="margin: 0 auto;">
+				<!--<table class="table" style="margin: 0 auto;">
 					<tr id="tsrow4">
 						<td>
 							<button id="ts7" class="eternityttbtn" onclick="buyTimeStudy(7)">You gain 1% more of your IP on crunch every second<br>Bought: <span id="ts7bought">x</span><br>Cost: <span id="ts7cost">x</span> TT<br>Current percentage<br><span id='ts7desc'></span></button>
@@ -3652,8 +3523,7 @@
 							<button id="ts8" class="eternityttbtn" onclick="buyTimeStudy(8)">1% more of your Infinities are kept on Eternity<br>Bought: <span id="ts8bought">x</span><br>Cost: <span id="ts8cost">x</span> TT<br>Current percentage<br><span id='ts8desc'></span></button>
 						</td>
 					</tr>
-				</table>
-				<div style="height: 60px;"></div>
+				</table>-->
 			</div>
 			<div class="eternitytab" id="masterystudies" style="font-size: 15px">
 				<canvas id="studyTreeCanvas2"></canvas>
@@ -4908,6 +4778,7 @@
 			<div id="gphtab" class="ghostifytab">
 				<div id="gphUnl"></div>
 				<div id="gphDiv">
+					<b class="red">Warning: This will be rewritten soon!</b><br>
 					You have <span id="dtGPH">0</span> dilated time.<br>
 					You are gaining <span class="gphAmount" id="gphProduction">0</span> <span id="gphProductionType">Photons</span> per second.<br>
 					<table class='qtable'><tr>
@@ -5250,6 +5121,7 @@
 			<button class="storebtn longbtn" id='ngudBtn' style="font-size: 15px" onclick="toggle_mod('ngud')" style="display: inline" ach-tooltip="Adds some end-game content including Black Hole.">NGUd: OFF</button>
 			<br><br>
 			<b>Hellish Mods</b><br>
+			<button class="storebtn longbtn" id='ngmBtn' style="font-size: 15px" onclick="toggle_mod('ngm')" style="display: inline">NG-: OFF</button>
 			<button class="storebtn longbtn" id='ngmmBtn' style="font-size: 15px" onclick="toggle_mod('ngmm')" style="display: inline" ach-tooltip="Make this game harder, but adds some mechanics to compromise.">NG--: OFF</button>
 			<br><br>
 			<b>Easy Mods</b><br>
@@ -5262,8 +5134,8 @@
 			<button class="storebtn longbtn" id='ngumuBtn' style="font-size: 15px" onclick="toggle_mod('ngumu')" style="display: inline" ach-tooltip="A mod which buffs some boosts to NG Update Prime.">NGUd*': OFF</button>
 			<button class="storebtn longbtn" id='nguepBtn' style="font-size: 15px" onclick="toggle_mod('nguep')" style="display: inline" ach-tooltip="A mod which greatly buffs some boosts to NG Update Prime.">NGUd↑': Linear' (↑⁰')</button>
 			<br><br>
-			<b>Timewally Mods</b><br>
-			<button class="storebtn longbtn" id='ngmBtn' style="font-size: 15px" onclick="toggle_mod('ngm')" style="display: inline">NG-: OFF</button>
+			<b>Other Mods</b><br>
+			<button class="storebtn longbtn" id='rsBtn' style="font-size: 15px" onclick="toggle_mod('rs')" style="display: inline">Respecced: OFF</button>
 		</div>
 	</div>
 	<div class="popup loadmenu" id="presetsmenu" style="overflow-y:hidden">
@@ -5491,14 +5363,12 @@
 	<script type="text/javascript" src="javascripts/mods/ngmm/ngmm.js"></script>
 	<script type="text/javascript" src="javascripts/mods/ngmm/ngmmm.js"></script>
 	<script type="text/javascript" src="javascripts/mods/ngmm/ngm4.js"></script>
-	<script type="text/javascript" src="javascripts/mods/ngmm/ngm5.js"></script>
 
 	<script type="text/javascript" src="javascripts/mods/ngud/ngud.js"></script>
 	<script type="text/javascript" src="javascripts/mods/ngud/ngudp.js"></script>
 	<script type="text/javascript" src="javascripts/mods/ngud/ngusp.js"></script>
 
-	<script type="text/javascript" src="javascripts/mods/respec/irs.js"></script>
-	<script type="text/javascript" src="javascripts/mods/respec/ers.js"></script>
+	<script type="text/javascript" src="javascripts/mods/ers.js"></script>
 
 	<script type="text/javascript" src="javascripts/mods/convert.js"></script>
 	<script type="text/javascript" src="javascripts/mods/core.js"></script>

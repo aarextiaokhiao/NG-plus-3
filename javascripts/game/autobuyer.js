@@ -36,7 +36,6 @@ function buyAutobuyer(id, quick) {
 
 	if (player.autobuyers[id].interval == 100) {
 		if (id > 8) {
-			if (!player.infinityUpgradesRespecced) return
 			if (player.autobuyers[id].bulkBought || player.infinityPoints.lt(1e4) || id > 10) return
 			player.infinityPoints = player.infinityPoints.sub(1e4)
 			player.autobuyers[id].bulkBought = true

@@ -1,6 +1,6 @@
 //VERSION: 2.41R
 let ngp3_ver = 2.41
-let ngp3_build = 20230105
+let ngp3_build = 20230106
 function doPNGP3RUpdates() {
 	if (!aarMod.ngp3_build) aarMod.ngp3_build = 0
 	if (aarMod.ngp3_build < 20221230) quSave.multPower = 0

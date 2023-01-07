@@ -1,6 +1,6 @@
 function updateTemp() {
 	if (typeof player != "undefined") {
-		if (player.money) tmp.ri = player.money.gte(getLimit()) && ((player.currentChallenge != "" && player.money.gte(player.challengeTarget)) || !onPostBreak())
+		if (player.money) tmp.ri = player.money.gte(Number.MAX_VALUE) && ((player.currentChallenge != "" && player.money.gte(player.challengeTarget)) || !onPostBreak())
 		else tmp.ri = false
 	} else {
 		tmp.ri = false
@@ -157,13 +157,9 @@ function updateTS431ExtraGalTemp() {
 	}
 }
 
-function updateMatterSpeed(){
+function updateMatterSpeed() {
 	//mv: Matter speed
 	tmp.mv = 1.03 + player.resets/200 + player.galaxies/100
-	if (player.pSac !== undefined) {
-		var exp = 10 / puMults[12](hasPU(12, true, true))
-		tmp.mv = E_pow(tmp.mv, exp)
-	}
 }
 
 function updateReplicantiTemp() {

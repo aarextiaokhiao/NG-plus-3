@@ -11,7 +11,7 @@ function updateConvertSave(convertMod) {
 }
 
 function eligibleConvert() {
-	if (aarMod.newGame3PlusVersion == undefined && (player.galacticSacrifice || player.tickspeedBoosts || player.pSac) == undefined && (aarMod.newGameMult || aarMod.newGameExpVersion) == undefined && (aarMod.newGameUpdateVersion == undefined) && (aarMod.ngexV == undefined) && (aarMod.ersVersion || aarMod.irsVersion) == undefined) {
+	if (aarMod.newGame3PlusVersion == undefined && !tmp.ngmX && (aarMod.newGameMult || aarMod.newGameExpVersion) == undefined && (aarMod.newGameUpdateVersion == undefined) && (aarMod.ngexV == undefined) && (aarMod.ersVersion || aarMod.irsVersion) == undefined) {
 		convert = "NG+3";
 	} else
 		convert = undefined;

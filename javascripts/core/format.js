@@ -168,11 +168,11 @@ const inflog = Math.log10(INF)
 function formatValue(notation, value, places, placesUnder1000, noInf) {
 	if (notation === "Blind") return ""
 	if (notation === "Same notation") notation = player.options.notation
-	if (notation === 'Iroha' && (onPostBreak() || Decimal.lt(value, getLimit()) || noInf)) return iroha(value, 5)
+	if (notation === 'Iroha' && (onPostBreak() || Decimal.lt(value, Number.MAX_VALUE) || noInf)) return iroha(value, 5)
 
 	if (E(value).l == 1/0) return "Infinite"
 	if (Decimal.eq(value, INF) && !player.break) return "Infinite"
-	if ((onPostBreak() || Decimal.lt(value, getLimit()) || noInf) && (Decimal.gte(value,1000))) {
+	if ((onPostBreak() || Decimal.lt(value, Number.MAX_VALUE) || noInf) && (Decimal.gte(value,1000))) {
 		if (notation === "AF2019") {
 			var log = Decimal.log10(value)
 			var digits = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz !"
@@ -971,15 +971,12 @@ function updateNotationOption() {
 function onNotationChange() {
 	document.getElementsByClassName("hideInMorse").display = player.options.notation == "Morse code" || player.options.notation == 'Spazzy' ? "none" : ""
 	updateNotationOption()
-	if (player.pSac !== undefined) updatePUCosts()
 	updateLastTenRuns();
 	updateLastTenEternities();
 	updateLastTenQuantums();
 	updateLastTenGhostifies()
 	tmp.tickUpdate = true;
 	setAchieveTooltip();
-	updateSingularity()
-	updateDimTechs()
 	updateDilationUpgradeCosts()
 	updateExdilation()
 	updateMilestones()

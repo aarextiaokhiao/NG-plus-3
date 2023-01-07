@@ -283,10 +283,7 @@ function quantumReset(force, auto, challid, bigRip, implode = false) {
 	if (!quantumed) {
 		quantumed=true
 		ngp3_feature_notify("qu")
-		el("quantumtabbtn").style.display=""
 		el("quarks").style.display=""
-		el("galaxyPoints2").className = "GP"
-		el("sacpos").className = "sacpos"
 		if (tmp.ngp3) {
 			el("bestAntimatterType").textContent = "Your best meta-antimatter for this quantum"
 			el("quarksAnimBtn").style.display="inline-block"
@@ -297,6 +294,7 @@ function quantumReset(force, auto, challid, bigRip, implode = false) {
 	el("bigripbtn").style.display = "none"
 	el("ghostifybtn").style.display = "none"
 	updateBankedEter()
+
 	if (force) {
 		if (bigRip && hasAch("ng3p73")) player.infinitiedBank = nA(player.infinitiedBank, gainBankedInf())
 		else bankedEterGain = 0
@@ -339,6 +337,7 @@ function quantumReset(force, auto, challid, bigRip, implode = false) {
 		if (player.dilation.rebuyables[1] + player.dilation.rebuyables[2] + player.dilation.rebuyables[3] + player.dilation.rebuyables[4] < 1 && player.dilation.upgrades.length < 1) giveAchievement("Never make paradoxes!")
 		if (hasAch("ng3p73")) player.infinitiedBank = nA(player.infinitiedBank, gainBankedInf())
 	} //bounds the else statement to if (force)
+
 	var oheHeadstart = bigRip ? hasRipUpg(2) : speedrunMilestonesReached > 0
 	var keepABnICs = oheHeadstart || bigRip || hasAch("ng3p51")
 	var oldTime = quSave.time
@@ -389,7 +388,7 @@ function quantumReset(force, auto, challid, bigRip, implode = false) {
 	var bigRipChanged = tmp.ngp3 && bigRip != brSave && brSave.active
 	var turnSomeOn = !bigRip || hasRipUpg(1)
 	if (aarMod.ngudpV) for (var d = 0; d < 4; d++) bhd[d]=Object.assign({}, player["blackholeDimension" + (d + 1)])
-	
+
 	doQuantumResetStuff(bigRip, challid)
 	if (ghostified && bigRip) {
 		player.timeDimension8 = {

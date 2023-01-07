@@ -151,10 +151,10 @@ strong { color: #0072e5 }
     color: #e5e5e5 !important
 }
 #vanillaInfinityPoints { display: none }
-#bigcrunch, #infinitybtn, #pastinfs, #postInfinityButton, #idtabbtn button, .newdim, #infinitydimensions td:nth-child(4) .storebtn, #replicantichance.storebtn, #replicantiinterval.storebtn, #replicantimax.storebtn, #challTabButtons td:nth-child(2) button, #infchallengesbtn, .respecbtn {
+.infinitybtn, .newdim, #infinitydimensions td:nth-child(4) .storebtn, #replicantichance.storebtn, #replicantiinterval.storebtn, #replicantimax.storebtn, .respecbtn {
     border-color: #e2bd00 !important
 }
-#bigcrunch:hover, #infinitybtn:hover, #pastinfs:hover, #postInfinityButton:hover, #idtabbtn button:hover, .newdim:hover, #infinitydimensions td:nth-child(4) .storebtn:hover, #replicantichance.storebtn:hover, #replicantiinterval.storebtn:hover, #replicantimax.storebtn:hover, #challTabButtons td:nth-child(2) button:hover, #infchallengesbtn:hover, .respecbtn:hover {
+.infinitybtn:hover, .newdim:hover, #infinitydimensions td:nth-child(4) .storebtn:hover, #replicantichance.storebtn:hover, #replicantiinterval.storebtn:hover, #replicantimax.storebtn:hover, .respecbtn:hover {
     background-color: #e2bd00 !important
 }
 .IPAmount1, .IPAmount2, #infPowAmount, #infDimMultAmount, #infDimEffectPower, #replicantiamount, #replicantimult {
@@ -179,9 +179,9 @@ strong { color: #0072e5 }
     border-color: #727272;
     border-radius: 0px
 }
-#singularitytabbtn, #singularityunlock.storebtn, #sacrificeIP.storebtn, #blackHoleTabbtn button, #blackholeunlock.storebtn, #blackholediv table .storebtn, #replicantstabbtn button, #replicantReset.storebtn, #edtabbtn button, #edtabbtn_dim button { border: 2px solid #333333 !important }
-#singularitytabbtn:hover, #singularityunlock.storebtn:hover, #sacrificeIP.storebtn:hover, #blackHoleTabbtn button:hover, #blackholeunlock.storebtn:hover, #blackholediv table .storebtn:hover, #replicantstabbtn button:hover, #replicantReset.storebtn:hover, #edtabbtn button:hover, #edtabbtn_dim button:hover { background-color: #333333 !important }
-#singularityPower, #darkMatter, #darkMatterPerSecond, #darkMatterDT, #nextDiscounts, #darkMatterMult, #blackholePowAmount, #DilMultAmount, #InfAndReplMultAmount, #replicantAmount, #workerReplAmount, #babyReplAmount, #workerProgress, #hatchProgress, #growupProgress, #replicantAmountED, #normalReplicantsNanofield { 
+#blackHoleTabbtn button, #blackholeunlock.storebtn, #blackholediv table .storebtn, #replicantstabbtn button, #replicantReset.storebtn, #edtabbtn button, #edtabbtn_dim button { border: 2px solid #333333 !important }
+#blackHoleTabbtn button:hover, #blackholeunlock.storebtn:hover, #blackholediv table .storebtn:hover, #replicantstabbtn button:hover, #replicantReset.storebtn:hover, #edtabbtn button:hover, #edtabbtn_dim button:hover { background-color: #333333 !important }
+#darkMatter, #darkMatterPerSecond, #darkMatterDT, #nextDiscounts, #darkMatterMult, #blackholePowAmount, #DilMultAmount, #InfAndReplMultAmount, #replicantAmount, #workerReplAmount, #babyReplAmount, #workerProgress, #hatchProgress, #growupProgress, #replicantAmountED, #normalReplicantsNanofield { 
 	color: #333333 !important;
 	text-shadow: 0px 0px 3px #333333, 0px 0px 4.5px #e5e5e5
 }
@@ -191,11 +191,11 @@ strong { color: #0072e5 }
     border-color: #e2bd00 !important;
     border-radius: 0px !important
 }
-#eternitybtn, #eternitystorebtn, #pasteternities, #tdtabbtn button, #timedimensions td:nth-child(4) .storebtn, .eternityupbtn, .milestonereward, .timestudy, .eternityttbtn, #eterctabbtn, #breakEternityTabbtn button, #autoEternityTabbtn button {
+.eternitybtn, #timedimensions td:nth-child(4) .storebtn, .eternityupbtn, .milestonereward, .timestudy, .eternityttbtn, #breakEternityTabbtn button {
     border-color: #7100e2 !important;
     animation: none
 }
-#eternitybtn:hover, #eternitystorebtn:hover, #pasteternities:hover, #tdtabbtn button:hover, #timedimensions td:nth-child(4) .storebtn:hover, .timestudy:hover, .eternityttbtn:hover, #eterctabbtn:hover, #breakEternityTabbtn button:hover, #autoEternityTabbtn button:hover {
+.eternitybtn:hover, #timedimensions td:nth-child(4) .storebtn:hover, .timestudy:hover, .eternityttbtn:hover, #breakEternityTabbtn button:hover {
     background-color: #7100e2 !important
 }
 #TTbuttons {
