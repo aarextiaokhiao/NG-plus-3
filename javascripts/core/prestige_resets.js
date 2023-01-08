@@ -251,8 +251,9 @@ let RESETS = {
 					player.dilation.dilatedTime = unl && speedrunMilestonesReached >= 22 ? E(1e100) : E(0)
 					if (speedrunMilestonesReached >= 6) player.dilation.upgrades = oldUpgs
 				}
-				if (keepTP) player.tachyonParticles = player.dilation.bestTP.pow((hasAch("ng3p71") ? true : bigRip ? false : qc ? ghSave.milestones > 15 : ghSave.milestones > 3) ? 1 : 0.5)
+				if (keepTP) player.dilation.tachyonParticles = player.dilation.bestTP.pow((hasAch("ng3p71") ? true : bigRip ? false : qc ? ghSave.milestones > 15 : ghSave.milestones > 3) ? 1 : 0.5)
 			}
+			player.dilation.totalTachyonParticles = player.dilation.tachyonParticles
 			resetDilationGalaxies()
 
 			doMetaDimensionsReset(bigRip, !tmp.ngp3, qc)

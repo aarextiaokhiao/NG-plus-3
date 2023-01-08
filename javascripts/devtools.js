@@ -227,8 +227,3 @@ dev.giveAllEmpowerments = function(){
 	}
 	ghSave.ghostlyPhotons.enpowerments += y
 }
-
-
-
-
-
