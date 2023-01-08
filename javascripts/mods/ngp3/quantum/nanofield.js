@@ -7,6 +7,7 @@ let NF = {
 	},
 }
 
+var nanospeed = 1
 function getNanospeedText() {
 	s = getNanofieldSpeedText()
 	if (!shiftDown) s = ghostified || nanospeed != 1 ? "Nanospeed: " + (nanospeed == 1 ? "" : shorten(tmp.ns) + " * " + shorten(nanospeed) + " = ") + shorten(getNanofieldFinalSpeed()) + "x (hold shift for details)" : ""

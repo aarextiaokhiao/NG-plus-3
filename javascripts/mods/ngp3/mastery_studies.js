@@ -129,10 +129,10 @@ var masteryStudies = {
 			return Decimal.max(Math.log10(player.replicanti.chance + 1), 1).pow(intensity)
 		},
 		281: function(){
-			return pow10(Math.pow(tmp.rm.max(1).log10(), 0.25) / 10 * (tmp.newNGP3E ? 2 : 1))
+			return pow10(Math.pow(tmp.rm.max(1).log10(), 0.25) / 10 * (tmp.ngp3e ? 2 : 1))
 		},
 		282: function(){
-			return pow10(Math.pow(tmp.rm.max(1).log10(), 0.25) / 15 * (tmp.newNGP3E ? 2 : 1))
+			return pow10(Math.pow(tmp.rm.max(1).log10(), 0.25) / 15 * (tmp.ngp3e ? 2 : 1))
 		},
 		301: function(){
 			if (ghSave.neutrinos.upgrades.includes(6)) return 0
@@ -154,10 +154,10 @@ var masteryStudies = {
 			var exp = Math.sqrt(quSave.replicants.quarks.add(1).log10())
 			if (exp > 150) exp = 150 * Math.pow(exp / 150, .5)
 			if (exp > 200) exp = 200 * Math.pow(exp / 200, .5)
-			return E_pow(tmp.newNGP3E ? 3 : 2, exp)
+			return E_pow(tmp.ngp3e ? 3 : 2, exp)
 		},
 		344: function(){
-			var ret = Math.pow(quSave.replicants.quarks.div(1e7).add(1).log10(), tmp.newNGP3E ? 0.3 : 0.25) * 0.17 + 1
+			var ret = Math.pow(quSave.replicants.quarks.div(1e7).add(1).log10(), tmp.ngp3e ? 0.3 : 0.25) * 0.17 + 1
 			if (tmp.ngp3l) return ret
 			if (ret > 3) ret = 1 + Math.log2(ret + 1)
 			if (ret > 4) ret = 3 + Math.log10(ret + 6)
@@ -167,7 +167,7 @@ var masteryStudies = {
 			let log = player.timeShards.max(1).log10()*14e-7
 			if (log > 1e4) log = Math.pow(log / 1e4, tmp.ngp3l ? 0.1 : 0.75) * 1e4
 			if (log > 2e4) log = 2 * Math.pow(Math.log10(5 * log) + 5 ,4)
-			return E_pow(tmp.newNGP3E ? 12 : 10, log)
+			return E_pow(tmp.ngp3e ? 12 : 10, log)
 		},
 		361: function(){
 			return player.dilation.tachyonParticles.max(1).pow(0.01824033924212366)
@@ -191,7 +191,7 @@ var masteryStudies = {
 			if (tmp.ngp3l) return E_pow(3200,Math.pow(quSave.colorPowers.b.add(1).log10(),0.25))
 			
 			var blueExp = 4/21
-			if (tmp.newNGP3E) blueExp = 1/5
+			if (tmp.ngp3e) blueExp = 1/5
 			var bluePortion = Math.pow(getCPLog("b"), blueExp)
 			var MAportion = Math.sqrt(player.meta.antimatter.add(10).log10())
 			var exp = MAportion * bluePortion * Math.log10(2)
@@ -207,7 +207,7 @@ var masteryStudies = {
 			return player.meta.antimatter.max(1).pow(8e-4)
 		},
 		392: function(){
-			return E_pow(tmp.newNGP3E ? 1.7 : 1.6, Math.sqrt(quSave.replicants.quarks.add(1).log10())).plus(tmp.ngp3l ? 0 : 1)
+			return E_pow(tmp.ngp3e ? 1.7 : 1.6, Math.sqrt(quSave.replicants.quarks.add(1).log10())).plus(tmp.ngp3l ? 0 : 1)
 		},
 		393: function(){
 			if (!tmp.twr) return E(1)
@@ -216,12 +216,12 @@ var masteryStudies = {
 		401: function(){
 			let log=quSave.replicants.quarks.div(1e28).add(1).log10()*0.2
 			if (log > 5) log = Math.log10(log * 2) * 5
-			return E_pow(tmp.newNGP3E ? 12 : 10, log)
+			return E_pow(tmp.ngp3e ? 12 : 10, log)
 		},
 		411: function(){
 			if (!tmp.tra) return E(1)
 			var exp = tmp.tra.div(1e24).add(1).pow(0.2).log10()
-			if (tmp.newNGP3E) exp += Math.pow((exp + 9) * 3, .2) * Math.log10(exp + 1)
+			if (tmp.ngp3e) exp += Math.pow((exp + 9) * 3, .2) * Math.log10(exp + 1)
 			return pow10(exp)
 		},
 		421: function(){
@@ -234,13 +234,13 @@ var masteryStudies = {
 			if (gals >= 1e6) gals = Math.pow(gals * 1e3, 2/3)
 
 			var effectBase = Math.max(gals / 1e4, 1)
-			if (effectBase > 10 && tmp.newNGP3E) effectBase *= Math.log10(effectBase)
+			if (effectBase > 10 && tmp.ngp3e) effectBase *= Math.log10(effectBase)
 
 			var effectExp = Math.max(gals / 1e4 + Math.log10(gals) / 2, 1)
-			if (effectExp > 10 && tmp.newNGP3E) effectExp *= Math.log10(effectExp)
+			if (effectExp > 10 && tmp.ngp3e) effectExp *= Math.log10(effectExp)
 
 			var eff = E_pow(effectBase, effectExp)
-			if (tmp.newNGP3E) eff = eff.times(eff.plus(9).log10())
+			if (tmp.ngp3e) eff = eff.times(eff.plus(9).log10())
 
 			var log = eff.log10()
 
@@ -551,7 +551,6 @@ function buyingDilStudyED(){
 	el("timestudy361").style.display = ""
 	el("timestudy362").style.display = ""
 	el("antTabs").style.display = ""
-	el("edtabbtn_dim").style.display = ""
 	updateReplicants()
 }
 
@@ -629,7 +628,7 @@ function buyMasteryStudy(type, id, quick=false) {
 		if (id == 266 && player.replicanti.gal > 399) {
 			var gal = player.replicanti.gal
 			player.replicanti.gal = 0
-			player.replicanti.galCost = E(player.galacticSacrifice!=undefined?1e110:1e170)
+			player.replicanti.galCost = E(inNGM(2)?1e110:1e170)
 			player.replicanti.galCost = getRGCost(gal)
 			player.replicanti.gal = gal
 		}
@@ -638,7 +637,7 @@ function buyMasteryStudy(type, id, quick=false) {
 		}
 		if (id == 321){
 			var tiers = [ null, "first", "second", "third", "fourth", "fifth", "sixth", "seventh", "eight" ]
-			var isone = ((inQC(5)||inQC(7))&&focusOn!="linear")||(((inNC(13)&&player.tickspeedBoosts==undefined)||player.currentChallenge=="postc1"||player.currentChallenge=="postcngm3_1")&&player.galacticSacrifice!=undefined)
+			var isone = ((inQC(5)||inQC(7))&&focusOn!="linear")||(((inNC(13)&&!inNGM(3))||player.currentChallenge=="postc1"||player.currentChallenge=="postcngm3_1")&&inNGM(2))
 			if (isone) {
 				for (var i = 1; i<9; i++) {
 					player[tiers[i] + "Pow"] = player[tiers[i] + "Pow"].times(pow10(430 * player[tiers[i] + "Bought"]/10))

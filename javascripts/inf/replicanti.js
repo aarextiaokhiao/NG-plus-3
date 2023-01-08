@@ -1,10 +1,10 @@
 function unlockReplicantis() {
-	if (player.infinityPoints.gte(player.galacticSacrifice!=undefined&&player.tickspeedBoosts==undefined?1e80:1e140)) {
+	if (player.infinityPoints.gte(inOnlyNGM(2)?1e80:1e140)) {
 		el("replicantidiv").style.display = "inline-block"
 		el("replicantiunlock").style.display = "none"
 		player.replicanti.unl = true
 		player.replicanti.amount = E(1)
-		player.infinityPoints = player.infinityPoints.minus(player.galacticSacrifice != undefined && player.tickspeedBoosts == undefined ? 1e80 : 1e140)
+		player.infinityPoints = player.infinityPoints.minus(inOnlyNGM(2) ? 1e80 : 1e140)
 	}
 }
 
@@ -15,7 +15,7 @@ function replicantiGalaxyBulkModeToggle() {
 
 function getReplMult(next) {
 	let exp = 2
-	if (player.galacticSacrifice !== undefined) exp = Math.max(2, Math.pow(player.galaxies, .4))
+	if (inNGM(2)) exp = Math.max(2, Math.pow(player.galaxies, .4))
 	if (player.boughtDims) {
 		exp += (player.timestudy.ers_studies[3] + (next ? 1 : 0)) / 2
 		if (hasAch('r108')) exp *= 1.09;
@@ -288,34 +288,6 @@ function continuousReplicantiUpdating(diff){
 }
 
 function toggleReplAuto(i) {
-	if (i == "chance") {
-		if (player.replicanti.auto[0]) {
-			player.replicanti.auto[0] = false
-			el("replauto1").textContent = "Auto: OFF"
-		} else {
-			player.replicanti.auto[0] = true
-			el("replauto1").textContent = "Auto: ON"
-		}
-	} else if (i == "interval") {
-		if (player.replicanti.auto[1]) {
-			player.replicanti.auto[1] = false
-			el("replauto2").textContent = "Auto: OFF"
-		} else {
-			player.replicanti.auto[1] = true
-			el("replauto2").textContent = "Auto: ON"
-		}
-	} else if (i == "galaxy") {
-		if (player.replicanti.auto[2]) {
-			player.replicanti.auto[2] = false
-			el("replauto3").textContent = "Auto: OFF"
-		} else {
-			player.replicanti.auto[2] = true
-			el("replauto3").textContent = "Auto: ON"
-		}
-	}
-}
-
-function updateReplicantiGalaxyToggels(){
-	if (player.replicanti.galaxybuyer === undefined || player.boughtDims) el("replicantiresettoggle").style.display = "none"
-	else el("replicantiresettoggle").style.display = "inline-block"
+	player.replicanti.auto[i] = !player.replicanti.auto[i]
+	el("replauto"+(i+1)).textContent = "Auto: "+(player.replicanti.auto[i]?"ON":"OFF")
 }

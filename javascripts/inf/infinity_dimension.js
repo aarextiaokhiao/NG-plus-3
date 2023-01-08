@@ -82,10 +82,10 @@ function DimensionProduction(tier) {
 	var dim = player["infinityDimension" + tier]
 	var ret = dim.amount
 	if (inQC(4) && tier == 1) ret = ret.plus(player.infinityDimension2.amount.floor())
-	if (player.tickspeedBoosts !== undefined && player.currentChallenge == "postc2") return E(0)
+	if (inNGM(3) && player.currentChallenge == "postc2") return E(0)
 	if (player.currentEternityChall == "eterc11") return ret
 	if (player.currentEternityChall == "eterc7") ret = dilates(ret.dividedBy(player.tickspeed.dividedBy(1000)))
-	if (aarMod.ngmX > 3) ret = ret.div(100)
+	if (inNGM(4)) ret = ret.div(100)
 	ret = ret.times(DimensionPower(tier))
 	if (player.challenges.includes("postc6") && !inQC(3)) return ret.times(Decimal.div(1000, dilates(player.tickspeed)).pow(0.0005))
 	return ret
@@ -104,7 +104,7 @@ function getInfDimPathIDMult(tier){
 	if (player.timestudy.studies.includes(72) && tier == 4) mult = mult.times(tmp.sacPow.pow(0.04).max(1).min("1e30000"))
 	if (player.timestudy.studies.includes(82)) mult = mult.times(E_pow(1.0000109, Math.pow(player.resets, 2)).min(player.meta == undefined ? 1 / 0 : '1e80000'))
 	if (player.timestudy.studies.includes(92)) mult = mult.times(pow2(600 / Math.max(player.bestEternity, 20)))
-	if (player.timestudy.studies.includes(162)) mult = mult.times(pow10((player.galacticSacrifice ? 234 : 11) * (aarMod.newGameExpVersion ? 5 : 1)))
+	if (player.timestudy.studies.includes(162)) mult = mult.times(pow10((inNGM(2) ? 234 : 11) * (aarMod.newGameExpVersion ? 5 : 1)))
 	return mult
 }
 
@@ -127,8 +127,8 @@ function DimensionPower(tier) {
 
   	if (hasAch("r94") && tier == 1) mult = mult.times(2);
   	if (hasAch("r75") && !player.boughtDims) mult = mult.times(player.achPow);
-  	if (hasAch("r66") && player.galacticSacrifice !== undefined) mult = mult.times(Math.max(1, Math.abs(player.tickspeed.log10()) / 29))
-  	if (player.replicanti.unl && player.replicanti.amount.gt(1) && player.galacticSacrifice === undefined) mult = mult.times(getIDReplMult())
+  	if (hasAch("r66") && inNGM(2)) mult = mult.times(Math.max(1, Math.abs(player.tickspeed.log10()) / 29))
+  	if (player.replicanti.unl && player.replicanti.amount.gt(1) && inNGM(2)) mult = mult.times(getIDReplMult())
 
   	mult = mult.times(getInfDimPathIDMult(tier))
 	mult = mult.times(getTotalIDEUMult())
@@ -138,13 +138,13 @@ function DimensionPower(tier) {
 
   	var ec9 = E(1)
   	if (ECComps("eterc9") !== 0) ec9 = getECReward(9)
-  	if (player.galacticSacrifice === undefined) mult = mult.times(ec9)
+  	if (inNGM(2)) mult = mult.times(ec9)
 
   	if (inQC(6)) mult = mult.times(player.postC8Mult).dividedBy(player.matter.max(1))
 
   	mult = dilates(mult, 2)
-  	if (player.replicanti.unl && player.replicanti.amount.gt(1) && player.galacticSacrifice !== undefined) mult = mult.times(getIDReplMult())
-  	if (player.galacticSacrifice !== undefined) mult = mult.times(ec9)
+  	if (player.replicanti.unl && player.replicanti.amount.gt(1) && inNGM(2)) mult = mult.times(getIDReplMult())
+  	if (inNGM(2)) mult = mult.times(ec9)
 
   	mult = dilates(mult, 1)
   	return mult
@@ -169,16 +169,16 @@ var infPowerMults = [[null, 50, 30, 10, 5, 5, 5, 5, 5], [null, 500, 300, 100, 50
 var infBaseCost = [null, 1e8, 1e9, 1e10, 1e20, 1e140, 1e200, 1e250, 1e280]
 function getIDCost(tier) {
 	let ret = player["infinityDimension" + tier].cost
-	if (player.galacticSacrifice !== undefined && hasAch("r123")) ret = ret.div(galMults.u11())
+	if (inNGM(2) && hasAch("r123")) ret = ret.div(galMults.u11())
 	return ret
 }
 
 function getIDCostMult(tier) {
 	let ret = infCostMults[tier]
 	if (ECComps("eterc12")) ret = Math.pow(ret,getECReward(12))
-	if (player.galacticSacrifice == undefined) return ret
+	if (inNGM(2)) return ret
 	if (player.infinityUpgrades.includes("postinfi53")) ret /= 50
-	if (player.galacticSacrifice.upgrades.includes(42)) ret /= 1 + 5 * Math.log10(player.eternityPoints.plus(1).log10() + 1)
+	if (hasGalUpg(42)) ret /= 1 + 5 * Math.log10(player.eternityPoints.plus(1).log10() + 1)
 	let cap = .1
 	if (player.achPow.gte(E_pow(5,11.9)) && tier > 1) {
 		cap = .02
@@ -188,8 +188,8 @@ function getIDCostMult(tier) {
 }
 
 function getInfBuy10Mult(tier) {
-	let ret = infPowerMults[player.galacticSacrifice!==undefined&&player.tickspeedBoosts===undefined ? 1 : 0][tier]
-	if (player.galacticSacrifice !== undefined && player.galacticSacrifice.upgrades.includes(41)) ret *= player.galacticSacrifice.galaxyPoints.max(10).log10()
+	let ret = infPowerMults[inOnlyNGM(2) ? 1 : 0][tier]
+	if (hasGalUpg(41)) ret *= player.galacticSacrifice.galaxyPoints.max(10).log10()
 	if (player.dilation.upgrades.includes("ngmm6")) ret *= getDil45Mult()
 	return ret
 }
@@ -237,7 +237,7 @@ function updateInfinityPowerEffects() {
 }
 
 function getInfinityPowerEffect() {
-	if (player.currentEternityChall == "eterc9") return E_pow(Math.max(player.infinityPower.log2(), 1), player.galacticSacrifice == undefined ? 4 : 30).max(1)
+	if (player.currentEternityChall == "eterc9") return E_pow(Math.max(player.infinityPower.log2(), 1), inNGM(2) ? 4 : 30).max(1)
 	let log = player.infinityPower.max(1).log10()
 	log *= tmp.infPowExp
 	return pow10(log)
@@ -246,10 +246,10 @@ function getInfinityPowerEffect() {
 function getPreInfinityPowerEffectExp() {
 	let x = 7
 	let galaxies = Math.max(player.galaxies, 0)
-	if (player.galacticSacrifice != undefined) {
+	if (inNGM(2)) {
 		x = Math.pow(galaxies, 0.7)
-		if (player.currentChallenge === "postcngm3_2" || (player.tickspeedBoosts != undefined && player.currentChallenge === "postc1")) {
-			if (aarMod.ngmX >= 4) {
+		if (player.currentChallenge === "postcngm3_2" || (inNGM(3) && player.currentChallenge === "postc1")) {
+			if (inNGM(4)) {
 				x = Math.pow(galaxies, 1.25)
 				if (x > 7) x += 1
 			} else x = galaxies
@@ -328,7 +328,7 @@ function getEU3Mult() {
 
 function updateInfPower() {
 	el("infPowAmount").textContent = shortenMoney(player.infinityPower)
-	if (player.galacticSacrifice) el("infPowEffectPower").textContent = tmp.infPowExp.toFixed(2)
+	if (inNGM(2)) el("infPowEffectPower").textContent = tmp.infPowExp.toFixed(2)
 	el("infDimMultAmount").textContent = shortenMoney(tmp.infPow)
 	if (player.currentEternityChall == "eterc7") el("infPowPerSec").textContent = "You are getting " +shortenDimensions(DimensionProduction(1))+" Seventh Dimensions per second."
 	else {
@@ -339,8 +339,8 @@ function updateInfPower() {
 
 function getNewInfReq() {
 	let reqs = [E("1e1100"), E("1e1900"), E("1e2400"), E("1e10500"), E("1e30000"), E("1e45000"), E("1e54000")]
-	if (player.galacticSacrifice !== undefined) {
-		if (player.tickspeedBoosts === undefined) {
+	if (inNGM(2)) {
+		if (!inNGM(3)) {
 			reqs[1] = E("1e1500")
 			reqs[3] = E("1e9600")
 		} else {
@@ -348,7 +348,7 @@ function getNewInfReq() {
 			reqs[1] = E("1e2400")
 			reqs[2] = E("1e4000")
 		}
-		if (aarMod.ngmX >= 4){
+		if (inNGM(4)){
 			reqs[0] = E("1e1777")
 		}
 	}

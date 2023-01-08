@@ -29,9 +29,9 @@ function getAutobuyerReduction() {
 }
 
 function buyAutobuyer(id, quick) {
-	if ((aarMod.ngmX >= 4 && id != 11 ? player.galacticSacrifice.galaxyPoints : player.infinityPoints).lt(player.autobuyers[id].cost)) return false
+	if ((inNGM(4) && id != 11 ? player.galacticSacrifice.galaxyPoints : player.infinityPoints).lt(player.autobuyers[id].cost)) return false
 
-	if (aarMod.ngmX >= 4 && id != 11) player.galacticSacrifice.galaxyPoints = player.galacticSacrifice.galaxyPoints.minus(player.autobuyers[id].cost)
+	if (inNGM(4) && id != 11) player.galacticSacrifice.galaxyPoints = player.galacticSacrifice.galaxyPoints.minus(player.autobuyers[id].cost)
 	else player.infinityPoints = player.infinityPoints.minus(player.autobuyers[id].cost)
 
 	if (player.autobuyers[id].interval == 100) {

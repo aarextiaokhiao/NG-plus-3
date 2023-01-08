@@ -794,7 +794,7 @@ var bu = {
 		13: function() {
 			var decays = getRadioactiveDecays('r') + getRadioactiveDecays('g') + getRadioactiveDecays('b')
 			var div = 3
-			if (tmp.newNGP3E){
+			if (tmp.ngp3e){
 				decays += Math.sqrt(decays) + decays / 3
 				div = 2
 			}
@@ -810,7 +810,7 @@ var bu = {
 		},
 		15: function() {
 			let gLog = Decimal.max(ghSave.times, 1).log10()
-			if (tmp.newNGP3E) gLog += 2 * Math.sqrt(gLog)
+			if (tmp.ngp3e) gLog += 2 * Math.sqrt(gLog)
 
 			let ghlog = player.dilation.dilatedTime.div("1e1520").add(1).pow(.05).log10()
 			if (ghlog > 308) ghlog = Math.sqrt(ghlog * 308)
@@ -827,7 +827,7 @@ var bu = {
 			var div = 8e3
 			var add = 1
 			var exp = 0.6
-			if (tmp.newNGP3E){
+			if (tmp.ngp3e){
 				div = 2e3
 				add = 1.5
 			}
@@ -839,18 +839,18 @@ var bu = {
 			return ret
 		},
 		33: function() {
-			var div = tmp.newNGP3E ? 4 : 6
+			var div = tmp.ngp3e ? 4 : 6
 			return (Math.sqrt(ghSave.hb.higgs + 1) - 1) / div + 1
 		},
 		34: function() {
 			var galPart = Math.log10(player.galaxies / 1e4 + 1) + Math.log10(getTotalRG() / 1e4 + 1) + Math.log10(player.dilation.freeGalaxies / 1e4 + 10) * Math.log10(tmp.aeg / 1e4 + 1)
-			var exp = tmp.newNGP3E ? 1/3 : 1/4
+			var exp = tmp.ngp3e ? 1/3 : 1/4
 			return Math.pow(galPart / 5 + 1, exp)
 		},
 		35: function() {
 			return {
 				rep: Math.pow(quSave.replicants.quarks.add(1).log10(), 1/3) * 2,
-				eds: E_pow(tmp.newNGP3E ? 10 : 20, Math.pow(player.replicanti.amount.log10(), 2/3) / 15e3)
+				eds: E_pow(tmp.ngp3e ? 10 : 20, Math.pow(player.replicanti.amount.log10(), 2/3) / 15e3)
 			}
 		},
 		41: function() {
@@ -867,7 +867,7 @@ var bu = {
 			return Math.sqrt(colorBoosts.g + tmp.pe) / (brSave.active ? 100 : 40) + 1
 		},
 		44: function() {
-			var exp = tmp.newNGP3E ? .55 : .5
+			var exp = tmp.ngp3e ? .55 : .5
 			return Math.pow(quSave.colorPowers.b.add(1).log10(), exp) * 0.15
 		},
 		45: function() {
@@ -1033,7 +1033,7 @@ function updateWZBosonsTemp(){
 	data.wbo = Decimal.pow(10, bosonsExp)
 	//W Bosons boost to Z Neutrino oscillation requirement
 
-	let div1 = tmp.newNGP3E ? 2 : 30
+	let div1 = tmp.ngp3e ? 2 : 30
 	data.wbp = player.ghostify.wzb.wpb.add(player.ghostify.wzb.wnb).div(div1).max(1).pow(1 / 3).sub(1)
 	//W Bosons boost to Bosons production
 

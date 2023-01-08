@@ -162,7 +162,7 @@ var neutrinoBoosts = {
 	boosts: {
 		1: function(nt) {
 			let nb1mult = .75
-			if (tmp.newNGP3E) nb1mult = .8
+			if (tmp.ngp3e) nb1mult = .8
 			if (isLEBoostUnlocked(7)) nb1mult *= tmp.leBonus[7]
 			let nb1neutrinos = nt[0].add(1).log10()+nt[1].add(1).log10()+nt[2].add(1).log10()
 			return Math.log10(1+nb1neutrinos)*nb1mult
@@ -193,14 +193,14 @@ var neutrinoBoosts = {
 		6: function(nt) {
 			var nb6neutrinos = Math.pow(nt[0].add(1).log10(), 2) + Math.pow(nt[1].add(1).log10(), 2) + Math.pow(nt[2].add(1).log10(), 2)
 			var nb6exp1 = .25
-			if (tmp.newNGP3E) nb6exp1 = .26
+			if (tmp.ngp3e) nb6exp1 = .26
 			let nb6 = Math.pow(Math.pow(nb6neutrinos, nb6exp1) * 0.525 + 1, brSave.active ? 0.5 : 1)
 			if (isLEBoostUnlocked(9)) nb6 *= tmp.leBonus[7]
 			return nb6
 		},
 		7: function(nt) {
 			let nb7exp = .5
-			if (tmp.newNGP3E) nb7exp = .6
+			if (tmp.ngp3e) nb7exp = .6
 			let nb7neutrinos = nt[0].add(1).log10()+nt[1].add(1).log10()+nt[2].add(1).log10()
 			let nb7 = Math.pow(Math.log10(1 + nb7neutrinos), nb7exp) * 2.35
 			if (nb7 > 4) nb7 = 2 * Math.log2(nb7)
@@ -209,7 +209,7 @@ var neutrinoBoosts = {
 		8: function(nt) {
 			let nb8neutrinos = Math.pow(nt[0].add(1).log10(),2)+Math.pow(nt[1].add(1).log10(),2)+Math.pow(nt[2].add(1).log10(),2)
 			let nb8exp = .25
-			if (tmp.newNGP3E) nb8exp = .27
+			if (tmp.ngp3e) nb8exp = .27
 			var nb8 = Math.pow(nb8neutrinos, nb8exp) / 10 + 1
 			if (nb8 > 3) nb8 = 3
 			return nb8

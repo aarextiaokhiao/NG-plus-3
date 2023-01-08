@@ -1,3 +1,33 @@
+function bigRip(auto) {
+	if (!player.masterystudies.includes("d14") || quSave.electrons.amount < 62500 || !inQC(0)) return
+	if (ghSave.milestones > 1) {
+		quSave.pairedChallenges.order = {1: [1, 2], 2: [3, 4], 3: [5, 7], 4:[6, 8]}
+		quSave.pairedChallenges.completed = 4
+		for (var c = 1; c < 9; c++) {
+			quSave.electrons.mult += (2 - quSave.challenges[c]) * 0.25
+			quSave.challenges[c] = 2
+		}
+		quantum(auto, true, 12, true, true)
+	} else {
+		for (var p = 1; p < 5; p++) {
+			var pcData = quSave.pairedChallenges.order[p]
+			if (pcData) {
+				var pc1 = Math.min(pcData[0], pcData[1])
+				var pc2 = Math.max(pcData[0], pcData[1])
+				if (pc1 == 6 && pc2 == 8) {
+					if (p - 1 > quSave.pairedChallenges.completed) return
+					quantum(auto, true, p + 8, true, true)
+				}
+			}
+		}
+	}
+}
+
+function toggleBigRipConf() {
+	brSave.conf = !brSave.conf
+	el("bigRipConfirmBtn").textContent = "Big Rip confirmation: O" + (brSave.conf ? "N" : "FF")
+}
+
 function unstoreTT() {
 	if (brSave.storedTS===undefined) return
 	player.timestudy.theorem = brSave && brSave.storedTS.tt

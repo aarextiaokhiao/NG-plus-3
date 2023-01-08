@@ -1,9 +1,10 @@
 //VERSION: 2.41R
 let ngp3_ver = 2.41
-let ngp3_build = 20230106
+let ngp3_build = 20230107
 function doPNGP3RUpdates() {
 	if (!aarMod.ngp3_build) aarMod.ngp3_build = 0
 	if (aarMod.ngp3_build < 20221230) quSave.multPower = 0
+	if (aarMod.ngp3_build < 20230107) player.options.animations.quantum = true
 	aarMod.newGame3PlusVersion = ngp3_ver
 	aarMod.ngp3_build = ngp3_build
 }
@@ -230,37 +231,6 @@ function autoECToggle() {
 	el("autoEC").className = quSave.autoEC ? "timestudybought" : "storebtn"
 }
 
-var nanospeed = 1
-function bigRip(auto) {
-	if (!player.masterystudies.includes("d14") || quSave.electrons.amount < 62500 || !inQC(0)) return
-	if (ghSave.milestones > 1) {
-		quSave.pairedChallenges.order = {1: [1, 2], 2: [3, 4], 3: [5, 7], 4:[6, 8]}
-		quSave.pairedChallenges.completed = 4
-		for (var c = 1; c < 9; c++) {
-			quSave.electrons.mult += (2 - quSave.challenges[c]) * 0.25
-			quSave.challenges[c] = 2
-		}
-		quantum(auto, true, 12, true, true)
-	} else {
-		for (var p = 1; p < 5; p++) {
-			var pcData = quSave.pairedChallenges.order[p]
-			if (pcData) {
-				var pc1 = Math.min(pcData[0], pcData[1])
-				var pc2 = Math.max(pcData[0], pcData[1])
-				if (pc1 == 6 && pc2 == 8) {
-					if (p - 1 > quSave.pairedChallenges.completed) return
-					quantum(auto, true, p + 8, true, true)
-				}
-			}
-		}
-	}
-}
-
-function toggleBigRipConf() {
-	brSave.conf = !brSave.conf
-	el("bigRipConfirmBtn").textContent = "Big Rip confirmation: O" + (brSave.conf ? "N" : "FF")
-}
-
 function switchAB() {
 	var bigRip = brSave && brSave.active
 	brSave["savedAutobuyers" + (bigRip ? "" : "No") + "BR"] = {}
@@ -281,13 +251,13 @@ function switchAB() {
 		bulk: player.autobuyers[9].bulk,
 		on: player.autobuyers[9].isOn
 	}
-	if (player.tickspeedBoosts !== undefined) if (player.autobuyers[13] % 1 !== 0) data.tickBoosts = {
+	if (inNGM(3)) if (player.autobuyers[13] % 1 !== 0) data.tickBoosts = {
 		maxDims: player.autobuyers[13].priority,
 		always: player.overXGalaxiesTickspeedBoost,
 		bulk: player.autobuyers[13].bulk,
 		on: player.autobuyers[13].isOn
 	}
-	if (player.galacticSacrifice !== undefined) if (player.autobuyers[12] % 1 !== 0) data.galSacrifice = {
+	if (inNGM(2)) if (player.autobuyers[12] % 1 !== 0) data.galSacrifice = {
 		amount: player.autobuyers[12].priority,
 		on: player.autobuyers[12].isOn
 	}
@@ -455,10 +425,9 @@ function ghostify(auto, force) {
 		setTimeout(function(){
 			if (Math.random()<1e-3) giveAchievement("Boo!")
 			ghostifyReset(true, gain, amount)
-		}, seconds * 500)
+		}, seconds * 750)
 		setTimeout(function(){
 			implosionCheck=0
-			showTab("dimensions")
 		}, seconds * 1000)
 	} else ghostifyReset(false, 0, 0, force)
 	updateAutoQuantumMode()

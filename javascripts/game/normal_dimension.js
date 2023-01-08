@@ -1,7 +1,7 @@
 function getR84or73Mult(){
 	var mult = E(1)
-	if (hasAch("r84")) mult = player.money.pow(player.galacticSacrifice?0.0002:0.00004).plus(1);
-	else if (hasAch("r73")) mult = player.money.pow(player.galacticSacrifice?0.0001:0.00002).plus(1);
+	if (hasAch("r84")) mult = player.money.pow(inNGM(2)?0.0002:0.00004).plus(1);
+	else if (hasAch("r73")) mult = player.money.pow(inNGM(2)?0.0001:0.00002).plus(1);
 	
 	var log = mult.log10()
 	if (log > 1e12) log = 1e12 * Math.pow(log / 1e12, .5)
@@ -15,22 +15,22 @@ function getNormalDimensionVanillaAchievementBonus(tier){
 	if (tier == 1) {
 		if (hasAch("r28")) mult = mult.times(1.1);
 		if (hasAch("r31")) mult = mult.times(1.05);
-		if (hasAch("r71")) mult = mult.times(player.galacticSacrifice ? 909 : 3);
-		if (hasAch("r68")) mult = mult.times(player.galacticSacrifice ? 5 : 1.5);
-		if (player.galacticSacrifice) if (hasAch("r64")) mult = mult.times(1e6);
+		if (hasAch("r71")) mult = mult.times(inNGM(2) ? 909 : 3);
+		if (hasAch("r68")) mult = mult.times(inNGM(2) ? 5 : 1.5);
+		if (inNGM(2)) if (hasAch("r64")) mult = mult.times(1e6);
 	}
 	if (tier == 8 && hasAch("r23")) mult = mult.times(1.1);
-	else if (hasAch("r34")) mult = mult.times(player.galacticSacrifice ? 2 : 1.02);
+	else if (hasAch("r34")) mult = mult.times(inNGM(2) ? 2 : 1.02);
 	if (tier <= 4 && hasAch("r43")) mult = mult.times(1.25);
-	if (player.galacticSacrifice && hasAch("r31")) mult = mult.times(productAllTotalBought1());
+	if (inNGM(2) && hasAch("r31")) mult = mult.times(productAllTotalBought1());
 	if (hasAch("r48")) mult = mult.times(1.1);
-	if (hasAch("r72")) mult = mult.times(player.galacticSacrifice ? 10 : 1.1); // tbd
-	if (player.galacticSacrifice && player.tickspeedBoosts == undefined && hasAch("r46")) mult = mult.times(productAllDims1());
-	if (hasAch("r74") && player.currentChallenge != "") mult = mult.times(player.galacticSacrifice ? 40 : 1.4);
-	if (hasAch("r77")) mult = mult.times(1 + tier / (player.galacticSacrifice ? 10 : 100));
+	if (hasAch("r72")) mult = mult.times(inNGM(2) ? 10 : 1.1); // tbd
+	if (inOnlyNGM(2) && hasAch("r46")) mult = mult.times(productAllDims1());
+	if (hasAch("r74") && player.currentChallenge != "") mult = mult.times(inNGM(2) ? 40 : 1.4);
+	if (hasAch("r77")) mult = mult.times(1 + tier / (inNGM(2) ? 10 : 100));
 	if (player.boughtDims && hasAch("r98")) mult = mult.times(player.infinityDimension8.amount.max(1))
 	mult = mult.times(getR84or73Mult())
-	if (player.galacticSacrifice) return mult
+	if (inNGM(2)) return mult
 	if (hasAch("r56") && player.thisInfinityTime < 1800) mult = mult.times(3600 / (player.thisInfinityTime + 1800));
 	if (hasAch("r78") && player.thisInfinityTime < 3) mult = mult.times(3.3 / (player.thisInfinityTime + 0.3));
 	if (hasAch("r65") && player.currentChallenge != "" && player.thisInfinityTime < 1800) mult = mult.times(Math.max(2400 / (player.thisInfinityTime + 600), 1))
@@ -45,7 +45,7 @@ function getNormalDimensionVanillaTimeStudyBonus(tier){
 	if (player.timestudy.studies.includes(91)) mult = mult.times(pow10(Math.min(player.thisEternity, 18000) / 60));
 	let useHigherNDReplMult = !player.dilation.active ? false : !player.masterystudies ? false : player.masterystudies.includes("t323")
 	if (!useHigherNDReplMult) mult = mult.times(tmp.nrm)
-	if (player.timestudy.studies.includes(161)) mult = mult.times(pow10((player.galacticSacrifice ? 6660 : 616) * (aarMod.newGameExpVersion ? 5 : 1)))
+	if (player.timestudy.studies.includes(161)) mult = mult.times(pow10((inNGM(2) ? 6660 : 616) * (aarMod.newGameExpVersion ? 5 : 1)))
 	if (player.timestudy.studies.includes(234) && tier == 1) mult = mult.times(tmp.sacPow)
 	if (player.timestudy.studies.includes(193)) mult = mult.times(E_pow(1.03, getEternitied()).min("1e13000"))
 	if (tier == 8 && player.timestudy.studies.includes(214)) mult = mult.times((tmp.sacPow.pow(8)).min("1e46000").times(tmp.sacPow.pow(1.1).min(E("1e125000"))))
@@ -53,23 +53,23 @@ function getNormalDimensionVanillaTimeStudyBonus(tier){
 }
 
 function getNormalDimensionGalaxyUpgradesBonus(tier,mult){
-	if (!player.galacticSacrifice) return mult
+	if (inNGM(2)) return mult
 	
-	if (player.galacticSacrifice.upgrades.includes(12) && (!player.galacticSacrifice.upgrades.includes(42) || aarMod.ngmX < 4)) mult = mult.times(galMults.u12())
-	if (player.galacticSacrifice.upgrades.includes(13) && ((!inNC(14) && player.currentChallenge != "postcngm3_3") || player.tickspeedBoosts == undefined || aarMod.ngmX > 3) && player.currentChallenge != "postcngm3_4") mult = mult.times(galMults.u13())
-	if (player.galacticSacrifice.upgrades.includes(15)) mult = mult.times(galMults.u15())
-	if (player.galacticSacrifice.upgrades.includes(35)) mult = mult.times(galMults.u35())
+	if (hasGalUpg(12) && (hasGalUpg(42) || !inNGM(4))) mult = mult.times(galMults.u12())
+	if (hasGalUpg(13) && ((!inNC(14) && player.currentChallenge != "postcngm3_3") || !inNGM(3) || inNGM(4)) && player.currentChallenge != "postcngm3_4") mult = mult.times(galMults.u13())
+	if (hasGalUpg(15)) mult = mult.times(galMults.u15())
+	if (hasGalUpg(35)) mult = mult.times(galMults.u35())
 	if (player.challenges.includes("postc4")) mult = mult.pow(1.05);
-	if (player.galacticSacrifice.upgrades.includes(31)) mult = mult.pow(galMults.u31());
+	if (hasGalUpg(31)) mult = mult.pow(galMults.u31());
 	return mult
 }
 
 function getAfterDefaultDilationLayerAchBonus(tier){
 	mult = E(1)
 	let timeAndDimMult = timeMult()
-	if (hasInfinityMult(tier) && !(aarMod.ngmX >= 4)) timeAndDimMult = dimMults().times(timeAndDimMult)
+	if (hasInfinityMult(tier) && !inNGM(3)) timeAndDimMult = dimMults().times(timeAndDimMult)
 	if (player.challenges.includes("postcngmm_1")||player.currentChallenge=="postcngmm_1") mult = mult.times(timeAndDimMult)
-	if (!player.galacticSacrifice) return mult
+	if (inNGM(2)) return mult
 	if (hasAch("r56") && player.thisInfinityTime < 1800) mult = mult.times(3600 / (player.thisInfinityTime + 1800));
 	if (hasAch("r78") && player.thisInfinityTime < 3) mult = mult.times(3.3 / (player.thisInfinityTime + 0.3));
 	if (hasAch("r65") && player.currentChallenge != "" && player.thisInfinityTime < 1800) mult = mult.times(Math.max(2400 / (player.thisInfinityTime + 600), 1))
@@ -77,9 +77,9 @@ function getAfterDefaultDilationLayerAchBonus(tier){
 	if (hasAch("r92") && player.thisInfinityTime < 600) mult = mult.times(Math.max(101 - player.thisInfinityTime / 6, 1));
 	if (player.currentChallenge == "postc6" || inQC(6)) mult = mult.dividedBy(player.matter.max(1))
 	if (player.currentChallenge == "postc8" || inQC(6)) mult = mult.times(player.postC8Mult)
-	if (player.galacticSacrifice.upgrades.includes(12) && player.galacticSacrifice.upgrades.includes(42) && aarMod.ngmX >= 4) mult = mult.times(galMults.u12())
-	if (player.galacticSacrifice.upgrades.includes(45) && aarMod.ngmX >= 4) {
-		var e = player.galacticSacrifice.upgrades.includes(46) ? galMults["u46"]() : 1
+	if (hasGalUpg(12) && hasGalUpg(42) && inNGM(4)) mult = mult.times(galMults.u12())
+	if (hasGalUpg(45) && inNGM(4)) {
+		var e = hasGalUpg(46) ? galMults["u46"]() : 1
 		mult = mult.times(Math.pow(player["timeDimension" + tier].amount.plus(10).log10(), e))
 	}
 	return mult
@@ -111,18 +111,18 @@ function getDimensionFinalMultiplier(tier) {
 	if (!tmp.infPow) updateInfinityPowerEffects()
 	if (player.currentChallenge == "postcngm3_2") return tmp.infPow.max(1e100)
 	if (player.currentEternityChall == "eterc11") return tmp.infPow.times(E_pow(getDimensionBoostPower(), player.resets - tier + 1).max(1))
-	if ((inNC(7) || player.currentChallenge == "postcngm3_3") && !player.galacticSacrifice) {
+	if ((inNC(7) || player.currentChallenge == "postcngm3_3") && inNGM(2)) {
 		if (tier == 4) mult = mult.pow(1.4)
 		if (tier == 2) mult = mult.pow(1.7)
 	}
 
-	if (player.currentEternityChall != "eterc9" && (player.tickspeedBoosts == undefined || player.currentChallenge != "postc2")) mult = mult.times(tmp.infPow)
+	if (player.currentEternityChall != "eterc9" && (!inNGM(3) || player.currentChallenge != "postc2")) mult = mult.times(tmp.infPow)
 
 	mult = mult.times(getPostBreakInfNDMult())
 
 	let timeAndDimMult = timeMult()
-	if (hasInfinityMult(tier) && !(aarMod.ngmX >= 4)) timeAndDimMult = dimMults().times(timeAndDimMult)
-	if (!(aarMod.ngmX >= 4)) mult = mult.times(dimMults())
+	if (hasInfinityMult(tier) && !inNGM(3)) timeAndDimMult = dimMults().times(timeAndDimMult)
+	if (!inNGM(3)) mult = mult.times(dimMults())
 	if (!player.challenges.includes("postcngmm_1") && player.currentChallenge!="postcngmm_1") mult = mult.times(timeAndDimMult)
 	
 	if (tier == 1 && player.infinityUpgrades.includes("unspentBonus")) mult = mult.times(unspentBonus);
@@ -132,16 +132,16 @@ function getDimensionFinalMultiplier(tier) {
 	mult = getNormalDimensionGalaxyUpgradesBonus(tier,mult)
 
 	mult = mult.times(player.postC3Reward)
-	if (player.challenges.includes("postc4") && player.galacticSacrifice === undefined) mult = mult.pow(1.05);
+	if (player.challenges.includes("postc4") && inNGM(2)) mult = mult.pow(1.05);
 	if (player.challenges.includes("postc8") && tier < 8 && tier > 1) mult = mult.times(mult18);
 
-	if (isADSCRunning() || (player.galacticSacrifice && player.currentChallenge === "postc1")) mult = mult.times(productAllTotalBought());
+	if (isADSCRunning() || (inNGM(2) && player.currentChallenge === "postc1")) mult = mult.times(productAllTotalBought());
 	else {
 		if (player.currentChallenge == "postc6" || inQC(6)) mult = mult.dividedBy(player.matter.max(1))
 		if (player.currentChallenge == "postc8" || inQC(6)) mult = mult.times(player.postC8Mult)
 	}
 
-	if (player.currentChallenge == "postc4" && player.postC4Tier != tier && player.tickspeedBoosts == undefined) mult = mult.pow(0.25)
+	if (player.currentChallenge == "postc4" && player.postC4Tier != tier && !inNGM(3)) mult = mult.pow(0.25)
 	
 	if (player.currentEternityChall == "eterc10") mult = mult.times(ec10bonus)
 	
@@ -149,11 +149,11 @@ function getDimensionFinalMultiplier(tier) {
 	
 	if (mult.gt(10)) mult = dilates(mult.max(1), 2)
 	mult = mult.times(getAfterDefaultDilationLayerAchBonus(tier))
-	if (player.currentChallenge == "postc4" && player.tickspeedBoosts != undefined) mult = mult.sqrt()
+	if (player.currentChallenge == "postc4" && inNGM(3)) mult = mult.sqrt()
 
 	if (mult.gt(10)) mult = dilates(mult.max(1), 1)
 	if (player.dilation.upgrades.includes(6)) mult = mult.times(player.dilation.dilatedTime.max(1).pow(308))
-	if (tier == 1 && player.tickspeedBoosts == undefined && player.infinityUpgrades.includes("postinfi60")) mult = mult.times(getNewB60Mult())
+	if (tier == 1 && !inNGM(3) && player.infinityUpgrades.includes("postinfi60")) mult = mult.times(getNewB60Mult())
 	let useHigherNDReplMult = !player.dilation.active ? false : !player.masterystudies ? false : player.masterystudies.includes("t323")
 	if (useHigherNDReplMult) mult = mult.times(tmp.nrm)
 	if (player.dilation.active && isNanoEffectUsed("dil_effect_exp")) mult = mult.pow(tmp.nf.effects.dil_effect_exp)
@@ -253,25 +253,25 @@ function getDimensionPowerMultiplier(focusOn, debug) {
 }
 	
 function getMPTBase(focusOn) {
-	if (((inQC(5) || inQC(7)) && focusOn != "linear") || (((inNC(13) && player.tickspeedBoosts == undefined) || player.currentChallenge == "postc1" || player.currentChallenge == "postcngm3_1") && player.galacticSacrifice != undefined)) {
+	if (((inQC(5) || inQC(7)) && focusOn != "linear") || (((inNC(13) && !inNGM(3)) || player.currentChallenge == "postc1" || player.currentChallenge == "postcngm3_1") && inNGM(2))) {
 		if (player.masterystudies) if (player.masterystudies.includes("t321")) return E("1e430")
 		return 1
 	}
 	let ret = 2
-	if (player.tickspeedBoosts !== undefined) ret = 1
+	if (inNGM(3)) ret = 1
 	if (aarMod.newGameExpVersion) ret *= 10
 	if (aarMod.newGameMult) ret *= 2.1
 	if (player.infinityUpgrades.includes("dimMult")) ret *= infUpg12Pow()
 	if ((inNC(9) || player.currentChallenge === "postc1") && !focusOn) ret = Math.pow(10 / 0.30, Math.random()) * 0.30
 	if (hasAch("r58")) {
-		if (player.galacticSacrifice !== undefined) {
+		if (inNGM(2)) {
 			let exp = 1.0666
-			if (player.tickspeedBoosts !== undefined) exp = Math.min(Math.sqrt(1800 / player.challengeTimes[3] + 1), exp)
+			if (inNGM(3)) exp = Math.min(Math.sqrt(1800 / player.challengeTimes[3] + 1), exp)
 			ret = Math.pow(ret, exp)
 		} else ret *= 1.01
 	}
 	ret += getECReward(3)
-	if (player.galacticSacrifice !== undefined) if (player.galacticSacrifice.upgrades.includes(33) && ((!inNC(14) && player.currentChallenge != "postcngm3_3") || player.tickspeedBoosts == undefined || aarMod.ngmX > 3) && player.currentChallenge != "postcngm3_4") ret *= galMults.u33();
+	if (inNGM(2)) if (hasGalUpg(33) && ((!inNC(14) && player.currentChallenge != "postcngm3_3") || !inNGM(3) || inNGM(4)) && player.currentChallenge != "postcngm3_4") ret *= galMults.u33();
 	if (focusOn == "no-QC5") return ret
 	if (tmp.ngp3) {
 		ret += tmp.qcRewards[5]
@@ -287,8 +287,8 @@ function getMPTExp(focusOn) {
 }
 
 function infUpg12Pow() {
-	if (player.tickspeedBoosts !== undefined) return 1.05 + .01 * Math.min(Math.max(player.infinitied, 0), 45)
-	if (player.galacticSacrifice) return 1.05 + .0025 * Math.min(Math.max(player.infinitied, 0), 60)
+	if (inNGM(3)) return 1.05 + .01 * Math.min(Math.max(player.infinitied, 0), 45)
+	if (inNGM(2)) return 1.05 + .0025 * Math.min(Math.max(player.infinitied, 0), 60)
 	if (aarMod.newGameExpVersion) return 1.2
 	return 1.1
 }
@@ -332,7 +332,7 @@ function dimBought(tier) {
 
 function recordBought (name, num) {
 	player[name + 'Bought'] += num;
-	if (player.galacticSacrifice) player.totalBoughtDims[name] = (player.totalBoughtDims[name] ? player.totalBoughtDims[name] : 0) + num;
+	if (inNGM(2)) player.totalBoughtDims[name] = (player.totalBoughtDims[name] ? player.totalBoughtDims[name] : 0) + num;
 }
 
 function costIncreaseActive(cost) {
@@ -343,12 +343,12 @@ function costIncreaseActive(cost) {
 function getDimensionCostMultiplierIncrease() {
 	if (inQC(7)) return Number.MAX_VALUE
 	let ret = player.dimensionMultDecrease;
-	if (aarMod.ngmX > 3) ret = Math.pow(ret, 1.25)
+	if (inNGM(4)) ret = Math.pow(ret, 1.25)
 	if (player.currentChallenge === 'postcngmm_2') {
-		exp = aarMod.ngmX >= 4 ? .9 : .5
+		exp = inNGM(4) ? .9 : .5
 		ret = Math.pow(ret, exp)
 	} else if (player.challenges.includes('postcngmm_2')) {
-		expcomp = aarMod.ngmX >= 4 ? .95 : .9
+		expcomp = inNGM(4) ? .95 : .9
 		ret = Math.pow(ret, expcomp)
 	}
 	return ret;
@@ -364,8 +364,8 @@ function buyOneDimension(tier) {
 	player[name + "Amount"] = player[name + "Amount"].add(1)
 	recordBought(name, 1)
 	if (dimBought(tier) == 0) {
-		if (player.currentChallenge == "postc5" && player.tickspeedBoosts == undefined) multiplyPC5Costs(player[name + 'Cost'], tier)
-		else if (inNC(5) && player.tickspeedBoosts == undefined) multiplySameCosts(player[name + 'Cost'])
+		if (player.currentChallenge == "postc5" && !inNGM(3)) multiplyPC5Costs(player[name + 'Cost'], tier)
+		else if (inNC(5) && !inNGM(3)) multiplySameCosts(player[name + 'Cost'])
 		else player[name + "Cost"] = player[name + "Cost"].times(getDimensionCostMultiplier(tier))
 		if (costIncreaseActive(player[name + "Cost"])) player.costMultipliers[tier - 1] = player.costMultipliers[tier - 1].times(getDimensionCostMultiplierIncrease())
 		floatText("D" + tier, "x" + shortenMoney(getDimensionPowerMultiplier()))
@@ -386,8 +386,8 @@ function buyManyDimension(tier, quick) {
 	getOrSubResource(tier, cost)
 	player[name + "Amount"] = player[name + "Amount"].add(toBuy)
 	recordBought(name, toBuy)
-	if (player.currentChallenge == "postc5" && player.tickspeedBoosts == undefined) multiplyPC5Costs(player[name + 'Cost'], tier)
-	else if (inNC(5) && player.tickspeedBoosts == undefined) multiplySameCosts(player[name + 'Cost'])
+	if (player.currentChallenge == "postc5" && !inNGM(3)) multiplyPC5Costs(player[name + 'Cost'], tier)
+	else if (inNC(5) && !inNGM(3)) multiplySameCosts(player[name + 'Cost'])
 	else player[name + "Cost"] = player[name + "Cost"].times(getDimensionCostMultiplier(tier))
 	if (costIncreaseActive(player[name + "Cost"])) player.costMultipliers[tier - 1] = player.costMultipliers[tier - 1].times(getDimensionCostMultiplierIncrease())
 	if (!quick) {
@@ -410,7 +410,7 @@ function buyBulkDimension(tier, bulk, auto) {
 	let cost = player[name + 'Cost'].times(10)
 	let resource = getOrSubResource(tier)
 	if (!cost.lte(resource)) return
-	if (((!inNC(5) && player.currentChallenge != "postc5") || player.tickspeedBoosts != undefined) && !inNC(9) && !costIncreaseActive(player[name + "Cost"])) {
+	if (((!inNC(5) && player.currentChallenge != "postc5") || inNGM(3)) && !inNC(9) && !costIncreaseActive(player[name + "Cost"])) {
 		let mult = getDimensionCostMultiplier(tier)
 		let max = Number.POSITIVE_INFINITY
 		if (!inNC(10) && player.currentChallenge != "postc1") max = Math.ceil(Decimal.div(Number.MAX_VALUE, cost).log(mult) + 1)
@@ -460,7 +460,7 @@ function buyBulkDimension(tier, bulk, auto) {
 }
 
 function canQuickBuyDim(tier) {
-	if (((inNC(5) || player.currentChallenge == "postc5") && player.tickspeedBoosts == undefined) || inNC(9)) return false
+	if (((inNC(5) || player.currentChallenge == "postc5") && !inNGM(3)) || inNC(9)) return false
 	return player.dimensionMultDecrease <= 3 || player.costMultipliers[tier-1].gt(Number.MAX_SAFE_INTEGER)
 }
 
@@ -482,29 +482,29 @@ function timeMult() {
 	var mult = E(1)
 	if (player.infinityUpgrades.includes("timeMult")) mult = mult.times(infUpg11Pow());
 	if (player.infinityUpgrades.includes("timeMult2")) mult = mult.times(infUpg13Pow());
-	if (hasAch("r76")) mult = mult.times(Math.pow(player.totalTimePlayed / (600 * 60 * 48), player.galacticSacrifice ? 0.1 : 0.05));
+	if (hasAch("r76")) mult = mult.times(Math.pow(player.totalTimePlayed / (600 * 60 * 48), inNGM(2) ? 0.1 : 0.05));
 	return mult;
 }
 
 function infUpg11Pow() {
-	if (player.galacticSacrifice) return Math.max(Math.pow(player.totalTimePlayed / 864e3, 0.75), 1)
+	if (inNGM(2)) return Math.max(Math.pow(player.totalTimePlayed / 864e3, 0.75), 1)
 	else return Math.max(Math.pow(player.totalTimePlayed / 1200, 0.15), 1)
 }
 
 function infUpg13Pow() {
-	if (player.galacticSacrifice) return Math.pow(1 + player.thisInfinityTime / 2400, 1.5)
+	if (inNGM(2)) return Math.pow(1 + player.thisInfinityTime / 2400, 1.5)
 	else return Math.max(Math.pow(player.thisInfinityTime / 2400, 0.25), 1)
 }
 
 function dimMults() {
-	return E_pow(Decimal.times(getInfinitied(), 0.2).add(1),(player.galacticSacrifice ? 2 : 1) * (player.timestudy.studies.includes(31) ? 4 : 1))
+	return E_pow(Decimal.times(getInfinitied(), 0.2).add(1),(inNGM(2) ? 2 : 1) * (player.timestudy.studies.includes(31) ? 4 : 1))
 }
 
 function getInfinitiedMult() {
-	var add = player.galacticSacrifice ? 0 : 1
-	var base = (player.galacticSacrifice ? 1 : 0) + Decimal.add(getInfinitied(), 1).log10() * (player.galacticSacrifice ? 100 : 10)
-	var exp = (player.galacticSacrifice ? 2 : 1) * (player.timestudy.studies.includes(31) ? 4 : 1)
-	if (aarMod.ngmX >= 4) {
+	var add = inNGM(2) ? 0 : 1
+	var base = (inNGM(2) ? 1 : 0) + Decimal.add(getInfinitied(), 1).log10() * (inNGM(2) ? 100 : 10)
+	var exp = (inNGM(2) ? 2 : 1) * (player.timestudy.studies.includes(31) ? 4 : 1)
+	if (inNGM(4)) {
 		if ((player.currentChallenge == "postcngmm_1" || player.challenges.includes("postcngmm_1")) && !hasAch("r71")) exp += .2
 		else exp *= 1 + Math.log10(getInfinitied() + 1) / 3
 	}
@@ -513,15 +513,15 @@ function getInfinitiedMult() {
 
 function getDimensionProductionPerSecond(tier) {
 	let ret = player[TIER_NAMES[tier] + 'Amount'].floor()
-	if ((inNC(7) || player.currentChallenge == "postcngm3_3" || inQC(4)) && !player.galacticSacrifice) {
+	if ((inNC(7) || player.currentChallenge == "postcngm3_3" || inQC(4)) && !inNGM(2)) {
 		if (tier == 4) ret = ret.pow(1.3)
 		else if (tier == 2) ret = ret.pow(1.5)
 	}
 	ret = ret.times(getDimensionFinalMultiplier(tier))
 	if (inNC(2) || player.currentChallenge == "postc1") ret = ret.times(player.chall2Pow)
 	if (tier == 1 && (inNC(3) || player.currentChallenge == "postc1")) ret = ret.times(player.chall3Pow)
-	if (player.tickspeedBoosts != undefined) ret = ret.div(10)
-	if (aarMod.ngmX>3) ret = ret.div(100)
+	if (inNGM(3)) ret = ret.div(10)
+	if (inNGM(4)) ret = ret.div(100)
 	if (tier == 1 && (inNC(7) || player.currentChallenge == "postcngm3_3" || inQC(4))) ret = ret.plus(getDimensionProductionPerSecond(2))
 	let tick = dilates(Decimal.div(1e3,getTickspeed()),"tick")
 	if (player.dilation.active && isNanoEffectUsed("dil_effect_exp")) tick = tick.pow(tmp.nf.effects.dil_effect_exp)

@@ -28,7 +28,7 @@
 		<div id="pres_header">
 			<div id="layer_galSac">
 				<div id="galaxyPoints2">You have <span class='GPAmount'>0</span> Galaxy points.</div>
-				<button id="sacrificebtn" class="storebtn" onclick="galacticSacrifice()"></button>
+				<button id="sacrificebtn" class="galaxybtn" onclick="galacticSacrifice()"></button>
 			</div><div id="layer_inf">
 				<div id="infinityPoints2"></div>
 				<button id="postInfinityButton" class="infinitybtn" onclick="bigCrunch()">Big Crunch for x Infinity Points</button>
@@ -87,7 +87,7 @@
 			<button id="challengesbtn" style="font-family: Typewriter; font-size: 20px" class="tabbtn" onclick="showTab('challenges')">Challenges</button>
 			<button id="automationbtn" style="font-family: Typewriter; font-size: 20px" class="tabbtn" onclick='showTab("autobuyers")'>Automation</button>
 			<span id="tab_break"><br></span>
-			<button id="tab_galSac" style="font-family: Typewriter; font-size: 20px; display: none" onclick='showTab("galaxy")'>Galaxy</button>
+			<button id="tab_galSac" style="font-family: Typewriter; font-size: 20px; display: none" class="galaxybtn" onclick='showTab("galaxy")'>Galaxy</button>
 			<button id="tab_inf" style="font-family: Typewriter; font-size: 20px; display: none" class="infinitybtn" onclick="showTab('infinity')">Infinity</button>
 			<button id="tab_eter" style="font-family: Typewriter; font-size: 20px; display: none" class="eternitybtn" onclick="showTab('eternitystore')">Eternity</button>
 			<button id="tab_qu" style="font-family: Typewriter; font-size: 20px; display: none" class="quantumbtn" onclick='showTab("quantumtab")'>Quantum</button>
@@ -110,7 +110,6 @@
 					<td id="idtabbtn"><button class="secondarytabbtn infinitybtn" onclick="showDimTab('infinitydimensions')">Infinity Dimensions</button></td>
 					<td id="tdtabbtn"><button class="secondarytabbtn eternitybtn" onclick="showDimTab('timedimensions')">Time Dimensions</button></td>
 					<td id="mdtabbtn"><button class="secondarytabbtn quantumbtn" onclick="showDimTab('metadimensions')">Meta Dimensions</button></td>
-					<td id="edtabbtn_dim"><button class="secondarytabbtn anttabbtn" onclick="teleportToEDs()">Emperor Dimensions</button></td>
 				</tr>
 			</table>
 			<div id="antimatterdimensions" class="dimtab">
@@ -650,7 +649,7 @@
 				<br><br>
 
 				<b>(Update v2.41R: Gravitional Relativity)</b><br>
-				<b class="red">(Beta: 1/6/23 Build)</b>
+				<b class="red">(Beta: 1/7/23 Build)</b>
 				<br><br>
 
 				NG++ is by dan-simon, NG+3 is by Aarex, pg132, and usavictor, and NG+4 is by Soul147.
@@ -2424,7 +2423,7 @@
 								<br>
 								<br>
 								<div class="outer">
-									<button id="qc1" class="challengesbtn" onclick="quantum(false, true, 1)">Start</button>
+									<button id="qc1" class="challengesbtn" onclick="selectQC(1)">Start</button>
 									<br>
 									<span id="qc1cost"></span><br>
 									<span id="qc1goal"></span><br>
@@ -2438,7 +2437,7 @@
 								<br>
 								<br>
 								<div class="outer">
-									<button id="qc2" class="challengesbtn" onclick="quantum(false, true, 2)">Start</button>
+									<button id="qc2" class="challengesbtn" onclick="selectQC(2)">Start</button>
 									<br>
 									<span id="qc2cost"></span><br>
 									<span id="qc2goal"></span><br>
@@ -2454,7 +2453,7 @@
 								<br>
 								<br>
 								<div class="outer">
-									<button id="qc3" class="challengesbtn" onclick="quantum(false, true, 3)">Start</button>
+									<button id="qc3" class="challengesbtn" onclick="selectQC(3)">Start</button>
 									<br>
 									<span id="qc3cost"></span><br>
 									<span id="qc3goal"></span><br>
@@ -2468,7 +2467,7 @@
 								<br>
 								<br>
 								<div class="outer">
-									<button id="qc4" class="challengesbtn" onclick="quantum(false, true, 4)">Start</button>
+									<button id="qc4" class="challengesbtn" onclick="selectQC(4)">Start</button>
 									<br>
 									<span id="qc4cost"></span><br>
 									<span id="qc4goal"></span><br>
@@ -2484,7 +2483,7 @@
 								<br>
 								<br>
 								<div class="outer">
-									<button id="qc5" class="challengesbtn" onclick="quantum(false, true, 5)">Start</button>
+									<button id="qc5" class="challengesbtn" onclick="selectQC(5)">Start</button>
 									<br>
 									<span id="qc5cost"></span><br>
 									<span id="qc5goal"></span><br>
@@ -2498,7 +2497,7 @@
 								<br>
 								<br>
 								<div class="outer">
-									<button id="qc6" class="challengesbtn" onclick="quantum(false, true, 6)">Start</button>
+									<button id="qc6" class="challengesbtn" onclick="selectQC(6)">Start</button>
 									<br>
 									<span id="qc6cost"></span><br>
 									<span id="qc6goal"></span><br>
@@ -2514,7 +2513,7 @@
 								<br>
 								<br>
 								<div class="outer">
-									<button id="qc7" class="challengesbtn" onclick="quantum(false, true, 7)">Start</button>
+									<button id="qc7" class="challengesbtn" onclick="selectQC(7)">Start</button>
 									<br>
 									<span id="qc7cost"></span><br>
 									<span id="qc7goal"></span><br>
@@ -2528,7 +2527,7 @@
 								<br>
 								<br>
 								<div class="outer">
-									<button id="qc8" class="challengesbtn" onclick="quantum(false, true, 8)">Start</button>
+									<button id="qc8" class="challengesbtn" onclick="selectQC(8)">Start</button>
 									<br>
 									<span id="qc8cost"></span><br>
 									<span id="qc8goal"></span><br>
@@ -2552,8 +2551,8 @@
 								<br>
 								<br>
 								<div class="outer">
-									<button id="pc1" class="challengesbtn" onclick="quantum(false, true, 9)">Assign</button>
-									<button id="pc1br" class="challengesbtn" onclick="quantum(false, true, 9, true)">Big Rip</button>
+									<button id="pc1" class="challengesbtn" onclick="selectPC(1)"></button>
+									<button id="pc1br" class="challengesbtn" onclick="selectPC(1, true)"></button>
 									<br>
 									<span id="pc1cost"></span><br>
 									<span id="pc1goal"></span><br>
@@ -2567,8 +2566,8 @@
 								<br>
 								<br>
 								<div class="outer">
-									<button id="pc2" class="challengesbtn" onclick="quantum(false, true, 10)">Assign</button>
-									<button id="pc2br" class="challengesbtn" onclick="quantum(false, true, 10, true)">Big Rip</button>
+									<button id="pc2" class="challengesbtn" onclick="selectPC(2)"></button>
+									<button id="pc2br" class="challengesbtn" onclick="selectPC(2, true)"></button>
 									<br>
 									<span id="pc2cost"></span><br>
 									<span id="pc2goal"></span><br>
@@ -2584,8 +2583,8 @@
 								<br>
 								<br>
 								<div class="outer">
-									<button id="pc3" class="challengesbtn" onclick="quantum(false, true, 11)">Assign</button>
-									<button id="pc3br" class="challengesbtn" onclick="quantum(false, true, 11, true)">Big Rip</button>
+									<button id="pc3" class="challengesbtn" onclick="selectPC(3)"></button>
+									<button id="pc3br" class="challengesbtn" onclick="selectPC(3, true)"></button>
 									<br>
 									<span id="pc3cost"></span><br>
 									<span id="pc3goal"></span><br>
@@ -2599,8 +2598,8 @@
 								<br>
 								<br>
 								<div class="outer">
-									<button id="pc4" class="challengesbtn" onclick="quantum(false, true, 12)">Assign</button>
-									<button id="pc4br" class="challengesbtn" onclick="quantum(false, true, 12, true)">Big Rip</button>
+									<button id="pc4" class="challengesbtn" onclick="selectPC($)"></button>
+									<button id="pc4br" class="challengesbtn" onclick="selectPC(4, true)"></button>
 									<br>
 									<span id="pc4cost"></span><br>
 									<span id="pc4goal"></span><br>
@@ -3232,9 +3231,9 @@
 				<button class="storebtn" id="replicantiinterval" onclick="upgradeReplicantiInterval()" style="width:180px; height: 50px; font-size: 10px">Interval: 1000ms<br>-> 900 Costs: 1e6969 IP</button>
 				<button class="storebtn" id="replicantimax" onclick="upgradeReplicantiGalaxy()" style="width:180px; height: 50px; font-size: 10px">Max Replicanti galaxies: 0<br>+1 Costs: 1e6969 IP</button>
 				<br>
-				<button class="storebtn" id="replauto1" onclick="toggleReplAuto('chance')" style="width:180px; font-size: 10px; visibility: hidden">Auto: ON</button>
-				<button class="storebtn" id="replauto2" onclick="toggleReplAuto('interval')" style="width:180px; font-size: 10px; visibility: hidden">Auto: ON</button>
-				<button class="storebtn" id="replauto3" onclick="toggleReplAuto('galaxy')" style="width:180px; font-size: 10px; visibility: hidden">Auto: ON</button>
+				<button class="storebtn" id="replauto1" onclick="toggleReplAuto(0)" style="width:180px; font-size: 10px; visibility: hidden">Auto: ON</button>
+				<button class="storebtn" id="replauto2" onclick="toggleReplAuto(1)" style="width:180px; font-size: 10px; visibility: hidden">Auto: ON</button>
+				<button class="storebtn" id="replauto3" onclick="toggleReplAuto(2)" style="width:180px; font-size: 10px; visibility: hidden">Auto: ON</button>
 				<br><br><br>
 				<p id="replicantiapprox"></p>
 				<br>
@@ -4579,7 +4578,7 @@
 					<tr>
 						<td><button class="gluonupgrade unavailablebtn" id="neutrinoUpg1" onclick="buyNeutrinoUpg(1)" style="font-size: 10px">Meta-Dimension Boosts cost cheaper.<br>Currently: -<span id="neutrinoUpg1Pow"></span><br>Cost: <span id="neutrinoUpg1Cost"></span> of any neutrinos</button></td>
 						<td><button class="gluonupgrade unavailablebtn" id="neutrinoUpg2" onclick="buyNeutrinoUpg(2)">Eggons hatch instantly.<br>Cost: <span id="neutrinoUpg2Cost"></span> of any neutrinos</button></td>
-						<td><button class="gluonupgrade unavailablebtn" id="neutrinoUpg3" onclick="buyNeutrinoUpg(3)">Blue power boosts pilon charge.<br>Currently: <span id="neutrinoUpg3Pow"></span>x<br>Cost: <span id="neutrinoUpg3Cost"></span> of any neutrinos</button></td>
+						<td><button class="gluonupgrade unavailablebtn" id="neutrinoUpg3" onclick="buyNeutrinoUpg(3)">Blue power boosts nanocharge.<br>Currently: <span id="neutrinoUpg3Pow"></span>x<br>Cost: <span id="neutrinoUpg3Cost"></span> of any neutrinos</button></td>
 					</tr>
 					<tr>
 						<td><button class="gluonupgrade unavailablebtn" id="neutrinoUpg4" onclick="buyNeutrinoUpg(4)" style="font-size: 10px">Tickspeed speeds up Branches and Quark Spins.<br>Currently: <span id="neutrinoUpg4Pow">1.0</span>x<br>Cost: <span id="neutrinoUpg4Cost"></span> of any neutrinos</button></td>
@@ -5154,6 +5153,7 @@
 			<button id="bigCrunchAnimBtn" class="storebtn" onclick="animationOnOff('bigCrunch')" style="width: 200px; height: 55px; font-size: 15px" style="display: inline" ach-tooltip="Click here while holding shift to toggle this option to always! (except some conditions)"></button>
 			<button id="tachyonParticleAnimBtn" class="storebtn" onclick="animationOnOff('tachyonParticles')" style="width: 200px; height: 55px; font-size: 15px" style="display: inline"></button>
 			<button id="blackHoleAnimBtn" class="storebtn" onclick="animationOnOff('blackHole')" style="width: 200px; height: 55px; font-size: 15px" style="display: inline"></button>
+			<button id="quantumAnimBtn" class="storebtn" onclick="animationOnOff('quantum')" style="width: 200px; height: 55px; font-size: 15px" style="display: inline"></button>
 			<button id="quarksAnimBtn" class="storebtn" onclick="animationOnOff('quarks')" style="width: 200px; height: 55px; font-size: 15px" style="display: inline"></button>
 			<button id="ghostifyAnimBtn" class="storebtn" onclick="animationOnOff('ghostify')" style="width: 200px; height: 55px; font-size: 15px" style="display: inline"></button>
 		</div>

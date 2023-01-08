@@ -1,38 +1,16 @@
 function galaxyReset(bulk) {
 	if (tmp.ri) return
+
 	if (autoS) auto = false;
 	autoS = true;
+
 	if (player.sacrificed == 0 && bulk > 0) giveAchievement("I don't believe in Gods");
-	if (player.tickspeedBoosts) player.tickspeedBoosts = 0
-	doGalaxyResetStuff(bulk)
 
-	NC10NDCostsOnReset()
-	resetTDs()
-	reduceDimCosts()
-	skipResets()
-	if (player.currentChallenge == "postc2") {
-		player.eightAmount = E(1);
-		player.eightBought = 1;
-		player.resets = 4;
-	}
-	setInitialDimensionPower();
-	
-	if (player.options.notation == "Emojis") player.spreadingCancer += bulk
-	if (hasAch("r36")) player.tickspeed = player.tickspeed.times(0.98);
-	if (hasAch("r45")) player.tickspeed = player.tickspeed.times(0.98);
-	if (hasAch("r83")) player.tickspeed = player.tickspeed.times(E_pow(0.95, player.galaxies));
-	divideTickspeedIC5()
+	let am = player.money
+	player.galaxies += bulk
+	doReset("gal")
+	if (hasAch("r111")) player.money = am
 
-	if (player.infinitied < 1 && player.eternities == 0 && !quantumed) {
-		el("sacrifice").style.display = "none"
-		el("confirmation").style.display = "none"
-		if (player.galacticSacrifice && (player.galaxies > 0 || (player.galacticSacrifice ? player.galacticSacrifice.times > 0 : false))) {
-			el("gSacrifice").style.display = "inline-block"
-			el("gConfirmation").style.display = "inline-block"
-		}
-	}
-	if (!hasAch("r111")) setInitialMoney()
-	if (hasAch("r66")) player.tickspeed = player.tickspeed.times(0.98);
 	if (tmp.ngp3 && bulk) {
 		if (quSave.autoOptions.sacrifice) sacrificeGalaxy(6, true)
 		if (brSave.active) brSave.bestGals = Math.max(brSave.bestGals, player.galaxies)
@@ -43,15 +21,15 @@ function galaxyReset(bulk) {
 }
 
 el("secondSoftReset").onclick = function() {
-	let ngm4 = aarMod.ngmX ? aarMod.ngmX >= 4 : false
+	let ngm4 = tmp.ngmX ? inNGM(4) : false
 	let bool1 = !inNC(11) || ngm4
 	let bool2 = player.currentChallenge != "postc1"
-	let bool3 = player.currentChallenge != "postc5" || player.tickspeedBoosts == undefined
+	let bool3 = player.currentChallenge != "postc5" || !inNGM(3)
 	let bool4 = player.currentChallenge != "postc7"
 	let bool5 = (player.currentEternityChall == "eterc6" || inQC(6)) && !tmp.be
 	var bool = bool1 && bool2  && bool3 && bool4 && !bool5 && !tmp.ri && !cantReset()
 	if (getAmount(inNC(4) ? 6 : 8) >= getGalaxyRequirement() && bool) {
-		if ((getEternitied() >= 7 || player.autobuyers[10].bulkBought) && !shiftDown && (!inNC(14) || !(aarMod.ngmX > 3))) maxBuyGalaxies(true);
+		if ((getEternitied() >= 7 || player.autobuyers[10].bulkBought) && !shiftDown && (!inNC(14) || !inNGM(3))) maxBuyGalaxies(true);
 		else galaxyReset(1)
 	}
 }
@@ -63,11 +41,11 @@ function getGalaxyRequirement(offset = 0, display) {
 	let base = tmp.grd.galaxies * mult
 	let amount = 80 + base
 	let scaling = 0
-	if (player.galacticSacrifice != undefined) amount -= (player.galacticSacrifice.upgrades.includes(22) && player.galaxies > 0) ? 80 : 60
+	if (inNGM(2)) amount -= (hasGalUpg(22) && player.galaxies > 0) ? 80 : 60
 	else if (inNC(6, 1) && aarMod.ngexV != undefined && tmp.grd.galaxies < 2) amount -= tmp.grd.galaxies == 1 ? 40 : 50
-	if (aarMod.ngmX > 3) amount -= 10
+	if (inNGM(4)) amount -= 10
 	if (inNC(6, 1) && aarMod.ngexV != undefined && tmp.grd.galaxies >= 2) amount -= 2 * mult
-	if (inNC(4)) amount = player.tickspeedBoosts == undefined ? 99 + base : amount + (aarMod.ngmX > 3 ? 20 : -30)
+	if (inNC(4)) amount = !inNGM(3) ? 99 + base : amount + (inNGM(4) ? 20 : -30)
 	if (tmp.be) {
 		amount *= 50
 		if (beSave && beSave.upgrades.includes(2)) amount /= getBreakUpgMult(2)
@@ -94,7 +72,7 @@ function getGalaxyRequirement(offset = 0, display) {
 			if (hasBU(45)) speed /= tmp.blu[45]
 			if (hasAch("ng3p98")) speed *= 0.9
 			amount += getDistantAdd(tmp.grd.galaxies-distantStart+1)*speed
-			if (tmp.grd.galaxies >= distantStart * 2.5 && player.galacticSacrifice != undefined) {
+			if (tmp.grd.galaxies >= distantStart * 2.5 && inNGM(2)) {
 				// 5 times worse scaling
 				amount += 4 * speed * getDistantAdd(tmp.grd.galaxies-distantStart * 2.5 + 1)
 				scaling = Math.max(scaling, 2)
@@ -107,7 +85,7 @@ function getGalaxyRequirement(offset = 0, display) {
 			if (GUBought("rg7")) speed2 *= 0.9
 			if (GUBought("gb7")) speed2 /= 1+Math.log10(1+player.infinityPoints.max(1).log10())/100
 			if (GUBought("br7")) speed2 /= 1+Math.log10(1+player.eternityPoints.max(1).log10())/80
-			amount *= Math.pow(1 + (GUBought("rg1") ? 1 : 2) / (aarMod.ngmX > 3 ? 10 : 1e3), (tmp.grd.galaxies - remoteStart + 1) * speed2)
+			amount *= Math.pow(1 + (GUBought("rg1") ? 1 : 2) / (inNGM(4) ? 10 : 1e3), (tmp.grd.galaxies - remoteStart + 1) * speed2)
 			scaling = Math.max(scaling, 3)
 		}
 	}
@@ -123,10 +101,10 @@ function getGalaxyReqMultiplier() {
 	if (inNC(6, 1) && aarMod.ngexV != undefined && tmp.grd.galaxies <= 2) return 0
 	if (player.currentChallenge == "postcngmm_1") return 60
 	let ret = 60
-	if (player.galacticSacrifice !== undefined) if (player.galacticSacrifice.upgrades.includes(22)) ret -= 30
+	if (inNGM(2)) if (hasGalUpg(22)) ret -= 30
 	if (inNC(4)) ret = 90
 	if (player.infinityUpgrades.includes("galCost")) ret -= 5
-	if (player.infinityUpgrades.includes("postinfi52") && player.tickspeedBoosts == undefined) ret -= 3
+	if (player.infinityUpgrades.includes("postinfi52") && !inNGM(3)) ret -= 3
 	if (player.dilation.upgrades.includes("ngmm12")) ret -= 10
 	if (player.timestudy.studies.includes(42)) ret *= tsMults[42]()
 	return ret
@@ -145,17 +123,17 @@ function getDistantScalingStart() {
 }
 
 function getDistantAdd(x) {
-	if (player.galacticSacrifice !== undefined && player.tickspeedBoosts == undefined) return Math.pow(x, 1.5) + x
+	if (inOnlyNGM(2)) return Math.pow(x, 1.5) + x
 	return (x + 1) * x
 }
 
 function getRemoteScalingStart(galaxies) {
 	var n = 800
-	if (aarMod.ngmX > 3) {
+	if (inNGM(4)) {
 		n = 6
 		if (player.challenges.includes("postcngm3_1")) n += tmp.cp / 2
 	}
-	else if (player.galacticSacrifice != undefined) n += 1e7
+	else if (inNGM(2)) n += 1e7
 	if (tmp.ngp3) {
 		for (var t = 251; t < 254; t++) if (player.masterystudies.includes("t" + t)) n += getMTSMult(t)
 		if (player.masterystudies.includes("t301")) n += getMTSMult(301)

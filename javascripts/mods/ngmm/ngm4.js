@@ -10,29 +10,26 @@ function tdBoost(bulk) {
 	if (player["timeDimension" + req.tier].bought < req.amount) return
 	if (cantReset()) return
 	player.tdBoosts += bulk
-	if (!hasAch("r36")) softReset(hasAch("r26") && player.resets >= player.tdBoosts ? 0 : -player.resets)
-	player.tickBoughtThisInf = updateTBTIonGalaxy()
+	if (!hasAch("r36")) doReset("tdb")
 }
 
 function resetTDBoosts() {
-	if (aarMod.ngmX > 3) return hasAch("r27") && player.currentChallenge == "" ? 3 : 0
+	if (inNGM(4)) return hasAch("r27") && player.currentChallenge == "" ? 3 : 0
 }
 
-function resetTDs() {
+function resetNGM4TDs() {
 	var bp=getDimensionBoostPower()
-	if (aarMod.ngmX > 3) {
-		for (var d = 1; d <= 8; d++) {
-			var dim = player["timeDimension" + d]
-			dim.amount = E(0)
-			dim.bought = 0
-			dim.cost = E(timeDimStartCosts[1][d])
-			dim.power = bp.pow((player.tdBoosts - d + 1) / 2).max(1)
-		}
-		player.timeShards = E(0)
-		player.totalTickGained = 0
-		player.tickThreshold = E(0.01)
-		el("totaltickgained").textContent = "You've gained " + getFullExpansion(player.totalTickGained) + " tickspeed upgrades."
+	for (var d = 1; d <= 8; d++) {
+		var dim = player["timeDimension" + d]
+		dim.amount = E(0)
+		dim.bought = 0
+		dim.cost = E(timeDimStartCosts[1][d])
+		dim.power = bp.pow((player.tdBoosts - d + 1) / 2).max(1)
 	}
+	player.timeShards = E(0)
+	player.totalTickGained = 0
+	player.tickThreshold = E(0.01)
+	el("totaltickgained").textContent = "You've gained " + getFullExpansion(player.totalTickGained) + " tickspeed upgrades."
 }
 
 //v2.1
@@ -46,7 +43,7 @@ function autoTDBoostBoolean() {
 	if (!player.autobuyers[14].isOn) return false
 	if (player.autobuyers[14].ticks * 100 < player.autobuyers[14].interval) return false
 	if (amount < req.amount) return false
-	if (aarMod.ngmX > 3 && inNC(14)) return false
+	if (inNGM(4) && inNC(14)) return false
 	if (player.autobuyers[14].overXGals <= player.galaxies) return true
 	if (player.autobuyers[14].priority < req.amount) return false
 	return true
@@ -54,7 +51,7 @@ function autoTDBoostBoolean() {
 
 //v2.11
 function cantReset() {
-	return aarMod.ngmX > 3 && inNC(14) && getTotalResets() > 9
+	return inNGM(4) && inNC(14) && getTotalResets() > 9
 }
 
 el("buyerBtnTDBoost").onclick = function () {

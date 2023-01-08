@@ -240,6 +240,22 @@ function updateColorPowers(log) {
 }
 
 //Gluons
+function convertAQToGluons() {
+	var u = quSave.usedQuarks
+	var g = quSave.gluons
+	var p = ["rg", "gb", "br"]
+	var d = []
+	for (var c = 0; c < 3; c++) d[c] = u[p[c][0]].min(u[p[c][1]])
+	for (var c = 0; c < 3; c++) {
+		g[p[c]] = g[p[c]].add(d[c]).round()
+		u[p[c][0]] = u[p[c][0]].sub(d[c]).round()
+	}
+
+	updateQuarkDisplay()
+	updateQuarksTabOnUpdate()
+	updateGluonsTabOnUpdate()
+}
+
 function checkGluonRounding(){
 	if (!tmp.ngp3) return
 	if (ghSave.milestones > 7 || !quantumed) return
@@ -282,9 +298,9 @@ function getQuarkMultReq() {
 
 function getQuarkMultBulk() {
 	let bulk = E(quantumWorth).max(1).div(500).log(100)
+	if (bulk > 467) bulk = (bulk + 467) / 2
 	bulk *= 3
 	if (bulk < 0) return 0
-	if (bulk > 467) bulk = (bulk + 467) / 2
 	return Math.floor(bulk + 1)
 }
 
@@ -353,7 +369,7 @@ function updateQuarksTab(tab) {
 	el("qk_mult_upg").className = "gluonupgrade " + (E(quantumWorth).gte(getQuarkMultReq()) ? "storebtn" : "unavailablebtn")
 	el("qk_mult_upg").innerHTML = `
 		<b>Double anti-quarks.</b><br>
-		Currently: ${shortenDimensions(getQuarkMult())}x<br>
+		Currently: ${shortenDimensions(E(2).pow(quSave.multPower))}x<br>
 		(req: ${shortenDimensions(getQuarkMultReq())} quantum worth)
 	`
 }
@@ -442,14 +458,8 @@ function updateGluonsTabOnUpdate(mode) {
 				else if (quSave.gluons[name].lt(GUCosts[u])) el(upg).className="gluonupgrade small unavailablebtn"
 				else el(upg).className="gluonupgrade small "+name
 			}
-			/*var upg = name + "qk"
-			var cost = E_pow(100, quSave.multPower[name] + Math.max(quSave.multPower[name] - 467,0)).times(500)
-			el(upg+"cost").textContent = shortenDimensions(cost)
-			if (quSave.gluons[name].lt(cost)) el(upg+"btn").className = "gluonupgrade unavailablebtn"
-			else el(upg + "btn").className = "gluonupgrade " + name*/
 		}
 	}
-	//if (mode == undefined || mode == "display") el("qkmultcurrent").textContent = shortenDimensions(pow2(quSave.multPower.total))
 }
 
 //Quarks animation

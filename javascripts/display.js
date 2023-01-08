@@ -33,7 +33,7 @@ function intergalacticDisplay(){
 		if (isNanoEffectUsed("dil_effect_exp")) nanopart = tmp.nf.effects["dil_effect_exp"] || 1
 		el("intergalacticLabel").innerHTML = 
 			getGalaxyScaleName(tmp.igs) + 'Intergalactic Boost ' + 
-			(player.dilation.active || player.galacticSacrifice != undefined ? " (estimated)" : "") +
+			(player.dilation.active || inNGM(2) ? " (estimated)" : "") +
 			" (" + getFullExpansion(player.galaxies) + (Math.floor(tmp.igg - player.galaxies) > 0 ? " + " + 
 			getFullExpansion(Math.floor(tmp.igg - player.galaxies)) : "") + "): " + 
 			shorten(dilates(tmp.ig).pow(player.dilation.active ? nanopart : 1)) + 
@@ -151,8 +151,8 @@ function preBreakUpgradeDisplay(){
 	el("infiMult").innerHTML = "You get " + (Math.round(getIPMultPower() * 100) / 100) + "x more IP." + infiMultEnding
 
 	infinityUpgradesDisplay()
-	if (player.galacticSacrifice) {
-		var base = player.tickspeedBoosts == undefined ? 2 : 1
+	if (inNGM(2)) {
+		var base = !inNGM(3) ? 2 : 1
 		if (aarMod.newGameExpVersion) base *= 10
 		el("infi21").innerHTML = "Increase the multiplier for buying 10 Dimensions based on Infinities<br>"+base+"x -> "+(infUpg12Pow()*base).toPrecision(4)+"x<br>Cost: 1 IP"
 		el("infi33").innerHTML = "Dimension Boosts are stronger based on Infinity Points<br>Currently: " + (1.2 + 0.05 * player.infinityPoints.max(1).log(10)).toFixed(2) + "x<br>Cost: 7 IP"
@@ -193,7 +193,7 @@ function breakInfinityUpgradeDisplay(){
 	else if (player.infinityPoints.gte(20e6)) el("postinfi13").className = "infinistorebtn1"
 	else el("postinfi13").className = "infinistorebtnlocked"
 	if (player.infinityUpgrades.includes("bulkBoost")) el("postinfi23").className = "infinistorebtnbought"
-	else if (player.infinityPoints.gte(player.tickspeedBoosts!=undefined?2e4:player.galacticSacrifice?5e6:5e9)) el("postinfi23").className = "infinistorebtn1"
+	else if (player.infinityPoints.gte(inNGM(3)?2e4:inNGM(2)?5e6:5e9)) el("postinfi23").className = "infinistorebtn1"
 	else el("postinfi23").className = "infinistorebtnlocked"
 	if (player.infinityUpgrades.includes("autoBuyerUpgrade")) el("postinfi33").className = "infinistorebtnbought"
 	else if (player.infinityPoints.gte(1e15)) el("postinfi33").className = "infinistorebtn1"
@@ -202,12 +202,12 @@ function breakInfinityUpgradeDisplay(){
 	el("postinfi21").innerHTML = "Normal Dimensions gain a multiplier based on current antimatter<br>Currently: " + shorten(tmp.postinfi21) + "x<br>Cost: "+shortenCosts(5e4)+" IP"
 	if (player.tickSpeedMultDecrease > 2) el("postinfi31").innerHTML = "Tickspeed cost multiplier increase <br>" + player.tickSpeedMultDecrease+"x -> "+(player.tickSpeedMultDecrease-1)+"x<br>Cost: "+shortenDimensions(player.tickSpeedMultDecreaseCost) +" IP"
 	else el("postinfi31").innerHTML = "Decrease the Tickspeed cost multiplier increase post-e308<br> " + player.tickSpeedMultDecrease.toFixed(player.tickSpeedMultDecrease < 2 ? 2 : 0)+"x"
-	el("postinfi22").innerHTML = "Normal Dimensions gain a multiplier based on achievements " + (aarMod.ngmX >= 4 ? "and purchased GP upgrades " : "") + "<br>Currently: " + shorten(achievementMult) + "x<br>Cost: " + shortenCosts(1e6) + " IP"
+	el("postinfi22").innerHTML = "Normal Dimensions gain a multiplier based on achievements " + (inNGM(4) ? "and purchased GP upgrades " : "") + "<br>Currently: " + shorten(achievementMult) + "x<br>Cost: " + shortenCosts(1e6) + " IP"
 	el("postinfi12").innerHTML = "Normal Dimensions gain a multiplier based on your Infinities <br>Currently: "+shorten(getInfinitiedMult())+"x<br>Cost: " + shortenCosts(1e5) + " IP"
 	el("postinfi41").innerHTML = "Galaxies are " + Math.round(getPostGalaxyEff() * 100 - 100) + "% stronger <br>Cost: "+shortenCosts(5e11)+" IP"
 	el("postinfi32").innerHTML = "Normal Dimensions gain a multiplier based on your slowest Normal Challenge time<br>Currently: "+shorten(worstChallengeBonus)+"x<br>Cost: " + shortenCosts(1e7) + " IP"
 	el("postinfi13").innerHTML = "You generate Infinities based on your fastest Infinity.<br>1 Infinity every " + timeDisplay(player.bestInfinityTime * 5) + " <br>Cost: " + shortenCosts(2e7) + " IP"
-	el("postinfi23").innerHTML = "Unlock the option to bulk buy Dimension" + (player.tickspeedBoosts == undefined ? "" : " and Tickspeed") + " Boosts <br>Cost: " + shortenCosts(player.tickspeedBoosts != undefined ? 2e4 : player.galacticSacrifice ? 5e6 : 5e9) + " IP"
+	el("postinfi23").innerHTML = "Unlock the option to bulk buy Dimension" + (!inNGM(3) ? "" : " and Tickspeed") + " Boosts <br>Cost: " + shortenCosts(inNGM(3) ? 2e4 : inNGM(2) ? 5e6 : 5e9) + " IP"
 	el("postinfi33").innerHTML = "Autobuyers work twice as fast <br>Cost: " + shortenCosts(1e15) + " IP"
 	if (player.dimensionMultDecrease > 3) el("postinfi42").innerHTML = "Decrease the Dimension cost multiplier increase post-e308<br>" + player.dimensionMultDecrease + "x -> " + (player.dimensionMultDecrease - 1) + "x<br>Cost: " + shortenCosts(player.dimensionMultDecreaseCost) +" IP"
 	else el("postinfi42").innerHTML = "Dimension cost multiplier increase<br>"+player.dimensionMultDecrease.toFixed(ECComps("eterc6") % 5 > 0 ? 1 : 0) + "x"
@@ -221,10 +221,10 @@ function roundedDBCostIncrease(a){
 
 function breakNGm2UpgradeColumnDisplay(){
 	if (player.infinityUpgrades.includes("galPointMult")) el("postinfi01").className = "infinistorebtnbought"
-	else if (player.infinityPoints.gte(player.tickspeedBoosts == undefined ? 1e3 : 1e4)) el("postinfi01").className = "infinistorebtn1"
+	else if (player.infinityPoints.gte(!inNGM(3) ? 1e3 : 1e4)) el("postinfi01").className = "infinistorebtn1"
 	else el("postinfi01").className = "infinistorebtnlocked"
 	if (player.infinityUpgrades.includes("dimboostCost")) el("postinfi02").className = "infinistorebtnbought"
-	else if (player.infinityPoints.gte(player.tickspeedBoosts == undefined ? 2e4 : 1e5)) el("postinfi02").className = "infinistorebtn1"
+	else if (player.infinityPoints.gte(!inNGM(3) ? 2e4 : 1e5)) el("postinfi02").className = "infinistorebtn1"
 	else el("postinfi02").className = "infinistorebtnlocked"
 	if (player.infinityUpgrades.includes("galCost")) el("postinfi03").className = "infinistorebtnbought"
 	else if (player.infinityPoints.gte(5e5)) el("postinfi03").className = "infinistorebtn1"
@@ -232,8 +232,8 @@ function breakNGm2UpgradeColumnDisplay(){
 	if (player.extraDimPowerIncrease >= 40) el("postinfi04").className = "infinistorebtnbought"
 	else if (player.infinityPoints.gte(player.dimPowerIncreaseCost)) el("postinfi04").className = "infinimultbtn"
 	else el("postinfi04").className = "infinistorebtnlocked"
-	el("postinfi01").innerHTML = "Multiplier to Galaxy points based on infinities<br>Currently: "+shorten(getPost01Mult())+"x<br>Cost: "+shortenCosts(player.tickspeedBoosts==undefined?1e3:1e4)+" IP"
-	el("postinfi02").innerHTML = "Dimension Boost cost increases by 1 less<br>Currently: " + roundedDBCostIncrease(0) + (player.infinityUpgrades.includes("dimboostCost") ? "" : " -> " + (roundedDBCostIncrease(-1))) + "<br>Cost: " + shortenCosts(player.tickspeedBoosts == undefined ? 2e4 : 1e5) + " IP"
+	el("postinfi01").innerHTML = "Multiplier to Galaxy points based on infinities<br>Currently: "+shorten(getPost01Mult())+"x<br>Cost: "+shortenCosts(!inNGM(3)?1e3:1e4)+" IP"
+	el("postinfi02").innerHTML = "Dimension Boost cost increases by 1 less<br>Currently: " + roundedDBCostIncrease(0) + (player.infinityUpgrades.includes("dimboostCost") ? "" : " -> " + (roundedDBCostIncrease(-1))) + "<br>Cost: " + shortenCosts(!inNGM(3) ? 2e4 : 1e5) + " IP"
 	el("postinfi03").innerHTML = "Galaxy cost increases by 5 less<br>Currently: " + Math.round(getGalaxyReqMultiplier() * 10) / 10 + (player.infinityUpgrades.includes("galCost") ? "" : " -> " + Math.round(getGalaxyReqMultiplier() * 10 - 50) / 10 + "<br>Cost: " + shortenCosts(5e5) + " IP")
 	el("postinfi04").innerHTML = "Further increase all dimension multipliers<br>x^" + galMults.u31().toFixed(2) + (player.extraDimPowerIncrease < 40 ? " -> x^" + ((galMults.u31() + 0.02).toFixed(2)) + "<br>Cost: " + shorten(player.dimPowerIncreaseCost) + " IP" : "")
 }
@@ -241,25 +241,25 @@ function breakNGm2UpgradeColumnDisplay(){
 function breakNGm2UpgradeRow5Display(){
 	el("postinfir5").style.display = ""
 	if (player.infinityUpgrades.includes("postinfi50")) el("postinfi50").className = "infinistorebtnbought"
-	else if (player.infinityPoints.gte(player.tickspeedBoosts == undefined ? 1e25 : 1e18)) el("postinfi50").className = "infinistorebtn1"
+	else if (player.infinityPoints.gte(!inNGM(3) ? 1e25 : 1e18)) el("postinfi50").className = "infinistorebtn1"
 	else el("postinfi50").className = "infinistorebtnlocked"
 	if (player.infinityUpgrades.includes("postinfi51")) el("postinfi51").className = "infinistorebtnbought"
-	else if (player.infinityPoints.gte(player.tickspeedBoosts == undefined ? 1e29 : 1e20)) el("postinfi51").className = "infinistorebtn1"
+	else if (player.infinityPoints.gte(!inNGM(3) ? 1e29 : 1e20)) el("postinfi51").className = "infinistorebtn1"
 	else el("postinfi51").className = "infinistorebtnlocked"
 	if (player.infinityUpgrades.includes("postinfi52")) el("postinfi52").className = "infinistorebtnbought"
-	else if (player.infinityPoints.gte(player.tickspeedBoosts == undefined ? 1e33 : 1e25)) el("postinfi52").className = "infinistorebtn1"
+	else if (player.infinityPoints.gte(!inNGM(3) ? 1e33 : 1e25)) el("postinfi52").className = "infinistorebtn1"
 	else el("postinfi52").className = "infinistorebtnlocked"
 	if (player.infinityUpgrades.includes("postinfi53")) el("postinfi53").className = "infinistorebtnbought"
-	else if (player.infinityPoints.gte(player.tickspeedBoosts == undefined ? 1e37 : 1e29)) el("postinfi53").className = "infinistorebtn1"
+	else if (player.infinityPoints.gte(!inNGM(3) ? 1e37 : 1e29)) el("postinfi53").className = "infinistorebtn1"
 	else el("postinfi53").className = "infinistorebtnlocked"
-	el("postinfi50").innerHTML = "Dimension Boost cost increases by 0.5 less.<br>Currently: " + getDimboostCostIncrease() + (player.infinityUpgrades.includes("postinfi50") ? "" : " -> " + (getDimboostCostIncrease() - 0.5)) + "<br>Cost: " + shortenCosts(player.tickspeedBoosts==undefined ? 1e25 : 1e18) + " IP"
-	el("postinfi51").innerHTML = "Galaxies are " + (player.tickspeedBoosts ? 15 : 20) + "% more stronger.<br>Cost: " + shortenCosts(player.tickspeedBoosts == undefined ? 1e29 : 1e20) + " IP"
+	el("postinfi50").innerHTML = "Dimension Boost cost increases by 0.5 less.<br>Currently: " + getDimboostCostIncrease() + (player.infinityUpgrades.includes("postinfi50") ? "" : " -> " + (getDimboostCostIncrease() - 0.5)) + "<br>Cost: " + shortenCosts(!inNGM(3) ? 1e25 : 1e18) + " IP"
+	el("postinfi51").innerHTML = "Galaxies are " + (player.tickspeedBoosts ? 15 : 20) + "% more stronger.<br>Cost: " + shortenCosts(!inNGM(3) ? 1e29 : 1e20) + " IP"
 	let inf52text = ''
-	if (player.tickspeedBoosts == undefined){
+	if (!inNGM(3)){
 		inf52text = "Galaxy cost increases by 3 less.<br>Currently: " + Math.round(getGalaxyReqMultiplier() * 10) / 10 + (player.infinityUpgrades.includes("postinfi52") ? "" : " -> " + Math.round(getGalaxyReqMultiplier() * 10 - 30) / 10) + "<br>Cost: " + shortenCosts(1e33) + " IP"
 	} else inf52text = "Decrease tickspeed boost cost multiplier to 3.<br>Cost: " + shortenCosts(1e25) + " IP"
 	el("postinfi52").innerHTML = inf52text
-	el("postinfi53").innerHTML = "Divide all Infinity Dimension cost multipliers by 50.<br>Cost: "+shortenCosts(player.tickspeedBoosts == undefined ? 1e37 : 1e29) + " IP"
+	el("postinfi53").innerHTML = "Divide all Infinity Dimension cost multipliers by 50.<br>Cost: "+shortenCosts(!inNGM(3) ? 1e37 : 1e29) + " IP"
 }
 
 function breakNGm2UpgradeRow6Display(){
@@ -287,11 +287,11 @@ function INFINITYUPGRADESDisplay(){
 		preBreakUpgradeDisplay()
 	} else if (el("postinf").style.display == "block" && el("breaktable").style.display == "inline-block") {
 		breakInfinityUpgradeDisplay()
-		if (player.galacticSacrifice) breakNGm2UpgradeColumnDisplay()
-		if (player.galacticSacrifice && (player.infinityDimension3.amount.gt(0) || player.eternities > (aarMod.newGameMinusVersion? -20 : 0) || quantumed)) {
+		if (inNGM(2)) breakNGm2UpgradeColumnDisplay()
+		if (inNGM(2) && (player.infinityDimension3.amount.gt(0) || player.eternities > (aarMod.newGameMinusVersion? -20 : 0) || quantumed)) {
 			breakNGm2UpgradeRow5Display()
 		} else el("postinfir5").style.display = "none"
-		if (player.galacticSacrifice && (player.infinityDimension4.amount.gt(0) || player.eternities > (aarMod.newGameMinusVersion ? -20 : 0) || quantumed)) {
+		if (inNGM(2) && (player.infinityDimension4.amount.gt(0) || player.eternities > (aarMod.newGameMinusVersion ? -20 : 0) || quantumed)) {
 			breakNGm2UpgradeRow6Display()
 		} else el("postinfir6").style.display = "none"
 	}
@@ -405,8 +405,8 @@ function replicantiDisplay() {
 		el("replicantireset").className = (canGetReplicatedGalaxy()) ? "storebtn" : "unavailablebtn"
 		el("replicantireset").style.height = (hasAch("ngpp16") && (tmp.ngp3l || !hasAch("ng3p67")) ? 90 : 70) + "px"
 	} else {
-		el("replicantiunlock").innerHTML = "Unlock Replicantis<br>Cost: " + shortenCosts(player.galacticSacrifice != undefined && player.tickspeedBoosts == undefined ? 1e80 : 1e140) + " IP"
-		el("replicantiunlock").className = (player.infinityPoints.gte(player.galacticSacrifice != undefined && player.tickspeedBoosts == undefined ? 1e80 : 1e140)) ? "storebtn" : "unavailablebtn"
+		el("replicantiunlock").innerHTML = "Unlock Replicantis<br>Cost: " + shortenCosts(inOnlyNGM(2) ? 1e80 : 1e140) + " IP"
+		el("replicantiunlock").className = (player.infinityPoints.gte(inOnlyNGM(2) ? 1e80 : 1e140)) ? "storebtn" : "unavailablebtn"
 	}
 }
 
@@ -427,8 +427,8 @@ function initialTimeStudyDisplay(){
 	el("142desc").textContent = "You gain " + shortenCosts(1e25) + "x more IP"
 	el("143desc").textContent = "Currently: " + shortenMoney(E_pow(15, Math.log(player.thisInfinityTime)*Math.pow(player.thisInfinityTime, 0.125))) + "x"
 	el("151desc").textContent = shortenCosts(1e4) + "x multiplier on all Time Dimensions"
-	el("161desc").textContent = shortenCosts(pow10((player.galacticSacrifice ? 6660 : 616) *  ( aarMod.newGameExpVersion ? 5 : 1))) + "x multiplier on all normal dimensions"
-	el("162desc").textContent = shortenCosts(pow10((player.galacticSacrifice ? 234 : 11) * (aarMod.newGameExpVersion ? 5 : 1))) + "x multiplier on all Infinity dimensions"
+	el("161desc").textContent = shortenCosts(pow10((inNGM(2) ? 6660 : 616) *  ( aarMod.newGameExpVersion ? 5 : 1))) + "x multiplier on all normal dimensions"
+	el("162desc").textContent = shortenCosts(pow10((inNGM(2) ? 234 : 11) * (aarMod.newGameExpVersion ? 5 : 1))) + "x multiplier on all Infinity dimensions"
 	el("192desc").textContent = "You can get beyond " + shortenMoney(Number.MAX_VALUE) + " replicantis, but the interval is increased the more you have"
 	el("193desc").textContent = "Currently: " + shortenMoney(E_pow(1.03, Decimal.min(1e7, getEternitied())).min("1e13000")) + "x"
 	el("212desc").textContent = "Currently: " + ((tsMults[212]() - 1) * 100).toFixed(2) + "%"
@@ -492,7 +492,6 @@ function infPoints2Display(){
 
 function eterPoints2Display(){
 	el("eternityPoints2").style.display = getEternitied() >= 0 || quantumed ? "inline-block" : ""
-	el("eternityPoints2").innerHTML = "You have <span class=\"EPAmount2\">"+shortenDimensions(player.eternityPoints)+"</span> Eternity points."
 }
 
 function dimboostABTypeDisplay(){
@@ -514,13 +513,15 @@ function IDABDisplayCorrection(){
 	}
 }
 
-function replicantiShopABDisplay(){
+function replicantiAutoDisplay(){
 	if (getEternitied() >= 40) el("replauto1").style.visibility = "visible"
 	else el("replauto1").style.visibility = "hidden"
 	if (getEternitied() >= 60) el("replauto2").style.visibility = "visible"
 	else el("replauto2").style.visibility = "hidden"
 	if (getEternitied() >= 80) el("replauto3").style.visibility = "visible"
 	else el("replauto3").style.visibility = "hidden"
+	if (getEternitied() >= 3) el("replicantiresettoggle").style.display = ""
+	else el("replicantiresettoggle").style.display = "none"
 }
 
 function primaryStatsDisplayResetLayers() {
@@ -575,7 +576,7 @@ function bankedInfinityDisplay(){
 //PRESTIGES
 let PRESTIGES = {
 	galSac: {
-		modReq: _ => tmp.ngmX >= 2,
+		modReq: _ => inNGM(2),
 		prequsite: _ => false,
 		reached: _ => getGSAmount().gt(0),
 		got: _ => player.galacticSacrifice.times > 0 || player.infinitied > 0 || getEternitied() > 0,
@@ -618,10 +619,10 @@ function updateHeaders() {
 	let quan = quantumed
 	let eter = player.eternities !== 0 || quan
 	let inf = player.infinitied > 0 || player.infinityPoints.gt(0) || eter
-	let chal = player.challenges.includes("challenge1") || inf
+	let chal = inNGM(4) ? gSacrificed() || inf : player.challenges.includes("challenge1") || inf
 
 	//NG-X Hell
-	el("automationbtn").style.display = aarMod.ngmX > 3 && chal ? "inline-block" : "none"
+	el("automationbtn").style.display = inNGM(4) && chal ? "inline-block" : "none"
 
 	//Side-Tabs
 	el("challengesbtn").style.display = chal ? "inline-block" : "none"

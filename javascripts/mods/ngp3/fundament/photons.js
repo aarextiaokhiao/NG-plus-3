@@ -1,5 +1,5 @@
 function updateRedLightBoostTemp(){
-	var light0multiplier = tmp.newNGP3E ? .1 : .07
+	var light0multiplier = tmp.ngp3e ? .1 : .07
 	var lighteffect0 = Math.log2(tmp.effL[0].best + 1) * light0multiplier + 1
 	tmp.le[0] = lighteffect0
 }
@@ -28,7 +28,7 @@ function updateIndigoLightBoostTemp(){
 }
 
 function updateVioletLightBoostTemp(){
-	var lightexp6 = tmp.newNGP3E ? .36 : 1/3
+	var lightexp6 = tmp.ngp3e ? .36 : 1/3
 	var loglighteffect6 = Math.pow(player.postC3Reward.log10() * tmp.effL[6], lightexp6) * 2 
 	if (loglighteffect6 > 15e3) loglighteffect6 = 15e3 * Math.pow(loglighteffect6 / 15e3, .6)
 	tmp.le[6] = pow10(loglighteffect6)
@@ -91,14 +91,14 @@ var leBoosts = {
 		function() {
 			var le1exp = 0.75
 			if (tmp.ngp3l) le1exp = 1
-			else if (tmp.newNGP3E) {
+			else if (tmp.ngp3e) {
 				le1exp += 0.2
 				if (ghSave.ghostlyPhotons.unl) le1exp += .15
 				if (ghSave.wzb.unl) le1exp += .15
 			}
 			var le1mult = 500
 			if (tmp.ngp3l) le1mult = 300
-			if (tmp.newNGP3E) le1mult *= 2
+			if (tmp.ngp3e) le1mult *= 2
 			var eff = Math.pow(Math.log10(tmp.effL[3] + 1), le1exp) * le1mult
 			return eff
 		},

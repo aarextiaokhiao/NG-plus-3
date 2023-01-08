@@ -1,7 +1,339 @@
+let RESETS = {
+	db: {
+		//lowest: Dimension Boosts
+		startingAM() {
+			let x = 10
+			if (player.challenges.includes("challenge1")) x = 100
+			if (inNGM(4)) x = 200
+			if (hasAch("r37")) x = 1000
+			if (hasAch("r54")) x = 2e5
+			if (hasAch("r55")) x = 1e10
+			if (hasAch("r78")) x = 2e25
+			player.money = E(x)
+		},
+		startingDims() {
+			var costs = [10, 100, 1e4, 1e6, 1e9, 1e13, 1e18, 1e24]
+			var costMults = [1e3, 1e4, 1e5, 1e6, 1e8, 1e10, 1e12, 1e15]
+			if (inNC(10) || player.currentChallenge == "postc1") costs = [10, 100, 100, 500, 2500, 2e4, 2e5, 4e6]
+			if (inNC(10)) costMults = [1e3, 5e3, 1e4, 12e3, 18e3, 26e3, 32e3, 42e3]
+
+			for (var d = 1; d <= 8; d++) {
+				var name = TIER_NAMES[d]
+				player[name + "Amount"] = E(0)
+				player[name + "Bought"] = 0
+				player[name + "Cost"] = E(costs[d - 1])
+				player.costMultipliers[d - 1] = E(costMults[d - 1])
+			}
+			player.totalBoughtDims = resetTotalBought()
+
+			//IC2 Headstart
+			if (player.currentChallenge == "postc2") {
+				player.eightAmount = E(1)
+				player.eightBought = 1
+				player.resets = 4
+			}
+		},
+		startingTickspeed() {
+			player.tickspeed = E(aarMod.newGameExpVersion ? 500 : 1000)
+			player.tickSpeedCost = E(1e3)
+			player.tickspeedMultiplier = E(10)
+
+			if (hasAch("r36")) player.tickspeed = player.tickspeed.times(0.98);
+			if (hasAch("r45")) player.tickspeed = player.tickspeed.times(0.98);
+			if (hasAch("r66")) player.tickspeed = player.tickspeed.times(0.98);
+			if (hasAch("r83")) player.tickspeed = player.tickspeed.times(E_pow(0.95,player.galaxies));
+			divideTickspeedIC5()
+		},
+		doReset() {
+			this.startingAM()
+			this.startingDims()
+			if (inNGM(4)) resetNGM4TDs()
+			this.startingTickspeed()
+			reduceDimCosts()
+			setInitialDimensionPower()
+			player.sacrificed = E(0)
+			player.chall3Pow = E(0.01)
+			player.matter = E(0)
+			player.chall11Pow = E(1)
+			player.postC4Tier = 1
+			player.postC8Mult = E(1)
+			skipResets()
+			Marathon = 0
+
+			//UPDATE DISPLAYS
+			hideDimensions()
+			tmp.tickUpdate = true
+		}
+	},
+	tdb: {
+		doReset() {
+			player.tickBoughtThisInf = updateTBTIonGalaxy()
+
+			if (order == "tdb" && (hasAch("r26") && player.resets >= player.tdBoosts)) return
+			if (order == "tsb" && (hasAch("r27") && player.tickspeedBoosts < 5 * player.galaxies - 8)) return
+			player.resets = 0
+		}
+	},
+	tsb: {
+		doReset(order) {
+			if (inNGM(4)) player.tdBoosts = hasAch("r27") && player.currentChallenge == "" ? 3 : 0
+		}
+	},
+	gal: {
+		doReset() {
+			if (inNGM(3)) player.tickspeedBoosts = 0
+		}
+	},
+	galSac: {
+		doReset() {
+			player.galaxies = 0
+			if (inNGM(2)) {
+				player.galacticSacrifice.time = 0
+				GPminpeak = E(0)
+			}
+		}
+	},
+	inf: {
+		doReset(order) {
+			if (isEmptiness) showTab("dimensions")
+			if (inNGM(2)) player.galacticSacrifice = newGalacticDataOnInfinity(order != "inf")
+			player.infinityPower = E(1)
+			player.thisInfinityTime = 0
+			IPminpeak = E(0)
+			Marathon2 = 0
+		}
+	},
+	eter: {
+		doReset(order) {
+			player.infinitied = 0
+			player.bestInfinityTime = 9999999999
+			player.lastTenRuns = [[600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)]]
+			player.autoIP = E(0)
+			player.autoTime = 1e300
+			updateLastTenRuns()
+
+			player.infinityPoints = E(hasAch("r104") ? 2e25 : 0);
+			playerInfinityUpgradesOnEternity()
+			player.infMult = E(1)
+			player.infMultCost = E(100)
+			if (hasAch("r85")) player.infMult = player.infMult.times(4)
+			if (hasAch("r93")) player.infMult = player.infMult.times(4)
+			el("infmultbuyer").style.display = tmp.ngp3 || getEternitied() >= 1 ? "" : "none"
+
+			if (!hasAch("r133")) player.postChallUnlocked = 0
+			player.currentChallenge = ""
+			player.challengeTarget = 0
+			player.challenges = challengesCompletedOnEternity()
+			updateChallenges()
+
+			if (getEternitied() < 2) {
+				player.autobuyers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+				if (inNGM(2)) player.autobuyers.push(13)
+				if (inNGM(3)) player.autobuyers.push(14)
+				if (inNGM(4)) player.autobuyers.push(15)
+				player.break = false
+			}
+			updateAutobuyers()
+
+			if (getEternitied() <= 20) {
+				player.tickSpeedMultDecrease = 10
+				player.tickSpeedMultDecreaseCost = 3e6
+				player.dimensionMultDecrease = 10
+				player.dimensionMultDecreaseCost = 1e8
+				player.extraDimPowerIncrease = 0
+				player.dimPowerIncreaseCost = 1e3  
+				player.offlineProd = 0
+				player.offlineProdCost = 1e7
+			}
+
+			player.infDimensionsUnlocked = resetInfDimUnlocked()
+			completelyResetInfinityDimensions()
+			hideMaxIDButton()
+
+			if (getEternitied() < 7) player.autoSacrifice = 1
+			player.postC4Tier = 1
+			player.postC8Mult = E(1)
+
+			if (getEternitied() < 50) {
+				player.replicanti.amount = E(0)
+				player.replicanti.unl = false
+			} else if (order != "eter" || speedrunMilestonesReached < 24) {
+				player.replicanti.amount = E(1)
+			}
+			if (!hasAch("ng3p67") || player.dilation.active) {
+				let keepPartial = tmp.ngp3 && player.dilation.upgrades.includes("ngpp3") && getEternitied() >= 2e10
+				player.replicanti.chance = keepPartial ? Math.min(player.replicanti.chance, 1) : 0.01
+				player.replicanti.interval = keepPartial ? Math.max(player.replicanti.interval, player.timestudy.studies.includes(22) ? 1 : 50) : 1000
+				player.replicanti.gal = 0
+				player.replicanti.chanceCost = E_pow(1e15, player.replicanti.chance * 100).times(inNGM(2) ? 1e75 : 1e135)
+				player.replicanti.intervalCost = E_pow(1e10, Math.round(Math.log10(1000 / player.replicanti.interval) / -Math.log10(0.9))).times(inNGM(2) ? 1e80 : 1e140)
+				player.replicanti.galCost = E(inNGM(2) ? 1e110 : 1e170)
+
+				el("replicantidiv").style.display="inline-block"
+				el("replicantiunlock").style.display="none"
+			}
+			if (getEternitied() < 3) player.replicanti.galaxybuyer = undefined
+
+			EPminpeakType = 'normal'
+			EPminpeak = E(0)
+
+			player.thisEternity = 0
+			player.timeShards = E(0)
+			player.tickThreshold = E(1)
+			player.totalTickGained = 0
+			resetTimeDimensions()
+
+			player.eterc8ids = 50
+			player.eterc8repl = 40
+
+			player.dimlife = true
+			player.dead = true
+			if (tmp.ngp3) {
+				player.peakSpent = 0
+				player.dontWant = true
+			}
+
+			resetUP()
+		}
+	},
+	qu: {
+		doReset(order) {
+			let bigRip = tmp.ngp3 && brSave.active
+			let qc = !inQC(0)
+
+			player.infinitiedBank = 0
+			player.eternities = speedrunMilestonesReached >= 1 ? 2e4 : tmp.ngp3 ? 0 : 100
+			player.lastTenEternities = [[600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)]]
+			updateLastTenEternities()
+
+			player.eternityPoints = E(0)
+			player.eternityBuyer = getEternitied() < 100 ? player.eternityBuyer : {
+				limit: E(0),
+				isOn: false
+			}
+			player.eternityBuyer.statBeforeDilation = 0
+			completelyResetTimeDimensions()
+
+			player.respec = false
+			if (bigRip ? !hasRipUpg(12) : !isRewardEnabled(11)) player.timestudy = {
+				theorem: 0,
+				amcost: E("1e20000"),
+				ipcost: E(1),
+				epcost: E(1),
+				studies: [],
+			}
+
+			if (bigRip ? !hasRipUpg(12) : !isRewardEnabled(3)) player.eternityUpgrades = []
+			player.epmult = E(1)
+			player.epmultCost = E(5)
+
+			if (tmp.ngp3 && (!isRewardEnabled(3) || bigRip)) player.eternityChalls = challengesCompletedOnEternity(bigRip)
+			player.eternityChallGoal = E(Number.MAX_VALUE)
+			player.currentEternityChall = ""
+			player.eternityChallUnlocked = isRewardEnabled(11) ? player.eternityChallUnlocked : 0
+			player.etercreq = 0
+
+			if (!player.dilation.bestTP) player.dilation.bestTP = player.dilation.tachyonParticles
+			let unl = bigRip ? hasRipUpg(10) : isRewardEnabled(4)
+			let oldUpgs = player.dilation.upgrades
+			player.dilation.tachyonParticles = E(0)
+			player.dilation.dilatedTime = E(0)
+			player.dilation.studies = []
+			player.dilation.upgrades = []
+			player.dilation.times = 0
+			if (unl) {
+				let keepTP = hasAch("ng3p71") ? true : bigRip ? hasRipUpg(11) : hasAch("ng3p37")
+				if (bigRip) {
+					player.dilation.studies = hasRipUpg(12) ? [1,2,3,4,5,6] : [1]
+					if (hasRipUpg(12)) player.dilation.upgrades = oldUpgs
+				} else {
+					player.dilation.studies = speedrunMilestonesReached >= 6 ? [1,2,3,4,5,6] : [1]
+					player.dilation.dilatedTime = unl && speedrunMilestonesReached >= 22 ? E(1e100) : E(0)
+					if (speedrunMilestonesReached >= 6) player.dilation.upgrades = oldUpgs
+				}
+				if (keepTP) player.tachyonParticles = player.dilation.bestTP.pow((hasAch("ng3p71") ? true : bigRip ? false : qc ? ghSave.milestones > 15 : ghSave.milestones > 3) ? 1 : 0.5)
+			}
+			resetDilationGalaxies()
+
+			doMetaDimensionsReset(bigRip, !tmp.ngp3, qc)
+			if (player.exdilation !== undefined) {
+				player.exdilation = {
+					unspent: E(0),
+					spent: {
+						1: E(0),
+						2: E(0),
+						3: E(0),
+						4: E(0)
+					},
+					times: 0
+				}
+				player.blackhole = {
+					unl: speedrunMilestonesReached >= 5,
+					upgrades: {dilatedTime: 0, bankedInfinities: 0, replicanti: 0, total: 0},
+					power: E(0)
+				}
+				if (!hasAch("ng3p67") || !aarMod.ngudpV || aarMod.ngumuV) {
+					for (var d = 1; d <= (aarMod.nguspV ? 8 : 4); d++) player["blackholeDimension" + d] = {
+						cost: blackholeDimStartCosts[d],
+						amount: E(0),
+						power: E(1),
+						bought: 0
+					}
+				}
+				if (speedrunMilestonesReached <= 4) {
+					el("blackholediv").style.display = "none"
+					el("blackholeunlock").style.display = "inline-block"
+				}
+			}
+			if (tmp.ngp3) {
+				if (speedrunMilestonesReached >= 4 && !isRewardEnabled(4)) {
+					for (var s = 0; s < player.masterystudies.length; s++) {
+						if (player.masterystudies[s].indexOf("t") >= 0) player.timestudy.theorem += masteryStudies.costs.time[player.masterystudies[s].split("t")[1]]
+						else player.timestudy.theorem += masteryStudies.costs.dil[player.masterystudies[s].split("d")[1]]
+					}
+				}
+				if (isRewardEnabled(11) && (bigRip && !hasRipUpg(12))) {
+					if (player.eternityChallUnlocked > 12) player.timestudy.theorem += masteryStudies.costs.ec[player.eternityChallUnlocked]
+					else player.timestudy.theorem += ([0, 30, 35, 40, 70, 130, 85, 115, 115, 415, 550, 1, 1])[player.eternityChallUnlocked]
+				}
+
+				player.masterystudies = bigRip && !hasRipUpg(12) ? ["d7", "d8", "d9", "d10", "d11", "d12", "d13", "d14"] : speedrunMilestonesReached >= 16 && isRewardEnabled(11) ? player.masterystudies : []
+				player.respecMastery = false
+				updateMasteryStudyCosts()
+
+				ipMultPower = GUBought("gb3") ? 2.3 : player.masterystudies.includes("t241") ? 2.2 : 2
+				if (!qc) {
+					quSave.electrons.amount = 0
+					quSave.electrons.sacGals = 0
+					if (speedrunMilestonesReached < 25 && player.quantum.autoOptions.sacrifice) toggleAutoQuantumContent('sacrifice')
+					tmp.aeg = 0
+				}
+				drawMasteryTree()
+				replicantsResetOnQuantum(qc)
+				nanofieldResetOnQuantum()
+			}
+
+			quSave.time = 0
+			QKminpeak = E(0)
+			QKminpeakValue = E(0)
+			el("metaAntimatterEffectType").textContent = inQC(3) ? "multiplier on all Infinity Dimensions" : "extra multiplier per Dimension Boost"
+		}
+	}
+}
+let RESET_ORDER = Object.keys(RESETS)
+let RESET_INDEX = {}
+for (var [i, r] of Object.entries(RESET_ORDER)) RESET_INDEX[r] = i
+
+function doReset(order) {
+	let start = RESET_INDEX[order]
+	for (var layer = start; layer >= 0; layer--) RESETS[RESET_ORDER[layer]].doReset(order)
+}
+
+//OLD CODE
 function onQuantumAM(){
 	let x = 10
 	if (player.challenges.includes("challenge1")) x = 100
-	if (aarMod.ngmX > 3) x = 200
+	if (inNGM(4)) x = 200
 	if (hasAch("r37")) x = 1000
 	if (hasAch("r54")) x = 2e5
 	if (hasAch("r55")) x = 1e10
@@ -47,158 +379,6 @@ function nanofieldResetOnQuantum(){
 	nfSave.power = 0
 	nfSave.powerThreshold = E(50)
 }
-
-function doQuantumResetStuff(bigRip, challid){
-	var headstart = aarMod.newGamePlusVersion > 0 && !tmp.ngp3
-	var oheHeadstart = bigRip ? hasRipUpg(2) : speedrunMilestonesReached > 0
-	var keepABnICs = oheHeadstart || bigRip || hasAch("ng3p51")
-	var turnSomeOn = !bigRip || hasRipUpg(1)
-	var bigRipChanged = tmp.ngp3 && bigRip != brSave && brSave.active
-	player.money = E(10)
-	player.tickSpeedCost = E(1000)
-	player.tickspeed = E(aarMod.newGameExpVersion ? 500 : 1000)
-	player.tickBoughtThisInf = resetTickBoughtThisInf()
-	completelyResetNormalDimensions()
-	player.sacrificed = E(0)
-	player.challenges = keepABnICs ? player.challenges : []
-	player.currentChallenge = ""
-	player.infinitied = 0
-	player.infinitiedBank = headstart || hasAch("ng3p15") ? player.infinitiedBank : 0
-	player.bestInfinityTime = 9999999999
-	player.thisInfinityTime = 0
-	player.resets = keepABnICs ? 4 : 0
-	player.tdBoosts = resetTDBoosts()
-	player.tickspeedBoosts = player.tickspeedBoosts !== undefined ? (keepABnICs ? 16 : 0) : undefined
-	player.galaxies = keepABnICs ? 1 : 0
-	player.galacticSacrifice = resetGalacticSacrifice()
-	player.interval = null
-	player.autobuyers = keepABnICs ? player.autobuyers : [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
-	player.partInfinityPoint = 0
-	player.partInfinitied = 0
-	player.break = keepABnICs ? player.break : false
-	player.costMultipliers = [E(1e3), E(1e4), E(1e5), E(1e6), E(1e8), E(1e10), E(1e12), E(1e15)]
-	player.tickspeedMultiplier = E(10)
-	player.chall2Pow = 1
-	player.chall3Pow = E(0.01)
-	player.matter = E(0)
-	player.chall11Pow = E(1)
-	player.lastTenRuns = [[600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)]]
-	player.lastTenEternities = [[600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)]]
-	player.infMult = E(1)
-	player.infMultCost = E(10)
-	player.tickSpeedMultDecrease = keepABnICs ? player.tickSpeedMultDecrease : GUBought("gb4") ? 1.25 : 10
-	player.tickSpeedMultDecreaseCost = keepABnICs ? player.tickSpeedMultDecreaseCost : 3e6
-	player.dimensionMultDecrease = keepABnICs ? player.dimensionMultDecrease : 10
-	player.dimensionMultDecreaseCost = keepABnICs ? player.dimensionMultDecreaseCost : 1e8
-	player.extraDimPowerIncrease = keepABnICs ? player.extraDimPowerIncrease : 0
-	player.dimPowerIncreaseCost = keepABnICs ? player.dimPowerIncreaseCost : 1e3
-	player.postC4Tier = 1
-	player.postC8Mult = E(1)
-	player.overXGalaxies = keepABnICs ? player.overXGalaxies : 0
-	player.overXGalaxiesTickspeedBoost = keepABnICs || player.tickspeedBoosts == undefined ? player.overXGalaxiesTickspeedBoost : 0
-	player.postChallUnlocked = hasAch("r133") || bigRip ? order.length : 0
-	player.postC4Tier = 0
-	player.postC3Reward = E(1)
-	player.eternityPoints = E(0)
-	player.eternities = headstart ? player.eternities : bigRip ? (hasRipUpg(2) ? 1e5 : 0) : speedrunMilestonesReached > 17 ? 1e13 : oheHeadstart ? 2e4 : hasAch("ng3p12") ? Math.max(Math.floor(720*3600*10/quSave.best),10000) : 0
-	player.eternitiesBank = tmp.ngp3 ? nA(player.eternitiesBank, bankedEterGain) : undefined
-	player.thisEternity = 0
-	player.bestEternity = headstart ? player.bestEternity : 9999999999
-	player.eternityUpgrades = isRewardEnabled(3) && (!bigRip || hasRipUpg(12)) ? [1,2,3,4,5,6] : []
-	player.epmult = E(1)
-	player.epmultCost = E(500)
-	player.infDimensionsUnlocked = resetInfDimUnlocked()
-	player.infinityPower = E(1)
-	completelyResetInfinityDimensions()
-	player.infDimBuyers = bigRipChanged ? [turnSomeOn, turnSomeOn, turnSomeOn, turnSomeOn, turnSomeOn, turnSomeOn, turnSomeOn, turnSomeOn] : oheHeadstart ? player.infDimBuyers : [false, false, false, false, false, false, false, false]
-	player.timeShards = E(0)
-	player.tickThreshold = E(1)
-	player.totalTickGained = 0
-	completelyResetTimeDimensions()
-	player.offlineProd = keepABnICs ? player.offlineProd : 0
-	player.offlineProdCost = keepABnICs ? player.offlineProdCost : 1e7
-	player.challengeTarget = 0
-	player.autoSacrifice = keepABnICs || hasAch("r133") ? player.autoSacrifice : 1
-	player.replicanti = {
-		amount: E(oheHeadstart ? 1 : 0),
-		unl: oheHeadstart,
-		chance: 0.01,
-		chanceCost: E(player.galacticSacrifice !== undefined ? 1e90 : 1e150),
-		interval: 1000,
-		intervalCost: E(player.galacticSacrifice !== undefined ? 1e80 : 1e140),
-		gal: 0,
-		galaxies: 0,
-		galCost: E(player.galacticSacrifice!=undefined?1e110:1e170),
-		galaxybuyer: bigRipChanged ? turnSomeOn : oheHeadstart ? player.replicanti.galaxybuyer : undefined,
-		auto: bigRipChanged ? [turnSomeOn, turnSomeOn, turnSomeOn] : oheHeadstart ? player.replicanti.auto : [false, false, false]
-	}
-	player.timestudy = isRewardEnabled(11) && (!bigRip || hasRipUpg(12)) ? player.timestudy : {
-		theorem: 0,
-		amcost: E("1e20000"),
-		ipcost: E(1),
-		epcost: E(1),
-		studies: [],
-	}
-	player.eternityChalls = {}
-	player.eternityChallGoal = E(Number.MAX_VALUE)
-	player.currentEternityChall = ""
-	player.eternityChallUnlocked = isRewardEnabled(11) ? player.eternityChallUnlocked : 0
-	player.etercreq = 0
-	player.autoIP = E(0)
-	player.autoTime = 1e300
-	player.infMultBuyer = bigRipChanged ? turnSomeOn : oheHeadstart ? player.infMultBuyer : false
-	player.autoCrunchMode = keepABnICs ? player.autoCrunchMode : "amount"
-	player.autoEterMode = keepABnICs ? player.autoEterMode : "amount"
-	player.peakSpent = tmp.ngp3 ? 0 : undefined
-	player.respec = false
-	player.respecMastery = tmp.ngp3 ? false : undefined
-	player.eternityBuyer = keepABnICs ? player.eternityBuyer : {
-		limit: E(0),
-		isOn: false
-	}
-	player.eterc8ids = 50
-	player.eterc8repl = 40
-	player.dimlife = true
-	player.dead = true
-	if (!player.dilation.bestTP) player.dilation.bestTP = player.dilation.tachyonParticles
-	player.dilation = {
-		studies: bigRip ? (hasRipUpg(12) ? [1,2,3,4,5,6] : hasRipUpg(10) ? [1] : []) : isRewardEnabled(4) ? (speedrunMilestonesReached > 5 ? [1,2,3,4,5,6] : [1]) : [],
-		active: false,
-		tachyonParticles: ((hasAch("ng3p37") && (!bigRip || hasRipUpg(11))) || hasAch("ng3p71")) ? player.dilation.bestTP.pow((ghSave.milestones > 15 && (!bigRip || hasAch("ng3p71"))) || (!challid && ghSave.milestones > 3) ? 1 : 0.5) : E(0),
-		dilatedTime: E(speedrunMilestonesReached > 21 && isRewardEnabled(4) && !bigRip ? 1e100 : 0),
-		bestTP: Decimal.max(player.dilation.bestTP || 0, player.dilation.tachyonParticles),
-		bestTPOverGhostifies: player.dilation.bestTPOverGhostifies,
-		nextThreshold: E(1000),
-		freeGalaxies: 0,
-		upgrades: speedrunMilestonesReached > 5 && isRewardEnabled(4) && (!bigRip || hasRipUpg(12)) ? [4,5,6,7,8,9,"ngpp1","ngpp2"] : [],
-		autoUpgrades: [],
-		rebuyables: {
-			1: 0,
-			2: 0,
-			3: 0,
-			4: 0,
-		},
-	}
-	player.exdilation = player.exdilation != undefined ? {
-		unspent: E(0),
-		spent: {
-			1: E(0),
-			2: E(0),
-			3: E(0),
-			4: E(0)
-		},
-		times: 0
-	}: player.exdilation
-	player.blackhole = player.exdilation != undefined ? {
-		unl: speedrunMilestonesReached > 4,
-		upgrades: {dilatedTime: 0, bankedInfinities: 0, replicanti: 0, total: 0},
-		power: E(0)
-	}: player.blackhole
-	doMetaDimensionsReset(bigRip, headstart, challid)
-	player.masterystudies = tmp.ngp3 ? (bigRip && !hasRipUpg(12) ? ["d7", "d8", "d9", "d10", "d11", "d12", "d13", "d14"] : speedrunMilestonesReached > 15 && isRewardEnabled(11) ? player.masterystudies : []) : undefined
-	player.old = tmp.ngp3 ? inQC(0) : undefined
-	player.dontWant = tmp.ngp3 || undefined
-}
 		
 function doMetaDimensionsReset(bigRip, headstart, challid){
 	player.meta = {
@@ -206,7 +386,7 @@ function doMetaDimensionsReset(bigRip, headstart, challid){
 		bestAntimatter: headstart ? player.meta.bestAntimatter : getMetaAntimatterStart(bigRip),
 		bestOverQuantums: player.meta.bestOverQuantums,
 		bestOverGhostifies: player.meta.bestOverGhostifies,
-		resets: isRewardEnabled(27) ? (!challid && ghSave.milestones > 4 && bigRip == brSave && brSave.active ? player.meta.resets : 4) : 0,
+		resets: isRewardEnabled(27) ? (!challid && ghSave.milestones > 4 ? player.meta.resets : 4) : 0,
 		'1': {
 			amount: E(0),
 			bought: 0,
@@ -250,98 +430,31 @@ function doMetaDimensionsReset(bigRip, headstart, challid){
 	}
 }
 
-function doGalaxyResetStuff(bulk){
-	player.money = hasAch("r111") ? player.money : E(10)
-	player.tickSpeedCost = E(1000)
-	player.tickBoughtThisInf = updateTBTIonGalaxy()
-	completelyResetNormalDimensions()
-	player.sacrificed = E(0)
-	player.totalBoughtDims = resetTotalBought()
-	player.resets = hasAch("ng3p55") ? player.resets : 0
-	player.interval = null
-	player.tdBoosts = resetTDBoosts()
-	player.galaxies = player.galaxies + bulk
-	player.costMultipliers = [E(1e3), E(1e4), E(1e5), E(1e6), E(1e8), E(1e10), E(1e12), E(1e15)]
-	player.tickspeedMultiplier = E(10)
-	player.chall3Pow = E(0.01)
-	player.matter = E(0)
-	player.chall11Pow = E(1)
-	player.postC4Tier = 1
-	player.postC8Mult = E(1)
-}
-
-
-function doNormalChallengeResetStuff(){
-	player.money = E(10)
-	player.tickSpeedCost = E(1000)
-	player.tickBoughtThisInf = resetTickBoughtThisInf()
-	completelyResetNormalDimensions()
-	player.totalBoughtDims = resetTotalBought()
-	player.sacrificed = E(0)
-	player.thisInfinityTime = 0
-	player.resets = 0
-	player.galaxies = 0
-	player.interval = null
-	player.galacticSacrifice = newGalacticDataOnInfinity()
-	player.costMultipliers = [E(1e3), E(1e4), E(1e5), E(1e6), E(1e8), E(1e10), E(1e12), E(1e15)]
-	player.tickspeedMultiplier= E(10)
-	player.chall2Pow = 1
-	player.chall3Pow = E(0.01)
-	player.matter = E(0)
-	player.chall11Pow = E(1)
-	player.postC4Tier = 1
-	player.postC8Mult = E(1)
-}
-			
-function completelyResetTimeDimensions(){
-	player.timeDimension1 = {
-		cost: E(1),
-		amount: E(0),
-		power: E(1),
-		bought: 0
-	}
-	player.timeDimension2 = {
-		cost: E(5),
-		amount: E(0),
-		power: E(1),
-		bought: 0
-	}
-	player.timeDimension3 = {
-		cost: E(100),
-		amount: E(0),
-		power: E(1),
-		bought: 0
-	}
-	player.timeDimension4 = {
-		cost: E(1000),
-		amount: E(0),
-		power: E(1),
-		bought: 0
-	}
-	player.timeDimension5 = {
-		cost: E("1e2350"),
-		amount: E(0),
-		power: E(1),
-		bought: 0
-	}
-	player.timeDimension6 = {
-		cost: E("1e2650"),
-		amount: E(0),
-		power: E(1),
-		bought: 0
-	}
-	player.timeDimension7 = {
-		cost: E("1e3000"),
-		amount: E(0),
-		power: E(1),
-		bought: 0
-	}
-	player.timeDimension8 = {
-		cost: timeDimCost(8,0),
-		amount: E(0),
-		power: E(1),
-		bought: 0
-	}
+function completelyResetNormalDimensions(){
+	player.firstCost = E(10)
+	player.secondCost = E(100)
+	player.thirdCost = E(10000)
+	player.fourthCost = E(1000000)
+	player.fifthCost = E(1e9)
+	player.sixthCost = E(1e13)
+	player.seventhCost = E(1e18)
+	player.eightCost = E(1e24)
+	player.firstAmount = E(0)
+	player.secondAmount = E(0)
+	player.thirdAmount = E(0)
+	player.fourthAmount = E(0)
+	player.firstBought = 0
+	player.secondBought = 0
+	player.thirdBought = 0
+	player.fourthBought = 0
+	player.fifthAmount = E(0)
+	player.sixthAmount = E(0)
+	player.seventhAmount = E(0)
+	player.eightAmount = E(0)
+	player.fifthBought = 0
+	player.sixthBought = 0
+	player.seventhBought = 0
+	player.eightBought = 0
 }
 
 function completelyResetInfinityDimensions(){
@@ -403,49 +516,55 @@ function completelyResetInfinityDimensions(){
 	}
 }
 
-function completelyResetNormalDimensions(){
-	player.firstCost = E(10)
-	player.secondCost = E(100)
-	player.thirdCost = E(10000)
-	player.fourthCost = E(1000000)
-	player.fifthCost = E(1e9)
-	player.sixthCost = E(1e13)
-	player.seventhCost = E(1e18)
-	player.eightCost = E(1e24)
-	player.firstAmount = E(0)
-	player.secondAmount = E(0)
-	player.thirdAmount = E(0)
-	player.fourthAmount = E(0)
-	player.firstBought = 0
-	player.secondBought = 0
-	player.thirdBought = 0
-	player.fourthBought = 0
-	player.fifthAmount = E(0)
-	player.sixthAmount = E(0)
-	player.seventhAmount = E(0)
-	player.eightAmount = E(0)
-	player.fifthBought = 0
-	player.sixthBought = 0
-	player.seventhBought = 0
-	player.eightBought = 0
-}
-
-function checkOnCrunchAchievements(){
-	if (player.thisInfinityTime <= 72000) giveAchievement("That's fast!");
-	if (player.thisInfinityTime <= 6000) giveAchievement("That's faster!")
-	if (player.thisInfinityTime <= 600) giveAchievement("Forever isn't that long")
-	if (player.thisInfinityTime <= 2) giveAchievement("Blink of an eye")
-	if (player.eightAmount == 0) giveAchievement("You didn't need it anyway");
-	if (player.galaxies == 1) giveAchievement("Claustrophobic");
-	if (player.galaxies == 0 && player.resets == 0) giveAchievement("Zero Deaths")
-	if (inNC(2) && player.thisInfinityTime <= 1800) giveAchievement("Many Deaths")
-	if (inNC(11) && player.thisInfinityTime <= 1800) giveAchievement("Gift from the Gods")
-	if (inNC(5) && player.thisInfinityTime <= 1800) giveAchievement("Is this hell?")
-	if (inNC(3) && player.thisInfinityTime <= 100) giveAchievement("You did this again just for the achievement right?");
-	if (player.firstAmount == 1 && player.resets == 0 && player.galaxies == 0 && inNC(12)) giveAchievement("ERROR 909: Dimension not found")
-	if (gainedInfinityPoints().gte(1e150)) giveAchievement("All your IP are belong to us")
-	if (gainedInfinityPoints().gte(1e200) && player.thisInfinityTime <= 20) giveAchievement("Ludicrous Speed")
-	if (gainedInfinityPoints().gte(1e250) && player.thisInfinityTime <= 200) giveAchievement("I brake for nobody")
+function completelyResetTimeDimensions(){
+	player.timeDimension1 = {
+		cost: E(1),
+		amount: E(0),
+		power: E(1),
+		bought: 0
+	}
+	player.timeDimension2 = {
+		cost: E(5),
+		amount: E(0),
+		power: E(1),
+		bought: 0
+	}
+	player.timeDimension3 = {
+		cost: E(100),
+		amount: E(0),
+		power: E(1),
+		bought: 0
+	}
+	player.timeDimension4 = {
+		cost: E(1000),
+		amount: E(0),
+		power: E(1),
+		bought: 0
+	}
+	player.timeDimension5 = {
+		cost: E("1e2350"),
+		amount: E(0),
+		power: E(1),
+		bought: 0
+	}
+	player.timeDimension6 = {
+		cost: E("1e2650"),
+		amount: E(0),
+		power: E(1),
+		bought: 0
+	}
+	player.timeDimension7 = {
+		cost: E("1e3000"),
+		amount: E(0),
+		power: E(1),
+		bought: 0
+	}
+	player.timeDimension8 = {
+		cost: timeDimCost(8,0),
+		amount: E(0),
+		power: E(1),
+		bought: 0
+	}
 }
 
 function checkSecondSetOnCrunchAchievements(){
@@ -457,97 +576,6 @@ function checkSecondSetOnCrunchAchievements(){
 	if (player.challenges.length >= 2) giveAchievement("Daredevil")
 	if (player.challenges.length >= getTotalNormalChallenges() + 1) giveAchievement("AntiChallenged")
 	if (player.challenges.length >= getTotalNormalChallenges() + order.length + 1) giveAchievement("Anti-antichallenged")
-}
-
-function doCrunchResetStuff(){
-	player.galacticSacrifice = newGalacticDataOnInfinity()
-	player.money = E(10)
-	player.tickSpeedCost = E(1000)
-	player.tickBoughtThisInf = resetTickBoughtThisInf()
-	completelyResetNormalDimensions()
-	player.totalBoughtDims = resetTotalBought()
-	player.sacrificed = E(0)
-	player.bestInfinityTime = (player.currentEternityChall !== "eterc12") ? Math.min(player.bestInfinityTime, player.thisInfinityTime) : player.bestInfinityTime
-	player.thisInfinityTime = 0
-	player.resets = 0
-	player.interval = null
-	player.costMultipliers = [E(1e3), E(1e4), E(1e5), E(1e6), E(1e8), E(1e10), E(1e12), E(1e15)]
-	player.tickspeedMultiplier = E(10)
-	player.chall2Pow = 1
-	player.chall3Pow = E(0.01)
-	player.matter = E(0)
-	player.chall11Pow = E(1)
-	player.postC4Tier = 1
-	player.postC8Mult = E(1)
-	player.galaxies = 0
-}
-
-function doEternityResetStuff(){
-	player.money = E(10)
-	player.tickSpeedCost = E(1000)
-	player.tickspeed = E(aarMod.newGameExpVersion?500:1000)
-	player.tickBoughtThisInf = resetTickBoughtThisInf()
-	completelyResetNormalDimensions()
-	player.infinitied = 0
-	player.totalBoughtDims = resetTotalBought()
-	player.sacrificed = E(0)
-	player.bestInfinityTime = 9999999999
-	player.thisInfinityTime = 0
-	player.resets = (getEternitied() > 3) ? 4 : 0
-	player.challenges = challengesCompletedOnEternity()
-	player.currentChallenge = ""
-	player.galaxies = (getEternitied() > 3) ? 1 : 0
-	player.galacticSacrifice = newGalacticDataOnInfinity(true)
-	player.interval = null
-	player.autobuyers = (getEternitied() > 1) ? player.autobuyers : [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
-	player.break = getEternitied() > 1 ? player.break : false
-	player.costMultipliers = [E(1e3), E(1e4), E(1e5), E(1e6), E(1e8), E(1e10), E(1e12), E(1e15)]
-	player.partInfinityPoint = 0
-	player.partInfinitied = 0    
-	player.tickspeedMultiplier = E(10)
-	player.chall2Pow = 1
-	player.chall3Pow = E(0.01)
-	player.matter = E(0)
-	player.chall11Pow = E(1)
-	player.lastTenRuns = [[600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)]]
-	player.infMult = E(1)
-	player.infMultCost = E(10)
-	player.tickSpeedMultDecrease = getEternitied() > 19 ? player.tickSpeedMultDecrease : 10
-	player.tickSpeedMultDecreaseCost = getEternitied() > 19 ? player.tickSpeedMultDecreaseCost : 3e6
-	player.dimensionMultDecrease = getEternitied() > 19 ? player.dimensionMultDecrease : 10
-	player.dimensionMultDecreaseCost = getEternitied() > 19 ? player.dimensionMultDecreaseCost : 1e8
-	player.extraDimPowerIncrease = getEternitied() > 19 ? player.extraDimPowerIncrease : 0
-	player.dimPowerIncreaseCost = getEternitied() > 19 ? player.dimPowerIncreaseCost : 1e3    
-	player.postChallUnlocked = hasAch("r133") ? order.length : 0
-	player.postC4Tier = 1
-	player.postC8Mult = E(1)
-	player.infDimensionsUnlocked = resetInfDimUnlocked()
-	player.infinityPower = E(1)
-	completelyResetInfinityDimensions()
-	player.timeShards = E(0)
-	player.tickThreshold = E(1)
-	player.totalTickGained = 0
-	player.thisEternity = 0
-	player.totalTickGained = 0
-	player.offlineProd = getEternitied() > 19 ? player.offlineProd : 0
-	player.offlineProdCost = getEternitied() > 19 ? player.offlineProdCost : 1e7
-	player.challengeTarget = 0
-	player.autoSacrifice = getEternitied() > 6 ? player.autoSacrifice : 1
-	player.replicanti.amount = speedrunMilestonesReached > 23 ? player.replicanti.amount : E(getEternitied() > 49 ? 1 : 0)
-	player.replicanti.unl = getEternitied() > 49
-	player.replicanti.galaxies = 0
-	player.replicanti.galaxybuyer = (getEternitied() > 2) ? player.replicanti.galaxybuyer : undefined
-	player.autoIP = E(0)
-	player.autoTime = 1e300
-	player.peakSpent = tmp.ngp3 ? 0 : undefined
-	player.eterc8ids = 50
-	player.eterc8repl = 40
-	player.dimlife = true
-	player.dead = true
-	player.eternityChallGoal = E(Number.MAX_VALUE)
-	player.currentEternityChall = ""
-	quSave = player.quantum
-	player.dontWant = tmp.ngp3 ? true : undefined
 }
 
 function getReplicantsOnGhostifyData(){
@@ -740,7 +768,7 @@ function doGhostifyResetStuff(implode, gain, amount, force, bulk, nBRU, nBEU){
 	player.thisInfinityTime = 0
 	player.resets = 0
 	player.tdBoosts = resetTDBoosts()
-	player.tickspeedBoosts = player.tickspeedBoosts !== undefined ? 16 : undefined
+	player.tickspeedBoosts = inNGM(3) ? 16 : undefined
 	player.galaxies = 0
 	player.interval = null
 	player.partInfinityPoint = 0
@@ -758,7 +786,7 @@ function doGhostifyResetStuff(implode, gain, amount, force, bulk, nBRU, nBEU){
 	player.tickSpeedMultDecrease = Math.max(player.tickSpeedMultDecrease, bm > 1 ? 1.25 : 2)
 	player.postC4Tier = 1
 	player.postC8Mult = E(1)
-	player.overXGalaxiesTickspeedBoost = player.tickspeedBoosts == undefined ? player.overXGalaxiesTickspeedBoost : 0
+	player.overXGalaxiesTickspeedBoost = !inNGM(3) ? player.overXGalaxiesTickspeedBoost : 0
 	player.postChallUnlocked = hasAch("r133") ? order.length : 0
 	player.postC4Tier = 0
 	player.postC3Reward = E(1)
@@ -783,12 +811,12 @@ function doGhostifyResetStuff(implode, gain, amount, force, bulk, nBRU, nBEU){
 		amount: E(bm ? 1 : 0),
 		unl: bm > 0,
 		chance: 0.01,
-		chanceCost: E(player.galacticSacrifice !== undefined ? 1e90 : 1e150),
+		chanceCost: E(inNGM(2) ? 1e90 : 1e150),
 		interval: 1000,
-		intervalCost: E(player.galacticSacrifice !== undefined ? 1e80 : 1e140),
+		intervalCost: E(inNGM(2) ? 1e80 : 1e140),
 		gal: 0,
 		galaxies: 0,
-		galCost: E(player.galacticSacrifice != undefined ? 1e110 : 1e170),
+		galCost: E(inNGM(2) ? 1e110 : 1e170),
 		galaxybuyer: player.replicanti.galaxybuyer,
 		auto: bm ? player.replicanti.auto : [false, false, false]
 	}
@@ -888,8 +916,6 @@ function doInfinityGhostifyResetStuff(implode, bm){
 	player.challenges = challengesCompletedOnEternity()
 	IPminpeak = E(0)
 	if (isEmptiness) showTab("dimensions")
-	el("infinityPoints1").innerHTML = "You have <span class=\"IPAmount1\">" + shortenDimensions(player.infinityPoints) + "</span> Infinity points."
-	el("infinityPoints2").innerHTML = "You have <span class=\"IPAmount2\">" + shortenDimensions(player.infinityPoints) + "</span> Infinity points."
 	el("infmultbuyer").textContent = "Max buy IP mult"
 	if (implode) showChallengesTab("normalchallenges")
 	updateChallenges()
@@ -1016,7 +1042,6 @@ function doQuantumGhostifyResetStuff(implode, bm){
 	if (!bm && !hasAch("ng3p77")) {
 		el("electronstabbtn").style.display = "none"
 		el("anttabs").style.display = "none"
-		el("edtabbtn_dim").style.display = "none"
 		NF.shown()
 		el("riptabbtn").style.display = "none"
 	}
@@ -1042,7 +1067,7 @@ function doGhostifyGhostifyResetStuff(bm, force){
 	el("ghostifybtn").style.display = "none"
 	if (!ghostified) {
 		ghostified = true
-		ngp3_feature_notify("gh")
+		ngp3_feature_notify("fu")
 		el("ghostparticles").style.display = ""
 		el("ghostifyAnimBtn").style.display = "inline-block"
 		el("ghostifyConfirmBtn").style.display = "inline-block"

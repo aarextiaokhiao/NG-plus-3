@@ -827,7 +827,7 @@ shortenMoney = function (money) {
 };
 
 shortenND = function (money) {
-	return formatQuick(money, 2, player.tdBoosts !== undefined ? Math.min(Math.max(3 - money.exponent, 0), 3) : 0)
+	return formatQuick(money, 2, !inNGM(4) ? Math.min(Math.max(3 - money.exponent, 0), 3) : 0)
 }
 
 formatSci = function (x) {

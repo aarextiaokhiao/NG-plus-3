@@ -32,8 +32,8 @@ function getBaseDTProduction(){
 		gain = gain.times(getDTMultPostBRU11())
 	}
 	if (hasBU(15)) gain = gain.times(tmp.blu[15].dt)
-	if (tmp.newNGP3E && hasAch("r138") && gain.lt(1e100)) gain = gain.times(3).min(1e100)
-	if ((tmp.ngp3 || tmp.newNGP3E) && hasAch("ngpp13")) gain = gain.times(2)
+	if (tmp.ngp3e && hasAch("r138") && gain.lt(1e100)) gain = gain.times(3).min(1e100)
+	if ((tmp.ngp3 || tmp.ngp3e) && hasAch("ngpp13")) gain = gain.times(2)
 
 	return gain
 }
@@ -164,15 +164,15 @@ function dilates(x, m) {
 		if (player.dilation.rebuyables[5]) e += 0.0025 * (1 - 1 / Math.pow(player.dilation.rebuyables[5] + 1 , 1 / 3))
 		a = true
 	}
-	if (player.galacticSacrifice !== undefined && m != 1) {
+	if (inNGM(2) && m != 1) {
 		e *= dilationPowerStrength()
 		a = true
 	}
 	if (a) {
 		if (m != "tick") x = x.max(1)
-		else if (player.galacticSacrifice == undefined) x = x.times(1e3)
-		if (x.gt(10) || !(aarMod.ngmX > 3)) x = pow10(Math.pow(x.log10(), e))
-		if (m == "tick" && player.galacticSacrifice == undefined) x = x.div(1e3)
+		else if (!inNGM(2)) x = x.times(1e3)
+		if (x.gt(10) || !inNGM(3)) x = pow10(Math.pow(x.log10(), e))
+		if (m == "tick" && inNGM(2)) x = x.div(1e3)
 		if (m == "tick" && x.lt(1)) x = Decimal.div(1, x)
 	}
 	return x.max(0).min(y) //it should never be a buff
@@ -180,7 +180,7 @@ function dilates(x, m) {
 
 function dilationPowerStrength() {
 	let pow = 0.75
-	if (aarMod.ngmX>3) pow = 0.7
+	if (inNGM(4)) pow = 0.7
 	return pow;
 }
 
@@ -300,9 +300,9 @@ function isDilUpgUnlocked(id) {
 	let ngpp = id.split("ngpp")[1]
 	let ngmm = id.split("ngmm")[1]
 	if (id == "r4") return player.meta !== undefined
-	if (id == "r5") return player.galacticSacrifice !== undefined
+	if (id == "r5") return inNGM(2)
 	if (ngmm) {
-		let r = player.galacticSacrifice !== undefined
+		let r = inNGM(2)
 		if (ngmm == 6) r = r && player.meta !== undefined
 		if (ngmm >= 7) r = r && player.dilation.studies.includes(6)
 		return r
@@ -340,7 +340,7 @@ function getDilUpgCost(id) {
 
 function getRebuyableDilUpgCost(id) {
 	var costGroup = DIL_UPG_COSTS["r"+id]
-	if (id == 4 && player.galacticSacrifice !== undefined) costGroup = DIL_UPG_COSTS.r4_ngmm
+	if (id == 4 && inNGM(2)) costGroup = DIL_UPG_COSTS.r4_ngmm
 	var amount = player.dilation.rebuyables[id] || 0
 	let cost = E(costGroup[0]).times(E_pow(costGroup[1],amount))
 	if (aarMod.nguspV) {
@@ -457,7 +457,7 @@ function updateDilationUpgradeButtons() {
 		el("dil64desc").textContent = "Currently: +" + shortenMoney(getD21Bonus()) + " to exponent before softcap"
 		el("dil65desc").textContent = "Currently: " + shortenMoney(getD22Bonus()) + "x"
 	}
-	if (player.galacticSacrifice !== undefined) {
+	if (inNGM(2)) {
 		el("dil44desc").textContent = "Currently: +" + shortenMoney(getDil44Mult())
 		el("dil45desc").textContent = "Currently: " + shortenMoney(getDil45Mult()) + "x"
 		if (player.dilation.studies.includes(6)) {
@@ -524,18 +524,14 @@ function resetDilationGalaxies() {
 	gainDilationGalaxies()
 }
 
-var failsafeDilateTime = false
-function startDilatedEternity(auto, shortcut) {
+function startDilatedEternity(auto) {
 	if (brokeDilation()) return
-	if (shortcut && player.dilation.active) return
-	if (failsafeDilateTime) return
 	if (!player.dilation.studies.includes(1)) return
-	failsafeDilateTime = true
-	var onActive = player.dilation.active
-	if (!onActive && aarMod.dilationConf && !auto) if (!confirm("Dilating time will start a new Eternity where all of your Normal/Infinity/Time Dimension multiplier's exponents and the Tickspeed multiplier's exponent will be reduced to ^ 0.75. If you can Eternity while dilated, you'll be rewarded with tachyon particles based on your antimatter and tachyon particles.")) return
 
-	eternity(true, true, false, !player.dilation.active)
-	resetUP()
+	var onActive = !player.dilation.active
+	if (!auto && onActive && aarMod.dilationConf && !confirm("Dilating time will start a new Eternity where all of your Normal/Infinity/Time Dimension multiplier's exponents and the Tickspeed multiplier's exponent will be reduced to ^0.75. If you can Eternity while dilated, you'll be rewarded with tachyon particles based on your antimatter and tachyon particles.")) return
+
+	eternity(onActive || !canEternity(), auto, onActive)
 }
 
 function updateDilationDisplay() {

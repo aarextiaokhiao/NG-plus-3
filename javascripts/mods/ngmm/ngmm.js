@@ -4,9 +4,9 @@ function getGSAmount(offset=0) {
 	let y = getGSGalaxyExp(galaxies)
 	let z = getGSDimboostExp(galaxies)
 	let resetMult = player.resets
-	if (aarMod.ngmX > 3) resetMult = resetMult + player.tdBoosts / 2 - 1
+	if (inNGM(4)) resetMult = resetMult + player.tdBoosts / 2 - 1
 	resetMult -= inNC(4) ? 2 : 4
-	if (player.tickspeedBoosts !== undefined) resetMult = (resetMult + 1) / 2
+	if (inNGM(3)) resetMult = (resetMult + 1) / 2
 	let exp = getD8Exp()
 	let div2 = 50
 	if (hasAch("r102")) div2 = 10
@@ -15,18 +15,18 @@ function getGSAmount(offset=0) {
 	let ret = E_pow(galaxies, y).times(E_pow(Math.max(0, resetMult), z)).max(0)
 	ret = ret.times(E_pow(1 + getAmount(8) / div2, exp))
 	
-	if (!player.galacticSacrifice.chall) ret = ret.times(getGPMultipliers())
-	if (player.galacticSacrifice.upgrades.includes(16) && player.tdBoosts) ret = ret.times(Math.max(player.tdBoosts, 1))
-	if (aarMod.ngmX >= 4) {
-		var e = player.galacticSacrifice.upgrades.includes(46) ? galMults["u46"]() : 1
-		if (player.galacticSacrifice.upgrades.includes(41) && aarMod.ngmX >= 4) ret = ret.times(Decimal.max(player.tickspeedBoosts, 1).pow(e))
-		if (player.galacticSacrifice.upgrades.includes(43) && aarMod.ngmX >= 4) ret = ret.times(Decimal.max(player.resets, 1).pow(e))
-		if (player.galacticSacrifice.upgrades.includes(45) && aarMod.ngmX >= 4) ret = ret.times(player.eightAmount.max(1).pow(e))
-		if (player.challenges.includes("postcngm3_1") && aarMod.ngmX >= 4) ret = ret.times(E_pow(3, tmp.cp))
+	if (player.galacticSacrifice.chall) ret = ret.times(getGPMultipliers())
+	if (hasGalUpg(16) && player.tdBoosts) ret = ret.times(Math.max(player.tdBoosts, 1))
+	if (inNGM(4)) {
+		var e = hasGalUpg(46) ? galMults["u46"]() : 1
+		if (hasGalUpg(41) && inNGM(4)) ret = ret.times(Decimal.max(player.tickspeedBoosts, 1).pow(e))
+		if (hasGalUpg(43) && inNGM(4)) ret = ret.times(Decimal.max(player.resets, 1).pow(e))
+		if (hasGalUpg(45) && inNGM(4)) ret = ret.times(player.eightAmount.max(1).pow(e))
+		if (player.challenges.includes("postcngm3_1") && inNGM(4)) ret = ret.times(E_pow(3, tmp.cp))
 	}
 	var rgs = player.replicanti.galaxies
 	if (hasAch("r98")) rgs *= 2
-	if (player.tickspeedBoosts != undefined && hasAch("r95")) ret = ret.times(E_pow(Math.max(1, player.eightAmount), rgs))
+	if (inNGM(3) && hasAch("r95")) ret = ret.times(E_pow(Math.max(1, player.eightAmount), rgs))
 
 	return ret.floor()
 }
@@ -37,18 +37,18 @@ function getGPGain(offset = 0){
 
 function getGPMultipliers(){
 	let ret = E(1)
-	if (hasAch("r23") && player.tickspeedBoosts !== undefined) {
+	if (hasAch("r23") && inNGM(3)) {
 		let tbDiv = 10
-		if (aarMod.ngmX > 3) tbDiv = 5
+		if (inNGM(4)) tbDiv = 5
 		ret=ret.times(E_pow(Math.max(player.tickspeedBoosts / tbDiv, 1),Math.max(getAmount(8) / 75, 1)))
 	}
-	if (player.galacticSacrifice.upgrades.includes(32)) ret = ret.times(galMults.u32())
+	if (hasGalUpg(32)) ret = ret.times(galMults.u32())
 	if (player.infinityUpgrades.includes("galPointMult")) ret = ret.times(getPost01Mult())
 	if (hasAch('r37')) {
 		if (player.bestInfinityTime >= 18000) ret = ret.times(Math.max(180000 / player.bestInfinityTime, 1))
 		else ret = ret.times(10 * (1 + Math.pow(Math.log10(18000 / player.bestInfinityTime), 2)))
 	}
-	if (hasAch("r62") && player.tickspeedBoosts == undefined) ret = ret.times(player.infinityPoints.max(10).log10())
+	if (hasAch("r62") && !inNGM(3)) ret = ret.times(player.infinityPoints.max(10).log10())
 	return ret
 }
 
@@ -69,16 +69,16 @@ function getGSGalaxyExp(galaxies) {
 	let y = 1.5 
 	if (player.challenges.includes("postcngmm_1")) {
 		y += Math.max(0, 0.05 * (galaxies - 10)) + 0.005 * Math.pow(Math.max(0, galaxies-30) , 2)
-		if (player.tickspeedBoosts == undefined || player.challenges.includes("postcngm3_4") || player.currentChallenge == "postcngm3_4") y += 0.0005 * Math.pow(Math.max(0, galaxies - 50) , 3)
-		if (hasAch("r121") && player.tickspeedBoosts == undefined) y += 1e-5 * Math.pow(Math.max(galaxies - 500, 0), 4) 
+		if (!inNGM(3) || player.challenges.includes("postcngm3_4") || player.currentChallenge == "postcngm3_4") y += 0.0005 * Math.pow(Math.max(0, galaxies - 50) , 3)
+		if (hasAch("r121") && !inNGM(3)) y += 1e-5 * Math.pow(Math.max(galaxies - 500, 0), 4) 
 		y *= .08*(tmp.cp+14)
-		if (player.infinityUpgrades.includes("postinfi60") && player.tickspeedBoosts != undefined) y *= Math.log10(Math.max(galaxies - 50, 1)) * 2.5 + 1
-		if (aarMod.ngmX >= 4) y += .25 * Math.sqrt(y + (2.5 / 9 * galaxies))
+		if (player.infinityUpgrades.includes("postinfi60") && inNGM(3)) y *= Math.log10(Math.max(galaxies - 50, 1)) * 2.5 + 1
+		if (inNGM(4)) y += .25 * Math.sqrt(y + (2.5 / 9 * galaxies))
 	}
 	if (hasAch("r121")) y *= Math.log(3+galaxies)
-	if (player.galacticSacrifice.upgrades.includes(52) && player.tickspeedBoosts == undefined) {
+	if (hasGalUpg(52) && !inNGM(3)) {
 		if (y > 100) y = Math.pow(1e4 * y , 1/3)
-	} else if (y > 100 && player.tickspeedBoosts == undefined) {
+	} else if (y > 100 && !inNGM(3)) {
 		y = Math.pow(316.22 * y, 1/3)
 	} else if (y > 10) {
 		y = Math.pow(10 * y, .5)
@@ -92,7 +92,7 @@ function getGSDimboostExp(galaxies){
 	if (tmp.cp > 3) {
 		z = 0.06 * (tmp.cp + 14)
 		z += galaxies / 100
-		if (player.tickspeedBoosts == undefined) z *= Math.log(galaxies + 3)
+		if (!inNGM(3)) z *= Math.log(galaxies + 3)
 	}
 	return z
 }
@@ -129,7 +129,7 @@ function galacticSacrifice(auto, force, chall) {
 		player.galacticSacrifice.chall = chall
 		showTab("dimensions")
 	}
-	if (aarMod.ngmX > 3) {
+	if (inNGM(4)) {
 		if (!force) {
 			if (!player.challenges.includes("challenge1")) player.challenges.push("challenge1")
 			if (player.galacticSacrifice.chall) {
@@ -154,11 +154,11 @@ function galacticSacrifice(auto, force, chall) {
 	}
 	GPminpeak = E(0)
 	player.galacticSacrifice.time = 0
-	galaxyReset(-player.galaxies)
+	doReset("galSac")
 }
 
 function resetGalacticSacrifice(eternity) {
-	return player.galacticSacrifice ? {
+	return inNGM(2) ? {
 		galaxyPoints: hasAch("r33") && !eternity ? player.infinityPoints.div(10).pow(2) : E(0),
 		time: 0,
 		times: 0,
@@ -167,10 +167,10 @@ function resetGalacticSacrifice(eternity) {
 }
 
 function newGalacticDataOnInfinity(eternity) {
-	if (player.galacticSacrifice && (eternity ? getEternitied() > 6 : hasAch("r3"+(player.tickspeedBoosts==undefined?6:3)))) {
+	if (inNGM(2) && (eternity ? getEternitied() > 6 : hasAch("r3"+(!inNGM(3)?6:3)))) {
 		var data = player.galacticSacrifice
-		data.galaxyPoints = player.tickspeedBoosts == undefined ? (eternity ? data.galaxyPoints : data.galaxyPoints.add(getGSAmount())) : E(0)
-		if (player.tickspeedBoosts != undefined) data.times = 0
+		data.galaxyPoints = !inNGM(3) ? (eternity ? data.galaxyPoints : data.galaxyPoints.add(getGSAmount())) : E(0)
+		if (inNGM(3)) data.times = 0
 		data.time = 0
 		return data
 	} else return resetGalacticSacrifice()
@@ -211,7 +211,7 @@ let galCosts = {
 }
 
 function getGalaxyUpgradeCost(i){
-	if (aarMod.ngmX == 4){
+	if (tmp.ngmX==4){
 		if (galCosts[i+"ngm4"]) return E(galCosts[i+"ngm4"])
 	}
 	return galCosts[i]
@@ -219,7 +219,7 @@ function getGalaxyUpgradeCost(i){
 
 function buyGalaxyUpgrade(i) {
 	var cost = getGalaxyUpgradeCost(i)
-	if (player.galacticSacrifice.upgrades.includes(i) || !(Math.floor(i/10) < 2 || player.galacticSacrifice.upgrades.includes(i-10)) || player.galacticSacrifice.galaxyPoints.lt(cost)) return
+	if (hasGalUpg(i) || !(Math.floor(i/10) < 2 || hasGalUpg(i-10)) || player.galacticSacrifice.galaxyPoints.lt(cost)) return
 	player.galacticSacrifice.upgrades.push(i)
 	player.galacticSacrifice.galaxyPoints = player.galacticSacrifice.galaxyPoints.sub(cost)
 	if (i == 11) {
@@ -227,16 +227,16 @@ function buyGalaxyUpgrade(i) {
 			for (var d = 1; d < 9; d++) {
 				var name = TIER_NAMES[d]
 				player[name + "Cost"] = player[name + "Cost"].times(10)
-				if (aarMod.ngmX > 3) player["timeDimension" + d].cost = player["timeDimension" + d].cost.times(10)
+				if (inNGM(4)) player["timeDimension" + d].cost = player["timeDimension" + d].cost.times(10)
 			}
 		}
 		reduceDimCosts(true)
 	}
-	if (i == 41 && aarMod.ngmX < 4) for (var tier = 1; tier < 9; tier++) {
+	if (i == 41 && !inNGM(4)) for (var tier = 1; tier < 9; tier++) {
 		let dim = player["infinityDimension" + tier]
 		dim.power = E_pow(getInfBuy10Mult(tier), dim.baseAmount/10)
 	}
-	if (i == 42 && aarMod.ngmX < 4) for (var tier = 1; tier < 9; tier++) {
+	if (i == 42 && !inNGM(4)) for (var tier = 1; tier < 9; tier++) {
 		let dim = player["infinityDimension" + tier]
 		dim.cost = E_pow(getIDCostMult(tier), dim.baseAmount / 10).times(infBaseCost[tier])
 	}
@@ -247,31 +247,31 @@ function buyGalaxyUpgrade(i) {
 }
 
 function reduceDimCosts(upg) {
-	if (player.galacticSacrifice) {
+	if (inNGM(2)) {
 		let div = 1
 		if (hasAch("r21")) div = 10
-		if (player.galacticSacrifice.upgrades.includes(11)) div = galMults.u11()
+		if (hasGalUpg(11)) div = galMults.u11()
 		for (var d = 1; d < 9; d++) {
 			var name = TIER_NAMES[d]
-			if (aarMod.ngmX > 3 && !upg) {
+			if (inNGM(4) && !upg) {
 				player[name + "Cost"] = player[name + "Cost"].pow(1.25).times(10)
 				player.costMultipliers[d - 1] = player.costMultipliers[d - 1].pow(1.25)
 			}
 			player[name + "Cost"] = player[name + "Cost"].div(div)
-			if (aarMod.ngmX > 3) player["timeDimension" + d].cost = player["timeDimension" + d].cost.div(div)
+			if (inNGM(4)) player["timeDimension" + d].cost = player["timeDimension" + d].cost.div(div)
 		}
-		if (hasAch('r48') && player.tickspeedBoosts == undefined) player.tickSpeedCost = player.tickSpeedCost.div(div)
+		if (hasAch('r48') && !inNGM(3)) player.tickSpeedCost = player.tickSpeedCost.div(div)
 	}
 }
 
 function galacticUpgradeSpanDisplay () {
 	el("galaxyPoints").innerHTML = "You have <span class='GPAmount'>"+shortenDimensions(player.galacticSacrifice.galaxyPoints)+"</span> Galaxy point"+(player.galacticSacrifice.galaxyPoints.eq(1)?".":"s.")
 	el('galcost33').innerHTML = shortenCosts(getGalaxyUpgradeCost(33))
-	if (player.tickspeedBoosts != undefined) {
+	if (inNGM(3)) {
 		el('galcost24').textContent = shortenCosts(1e3)
 		el('galcost34').textContent = shortenCosts(1e17)
 	}
-	if (aarMod.ngmX >= 4) {
+	if (inNGM(4)) {
 		el('galcost25').textContent = shortenCosts(1e3)
 		el('galcost35').textContent = shortenCosts(2e3)
 		el('galcost16').textContent = shortenCosts(1e16)
@@ -296,12 +296,12 @@ function galacticUpgradeSpanDisplay () {
 }
 
 function updateGalaxyUpgradesDisplay(){
-	var text41 = aarMod.ngmX >= 4 ? "Square g11, and tickspeed boosts multiply GP gain." : "Galaxy points boost per-10 bought Infinity Dimensions multiplier."
+	var text41 = inNGM(4) ? "Square g11, and tickspeed boosts multiply GP gain." : "Galaxy points boost per-10 bought Infinity Dimensions multiplier."
 	el("galaxy41").innerHTML = text41 + "<br>Cost: <span id='galcost41'></span> GP"
-	var text42 = aarMod.ngmX >= 4 ? "Buff g12 and make it post dilation." : "Eternity points reduce Infinity Dimension cost multipliers."
+	var text42 = inNGM(4) ? "Buff g12 and make it post dilation." : "Eternity points reduce Infinity Dimension cost multipliers."
 	el("galaxy42").innerHTML = text42 + "<br>Cost: <span id='galcost42'></span> GP"
-	var text43 = aarMod.ngmX >= 4 ? "Reduce Dimension Boost cost multiplier by 1, and Dimension Boosts multiply GP gain." : "Galaxy points boost Time Dimensions."
-	var curr43 = aarMod.ngmX >= 4 ? "" : "<br>Currently: <span id='galspan43'>?</span>x"
+	var text43 = inNGM(4) ? "Reduce Dimension Boost cost multiplier by 1, and Dimension Boosts multiply GP gain." : "Galaxy points boost Time Dimensions."
+	var curr43 = inNGM(4) ? "" : "<br>Currently: <span id='galspan43'>?</span>x"
 	el("galaxy43").innerHTML = text43 + curr43 + "<br>Cost: <span id='galcost43'></span> GP"
 }
 
@@ -316,9 +316,9 @@ function galacticUpgradeButtonTypeDisplay () {
 				if (!galConditions["c"+j] || galConditions["c"+j]()) {
 					c.style.display = ""
 					var e = el('galaxy' + i + j);
-					if (player.galacticSacrifice.upgrades.includes(+(i + '' + j))) {
+					if (hasGalUpg(+(i + '' + j))) {
 						e.className = 'infinistorebtnbought'
-					} else if (player.galacticSacrifice.galaxyPoints.gte(getGalaxyUpgradeCost(i + '' + j)) && (i === 1 || player.galacticSacrifice.upgrades.includes(+((i - 1) + '' + j)))) {
+					} else if (player.galacticSacrifice.galaxyPoints.gte(getGalaxyUpgradeCost(i + '' + j)) && (i === 1 || hasGalUpg(+((i - 1) + '' + j)))) {
 						e.className = 'infinistorebtn' + ((j-1)%4+1);
 					} else {
 						e.className = 'infinistorebtnlocked'
@@ -328,8 +328,8 @@ function galacticUpgradeButtonTypeDisplay () {
 						if (i * 10 + j == 11 || i * 10 + j == 15) {
 							if (player.infinitied > 0 || player.eternities !== 0 || quantumed) el('galspan' + i + j).textContent = shortenDimensions(galMults["u" + i + j]())
 						} else if (i * 10 + j == 31 || i * 10 + j == 25) el("galspan" + i + j).textContent = galMults["u" + i + j]().toFixed(2)
-						else if (i * 10 + j == 43 && aarMod.ngmX >= 4) a = 0
-						else if (i * 10 + j == 46 && aarMod.ngmX >= 4) el("galspan46").textContent = shorten(galMults["u46"]() * 100 - 100)
+						else if (i * 10 + j == 43 && inNGM(4)) a = 0
+						else if (i * 10 + j == 46 && inNGM(4)) el("galspan46").textContent = shorten(galMults["u46"]() * 100 - 100)
 						else el("galspan" + i + j).textContent = shorten(galMults["u" + i + j]())
 					}
 				} else c.style.display = "none"
@@ -340,14 +340,14 @@ function galacticUpgradeButtonTypeDisplay () {
 
 //v1.295
 function resetTotalBought() { //uhh what does this do?
-	if (player.galacticSacrifice) return {}
+	if (inNGM(2)) return {}
 }
 
 function productAllTotalBought() {
 	var ret = 1;
 	var mult = getProductBoughtMult()
 	for (var i = 1; i <= 8; i++) {
-		if (inNC(13) && player.tickspeedBoosts != undefined) ret = Decimal.times(player[TIER_NAMES[i] + "Amount"].max(1).log10(), mult).add(1).times(ret);
+		if (inNC(13) && inNGM(3)) ret = Decimal.times(player[TIER_NAMES[i] + "Amount"].max(1).log10(), mult).add(1).times(ret);
 		else if (player.totalBoughtDims[TIER_NAMES[i]]) ret = Decimal.times(ret, player.totalBoughtDims[TIER_NAMES[i]] ? Decimal.times(player.totalBoughtDims[TIER_NAMES[i]], mult).max(1) : 1);
 	}
 	return ret;
@@ -381,17 +381,17 @@ el("challenge14").onclick = function () {
 }
 
 function updateTBTIonGalaxy() {
-	if (player.galacticSacrifice) return {current: player.tickBoughtThisInf.current, pastResets: [{resets: 0, bought: player.tickBoughtThisInf.current}]}
+	if (inNGM(2)) return {current: player.tickBoughtThisInf.current, pastResets: [{resets: 0, bought: player.tickBoughtThisInf.current}]}
 }
 
 function resetTickBoughtThisInf() {
-	if (player.galacticSacrifice) return {current: 0, pastResets: [{resets: 0, bought: 0}]}
+	if (inNGM(2)) return {current: 0, pastResets: [{resets: 0, bought: 0}]}
 }
 
 function upgradeSacAutobuyer() {
 	let cost = player.autoSacrifice.cost
-	if ((aarMod.ngmX > 3 ? player.galacticSacrifice.galaxyPoints : player.infinityPoints).lt(cost)) return false
-	if (aarMod.ngmX > 3) player.galacticSacrifice.galaxyPoints=player.galacticSacrifice.galaxyPoints.sub(cost)
+	if ((inNGM(4) ? player.galacticSacrifice.galaxyPoints : player.infinityPoints).lt(cost)) return false
+	if (inNGM(4)) player.galacticSacrifice.galaxyPoints=player.galacticSacrifice.galaxyPoints.sub(cost)
 	else player.infinityPoints = player.infinityPoints.sub(cost)
 	if (player.autoSacrifice.interval > 100) {
 		player.autoSacrifice.interval = Math.max(player.autoSacrifice.interval * 0.6, 100);
@@ -410,11 +410,11 @@ function getPost01Mult() {
 }
 
 el("postinfi01").onclick = function() {
-	buyInfinityUpgrade("galPointMult",player.tickspeedBoosts==undefined?1e3:1e4);
+	buyInfinityUpgrade("galPointMult",!inNGM(3)?1e3:1e4);
 }
 
 el("postinfi02").onclick = function() {
-	buyInfinityUpgrade("dimboostCost",player.tickspeedBoosts==undefined?2e4:1e5);
+	buyInfinityUpgrade("dimboostCost",!inNGM(3)?2e4:1e5);
 }
 
 el("postinfi03").onclick = function() {
@@ -424,7 +424,7 @@ el("postinfi03").onclick = function() {
 el("postinfi04").onclick = function() {
 	if (player.infinityPoints.gte(player.dimPowerIncreaseCost) && player.extraDimPowerIncrease < 40) {
 		player.infinityPoints = player.infinityPoints.minus(player.dimPowerIncreaseCost)
-		player.dimPowerIncreaseCost = E(player.tickspeedBoosts == undefined ? 1e3 : 3e5).times(E_pow(4, Math.min(player.extraDimPowerIncrease, 15) + 1));
+		player.dimPowerIncreaseCost = E(!inNGM(3) ? 1e3 : 3e5).times(E_pow(4, Math.min(player.extraDimPowerIncrease, 15) + 1));
 		player.extraDimPowerIncrease += 1;
 		if (player.extraDimPowerIncrease > 15) player.dimPowerIncreaseCost = player.dimPowerIncreaseCost.times(E_pow(E_pow(4, 5), player.extraDimPowerIncrease - 15))
 		el("postinfi04").innerHTML = "Further increase all Dimension multipliers<br>x^" + galMults.u31().toFixed(2) + (player.extraDimPowerIncrease < 40 ? " -> x^" + ((galMults.u31() + 0.02).toFixed(2)) + "<br>Cost: " + shorten(player.dimPowerIncreaseCost) + " IP" : "")
@@ -452,24 +452,24 @@ function renameIC(id) {
 
 //v1.501
 function isADSCRunning() {
-	return inNC(13) || (player.currentChallenge === "postc1" && player.galacticSacrifice) || player.tickspeedBoosts !== undefined
+	return inNC(13) || (player.currentChallenge === "postc1" && inNGM(2)) || inNGM(3)
 }
 
 //v1.6
 el("postinfi50").onclick = function() {
-    buyInfinityUpgrade("postinfi50", player.tickspeedBoosts==undefined?1e25:2e18);
+    buyInfinityUpgrade("postinfi50", !inNGM(3)?1e25:2e18);
 }
 
 el("postinfi51").onclick = function() {
-    buyInfinityUpgrade("postinfi51", player.tickspeedBoosts==undefined?1e29:1e20);
+    buyInfinityUpgrade("postinfi51", !inNGM(3)?1e29:1e20);
 }
 
 el("postinfi52").onclick = function() {
-    buyInfinityUpgrade("postinfi52", player.tickspeedBoosts==undefined?1e33:1e25);
+    buyInfinityUpgrade("postinfi52", !inNGM(3)?1e33:1e25);
 }
 
 el("postinfi53").onclick = function() {
-    buyInfinityUpgrade("postinfi53", player.tickspeedBoosts==undefined?1e37:1e29);
+    buyInfinityUpgrade("postinfi53", !inNGM(3)?1e37:1e29);
 }
 
 //v1.9
@@ -514,9 +514,9 @@ let R135 = Math.pow(Math.E + Math.PI + 0.56714 + 4.81047 + 0.78343 + 1.75793 + 2
 //v2.31
 let galMults = {
 	u11: function() {
-		if (player.tickspeedBoosts != undefined) {
-			var e = player.galacticSacrifice.upgrades.includes(46) ? galMults["u46"]() : 1
-			var exp = (aarMod.ngmX >= 4 && player.galacticSacrifice.upgrades.includes(41)) ? 2 * e : 1
+		if (inNGM(3)) {
+			var e = hasGalUpg(46) ? galMults["u46"]() : 1
+			var exp = (inNGM(4) && hasGalUpg(41)) ? 2 * e : 1
 			var l = 0
 			if (player.infinityUpgrades.includes("postinfi61")) l = Math.log10(getInfinitied() + 1)
 			if (l > 2) return pow10(l * Math.min(l, 6) * Math.min(l, 4))
@@ -550,10 +550,10 @@ let galMults = {
 	},
 	u12: function() {
 		var r = 2 * Math.pow(1 + player.galacticSacrifice.time / 600, 0.5)
-		if (aarMod.ngmX >= 4 && player.galacticSacrifice.upgrades.includes(42)) {
-			m = player.galacticSacrifice.upgrades.includes(46) ? 10 : 4
+		if (inNGM(4) && hasGalUpg(42)) {
+			m = hasGalUpg(46) ? 10 : 4
 			r = E_pow(r, Math.min(m, Math.pow(r, 1/3)))
-			if (player.galacticSacrifice.upgrades.includes(46)) r = E_pow(r, Math.log10(10 + r)).plus(1e20)
+			if (hasGalUpg(46)) r = E_pow(r, Math.log10(10 + r)).plus(1e20)
 		}
 		r = Decimal.add(r, 0)
 		if (r.gt(1e25)) r = r.div(1e25).pow(.5).times(1e25)
@@ -565,7 +565,7 @@ let galMults = {
 		let x = player.totalmoney
 		let exp = .003
 		if (hasAch("r123")) exp = .005
-		if (aarMod.ngmX >= 4){
+		if (inNGM(4)){
 			m = 1
 			if (hasAch("r63")) m += .01 * player.galacticSacrifice.upgrades.length
 			if (hasAch("r64")) m += .02 * tmp.cp
@@ -599,7 +599,7 @@ let galMults = {
 		return x
 	},
 	u33: function() {
-		if (player.tickspeedBoosts != undefined) return player.galacticSacrifice.galaxyPoints.div(1e10).add(1).log10()/5+1
+		if (inNGM(3)) return player.galacticSacrifice.galaxyPoints.div(1e10).add(1).log10()/5+1
 		return player.galacticSacrifice.galaxyPoints.max(1).log10() / 4 + 1
 	},
 	u43: function() {
@@ -609,12 +609,12 @@ let galMults = {
 		return player.galacticSacrifice.galaxyPoints.pow(0.25).div(20).max(0.2)
 	},
 	u15: function() {
-		return pow10(getInfinitied() + 2).max(1).min(1e6).pow(player.galacticSacrifice.upgrades.includes(16) ? 2 : 1)
+		return pow10(getInfinitied() + 2).max(1).min(1e6).pow(hasGalUpg(16) ? 2 : 1)
 	},
 	u25: function() {
 		let r = Math.max(player.galacticSacrifice.galaxyPoints.log10() - 2, 1)
 		if (r > 2.5) r = Math.pow(r * 6.25, 1/3)
-		r =  Math.pow(r, player.galacticSacrifice.upgrades.includes(26) ? 2 : 1)
+		r =  Math.pow(r, hasGalUpg(26) ? 2 : 1)
 		if (r > 10) r = 10 * Math.log10(r)
 		return r
 	},
@@ -624,7 +624,7 @@ let galMults = {
 		for (var d = 1; d < 9; d++) {
 			r = Decimal.times(player["timeDimension" + d].bought / 6, p).max(1).times(r)
 		}
-		r = r.pow(player.galacticSacrifice.upgrades.includes(36) ? 2 : 1)
+		r = r.pow(hasGalUpg(36) ? 2 : 1)
 		if (r.gt(1e100)) r = E_pow(r.log10(), 50)
 		return r
 	},
@@ -639,19 +639,19 @@ let galMults = {
 let galConditions = {
 	r4: function() {
 		var unl = player.challenges.includes("postcngmm_1") || player.eternities > 0
-		return player.infinityUpgrades.includes("postinfi63") || (aarMod.ngmX >= 4 && unl)
+		return player.infinityUpgrades.includes("postinfi63") || (inNGM(4) && unl)
 	},
 	r5: function() {
 		return player.infinityUpgrades.includes("postinfi63")
 	},
 	c4: function() {
-		return player.tickspeedBoosts !== undefined
+		return inNGM(3)
 	},
 	c5: function() {
-		return aarMod.ngmX >= 4
+		return inNGM(4)
 	},
 	c6: function(){
-		return aarMod.ngmX >= 4 && player.totalmoney.log10() >= 666
+		return inNGM(4) && player.totalmoney.log10() >= 666
 	}
 }
 
@@ -709,7 +709,7 @@ function getNewB60Mult(){
 
 function calcG13Exp(){
 	let exp = 3
-	if (player.infinityUpgrades.includes("postinfi62") && hasAch("r117") && player.tickspeedBoosts == undefined) {
+	if (player.infinityUpgrades.includes("postinfi62") && hasAch("r117") && !inNGM(3)) {
 		if (player.currentEternityChall === "") exp *= Math.pow(.8 + Math.log(player.resets + 3), 2.08)
 		else if (player.currentEternityChall == "eterc9" || player.currentEternityChall == "eterc7" || player.currentEternityChall == "eterc6") {
 			exp *= Math.pow(.8 + Math.log(player.resets + 3) * (hasAch("r124") ? (8 - player.bestEternity || 6) : 1), 0.5 + hasAch("r124") ? 0.5 : 0)
@@ -719,22 +719,30 @@ function calcG13Exp(){
 		if (player.currentEternityChall === "") exp *= Math.pow(Math.log(player.resets + 3), 2)
 		else exp *= Math.pow(Math.log(player.resets + 3), 0.5)
 	}
-	if (player.tickspeedBoosts != undefined && hasAch("r101")) exp *= Math.pow(Math.max(1, 2*player.galaxies), 1/3)
+	if (inNGM(3) && hasAch("r101")) exp *= Math.pow(Math.max(1, 2*player.galaxies), 1/3)
 	if (hasAch("r81") && player.currentEternityChall === "") exp += 7
-	if (player.tickspeedBoosts != undefined && exp > 100) exp = Math.sqrt(exp) * 10
-	if (player.tickspeedBoosts != undefined && hasAch("r117")) exp += Math.sqrt(exp)
+	if (inNGM(3) && exp > 100) exp = Math.sqrt(exp) * 10
+	if (inNGM(3) && hasAch("r117")) exp += Math.sqrt(exp)
 	return exp
 }
 
 //Unknown
+function gSacrificed() {
+	return inNGM(2) ? player.galacticSacrifice.times > 0 : false
+}
+
+function hasGalUpg(x) {
+	return inNGM(2) && player.galacticSacrifice.upgrades.includes(x)
+}
+
 function updateNGM2RewardDisplay(){
-	el("postcngmm_1reward").innerHTML = "Reward: Infinity upgrades based on time " + (aarMod.ngmX >= 4 ? "" : "or Infinities ") + "are applied post-dilation, and make the GP formula better based on galaxies."
-	el("postcngm3_1description").innerHTML = "Multiplier per ten Dimensions is 1x, Dimension Boosts have no effect," + (aarMod.ngmX >= 4 ? " have a much lower time dimension cost limit," : "") + " and Tickspeed Boost effect softcap starts immediately."
-	el("postcngm3_1reward").innerHTML = "Reward: Tickspeed boost effect softcap is softer" + (aarMod.ngmX >= 4 ? ", remote galaxy scaling starts .5 later and triple GP per IC completion" : "") + "."
+	el("postcngmm_1reward").innerHTML = "Reward: Infinity upgrades based on time " + (inNGM(4) ? "" : "or Infinities ") + "are applied post-dilation, and make the GP formula better based on galaxies."
+	el("postcngm3_1description").innerHTML = "Multiplier per ten Dimensions is 1x, Dimension Boosts have no effect," + (inNGM(4) ? " have a much lower time dimension cost limit," : "") + " and Tickspeed Boost effect softcap starts immediately."
+	el("postcngm3_1reward").innerHTML = "Reward: Tickspeed boost effect softcap is softer" + (inNGM(4) ? ", remote galaxy scaling starts .5 later and triple GP per IC completion" : "") + "."
 }
 
 function displayGalSacStats(){
-	if (player.galacticSacrifice ? player.galacticSacrifice.times < 1 : true) el("gsStatistics").style.display = "none"
+	if (inNGM(2) ? player.galacticSacrifice.times < 1 : true) el("gsStatistics").style.display = "none"
 	else {
 		el("gsStatistics").style.display = ""
 		el("sacrificed").textContent = "You have Galactic Sacrificed "+getFullExpansion(player.galacticSacrifice.times) + " times."
@@ -743,11 +751,67 @@ function displayGalSacStats(){
 }
 
 function galSacDisplay(){
-	if ((player.galacticSacrifice ? (player.galacticSacrifice.times > 0 || player.infinitied > 0 || player.eternities != 0 || quantumed) : false) && !isEmptiness) {
+	if ((inNGM(2) ? (player.galacticSacrifice.times > 0 || player.infinitied > 0 || player.eternities != 0 || quantumed) : false) && !isEmptiness) {
 		el("galaxyPoints2").innerHTML = "You have <span class='GPAmount'>"+shortenDimensions(player.galacticSacrifice.galaxyPoints)+"</span> Galaxy point"+(player.galacticSacrifice.galaxyPoints.eq(1)?".":"s.")
 	}
 	if (el("galaxy").style.display=='block') {
 		galacticUpgradeSpanDisplay()
 		galacticUpgradeButtonTypeDisplay()
 	}
+}
+
+function galSacBtnUpdating(){
+	el("sacrificebtn").style.display = "none"
+	if (el("gSacrifice").style.display === "inline-block") {
+		el("gSacrifice").innerHTML = "Galactic Sacrifice (" + formatValue(player.options.notation, getGSAmount(), 2, 0) + " GP)"
+		el("gSacrifice").setAttribute('ach-tooltip', "Gain " + formatValue(player.options.notation, getGSAmount(), 2, 0) + " GP")
+		if (getGSAmount().gt(0)) {
+			el("gSacrifice").className = "storebtn"
+			el("sacrificebtn").style.display = ""
+			var currentGPmin = getGSAmount().dividedBy(player.galacticSacrifice.time / 600)
+			if (currentGPmin.gt(GPminpeak)) GPminpeak = currentGPmin
+			var notationOkay = (GPminpeak.gt("1e300000") && player.options.theme != "Aarex's Modifications") || player.options.notation == "Morse code" || player.options.notation == 'Spazzy'
+			var notation2okay = (GPminpeak.gt("1e3000") && player.options.theme != "Aarex's Modifications") || player.options.notation == "Morse code" || player.options.notation == 'Spazzy'
+			el("sacrificebtn").innerHTML = (notationOkay ? "Gain " : "Galactic Sacrifice for ") + shortenDimensions(getGSAmount()) + " Galaxy points." +
+				(notation2okay ? "" : "<br>" + shortenMoney(currentGPmin) + " GP/min" + "<br>Peaked at " + shortenMoney(GPminpeak) + " GP/min")
+		} else el("gSacrifice").className = "unavailablebtn"
+	}
+}
+
+function passiveGPGen(diff){
+	let passiveGPGen = false
+	if (inNGM(3)) passiveGPGen = hasAch("r56")
+	else if (inNGM(2)) passiveGPGen = player.timestudy.studies.includes(181)
+	var mult = 1
+	if (inNGM(4)){
+		if (hasAch("r43")){
+			mult = Math.pow(player.galacticSacrifice.galaxyPoints.plus(1e20).log10() / 10, 2) /2
+		}
+		if (mult > 100) mult = 100
+	}
+	if (passiveGPGen) player.galacticSacrifice.galaxyPoints = player.galacticSacrifice.galaxyPoints.add(getGSAmount().times(diff / 100 * mult))
+}
+
+function doGPUpgCrunchUpdating(g11MultShown){
+	var showg11Mult = player.infinitied > 0 || player.eternities !== 0 || quantumed
+	if (inNGM(2) && (showg11Mult != g11MultShown)) {
+		el("galaxy11").innerHTML = "Normal" + (inNGM(4) ? " and Time D" : " d")+"imensions are " + (showg11Mult ? "cheaper based on your infinitied stat.<br>Currently: <span id='galspan11'></span>x":"99% cheaper.")+"<br>Cost: 1 GP"
+		el("galaxy15").innerHTML = "Normal and Time Dimensions produce " + (showg11Mult ? "faster based on your infinitied stat.<br>Currently: <span id='galspan15'></span>x":"100x faster")+".<br>Cost: 1 GP"
+	}
+}
+
+//Global
+function inNGM(x) {
+	return tmp.ngmX >= x
+}
+
+function inOnlyNGM(x) {
+	return tmp.ngmX == x
+}
+
+function getNGMX() {
+	if (aarMod.ngmX) return aarMod.ngmX
+	return player.tdBoosts !== undefined ? 4 :
+		player.tickspeedBoosts !== undefined ? 3 :
+		player.galacticSacrifice ? 2 : 0
 }

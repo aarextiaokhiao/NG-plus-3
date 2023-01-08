@@ -450,61 +450,27 @@ function respecUnbuyableTimeStudies() {
 
 function getTotalTT(tree) {
 	tree = tree.timestudy
+
 	var result = tree.theorem
-	if (tree.boughtDims) {
-		for (var id = 1; id < 7; id++) result += tree.ers_studies[id] * (tree.ers_studies[id] + 1) / 2
-		return result
-	} else {
-		var ecCosts = [null, 30, 35, 40, 70, 130, 85, 115, 115, 415, 550, 1, 1]
-		for (var id = 0; id < all.length; id++) if (tree.studies.includes(all[id])) result += studyCosts[id]
-		return result + ecCosts[player.eternityChallUnlocked]
-	}
+	var ecCosts = [null, 30, 35, 40, 70, 130, 85, 115, 115, 415, 550, 1, 1]
+	for (var id = 0; id < all.length; id++) if (tree.studies.includes(all[id])) result += studyCosts[id]
+	return result + ecCosts[player.eternityChallUnlocked]
 }
 
-function exportSpec() {
-	let l = [];
-	for (let i = 1; i <= numTimeStudies; i++) {
-		if (studyHasBeenUnlocked(i)) {
-			l.push(player.timestudy.studies[i]);
-		}
-	}
-	let s = l.join('/');
-	copyToClipboard(s);
-}
-
-function importSpec () {
-	let s = prompt('Enter your spec');
-	let l = s.split('/');
-	for (let i = 1; i <= l.length; i++) {
-		for (let j = 0; j < +l[i - 1]; j++) {
-			if (!buyTimeStudy(i)) break;
-		}
-	}
-}
 
 function exportStudyTree() {
 	let output = el('output');
 	let parent = output.parentElement;
 
 	parent.style.display = "";
-	if (player.boughtDims) {
-		let l = [];
-		for (let i = 1; i < 7; i++) {
-			if (i < 5 || getTotalTT(player) > 59) {
-				l.push(player.timestudy.ers_studies[i]);
-			}
+	var mtsstudies=[]
+	if (player.masterystudies) {
+		for (id = 0; id < player.masterystudies.length; id++) {
+			var t = player.masterystudies[id].split("t")[1]
+			if (t) mtsstudies.push(t)
 		}
-		output.value = l.join('/');
-	} else {
-		var mtsstudies=[]
-		if (player.masterystudies) {
-			for (id = 0; id < player.masterystudies.length; id++) {
-				var t = player.masterystudies[id].split("t")[1]
-				if (t) mtsstudies.push(t)
-			}
-		}
-		output.value = player.timestudy.studies + (mtsstudies.length > 0 ? "," + mtsstudies + "|" : "|") + player.eternityChallUnlocked;
 	}
+	output.value = player.timestudy.studies + (mtsstudies.length > 0 ? "," + mtsstudies + "|" : "|") + player.eternityChallUnlocked;
 	output.onblur = function() { parent.style.display = "none";}
 	output.focus();
 	output.select();
@@ -647,7 +613,7 @@ function load_preset(id, reset) {
 		if (player.infinityPoints.lt(player.eternityChallGoal) || !id7unlocked) return
 		player.respec = true
 		player.respecMastery = true
-		eternity(false, false, true)
+		eternity(false, false, false, true)
 	}
 	importStudyTree(presets[id].preset)
 	closeToolTip()
@@ -766,10 +732,10 @@ let tsMults = {
 		let log = -player.tickspeed.div(1e3).pow(0.005).times(0.95).plus(player.tickspeed.div(1e3).pow(0.0003).times(0.95)).log10()
 		if (bigRipped && log > 900) log = Math.sqrt(log * 900)
 		else if (aarMod.newGameExpVersion) log = Math.min(log, 25000) // buff to NG+++^
-		else if (player.galacticSacrifice === undefined) log = Math.min(log, 2500)
+		else if (!inNGM(2)) log = Math.min(log, 2500)
 		if (log < 0) log = 0
 		
-		if (player.galacticSacrifice) return pow10(log)
+		if (inNGM(2)) return pow10(log)
 		if (tmp.ngp3l || !bigRipped) return pow10(log)
 		log = softcap(log, "ts11_log_big_rip", 1)
 		
@@ -793,7 +759,7 @@ let tsMults = {
 		return r
 	},
 	211: function() {
-		return player.galacticSacrifice === undefined ? 5 : tmp.ngp3l ? 0 : 1
+		return !inNGM(2) ? 5 : tmp.ngp3l ? 0 : 1
 	},
 	212: function() {
 		let r = player.timeShards.max(2).log2()
@@ -804,6 +770,6 @@ let tsMults = {
 		return tmp.ngex ? 10 : 20
 	},
 	222: function() {
-		return player.galacticSacrifice === undefined ? 2 : tmp.ngp3l ? 0 : .5
+		return !inNGM(2) ? 2 : tmp.ngp3l ? 0 : .5
 	}
 }

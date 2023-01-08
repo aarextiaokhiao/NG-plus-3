@@ -19,19 +19,19 @@ function doNGMatLeast4TDChanges(tier, ret){
 	var x = player.postC3Reward
 	var exp = ([5, 3, 2, 1.5, 1, .5, 1/3, 0])[tier - 1]
 	if (x.gt(1e10)) x = pow10(Math.sqrt(x.log10() * 5 + 50))
-	if (player.galacticSacrifice.upgrades.includes(25)) exp *= galMults.u25()
+	if (hasGalUpg(25)) exp *= galMults.u25()
 	if (inNC(16)) exp /= 2
 	ret = ret.times(x.pow(exp))
 
 	//NG-4 upgrades
-	if (player.galacticSacrifice.upgrades.includes(12)) ret = ret.times(galMults.u12())
-	if (player.galacticSacrifice.upgrades.includes(13) && player.currentChallenge!="postngm3_4") ret = ret.times(galMults.u13())
-	if (player.galacticSacrifice.upgrades.includes(15)) ret = ret.times(galMults.u15())
-	if (player.galacticSacrifice.upgrades.includes(44) && aarMod.ngmX >= 4) {
-		var e = player.galacticSacrifice.upgrades.includes(46) ? galMults["u46"]() : 1
+	if (hasGalUpg(12)) ret = ret.times(galMults.u12())
+	if (hasGalUpg(13) && player.currentChallenge!="postngm3_4") ret = ret.times(galMults.u13())
+	if (hasGalUpg(15)) ret = ret.times(galMults.u15())
+	if (hasGalUpg(44) && inNGM(4)) {
+		var e = hasGalUpg(46) ? galMults["u46"]() : 1
 		ret = ret.times(E_pow(player[TIER_NAMES[tier]+"Amount"].plus(10).log10(), e * Math.pow(11 - tier, 2)))
 	}
-	if (player.galacticSacrifice.upgrades.includes(31)) ret = ret.pow(galMults.u31())
+	if (hasGalUpg(31)) ret = ret.pow(galMults.u31())
 	return ret
 }
 
@@ -74,7 +74,7 @@ function getTimeDimensionPower(tier) {
 	var dim = player["timeDimension" + tier]
 	var ret = dim.power.pow(player.boughtDims ? 1 : 2)
 
-	if (aarMod.ngmX >= 4) ret = doNGMatLeast4TDChanges(tier,ret)
+	if (inNGM(4)) ret = doNGMatLeast4TDChanges(tier,ret)
 
 	if (player.timestudy.studies.includes(11) && tier == 1) ret = ret.times(tsMults[11]())
 	
@@ -82,17 +82,17 @@ function getTimeDimensionPower(tier) {
 	ret = ret.times(getERTDAchMults())
 
 	var ret2 = calcNGM2atleastTDPreVPostDilMultiplier(tier)
-	if (player.galacticSacrifice === undefined) ret = ret.times(ret2)
+	if (inNGM(2)) ret = ret.times(ret2)
 	ret = ret.times(calcVanillaTSTDMult(tier))
 
 	if (ECComps("eterc10") !== 0) ret = ret.times(getECReward(10))
 	if (hasAch("r128")) ret = ret.times(Math.max(player.timestudy.studies.length, 1))
-	if (player.galacticSacrifice !== undefined && player.galacticSacrifice.upgrades.includes(43)) ret = ret.times(galMults.u43())
+	if (hasGalUpg(43)) ret = ret.times(galMults.u43())
 	if (!player.dilation.upgrades.includes("ngmm2") && player.dilation.upgrades.includes(5) && player.replicanti.amount.gt(1)) ret = ret.times(tmp.rm.pow(0.1))
 	if (inQC(6)) ret = ret.times(player.postC8Mult).dividedBy(player.matter.max(1))
 
 	ret = dilates(ret, 2)
-	if (player.galacticSacrifice !== undefined) ret = ret.times(ret2)
+	if (inNGM(2)) ret = ret.times(ret2)
 
 	ret = dilates(ret, 1)
 	if (player.dilation.upgrades.includes("ngmm2") && player.dilation.upgrades.includes(5) && player.replicanti.amount.gt(1)) ret = ret.times(tmp.rm.pow(0.1))
@@ -108,9 +108,9 @@ function getTimeDimensionProduction(tier) {
   	var ret = dim.amount
   	if (inQC(4) && tier == 1) ret = ret.plus(player.timeDimension2.amount.floor())
   	ret = ret.times(getTimeDimensionPower(tier))
-  	if (aarMod.ngmX>3&&(inNC(2)||player.currentChallenge=="postc1")) ret = ret.times(player.chall2Pow)
+  	if (inNGM(4)&&(inNC(2)||player.currentChallenge=="postc1")) ret = ret.times(player.chall2Pow)
   	if (player.currentEternityChall == "eterc7") ret = dilates(ret.dividedBy(player.tickspeed.dividedBy(1000)))
-  	if (aarMod.ngmX>3&&(tier>1||!hasAch("r12"))) ret = ret.div(100)
+  	if (inNGM(4)&&(tier>1||!hasAch("r12"))) ret = ret.div(100)
   	if (aarMod.ngexV) ret = ret.div(10 / tier)
   	if (player.currentEternityChall == "eterc1") return E(0)
   	return ret
@@ -125,13 +125,13 @@ function getIC3EffFromFreeUpgs() {
 			if (hasNU(12)) if (brSave.active) x *= tmp.nu[4].replicated
 		}
 	}
-	if (player.galacticSacrifice !== undefined) x++
+	if (inNGM(2)) x++
 	return x
 }
 
 function isTDUnlocked(t) {
 	if (t > 8) return
-	if (aarMod.ngmX > 3) {
+	if (inNGM(4)) {
 		if ((inNC(4) || player.currentChallenge == "postc1") && t > 6) return
 		return player.tdBoosts > t - 2
 	}
@@ -149,7 +149,7 @@ function getTimeDimensionRateOfChange(tier) {
 }
 
 function getTimeDimensionDescription(tier) {
-	if (!isTDUnlocked(((inNC(7) && aarMod.ngmX > 3) || inQC(4) ? 2 : 1) + tier)) return getFullExpansion(player['timeDimension' + tier].bought)
+	if (!isTDUnlocked(((inNC(7) && inNGM(4)) || inQC(4) ? 2 : 1) + tier)) return getFullExpansion(player['timeDimension' + tier].bought)
 	else if (player.timeShards.l > 1e7) return shortenDimensions(player['timeDimension' + tier].amount)
 	else return shortenDimensions(player['timeDimension' + tier].amount) + ' (+' + formatValue(player.options.notation, getTimeDimensionRateOfChange(tier), 2, 2) + dimDescEnd;
 }
@@ -162,12 +162,12 @@ function updateTimeDimensions() {
 				el("timeRow" + tier).style.display = "table-row"
 				el("timeD" + tier).textContent = DISPLAY_NAMES[tier] + " Time Dimension x" + shortenMoney(getTimeDimensionPower(tier));
 				el("timeAmount" + tier).textContent = getTimeDimensionDescription(tier);
-				el("timeMax" + tier).textContent = (quantumed ? '':"Cost: ") + shortenDimensions(player["timeDimension" + tier].cost) + (aarMod.ngmX > 3 ? "" : " EP")
+				el("timeMax" + tier).textContent = (quantumed ? '':"Cost: ") + shortenDimensions(player["timeDimension" + tier].cost) + (inNGM(4) ? "" : " EP")
 				if (getOrSubResourceTD(tier).gte(player["timeDimension" + tier].cost)) el("timeMax"+tier).className = "storebtn"
 			else el("timeMax" + tier).className = "unavailablebtn"
 			} else el("timeRow" + tier).style.display = "none"
 		}
-		if (aarMod.ngmX > 3) {
+		if (inNGM(4)) {
 			var isShift = player.tdBoosts < (inNC(4) ? 5 : 7)
 			var req = getTDBoostReq()
 			el("tdReset").style.display = ""
@@ -192,7 +192,7 @@ var timeDimStartCosts = [[null, 1, 5, 100, 1000, "1e2350", "1e2650", "1e3000", "
 
 function timeDimCost(tier, bought) {
 	var cost = E_pow(timeDimCostMults[0][tier], bought).times(timeDimStartCosts[0][tier])
-	if (player.galacticSacrifice !== undefined) return cost
+	if (inNGM(2)) return cost
 	if (cost.gte(Number.MAX_VALUE)) cost = E_pow(timeDimCostMults[0][tier]*1.5, bought).times(timeDimStartCosts[0][tier])
 	if (cost.gte("1e1300")) cost = E_pow(timeDimCostMults[0][tier]*2.2, bought).times(timeDimStartCosts[0][tier])
 	if (tier > 4) cost = E_pow(timeDimCostMults[0][tier]*100, bought).times(timeDimStartCosts[0][tier])
@@ -207,7 +207,7 @@ function timeDimCost(tier, bought) {
 
 function buyTimeDimension(tier) {
 	var dim = player["timeDimension"+tier]
-	if (aarMod.ngmX > 3 && getAmount(1) < 1) {
+	if (inNGM(4) && getAmount(1) < 1) {
 		alert("You need to buy a first Normal Dimension to be able to buy Time Dimensions.")
 		return
 	}
@@ -218,7 +218,7 @@ function buyTimeDimension(tier) {
 	dim.amount = dim.amount.plus(1);
 	dim.bought += 1
 	if (inQC(6)) player.postC8Mult = E(1)
-	if (aarMod.ngmX > 3) {
+	if (inNGM(4)) {
 		dim.cost = dim.cost.times(timeDimCostMults[1][tier])
 		if (inNC(2) || player.currentChallenge == "postc1") player.chall2Pow = 0
 	} else {
@@ -241,10 +241,10 @@ function getOrSubResourceTD(tier, sub) {
 		var currmax = player.currentChallenge == "" ? E(Number.MAX_VALUE).pow(10) : pow10(1000)
 		if (player.currentChallenge == "postcngm3_1") currmax = E(1e60)
 		var maxval = hasAch("r36") ? currmax : E(Number.MAX_VALUE)
-		if (aarMod.ngmX > 3) return player.money.min(maxval)
+		if (inNGM(4)) return player.money.min(maxval)
 		return player.eternityPoints
 	} else {
-		if (aarMod.ngmX > 3) player.money = player.money.sub(player.money.min(sub))
+		if (inNGM(4)) player.money = player.money.sub(player.money.min(sub))
 		else player.eternityPoints = player.eternityPoints.sub(player.eternityPoints.min(sub))
 	}
 }
@@ -252,11 +252,11 @@ function getOrSubResourceTD(tier, sub) {
 function buyMaxTimeDimension(tier, bulk) {
 	var dim = player['timeDimension' + tier]
 	var res = getOrSubResourceTD(tier)
-	if (aarMod.ngmX > 3 && getAmount(1) < 1) return
+	if (inNGM(4) && getAmount(1) < 1) return
 	if (aarMod.maxHighestTD && tier < 8 && player["timeDimension" + (tier + 1)].bought > 0) return
 	if (!isTDUnlocked(tier)) return
 	if (res.lt(dim.cost)) return
-	if (aarMod.ngmX > 3) {
+	if (inNGM(4)) {
 		var toBuy = Math.floor(res.div(dim.cost).times(timeDimCostMults[1][tier] - 1).add(1).log(timeDimCostMults[1][tier]))
 		if (bulk) toBuy = Math.min(toBuy,bulk)
 		getOrSubResourceTD(tier, E_pow(timeDimCostMults[1][tier], toBuy).sub(1).div(timeDimCostMults[1][tier] - 1).times(dim.cost))
@@ -286,7 +286,7 @@ function buyMaxTimeDimension(tier, bulk) {
 	}
 	dim.amount = dim.amount.plus(toBuy);
 	dim.bought += toBuy
-	if (aarMod.ngmX > 3) {
+	if (inNGM(4)) {
 		dim.power = Decimal.sqrt(getDimensionPowerMultiplier()).times(dim.power)
 		dim.cost = dim.cost.times(E_pow(timeDimCostMults[1][tier], toBuy))
 	} else {

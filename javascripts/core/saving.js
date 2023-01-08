@@ -105,7 +105,7 @@ function changeSaveDesc(saveId, placement) {
 		} else if (temp.meta) msg += exp + "++" + (temp.masterystudies ? "+" : "")
 		else if (temp.aarexModifications.newGamePlusVersion) msg += exp + "+"
 		if (temp.masterystudies && !temp.aarexModifications.ngp4V && temp.aarexModifications.newGamePlusVersion) msg += ", The Marathon [No NG+4]"
-		if (temp.aarexModifications.ngmX > 3) msg += "-" + temp.aarexModifications.ngmX
+		if (temp.aarexModifications.ngmX>=4) msg += "-" + temp.aarexModifications.ngmX
 		else if (temp.galacticSacrifice) msg += "--" + (temp.tickspeedBoosts != undefined ? "-" : "")
 		else if (temp.aarexModifications.newGameMinusVersion) msg += "-"
 		var ex=temp.aarexModifications.ngexV
@@ -559,7 +559,7 @@ function updateNewPlayer(mode, preset) {
 			ngp: aarMod.ngp4V !== undefined ? 2 : aarMod.newGamePlusVersion !== undefined ? 1 : 0,
 			arrows: aarMod.newGameExpVersion !== undefined,
 			ngpp: player.meta == undefined ? false : tmp.ngp3 ? 2 : 1,
-			ngmm: aarMod.ngmX ? aarMod.ngmX - 1 : player.galacticSacrifice !== undefined ? 1 : 0,
+			ngmm: Math.max(tmp.ngmX - 1, 0),
 			rs: player.boughtDims !== undefined,
 			ngud: aarMod.nguspV !== undefined ? 3 : aarMod.ngudpV !== undefined ? 2 : player.exdilation !== undefined ? 1 : 0,
 			nguep: aarMod.nguepV !== undefined,
@@ -868,20 +868,28 @@ function updateNewPlayer(mode, preset) {
 	if (modsChosen.ngm) doNGMinusNewPlayer()
 	if (modsChosen.ngp) doNGPlusOneNewPlayer()
 	if (modsChosen.ngpp) doNGPlusTwoNewPlayer()
-	if (modsChosen.ngmm) doNGMinusTwoNewPlayer()
 	if (modsChosen.ngpp > 1) doNGPlusThreeNewPlayer()
-	if (modsChosen.rs == 1) doEternityRespeccedNewPlayer()
-	if (modsChosen.ngmm > 1) doNGMinusThreeNewPlayer()
-	if (modsChosen.arrows) doNGEXPNewPlayer()
-	if (modsChosen.ngud) doNGUDNewPlayer()
 	if (modsChosen.ngp > 1) doNGPlusFourPlayer()
+
+	if (modsChosen.ngmu) doNGMultipliedPlayer()
+	if (modsChosen.arrows) doNGEXPNewPlayer()
+
+	if (modsChosen.ngud) doNGUDNewPlayer()
 	if (modsChosen.ngud == 2) aarMod.ngudpV = 1.12
 	if (modsChosen.ngud == 3) doNGUDSemiprimePlayer()
 	if (modsChosen.nguep) aarMod.nguepV = 1.03
-	if (modsChosen.ngmm > 2) doNGMinusFourPlayer()
-	if (modsChosen.ngmu) doNGMultipliedPlayer()
 	if (modsChosen.ngumu) aarMod.ngumuV = 1.03
 	if (modsChosen.ngex) aarMod.ngexV = 0.1
+
+	if (modsChosen.ngmm) {
+		tmp.ngmX = modsChosen.ngmm+1
+		aarMod.ngmX = modsChosen.ngmm+1
+		doNGMinusTwoNewPlayer()
+	}
+	if (modsChosen.ngmm > 1) doNGMinusThreeNewPlayer()
+	if (modsChosen.ngmm > 2) doNGMinusFourPlayer()
+
+	if (modsChosen.rs == 1) doEternityRespeccedNewPlayer()
 	if (modsChosen.aau) {
 		aarMod.aau = 1
 		dev.giveAllAchievements(true)
@@ -972,7 +980,7 @@ function doNGMinusTwoNewPlayer(){
 	player.challengeTimes.push(600*60*24*31)
 	player.autobuyers[12] = 13
 	player.extraDimPowerIncrease = 0
-	player.dimPowerIncreaseCost = player.tickspeedBoosts == undefined ? 1e3 : 3e5
+	player.dimPowerIncreaseCost = !inNGM(3) ? 1e3 : 3e5
 	player.infchallengeTimes.push(600*60*24*31)
 	player.infchallengeTimes.push(600*60*24*31)
 	player.options.gSacrificeConfirmation = true
@@ -1164,6 +1172,7 @@ function doNGPlusThreeNewPlayer(){
 	player.peakSpent = 0
 	player.masterystudies = []
 	quSave.reached = false
+	player.options.animations.quantum = true
 	player.options.animations.quarks = true
 	player.meta.bestOverQuantums = 0
 	quSave.usedQuarks = {r: 0, g: 0, b: 0}
@@ -1222,7 +1231,6 @@ function doEternityRespeccedNewPlayer(){
 
 function doNGMinusThreeNewPlayer(){
 	aarMod.newGame3MinusVersion = 3.202
-	aarMod.ngmX=3
 	player.tickspeedBoosts = 0
 	player.autobuyers[13] = 14
 	player.challengeTimes.push(600*60*24*31)
@@ -1308,11 +1316,10 @@ function doNGUDSemiprimePlayer(){
 
 function doNGMinusFourPlayer(){
 	aarMod.newGame4MinusVersion = 2.111
-	aarMod.ngmX = 4
 	player.tdBoosts = 0
 	player.challengeTimes.push(600 * 60 * 24 * 31)
 	player.autobuyers.push(15)
-	resetTDs()
+	resetNGM4TDs()
 	reduceDimCosts()
 }
 

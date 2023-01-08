@@ -253,7 +253,7 @@ function automatorTick(diff) {
 	let limit = ghSave.automatorGhosts[13].o || 1 / 0
 	if (player.masterystudies.includes("d13") && isAutoGhostActive(13)) {
 		if (brSave.active) {
-			if (quSave.time >= ghSave.automatorGhosts[13].u * 10 && brSave.times <= limit) quantumReset(true, true)
+			if (quSave.time >= ghSave.automatorGhosts[13].u * 10 && brSave.times <= limit) doQuantum(true, true)
 		} else if (quSave.time >= ghSave.automatorGhosts[13].t * 10 && brSave.times < limit) bigRip(true)
 	}
 	if (NF.unl()) {

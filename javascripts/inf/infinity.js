@@ -1,26 +1,85 @@
-function canBreakInfinity() {
-	if (aarMod.ngexV) return player.challenges.length >= getTotalNormalChallenges() + 1
-	return player.autobuyers[11] % 1 != 0 && player.autobuyers[11].interval <= 100
-}
+var isEmptiness=false
+function bigCrunch(auto) {
+	if (implosionCheck) return
 
-function breakInfinity() {
-	if (!canBreakInfinity()) return false
-	if (player.break && !player.currentChallenge.includes("post")) {
-		player.break = false
-		el("break").textContent = "BREAK INFINITY"
+	if (!auto && player.options.animations.bigCrunch && (player.options.animations.bigCrunch === "always" || !hasAch("r55"))) {
+		implosionCheck = 1
+		el("body").style.animation = "implode 2s 1"
+		setTimeout(function(){ 
+			el("body").style.animation = ""
+			implosionCheck = 0
+		}, 2000)
+		setTimeout(doBigCrunch, 1000)
+		return
 	} else {
-		player.break = true
-		el("break").textContent = "FIX INFINITY"
-	}
-	if (player.galacticSacrifice) if (player.eternities == 0 && player.infinityPoints.lt(Number.MAX_VALUE) && !quantumed) {
-		el("quantumBlock").style.display=player.break?"":"none"
-		el("sacpos").className=player.break?"quantumpos":"eterpos"
-		el("galaxyPoints2").className=player.break?"QK":"EP"
+		doBigCrunch()
 	}
 }
 
-function onPostBreak() {
-	return (player.break && inNC(0)) || player.currentChallenge.includes("p")
+function doBigCrunch(auto) {
+	//Infinity
+	var add = getIPMult()
+	if (player.break && player.currentChallenge == "") add = gainedInfinityPoints()
+	else if (player.timestudy.studies.includes(51)) add = add.times(1e15)
+	player.infinityPoints = player.infinityPoints.plus(add)
+
+	if (auto && autoS) {
+		if (gainedInfinityPoints().dividedBy(player.thisInfinityTime).gt(player.autoIP) && !player.break) player.autoIP = gainedInfinityPoints().dividedBy(player.thisInfinityTime);
+		if (player.thisInfinityTime < player.autoTime) player.autoTime = player.thisInfinityTime;
+	}
+	auto = autoS; //only allow autoing if prev crunch was auto
+	autoS = true;
+
+	doCrunchInfinitiesGain()
+
+	//Times
+	var array = [player.thisInfinityTime, add]
+	if (player.currentChallenge != "") array.push(player.currentChallenge)
+	addTime(array)
+	updateLastTenRuns()
+	checkYoDawg()
+
+	//Challenges
+	checkChallengesOnCrunch()
+
+	//Achievements
+	checkOnCrunchAchievements()
+	checkSecondSetOnCrunchAchievements()
+
+	//Others
+	if (player.replicanti.unl && !hasAch("r95")) player.replicanti.amount = E(1)
+	if (speedrunMilestonesReached < 28 && !hasAch("ng3p67")) player.replicanti.galaxies = (player.timestudy.studies.includes(33)) ? Math.floor(player.replicanti.galaxies / 2) : 0
+	doGPUpgCrunchUpdating(true)
+	doReset("inf")
+
+	replicantiAutoTick()
+	idAutoTick()
+}
+
+function checkChallengesOnCrunch() {
+	el("challengeconfirmation").style.display = "inline-block"
+
+	var isChal = player.currentChallenge != ""
+	if (!isChal) return
+
+	var challNumber
+	var split = player.currentChallenge.split("challenge")
+	if (split[1] != undefined) challNumber = parseInt(split[1])
+	var icID = checkICID(player.currentChallenge)
+	if (icID) challNumber = icID
+
+	if (player.currentChallenge != "" && player.challengeTimes[challNumber-2] > player.thisInfinityTime) player.challengeTimes[challNumber-2] = player.thisInfinityTime
+	if (inNGM(4) && player.galacticSacrifice.chall) {
+		challNumber = player.galacticSacrifice.chall
+		if (player.challengeTimes[challNumber-2] > player.thisInfinityTime) player.challengeTimes[challNumber-2] = player.thisInfinityTime
+	}
+	if (player.currentChallenge.includes("post") && player.infchallengeTimes[challNumber-1] > player.thisInfinityTime) player.infchallengeTimes[challNumber-1] = player.thisInfinityTime
+
+	if (!player.options.retryChallenge) player.currentChallenge = ""
+
+	updateNCVisuals()
+	updateChallenges()
+	updateChallengeTimes()
 }
 
 function getInfinityPointGain(){
@@ -35,7 +94,7 @@ function gainedInfinityPoints(next) {
 	let div = 308;
 	if (player.timestudy.studies.includes(111)) div = 285;
 	else if (hasAch("r103")) div = 307.8;
-	if (player.galacticSacrifice && player.tickspeedBoosts == undefined) div -= galIP()
+	if (inOnlyNGM(2)) div -= galIP()
 
 	var ret = pow10(player.money.e / div - 0.75).times(getIPMult())
 	if (player.timestudy.studies.includes(41)) ret = ret.times(E_pow(tsMults[41](), player.galaxies + player.replicanti.galaxies))
@@ -51,13 +110,13 @@ function gainedInfinityPoints(next) {
 		ret = ret.times(E_pow(player.thisInfinityTime/10,player.timestudy.ers_studies[6]+(next==6?1:0)))
 	}
 	if (isBigRipUpgradeActive(4)) ret = ret.times(player.replicanti.amount.pow(0.34).max(1))
-	if (player.tickspeedBoosts != undefined && hasAch("r95") && player.eightAmount > 5000) ret = ret.times(E_pow(player.eightAmount, 2))
+	if (inNGM(3) && hasAch("r95") && player.eightAmount > 5000) ret = ret.times(E_pow(player.eightAmount, 2))
 	return ret.floor()
 }
 
 function getIPMult() {
 	let mult = player.infMult
-	if (player.galacticSacrifice && player.tickspeedBoosts == undefined) {
+	if (inOnlyNGM(2)) {
 		if (hasAch("r85")) mult = mult.times(4)
 		if (hasAch("r93")) mult = mult.times(4)
 		if (hasAch("r43")) mult = mult.times(1.25)
@@ -71,6 +130,22 @@ function getIPMult() {
 		}
 	}
 	return mult;
+}
+
+function IPonCrunchPassiveGain(diff){
+	if (player.timestudy.studies.includes(181)) player.infinityPoints = player.infinityPoints.plus(gainedInfinityPoints().times(diff / 100))
+}
+
+function doCrunchInfinitiesGain(){
+	let infGain
+	if (player.currentEternityChall == "eterc4") {
+		infGain = 1
+		if (player.infinitied >= 16 - (ECComps("eterc4")*4)) {
+			setTimeout(exitChallenge, 500)
+			onChallengeFail()
+		}
+	} else infGain = getInfinitiedGain()
+	player.infinitied = nA(player.infinitied, infGain)
 }
 
 function toggleCrunchMode(freeze) {
@@ -140,6 +215,33 @@ function updateLastTenRuns() {
 	} else el("averagerun").innerHTML = ""
 }
 
+function checkOnCrunchAchievements(){
+	if (player.thisInfinityTime <= 72000) giveAchievement("That's fast!");
+	if (player.thisInfinityTime <= 6000) giveAchievement("That's faster!")
+	if (player.thisInfinityTime <= 600) giveAchievement("Forever isn't that long")
+	if (player.thisInfinityTime <= 2) giveAchievement("Blink of an eye")
+	if (player.eightAmount == 0) giveAchievement("You didn't need it anyway");
+	if (player.galaxies == 1) giveAchievement("Claustrophobic");
+	if (player.galaxies == 0 && player.resets == 0) giveAchievement("Zero Deaths")
+	if (inNC(2) && player.thisInfinityTime <= 1800) giveAchievement("Many Deaths")
+	if (inNC(11) && player.thisInfinityTime <= 1800) giveAchievement("Gift from the Gods")
+	if (inNC(5) && player.thisInfinityTime <= 1800) giveAchievement("Is this hell?")
+	if (inNC(3) && player.thisInfinityTime <= 100) giveAchievement("You did this again just for the achievement right?");
+	if (player.firstAmount == 1 && player.resets == 0 && player.galaxies == 0 && inNC(12)) giveAchievement("ERROR 909: Dimension not found")
+	if (gainedInfinityPoints().gte(1e150)) giveAchievement("All your IP are belong to us")
+	if (gainedInfinityPoints().gte(1e200) && player.thisInfinityTime <= 20) giveAchievement("Ludicrous Speed")
+	if (gainedInfinityPoints().gte(1e250) && player.thisInfinityTime <= 200) giveAchievement("I brake for nobody")
+
+	if (player.currentChallenge == "postc5" && player.thisInfinityTime <= 100) giveAchievement("Hevipelle did nothing wrong")
+	if (inNGM(3) && player.thisInfinityTime <= 100 && player.currentChallenge == "postc7") giveAchievement("Hevipelle did nothing wrong")
+	if (player.currentChallenge != "" && !player.challenges.includes(player.currentChallenge)) player.challenges.push(player.currentChallenge);
+	if (player.currentChallenge == "postc8") giveAchievement("Anti-antichallenged");
+}
+
+//CHALLENGES
+var challNames = [null, null, "Second Dimension Autobuyer Challenge", "Third Dimension Autobuyer Challenge", "Fourth Dimension Autobuyer Challenge", "Fifth Dimension Autobuyer Challenge", "Sixth Dimension Autobuyer Challenge", "Seventh Dimension Autobuyer Challenge", "Eighth Dimension Autobuyer Challenge", "Tickspeed Autobuyer Challenge", "Automated Dimension Boosts Challenge", "Automated Galaxies Challenge", "Automated Big Crunches Challenge", "Automated Dimensional Sacrifice Challenge", "Automated Galactic Sacrifice Challenge", "Automated Tickspeed Boosts Challenge", "Automated Time Dimension Boosts Challenge"]
+var challOrder = [null, 1, 2, 3, 8, 6, 10, 9, 11, 5, 4, 12, 7, 13, 14, 15, 16]
+
 function startChallenge(name) {
 	if (name == "postc3" && isIC3Trapped()) return
 	if (name == "challenge7" && inQC(4)) return
@@ -149,53 +251,17 @@ function startChallenge(name) {
 		var target = getGoal(name)
 	} else var target = E(Number.MAX_VALUE)
 	if (player.options.challConf && name != "") if (!confirm("You will start over with just your Infinity upgrades, and achievements. You need to reach " + (name.includes("post") ? "a set goal" : "infinity") + " with special conditions. The 4th Infinity upgrade column doesn't work on challenges.")) return
-	if (player.tickspeedBoosts != undefined) player.tickspeedBoosts = 0
+	if (inNGM(3)) player.tickspeedBoosts = 0
 	if (name == "postc1" && player.currentEternityChall != "" && inQC(4) && inQC(6)) giveAchievement("The Ultimate Challenge")
-	
-	doNormalChallengeResetStuff()
+
 	player.currentChallenge = name
 	player.challengeTarget = target
-	NC10NDCostsOnReset()
-	
-	player.tdBoosts = resetTDBoosts()
-	resetTDs()
-	reduceDimCosts()
-	if (player.currentChallenge == "postc1") player.costMultipliers = [E(1e3), E(5e3), E(1e4), E(1.2e4), E(1.8e4), E(2.6e4), E(3.2e4), E(4.2e4)];
-	if (player.currentChallenge == "postc2") {
-		player.eightAmount = E(1);
-		player.eightBought = 1;
-		player.resets = 4;
-	}
+	doReset("inf")
+
 	updateNCVisuals()
-	
-	if (player.replicanti.unl) player.replicanti.amount = E(1)
-	player.replicanti.galaxies = 0
-
-	// even if we're in a challenge, apparently if it's challenge 2 we might have four resets anyway.
-	setInitialDimensionPower();
-
-	GPminpeak = E(0)
-	IPminpeak = E(0)
-	if (player.currentChallenge.includes("post")) {
-		player.break = true
-		el("break").innerHTML = "FIX INFINITY"
-	}
-	if (hasAch("r36")) player.tickspeed = player.tickspeed.times(0.98);
-	if (hasAch("r45")) player.tickspeed = player.tickspeed.times(0.98);
-	if (hasAch("r66")) player.tickspeed = player.tickspeed.times(0.98);
-	if (hasAch("r83")) player.tickspeed = player.tickspeed.times(E_pow(0.95, player.galaxies));
-
-	showTab('dimensions')
 	updateChallenges()
-	setInitialMoney()
 
-	resetInfDimensions();
-	hideDimensions()
-	tmp.tickUpdate = true;
-
-	skipResets()
 	if (player.currentChallenge.includes("post") && player.currentEternityChall !== "") giveAchievement("I wish I had gotten 7 eternities")
-	Marathon2 = 0;
 }
 
 function startNormalChallenge(x) {
@@ -203,7 +269,7 @@ function startNormalChallenge(x) {
 		if (player.infinitied < 1 && player.eternities < 1 && !quantumed) return
 		startChallenge("challenge7", Number.MAX_VALUE)
 	}
-	if (aarMod.ngmX > 3) galacticSacrifice(false, true, x)
+	if (inNGM(4)) galacticSacrifice(false, true, x)
 	else startChallenge("challenge" + x, Number.MAX_VALUE)
 }
 
@@ -213,15 +279,18 @@ function inNC(x, n) {
 		if (n == 1 && aarMod.ngexV && player.currentChallenge == "challenge6") return false
 		if (n == 2 && !aarMod.ngexV) return false
 	}
-	if (x == 0) return player.currentChallenge == "" && (!(aarMod.ngmX > 3) || !player.galacticSacrifice.chall)
-	return player.currentChallenge == "challenge" + x || (aarMod.ngmX > 3 && player.galacticSacrifice.chall == x)
+	if (inNGM(4)) {
+		return x==0 ? !player.galacticSacrifice.chall : player.galacticSacrifice.chall == x
+	} else {
+		return player.currentChallenge == x==0 ? "" : "challenge"+x
+	}
 }
 
 function getTotalNormalChallenges() {
 	let x = 11
-	if (player.galacticSacrifice) x += 2
-	if (player.tickspeedBoosts != undefined) x++
-	if (aarMod.ngmX > 3) x++
+	if (inNGM(2)) x += 2
+	if (inNGM(3)) x++
+	if (inNGM(4)) x++
 	return x
 }
 
@@ -240,10 +309,76 @@ function updateNCVisuals() {
 	if (isADSCRunning()) el("chall13Mult").style.display = "block"
 	else el("chall13Mult").style.display = "none"
 
-	if (inNC(14) && aarMod.ngmX > 3) el("c14Resets").style.display = "block"
+	if (inNC(14) && inNGM(4)) el("c14Resets").style.display = "block"
 	else el("c14Resets").style.display = "none"
 
-	if (inNC(6, 2) || inNC(9) || inNC(12) || ((inNC(5) || inNC(14) || chall == "postc4" || chall == "postc5") && player.tickspeedBoosts == undefined) || chall == "postc1" || chall == "postc6" || chall == "postc8") el("quickReset").style.display = "inline-block"
+	if (inNC(6, 2) || inNC(9) || inNC(12) || ((inNC(5) || inNC(14) || chall == "postc4" || chall == "postc5") && !inNGM(3)) || chall == "postc1" || chall == "postc6" || chall == "postc8") el("quickReset").style.display = "inline-block"
 	else el("quickReset").style.display = "none"
 }
 
+var infchallengeTimes = 999999999
+function updateChallengeTimes() {
+	for (c=2;c<17;c++) setAndMaybeShow("challengetime"+c,player.challengeTimes[challOrder[c]-2]<600*60*24*31,'"'+challNames[c]+' time record: "+timeDisplayShort(player.challengeTimes['+(challOrder[c]-2)+'], false, 3)')
+	var temp=0
+	var tempcounter=0
+	for (var i=0;i<player.challengeTimes.length;i++) if (player.challenges.includes("challenge"+(i+2))&&player.challengeTimes[i]<600*60*24*31) {
+		temp+=player.challengeTimes[i]
+		tempcounter++
+	}
+	setAndMaybeShow("challengetimesum",tempcounter>1,'"Sum of completed challenge time records is "+timeDisplayShort('+temp+', false, 3)')
+
+	var temp=0
+	var tempcounter=0
+	for (var i=0;i<14;i++) {
+		setAndMaybeShow("infchallengetime"+(i+1),player.infchallengeTimes[i]<600*60*24*31,'"Infinity Challenge '+(i+1)+' time record: "+timeDisplayShort(player.infchallengeTimes['+i+'], false, 3)')
+		if (player.infchallengeTimes[i]<600*60*24*31) {
+			temp+=player.infchallengeTimes[i]
+			tempcounter++
+		}
+	}
+	setAndMaybeShow("infchallengetimesum",tempcounter>1,'"Sum of completed infinity challenge time records is "+timeDisplayShort('+temp+', false, 3)')
+	updateWorstChallengeBonus();
+}
+
+var worstChallengeTime = 1
+var worstChallengeBonus = 1
+function updateWorstChallengeTime() {
+	worstChallengeTime = 1
+	for (var i = 0; i < getTotalNormalChallenges(); i++) worstChallengeTime = Math.max(worstChallengeTime, player.challengeTimes[i])
+}
+
+function updateWorstChallengeBonus() {
+	updateWorstChallengeTime()
+	var exp = inNGM(2) ? 2 : 1
+	var timeeff = Math.max(33e-6, worstChallengeTime * 0.1)
+	var base = inNGM(4) ? 3e4 : 3e3
+	var eff = Decimal.max(Math.pow(base / timeeff, exp), 1)
+	if (inNGM(4)) eff = eff.times(E_pow(eff.plus(10).log10(), 5)) 
+	worstChallengeBonus = eff
+}
+
+//BREAK INFINITY
+function canBreakInfinity() {
+	if (aarMod.ngexV) return player.challenges.length >= getTotalNormalChallenges() + 1
+	return player.autobuyers[11] % 1 != 0 && player.autobuyers[11].interval <= 100
+}
+
+function breakInfinity() {
+	if (!canBreakInfinity()) return false
+	if (player.break && !player.currentChallenge.includes("post")) {
+		player.break = false
+		el("break").textContent = "BREAK INFINITY"
+	} else {
+		player.break = true
+		el("break").textContent = "FIX INFINITY"
+	}
+	if (inNGM(2)) if (player.eternities == 0 && player.infinityPoints.lt(Number.MAX_VALUE) && !quantumed) {
+		el("quantumBlock").style.display=player.break?"":"none"
+		el("sacpos").className=player.break?"quantumpos":"eterpos"
+		el("galaxyPoints2").className=player.break?"QK":"EP"
+	}
+}
+
+function onPostBreak() {
+	return (player.break && inNC(0)) || player.currentChallenge.includes("p")
+}

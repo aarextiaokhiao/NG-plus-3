@@ -15,7 +15,7 @@ function displayStats() {
 function displayMainStats() {
 	el("totalmoney").textContent = 'You have made a total of ' + shortenMoney(player.totalmoney) + ' antimatter.'
 	el("totalresets").textContent = 'You have performed ' + getFullExpansion(player.resets) + ' Dimension Boosts/Shifts.'
-	el("tdboosts").textContent = aarMod.ngmX >= 4 ? 'You have performed ' + getFullExpansion(player.tdBoosts) + ' Time Dimension Boosts/Shifts.':""
+	el("tdboosts").textContent = inNGM(4) ? 'You have performed ' + getFullExpansion(player.tdBoosts) + ' Time Dimension Boosts/Shifts.':""
 	var showBoosts=isTickspeedBoostPossible()
 	el("boosts").style.display = showBoosts ? '' : 'none'
 	if (showBoosts) el("boosts").textContent = 'You have performed '+getFullExpansion(player.tickspeedBoosts)+' Tickspeed Boosts.'

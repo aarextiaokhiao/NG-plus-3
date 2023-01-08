@@ -18,10 +18,6 @@ function changestate(n) {
 	}
 }
 
-function save() {
-	localStorage.setItem("howToSpoilers", spoilers)
-}
-
 function get_save(id) {
     try {
         var dimensionSave = localStorage.getItem(btoa(savePrefix+id))

@@ -3,15 +3,13 @@ var quantumChallenges = {
 	goals:[0, 6.65e9, 7.68e10, 4.525e10, 5.325e10, 1.344e10, 5.61e8, 6.254e10, 2.925e10]
 }
 
-var assigned = []
-var pcFocus = 0
 function updateQuantumChallenges() {
 	if (!tmp.ngp3 || !player.masterystudies.includes("d8")) {
 		el("qctabbtn").style.display = "none"
 		el("pctabbtn").style.display = "none"
 		return
 	} else el("qctabbtn").style.display = ""
-	var assigned = []
+	assigned = []
 	var assignedNums = {}
 	el("pctabbtn").style.display = player.masterystudies.includes("d9") ? "" : "none"
 	el("respecPC").style.display = player.masterystudies.includes("d9") ? "" : "none"
@@ -20,7 +18,7 @@ function updateQuantumChallenges() {
 		if (subChalls) for (var sc=0; sc < 2; sc++) {
 			var subChall = subChalls[sc]
 			if (subChall) {
-				assigned.push(subChall)
+				pcAssigned.push(subChall)
 				assignedNums[subChall] = pc
 			}
 		}
@@ -46,8 +44,8 @@ function updateQuantumChallenges() {
 	for (var qc = 1; qc <= 8; qc++) {
 		var property = "qc" + qc
 		el(property + "div").style.display = (qc < 2 || QCIntensity(qc - 1)) ? "inline-block" : "none"
-		el(property).textContent = ((!assigned.includes(qc) && pcFocus) ? "Choose" : inQC(qc) ? "Running" : QCIntensity(qc) ? (assigned.includes(qc) ? "Assigned" : "Completed") : "Start") + (assigned.includes(qc) ? " (PC" + assignedNums[qc] + ")" : "")
-		el(property).className = (!assigned.includes(qc) && pcFocus) ? "challengesbtn" : inQC(qc) ? "onchallengebtn" : QCIntensity(qc) ? "completedchallengesbtn" : "challengesbtn"
+		el(property).textContent = ((!pcAssigned.includes(qc) && pcFocus) ? "Choose" : inQC(qc) ? "Running" : QCIntensity(qc) ? (pcAssigned.includes(qc) ? "Assigned" : "Completed") : "Start") + (pcAssigned.includes(qc) ? " (PC" + assignedNums[qc] + ")" : "")
+		el(property).className = (!pcAssigned.includes(qc) && pcFocus) ? "challengesbtn" : inQC(qc) ? "onchallengebtn" : QCIntensity(qc) ? "completedchallengesbtn" : "challengesbtn"
 		el(property + "cost").textContent = "Cost: " + getFullExpansion(quantumChallenges.costs[qc]) + " electrons"
 		el(property + "goal").textContent = "Goal: " + shortenCosts(pow10(getQCGoal(qc))) + " antimatter"
 	}
@@ -121,36 +119,6 @@ function updateQCTimes() {
 	setAndMaybeShow("qctimesum", tempcounter > 1, '"The sum of your completed Quantum Challenge time records is "+timeDisplayShort(' + temp + ', false, 3)')
 }
 
-var ranking=0
-function updatePCCompletions() {
-	el("pccompletionsbtn").style.display = "none"
-	if (!player.masterystudies) return
-	var r = 0
-	tmp.pcc = {} // PC Completion counters
-	for (var c1 = 2; c1 < 9; c1++) for (var c2 = 1; c2 < c1; c2++) {
-		var rankingPart = 0
-		if (quSave.pairedChallenges.completions[c2 * 10 + c1]) {
-			rankingPart = 5 - quSave.pairedChallenges.completions[c2 * 10 + c1]
-			tmp.pcc.normal = (tmp.pcc.normal || 0) + 1
-		} else if (c2 * 10 + c1 == 68 && ghostified) {
-			rankingPart = 0.5
-			tmp.pcc.normal = (tmp.pcc.normal || 0) + 1
-		}
-		if (quSave.qcsNoDil["pc" + (c2 * 10 + c1)]) {
-			rankingPart += 5 - quSave.qcsNoDil["pc" + ( c2 * 10 + c1)]
-			tmp.pcc.noDil = (tmp.pcc.noDil || 0) + 1
-		}
-		r += Math.sqrt(rankingPart)
-	}
-	r *= 100 / 56
-	if (r) el("pccompletionsbtn").style.display = "inline-block"
-	el("pccranking").textContent = r.toFixed(1)
-	el("pccrankingMax").textContent = Math.sqrt(2e4).toFixed(1)
-	updatePCTable()
-	
-	ranking = r // its global
-}
-
 let qcRewards = {
 	effects: {
 		1: function(comps) {
@@ -204,9 +172,74 @@ function updateQCRewardsTemp() {
 }
 
 function getQCCost(num) {
+	return getQCIdCost(num > 8 ? quSave.pairedChallenges.order[num - 8] : [num])
+}
+
+function getQCIdCost(qcs) {
 	if (hasAch("ng3p55")) return 0
-	if (num > 8) return quantumChallenges.costs[quSave.pairedChallenges.order[num - 8][0]] + quantumChallenges.costs[quSave.pairedChallenges.order[num - 8][1]]
-	return quantumChallenges.costs[num]
+
+	let r = 0
+	for (var qc of qcs) r += quantumChallenges.costs[qc]
+	return r
+}
+
+function selectQC(x) {
+	if (pcFocus) {
+		let orderSave = quSave.pairedChallenges.order
+		let order = orderSave[pcFocus] || []
+		orderSave[pcFocus] = order.concat(x)
+		if (orderSave[pcFocus].length == 2) {
+			showChallengesTab("pairedchallenges")
+			pcFocus = 0
+		}
+		updateQuantumChallenges()
+	} else quantum(false, true, { qc: [x] })
+}
+
+//Paired Challenges
+var pcFocus = 0
+var pcAssigned = []
+function selectPC(loc, bigRip) {
+	let pc = quSave.pairedChallenges.order[loc] || []
+	if (pc.length == 2) {
+		if (bigRip && (!pc.includes(6) || !pc.includes(8))) return
+		quantum(false, true, { qc: pc, pc: loc, br: bigRip })
+		return
+	} else {
+		if (pcFocus == loc) pcFocus = 0
+		else showChallengesTab("quantumchallenges")
+	}
+	updateQuantumChallenges()
+}
+
+var ranking=0
+function updatePCCompletions() {
+	el("pccompletionsbtn").style.display = "none"
+	if (!player.masterystudies) return
+	var r = 0
+	tmp.pcc = {} // PC Completion counters
+	for (var c1 = 2; c1 < 9; c1++) for (var c2 = 1; c2 < c1; c2++) {
+		var rankingPart = 0
+		if (quSave.pairedChallenges.completions[c2 * 10 + c1]) {
+			rankingPart = 5 - quSave.pairedChallenges.completions[c2 * 10 + c1]
+			tmp.pcc.normal = (tmp.pcc.normal || 0) + 1
+		} else if (c2 * 10 + c1 == 68 && ghostified) {
+			rankingPart = 0.5
+			tmp.pcc.normal = (tmp.pcc.normal || 0) + 1
+		}
+		if (quSave.qcsNoDil["pc" + (c2 * 10 + c1)]) {
+			rankingPart += 5 - quSave.qcsNoDil["pc" + ( c2 * 10 + c1)]
+			tmp.pcc.noDil = (tmp.pcc.noDil || 0) + 1
+		}
+		r += Math.sqrt(rankingPart)
+	}
+	r *= 100 / 56
+	if (r) el("pccompletionsbtn").style.display = "inline-block"
+	el("pccranking").textContent = r.toFixed(1)
+	el("pccrankingMax").textContent = Math.sqrt(2e4).toFixed(1)
+	updatePCTable()
+	
+	ranking = r // its global
 }
 
 function updatePCTable() {

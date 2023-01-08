@@ -182,9 +182,9 @@ function updateReplicantiTemp() {
 }
 
 function updatePostInfiTemp() {
-	var exp11 = player.galacticSacrifice ? 2 : 0.5
-	var exp21 = player.galacticSacrifice ? 2 : 0.5
-	if (aarMod.ngmX >= 4){
+	var exp11 = inNGM(2) ? 2 : 0.5
+	var exp21 = inNGM(2) ? 2 : 0.5
+	if (inNGM(4)){
 		exp11 += player.totalmoney.plus(10).div(10).log10() / 1e4
 		exp21 += player.money.plus(10).div(10).log10() / 1e4
 	}
@@ -446,10 +446,10 @@ function updateBigRipUpgradesTemp(){
 function updatePhotonsUnlockedBRUpgrades(){
 	var bigRipUpg18base = 1 + brSave.spaceShards.div(1e140).add(1).log10()
 	var bigRipUpg18exp = Math.max(brSave.spaceShards.div(1e140).add(1).log10() / 10, 1)
-	if (bigRipUpg18base > 10 && tmp.newNGP3E) bigRipUpg18base *= Math.log10(bigRipUpg18base)
+	if (bigRipUpg18base > 10 && tmp.ngp3e) bigRipUpg18base *= Math.log10(bigRipUpg18base)
 	tmp.bru[18] = E_pow(bigRipUpg18base, bigRipUpg18exp) // BRU18
 	
-	var bigRipUpg19exp = Math.sqrt(player.timeShards.add(1).log10()) / (tmp.newNGP3E ? 60 : 80)
+	var bigRipUpg19exp = Math.sqrt(player.timeShards.add(1).log10()) / (tmp.ngp3e ? 60 : 80)
 	tmp.bru[19] = pow10(bigRipUpg19exp) // BRU19
 }
 
