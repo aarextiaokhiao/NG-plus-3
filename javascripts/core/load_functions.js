@@ -452,10 +452,6 @@ function setSomeEterEraStuff() {
 
 	updateNotationOption()
 
-	el("floatingTextAnimBtn").textContent = "Floating text: " + ((player.options.animations.floatingText) ? "ON" : "OFF")
-	el("bigCrunchAnimBtn").textContent = "Big crunch: " + (player.options.animations.bigCrunch === "always" ? "ALWAYS" : player.options.animations.bigCrunch ? "ON" : "OFF")
-	el("tachyonParticleAnimBtn").textContent = "Tachyon particles: " + ((player.options.animations.tachyonParticles) ? "ON" : "OFF")
-
 	if (player.infinitied == 0 && getEternitied() == 0) el("infinityPoints2").style.display = "none"
 
 	if (player.eternityChallUnlocked === null) player.eternityChallUnlocked = 0
@@ -528,7 +524,7 @@ function dov7tov10(){
 	el(inERS?"r35":"r76").appendChild(el("One for each dimension"))
 	el(inERS?"r41":"r22").appendChild(el("Fake News"))
 	el(inERS?"r76":"r41").appendChild(el("Spreading Cancer"))
-	el("Universal harmony").style["background-image"]="url(images/"+(player.masterystudies==undefined?104:"104-ngp3")+".png)"
+	el("Universal harmony").style["background-image"]="url(images/"+(!tmp.ngp3?104:"104-ngp3")+".png)"
 	el("Infinite time").style["background-image"]="url(images/"+(inERS?79:69)+".png)"
 
 	if (player.version < 9.5) {
@@ -608,7 +604,6 @@ function doNGP3NewPlayerStuff(){
         player.masterystudies = []
         quSave.reached = false
         player.meta.bestOverQuantums = player.meta.bestAntimatter
-        player.options.animations.quarks = true
         quSave.usedQuarks = {
                 r: 0,
                 g: 0,
@@ -736,7 +731,6 @@ function doNGP3NewPlayerStuff(){
         ghSave = getGhostifyOnNewNGP3Data()
         tmp.bl=ghSave.bl
         for (var g=1;g<=br.maxLimit;g++) tmp.bl.glyphs.push(0)
-        player.options.animations.ghostify = true
         aarMod.ghostifyConf = true
 }
 
@@ -1014,7 +1008,6 @@ function doQuantumUpdates(){
                 player.dilation.bestTP=hasAch("ng3p18")?player.dilation.tachyonParticles:E(0)
                 player.old=false
         }
-        if (aarMod.newGame3PlusVersion < 1.99795) player.options.animations.quarks = true
         if (aarMod.newGame3PlusVersion < 1.99799) player.respecOptions={time:player.respec,mastery:player.respec}
         if (aarMod.newGame3PlusVersion < 1.998) {
                 var respecedMS=[]
@@ -1212,7 +1205,6 @@ function doFundamentUpdates(){
 		brSave = quSave.bigRip
 		beSave = quSave.breakEternity
 		ghSave = quSave.ghostify
-		player.options.animations.ghostify = true
 		aarMod.ghostifyConf = true
 		skip++
 	}
@@ -1577,7 +1569,6 @@ function doNGExpv0tov111(){
 function doNGUdv0tov11(){
         if (aarMod.newGameUpdateVersion === undefined && player.exdilation != undefined) {
                 aarMod.newGameUpdateVersion=1.01
-                player.options.animations.blackHole=true
                 aarMod.dilationConf=player.options.dilationconfirm
                 var newAchievements=[]
                 for (id=0;id<player.achievements.length;id++) {
@@ -1721,7 +1712,7 @@ function doNGp3Init2(){
                 el('prioritydil').value=player.eternityBuyer.dilationPerAmount
                 if (player.meta.bestOverQuantums === undefined) player.meta.bestOverQuantums = player.meta.bestAntimatter
                 updateColorPowers()
-                tmp.be=brSave.active&&beSave.break
+                tmp.be=bigRipped()&&beSave.break
                 el("eggonsCell").style.display = ghSave.neutrinos.upgrades.includes(2) ? "none" : ""
                 el("workerReplWhat").textContent = ghSave.neutrinos.upgrades.includes(2) ? "babies" : "eggons"
                 updateQuantumWorth()
@@ -1780,7 +1771,7 @@ function setConfirmationsDisplay(){
         el("eternityconf").style.display = (player.eternities !== 0 || quantumed) ? "inline-block" : "none"
         el("dilationConfirmBtn").style.display = (player.dilation.studies.includes(1) || quantumed) ? "inline-block" : "none"
         el("quantumConfirmBtn").style.display = quantumed ? "inline-block" : "none"
-        el("bigRipConfirmBtn").style.display = (player.masterystudies === undefined ? false : brSave.times) ? "inline-block" : "none"
+        el("bigRipConfirmBtn").style.display = (!tmp.ngp3 ? false : brSave.times) ? "inline-block" : "none"
         el("ghostifyConfirmBtn").style.display = ghostified ? "inline-block" : "none"
         el("leConfirmBtn").style.display = ghostified && ghSave.ghostlyPhotons.enpowerments ? "inline-block" : "none"
 
@@ -1793,7 +1784,7 @@ function setConfirmationsDisplay(){
         el("dilationConfirmBtn").textContent = "Dilation confirmation: O" + (aarMod.dilationConf ? "N" : "FF")
         el("exdilationConfirmBtn").textContent = "Reverse dilation confirmation: O" + (player.options.exdilationconfirm ? "N" : "FF")
         el("quantumConfirmBtn").textContent = "Quantum confirmation: O" + (aarMod.quantumConf ? "N" : "FF")
-        el("bigRipConfirmBtn").textContent = "Big Rip confirmation: O" + ((player.masterystudies === undefined ? false : brSave.conf) ? "N" : "FF")
+        el("bigRipConfirmBtn").textContent = "Big Rip confirmation: O" + ((!tmp.ngp3 ? false : brSave.conf) ? "N" : "FF")
         el("ghostifyConfirmBtn").textContent = "Fundament confirmation: O" + (aarMod.ghostifyConf ? "N" : "FF")
         el("leConfirmBtn").textContent = "Spectral Ion confirmation: O" + (aarMod.leNoConf ? "FF" : "N")
 }
@@ -1965,7 +1956,6 @@ function updateNGp3DisplayStuff(){
 	el("antTabs").style.display=player.masterystudies.includes("d11")?"":"none"
 	NF.shown()
 	el("riptabbtn").style.display=player.masterystudies.includes("d14")?"":"none"
-	el("ghostifyAnimBtn").textContent="Fundament: O"+(player.options.animations.ghostify?"N":"FF")
 	for (var u=5;u<13;u++) {
 			if (u%3==1) el("neutrinoUpg"+u).parentElement.parentElement.style.display=u>ghSave.times+2?"none":""
 			else el("neutrinoUpg"+u).style.display=u>ghSave.times+2?"none":""
@@ -1996,8 +1986,8 @@ function setSomeQuantumAutomationDisplay(){
         el("uhDiv" + suffix).appendChild(el("Universal harmony"))
         el("feDiv" + suffix).appendChild(el("In the grim darkness of the far endgame"))
         el("dil14desc").textContent = aarMod.nguspV ? "The TP multiplier upgrade is more powerful." : "Increase the exponent of the TP formula."
-        el("dil52").style["font-size"] = player.masterystudies == undefined || aarMod.nguspV !== undefined ? "10px" : "9px"
-        el("dil52formula").style.display = player.masterystudies == undefined || aarMod.nguspV !== undefined ? "none" : ""
+        el("dil52").style["font-size"] = !tmp.ngp3 || aarMod.nguspV !== undefined ? "10px" : "9px"
+        el("dil52formula").style.display = !tmp.ngp3 || aarMod.nguspV !== undefined ? "none" : ""
         el("exDilationDesc").innerHTML = aarMod.nguspV ? 'making galaxies <span id="exDilationBenefit" style="font-size:25px; color: black">0</span>% stronger in dilation.' : 'making dilation <span id="exDilationBenefit" style="font-size:25px; color: black">0</span>% less severe.'
         el("metaAntimatterEffectType").textContent=inQC(3) ? "multiplier on all Infinity Dimensions" : "extra multiplier per Dimension Boost"
         if (player.meta) {
@@ -2015,24 +2005,21 @@ function setSomeQuantumAutomationDisplay(){
 }
 
 function setReplAutoDisplay(){
-        el('replicantigalaxypowerdiv').style.display=hasAch("r106")&&player.boughtDims?"":"none"
-        el("dilationeterupgrow").style.display="none"
-        el("blackHoleAnimBtn").style.display="none"
-        if (player.exdilation != undefined) {
-                if (player.dilation.studies.includes(1)) el("dilationeterupgrow").style.display="table-row"
-                el("blackHoleAnimBtn").textContent = "Black hole: " + ((player.options.animations.blackHole) ? "ON" : "OFF")
-                el("blackholeMax").style.display = aarMod.ngudpV || aarMod.nguspV ? "" : "none"
-                el("blackholeAuto").style.display = aarMod.ngudpV && hasAch("ngpp17") ? "" : "none"
-                el('blackholeAuto').textContent="Auto: O"+(aarMod.ngudpV&&player.autoEterOptions.blackhole?"N":"FF")
-                if (player.blackhole.unl == true) {
-                        el("blackholediv").style.display="inline-block"
-                        el("blackholeunlock").style.display="none"
-                        el("blackHoleAnimBtn").style.display="inline-block"
-                } else {
-                        el("blackholediv").style.display="none"
-                        el("blackholeunlock").style.display="inline-block"
-                }
-        }
+	el('replicantigalaxypowerdiv').style.display=hasAch("r106")&&player.boughtDims?"":"none"
+	el("dilationeterupgrow").style.display="none"
+	if (player.exdilation != undefined) {
+		if (player.dilation.studies.includes(1)) el("dilationeterupgrow").style.display="table-row"
+		el("blackholeMax").style.display = aarMod.ngudpV || aarMod.nguspV ? "" : "none"
+		el("blackholeAuto").style.display = aarMod.ngudpV && hasAch("ngpp17") ? "" : "none"
+		el('blackholeAuto').textContent="Auto: O"+(aarMod.ngudpV&&player.autoEterOptions.blackhole?"N":"FF")
+		if (player.blackhole.unl == true) {
+			el("blackholediv").style.display="inline-block"
+			el("blackholeunlock").style.display="none"
+		} else {
+			el("blackholediv").style.display="none"
+			el("blackholeunlock").style.display="inline-block"
+		}
+	}
 }
 
 function updateNGModeMessage(){
@@ -2109,117 +2096,114 @@ function onLoad(noOffline) {
 	transformSaveToDecimal()
 	updateInQCs()
 	doNGp3Init2()
-        for (s = 0; s < (player.boughtDims ? 4 : 3); s++) toggleCrunchMode(true)
-        updateAutoEterMode()
-        setConfirmationsDisplay()
-        setOptionsDisplaysStuff1()
-        updateHotkeys()
-        setDisplaysStuff1()
-        setChallengeDisplay()
-        setInfChallengeDisplay()
-        setOtherChallDisplay()
-        setTSDisplay()
-        setReplAutoDisplay()
-        setSomeQuantumAutomationDisplay()
-        if (tmp.ngp3) updateNGp3DisplayStuff()
-        hideDimensions()
-        updateChallenges()
-        updateNCVisuals()
-        updateChallengeTimes()
-        checkForEndMe()
-        updateAutobuyers()
-        updatePriorities()
-        updateMilestones()
-        loadInfAutoBuyers()
-        updateEternityUpgrades()
-        updateTheoremButtons()
-        updateTimeStudyButtons()
-        updateRespecButtons()
-        updateEternityChallenges()
-        updateEterChallengeTimes()
-        updateDilationUpgradeCosts()
-        updateExdilation()
-        updateLastTenQuantums()
-        updateSpeedruns()
-        updateBankedEter()
-        updateQuantumChallenges()
-        updateQCTimes()
-        updatePCCompletions()
-        maybeShowFillAll()
-        updateNanoRewardTemp()
-        updateBreakEternity()
-        updateLastTenGhostifies()
-        onNotationChangeNeutrinos()
-        updateHeaders()
-        setAchieveTooltip()
-        if (player.boughtDims) {
-                if (el("timestudies").style.display=="block") showEternityTab("ers_timestudies",true)
-                updateGalaxyControl()
-        } else if (el("ers_timestudies").style.display=="block") showEternityTab("timestudies",true)
-        poData=metaSave["presetsOrder"+(player.boughtDims?"_ers":"")]
-        setAndMaybeShow('bestTP',hasAch("ng3p18") || hasAch("ng3p37"),'"Your best"+(ghostified ? "" : " ever")+" Tachyon particles"+(ghostified ? " in this Fundament" : "")+" was "+shorten(player.dilation.bestTP)+"."')
-        setAndMaybeShow('bestTPOverGhostifies',(hasAch("ng3p18") || hasAch("ng3p37")) && ghostified,'"Your best-ever Tachyon particles was "+shorten(player.dilation.bestTPOverGhostifies)+"."')
-        el('dilationmode').style.display=speedrunMilestonesReached>4?"":"none"
-        el('rebuyupgmax').style.display=speedrunMilestonesReached<26&&tmp.ngp3?"":"none"
-        el('rebuyupgauto').style.display=speedrunMilestonesReached>6?"":"none"
-        el('toggleallmetadims').style.display=speedrunMilestonesReached>7?"":"none"
-        el('metaboostauto').style.display=speedrunMilestonesReached>14?"":"none"
-        el("autoBuyerQuantum").style.display=speedrunMilestonesReached>22?"":"none"
-        el("quantumAnimBtn").style.display=quantumed&&tmp.ngp3?"inline-block":"none"
-        el("quantumAnimBtn").textContent="Quantum: O"+(player.options.animations.quarks?"N":"FF")
-        el("quarksAnimBtn").style.display=quantumed&&tmp.ngp3?"inline-block":"none"
-        el("quarksAnimBtn").textContent="Quarks: O"+(player.options.animations.quarks?"N":"FF")
-        el("maxTimeDimensions").style.display=removeMaxTD?"none":""
-        el("metaMaxAllDiv").style.display=removeMaxMD?"none":""
-        el("ghostifyAnimBtn").style.display=ghostified?"inline-block":"none"
-        var removeMaxTD=false
-        var removeMaxMD=false
-        if (hasAch("ngpp17")) {
-                for (d=1;d<9;d++) {
-                        if (player.autoEterOptions["td"+d]) if (d>7) removeMaxTD=true
-                        else break
-                }
-        }
-        if (speedrunMilestonesReached > 27) {
-                for (d=1;d<9;d++) {
-                        if (player.autoEterOptions["md"+d]) if (d>7) removeMaxMD=true
-                        else break
-                }
-        }
-        notifyId=speedrunMilestonesReached
-        notifyId2=player.masterystudies===undefined?0:ghSave.milestones
-        el("newsbtn").textContent=(player.options.newsHidden?"Show":"Hide")+" news ticker"
-        el("game").style.display=player.options.newsHidden?"none":"block"
-        var tabsSave = aarMod.tabsSave
-        showDimTab((tabsSave.on && tabsSave.tabDims) || 'antimatterdimensions')
-        showStatsTab((tabsSave.on && tabsSave.tabStats) || 'stats')
-        showAchTab((tabsSave.on && (tabsSave.tabAchs == 'normalachievements' || tabsSave.tabAchs == 'secretachievements') && tabsSave.tabAchs) || 'normalachievements')
-        showChallengesTab((tabsSave.on && tabsSave.tabChalls) || 'normalchallenges')
-        showInftab((tabsSave.on && tabsSave.tabInfinity) || 'preinf')
-        showEternityTab((tabsSave.on && tabsSave.tabEternity) || 'timestudies', true)
-        showQuantumTab((tabsSave.on && tabsSave.tabQuantum) || 'uquarks')
-        showAntTab((tabsSave.on && tabsSave.tabAnt) || 'antcore')
-        showGhostifyTab((tabsSave.on && tabsSave.tabGhostify) || 'neutrinos')
-        showBLTab((tabsSave.on && tabsSave.tabBL) || 'bextab')
-        if (!player.options.newsHidden) scrollNextMessage()
-        el("secretoptionsbtn").style.display=player.options.secrets?"":"none"
-        el("ghostlynewsbtn").textContent=((player.options.secrets!==undefined?player.options.secrets.ghostlyNews:false)?"Hide":"Show")+" ghostly news ticker"
-        resetUP()
-        if (aarMod.offlineProgress && !noOffline) {
-                let diff = new Date().getTime() - player.lastUpdate
-                if (diff > 1000*1000) simulateTime(diff/1000)
-        } else player.lastUpdate = new Date().getTime()
-        if (player.totalTimePlayed < 1 || inflationCheck || forceToQuantumAndRemove) {
-                updateNGModeMessage()
-                inflationCheck = false
-                infiniteCheck = false
-                closeToolTip()
-                showNextModeMessage()
-        }  else showNextModeMessage()
-        el("ghostlyNewsTicker").style.height=((player.options.secrets!==undefined?player.options.secrets.ghostlyNews:false)?24:0)+"px"
-        el("ghostlyNewsTickerBlock").style.height=((player.options.secrets!==undefined?player.options.secrets.ghostlyNews:false)?16:0)+"px"
-        updateTemp()
-        updateTemp()
+
+	for (s = 0; s < (player.boughtDims ? 4 : 3); s++) toggleCrunchMode(true)
+	updateAutoEterMode()
+	setConfirmationsDisplay()
+	setOptionsDisplaysStuff1()
+	updateHotkeys()
+	setDisplaysStuff1()
+	setChallengeDisplay()
+	setInfChallengeDisplay()
+	setOtherChallDisplay()
+	setTSDisplay()
+	setReplAutoDisplay()
+	setSomeQuantumAutomationDisplay()
+	if (tmp.ngp3) updateNGp3DisplayStuff()
+	hideDimensions()
+	updateChallenges()
+	updateNCVisuals()
+	updateChallengeTimes()
+	checkForEndMe()
+	updateAutobuyers()
+	updatePriorities()
+	updateMilestones()
+	loadInfAutoBuyers()
+	updateEternityUpgrades()
+	updateTheoremButtons()
+	updateTimeStudyButtons()
+	updateRespecButtons()
+	updateEternityChallenges()
+	updateEterChallengeTimes()
+	updateDilationUpgradeCosts()
+	updateExdilation()
+	updateLastTenQuantums()
+	updateSpeedruns()
+	updateBankedEter()
+	updateQuantumChallenges()
+	updateQCTimes()
+	updatePCCompletions()
+	maybeShowFillAll()
+	updateNanoRewardTemp()
+	updateBreakEternity()
+	updateLastTenGhostifies()
+	onNotationChangeNeutrinos()
+	updateHeaders()
+	setAchieveTooltip()
+	updateAnimationBtns(true)
+	if (player.boughtDims) {
+			if (el("timestudies").style.display=="block") showEternityTab("ers_timestudies",true)
+			updateGalaxyControl()
+	} else if (el("ers_timestudies").style.display=="block") showEternityTab("timestudies",true)
+	poData=metaSave["presetsOrder"+(player.boughtDims?"_ers":"")]
+	setAndMaybeShow('bestTP',hasAch("ng3p18") || hasAch("ng3p37"),'"Your best"+(ghostified ? "" : " ever")+" Tachyon particles"+(ghostified ? " in this Fundament" : "")+" was "+shorten(player.dilation.bestTP)+"."')
+	setAndMaybeShow('bestTPOverGhostifies',(hasAch("ng3p18") || hasAch("ng3p37")) && ghostified,'"Your best-ever Tachyon particles was "+shorten(player.dilation.bestTPOverGhostifies)+"."')
+	el('dilationmode').style.display=speedrunMilestonesReached>4?"":"none"
+	el('rebuyupgmax').style.display=speedrunMilestonesReached<26&&tmp.ngp3?"":"none"
+	el('rebuyupgauto').style.display=speedrunMilestonesReached>6?"":"none"
+	el('toggleallmetadims').style.display=speedrunMilestonesReached>7?"":"none"
+	el('metaboostauto').style.display=speedrunMilestonesReached>14?"":"none"
+	el("autoBuyerQuantum").style.display=speedrunMilestonesReached>22?"":"none"
+	el("maxTimeDimensions").style.display=removeMaxTD?"none":""
+	el("metaMaxAllDiv").style.display=removeMaxMD?"none":""
+	var removeMaxTD=false
+	var removeMaxMD=false
+	if (hasAch("ngpp17")) {
+			for (d=1;d<9;d++) {
+					if (player.autoEterOptions["td"+d]) if (d>7) removeMaxTD=true
+					else break
+			}
+	}
+	if (speedrunMilestonesReached > 27) {
+			for (d=1;d<9;d++) {
+					if (player.autoEterOptions["md"+d]) if (d>7) removeMaxMD=true
+					else break
+			}
+	}
+	notifyId=speedrunMilestonesReached
+	notifyId2=player.masterystudies===undefined?0:ghSave.milestones
+	el("newsbtn").textContent=(player.options.newsHidden?"Show":"Hide")+" news ticker"
+	el("game").style.display=player.options.newsHidden?"none":"block"
+	var tabsSave = aarMod.tabsSave
+	showDimTab((tabsSave.on && tabsSave.tabDims) || 'antimatterdimensions')
+	showStatsTab((tabsSave.on && tabsSave.tabStats) || 'stats')
+	showAchTab((tabsSave.on && (tabsSave.tabAchs == 'normalachievements' || tabsSave.tabAchs == 'secretachievements') && tabsSave.tabAchs) || 'normalachievements')
+	showChallengesTab((tabsSave.on && tabsSave.tabChalls) || 'normalchallenges')
+	showInftab((tabsSave.on && tabsSave.tabInfinity) || 'preinf')
+	showEternityTab((tabsSave.on && tabsSave.tabEternity) || 'timestudies', true)
+	showQuantumTab((tabsSave.on && tabsSave.tabQuantum) || 'uquarks')
+	showAntTab((tabsSave.on && tabsSave.tabAnt) || 'antcore')
+	showGhostifyTab((tabsSave.on && tabsSave.tabGhostify) || 'neutrinos')
+	showBLTab((tabsSave.on && tabsSave.tabBL) || 'bextab')
+	if (!player.options.newsHidden) scrollNextMessage()
+	el("secretoptionsbtn").style.display=player.options.secrets?"":"none"
+	el("ghostlynewsbtn").textContent=((player.options.secrets!==undefined?player.options.secrets.ghostlyNews:false)?"Hide":"Show")+" ghostly news ticker"
+	resetUP()
+	if (aarMod.offlineProgress && !noOffline) {
+			let diff = new Date().getTime() - player.lastUpdate
+			if (diff > 1000*1000) simulateTime(diff/1000)
+	} else player.lastUpdate = new Date().getTime()
+	if (player.totalTimePlayed < 1 || inflationCheck || forceToQuantumAndRemove) {
+			updateNGModeMessage()
+			inflationCheck = false
+			infiniteCheck = false
+			closeToolTip()
+			showNextModeMessage()
+	}  else showNextModeMessage()
+	el("ghostlyNewsTicker").style.height=((player.options.secrets!==undefined?player.options.secrets.ghostlyNews:false)?24:0)+"px"
+	el("ghostlyNewsTickerBlock").style.height=((player.options.secrets!==undefined?player.options.secrets.ghostlyNews:false)?16:0)+"px"
+	updateTemp()
+	updateTemp()
 }
 
 
@@ -2537,48 +2521,48 @@ function conToDeciMS(){
 }
 
 function conToDeciGhostify(){
-        if (ghSave) {
-                player.dilation.bestTPOverGhostifies = Decimal.max(player.dilation.bestTPOverGhostifies, player.dilation.bestTP)
-                player.meta.bestOverGhostifies = Decimal.max(player.meta.bestOverGhostifies, player.meta.bestOverQuantums)
-                quSave.pairedChallenges.pc68best = E(quSave.pairedChallenges.pc68best)
-                if (brSave) {
-                        brSave.bestThisRun = E(brSave.bestThisRun)
-                        brSave.totalAntimatter = E(brSave.totalAntimatter)
-                        brSave.spaceShards = E(brSave.spaceShards)
-                }
-                if (beSave) beSave.eternalMatter = E(beSave.eternalMatter)
-                ghSave.times = nP(ghSave.times)
-                ghSave.ghostParticles = E(ghSave.ghostParticles)
-                for (var r=0;r<10;r++) ghSave.last10[r][1] = E(ghSave.last10[r][1])
-                ghSave.neutrinos.electron = E(ghSave.neutrinos.electron)
-                ghSave.neutrinos.mu = E(ghSave.neutrinos.mu)
-                ghSave.neutrinos.tau = E(ghSave.neutrinos.tau)
-                if (ghSave.automatorGhosts!==undefined) ghSave.automatorGhosts[15].a=E(ghSave.automatorGhosts[15].a)
-                if (ghSave.ghostlyPhotons) {
-                        ghSave.ghostlyPhotons.amount=E(ghSave.ghostlyPhotons.amount)
-                        ghSave.ghostlyPhotons.ghostlyRays=E(ghSave.ghostlyPhotons.ghostlyRays)
-                        ghSave.ghostlyPhotons.darkMatter=E(ghSave.ghostlyPhotons.darkMatter)
-                }
-				if (tmp.bl && ghSave.wzb) {
-					tmp.bl.watt=E(tmp.bl.watt)
-					tmp.bl.ticks=E(tmp.bl.ticks)
-					tmp.bl.speed=E(tmp.bl.speed)
-					tmp.bl.am=E(tmp.bl.am)
-					tmp.bl.extractProgress=E(tmp.bl.extractProgress)
-					tmp.bl.autoExtract=E(tmp.bl.autoExtract)
-					for (var t=0;t<=br.maxLimit-1;t++) tmp.bl.glyphs[t]=E(tmp.bl.glyphs[t]||0)
-					tmp.bl.battery=E(tmp.bl.battery)
-					for (var g2=2;g2<=br.maxLimit;g2++) for (var g1=1;g1<g2;g1++) if (tmp.bl.enchants[g1*10+g2]!==undefined) tmp.bl.enchants[g1*10+g2]=E(tmp.bl.enchants[g1*10+g2])
+	if (ghSave) {
+		player.dilation.bestTPOverGhostifies = Decimal.max(player.dilation.bestTPOverGhostifies, player.dilation.bestTP)
+		player.meta.bestOverGhostifies = Decimal.max(player.meta.bestOverGhostifies, player.meta.bestOverQuantums)
+		quSave.pairedChallenges.pc68best = E(quSave.pairedChallenges.pc68best)
+		if (brSave) {
+			brSave.bestThisRun = E(brSave.bestThisRun)
+			brSave.totalAntimatter = E(brSave.totalAntimatter)
+			brSave.spaceShards = E(brSave.spaceShards)
+		}
+		if (beSave) beSave.eternalMatter = E(beSave.eternalMatter)
+		ghSave.times = nP(ghSave.times)
+		ghSave.ghostParticles = E(ghSave.ghostParticles)
+		for (var r=0;r<10;r++) ghSave.last10[r][1] = E(ghSave.last10[r][1])
+		ghSave.neutrinos.electron = E(ghSave.neutrinos.electron)
+		ghSave.neutrinos.mu = E(ghSave.neutrinos.mu)
+		ghSave.neutrinos.tau = E(ghSave.neutrinos.tau)
+		if (ghSave.automatorGhosts!==undefined) ghSave.automatorGhosts[15].a=E(ghSave.automatorGhosts[15].a)
+		if (ghSave.ghostlyPhotons) {
+				ghSave.ghostlyPhotons.amount=E(ghSave.ghostlyPhotons.amount)
+				ghSave.ghostlyPhotons.ghostlyRays=E(ghSave.ghostlyPhotons.ghostlyRays)
+				ghSave.ghostlyPhotons.darkMatter=E(ghSave.ghostlyPhotons.darkMatter)
+		}
+		if (tmp.bl && ghSave.wzb) {
+			tmp.bl.watt=E(tmp.bl.watt)
+			tmp.bl.ticks=E(tmp.bl.ticks)
+			tmp.bl.speed=E(tmp.bl.speed)
+			tmp.bl.am=E(tmp.bl.am)
+			tmp.bl.extractProgress=E(tmp.bl.extractProgress)
+			tmp.bl.autoExtract=E(tmp.bl.autoExtract)
+			for (var t=0;t<=br.maxLimit-1;t++) tmp.bl.glyphs[t]=E(tmp.bl.glyphs[t]||0)
+			tmp.bl.battery=E(tmp.bl.battery)
+			for (var g2=2;g2<=br.maxLimit;g2++) for (var g1=1;g1<g2;g1++) if (tmp.bl.enchants[g1*10+g2]!==undefined) tmp.bl.enchants[g1*10+g2]=E(tmp.bl.enchants[g1*10+g2])
 
-					ghSave.wzb.dP=E(ghSave.wzb.dP)
-					ghSave.wzb.wQkProgress=E(ghSave.wzb.wQkProgress)
-					ghSave.wzb.zNeProgress=E(ghSave.wzb.zNeProgress)
-					ghSave.wzb.zNeReq=E(ghSave.wzb.zNeReq)
-					ghSave.wzb.wpb=E(ghSave.wzb.wpb)
-					ghSave.wzb.wnb=E(ghSave.wzb.wnb)
-					ghSave.wzb.zb=E(ghSave.wzb.zb)
-				}
-        }
+			ghSave.wzb.dP=E(ghSave.wzb.dP)
+			ghSave.wzb.wQkProgress=E(ghSave.wzb.wQkProgress)
+			ghSave.wzb.zNeProgress=E(ghSave.wzb.zNeProgress)
+			ghSave.wzb.zNeReq=E(ghSave.wzb.zNeReq)
+			ghSave.wzb.wpb=E(ghSave.wzb.wpb)
+			ghSave.wzb.wnb=E(ghSave.wzb.wnb)
+			ghSave.wzb.zb=E(ghSave.wzb.zb)
+		}
+	}
 }
 
 function deepUndefinedAndDecimal(obj, data) {

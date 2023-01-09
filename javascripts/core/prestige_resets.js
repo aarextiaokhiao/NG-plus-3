@@ -198,7 +198,7 @@ let RESETS = {
 	},
 	qu: {
 		doReset(order) {
-			let bigRip = tmp.ngp3 && brSave.active
+			let bigRip = bigRipped()
 			let qc = !inQC(0)
 
 			player.infinitiedBank = 0
@@ -1070,7 +1070,6 @@ function doGhostifyGhostifyResetStuff(bm, force){
 		ghostified = true
 		ngp3_feature_notify("fu")
 		el("ghostparticles").style.display = ""
-		el("ghostifyAnimBtn").style.display = "inline-block"
 		el("ghostifyConfirmBtn").style.display = "inline-block"
 		giveAchievement("Kee-hee-hee!")
 	} else if (ghSave.times > 2 && ghSave.times < 11) {

@@ -13,7 +13,6 @@ function galaxyReset(bulk) {
 
 	if (tmp.ngp3 && bulk) {
 		if (quSave.autoOptions.sacrifice) sacrificeGalaxy(6, true)
-		if (brSave.active) brSave.bestGals = Math.max(brSave.bestGals, player.galaxies)
 		if (ghostified && ghSave.neutrinos.boosts) gainNeutrinos(bulk, "gen")
 	}
 	hideDimensions()
@@ -115,7 +114,7 @@ function getDistantScalingStart() {
 	var n = 100 + getECReward(5)
 	if (player.timestudy.studies.includes(223)) n += 7
 	if (player.timestudy.studies.includes(224)) n += Math.floor(player.resets/2000)
-	if (tmp.ngp3) if (brSave.active && hasRipUpg(15)) n += tmp.bru[15]
+	if (bigRipped() && hasRipUpg(15)) n += tmp.bru[15]
 	if (player.dilation.upgrades.includes("ngmm11")) n += 25
 
 	if (tmp.grd.speed == 1) return Math.max(n, 0)

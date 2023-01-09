@@ -1,7 +1,7 @@
 // v2.9
 quantumed = false
 function quantum(auto, force, qc, bigRip = false) {
-	if (tmp.ngp3 && brSave.active) force = true
+	if (bigRipped()) force = true
 	if (!force && !isQuantumReached()) return
 	if (implosionCheck) return
 
@@ -19,14 +19,14 @@ function quantum(auto, force, qc, bigRip = false) {
 		if (quSave.electrons.amount < cost) return
 		if (quSave.pairedChallenges.completed <= qc.pc - 1) return
 
-		if (bigRip && confirm("Big Ripping the universe starts PC6+8, however, only dilation upgrades boost dilation except upgrades that multiply TP gain until you buy the eleventh upgrade, certain resources like Time Theorems and Time Studies will be changed, and only certain upgrades work in Big Rip. If you can beat PC6+8, you will be able to unlock the next layer. You can give your Time Theorems and Time Studies back by undoing Big Rip.")) return
+		if (bigRip && confirm("Big Ripping the universe starts PC6+8, but with various changes. You can give your Time Theorems and Time Studies back by undoing Big Rip. If you can beat this, you will be able to unlock the next layer.")) return
 		else if (qc.pc && (player.options.challConf || (quSave.pairedChallenges.completions.length < 1 && !ghostified)) && confirm("You will start a Quantum Challenge, but as a Paired Challenge, there will be two challenges at once. Completing it boosts the rewards of the Quantum Challenges that you chose in this Paired Challenge. You will keep electrons & sacrificed galaxies, but they don't work in this Challenge.")) return
 		else if (qc.qc.length && (player.options.challConf || (QCIntensity(1) == 0 && !ghostified)) && confirm("You will do a Quantum reset, but you will not gain quarks, you keep your electrons & sacrificed galaxies, and you can't buy electron upgrades. You have to reach the set goal of antimatter while getting the meta-antimatter requirement to Quantum to complete this challenge. Electrons and banked eternities have no effect in Quantum Challenges and your electrons and sacrificed galaxies don't reset until you end the challenge.")) return
 
 		quSave.electrons.amount -= cost
 	}
 
-	var implode = !auto && !force && player.options.animations.quantum
+	var implode = !auto && !force && isAnimationOn("quantum")
 	if (implode) {
 		implosionCheck = 1
 		el("body").style.animation = "quantum 2s 1"
@@ -55,7 +55,7 @@ function isQuantumReached() {
 	if (!player.meta) return
 
 	let ma = player.meta.antimatter.max(hasAch("ng3p76") ? player.meta.bestOverQuantums : 0)
-	let got = ma.gte(getQuantumReq(undefined, tmp.ngp3 && brSave.active))
+	let got = ma.gte(getQuantumReq(undefined, bigRipped()))
 	if (tmp.ngp3) got = got && ECComps("eterc14") && quarkGain().gt(0)
 	return got
 }
@@ -183,7 +183,7 @@ function doQuantumProgress() {
 	var quantumReq = getQuantumReq()
 	var id = 1
 	if (quantumed && tmp.ngp3) {
-		if (brSave.active) {
+		if (bigRipped()) {
 			var gg = getGHPGain()
 			if (player.meta.antimatter.lt(quantumReq)) id = 1
 			else if (!beSave.unlocked) id = 4
@@ -250,7 +250,7 @@ function doQuantum(force, auto, qc = {}) {
 	//setup
 	let dilTimes = player.dilation.times
 	let bigRip = qc.br
-	let oldBigRip = brSave.active
+	let oldBigRip = bigRipped()
 
 	if (hasAch("ng3p73")) player.infinitiedBank = nA(player.infinitiedBank, gainBankedInf())
 	if (!force) {
@@ -285,9 +285,7 @@ function doQuantum(force, auto, qc = {}) {
 		if (!quantumed) {
 			quantumed = true
 			ngp3_feature_notify("qu")
-			el("quantumAnimBtn").style.display="inline-block"
 			el("quantumConfirmBtn").style.display = "inline-block"
-			el("quarksAnimBtn").style.display="inline-block"
 			el("quarks").style.display=""
 			el("bestAntimatterType").textContent = "Your best meta-antimatter for this quantum"
 			if (isEmptiness) showTab("dimensions")
@@ -318,6 +316,42 @@ function doQuantum(force, auto, qc = {}) {
 		if (quSave.autoOptions.assignQK) assignAll(true)
 		updateColorCharge()
 	}
+
+	//Big Rip
+	if (oldBigRip) {
+		brSave.spaceShards = brSave && brSave.spaceShards.add(getSpaceShardsGain())
+		if (ghSave.milestones < 8) brSave.spaceShards = brSave && brSave.spaceShards.round()
+		if (player.matter.gt("1e5000")) giveAchievement("Really?")
+	}
+	if (bigRip && !hasRipUpg(12)) {
+		brSave.storedTS={
+			tt: player.timestudy.theorem,
+			studies: player.timestudy.studies,
+			boughtA: Decimal.div(player.timestudy.amcost, "1e20000").log("1e20000"),
+			boughtI: player.timestudy.ipcost.log("1e100"),
+			boughtE: Math.round(player.timestudy.epcost.log(2))
+		}
+		if (player.eternityChallUnlocked > 12) brSave.storedTS.tt += masteryStudies.costs.ec[player.eternityChallUnlocked]
+		else brSave.storedTS.tt += ([0, 30, 35, 40, 70, 130, 85, 115, 115, 415, 550, 1, 1])[player.eternityChallUnlocked]
+		for (var s = 0; s < player.masterystudies.length; s++) if (player.masterystudies[s].indexOf("t") == 0) brSave.storedTS.studies.push(parseInt(player.masterystudies[s].split("t")[1]))
+	}
+	if (bigRip != oldBigRip) {
+		if (bigRip) {
+			if (brSave.times < 1) el("bigRipConfirmBtn").style.display = "inline-block"
+			brSave.times++
+			brSave.bestThisRun = E(0)
+			giveAchievement("To the new dimension!")
+			if (brokeEternity()) beSave.did = true
+		} else {
+			if (!hasRipUpg(1)) {
+				player.infmultbuyer = true
+				for (var d=0;d<8;d++) player.infDimBuyers[d] = true
+			}
+			if (isRewardEnabled(11)) unstoreTT()
+		}
+		switchAB()
+	}
+	brSave.active = bigRip
 
 	//Quantum Challenges
 	if (!force) {
@@ -357,7 +391,7 @@ function doQuantum(force, auto, qc = {}) {
 			if (dilTimes == 0) quSave.qcsNoDil["qc" + qc1] = 1
 		}
 	}
-	if (inQC(6) && inQC(8) && player.money.gt(quSave.pairedChallenges.pc68best) && !brSave.active) {
+	if (inQC(6) && inQC(8) && player.money.gt(quSave.pairedChallenges.pc68best) && !bigRipped()) {
 		quSave.pairedChallenges.pc68best = player.money
 		el("bpc68").textContent = shortenMoney(player.money)
 	}
@@ -380,42 +414,6 @@ function doQuantum(force, auto, qc = {}) {
 		for (qc = 1; qc < 9; qc++) quSave.challenges[qc] = 1
 		el("respecPC").className = "storebtn"
 	}
-
-	//Big Rip
-	if (oldBigRip) {
-		brSave.spaceShards = brSave && brSave.spaceShards.add(getSpaceShardsGain())
-		if (ghSave.milestones < 8) brSave.spaceShards = brSave && brSave.spaceShards.round()
-		if (player.matter.gt("1e5000")) giveAchievement("Really?")
-	}
-	if (bigRip && !hasRipUpg(12)) {
-		brSave.storedTS={
-			tt: player.timestudy.theorem,
-			studies: player.timestudy.studies,
-			boughtA: Decimal.div(player.timestudy.amcost, "1e20000").log("1e20000"),
-			boughtI: player.timestudy.ipcost.log("1e100"),
-			boughtE: Math.round(player.timestudy.epcost.log(2))
-		}
-		if (player.eternityChallUnlocked > 12) brSave.storedTS.tt += masteryStudies.costs.ec[player.eternityChallUnlocked]
-		else brSave.storedTS.tt += ([0, 30, 35, 40, 70, 130, 85, 115, 115, 415, 550, 1, 1])[player.eternityChallUnlocked]
-		for (var s = 0; s < player.masterystudies.length; s++) if (player.masterystudies[s].indexOf("t") == 0) brSave.storedTS.studies.push(parseInt(player.masterystudies[s].split("t")[1]))
-	}
-	if (bigRip != oldBigRip) {
-		if (bigRip) {
-			if (brSave.times < 1) el("bigRipConfirmBtn").style.display = "inline-block"
-			brSave.times++
-			brSave.bestThisRun = player.money
-			giveAchievement("To the new dimension!")
-			if (beSave && beSave.break) beSave.did = true
-		} else {
-			if (!hasRipUpg(1)) {
-				player.infmultbuyer = true
-				for (var d=0;d<8;d++) player.infDimBuyers[d] = true
-			}
-			if (isRewardEnabled(11)) unstoreTT()
-		}
-		switchAB()
-	}
-	brSave.active = bigRip
 
 	//Achievements
 	if (!force) {
@@ -449,6 +447,6 @@ function updateQuarkDisplay() {
 }
 
 function metaReset2() {
-	if (tmp.ngp3 && brSave.active) ghostify()
+	if (bigRipped()) ghostify()
 	else quantum(false, false, 0)
 }

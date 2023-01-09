@@ -46,7 +46,6 @@ function unlockBlackhole() {
 	if (player.eternityPoints.gte('1e4000')) {
 		el("blackholediv").style.display = "inline-block"
 		el("blackholeunlock").style.display = "none"
-		el("blackHoleAnimBtn").style.display = "inline-block"
 		player.blackhole.unl = true
 		player.eternityPoints = player.eternityPoints.minus('1e4000')
 	}
@@ -91,7 +90,7 @@ function updateBlackhole() {
 }
 
 function drawBlackhole(ts) {
-	if (el("eternitystore").style.display !== "none" && el("blackhole").style.display !== "none" && player.options.animations.blackHole) {
+	if (el("eternitystore").style.display !== "none" && el("blackhole").style.display !== "none" && isAnimationOn("blackHole")) {
 		bhctx.clearRect(0, 0, canvas.width, canvas.height);
 		let radius = Math.max(player.blackhole.power.log(2), 0);
 		bhctx.beginPath()

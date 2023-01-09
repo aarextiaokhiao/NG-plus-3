@@ -81,7 +81,7 @@ var antTabs = {
 }
 
 function updateReplicants(mode) {
-	if (player.masterystudies == undefined ? true : ghSave.milestones < 8) mode = undefined
+	if (!tmp.ngp3 ? true : ghSave.milestones < 8) mode = undefined
 	if (mode === undefined) {
 		if (player.masterystudies ? !player.masterystudies.includes("d10") : true) return
 	}
@@ -173,7 +173,7 @@ function getEmperorDimensionMultiplier(dim) {
 	let ret = E(1)
 	if (player.currentEternityChall == "eterc11") return ret
 	ret = tmp.edgm //Global multiplier of all Emperor Dimensions
-	if (hasNU(7) && dim % 2 == 1) ret = ret.times(tmp.nu[3])
+	if (hasNU(7) && dim % 2 == 1) ret = ret.times(tmp.nu[7])
 	//quSave.emperorDimensions[8].perm-10
 	if (dim == 8) ret = ret.times(E_pow(1.05, Math.sqrt(Math.max(0, quSave.emperorDimensions[8].perm - 8))))
 	return dilates(ret, 1)

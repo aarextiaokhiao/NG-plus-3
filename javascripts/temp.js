@@ -14,7 +14,7 @@ function updateTemp() {
 		updateGhostifyTempStuff()
 		if (beSave && beSave.unlocked) updateBreakEternityUpgradesTemp()
 		if (player.masterystudies.includes("d14")) updateBigRipUpgradesTemp()
-		if (tmp.nrm !== 1 && brSave.active) {
+		if (tmp.nrm !== 1 && bigRipped()) {
 			if (!player.dilation.active && hasRipUpg(14)) tmp.nrm = tmp.nrm.pow(tmp.bru[14])
 			if (tmp.nrm.log10() > 1e9) tmp.nrm = pow10(1e9 * Math.pow(tmp.nrm.log10() / 1e9, 2/3))
 		}
@@ -38,7 +38,7 @@ function updateTemp() {
 			}
 		}
 		if (player.masterystudies.includes("d10")) tmp.edgm = getEmperorDimensionGlobalMultiplier() //Update global multiplier of all Emperor Dimensions
-		tmp.be = brSave && brSave.active && beSave.break
+		tmp.be = brokeEternity()
 		tmp.rg4 = quSave.upgrades.includes("rg4")
 		tmp.tue = getTreeUpgradeEfficiency()
 	} else tmp.be = false
@@ -87,7 +87,7 @@ let tmp = {
 	beu: {},
 	bm: [200,175,150,100,50,40,30,25,20,15,10,5,4,3,2,1],
 	nbc: [1,2,4,6,15,50,1e3,1e14,1e35,"1e500","1e2500","1e20000"],
-	nu: [],
+	nu: {},
 	nuc: [null,1e6,1e7,1e8,2e8,5e8,2e9,5e9,75e8,1e10,7e12,1e18,1e45,1e100,1e80,1e280,"e10000","e13000"],
 	lt: [100,3e3,2e4,1e5,1e6,1e7,1e8,1e9],
 	lti: [2,3,1.3,10,4,1e3,2.5,3],
@@ -122,7 +122,7 @@ function updateInfiniteTimeTemp() {
 function updateIntergalacticTemp() {
 	if (!tmp.ngp3) return
 	x = player.galaxies
-	if (isLEBoostUnlocked(3) && !brSave.active) x *= tmp.leBonus[3]
+	if (isLEBoostUnlocked(3) && !bigRipped()) x *= tmp.leBonus[3]
 	if (tmp.be && player.dilation.active && beSave.upgrades.includes(10)) x *= getBreakUpgMult(10)
 	if (!tmp.ngp3l) x += tmp.effAeg
 	tmp.igg = x
@@ -139,7 +139,7 @@ function updateIntergalacticTemp() {
 
 function updateAntiElectronGalaxiesTemp(){
 	tmp.aeg = 0
-	if (hasBU(14) && !brSave.active) tmp.aeg = Math.max(tmp.blu[14] - quSave.electrons.sacGals, 0)
+	if (hasBU(14) && !bigRipped()) tmp.aeg = Math.max(tmp.blu[14] - quSave.electrons.sacGals, 0)
 	tmp.effAeg = tmp.aeg
 }
 
@@ -241,33 +241,32 @@ function updateNeutrinoBoostsTemp() {
 
 function updateNU1Temp(){
 	let x = 110
-	if (!brSave.active) x = Math.max(x - player.meta.resets, 0)
-	tmp.nu[0] = x
+	if (!bigRipped()) x = Math.max(x - player.meta.resets, 0)
+	tmp.nu[1] = x
 }
 
 function updateNU3Temp(){
 	let log = quSave.colorPowers.b.log10()
 	let exp = Math.max(log / 1e4 + 1, 2)
 	let x
-	if (exp > 2) x = E_pow(Math.max(log / 250 + 1, 1), exp)
-	else x = Math.pow(Math.max(log / 250 + 1, 1), exp)
-	tmp.nu[1] = x
+	if (exp > 2) x = E_pow(Math.max(log / 500 + 1, 1), exp)
+	else x = Math.pow(Math.max(log / 500 + 1, 1), exp)
+	tmp.nu[3] = x
 }
 
 function updateNU4Temp(){
-	let nu4base = 50
-	if (tmp.ngp3l) nu4base = 20
-	tmp.nu[2] = E_pow(nu4base, Math.pow(Math.max(-getTickspeed().div(1e3).log10() / 4e13 - 4, 0), 1/4))
+	let nu4base = 30
+	tmp.nu[4] = E_pow(nu4base, Math.pow(Math.max(-getTickspeed().div(1e3).log10() / 4e13 - 4, 0), 1/4))
 }
 
 function updateNU7Temp(){
 	var nu7 = quSave.colorPowers.g.add(1).log10()/400
 	if (nu7 > 40) nu7 = Math.sqrt(nu7*10)+20
-	tmp.nu[3] = pow10(nu7) 
+	tmp.nu[7] = pow10(nu7) 
 }
 
 function updateNU12Temp(){
-	tmp.nu[4] = { 
+	tmp.nu[12] = { 
 		normal: Math.sqrt(player.galaxies * .0035 + 1),
 		free: player.dilation.freeGalaxies * .035 + 1,
 		replicated: Math.sqrt(getTotalRG()) * (tmp.ngp3l ? .035 : .0175) + 1 //NU12 
@@ -276,11 +275,11 @@ function updateNU12Temp(){
 
 function updateNU14Temp(){
 	var base = ghSave.ghostParticles.add(1).log10()
-	tmp.nu[5] = Decimal.pow(2, base / 60 - 0.5).max(1).min(1e4)
+	tmp.nu[14] = Decimal.pow(2, base / 60 - 0.5).max(1).min(1e4)
 }
 
 function updateNU15Temp(){
-	tmp.nu[6] = pow2(Math.sqrt(nfSave.rewards + 4) - 1) 
+	tmp.nu[15] = pow2(Math.sqrt(nfSave.rewards + 4) - 1) 
 	//NU15
 }
 
@@ -394,7 +393,7 @@ function updateBreakEternityUpgradesTemp() {
 
 function updateBRU1Temp() {
 	tmp.bru[1] = 1
-	if (!brSave.active) return
+	if (!bigRipped()) return
 	let exp = 1
 	if (hasRipUpg(17)) exp = tmp.bru[17]
 	if (ghostified && ghSave.neutrinos.boosts > 7) exp *= tmp.nb[8]
@@ -404,13 +403,13 @@ function updateBRU1Temp() {
 
 function updateBRU8Temp() {
 	tmp.bru[8] = 1
-	if (!brSave.active) return
+	if (!bigRipped()) return
 	tmp.bru[8] = pow2(getTotalRG()) // BRU8
 	if (!hasNU(11)) tmp.bru[8] = tmp.bru[8].min(Number.MAX_VALUE)
 }
 
 function updateBRU14Temp() {
-	if (!brSave.active) {
+	if (!bigRipped()) {
 		tmp.bru[14] = 1
 		return
 	}

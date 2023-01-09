@@ -39,21 +39,60 @@ function resizeCanvas() {
 }
 
 function point(x, y, ctz){
-    ctz.beginPath();
-    ctz.arc(x, y, 2, 0, 2 * Math.PI, true);
-    ctz.fill();
-  }
+	ctz.beginPath();
+	ctz.arc(x, y, 2, 0, 2 * Math.PI, true);
+	ctz.fill();
+}
 
-function animationOnOff(name) {
-    if (name == "bigCrunch" && shiftDown && player.options.animations[name] !== "always") player.options.animations[name] = "always"
-    else if (player.options.animations[name]) player.options.animations[name] = false;
-    else player.options.animations[name] = true;
-    if (name == "floatingText") el("floatingTextAnimBtn").textContent = "Floating text: " + ((player.options.animations.floatingText) ? "ON" : "OFF")
-    else if (name == "bigCrunch") el("bigCrunchAnimBtn").textContent = "Big crunch: " + (player.options.animations.bigCrunch === "always" ? "ALWAYS" : player.options.animations.bigCrunch ? "ON" : "OFF")
-    else if (name == "tachyonParticles") el("tachyonParticleAnimBtn").textContent = "Tachyon particles: " + ((player.options.animations.tachyonParticles) ? "ON" : "OFF")
-    else if (name == "blackHole") el("blackHoleAnimBtn").textContent = "Black hole: " + ((player.options.animations.blackHole) ? "ON" : "OFF")
-    else if (name == "quarks") el("quarksAnimBtn").textContent="Quarks: O"+(player.options.animations[name]?"N":"FF")
-    else if (name == "ghostify") el("ghostifyAnimBtn").textContent="Fundament: O"+(player.options.animations[name]?"N":"FF")
+const ANIMATIONS = {
+	bigCrunch: {
+		unl: _ => player.infinities > 0 || getEternitied() > 0 || quantumed,
+		title: "Big Crunch"
+	},
+	quantum: {
+		unl: _ => quantumed,
+		title: "Quantum"
+	},
+	ghostify: {
+		unl: _ => ghostified,
+		title: "Fundament"
+	},
+
+	floatingText: {
+		unl: _ => true,
+		title: "Floating text"
+	},
+	tachyonParticles: {
+		unl: _ => hasAch("r136"),
+		title: "Tachyon particles"
+	},
+	blackHole: {
+		unl: _ => player.blackhole && (player.blackhole.unl || quantumed),
+		title: "Black hole"
+	}
+}
+
+function isAnimationOn(x) {
+	return player.options.animations[x] ?? true
+}
+
+function setupAnimationBtns() {
+	var html = ``
+	for (let name of Object.keys(ANIMATIONS)) html += `<button id="${name}AnimBtn" class="storebtn" onclick="animationOnOff('${name}')" style="width: 200px; height: 55px; font-size: 15px"></button>`
+	el("animationoptionsdiv").innerHTML = html
+}
+
+function updateAnimationBtns(onLoad) {
+	for (let [name, data] of Object.entries(ANIMATIONS)) {
+		el(name+"AnimBtn").style.display = data.unl() ? "inline" : "none"
+		if (onLoad) el(name+"AnimBtn").textContent = data.title + ": " + (isAnimationOn(name) ? "ON" : "OFF")
+	}
+}
+
+function animationOnOff(x) {
+	let on = !isAnimationOn(x)
+	player.options.animations[x] = on
+	el(x+"AnimBtn").textContent = ANIMATIONS[x].title + ": " + (on ? "ON" : "OFF")
 }
 
 function drawAnimations(ts){

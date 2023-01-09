@@ -44,9 +44,10 @@ function updateNanoverseTab() {
 
 function getQuarkChargeProduction(noSpeed) {
 	let ret = E(1)
-	if (isNanoEffectUsed("preon_charge")) ret = tmp.nf.effects.preon_charge
-	if (hasNU(3)) ret = ret.times(tmp.nu[1])
-	if (hasNU(7)) ret = ret.times(tmp.nu[3])
+	if (isNanoEffectUsed("preon_charge")) ret = ret.times(tmp.nf.effects.preon_charge)
+	if (player.masterystudies.includes("t421")) ret = ret.times(getMTSMult(421))
+	if (hasNU(3)) ret = ret.times(tmp.nu[3])
+	if (hasNU(7)) ret = ret.times(tmp.nu[7])
 	if (!noSpeed) ret = ret.times(getNanofieldFinalSpeed())
 	return ret
 }
@@ -58,9 +59,7 @@ function startProduceQuarkCharge() {
 
 function getQuarkLossProduction() {
 	let ret = getQuarkChargeProduction(true)
-	let retCube = ret.pow(3)
-	if (retCube.gte("1e180")) retCube = retCube.pow(Math.pow(180 / retCube.log10(), 2 / 3))
-	ret = ret.times(retCube).times(4e25)
+	ret = ret.pow(2).times(4e25)
 	if (hasNU(3)) ret = ret.div(10)
 	ret = ret.times(getNanofieldFinalSpeed())
 	return ret
@@ -68,9 +67,8 @@ function getQuarkLossProduction() {
 
 function getQuarkEnergyProduction() {
 	let ret = nfSave.charge.mul(5).sqrt()
-	if (player.masterystudies.includes("t411")) ret = ret.times(getMTSMult(411))
-	if (player.masterystudies.includes("t421")) ret = ret.times(getMTSMult(421))
 	if (isNanoEffectUsed("preon_energy")) ret = ret.times(tmp.nf.effects.preon_energy)
+	if (player.masterystudies.includes("t411")) ret = ret.times(getMTSMult(411))
 	ret = ret.times(getNanofieldFinalSpeed())
 	return ret
 }
@@ -197,7 +195,7 @@ function getNanofieldSpeedText(){
 	text = ""
 	if (ghostified) text += "Ghostify Bonus: " + shorten(nfSave.rewards >= 16 ? 1 : (ghSave.milestone >= 1 ? 6 : 3)) + "x, "
 	if (hasAch("ng3p78")) text += "'Aren't you already dead' reward: " +shorten(Math.sqrt(getTreeUpgradeLevel(8) * tmp.tue + 1)) + "x, "
-	if (hasNU(15)) text += "Neutrino upgrade 15: " + shorten(tmp.nu[6]) + "x, "
+	if (hasNU(15)) text += "Neutrino upgrade 15: " + shorten(tmp.nu[15]) + "x, "
 	if (text == "") return "No multipliers currently"
 	return text.slice(0, text.length-2)
 }
@@ -206,7 +204,7 @@ function getNanofieldSpeed() {
 	let x = 1
 	if (ghostified) x *= nfSave.rewards >= 16 ? 1 : (ghSave.milestone >= 1 ? 6 : 3)
 	if (hasAch("ng3p78")) x *= Math.sqrt(getTreeUpgradeLevel(8) * tmp.tue + 1)
-	if (hasNU(15)) x = tmp.nu[6].times(x)
+	if (hasNU(15)) x = tmp.nu[15].times(x)
 	return x
 }
 

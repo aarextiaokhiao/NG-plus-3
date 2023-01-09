@@ -21,8 +21,8 @@ function doBDUnlockStuff(){
 }
 
 function doPostNGP3UnlockStuff() {
-    if (ghSave.hb.unl && !ghSave.gravitons.unl && player.money.gte("e1e18")) doGravitonsUnlockStuff()
-    //if (ghSave.gravitons.unl && !ghSave.breakDilation.unl && brSave.active && player.money.gte("e4e12")) doBDUnlockStuff()
+    //if (ghSave.hb.unl && !ghSave.gravitons.unl && player.money.gte("e1e18")) doGravitonsUnlockStuff()
+    //if (ghSave.gravitons.unl && !ghSave.breakDilation.unl && bigRipped() && player.money.gte("e4e12")) doBDUnlockStuff()
 }
 
 function getBrandNewBDData() {
@@ -53,7 +53,7 @@ function postNGp3AchsCheck() {
     if (tmp.rep && E(tmp.rep.freq).gte(E(2).pow(1024))) giveAchievement(allAchievements.ng3p105)
     if (E(ghSave.times).gte(E(2).pow(1024))) giveAchievement(allAchievements.ng3p106)
     if (ghSave.ghostParticles.gte("e6000")) giveAchievement(allAchievements.ng3p107)
-    if (player.money.gte("e1e11") && brSave.active && !beSave.break && beSave.eternalMatter.lte(0)) giveAchievement(allAchievements.ng3p108)
+    if (player.money.gte("e1e11") && bigRipped() && !tmp.be && beSave.eternalMatter.lte(0)) giveAchievement(allAchievements.ng3p108)
 
     if (player.totalTickGained >= 8e10) giveAchievement(allAchievements.ng3p112)
     if (nfSave.rewards >= 200) giveAchievement(allAchievements.ng3p113)

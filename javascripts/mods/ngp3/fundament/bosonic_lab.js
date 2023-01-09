@@ -855,8 +855,8 @@ var bu = {
 		},
 		41: function() {
 			return {
-				ig: E_pow(brSave.active ? 1e5 : 1.05, Math.pow(Decimal.max(tmp.it, 1).log10(), 2)),
-				it: E_pow(brSave.active ? 1.01 : 5, Math.sqrt(Decimal.max(tmp.ig, 1).log10()))
+				ig: E_pow(bigRipped() ? 1e5 : 1.05, Math.pow(Decimal.max(tmp.it, 1).log10(), 2)),
+				it: E_pow(bigRipped() ? 1.01 : 5, Math.sqrt(Decimal.max(tmp.ig, 1).log10()))
 			}
 		},
 		42: function() {
@@ -864,7 +864,7 @@ var bu = {
 			return Math.pow(quSave.colorPowers.r.add(1).log10() / 2e4 + 1, exp)
 		},
 		43: function() {
-			return Math.sqrt(colorBoosts.g + tmp.pe) / (brSave.active ? 100 : 40) + 1
+			return Math.sqrt(colorBoosts.g + tmp.pe) / (bigRipped() ? 100 : 40) + 1
 		},
 		44: function() {
 			var exp = tmp.ngp3e ? .55 : .5
@@ -884,7 +884,7 @@ var bu = {
 		},
 		14: function(x) {
 			//To do: Add Antielectronic Galaxies in Big Rips, sometimes in Gravitons
-			return getFullExpansion(x) + (x > quSave.electrons.sacGals && !brSave.active ? " (+" + getFullExpansion(Math.max(x - quSave.electrons.sacGals, 0)) + " Antielectronic Galaxies)" : "")
+			return getFullExpansion(x) + (x > quSave.electrons.sacGals && !bigRipped() ? " (+" + getFullExpansion(Math.max(x - quSave.electrons.sacGals, 0)) + " Antielectronic Galaxies)" : "")
 		},
 		15: function(x) {
 			return shorten(x.gh) + "x Fundaments, " + shorten(x.dt) + "x DT"

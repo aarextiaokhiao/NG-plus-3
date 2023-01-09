@@ -800,6 +800,27 @@ function doGPUpgCrunchUpdating(g11MultShown){
 	}
 }
 
+function doGalSacAni() {
+	el("body").style.animation = "gsac 2s 1";
+	el("gsacani").style.display = "block"
+	setTimeout(function() {
+		el("gsacani1").style.opacity = 1
+		el("gsacani1").style.width = "100%"
+		el("gsacani1").style.left = "0"
+		el("gsacani1").style.top = "0"
+	}, 100)
+	setTimeout(function() {
+		el("gsacani1").style.opacity = 0
+		el("gsacani1").style.width = "0%"
+		el("gsacani1").style.left = "50%"
+	}, 1500)
+	setTimeout(function() {
+		el("body").style.animation = ""
+		el("gsacani").style.display = "none"
+		el("gsacani1").style.top = "100%"
+	}, 2e3)
+}
+
 //Global
 function inNGM(x) {
 	return tmp.ngmX >= x

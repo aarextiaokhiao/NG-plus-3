@@ -28,7 +28,7 @@ function getBaseDTProduction(){
 
 	if (player.dilation.upgrades.includes('ngpp6')) gain = gain.times(getDil17Bonus())
 	if (player.dilation.upgrades.includes('ngusp3')) gain = gain.times(getD22Bonus())
-	if (tmp.ngp3 && (!brSave.active || hasRipUpg(11))) {
+	if (tmp.ngp3 && (!bigRipped() || hasRipUpg(11))) {
 		gain = gain.times(getDTMultPostBRU11())
 	}
 	if (hasBU(15)) gain = gain.times(tmp.blu[15].dt)
@@ -69,7 +69,6 @@ function getDilPower() {
 		if (hasAch("ng3p11")) ret = ret.times(Math.max(getTotalRG() / 125, 1))
 		if (player.masterystudies.includes("t264")) ret = ret.times(getMTSMult(264))
 		if (GUBought("br1")) ret = ret.times(getBR1Effect())
-		if (player.masterystudies.includes("t341")) ret = ret.times(getMTSMult(341))
 		if (hasBDUpg(0)) ret = ret.mul(tmp.bd.upg_eff[0])
 	}
 	return ret
@@ -97,7 +96,7 @@ function getDilExp(disable) {
 	if (aarMod.newGameExpVersion) ret += .001
 	if (player.meta !== undefined && !aarMod.nguspV) ret += getDilUpgPower(4) / 4
 	if (tmp.ngp3) {
-		if ((!brSave.active || hasRipUpg(11)) && player.masterystudies.includes("d13") && disable != "TU3") ret += getTreeUpgradeEffect(2)
+		if ((!bigRipped() || hasRipUpg(11)) && player.masterystudies.includes("d13") && disable != "TU3") ret += getTreeUpgradeEffect(2)
 		if (ghostified && ghSave.neutrinos.boosts && disable != "neutrinos") ret += tmp.nb[1]
 	}
 	return ret
@@ -114,7 +113,7 @@ function getTotalTachyonParticleGain(){
 function getDilGain() {
 	if (player.money.lt(10)) return E(0)
 	var log = Math.log10(player.money.log10() / 400) * getDilExp() + getDilPower().log10()
-	if (tmp.ngp3) if (!tmp.be && brSave.active) {
+	if (tmp.ngp3) if (!tmp.be && bigRipped()) {
 		if (log > 100) log = Math.sqrt(100 * log)
 	}
 	return pow10(log)
@@ -123,7 +122,7 @@ function getDilGain() {
 
 function getReqForTPGain() {
 	let tplog = player.dilation.totalTachyonParticles.log10()
-	if (tplog > 100 && !tmp.be && brSave.active) tplog = Math.pow(tplog, 2) / 100
+	if (tplog > 100 && !tmp.be && bigRipped()) tplog = Math.pow(tplog, 2) / 100
 	return pow10(pow10(tplog).div(getDilPower()).pow(1 / getDilExp()).toNumber() * 400)
 }
 
@@ -406,7 +405,7 @@ function buyDilationUpgrade(pos, max, isId) {
 function getPassiveTTGen() {
 	if (player.dilation.tachyonParticles.plus(player.dilation.bestTP).gt(pow10(3333))) return 1e202
 	let r = getTTGenPart(player.dilation.tachyonParticles)
-	if (hasAch("ng3p18") && !brSave.active) r += getTTGenPart(player.dilation.bestTP) / 50
+	if (hasAch("ng3p18") && !bigRipped()) r += getTTGenPart(player.dilation.bestTP) / 50
 	if (tmp.ngex) r *= .8
 	r /= (hasAch("ng3p51") ? 200 : 2e4)
 	if (isLEBoostUnlocked(6)) r *= tmp.leBonus[6]

@@ -602,7 +602,7 @@ let PRESTIGES = {
 	fund: {
 		modReq: _ => tmp.ngp3,
 		prequsite: _ => player.masterystudies.includes("d14"),
-		reached: _ => isQuantumReached() && brSave.active,
+		reached: _ => isQuantumReached() && bigRipped(),
 		got: _ => ghostified,
 	},
 }
@@ -657,12 +657,12 @@ function updateResetTierButtons(){
 
 	if (!player.meta) return
 
-	let bigRipped = tmp.ngp3 && brSave.active
-	el("quantumbtn").className = bigRipped ? "bigripbtn" : "quantumbtn"
-	el("quantumbtn").style.display = bigRipped || isQuantumReached() ? "" : "none"
+	let bigRip = bigRipped()
+	el("quantumbtn").className = bigRip ? "bigripbtn" : "quantumbtn"
+	el("quantumbtn").style.display = bigRip || isQuantumReached() ? "" : "none"
 
-	el("bigripbtn").style.display = tmp.ngp3 && player.masterystudies.includes("d14") && !brSave.active ? "" : "none"
-	el("ghostifybtn").style.display = bigRipped && isQuantumReached() ? "" : "none"
+	el("bigripbtn").style.display = !bigRip ? "" : "none"
+	el("ghostifybtn").style.display = bigRip && isQuantumReached() ? "" : "none"
 	el("ghostparticles").style.display = ghostified ? "" : "none"
 	if (ghostified) {
 		el("GHPAmount").textContent = shortenDimensions(ghSave.ghostParticles)

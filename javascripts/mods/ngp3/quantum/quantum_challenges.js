@@ -36,8 +36,8 @@ function updateQuantumChallenges() {
 			var sc2t = Math.max(sc1, sc2)
 			if (player.masterystudies.includes("d14")) {
 				el(property + "br").style.display = ""
-				el(property + "br").textContent = sc1t != 6 || sc2t != 8 ? "QC6 & 8" : brSave.active ? "Big Ripped" : quSave.pairedChallenges.completed + 1 < pc ? "Locked" : "Big Rip"
-				el(property + "br").className = sc1t != 6 || sc2t != 8 ? "lockedchallengesbtn" : brSave.active ? "onchallengebtn" : quSave.pairedChallenges.completed + 1 < pc ? "lockedchallengesbtn" : "bigripbtn"
+				el(property + "br").textContent = sc1t != 6 || sc2t != 8 ? "QC6 & 8" : bigRipped() ? "Big Ripped" : quSave.pairedChallenges.completed + 1 < pc ? "Locked" : "Big Rip"
+				el(property + "br").className = sc1t != 6 || sc2t != 8 ? "lockedchallengesbtn" : bigRipped() ? "onchallengebtn" : quSave.pairedChallenges.completed + 1 < pc ? "lockedchallengesbtn" : "bigripbtn"
 			} else el(property + "br").style.display = "none"
 		}
 	}
@@ -74,7 +74,7 @@ function updateInQCs() {
 }
 
 function getQCGoal(num, bigRip) {
-	if (player.masterystudies == undefined) return 0
+	if (!tmp.ngp3) return 0
 	var c1 = 0
 	var c2 = 0
 	var mult = 1
@@ -189,7 +189,7 @@ function selectQC(x) {
 		let order = orderSave[pcFocus] || []
 		orderSave[pcFocus] = order.concat(x)
 		if (orderSave[pcFocus].length == 2) {
-			showChallengesTab("pairedchallenges")
+			showChallengesTab("pChalls")
 			pcFocus = 0
 		}
 		updateQuantumChallenges()
@@ -205,9 +205,10 @@ function selectPC(loc, bigRip) {
 		if (bigRip && (!pc.includes(6) || !pc.includes(8))) return
 		quantum(false, true, { qc: pc, pc: loc, br: bigRip })
 		return
-	} else {
-		if (pcFocus == loc) pcFocus = 0
-		else showChallengesTab("quantumchallenges")
+	} else if (pcFocus == loc) pcFocus = 0
+	else {
+		pcFocus = loc
+		showChallengesTab("quantumchallenges")
 	}
 	updateQuantumChallenges()
 }

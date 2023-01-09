@@ -63,7 +63,7 @@ function getCRGain() {
 
 function getCREffect() {
     let x = E(1)
-    if (!brokeDilation() || brSave.active) return x
+    if (!brokeDilation() || bigRipped()) return x
     x = ghSave.breakDilation.cr.add(1).pow(10)
 
     if (hasBDUpg(2)) x = x.div(tmp.bd.upg_eff[2])

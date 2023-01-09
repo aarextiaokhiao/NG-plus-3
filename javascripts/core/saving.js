@@ -39,7 +39,7 @@ function load_game(noOffline, init) {
 	savePlacement=1
 	while (metaSave.saveOrder[savePlacement - 1] != metaSave.current) savePlacement++
 	if (infiniteCheck) exportInfiniteSave()
-	if (infiniteCheck || infiniteCheck2) {
+	if (infiniteCheck || infiniteCheck2 || dimensionSave?.aarMod?.ngp3Build) {
 		updateNewPlayer("reset")
 		infiniteCheck2 = false
 	}
@@ -1172,8 +1172,6 @@ function doNGPlusThreeNewPlayer(){
 	player.peakSpent = 0
 	player.masterystudies = []
 	quSave.reached = false
-	player.options.animations.quantum = true
-	player.options.animations.quarks = true
 	player.meta.bestOverQuantums = 0
 	quSave.usedQuarks = {r: 0, g: 0, b: 0}
 	quSave.colorPowers = {r: 0, g: 0, b: 0}
@@ -1216,7 +1214,6 @@ function doNGPlusThreeNewPlayer(){
 	ghSave = player.ghostify
 	tmp.bl = ghSave.bl
 	for (var g = 1; g < br.maxLimit; g++) ghSave.bl.glyphs.push(0)
-	player.options.animations.ghostify = true
 	aarMod.ghostifyConf = true
 }
 
@@ -1272,7 +1269,6 @@ function doNGUDNewPlayer(){
 		power: 1,
 		bought: 0
 	}
-	player.options.animations.blackHole = true 
 	player.options.exdilationconfirm = true
 }
 

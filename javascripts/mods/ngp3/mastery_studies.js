@@ -1,16 +1,12 @@
 var masteryStudies = {
 	initCosts: {
-		time: {241: 2e71, 251: 5e71, 252: 5e71, 253: 5e71, 261: 2e71, 262: 2e71, 263: 2e71, 264: 2e71, 265: 2e71, 266: 2e71, 271: 2.7434842249657063e76, 272: 2.7434842249657063e76, 273: 2.7434842249657063e76, 281: 6.858710562414266e76, 282: 6.858710562414266e76, 291: 2.143347050754458e77, 292: 2.143347050754458e77, 301: 8.573388203017832e77, 302: 2.6791838134430725e78, 303: 8.573388203017832e77, 311: 8.573388203017832e77, 312: 8.573388203017832e77, 321: 2.6791838134430727e76, 322: 9.324815538194444e77, 323: 2.6791838134430727e76, 331: 1.0172526041666666e79, 332: 1.0172526041666666e79, 341: 9.5367431640625e78, 342: 1.0172526041666666e79, 343: 1.0172526041666666e79, 344: 9.5367431640625e78, 351: 2.1192762586805557e79, 361: 1.5894571940104167e79, 362: 1.5894571940104167e79, 371: 2.1192762586805557e79, 372: 6.622738308376736e79, 373: 2.1192762586805557e79, 381: 6.622738308376736e79, 382: 6.622738308376736e79, 383: 6.622738308376736e79, 391: 8.27842288547092e79, 392: 8.27842288547092e79, 393: 8.27842288547092e79, 401: 4.967053731282552e80, 402: 8.278422885470921e80, 411: 1.3245476616753473e71, 412: 1.655684577094184e71, 421: 1.9868214925130208e72, 431: 1.1037897180627893e75},
-		time_legacy: {241: 1e71, 251: 2e71, 252: 2e71, 253: 2e71, 261: 5e71, 262: 5e71, 263: 5e71, 264: 5e71, 265: 5e71, 266: 5e71},
+		time: {241: 2e71, 251: 5e71, 252: 5e71, 253: 5e71, 261: 2e71, 262: 2e71, 263: 2e71, 264: 2e71, 265: 2e71, 266: 2e71, 271: 2.7434842249657063e76, 272: 2.7434842249657063e76, 273: 2.7434842249657063e76, 281: 6.858710562414266e76, 282: 6.858710562414266e76, 291: 2.143347050754458e77, 292: 2.143347050754458e77, 301: 8.573388203017832e77, 302: 2.6791838134430725e78, 303: 8.573388203017832e77, 311: 8.573388203017832e77, 312: 8.573388203017832e77, 321: 2.6791838134430727e76, 322: 9.324815538194444e77, 323: 2.6791838134430727e76, 331: 1.0172526041666666e79, 332: 1.0172526041666666e79, 341: 9.5367431640625e78, 342: 1.0172526041666666e79, 343: 1.0172526041666666e79, 344: 9.5367431640625e78, 351: 2.1192762586805557e79, 361: 1.5894571940104167e79, 362: 1.5894571940104167e79, 371: 2.1192762586805557e79, 372: 6.622738308376736e79, 373: 2.1192762586805557e79, 381: 6.622738308376736e79, 382: 6.622738308376736e79, 383: 6.622738308376736e79, 391: 8.27842288547092e79, 392: 8.27842288547092e79, 393: 8.27842288547092e79, 401: 4.967053731282552e80, 402: 8.278422885470921e80, 411: 1.3245476616753473e76, 412: 1.655684577094184e76, 421: 1.9868214925130208e77, 431: 1.1037897180627893e80},
 		ec: {13: 1.7777777777777776e72, 14: 1.7777777777777776e72},
-		ec_legacy: {13: 1e72, 14: 1e72},
-		dil: {7: 2e81, 8: 2e83, 9: 1e85, 10: 1e87, 11: 1e90, 12: 1e92, 13: 1e94, 14: 1e97},
-		dil_legacy: {7: 2e82, 8: 2e84, 9: 4e85, 10: 4e87, 11: 3e90, 12: 3e92, 13: 1e95, 14: 1e98}
+		dil: {},
 	},
 	costs: {
 		time: {},
-		time_mults: {241: 1, 251: 2.5, 252: 2.5, 253: 2.5, 261: 6, 262: 6, 263: 6, 264: 6, 265: 6, 266: 6, 271: 2, 272: 2, 273: 2, 281: 4, 282: 4, 291: 1, 292: 1, 301: 2, 302: 131072, 303: 2, 311: 64, 312: 64, 321: 2, 322: 2, 323: 2, 331: 2, 332: 2, 341: 1, 342: 1, 343: 1, 344: 1, 351: 4, 361: 1, 362: 1, 371: 2, 372: 2, 373: 2, 381: 1, 382: 1, 383: 2, 391: 1, 392: 1, 393: 1, 401: 1e10, 402: 1e10, 411: 1, 412: 1, 421: 1, 431: 1},
-		time_mults_legacy: {},
+		time_mults: {241: 1, 251: 2.5, 252: 2.5, 253: 2.5, 261: 6, 262: 6, 263: 6, 264: 6, 265: 6, 266: 6, 271: 2, 272: 2, 273: 2, 281: 4, 282: 4, 291: 1, 292: 1, 301: 2, 302: 131072, 303: 2, 311: 64, 312: 64, 321: 2, 322: 2, 323: 2, 331: 2, 332: 2, 341: 1, 342: 1, 343: 1, 344: 1, 351: 4, 361: 1, 362: 1, 371: 2, 372: 2, 373: 2, 381: 1, 382: 1, 383: 2, 391: 1, 392: 1, 393: 1, 401: 1e5, 402: 1e5, 411: 1, 412: 1, 421: 1, 431: 1},
 		ec: {},
 		dil: {}
 	},
@@ -36,7 +32,7 @@ var masteryStudies = {
 	},
 	unlockReqConditions: {
 		7: function() {
-			return tmp.ngp3l || quantumWorth.gte(50)
+			return quantumWorth.gte(50)
 		},
 		8: function() {
 			return quSave.electrons.amount >= 16750
@@ -62,7 +58,7 @@ var masteryStudies = {
 	},
 	unlockReqDisplays: {
 		7: function() {
-			if (!tmp.ngp3l) return "50 quantum worth"
+			return "50 quantum worth"
 		},
 		8: function() {
 			return getFullExpansion(16750) + " electrons"
@@ -188,18 +184,9 @@ var masteryStudies = {
 			return player.eightAmount.max(1).pow(Math.PI)
 		},
 		383: function(){
-			if (tmp.ngp3l) return E_pow(3200,Math.pow(quSave.colorPowers.b.add(1).log10(),0.25))
-			
-			var blueExp = 4/21
-			if (tmp.ngp3e) blueExp = 1/5
+			var blueExp = 2/5
 			var bluePortion = Math.pow(getCPLog("b"), blueExp)
-			var MAportion = Math.sqrt(player.meta.antimatter.add(10).log10())
-			var exp = MAportion * bluePortion * Math.log10(2)
-			
-			if (!tmp.ngp3l){
-				if (exp > 1000) exp = Math.pow(exp / 1000, .6) * 1000
-				if (exp > 2000) exp = Math.pow(exp / 2000, .4) * 2000
-			}
+			var exp = bluePortion * Math.log10(2)
 
 			return pow10(exp)
 		},
@@ -214,19 +201,17 @@ var masteryStudies = {
 			return E_pow(4e5, Math.sqrt(tmp.twr.add(1).log10()))
 		},
 		401: function(){
-			let log=quSave.replicants.quarks.div(1e28).add(1).log10()*0.2
-			if (log > 5) log = Math.log10(log * 2) * 5
+			let log = quSave.replicants.quarks.div(1e28).add(1).log10() / 5
 			return E_pow(tmp.ngp3e ? 12 : 10, log)
 		},
 		411: function(){
 			if (!tmp.tra) return E(1)
-			var exp = tmp.tra.div(1e24).add(1).pow(0.2).log10()
+			var exp = tmp.tra.div(1e24).add(1).log10() / 2
 			if (tmp.ngp3e) exp += Math.pow((exp + 9) * 3, .2) * Math.log10(exp + 1)
 			return pow10(exp)
 		},
 		421: function(){
-			let ret = Math.pow(Math.max(-getTickspeed().log10() / 1e13 - 0.75, 1), 4)
-			if (ret > 100) ret = Math.sqrt(ret * 100)
+			let ret = Math.pow(Math.max(-getTickspeed().log10() / 1e13 - 0.75, 1), 2)
 			return ret
 		},
 		431: function(){
@@ -236,21 +221,13 @@ var masteryStudies = {
 			var effectBase = Math.max(gals / 1e4, 1)
 			if (effectBase > 10 && tmp.ngp3e) effectBase *= Math.log10(effectBase)
 
-			var effectExp = Math.max(gals / 1e4 + Math.log10(gals) / 2, 1)
+			var effectExp = Math.max(gals / 2e4 + 0.5, 1)
 			if (effectExp > 10 && tmp.ngp3e) effectExp *= Math.log10(effectExp)
 
 			var eff = E_pow(effectBase, effectExp)
 			if (tmp.ngp3e) eff = eff.times(eff.plus(9).log10())
 
 			var log = eff.log10()
-
-			let log2log = Math.log10(log) / Math.log10(2)
-			let start = 9 //Starts at e512
-			if (log2log > start) {
-				let capped = Math.floor(Math.log10(Math.max(log2log + 2 - start, 1)) / Math.log10(2))
-				log2log = (log2log - Math.pow(2, capped) - start + 2) / Math.pow(2, capped) + capped + start - 1
-				log = Math.pow(2, log2log)
-			}
 
 			return pow10(log)
 		}
@@ -299,20 +276,16 @@ var masteryStudies = {
 		373: "You get more pilons based on your galaxies.",
 		381: "Hatch speed is faster based on your tickspeed reduction multiplier.",
 		382: "Eighth Dimensions boost Meta Dimensions.",
-		383: function() {
-			return "Blue power " + (tmp.ngp3l ? "boosts" : " and meta-antimatter boost") + " Meta Dimensions."
-		},
+		383: "Blue power boosts Meta Dimensions.",
 		391: "Hatch speed is faster based on your meta-antimatter.",
 		392: "Pilons boost all Emperor Dimensions.",
 		393: "Workers boost Meta Dimensions.",
-		401: "The production of anti-nanoenergy is slower based on your pilons.",
+		401: "Pilons reduce anti-nanoenergy.",
 		402: "Emperor Dimensions and hatch speed are 30x faster.",
-		411: "The production of nanoenergy is faster based on your duplicants.",
-		412: function() {
-			return tmp.ngp3l ? "Pilon effect is 25% stronger." : "Further reduce the softcap of pilon boost."
-		},
-		421: "Tickspeed boosts nanoenergy.",
-		431: "DT production and branches are faster based on your Tachyonic Galaxies."
+		411: "Duplicants boost nanoenergy.",
+		412: "Further reduce the softcap of pilon boost.",
+		421: "Tickspeed boosts nanocharge.",
+		431: "Tachyonic Galaxies speed up Branches."
 	},
 	hasStudyEffect: [251, 252, 253, 262, 263, 264, 273, 281, 282, 301, 303, 322, 332, 341, 344, 351, 361, 371, 372, 373, 381, 382, 383, 391, 392, 393, 401, 411, 421, 431],
 	studyEffectDisplays: {
@@ -346,7 +319,6 @@ var masteryStudies = {
 	ecsUpTo: 14,
 	unlocksUpTo: 14,
 	allConnections: {241: [251, 253, 252], 251: [261, 262], 252: [263, 264], 253: [265, 266], 261: ["ec13"], 262: ["ec13"], 263: ["ec13"], 264: ["ec14"], 265: ["ec14"], 266: ["ec14"], ec13: ["d7"], ec14: ["d7"], d7: [272], 271: [281], 272: [271, 273, 281, 282, "d8"], 273: [282], d8: ["d9"], d9: [291, 292, 302], 291: [301], 292: [303], 301: [311], 302: ["d10"], 303: [312], 311: [321], 312: [323], d10: [322], 322: [331, 332], 331: [342], 332: [343], 342: [341], 343: [344], 344: [351], 351: ["d11"], d11: [361, 362], 361: [371], 362: [373], 371: [372], 372: [381], 373: [382], 381: [391], 382: [383], 383: [393], 391: [392], 393: [392], 392: ["d12"], d12: [401, 402], 401: [411], 402: [412], 411: [421], 412: ["d13"], 421: ["d13"], d13: [431], 431: ["d14"]},
-	allConnections_legacy: {252: [263, 264, "d7"], ec13: [], ec14: []},
 	allUnlocks: {
 		d7: function() {
 			return quantumed
@@ -463,7 +435,7 @@ function setupMasteryStudiesHTML() {
 }
 
 function getMasteryStudyConnections(id) {
-	return (tmp.ngp3l && masteryStudies.allConnections_legacy[id]) || masteryStudies.allConnections[id]
+	return masteryStudies.allConnections[id]
 }
 
 function updateUnlockedMasteryStudies() {
@@ -514,11 +486,11 @@ function addSpentableMasteryStudies(x) {
 function setMasteryStudyCost(id,type) {
 	let d = masteryStudies.initCosts
 	let type2 = masteryStudies.types[type]
-	masteryStudies.costs[type2][id] = ((tmp.ngp3l && d[type2+"_legacy"][id])||d[type2][id]||0) * (type == "d" ? 1 : masteryStudies.costMult)
+	masteryStudies.costs[type2][id] = (d[type2][id]||0) * (type == "d" ? 1 : masteryStudies.costMult)
 }
 
 function getMasteryStudyCostMult(id) {
-	return (tmp.ngp3l && masteryStudies.costs.time_mults_legacy[id]) || masteryStudies.costs.time_mults[id] || 1
+	return masteryStudies.costs.time_mults[id] || 1
 }
 
 function buyingD7Changes(){
@@ -682,7 +654,7 @@ function canBuyMasteryStudy(type, id) {
 		if (!masteryStudies.spentable.includes(id)) return false
 	} else if (type == 'd') {
 		if (player.timestudy.theorem < masteryStudies.costs.dil[id] || player.masterystudies.includes('d' + id)) return false
-		if (!ghostified && !(masteryStudies.unlockReqConditions[id] && masteryStudies.unlockReqConditions[id]())) return false
+		if (ghSave.milestones < 3 && masteryStudies.unlockReqConditions[id]()) return false
 		if (!masteryStudies.spentable.includes("d" + id)) return false
 	} else {
 		if (player.timestudy.theorem < masteryStudies.costs.ec[id] || player.eternityChallUnlocked) return false
@@ -744,10 +716,7 @@ function updateMasteryStudyTextDisplay() {
 		el("ec" + id + "Req").textContent = "Requirement: " + masteryStudies.ecReqDisplays[id]()
 	}
 	for (id = 7; id <= masteryStudies.unlocksUpTo; id++) {
-		if (!masteryStudies.unlocked.includes("d" + id)) break
-		var req = masteryStudies.unlockReqDisplays[id]&&masteryStudies.unlockReqDisplays[id]()
-		el("ds" + id + "Cost").textContent = "Cost: " + shorten(masteryStudies.costs.dil[id]) + " Time Theorems"
-		if (req) el("ds" + id + "Req").innerHTML = ghostified || !req ? "" : "<br>Requirement: " + req
+		el("ds" + id + "Req").innerHTML = ghSave.milestones >= 3 ? "" : "Requirement: " + masteryStudies.unlockReqDisplays[id]()
 	}
 	if (quantumed) el("321effect").textContent=shortenCosts(E("1e430"))
 }
@@ -803,7 +772,7 @@ function drawMasteryBranch(id1, id2) {
 function drawMasteryTree() {
 	msctx.clearRect(0, 0, msc.width, msc.height);
 	if (player === undefined) return
-	if (el("eternitystore").style.display === "none" || el("masterystudies").style.display === "none" || player.masterystudies === undefined) return
+	if (el("eternitystore").style.display === "none" || el("masterystudies").style.display === "none" || !tmp.ngp3) return
 	occupied=[]
 	drawMasteryBranch("back", "timestudy241")
 	for (var x = 0; x < masteryStudies.studies.length; x++) {

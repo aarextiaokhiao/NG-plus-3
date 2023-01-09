@@ -252,7 +252,7 @@ function ngP3AchieveCheck(){
 	if (player.infinityPoints.gte(pow10(2.75e5)) && ableToGetRid6) giveAchievement("Are you currently dying?")
 	if (nfSave.rewards >= 21 && noTree) giveAchievement("But I don't want to grind!")
 	if (player.replicanti.amount.log10() >= (aarMod.ngudpV ? 268435456 : 36e6)) giveAchievement("Will it be enough?")
-	if (brSave.active) {
+	if (bigRipped()) {
 		let ableToGetRid7 = ableToGetRid2 && player.epmult.eq(1)
 		let ableToGetRid8 = ableToGetRid7 && !beSave.did
 		let ableToGetRid9 = ableToGetRid8 && noTree

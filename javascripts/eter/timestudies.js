@@ -38,7 +38,7 @@ function buyWithEP() {
 }
 
 function canBuyTTWithEP() {
-	return player.timeDimension1.bought || (player.masterystudies !== undefined && brSave.active)
+	return player.timeDimension1.bought || (player.masterystudies !== undefined && bigRipped())
 }
 
 function maxTheorems() {
@@ -609,7 +609,7 @@ function save_preset(id) {
 function load_preset(id, reset) {
 	if (reset) {
 		var id7unlocked = player.infDimensionsUnlocked[7]
-		if (player.masterystudies !== undefined) if (brSave.active) id7unlocked = true
+		if (player.masterystudies !== undefined) if (bigRipped()) id7unlocked = true
 		if (player.infinityPoints.lt(player.eternityChallGoal) || !id7unlocked) return
 		player.respec = true
 		player.respecMastery = true
@@ -728,15 +728,15 @@ function changePresetTitle(id, placement) {
 //Time Study Effects
 let tsMults = {
 	11: function() {
-		let bigRipped = tmp.ngp3 && brSave.active
+		let bigRip = bigRipped()
 		let log = -player.tickspeed.div(1e3).pow(0.005).times(0.95).plus(player.tickspeed.div(1e3).pow(0.0003).times(0.95)).log10()
-		if (bigRipped && log > 900) log = Math.sqrt(log * 900)
+		if (bigRip && log > 900) log = Math.sqrt(log * 900)
 		else if (aarMod.newGameExpVersion) log = Math.min(log, 25000) // buff to NG+++^
 		else if (!inNGM(2)) log = Math.min(log, 2500)
 		if (log < 0) log = 0
 		
 		if (inNGM(2)) return pow10(log)
-		if (tmp.ngp3l || !bigRipped) return pow10(log)
+		if (tmp.ngp3l || !bigRip) return pow10(log)
 		log = softcap(log, "ts11_log_big_rip", 1)
 		
 		return pow10(log)

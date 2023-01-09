@@ -34,18 +34,18 @@ function updateNeutrinoAmountDisplay(){
 function updateNeutrinoUpgradeDisplay(){
 	el("gravRow").style.display = ghSave.gravitons.unl ? "" : "none"
 
-	el("neutrinoUpg1Pow").textContent = tmp.nu[0]
-	el("neutrinoUpg3Pow").textContent = shorten(tmp.nu[1])
-	el("neutrinoUpg4Pow").textContent = shorten(tmp.nu[2])
-	if (ghSave.times > 4) el("neutrinoUpg7Pow").textContent = shorten(tmp.nu[3])
+	el("neutrinoUpg1Pow").textContent = tmp.nu[1]
+	el("neutrinoUpg3Pow").textContent = shorten(tmp.nu[3])
+	el("neutrinoUpg4Pow").textContent = shorten(tmp.nu[4])
+	if (ghSave.times > 4) el("neutrinoUpg7Pow").textContent = shorten(tmp.nu[7])
 	if (ghSave.times > 9) el("neutrinoUpg12").setAttribute('ach-tooltip',
-		"Normal galaxy effect: " + shorten(tmp.nu[4].normal) + "x to quark spin production, "+
-		"Replicated galaxy effect: " + shorten(tmp.nu[4].replicated) + "x to EC14 reward, "+
-		"Tachyonic galaxy effect: " + shorten(tmp.nu[4].free) + "x to IC3 base"
+		"Normal galaxy effect: " + shorten(tmp.nu[12].normal) + "x to quark spin production, "+
+		"Replicated galaxy effect: " + shorten(tmp.nu[12].replicated) + "x to EC14 reward, "+
+		"Tachyonic galaxy effect: " + shorten(tmp.nu[12].free) + "x to IC3 base"
 	)
 	if (ghSave.ghostlyPhotons.unl) {
-		el("neutrinoUpg14Pow").textContent=shorten(tmp.nu[5])
-		el("neutrinoUpg15Pow").textContent=shorten(tmp.nu[6])
+		el("neutrinoUpg14Pow").textContent=shorten(tmp.nu[14])
+		el("neutrinoUpg15Pow").textContent=shorten(tmp.nu[15])
 	}
 	if (ghSave.gravitons.unl) el("neutrinoUpg16Pow").textContent=shorten(tmp.nu[7])
 	var sum = ghSave.neutrinos.electron.add(ghSave.neutrinos.mu).add(ghSave.neutrinos.tau).round()
@@ -82,7 +82,7 @@ function updateNeutrinosTab(){
 }
 
 function onNotationChangeNeutrinos() {
-	if (player.masterystudies == undefined) return
+	if (!tmp.ngp3) return
 	el("neutrinoUnlockCost").textContent=shortenDimensions(E(tmp.nbc[ghSave.neutrinos.boosts]))
 	el("neutrinoMult").textContent=shortenDimensions(E_pow(5, ghSave.neutrinos.multPower - 1))
 	el("neutrinoMultUpgCost").textContent=shortenDimensions(E_pow(4, ghSave.neutrinos.multPower-1).times(2))
@@ -135,7 +135,7 @@ function getMaxUnlockedNeutrinoBoosts() {
 }
 
 function hasNU(id) {
-	return ghostified ? ghSave.neutrinos.upgrades.includes(id) : false
+	return ghostified && ghSave.neutrinos.upgrades.includes(id)
 }
 
 function buyNeutrinoMult() {
@@ -183,7 +183,7 @@ var neutrinoBoosts = {
 		},
 		4: function(nt) {
 			var nb4neutrinos = Math.pow(nt[0].add(1).log10(),2)+Math.pow(nt[1].add(1).log10(),2)+Math.pow(nt[2].add(1).log10(),2)
-			var nb4 = Math.pow(Math.log10(nb4neutrinos*(brSave.active?1:0.07)+1)/4+1,brSave.active?1:0.5)
+			var nb4 = Math.pow(Math.log10(nb4neutrinos*(bigRipped()?1:0.07)+1)/4+1,bigRipped()?1:0.5)
 			return nb4
 		},
 		5: function(nt) {
@@ -194,7 +194,7 @@ var neutrinoBoosts = {
 			var nb6neutrinos = Math.pow(nt[0].add(1).log10(), 2) + Math.pow(nt[1].add(1).log10(), 2) + Math.pow(nt[2].add(1).log10(), 2)
 			var nb6exp1 = .25
 			if (tmp.ngp3e) nb6exp1 = .26
-			let nb6 = Math.pow(Math.pow(nb6neutrinos, nb6exp1) * 0.525 + 1, brSave.active ? 0.5 : 1)
+			let nb6 = Math.pow(Math.pow(nb6neutrinos, nb6exp1) * 0.525 + 1, bigRipped() ? 0.5 : 1)
 			if (isLEBoostUnlocked(9)) nb6 *= tmp.leBonus[7]
 			return nb6
 		},

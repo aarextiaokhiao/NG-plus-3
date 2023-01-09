@@ -135,10 +135,12 @@ function getBranchSpeedText(){
 	if (E(getTreeUpgradeEffect(5)).gt(1)) text += "Tree Upgrade 5: " + shorten(getTreeUpgradeEffect(5)) + "x, "
 	if (player.masterystudies.includes("t431")) if (getMTSMult(431).gt(1)) text += "Mastery Study 431: " + shorten(getMTSMult(431)) + "x, "
 	if (getGluonBranchSpeed().gt(1)) text += "Gluon Upgrades: " + shorten(getGluonBranchSpeed()) + "x, "
-	if (brSave.active && isBigRipUpgradeActive(19)) text += "19th Big Rip upgrade: " + shorten(tmp.bru[19]) + "x, "
-	if (hasNU(4)) if (tmp.nu[2].gt(1)) text += "Fourth Neutrino Upgrade: " + shorten(tmp.nu[2]) + "x, "
-	if (!tmp.ngp3l) if (hasAch("ng3p48")) if (player.meta.resets > 1) text += "'Are you currently dying?' reward: " + shorten (Math.sqrt(player.meta.resets + 1)) + "x, "
-	if (ghSave.milestones >= 14) text += "Brave Milestone 14: " + shorten(getMilestone14SpinMult()) + "x, "
+	if (bigRipped() && isBigRipUpgradeActive(19)) text += "19th Big Rip upgrade: " + shorten(tmp.bru[19]) + "x, "
+	if (hasAch("ng3p48")) if (player.meta.resets > 1) text += "'Are you currently dying?' reward: " + shorten (Math.sqrt(player.meta.resets + 1)) + "x, "
+	if (ghostified) {
+		if (ghSave.milestones >= 14) text += "Brave Milestone 14: " + shorten(getMilestone14SpinMult()) + "x, "
+		if (ghSave.ghostlyPhotons.unl && E(tmp.le[5] || 1).gt(1)) x = x.times("6th Light Empowerment Boost: " + shorten(tmp.le[5]) + "x, ")
+	}
 	if (todspeed) if (todspeed > 1) text += "ToD Speed: " + shorten(todspeed) + "x, "
 	if (text == "") return "No multipliers currently"
 	return text.slice(0, text.length-2)
@@ -155,13 +157,12 @@ function getBranchSpeed() { // idea: when you hold shift you can see where the m
 	let x = Decimal.times(getTreeUpgradeEffect(3), getTreeUpgradeEffect(5))
 	if (player.masterystudies.includes("t431")) x = x.times(getMTSMult(431))
 	x = x.times(getGluonBranchSpeed())
-	if (brSave.active && isBigRipUpgradeActive(19)) x = x.times(tmp.bru[19])
-	if (hasNU(4)) x = x.times(tmp.nu[2])
-	if (!tmp.ngp3l) {
-		if (hasAch("ng3p48")) x = x.times(Math.sqrt(player.meta.resets + 1))
+	if (bigRipped() && isBigRipUpgradeActive(19)) x = x.times(tmp.bru[19])
+	if (hasAch("ng3p48")) x = x.times(Math.sqrt(player.meta.resets + 1))
+	if (ghostified) {
+		if (ghSave.milestones >= 14) x = x.times(getMilestone14SpinMult())
+		if (ghSave.ghostlyPhotons.unl) x = x.times(tmp.le[5] || 1)
 	}
-	if (ghSave.milestones >= 14) x = x.times(getMilestone14SpinMult())
-	if (ghSave.ghostlyPhotons.unl) x = x.times(tmp.le[5] || 1)
 	return x
 }
 
@@ -183,12 +184,12 @@ function getMilestone14SpinMult(){
 
 function getQuarkSpinProduction(branch) {
 	let ret = getBranchUpgMult(branch, 1).times(getBranchFinalSpeed())
-	if (hasNU(4)) ret = ret.times(tmp.nu[2])
+	if (hasNU(3)) ret = ret.times(tmp.nu[3])
 	if (hasAch("ng3p74")) if (todSave[branch].decays) ret = ret.times(1 + todSave[branch].decays)
-	if (brSave.active) {
+	if (bigRipped()) {
 		if (isBigRipUpgradeActive(18)) ret = ret.times(tmp.bru[18])
 		if (isBigRipUpgradeActive(19)) ret = ret.times(tmp.bru[19])
-		if (hasNU(12)) ret = ret.times(tmp.nu[4].normal)
+		if (hasNU(12)) ret = ret.times(tmp.nu[12].normal)
 	}
 	if (!tmp.ngp3l) ret = ret.times(E_pow(1.1, nfSave.rewards - 12))
 	ret = ret.times(todspeed)
@@ -253,7 +254,7 @@ function getTreeUpgradeEffect(upg) {
 		return lvl * 0.25
 	}
 	if (upg == 3) {
-		return pow2(Math.sqrt(Math.sqrt(Math.max(lvl * 3 - 2, 0)) * Math.max(getTotalNumOfToDUpgrades() - 10, 0)))
+		return pow2(Math.sqrt(Math.max(lvl, 0) * 2))
 	}
 	if (upg == 4) {
 		return Math.sqrt(1 + Math.log10(lvl * 0.5 + 1) * 0.1)
@@ -500,7 +501,7 @@ function getTreeUpgradeEfficiencyText(){
 	let text = ""
 	if (ghSave.neutrinos.boosts >= 7) text += "Neutrino Boost 7: +" + shorten(tmp.nb[7]) + ", "
 	if (!tmp.ngp3l) {
-		if (hasAch("ng3p62") && !brSave.active) text += "Finite Time Reward: +10%, "
+		if (hasAch("ng3p62") && !bigRipped()) text += "Finite Time Reward: +10%, "
 		if (hasBU(43)) text += "Bosonic Lab Upgrade 18: " + shorten(tmp.blu[43]) + "x, "
 	}
 	if (text == "") return "No multipliers currently"
@@ -509,9 +510,9 @@ function getTreeUpgradeEfficiencyText(){
 
 function getTreeUpgradeEfficiency(mod) {
 	let r = 1
-	if (ghSave.neutrinos.boosts >= 7 && (brSave.active || mod == "br") && mod != "noNB") r += tmp.nb[7]
+	if (ghSave.neutrinos.boosts >= 7 && (bigRipped() || mod == "br") && mod != "noNB") r += tmp.nb[7]
 	if (!tmp.ngp3l) {
-		if (hasAch("ng3p62") && !brSave.active) r += 0.1
+		if (hasAch("ng3p62") && !bigRipped()) r += 0.1
 		if (hasBU(43)) r *= tmp.blu[43]
 	}
 	return r

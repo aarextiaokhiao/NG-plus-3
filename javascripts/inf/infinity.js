@@ -2,7 +2,7 @@ var isEmptiness=false
 function bigCrunch(auto) {
 	if (implosionCheck) return
 
-	if (!auto && player.options.animations.bigCrunch && (player.options.animations.bigCrunch === "always" || !hasAch("r55"))) {
+	if (!auto && player.options.animations.bigCrunch) {
 		implosionCheck = 1
 		el("body").style.animation = "implode 2s 1"
 		setTimeout(function(){ 

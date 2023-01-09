@@ -58,7 +58,7 @@ function displayQuantumStats() {
 	el("stats_br").style.display = br ? "" : "none"
 	if (br) {
 		setAndMaybeShow("bigRipped", brSave.times, '"You have big ripped the universe " + getFullExpansion(brSave.times) + " times."')
-		setAndMaybeShow("bestmoneythisrip", brSave.active, "'Your best antimatter for this Big Rip is ' + shortenMoney(brSave.bestThisRun) + '.'")
+		setAndMaybeShow("bestmoneythisrip", bigRipped(), "'Your best antimatter for this Big Rip is ' + shortenMoney(brSave.bestThisRun) + '.'")
 		el("totalmoneybigrip").textContent = 'You have made a total of ' + shortenMoney(brSave.totalAntimatter) + ' antimatter in all big rips.'
 		el("bestgalsbigrip").textContent = 'Your best amount of normal galaxies for all Big Rips is ' + getFullExpansion(brSave.bestGals) + "."
 	}

@@ -73,9 +73,7 @@ function getMetaDimensionGlobalMultiplier() {
 		ret = ret.times(tmp.qcRewards[6])
 
 		//Achievement Rewards
-		var ng3p13exp = Math.pow(Decimal.plus(quantumWorth, 1).log10(), 0.75)
-		if (ng3p13exp > 1000) ng3p13exp = Math.pow(7 + Math.log10(ng3p13exp), 3)
-		if (hasAch("ng3p13")) ret = ret.times(E_pow(8, ng3p13exp))
+		if (hasAch("ng3p13")) ret = ret.times(Math.pow(Decimal.plus(quantumWorth, 1).log10(), 2))
 		if (hasAch("ng3p57")) ret = ret.times(1 + player.timeShards.plus(1).log10())
 	}
 	
@@ -148,7 +146,7 @@ function getMetaShiftRequirement() {
 	}
 	data.amount += data.mult * Math.max(mdb - 4, 0)
 	if (tmp.ngp3 && player.masterystudies.includes("d13")) data.amount -= getTreeUpgradeEffect(1)
-	if (ghostified) if (hasNU(1)) data.amount -= tmp.nu[0]
+	if (hasNU(1)) data.amount -= tmp.nu[1]
 
 	data.scalingStart = inQC4 ? 55 : 15
 	if (player.meta.resets >= data.scalingStart) {
@@ -166,7 +164,7 @@ function getMetaDimensionBoostRequirement(){
 
 function metaBoost() {
 	let req = getMetaShiftRequirement()
-	let isNU1ReductionActive = hasNU(1) ? !brSave.active : false
+	let isNU1ReductionActive = hasNU(1) ? !bigRipped() : false
 	if (!(player.meta[req.tier].bought>=req.amount)) return
 	if (isRewardEnabled(27) && req.tier > 7) {
 		if (isNU1ReductionActive) {
@@ -191,7 +189,7 @@ function metaBoost() {
 	if (hasAch("ng3p52")) return
 	player.meta.antimatter = getMetaAntimatterStart()
 	clearMetaDimensions()
-	if (!tmp.ngp3 || !brSave.active) el("quantumbtn").style.display="none"
+	if (!tmp.ngp3 || !bigRipped()) el("quantumbtn").style.display="none"
 }
 
 
@@ -404,16 +402,16 @@ function updateMetaDimensions () {
 	} else {
 		el("metaSoftReset").className = 'unavailablebtn'
 	}
-	var bigRipped = tmp.ngp3 && brSave.active
+	var bigRip = bigRipped()
 	var req = getQuantumReq()
 	var reqGotten = isQuantumReached()
-	var newClassName = reqGotten ? (bigRipped && player.options.theme == "Aarex's Modifications" ? "" : "storebtn ") + (bigRipped ? "aarexmodsghostifybtn" : "") : 'unavailablebtn'
+	var newClassName = reqGotten ? (bigRip && player.options.theme == "Aarex's Modifications" ? "" : "storebtn ") + (bigRip ? "aarexmodsghostifybtn" : "") : 'unavailablebtn'
 	var message = 'Lose all your previous progress, but '
-	el("quantumResetLabel").textContent = (bigRipped ? 'Ghostify' : 'Quantum') + ': requires ' + shorten(req) + ' meta-antimatter ' + (!inQC(0) ? "and " + shortenCosts(pow10(getQCGoal())) + " antimatter" : player.masterystudies ? "and an EC14 completion" : "")
-	if (reqGotten && bigRipped && ghostified) {
+	el("quantumResetLabel").textContent = (bigRip ? 'Ghostify' : 'Quantum') + ': requires ' + shorten(req) + ' meta-antimatter ' + (!inQC(0) ? "and " + shortenCosts(pow10(getQCGoal())) + " antimatter" : player.masterystudies ? "and an EC14 completion" : "")
+	if (reqGotten && bigRip && ghostified) {
 		var GS = getGHPGain()
 		message += "gain " + shortenDimensions(GS) + " Elementary Particle" + (GS.lt(2) ? "" : "s")
-	} else if (reqGotten && !bigRipped && (quSave.times || ghSave.milestones)) {
+	} else if (reqGotten && !bigRip && (quSave.times || ghSave.milestones)) {
 		var QS = quarkGain()
 		message += "gain " + shortenDimensions(QS) + " quark" + (QS.lt(2) ? "" : "s") + " for boosts"
 	} else message += "get a boost"

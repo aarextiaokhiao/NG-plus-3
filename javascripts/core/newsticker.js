@@ -386,7 +386,7 @@ newsArray = [//always true
 ["You have read over meta^-1-Infinity unique news ticker messages! What a great milestone!", "player.newsArray.length > 308", "am176"],
 ["People who read at least 350 news tickers are really unlikely to be ghosts.", "player.newsArray.length >= 350", "am177"],
 ["You are a no-life news reader.", "player.newsArray.length >= 400", "am178"],
-["Is not called matter dimensions for that?", "tmp.ngp3 && brSave.active", "am179"],
+["Is not called matter dimensions for that?", "bigRipped()", "am179"],
 ["Aarex has retired back to his cave after apeasing the masses with Higgs.", true, "am180"],
 ["We launched a mission rocket to land on a ghostly moon.", true, "am181"],
 ["BREAKING NEWS! After the killing of a antimatter person, antimatter people started protesting!", true, "am182"],

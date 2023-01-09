@@ -164,7 +164,7 @@ function do_softcap(x, data, num) {
 
 function softcap(x, id, max = 1/0) {
 	var data = softcap_data[id]
-	if (brSave && brSave.active) {
+	if (bigRipped()) {
 		var big_rip_data = softcap_data[id + "_big_rip"]
 		if (big_rip_data !== undefined) data = big_rip_data
 	}

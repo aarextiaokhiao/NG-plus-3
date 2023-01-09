@@ -1,10 +1,9 @@
 //VERSION: 2.41R
 let ngp3_ver = 2.41
-let ngp3_build = 20230107
+let ngp3_build = 20230109
 function doPNGP3RUpdates() {
 	if (!aarMod.ngp3_build) aarMod.ngp3_build = 0
 	if (aarMod.ngp3_build < 20221230) quSave.multPower = 0
-	if (aarMod.ngp3_build < 20230107) player.options.animations.quantum = true
 	aarMod.newGame3PlusVersion = ngp3_ver
 	aarMod.ngp3_build = ngp3_build
 }
@@ -232,7 +231,7 @@ function autoECToggle() {
 }
 
 function switchAB() {
-	var bigRip = brSave && brSave.active
+	var bigRip = bigRipped()
 	brSave["savedAutobuyers" + (bigRip ? "" : "No") + "BR"] = {}
 	var data = brSave["savedAutobuyers" + (bigRip ? "" : "No") + "BR"]
 	for (let d = 1; d < 9; d++) if (player.autobuyers[d-1] % 1 !== 0) data["d" + d] = {
@@ -370,7 +369,7 @@ function switchAB() {
 }
 
 function getGHPGain() {
-	if (!tmp.ngp3 || !brSave.active) return E(0)
+	if (!tmp.ngp3 || !bigRipped()) return E(0)
 	if (!ghostified) return E(1)
 	let log = brSave && brSave.bestThisRun.log10() / getQCGoal(undefined,true) - 1
 	if (log < 0) return E(0)
@@ -399,7 +398,7 @@ function getGHPMult() {
 
 ghostified = false
 function ghostify(auto, force) {
-	if (!force&&(!isQuantumReached()||!brSave.active||implosionCheck)) return
+	if (!force&&(!isQuantumReached()||!bigRipped()||implosionCheck)) return
 	if (!auto && !force && aarMod.ghostifyConf && !confirm("Fundament will reset everything up to this point, except achievements. Are you ready for this?")) {
 		denyGhostify()
 		return
@@ -412,7 +411,7 @@ function ghostify(auto, force) {
 		denyGhostify()
 		return
 	}
-	var implode = player.options.animations.ghostify && !force
+	var implode = !force && !auto && isAnimationOn("ghostify")
 	if (implode) {
 		var gain = getGHPGain()
 		var amount = ghSave.ghostParticles.add(gain).round()
@@ -453,7 +452,7 @@ function ghostifyReset(implode, gain, amount, force) {
 		ghSave.best = Math.min(ghSave.best, ghSave.time)
 		while (quSave.times <= tmp.bm[ghSave.milestones]) ghSave.milestones++
 	}
-	if (brSave.active) switchAB()
+	if (bigRipped()) switchAB()
 	var bm = ghSave.milestones
 	var nBRU = []
 	var nBEU = []
@@ -496,7 +495,7 @@ function getGHPRate(num) {
 var averageGHP = E(0)
 var bestGHP
 function updateLastTenGhostifies() {
-	if (player.masterystudies === undefined) return
+	if (!tmp.ngp3) return
 	var listed = 0
 	var tempTime = E(0)
 	var tempGHP = E(0)
@@ -868,7 +867,7 @@ function doGhostifyUnlockStuff(){
 function doReachAMGoalStuff(chall){
 	if (el("welcome").style.display != "flex") el("welcome").style.display = "flex"
 	else aarMod.popUpId = ""
-	el("welcomeMessage").innerHTML = "You reached the antimatter goal (" + shorten(pow10(getQCGoal())) + "), but you didn't reach the meta-antimatter goal yet! Get " + shorten(getQuantumReq()) + " meta-antimatter" + (brSave.active ? " and then you can fundament!" : " and then go Quantum to complete your challenge!")
+	el("welcomeMessage").innerHTML = "You reached the antimatter goal (" + shorten(pow10(getQCGoal())) + "), but you didn't reach the meta-antimatter goal yet! Get " + shorten(getQuantumReq()) + " meta-antimatter" + (bigRipped() ? " and then you can fundament!" : " and then go Quantum to complete your challenge!")
 	quSave.nonMAGoalReached.push(chall)
 }
 
@@ -891,19 +890,20 @@ function doNGP3UnlockStuff(){
 	if (chall && player.money.gt(pow10(getQCGoal())) && MAbool && DONEbool && TIMEbool) {
 		doReachAMGoalStuff(chall)
 	}
-	if (!ghSave.reached && brSave.active) if (brSave.bestThisRun.gte(pow10(getQCGoal(undefined, true)))) {
+	if (!ghSave.reached && bigRipped() && brSave.bestThisRun.gte(pow10(getQCGoal(undefined, true)))) {
 		doGhostifyUnlockStuff()
 	}
 	var inEasierModeCheck = !inEasierMode()
 	if (player.masterystudies && (player.masterystudies.includes("d14")||hasAch("ng3p51")) && !metaSave.ngp4 && !inEasierModeCheck) doNGP4UnlockStuff()
-	if (player.eternityPoints.gte("1e1200") && brSave.active && !beSave.unlocked) doBreakEternityUnlockStuff()
-	if (player.money.gte(pow10(4.7e9)) && brSave.active && !ghSave.ghostlyPhotons.unl) doPhotonsUnlockStuff()
+	if (player.eternityPoints.gte("1e1200") && bigRipped() && !beSave.unlocked) doBreakEternityUnlockStuff()
+	if (player.money.gte(pow10(4.7e9)) && bigRipped() && !ghSave.ghostlyPhotons.unl) doPhotonsUnlockStuff()
 	if (canUnlockBosonicLab() && !ghSave.wzb.unl) doBosonsUnlockStuff()
 	if (!tmp.ng3l) unlockHiggs()
 }
 
 function quantumOverallUpdating(diff){
 	var colorShorthands=["r","g","b"]
+
 	//Color Powers
 	for (var c=0;c<3;c++) quSave.colorPowers[colorShorthands[c]]=quSave.colorPowers[colorShorthands[c]].add(getColorPowerProduction(colorShorthands[c]).times(diff))
 	updateColorPowers()
@@ -911,6 +911,11 @@ function quantumOverallUpdating(diff){
 	if (player.masterystudies.includes("d11")) emperorDimUpdating(diff)
 	if (NF.unl()) nanofieldUpdating(diff)
 	if (player.masterystudies.includes("d13")) treeOfDecayUpdating(diff)
+	if (bigRipped()) {
+		brSave.totalAntimatter = brSave.totalAntimatter.max(player.money)
+		brSave.bestThisRun = brSave.bestThisRun.max(player.money)
+		brSave.bestGals = Math.max(brSave.bestGals, player.galaxies)
+	}
 	
 	if (speedrunMilestonesReached>5) {
 		quSave.metaAutobuyerWait+=diff*10
@@ -920,4 +925,5 @@ function quantumOverallUpdating(diff){
 			doAutoMetaTick()
 		}
 	}
+	thisQuantumTimeUpdating()
 }

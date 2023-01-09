@@ -157,12 +157,12 @@ function updateGPHUnlocks() {
 }
 
 function getGPHProduction() {
-	let b = brSave && brSave.active
+	let b = bigRipped()
 	if (b) var ret = player.dilation.dilatedTime.div("1e480")
 	else var ret = player.dilation.dilatedTime.div("1e900")
 	if (ret.gt(1)) ret = ret.pow(b ? 0.013 : 0.025)
 	if (hasAch("ng3p72")) ret = ret.mul(2)
-	if (hasNU(14)) ret = ret.mul(tmp.nu[5])
+	if (hasNU(14)) ret = ret.mul(tmp.nu[14])
 	return ret
 }
 
@@ -177,9 +177,9 @@ function updatePhotonsTab(){
 function updateRaysPhotonsDisplay(){
 	var gphData = ghSave.ghostlyPhotons
 	el("dtGPH").textContent = shorten(player.dilation.dilatedTime)
-	el("gphProduction").textContent = shorten(getGPHProduction()) + (brSave.active ? " Hz" : "")
-	el("gphProduction").className = (brSave.active ? "gph" : "dm") + "Amount"
-	el("gphProductionType").textContent = brSave.active ? "frequency" : "Photons"
+	el("gphProduction").textContent = shorten(getGPHProduction()) + (bigRipped() ? " Hz" : "")
+	el("gphProduction").className = (bigRipped() ? "gph" : "dm") + "Amount"
+	el("gphProductionType").textContent = bigRipped() ? "frequency" : "Photons"
 	el("gph").textContent = shortenMoney(gphData.amount) + " Hz"
 	el("dm").textContent = shortenMoney(gphData.darkMatter)
 	el("ghrProduction").textContent = shortenMoney(getWVProduction())
@@ -239,7 +239,7 @@ function getWVProduction() {
 	var log = ghSave.ghostlyPhotons.amount.cbrt().div(2).log10()
 	if (ghSave.neutrinos.boosts >= 11) log += tmp.nb[11].log10()
 	if (hasAch("ng3p72")) log += Math.log10(2)
-	if (hasNU(14)) log += tmp.nu[5].log10()
+	if (hasNU(14)) log += tmp.nu[14].log10()
 	return pow10(log)
 }
 
@@ -297,7 +297,7 @@ function getLightEmpowermentReq(le) {
 
 function ghostlyPhotonsUpdating(diff){
 	var data = ghSave.ghostlyPhotons
-	var type = brSave && brSave.active ? "amount" : "darkMatter"
+	var type = bigRipped() ? "amount" : "darkMatter"
 	data[type] = data[type].add(getGPHProduction().times(diff))
 	data.ghostlyRays = data.ghostlyRays.add(getWVProduction().times(diff)).min(getWVCap())
 	for (var c = 0; c < 8; c++) {

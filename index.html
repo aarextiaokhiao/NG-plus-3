@@ -17,6 +17,7 @@
 	<script type="text/javascript" src="javascripts/stuck.js"></script>
 
 	<!-- CONTAINER -->
+	<div style="display:none;position:fixed;left:0;top:0"><textarea id="output" style="color:black; width: 200px; height: 55px;"></textarea></div>
 	<div id='ghostlyNewsTicker'><span id='ghostlyNewsTickerText'></span></div>
 	<div id="snow" style="display: none; "></div>
 	<div id="bg" style="display: none"></div>
@@ -649,7 +650,7 @@
 				<br><br>
 
 				<b>(Update v2.41R: Gravitional Relativity)</b><br>
-				<b class="red">(Beta: 1/7/23 Build)</b>
+				<b class="red">(Beta: 1/9/23 Build)</b>
 				<br><br>
 
 				NG++ is by dan-simon, NG+3 is by Aarex, pg132, and usavictor, and NG+4 is by Soul147.
@@ -2598,7 +2599,7 @@
 								<br>
 								<br>
 								<div class="outer">
-									<button id="pc4" class="challengesbtn" onclick="selectPC($)"></button>
+									<button id="pc4" class="challengesbtn" onclick="selectPC(4)"></button>
 									<button id="pc4br" class="challengesbtn" onclick="selectPC(4, true)"></button>
 									<br>
 									<span id="pc4cost"></span><br>
@@ -4578,10 +4579,10 @@
 					<tr>
 						<td><button class="gluonupgrade unavailablebtn" id="neutrinoUpg1" onclick="buyNeutrinoUpg(1)" style="font-size: 10px">Meta-Dimension Boosts cost cheaper.<br>Currently: -<span id="neutrinoUpg1Pow"></span><br>Cost: <span id="neutrinoUpg1Cost"></span> of any neutrinos</button></td>
 						<td><button class="gluonupgrade unavailablebtn" id="neutrinoUpg2" onclick="buyNeutrinoUpg(2)">Eggons hatch instantly.<br>Cost: <span id="neutrinoUpg2Cost"></span> of any neutrinos</button></td>
-						<td><button class="gluonupgrade unavailablebtn" id="neutrinoUpg3" onclick="buyNeutrinoUpg(3)">Blue power boosts nanocharge.<br>Currently: <span id="neutrinoUpg3Pow"></span>x<br>Cost: <span id="neutrinoUpg3Cost"></span> of any neutrinos</button></td>
+						<td><button class="gluonupgrade unavailablebtn" id="neutrinoUpg3" onclick="buyNeutrinoUpg(3)" style="font-size: 10px">Blue power boosts nanocharge and preonic spin.<br>Currently: <span id="neutrinoUpg3Pow"></span>x<br>Cost: <span id="neutrinoUpg3Cost"></span> of any neutrinos</button></td>
 					</tr>
 					<tr>
-						<td><button class="gluonupgrade unavailablebtn" id="neutrinoUpg4" onclick="buyNeutrinoUpg(4)" style="font-size: 10px">Tickspeed speeds up Branches and Quark Spins.<br>Currently: <span id="neutrinoUpg4Pow">1.0</span>x<br>Cost: <span id="neutrinoUpg4Cost"></span> of any neutrinos</button></td>
+						<td><button class="gluonupgrade unavailablebtn" id="neutrinoUpg4" onclick="buyNeutrinoUpg(4)" style="font-size: 10px">Tickspeed speeds up Branches.<br>Currently: <span id="neutrinoUpg4Pow">1.0</span>x<br>Cost: <span id="neutrinoUpg4Cost"></span> of any neutrinos</button></td>
 						<td><button class="gluonupgrade unavailablebtn" id="neutrinoUpg5" onclick="buyNeutrinoUpg(5)">Triple Electrons.<br>Cost: <span id="neutrinoUpg5Cost"></span> of any neutrinos</button></td>
 						<td><button class="gluonupgrade unavailablebtn" id="neutrinoUpg6" onclick="buyNeutrinoUpg(6)">Disable Remote Antimatter Galaxies scaling!<br>Cost: <span id="neutrinoUpg6Cost"></span> of any neutrinos</button></td>
 					</tr>
@@ -4755,7 +4756,7 @@
 					<tr id="braveRow1">
 						<td><div id="braveMilestone1" class="achievement achievementlocked"></div></td>
 						<td><div id="braveMilestone2" class="achievement achievementlocked" ach-tooltip="Reward: Colored quarks don't cancel and Eternity Challenges don't respec. Also, keep your gluon upgrades."></div></td>
-						<td><div id="braveMilestone3" class="achievement achievementlocked" ach-tooltip="Reward: Keep Electron upgrades."></div></td>
+						<td><div id="braveMilestone3" class="achievement achievementlocked" ach-tooltip="Reward: Keep Electron upgrades. Also, remove requirements for post-Quantum unlocks except Break Eternity."></div></td>
 						<td><div id="braveMilestone4" class="achievement achievementlocked" ach-tooltip="Reward: Tachyon particles don't reset on Quantum except when entering a QC, unstabilizing quarks don't reset colored quarks, and you start with 5 of 1st Branch Upgrades for each branch."></div></td>
 						<td><div id="braveMilestone5" class="achievement achievementlocked" ach-tooltip="Reward: Meta-Dimension Boosts don't reset on Quantum except when entering a QC or exiting Big Rip."></div></td>
 						<td><div id="braveMilestone6" class="achievement achievementlocked" ach-tooltip="Reward: Normal duplicants don't reset on Quantum except when entering a QC or exiting Big Rip."></div></td>
@@ -5148,15 +5149,7 @@
 	</div>
 	<div class="popup optionmenu" id="animationoptions">
 		<button class="closebtn storebtn" onclick="closeToolTip()">&times;</button>
-		<div class="scrollablemenu">
-			<button id="floatingTextAnimBtn" class="storebtn" onclick="animationOnOff('floatingText')" style="width: 200px; height: 55px; font-size: 15px" style="display: inline"></button>
-			<button id="bigCrunchAnimBtn" class="storebtn" onclick="animationOnOff('bigCrunch')" style="width: 200px; height: 55px; font-size: 15px" style="display: inline" ach-tooltip="Click here while holding shift to toggle this option to always! (except some conditions)"></button>
-			<button id="tachyonParticleAnimBtn" class="storebtn" onclick="animationOnOff('tachyonParticles')" style="width: 200px; height: 55px; font-size: 15px" style="display: inline"></button>
-			<button id="blackHoleAnimBtn" class="storebtn" onclick="animationOnOff('blackHole')" style="width: 200px; height: 55px; font-size: 15px" style="display: inline"></button>
-			<button id="quantumAnimBtn" class="storebtn" onclick="animationOnOff('quantum')" style="width: 200px; height: 55px; font-size: 15px" style="display: inline"></button>
-			<button id="quarksAnimBtn" class="storebtn" onclick="animationOnOff('quarks')" style="width: 200px; height: 55px; font-size: 15px" style="display: inline"></button>
-			<button id="ghostifyAnimBtn" class="storebtn" onclick="animationOnOff('ghostify')" style="width: 200px; height: 55px; font-size: 15px" style="display: inline"></button>
-		</div>
+		<div class="scrollablemenu" id="animationoptionsdiv"></div>
 	</div>
 	<div class="popup optionmenu" id="visibilityoptions">
 		<button class="closebtn storebtn" onclick="closeToolTip()">&times;</button>
@@ -5285,6 +5278,10 @@
 		<div id="ngp3_feature_ani_3">
 			<b id="ngp3_feature_ani_4">Strings have been unlocked!</b>
 		</div>
+	</div>
+	<div id="gsacani">
+		<div id="gsacani1"></div>
+		<div id="gsacani2"></div>
 	</div>
 	<div id="ghostifyani">
 		<div id="ghostifyanibg"></div>

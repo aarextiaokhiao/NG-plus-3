@@ -8,7 +8,7 @@ function getBreakEternityTDMult(tier){
 	if (hasRipUpg(13)) ret = ret.times(player.replicanti.amount.max(1).pow(1e-6))
 	if (tier == 6 && ghSave.ghostlyPhotons.unl) ret = ret.times(tmp.le[6])
 	if (tier == 7 && hasRipUpg(16)) ret = ret.times(tmp.bru[16])
-	if (beSave && beSave.upgrades.includes(11) && brSave.active) ret = ret.mul(tmp.beu[11]||1)
+	if (beSave && beSave.upgrades.includes(11) && bigRipped()) ret = ret.mul(tmp.beu[11]||1)
 	if (tier == 8 && hasAch("ng3p62")) ret = ret.pow(Math.log10(ghSave.time/10+1)/100+1)
 	if (ret.lt(0)) ret = E(0)
 	return dilates(ret)
@@ -122,7 +122,7 @@ function getIC3EffFromFreeUpgs() {
 		if (player.currentEternityChall=='eterc14') x = 5
 		else {
 			x = ECComps("eterc14") * (tmp.ngp3l ? 2 : 4)
-			if (hasNU(12)) if (brSave.active) x *= tmp.nu[4].replicated
+			if (hasNU(12)) if (bigRipped()) x *= tmp.nu[12].replicated
 		}
 	}
 	if (inNGM(2)) x++

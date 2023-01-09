@@ -474,7 +474,7 @@ function drawQuarkAnimation(ts){
 	centerY = canvas.height/2
 	maxDistance=Math.sqrt(Math.pow(centerX,2)+Math.pow(centerY,2))
 	code=player.options.theme=="Aarex's Modifications"?"e5":"99"
-	if (el("quantumtab").style.display !== "none" && el("uquarks").style.display !== "none" && player.options.animations.quarks) {
+	if (el("quantumtab").style.display !== "none" && el("uquarks").style.display !== "none" && isAnimationOn("quarks")) {
 		qkctx.clearRect(0, 0, canvas.width, canvas.height);
 		quarks.sum=quSave.colorPowers.r.max(1).log10()+quSave.colorPowers.g.max(1).log10()+quSave.colorPowers.b.max(1).log10()
 		quarks.amount=Math.ceil(Math.min(quarks.sum,200))

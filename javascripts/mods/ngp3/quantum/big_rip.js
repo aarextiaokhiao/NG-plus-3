@@ -16,11 +16,15 @@ function bigRip(auto) {
 				var pc2 = Math.max(pcData[0], pcData[1])
 				if (pc1 == 6 && pc2 == 8) {
 					if (p - 1 > quSave.pairedChallenges.completed) return
-					quantum(auto, true, p + 8, true, true)
+					selectPC(p, true)
 				}
 			}
 		}
 	}
+}
+
+function bigRipped() {
+	return tmp.ngp3 && brSave.active
 }
 
 function toggleBigRipConf() {
@@ -57,23 +61,13 @@ function unstoreTT() {
 }
 
 function getSpaceShardsGain() {
-	let ret = brSave && brSave.active ? brSave.bestThisRun : player.money
-	ret = E_pow(ret.add(1).log10() / 2000, 1.5).times(player.dilation.dilatedTime.add(1).pow(0.05))
-	if (!brSave.active || tmp.be) {
+	let ret = bigRipped() ? brSave.bestThisRun : player.money
+	ret = E_pow(ret.add(1).log10() / 2000, 1.5).times(player.dilation.dilatedTime.add(1).pow(0.05)).div(50)
+	if (tmp.be) {
 		if (beSave && beSave.upgrades.includes(3)) ret = ret.times(getBreakUpgMult(3))
 		if (beSave && beSave.upgrades.includes(6)) ret = ret.times(getBreakUpgMult(6))
 	}
 	if (hasNU(9)) ret = ret.times(Decimal.max(getEternitied(), 1).pow(0.1))
-
-	let log = ret.log10()
-	let log4log = Math.log10(log) / Math.log10(4)
-	let start = 5 //Starts at e1,024.
-	if (log4log > start && false) { //removed the softcap for now, it can go back in later maybe
-		let capped=Math.min(Math.floor(Math.log10(Math.max(log4log + 2 - start, 1)) / Math.log10(2)), 10 - start)
-		log4log = (log4log - Math.pow(2, capped) - start + 2) / Math.pow(2, capped) + capped + start - 1
-		log = Math.pow(4, log4log)
-	}
-	ret = pow10(log)
 
 	if (isNaN(ret.e)) return E(0)
 	return ret.floor()
@@ -118,10 +112,10 @@ function buyBigRipUpg(id) {
 	if (ghSave.milestones < 8) brSave.spaceShards=brSave.spaceShards.round()
 	brSave.upgrades.push(id)
 	el("spaceShards").textContent = shortenDimensions(brSave.spaceShards)
-	if (brSave.active) tweakBigRip(id, true)
+	if (bigRipped()) tweakBigRip(id, true)
 	if (id == 10 && !hasRipUpg(9)) {
 		brSave.upgrades.push(9)
-		if (brSave.active) tweakBigRip(9, true)
+		if (bigRipped()) tweakBigRip(9, true)
 	}
 	for (var u = 1; u <= getMaxBigRipUpgrades(); u++) {
 		el("bigripupg" + u).className = brSave && hasRipUpg(u) ? "gluonupgradebought bigrip" + (isBigRipUpgradeActive(u, true) ? "" : "off") : brSave.spaceShards.lt(bigRipUpgCosts[u]) ? "gluonupgrade unavailablebtn" : "gluonupgrade bigrip"
@@ -178,9 +172,8 @@ function getMaxBigRipUpgrades() {
 	return 17
 }
 
-function isBigRipUpgradeActive(id, bigRipped) {
-	if (player.masterystudies == undefined) return false
-	if (bigRipped === undefined ? !brSave.active : !bigRipped) return false
+function isBigRipUpgradeActive(id) {
+	if (!bigRipped()) return false
 	if (id == 1) if (!hasRipUpg(17)) for (var u = 3; u < 18; u++) if (hasRipUpg(u)) return false
 	if (id > 2 && id != 4 && id < 9) if (hasRipUpg(9) && (id != 8 || !hasNU(11))) return false
 	if (id == 4) if (hasRipUpg(11)) return false
@@ -197,13 +190,13 @@ function updateBreakEternity() {
 	el("breakEternityShop").style.display = unl ? "" : "none"
 
 	if (unl) {
-		el("breakEternityNoBigRip").style.display = brSave && brSave.active ? "none" : ""
-		el("breakEternityBtn").style.display = brSave && brSave.active ? "" : "none"
+		el("breakEternityNoBigRip").style.display = bigRipped() ? "none" : ""
+		el("breakEternityBtn").style.display = bigRipped() ? "" : "none"
 		el("breakEternityBtn").textContent = (beSave.break ? "FIX" : "BREAK") + " ETERNITY"
 		for (var u = 1; u < getBEUnls(); u++) el("breakUpg" + u + "Cost").textContent = shortenDimensions(getBreakUpgCost(u))
 		el("breakUpg7MultIncrease").textContent = shortenDimensions(1e9)
 		el("breakUpg7Mult").textContent = shortenDimensions(getBreakUpgMult(7))
-		el("breakUpgRS").style.display = brSave && brSave.active ? "" : "none"
+		el("breakUpgRS").style.display = bigRipped() ? "" : "none"
 		el("breakUpgR4").style.display = ghSave.breakDilation.unl ? "" : "none"
 	} else {
 		el("breakEternityReq").textContent = "You need to get " + shorten(E("1e1200")) + " EP before you can Break Eternity."
@@ -219,7 +212,7 @@ function breakEternityDisplay(){
 		if (u == 8) el("breakUpg8Mult").textContent = (getBreakUpgMult(8) * 100 - 100).toFixed(1)
 		else if (u != 7 && el("breakUpg" + u + "Mult")) el("breakUpg" + u + "Mult").textContent = shortenMoney(getBreakUpgMult(u))
 	}
-	if (brSave.active) {
+	if (bigRipped()) {
 		el("eterShortcutEM").textContent=shortenDimensions(beSave.eternalMatter)
 		el("eterShortcutEP").textContent=shortenDimensions(player.eternityPoints)
 		el("eterShortcutTP").textContent=shortenMoney(player.dilation.tachyonParticles)
@@ -237,7 +230,7 @@ function breakEternity() {
 	beSave.break = !beSave.break
 	beSave.did = true
 	el("breakEternityBtn").textContent = (beSave.break ? "FIX" : "BREAK") + " ETERNITY"
-	if (brSave.active) {
+	if (bigRipped()) {
 		tmp.be = beSave.break
 		updateTemp()
 		if (!tmp.be && el("timedimensions").style.display == "block") showDimTab("antimatterdimensions")
@@ -247,6 +240,10 @@ function breakEternity() {
 		EPminpeak = E(0)
 		player.peakSpent = 0
 	}
+}
+
+function brokeEternity() {
+	return bigRipped() && beSave.break
 }
 
 function getEMGain() {
