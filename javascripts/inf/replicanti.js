@@ -38,7 +38,7 @@ function upgradeReplicantiChance() {
 }
 
 function isChanceAffordable() {
-	return player.replicanti.chance < 1 || (tmp.ngp3 && player.masterystudies.includes("t265"))
+	return player.replicanti.chance < 1 || (mod.ngp3 && player.masterystudies.includes("t265"))
 }
 
 function upgradeReplicantiInterval() {
@@ -62,7 +62,7 @@ function getReplicantiLimit() {
 }
 
 function isIntervalAffordable() {
-	if (tmp.ngp3) if (player.masterystudies.includes("t271")) return true
+	if (mod.ngp3) if (player.masterystudies.includes("t271")) return true
 	return player.replicanti.interval > (player.timestudy.studies.includes(22) || player.boughtDims ? 1 : 50)
 }
 
@@ -76,8 +76,8 @@ function getRGCost(offset = 0, costChange) {
 			else increase = offset * (2.5 * (offset + player.replicanti.gal * 2) + 22.5)
 			if (player.replicanti.gal + offset > 99) increase += (offset - Math.max(99 - player.replicanti.gal, 0)) * (25 * (offset - Math.max(99 - player.replicanti.gal, 0) + Math.max(player.replicanti.gal, 99) * 2) - 4725)
 			if (player.replicanti.gal + offset > 399) {
-				if (player.exdilation != undefined) for (var g = Math.max(player.replicanti.gal, 399); g < player.replicanti.gal + offset; g++) increase += Math.pow(g - 389, 2)
-				if (player.meta != undefined) {
+				if (mod.ngud) for (var g = Math.max(player.replicanti.gal, 399); g < player.replicanti.gal + offset; g++) increase += Math.pow(g - 389, 2)
+				if (mod.ngpp) {
 					var isReduced = false
 					if (player.masterystudies != undefined) if (player.masterystudies.includes("t266")) isReduced = true
 					if (isReduced) {
@@ -120,7 +120,7 @@ function replicantiGalaxy() {
 	if (!canGetReplicatedGalaxy()) return
 	if (player.galaxyMaxBulk) player.replicanti.galaxies=maxGal
 	else player.replicanti.galaxies++
-	if (tmp.ngp3l||!hasAch("ng3p67")) player.replicanti.amount=Decimal.div(hasAch("r126")?player.replicanti.amount:1,Number.MAX_VALUE).max(1)
+	if (!hasAch("ng3p67")) player.replicanti.amount=Decimal.div(hasAch("r126")?player.replicanti.amount:1,Number.MAX_VALUE).max(1)
 	galaxyReset(0)
 }
 
@@ -178,7 +178,7 @@ function updateExtraReplGalaxies() {
 	}
 	extraReplGalaxies = ts225Eff + ts226Eff
 	if (extraReplGalaxies > 325) extraReplGalaxies = (Math.sqrt(0.9216+0.16*(extraReplGalaxies-324))-0.96)/0.08+324
-	if (tmp.ngp3) {
+	if (mod.ngp3) {
 		let expData={
 			normal: 1/3,
 			ts362: 0.4
@@ -209,7 +209,7 @@ function getReplSpeed() {
 	let exp = 308
 	if (player.dilation.upgrades.includes('ngpp1') && (!aarMod.nguspV || aarMod.nguepV)) {
 		let expDiv = 10
-		if (tmp.ngp3) expDiv = 9
+		if (mod.ngp3) expDiv = 9
 		let x = 1 + player.dilation.dilatedTime.max(1).log10() / expDiv
 		inc /= Math.min(x, 200)
 		if (x > 200) exp += x / 10 - 20
@@ -224,7 +224,6 @@ function getReplSpeed() {
 
 function getReplicantiInterval() {
 	let interval = player.replicanti.interval
-	if (aarMod.ngexV) interval *= .8
 	if (player.timestudy.studies.includes(62)) interval /= tsMults[62]()
 	if (player.replicanti.amount.gt(Number.MAX_VALUE)||player.timestudy.studies.includes(133)) interval *= 10
 	if (player.timestudy.studies.includes(213)) interval /= tsMults[213]()
@@ -233,10 +232,10 @@ function getReplicantiInterval() {
 	if (isBigRipUpgradeActive(4)) interval /= 10
 
 	interval = E(interval)
-	if (player.exdilation != undefined) interval = interval.div(getBlackholePowerEffect().pow(1/3))
+	if (mod.ngud) interval = interval.div(getBlackholePowerEffect().pow(1/3))
 	if (player.dilation.upgrades.includes('ngpp1') && aarMod.nguspV && !aarMod.nguepV) interval = interval.div(player.dilation.dilatedTime.max(1).pow(0.05))
 	if (player.dilation.upgrades.includes("ngmm9")) interval = interval.div(getDil72Mult())
-	if (tmp.ngp3) if (player.masterystudies.includes("t332")) interval = interval.div(getMTSMult(332))
+	if (mod.ngp3) if (player.masterystudies.includes("t332")) interval = interval.div(getMTSMult(332))
 	return interval
 }
 

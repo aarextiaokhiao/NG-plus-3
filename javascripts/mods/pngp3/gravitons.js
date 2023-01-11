@@ -64,7 +64,7 @@ function getBrandNewGravitonsData() {
 
 //Functions
 function inGrav() {
-	return tmp.ngp3 && ghSave.gravitons.cur
+	return mod.ngp3 && ghSave.gravitons.cur
 }
 
 function exitGrav() {

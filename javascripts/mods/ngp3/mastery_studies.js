@@ -103,19 +103,17 @@ var masteryStudies = {
 			let exp = Math.sqrt(Math.max(player.resets / 1e5 - 5.5, 1))
 
 			if (r > 1e4) r = Math.pow(6 + Math.log10(r), 4)
-			if (aarMod.newGameExpVersion) exp *= 2
+			if (mod.ngep) exp *= 2
 			return E_pow(r, exp)
 		},
 		263: function(){
 			let x = player.meta.resets
-			if (!tmp.ngp3l) x = x * (x + 10) / 60
+			x = x * (x + 10) / 60
 			return x + 1
 		},
 		264: function(){
-			let r = 1
-			if (tmp.ngp3l) r = Math.pow(player.galaxies + 1, 0.25) * 2
-			else r = player.galaxies / 100 + 1
-			if (aarMod.newGameExpVersion) return Math.pow(r, 2)
+			let r = player.galaxies / 100 + 1
+			if (mod.ngep) return Math.pow(r, 2)
 			return r
 		},
 		273: function(uses){
@@ -125,10 +123,10 @@ var masteryStudies = {
 			return Decimal.max(Math.log10(player.replicanti.chance + 1), 1).pow(intensity)
 		},
 		281: function(){
-			return pow10(Math.pow(tmp.rm.max(1).log10(), 0.25) / 10 * (tmp.ngp3e ? 2 : 1))
+			return pow10(Math.pow(tmp.rm.max(1).log10(), 0.25) / 10 * (mod.p3ep ? 2 : 1))
 		},
 		282: function(){
-			return pow10(Math.pow(tmp.rm.max(1).log10(), 0.25) / 15 * (tmp.ngp3e ? 2 : 1))
+			return pow10(Math.pow(tmp.rm.max(1).log10(), 0.25) / 15 * (mod.p3ep ? 2 : 1))
 		},
 		301: function(){
 			if (ghSave.neutrinos.upgrades.includes(6)) return 0
@@ -140,7 +138,7 @@ var masteryStudies = {
 		322: function(){
 			let log = Math.sqrt(Math.max(3-getTickspeed().log10(),0))/2e4
 			if (log > 110) log = Math.sqrt(log * 27.5) + 55
-			if (aarMod.newGameExpVersion) log += Math.pow(Math.log10(log + 10), 4) - 1
+			if (mod.ngep) log += Math.pow(Math.log10(log + 10), 4) - 1
 			return pow10(log)
 		},
 		332: function(){
@@ -150,26 +148,25 @@ var masteryStudies = {
 			var exp = Math.sqrt(quSave.replicants.quarks.add(1).log10())
 			if (exp > 150) exp = 150 * Math.pow(exp / 150, .5)
 			if (exp > 200) exp = 200 * Math.pow(exp / 200, .5)
-			return E_pow(tmp.ngp3e ? 3 : 2, exp)
+			return E_pow(mod.p3ep ? 3 : 2, exp)
 		},
 		344: function(){
-			var ret = Math.pow(quSave.replicants.quarks.div(1e7).add(1).log10(), tmp.ngp3e ? 0.3 : 0.25) * 0.17 + 1
-			if (tmp.ngp3l) return ret
+			var ret = Math.pow(quSave.replicants.quarks.div(1e7).add(1).log10(), mod.p3ep ? 0.3 : 0.25) * 0.17 + 1
 			if (ret > 3) ret = 1 + Math.log2(ret + 1)
 			if (ret > 4) ret = 3 + Math.log10(ret + 6)
 			return ret
 		},
 		351: function(){ //maybe use softcap.js
 			let log = player.timeShards.max(1).log10()*14e-7
-			if (log > 1e4) log = Math.pow(log / 1e4, tmp.ngp3l ? 0.1 : 0.75) * 1e4
+			if (log > 1e4) log = Math.pow(log / 1e4, 0.75) * 1e4
 			if (log > 2e4) log = 2 * Math.pow(Math.log10(5 * log) + 5 ,4)
-			return E_pow(tmp.ngp3e ? 12 : 10, log)
+			return E_pow(mod.p3ep ? 12 : 10, log)
 		},
 		361: function(){
 			return player.dilation.tachyonParticles.max(1).pow(0.01824033924212366)
 		},
 		371: function(){
-			return Math.pow(extraReplGalaxies+1,aarMod.newGameExpVersion?.5:.3)
+			return Math.pow(extraReplGalaxies+1,mod.p3ep?.5:.3)
 		},
 		372: function(){
 			return Math.sqrt(player.timeShards.add(1).log10())/20+1
@@ -194,7 +191,7 @@ var masteryStudies = {
 			return player.meta.antimatter.max(1).pow(8e-4)
 		},
 		392: function(){
-			return E_pow(tmp.ngp3e ? 1.7 : 1.6, Math.sqrt(quSave.replicants.quarks.add(1).log10())).plus(tmp.ngp3l ? 0 : 1)
+			return E_pow(mod.p3ep ? 1.7 : 1.6, Math.sqrt(quSave.replicants.quarks.add(1).log10())).add(1)
 		},
 		393: function(){
 			if (!tmp.twr) return E(1)
@@ -202,12 +199,12 @@ var masteryStudies = {
 		},
 		401: function(){
 			let log = quSave.replicants.quarks.div(1e28).add(1).log10() / 5
-			return E_pow(tmp.ngp3e ? 12 : 10, log)
+			return E_pow(mod.p3ep ? 12 : 10, log)
 		},
 		411: function(){
 			if (!tmp.tra) return E(1)
 			var exp = tmp.tra.div(1e24).add(1).log10() / 2
-			if (tmp.ngp3e) exp += Math.pow((exp + 9) * 3, .2) * Math.log10(exp + 1)
+			if (mod.p3ep) exp += Math.pow((exp + 9) * 3, .2) * Math.log10(exp + 1)
 			return pow10(exp)
 		},
 		421: function(){
@@ -219,13 +216,13 @@ var masteryStudies = {
 			if (gals >= 1e6) gals = Math.pow(gals * 1e3, 2/3)
 
 			var effectBase = Math.max(gals / 1e4, 1)
-			if (effectBase > 10 && tmp.ngp3e) effectBase *= Math.log10(effectBase)
+			if (effectBase > 10 && mod.p3ep) effectBase *= Math.log10(effectBase)
 
 			var effectExp = Math.max(gals / 2e4 + 0.5, 1)
-			if (effectExp > 10 && tmp.ngp3e) effectExp *= Math.log10(effectExp)
+			if (effectExp > 10 && mod.p3ep) effectExp *= Math.log10(effectExp)
 
 			var eff = E_pow(effectBase, effectExp)
-			if (tmp.ngp3e) eff = eff.times(eff.plus(9).log10())
+			if (mod.p3ep) eff = eff.times(eff.plus(9).log10())
 
 			var log = eff.log10()
 
@@ -236,9 +233,7 @@ var masteryStudies = {
 		241: "The IP mult multiplies IP gain by 2.2x per upgrade.",
 		251: "Remote galaxy scaling starts 1 galaxy later per 3,000 dimension boosts.",
 		252: "Remote galaxy scaling starts 1 galaxy later per 7 Tachyonic Galaxies.",
-		253: function() {
-			return "Remote galaxy scaling starts "+(tmp.ngp3l?"20 galaxies later per 9 extra replicated galaxies.":"1 galaxy later per 4 total replicated galaxies.")
-		},
+		253: "Remote galaxy scaling starts 1 galaxy later per 4 total replicated galaxies.",
 		261: "Dimension Boost costs scale by another 1 less.",
 		262: "Dimension Boosts boost Meta Dimensions at a reduced rate.",
 		263: "Meta-dimension boosts boost dilated time production.",
@@ -617,13 +612,11 @@ function buyMasteryStudy(type, id, quick=false) {
 			}
 		}
 		if (id == 383) updateColorCharge()
-		if (!tmp.ngp3l) {
-			if (!hasNU(6) && (id == 251 || id == 252 || id == 253 || id == 301)) {
-				player.galaxies = 1
-			}
-			if (!inQC(5) && (id == 261 || id == 331)) {
-				player.resets = 4
-			}
+		if (!hasNU(6) && (id == 251 || id == 252 || id == 253 || id == 301)) {
+			player.galaxies = 1
+		}
+		if (!inQC(5) && (id == 261 || id == 331)) {
+			player.resets = 4
 		}
 	}
 	if (type=="d") {
@@ -667,7 +660,7 @@ function canBuyMasteryStudy(type, id) {
 }
 	
 function updateMasteryStudyButtons() {
-	if (!tmp.ngp3) return
+	if (!mod.ngp3) return
 	for (id = 0; id < masteryStudies.unlocked.length; id++) {
 		var name = masteryStudies.unlocked[id]
 		if (name + 0 == name) {
@@ -772,7 +765,7 @@ function drawMasteryBranch(id1, id2) {
 function drawMasteryTree() {
 	msctx.clearRect(0, 0, msc.width, msc.height);
 	if (player === undefined) return
-	if (el("eternitystore").style.display === "none" || el("masterystudies").style.display === "none" || !tmp.ngp3) return
+	if (el("eternitystore").style.display === "none" || el("masterystudies").style.display === "none" || !mod.ngp3) return
 	occupied=[]
 	drawMasteryBranch("back", "timestudy241")
 	for (var x = 0; x < masteryStudies.studies.length; x++) {

@@ -11,7 +11,7 @@ function galaxyReset(bulk) {
 	doReset("gal")
 	if (hasAch("r111")) player.money = am
 
-	if (tmp.ngp3 && bulk) {
+	if (mod.ngp3 && bulk) {
 		if (quSave.autoOptions.sacrifice) sacrificeGalaxy(6, true)
 		if (ghostified && ghSave.neutrinos.boosts) gainNeutrinos(bulk, "gen")
 	}
@@ -20,7 +20,7 @@ function galaxyReset(bulk) {
 }
 
 el("secondSoftReset").onclick = function() {
-	let ngm4 = tmp.ngmX ? inNGM(4) : false
+	let ngm4 = mod.ngmX ? inNGM(4) : false
 	let bool1 = !inNC(11) || ngm4
 	let bool2 = player.currentChallenge != "postc1"
 	let bool3 = player.currentChallenge != "postc5" || !inNGM(3)
@@ -41,9 +41,7 @@ function getGalaxyRequirement(offset = 0, display) {
 	let amount = 80 + base
 	let scaling = 0
 	if (inNGM(2)) amount -= (hasGalUpg(22) && player.galaxies > 0) ? 80 : 60
-	else if (inNC(6, 1) && aarMod.ngexV != undefined && tmp.grd.galaxies < 2) amount -= tmp.grd.galaxies == 1 ? 40 : 50
 	if (inNGM(4)) amount -= 10
-	if (inNC(6, 1) && aarMod.ngexV != undefined && tmp.grd.galaxies >= 2) amount -= 2 * mult
 	if (inNC(4)) amount = !inNGM(3) ? 99 + base : amount + (inNGM(4) ? 20 : -30)
 	if (tmp.be) {
 		amount *= 50
@@ -97,7 +95,6 @@ function getGalaxyRequirement(offset = 0, display) {
 }
 
 function getGalaxyReqMultiplier() {
-	if (inNC(6, 1) && aarMod.ngexV != undefined && tmp.grd.galaxies <= 2) return 0
 	if (player.currentChallenge == "postcngmm_1") return 60
 	let ret = 60
 	if (inNGM(2)) if (hasGalUpg(22)) ret -= 30
@@ -133,7 +130,7 @@ function getRemoteScalingStart(galaxies) {
 		if (player.challenges.includes("postcngm3_1")) n += tmp.cp / 2
 	}
 	else if (inNGM(2)) n += 1e7
-	if (tmp.ngp3) {
+	if (mod.ngp3) {
 		for (var t = 251; t < 254; t++) if (player.masterystudies.includes("t" + t)) n += getMTSMult(t)
 		if (player.masterystudies.includes("t301")) n += getMTSMult(301)
 		if (isNanoEffectUsed("remote_start")) n += tmp.nf.effects.remote_start

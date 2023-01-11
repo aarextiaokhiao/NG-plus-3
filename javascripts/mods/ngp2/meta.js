@@ -12,7 +12,7 @@ function getDilationMetaDimensionMultiplier() {
 	if (isNanoEffectUsed("dt_to_ma_exp") && tmp.nf.effects.dt_to_ma_exp) pow = tmp.nf.effects.dt_to_ma_exp //this is a quick fix, but we need to fix this bug
 	if (aarMod.nguspV !== undefined) div = 1e50
 
-	if (aarMod.ngudpV && !aarMod.nguepV) {
+	if (mod.udp && !aarMod.nguepV) {
 		let l = quSave.colorPowers.b.plus(10).log10()
 		let x = 3 - Math.log10(l + 1)
 		if (aarMod.ngumuV) {
@@ -53,7 +53,7 @@ function getMetaDimensionGlobalMultiplier() {
 	let ret = getDilationMetaDimensionMultiplier()
 	if (player.dilation.upgrades.includes("ngpp3")) ret = ret.times(getDil14Bonus())
 	if (hasAch("ngpp12")) ret = ret.times(1.1)
-	if (tmp.ngp3) {
+	if (mod.ngp3) {
 		//Mastery Study Boosts
 		if (player.masterystudies.includes("t262")) ret = ret.times(getMTSMult(262))
 		if (player.masterystudies.includes("t282")) ret = ret.times(getMTSMult(282))
@@ -93,7 +93,7 @@ function getMetaBoostPower() {
 	let r = 2
 	let exp = 1
 	if (player.dilation.upgrades.includes("ngpp4")) r = getDil15Bonus()
-	if (tmp.ngp3) {
+	if (mod.ngp3) {
 		if (isNanoEffectUsed("meta_boost_power")) r = tmp.nf.effects.meta_boost_power
 
 		if (player.masterystudies.includes("t312")) exp = 1.045
@@ -141,11 +141,11 @@ function getMetaShiftRequirement() {
 	var data = {tier: Math.min(8, mdb + 4), amount: 20}
 	var inQC4 = inQC(4)
 	data.mult = inQC4 ? 5.5 : 15
-	if (tmp.ngp3) {
+	if (mod.ngp3) {
 		if (player.masterystudies.includes("t312")) data.mult -= 1
 	}
 	data.amount += data.mult * Math.max(mdb - 4, 0)
-	if (tmp.ngp3 && player.masterystudies.includes("d13")) data.amount -= getTreeUpgradeEffect(1)
+	if (mod.ngp3 && player.masterystudies.includes("d13")) data.amount -= getTreeUpgradeEffect(1)
 	if (hasNU(1)) data.amount -= tmp.nu[1]
 
 	data.scalingStart = inQC4 ? 55 : 15
@@ -189,7 +189,7 @@ function metaBoost() {
 	if (hasAch("ng3p52")) return
 	player.meta.antimatter = getMetaAntimatterStart()
 	clearMetaDimensions()
-	if (!tmp.ngp3 || !bigRipped()) el("quantumbtn").style.display="none"
+	if (!mod.ngp3 || !bigRipped()) el("quantumbtn").style.display="none"
 }
 
 
@@ -352,7 +352,7 @@ function getExtraDimensionBoostPowerExponent(ma) {
 	}
 	if (player.dilation.upgrades.includes("ngpp5")) power++
 	power += getECReward(13)
-	if (tmp.ngp3) {
+	if (mod.ngp3) {
 		if (isNanoEffectUsed("ma_effect_exp")) power += tmp.nf.effects.ma_effect_exp
 		if (player.masterystudies.includes("d13")) power += getTreeUpgradeEffect(8)
 	}
@@ -371,7 +371,7 @@ function updateOverallMetaDimensionsStuff(){
 	el("metaAntimatterAmount").textContent = shortenMoney(player.meta.antimatter)
 	el("metaAntimatterBest").textContent = shortenMoney(player.meta.bestAntimatter)
 	el("bestAntimatterQuantum").textContent = player.masterystudies && quantumed ? "Your best" + (ghostified ? "" : "-ever") + " meta-antimatter" + (ghostified ? " in this Ghostify" : "") + " was " + shortenMoney(player.meta.bestOverQuantums) + "." : ""
-	el("bestAntimatterTranslation").innerHTML = (tmp.ngp3 && aarMod.nguspV === undefined && player.currentEternityChall != "eterc14" && (inQC(3) || nfSave.rewards >= 2) && !inQC(7)) ? 'Raised to the power of <span id="metaAntimatterPower" style="font-size:35px; color: black">'+formatValue(player.options.notation, getExtraDimensionBoostPowerExponent(getExtraDimensionBoostPowerUse()), 2, 1)+'</span>, t' : "T"
+	el("bestAntimatterTranslation").innerHTML = (mod.ngp3 && aarMod.nguspV === undefined && player.currentEternityChall != "eterc14" && (inQC(3) || nfSave.rewards >= 2) && !inQC(7)) ? 'Raised to the power of <span id="metaAntimatterPower" style="font-size:35px; color: black">'+formatValue(player.options.notation, getExtraDimensionBoostPowerExponent(getExtraDimensionBoostPowerUse()), 2, 1)+'</span>, t' : "T"
 	setAndMaybeShow("bestMAOverGhostifies", ghostified, '"Your best-ever meta-antimatter was " + shortenMoney(player.meta.bestOverGhostifies) + "."')
 	el("metaAntimatterEffect").textContent = shortenMoney(getExtraDimensionBoostPower())
 	el("metaAntimatterPerSec").textContent = 'You are getting ' + shortenDimensions(getMetaDimensionProduction(1)) + ' meta-antimatter per second.'
@@ -423,11 +423,8 @@ function getDil15Bonus() {
 	let x = 1
 	let max = 3
 	if (ghostified && ghSave.neutrinos.boosts >= 3) {
-		if (tmp.ngp3l) max = tmp.nb[3]
-		else {
-			x = tmp.nb[3]
-			max = 1/0
-		}
+		x = tmp.nb[3]
+		max = 1/0
 	}
 	if (aarMod.nguspV !== undefined) x *= Math.min(Math.max(player.dilation.dilatedTime.max(1).log10() / 10 - 6.25, 2), max)
 	else x *= Math.min(Math.log10(player.dilation.dilatedTime.max(1e10).log(10)) + 1, max)
@@ -443,7 +440,7 @@ function metaDimsUpdating(diff){
 	player.meta.antimatter = player.meta.antimatter.plus(getMetaDimensionProduction(1).times(diff))
 	if (inQC(4)) player.meta.antimatter = player.meta.antimatter.plus(getMetaDimensionProduction(1).times(diff))
 	player.meta.bestAntimatter = player.meta.bestAntimatter.max(player.meta.antimatter)
-	if (tmp.ngp3) {
+	if (mod.ngp3) {
 		player.meta.bestOverQuantums = player.meta.bestOverQuantums.max(player.meta.antimatter)
 		player.meta.bestOverGhostifies = player.meta.bestOverGhostifies.max(player.meta.antimatter)
 	}

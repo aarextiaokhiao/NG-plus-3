@@ -4,7 +4,7 @@ var quantumChallenges = {
 }
 
 function updateQuantumChallenges() {
-	if (!tmp.ngp3 || !player.masterystudies.includes("d8")) {
+	if (!mod.ngp3 || !player.masterystudies.includes("d8")) {
 		el("qctabbtn").style.display = "none"
 		el("pctabbtn").style.display = "none"
 		return
@@ -74,7 +74,7 @@ function updateInQCs() {
 }
 
 function getQCGoal(num, bigRip) {
-	if (!tmp.ngp3) return 0
+	if (!mod.ngp3) return 0
 	var c1 = 0
 	var c2 = 0
 	var mult = 1
@@ -101,7 +101,7 @@ function getQCGoal(num, bigRip) {
 }
 
 function QCIntensity(num) {
-	if (tmp.ngp3 && quSave !== undefined && quSave.challenges !== undefined) return quSave.challenges[num] || 0
+	if (mod.ngp3 && quSave !== undefined && quSave.challenges !== undefined) return quSave.challenges[num] || 0
 	return 0
 }
 

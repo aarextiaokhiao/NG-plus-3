@@ -650,7 +650,7 @@
 				<br><br>
 
 				<b>(Update v2.41R: Gravitional Relativity)</b><br>
-				<b class="red">(Beta: 1/9/23 Build)</b>
+				<b class="red">(Beta: 1/10/23 Build)</b>
 				<br><br>
 
 				NG++ is by dan-simon, NG+3 is by Aarex, pg132, and usavictor, and NG+4 is by Soul147.
@@ -5114,7 +5114,8 @@
 			<button class="storebtn" style="width: 360px; font-size: 15px" onclick="new_game('grand_run')" style="display: inline">Grand Run (NG= -> NG+3)</button><br>
 		</div>
 		<div id="advModsTab" style="height: 320px; overflow-y: auto; display: none">
-			Select a mod first before you start your new journey.
+			Select a mod first before you start your new journey.<br>
+			<button class="storebtn" onclick="reset_mods()">Reset Mods</button>
 			<br><br>
 			<b>Expansion Mods</b><br>
 			<button class="storebtn longbtn" id='ngppBtn' style="font-size: 15px" onclick="toggle_mod('ngpp')" style="display: inline" ach-tooltip="Adds new several end-game content. Featuring NG+3, the most popular mod yet!">NG++: OFF</button>
@@ -5130,9 +5131,9 @@
 			<br><br>
 			<b>Buffed Mods</b><br>
 			<button class="storebtn longbtn" id='ngmuBtn' style="font-size: 15px" onclick="toggle_mod('ngmu')" style="display: inline" ach-tooltip="A spinoff to NG^, which is slower than NG^, but faster than NG=.">NG*: OFF</button>
-			<button class="storebtn longbtn" id='arrowsBtn' style="font-size: 15px" onclick="toggle_mod('arrows')" style="display: inline" ach-tooltip="A original mod that starts buffed mods.">NG↑: Linear (↑⁰)</button>
+			<button class="storebtn longbtn" id='ngepBtn' style="font-size: 15px" onclick="toggle_mod('ngep')" style="display: inline" ach-tooltip="A original mod that starts buffed mods.">NG↑: OFF</button>
 			<button class="storebtn longbtn" id='ngumuBtn' style="font-size: 15px" onclick="toggle_mod('ngumu')" style="display: inline" ach-tooltip="A mod which buffs some boosts to NG Update Prime.">NGUd*': OFF</button>
-			<button class="storebtn longbtn" id='nguepBtn' style="font-size: 15px" onclick="toggle_mod('nguep')" style="display: inline" ach-tooltip="A mod which greatly buffs some boosts to NG Update Prime.">NGUd↑': Linear' (↑⁰')</button>
+			<button class="storebtn longbtn" id='nguepBtn' style="font-size: 15px" onclick="toggle_mod('nguep')" style="display: inline" ach-tooltip="A mod which greatly buffs some boosts to NG Update Prime.">NGUd↑': OFF</button>
 			<br><br>
 			<b>Other Mods</b><br>
 			<button class="storebtn longbtn" id='rsBtn' style="font-size: 15px" onclick="toggle_mod('rs')" style="display: inline">Respecced: OFF</button>
@@ -5346,6 +5347,8 @@
 	<script type="text/javascript" src="javascripts/mods/ngp3/quantum/tod.js"></script>
 	<script type="text/javascript" src="javascripts/mods/ngp3/quantum/big_rip.js"></script>
 	<script type="text/javascript" src="javascripts/mods/ngp3/quantum/electrons.js"></script>
+
+	<script type="text/javascript" src="javascripts/mods/ngp3/fundament/fundament.js"></script>
 	<script type="text/javascript" src="javascripts/mods/ngp3/fundament/auto.js"></script>
 	<script type="text/javascript" src="javascripts/mods/ngp3/fundament/neutrinos.js"></script>
 	<script type="text/javascript" src="javascripts/mods/ngp3/fundament/photons.js"></script>

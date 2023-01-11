@@ -24,7 +24,7 @@ function bigRip(auto) {
 }
 
 function bigRipped() {
-	return tmp.ngp3 && brSave.active
+	return mod.ngp3 && brSave.active
 }
 
 function toggleBigRipConf() {
@@ -182,7 +182,7 @@ function isBigRipUpgradeActive(id) {
 
 //BREAK ETERNITY
 function updateBreakEternity() {
-	if (!tmp.ngp3) return
+	if (!mod.ngp3) return
 
 	let unl = beSave && beSave.unlocked
 	el("betabbtn").style.display = unl ? "" : "none"

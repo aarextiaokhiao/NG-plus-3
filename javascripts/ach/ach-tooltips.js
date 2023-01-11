@@ -182,7 +182,7 @@ function setR10Tooltip(){
 
 	//ACHIEVEMENT ROW 10
 	costco.setAttribute('ach-tooltip', "Bulk buy 750 Dimension Boosts at once. Reward: Dimension Boosts are " + (player.boughtDims?"cheaper based on EP":"1% more powerful (to Normal Dimensions)") + (inNGM(3) ? " and g13 is boosted by the cube root of Galaxies" : "") + ".")
-	mile.setAttribute('ach-tooltip', "Get "+(tmp.ngp3 ? "the 100 Eternities milestone." : "all Eternity milestones."))
+	mile.setAttribute('ach-tooltip', "Get "+(mod.ngp3 ? "the 100 Eternities milestone." : "all Eternity milestones."))
 	swarm.setAttribute('ach-tooltip', "Get 10 replicanti galaxies within the first 15 seconds of this Infinity." + (player.boughtDims ? " Reward: Unlock replicanti galaxy power control, and uncap replicanti chance and interval." : ""))
 	inftime.setAttribute('ach-tooltip', player.boughtDims ? "Eternity without buying dimensions 1-7. Reward: Time Dimensions gain a multiplier based on the eighth root of eighth dimensions." : "Get 308 tickspeed upgrades (in one eternity) from Time Dimensions. Reward: Time Dimensions are affected slightly more by tickspeed.")
 	guide.setAttribute('ach-tooltip', player.boughtDims ? "Reach " + shortenCosts(E("1e1000000")) + " replicanti. Reward: Replicanti increases faster the more you have." : "Eternity with less than 10 infinities.")
@@ -239,21 +239,21 @@ function setR13Tooltip(){
 	let thisis = el("This is what I have to do to get rid of you.")
 
 	let thinkingReward = [] // for the achievement "This is what I have to do to get rid of you."
-	if (tmp.ngp3) thinkingReward.push("multiply dilated time gain based on replicanti")
+	if (mod.ngp3) thinkingReward.push("multiply dilated time gain based on replicanti")
 	if (NGP3andVanillaCheck()) thinkingReward.push("gain 2x more DT and TT while dilated")
 	thinkingReward = wordizeList(thinkingReward, true)
 
 	let thisisReward = [] // for the achievement "This is what I have to do to get rid of you."
 	if (inNGM(2)) thisisReward.push("g23 is more effective based on your best IP in dilation")
-	if (tmp.ngp3e) thisisReward.push("you gain 3x more DT while you produce less than "+shortenCosts(1e100)+" DT/second")
+	if (mod.p3ep) thisisReward.push("you gain 3x more DT while you produce less than "+shortenCosts(1e100)+" DT/second")
 	thisisReward = wordizeList(thisisReward, true)
 
 	//ACHIEVEMENT ROW 13
 	unique.setAttribute('ach-tooltip', "Have 540 galaxies without having any Replicated galaxies." + (NGP3andVanillaCheck() ? " Reward: Gain a multiplier to Tachyon Particle and Dilated Time gain based on Antimatter Galaxies." : ""))
 	potato3.setAttribute('ach-tooltip', "Get more than "+shortenCosts(E("1e8296262"))+" ticks per second." + (inNGM(2) ? " Reward: The Galaxy boost to Galaxy points gain is buffed based on a specific value (~663 galaxies)." : ""))
-	infstuff.setAttribute('ach-tooltip', "Reach "+shortenCosts(E("1e140000"))+" IP without buying IDs or IP multipliers. Reward: You start eternities with all Infinity Challenges unlocked and completed" + (player.meta ? ", and your Infinity gain is multiplied by dilated time^(1/4)." : "."))
-	when.setAttribute('ach-tooltip', "Reach "+shortenCosts( E(tmp.ngex?"1e15000":"1e20000"))+" replicanti. Reward: You gain replicanti 2 times faster under " + shortenMoney(Number.MAX_VALUE) + " replicanti.")
-	thinking.setAttribute('ach-tooltip', "Eternity for " + shortenCosts( E("1e600")) + " EP in 1 minute or less while dilated." + (thinking != "" ? " Reward: " + thinkingReward + "." : ""))
+	infstuff.setAttribute('ach-tooltip', "Reach "+shortenCosts(E("1e140000"))+" IP without buying IDs or IP multipliers. Reward: You start eternities with all Infinity Challenges unlocked and completed" + (mod.ngpp ? ", and your Infinity gain is multiplied by dilated time^(1/4)." : "."))
+	when.setAttribute('ach-tooltip', "Reach "+shortenCosts(E("1e20000"))+" replicanti. Reward: You gain replicanti 2 times faster under " + shortenMoney(Number.MAX_VALUE) + " replicanti.")
+	thinking.setAttribute('ach-tooltip', "Eternity for " + shortenCosts(E("1e600")) + " EP in 1 minute or less while dilated." + (thinking != "" ? " Reward: " + thinkingReward + "." : ""))
 	thisis.setAttribute('ach-tooltip', "Reach "+shortenCosts(E('1e20000'))+" IP without any time studies while dilated."+(thisisReward != "" ? " Reward: " + thisisReward + "." : ""))
 }
 
@@ -284,7 +284,7 @@ function setR14Tooltip(){
 	let harmony = el("Universal harmony")
 
 	let onlywarReward = [] // for the achievement "In the grim darkness of the far endgame"
-	if (tmp.ngp3 || tmp.ngp3e) onlywarReward.push("You get 2x more DT")
+	if (mod.ngp3 || mod.p3ep) onlywarReward.push("You get 2x more DT")
 	if (aarMod.nguspV !== undefined) onlywarReward.push("you can auto-buy Dilation upgrades every second if you have at least " + shortenMoney(E('1e40000')) + " EP")
 	onlywarReward = wordizeList(onlywarReward, true)
 
@@ -292,7 +292,7 @@ function setR14Tooltip(){
 	onlywar.setAttribute('ach-tooltip', "Reach "+shortenMoney(E('1e40000'))+" EP."+(onlywarReward!=""?" Reward: " + onlywarReward + ".":""))
 	thecap.setAttribute('ach-tooltip', "Get "+shortenDimensions(1e12)+" eternities. Reward: Eternity Upgrade 2 uses a better formula.")
 	neverenough.setAttribute('ach-tooltip', "Reach "+shortenCosts(E("1e100000"))+" replicanti. Reward: You unlock the option to buy the maximum Replicanti Galaxies available.")
-	harmony.setAttribute('ach-tooltip', player.meta?"Have at least 700 normal, replicanti, and free dilated galaxies. Reward: Galaxies are 0.1% stronger.":"Get the same amount (at least 300) of normal, replicanti, and free galaxies.")
+	harmony.setAttribute('ach-tooltip', mod.ngpp?"Have at least 700 normal, replicanti, and free dilated galaxies. Reward: Galaxies are 0.1% stronger.":"Get the same amount (at least 300) of normal, replicanti, and free galaxies.")
 }
 
 function setR15Tooltip(){
@@ -419,14 +419,14 @@ function setR20Tooltip(){
 	let willenoughReward = [] // for the achievement "Will it be enough?"
 	willenoughReward.push("Replicated Galaxies don't reset until next Eternity")
 	willenoughReward.push("keep Replicanti upgrades on normal Eternity runs")
-	if (aarMod.ngudpV&&!aarMod.ngumuV) willenoughReward.push("keep Black Hole Dimensions on Quantum")
+	if (mod.udp&&!aarMod.ngumuV) willenoughReward.push("keep Black Hole Dimensions on Quantum")
 	willenoughReward = wordizeList(willenoughReward, true)
 
 	//ACHIEVEMENT ROW 20
 	finite.setAttribute('ach-tooltip', "Get " + shortenCosts(1e33) + " Space Shards without Breaking Eternity within this Fundament. Reward: Outside of Big Rips, Tree Upgrades are 10% stronger. In Big Rips, 8th Time Dimensions gain an small exponent boost based on your current Fundament time.")
 	really.setAttribute('ach-tooltip', "Reach " + shortenCosts(pow10(5000)) + " matter in Big Rip. Reward: Buying Electron upgrades doesn't consume Meta-Dimension Boosts.")
 	grind.setAttribute('ach-tooltip', "Get the 21st Nanoreward without having Tree Upgrades. Reward: Gain more Quarks based on Radioactive Decays.")
-	willenough.setAttribute('ach-tooltip', "Reach " + shortenCosts(pow10(aarMod.ngudpV ? 268435456 : 36000000))+" replicanti." + (willenoughReward != "" ? " Reward: " + willenoughReward + "." : ""))
+	willenough.setAttribute('ach-tooltip', "Reach " + shortenCosts(pow10(mod.udp ? 268435456 : 36000000))+" replicanti." + (willenoughReward != "" ? " Reward: " + willenoughReward + "." : ""))
 	oppose.setAttribute('ach-tooltip', "Become a ghost with at most 1x quantumed stat. Reward: You gain more Quarks based on your quantumed stat.")
 	pls.setAttribute('ach-tooltip', "Reach " + shortenCosts(pow10(9.5e5)) + " IP in Big Rip while dilated, with no EP multiplier upgrades, time studies, and Break Eternity within this Fundament. Reward: Gain "+shortenDimensions(2e3)+" galaxies worth of Neutrinos on Fundament. (multiplied by best galaxies in Big Rip)")
 	keeheehee.setAttribute('ach-tooltip', "Become a ghost. Reward: Multiply Eternities gained by 100x (weakens as you have more), all quantum mechanic unlocks only require Time Theorems, assignation options are kept permanently, Nanofield is 3x faster until you reach 16 rewards, get all achievements prior to Paired Challenges, and start with 1 Eighth Time Dimension in Big Rips.")
@@ -440,7 +440,7 @@ function setBMTooltip(){
 
 	//BRAVE MILESTONES
 	bm1.setAttribute('ach-tooltip', "Reward: Keep Speedrun Milestones, Paired Challenges, Big Rip Upgrades, and assignation features. Also, gain quarks based on your best MA for this Quantum.")
-	bm10.setAttribute('ach-tooltip', "Reward: Start with 10 Fourth Emperor Dimensions" + (aarMod.ngudpV ? ", and start Big Rips with the 3rd row of Eternity upgrades." : "."))
+	bm10.setAttribute('ach-tooltip', "Reward: Start with 10 Fourth Emperor Dimensions" + (mod.udp ? ", and start Big Rips with the 3rd row of Eternity upgrades." : "."))
 	bm14.setAttribute('ach-tooltip', "Reward: Start with " + shortenCosts(1e25) + " Quark Spins and Spins speed up Branches.")
 }
 
@@ -536,7 +536,7 @@ function setNGP3p1AchievementTooltip(){
 
 function setAchieveTooltip() { 
 	setPreNGP3AchievementTooltip()
-	if (tmp.ngp3) {
+	if (mod.ngp3) {
 		setPreNGP3p1AchievementTooltip()
 		setNGP3p1AchievementTooltip()
 		setPostR23Tooltip()

@@ -1,7 +1,7 @@
 //Quantum worth
 var quantumWorth
 function updateQuantumWorth(mode) {
-	if (!tmp.ngp3) return
+	if (!mod.ngp3) return
 	if (ghSave.milestones<8) {
 		if (mode != "notation") mode = undefined
 	} else if (mode == "notation") return
@@ -9,7 +9,7 @@ function updateQuantumWorth(mode) {
 	if (mode != "notation") {
 		if (mode != "display") {
 			quantumWorth = quSave.quarks.add(quSave.usedQuarks.r).add(quSave.usedQuarks.g).add(quSave.usedQuarks.b).add(quSave.gluons.rg).add(quSave.gluons.gb).add(quSave.gluons.br).round()
-			if (!tmp.ngp3l) colorCharge.qwBonus = quantumWorth.pow(.8).div(100)
+			colorCharge.qwBonus = quantumWorth.pow(.8).div(100)
 		}
 		if (ghostified) updateAutomatorStuff(mode)
 	}
@@ -27,7 +27,6 @@ function getAssortAmount() {
 
 var assortDefaultPercentages = [10, 25, 50, 100]
 function updateAssortPercentage() {
-	if (tmp.ngp3l) return
 	let percentage = getAssortPercentage()
 	el("assort_percentage").value = percentage
 	for (var i = 0; i < assortDefaultPercentages.length; i++) {
@@ -48,7 +47,7 @@ function assignQuark(color) {
 		$.notify("Make sure you are assigning at least one quark!")
 		return
 	}
-	if (tmp.ngp3l && color != "r" && quSave.times < 2 && !ghostified) if (!confirm("It is strongly recommended to assign your first quarks to red. Are you sure you want to do that?")) return
+	if (color != "r" && quSave.times < 2 && !ghostified && !confirm("It is strongly recommended to assign your first quarks to red. Are you sure you want to do that?")) return
 	var mult = getQuarkAssignMult()
 	quSave.usedQuarks[color] = quSave.usedQuarks[color].add(usedQuarks.times(mult)).round()
 	quSave.quarks = quSave.quarks.sub(usedQuarks)
@@ -137,7 +136,7 @@ colorShorthands = {r:'red',
 	b:'blue'}
 
 function updateColorCharge() {
-	if (!tmp.ngp3) return
+	if (!mod.ngp3) return
 	var colors = ['r','g','b']
 	for (var i = 0; i < 3; i++) {
 		var ret = E(0)
@@ -160,8 +159,7 @@ function updateColorCharge() {
 }
 
 function getColorPowerProduction(color) {
-	let ret = E(colorCharge[color])
-	if (!tmp.ngp3l) ret = ret.add(colorCharge.qwBonus)
+	let ret = E(colorCharge[color]).add(colorCharge.qwBonus)
 	return ret
 }
 
@@ -207,18 +205,13 @@ function updateColorPowers(log) {
 
 	//Green
 	let m = 1
-	if (tmp.ngp3l) {
-		colorBoosts.g = Math.sqrt(log.g*2+1)
-		if (colorBoosts.g>4.5) colorBoosts.g = Math.sqrt(colorBoosts.g*4.5)
-	} else {
-		colorBoosts.g = Math.pow(log.g+1, 1/3) * 2 - 1
-		if (ghSave.ghostlyPhotons.unl) m *= tmp.le[3]
-	}
+	colorBoosts.g = Math.pow(log.g+1, 1/3) * 2 - 1
+	if (ghSave.ghostlyPhotons.unl) m *= tmp.le[3]
 	if (aarMod.ngumuV && player.masterystudies.includes("t362")) {
 		m += quSave.replicants.quarks.add(1).log10()/10
 		if (m > 4) m = Math.sqrt(m * 4)
 	}
-	if (aarMod.ngudpV && !aarMod.nguepV) m /= 2
+	if (mod.udp && !aarMod.nguepV) m /= 2
 	colorBoosts.g = (colorBoosts.g - 1) * m + 1
 
 	//Blue
@@ -257,7 +250,7 @@ function convertAQToGluons() {
 }
 
 function checkGluonRounding(){
-	if (!tmp.ngp3) return
+	if (!mod.ngp3) return
 	if (ghSave.milestones > 7 || !quantumed) return
 	if (quSave.gluons.rg.lt(101)) quSave.gluons.rg = quSave.gluons.rg.round()
 	if (quSave.gluons.gb.lt(101)) quSave.gluons.gb = quSave.gluons.gb.round()
@@ -287,7 +280,7 @@ function buyGluonUpg(color, id) {
 }
 
 function GUBought(id) {
-	return tmp.ngp3 && quSave.upgrades.includes(id)
+	return mod.ngp3 && quSave.upgrades.includes(id)
 }
 
 function getQuarkMultReq() {
@@ -325,17 +318,16 @@ function increaseQuarkMult(toAdd) {
 }
 
 function getGB1Effect() {
-	if (tmp.ngp3l) return 1 - Math.min(Decimal.log10(tmp.tsReduce),0)
 	return Decimal.div(1, tmp.tsReduce).log10() / 100 + 1
 }
 
 function getBR1Effect() {
-	if (tmp.ngp3l) return player.dilation.dilatedTime.add(1).log10()+1
 	return Math.sqrt(player.dilation.dilatedTime.add(10).log10()) / 2
 }
 
 function getRG3Effect() {
-	if (tmp.ngp3l || !hasAch("ng3p24")) return player.resets
+	if (!hasAch("ng3p24")) return player.resets
+
 	let exp = Math.sqrt(player.meta.resets)
 	if (exp > 36) exp = 6 * Math.sqrt(exp)
 	return E_pow(player.resets, exp)

@@ -11,7 +11,7 @@ function getDimensionBoostPower(next, focusOn) {
 	if (hasGalUpg(23) && ((!inNC(14) && player.currentChallenge != "postcngm3_3") || !inNGM(3) || inNGM(4)) && player.currentChallenge != "postcngm3_4") ret *= galMults.u23()
 	if (player.infinityUpgrades.includes("resetMult") && inNGM(2)) ret *= 1.2 + 0.05 * player.infinityPoints.max(1).log(10)
 	if (!player.boughtDims && hasAch("r101")) ret = ret * 1.01
-	if (player.timestudy.studies.includes(83)) ret = E_pow(1.0004, player.totalTickGained).min(player.meta ? 1/0 : 1e30).times(ret);
+	if (player.timestudy.studies.includes(83)) ret = E_pow(1.0004, player.totalTickGained).min(mod.ngpp ? 1/0 : 1e30).times(ret);
 	if (player.timestudy.studies.includes(231)) ret = E_pow(Math.max(player.resets, 1), 0.3).times(ret)
 	if (inNGM(2)) {
 		if (player.currentChallenge == "postc7" || inQC(6) || player.timestudy.studies.includes(81)) ret = Math.pow(ret , 3)
@@ -27,7 +27,7 @@ function dimBoost(bulk, tier=1) {
 	player.resets += bulk;
 	if (player.masterystudies) if (player.resets > 4) player.old = false
 	if (inNC(14) && !inNGM(3)) player.tickBoughtThisInf.pastResets.push({resets: player.resets, bought: player.tickBoughtThisInf.current})
-	if (tmp.ngp3 && getEternitied() >= 1e9 && player.dilation.upgrades.includes("ngpp6") && tier < 2) {
+	if (mod.ngp3 && getEternitied() >= 1e9 && player.dilation.upgrades.includes("ngpp6") && tier < 2) {
 		skipResets()
 		player.matter = E(0)
 		player.postC8Mult = E(1)
@@ -53,15 +53,15 @@ function setInitialMoney() {
 
 function setInitialDimensionPower() {
 	var dimensionBoostPower = getDimensionBoostPower()
-	if (tmp.ngp3 && getEternitied() >= 1e9 && player.dilation.upgrades.includes("ngpp6")) player.dbPower = dimensionBoostPower
+	if (mod.ngp3 && getEternitied() >= 1e9 && player.dilation.upgrades.includes("ngpp6")) player.dbPower = dimensionBoostPower
 
 	var tickspeedPower = player.totalTickGained
-	player.tickspeed = E_pow(getTickSpeedMultiplier(), tickspeedPower).times(aarMod.newGameExpVersion ? 500 : 1e3)
+	player.tickspeed = E_pow(getTickSpeedMultiplier(), tickspeedPower).times(mod.ngep ? 500 : 1e3)
 	
 	var ic3Power = player.totalTickGained * getECReward(14)
 	if (inNGM(3) && player.currentChallenge != "postc5") {
 		let mult = 30
-		if ((inNC(14) && tmp.ngmX==3) || player.currentChallenge == "postcngm3_3") mult = 20
+		if ((inNC(14) && mod.ngmX==3) || player.currentChallenge == "postcngm3_3") mult = 20
 		else if (hasGalUpg(14)) mult = 32
 		if (inNC(6, 1)) mult *= Math.min(player.galaxies / 30, 1)
 		let ic3PowerTB = player.tickspeedBoosts * mult
@@ -152,7 +152,7 @@ function getDimboostCostIncrease () {
 		if (player.infinityUpgrades.includes('dimboostCost')) ret -= 1
 		if (player.infinityUpgrades.includes("postinfi50")) ret -= 0.5
 	} else {
-		if (tmp.ngp3 && player.masterystudies.includes("t261")) ret -= 1
+		if (mod.ngp3 && player.masterystudies.includes("t261")) ret -= 1
 		if (inNC(4)) ret += 5
 		if (player.boughtDims && hasAch('r101')) ret -= Math.min(8, Math.pow(player.eternityPoints.max(1).log(10), .25))
 	}
@@ -166,7 +166,7 @@ function getSupersonicStart() {
 	if (inNGM(2)) return 1/0
 	let r = 56e4
 	if (aarMod.nguspV && !aarMod.nguepV) r = 1e5
-	if (tmp.ngp3) {
+	if (mod.ngp3) {
 		if (player.masterystudies.includes("t331")) r += 24e4
 		if (isNanoEffectUsed("supersonic_start")) if (tmp.nf.effects.supersonic_start) r += tmp.nf.effects.supersonic_start 
 	}

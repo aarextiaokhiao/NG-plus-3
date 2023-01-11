@@ -34,7 +34,7 @@ function getBlackholeUpgradeExponent() {
 	let ret = player.blackhole.upgrades.total / 10
 	if (player.dilation.upgrades.includes("ngusp2")) ret += getD21Bonus()
 	if (ret > 2) ret = (ret - 2) / Math.log2(ret) + 2
-	if (ret > 20 && (aarMod.ngudpV || aarMod.nguspV)) ret=20+Math.pow(Math.log10(ret-19),aarMod.ngumu?2.5:2) // this should only happen if you are playing NGUd'.
+	if (ret > 20 && (mod.udp || aarMod.nguspV)) ret=20+Math.pow(Math.log10(ret-19),aarMod.ngumu?2.5:2) // this should only happen if you are playing NGUd'.
 	return ret
 }
 
@@ -212,7 +212,7 @@ function updateExdilation() {
 	el("xdp").style.display = "none"
 	el("xdrow").style.display = "none"
 	el("exdilationConfirmBtn").style.display = "none"
-	if (player.exdilation == undefined || aarMod.ngudpV) return
+	if (!mod.ngud || mod.udp) return
 	if (player.exdilation.times < 1 && !quantumed) return
 	el("xdp").style.display = ""
 	el("xdrow").style.display = ""
@@ -296,7 +296,7 @@ function reverseDilation () {
 			3: 0
 		},
 	}
-	if (player.meta !== undefined) player.dilation.rebuyables[4] = 0
+	if (mod.ngpp) player.dilation.rebuyables[4] = 0
 	resetBlackhole();
 	updateDilation();
 	updateDilationUpgradeButtons();
@@ -323,7 +323,7 @@ function boostDilationUpgrade(x) {
 function getD18Bonus() {
 	let x = player.replicanti.amount.max(1).log10() / 1e3
 	if (aarMod.nguspV) return Decimal.max(x / 20 + 1, 1)
-	if (x > 100 && aarMod.ngudpV) x = Math.log(x) * 50 //NGUd'
+	if (x > 100 && mod.udp) x = Math.log(x) * 50 //NGUd'
 	return E_pow(1.05, x)
 }
 

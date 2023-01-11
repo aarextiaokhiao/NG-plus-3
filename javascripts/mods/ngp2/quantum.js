@@ -5,12 +5,12 @@ function quantum(auto, force, qc, bigRip = false) {
 	if (!force && !isQuantumReached()) return
 	if (implosionCheck) return
 
-	if (!tmp.ngp3) {
+	if (!mod.ngp3) {
 		alert("You've reached the end of NG++. To continue playing, please convert your save to NG+++ in Options > Save tab.")
 		return
 	}
 
-	var headstart = aarMod.newGamePlusVersion > 0 && !tmp.ngp3
+	var headstart = aarMod.newGamePlusVersion > 0 && !mod.ngp3
 	if (!(auto||force) && aarMod.quantumConf && !confirm("Quantum will reset everything up to and including Eternity features will be reset, in exchange of anti-quarks. Ready?")) return
 	if (!quantumed && !confirm("Are you sure you want to do this? You will lose everything you have!")) return
 
@@ -48,15 +48,15 @@ function quantum(auto, force, qc, bigRip = false) {
 }
 
 function getQuantumReq() {
-	return E_pow(Number.MAX_VALUE, tmp.ngp3 ? 1.4 : 1)
+	return E_pow(Number.MAX_VALUE, mod.ngp3 ? 1.4 : 1)
 }
 
 function isQuantumReached() {
-	if (!player.meta) return
+	if (!mod.ngpp) return
 
 	let ma = player.meta.antimatter.max(hasAch("ng3p76") ? player.meta.bestOverQuantums : 0)
 	let got = ma.gte(getQuantumReq(undefined, bigRipped()))
-	if (tmp.ngp3) got = got && ECComps("eterc14") && quarkGain().gt(0)
+	if (mod.ngp3) got = got && ECComps("eterc14") && quarkGain().gt(0)
 	return got
 }
 
@@ -82,7 +82,6 @@ function getQCtotalTime(){
 }
 
 function getQCtoQKEffect(){
-	if (tmp.ngp3l) return 1
 	var time = getQCtotalTime()
 	var ret = 1 + 192 * 3600 * 10 / time
 	if (ret > 999) ret = 333 * Math.log10(ret + 1)
@@ -91,7 +90,7 @@ function getQCtoQKEffect(){
 
 function getEPtoQKExp(){
 	let exp = 0.6
-	if (tmp.ngp3e) exp += 0.05
+	if (mod.p3ep) exp += 0.05
 	if (hasAch("ng3p28")) exp *= 1.05
 	return exp
 }
@@ -114,14 +113,14 @@ function getNGP3p1totalQKMult(){
 
 function quarkGain() {
 	let ma = player.meta.antimatter.max(1)
-	if (!tmp.ngp3) return pow10(ma.log(10) / Math.log10(Number.MAX_VALUE) - 1).floor()
+	if (!mod.ngp3) return pow10(ma.log(10) / Math.log10(Number.MAX_VALUE) - 1).floor()
 	
 	if (!quantumed) return E(1)
 	if (ghSave.milestones) ma = player.meta.bestAntimatter.max(1)
 
 	let log = (ma.log10() - 379.4) / (hasAch("ng3p63") ? 279.8 : 280)
-	let logBoost = tmp.ngp3l ? 1.2 : 2
-	let logBoostExp = tmp.ngp3l ? 2 : 1.5
+	let logBoost = 2
+	let logBoostExp = 1.5
 	if (log > logBoost) log = Math.pow(log / logBoost, logBoostExp) * logBoost
 	if (log > 738 && !hasNU(8)) log = Math.sqrt(log * 738)
 
@@ -145,7 +144,7 @@ function toggleQuantumConf() {
 var averageQk = E(0)
 var bestQk
 function updateLastTenQuantums() {
-	if (!player.meta) return
+	if (!mod.ngpp) return
 	var listed = 0
 	var tempTime = E(0)
 	var tempQK = E(0)
@@ -182,7 +181,7 @@ function updateLastTenQuantums() {
 function doQuantumProgress() {
 	var quantumReq = getQuantumReq()
 	var id = 1
-	if (quantumed && tmp.ngp3) {
+	if (quantumed && mod.ngp3) {
 		if (bigRipped()) {
 			var gg = getGHPGain()
 			if (player.meta.antimatter.lt(quantumReq)) id = 1
@@ -294,7 +293,7 @@ function doQuantum(force, auto, qc = {}) {
 			quSave.reachedInfQK = true
 			if (!ghostified) {
 				el("welcome").style.display = "flex"
-				el("welcomeMessage").innerHTML = "Congratulations for getting " + shorten(Number.MAX_VALUE) + " quarks! You have unlocked new QoL features, like quantum autobuyer modes, assign all, and auto-assignation!"
+				el("welcomeMessage").innerHTML = "Congratulations for getting " + shorten(Number.MAX_VALUE) + " quarks! You have unlocked new QoL features, like quantum autobuyer modChosen, assign all, and auto-assignation!"
 				el('assignAll').style.display = ""
 				el('autoAssign').style.display = ""
 				el('autoAssignRotate').style.display = ""
@@ -439,7 +438,7 @@ function updateQuarkDisplay() {
 	let msg = ""
 	if (quantumed) {
 		msg += "You have <b class='QKAmount'>"+shortenDimensions(quSave.quarks)+"</b> "	
-		if (tmp.ngp3&&player.masterystudies.includes("d14")) msg += " QK and <b class='SSAmount'>" + shortenDimensions(brSave.spaceShards) + "</b> Space Shard" + (brSave.spaceShards.round().eq(1) ? "" : "s")
+		if (mod.ngp3&&player.masterystudies.includes("d14")) msg += " QK and <b class='SSAmount'>" + shortenDimensions(brSave.spaceShards) + "</b> Space Shard" + (brSave.spaceShards.round().eq(1) ? "" : "s")
 		else msg += "anti-quark" + (quSave.quarks.round().eq(1) ? "" : "s")
 		msg += "."
 	}

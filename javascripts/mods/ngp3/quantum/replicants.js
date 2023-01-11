@@ -81,7 +81,7 @@ var antTabs = {
 }
 
 function updateReplicants(mode) {
-	if (!tmp.ngp3 ? true : ghSave.milestones < 8) mode = undefined
+	if (!mod.ngp3 ? true : ghSave.milestones < 8) mode = undefined
 	if (mode === undefined) {
 		if (player.masterystudies ? !player.masterystudies.includes("d10") : true) return
 	}

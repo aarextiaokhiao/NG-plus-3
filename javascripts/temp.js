@@ -9,7 +9,7 @@ function updateTemp() {
 	tmp.nrm = 1
 	if (player.timestudy.studies.includes(101)) tmp.nrm = player.replicanti.amount.max(1)
 	tmp.rg4 = false
-	if (tmp.ngp3) {
+	if (mod.ngp3) {
 		updatePostNGp3TempStuff()
 		updateGhostifyTempStuff()
 		if (beSave && beSave.unlocked) updateBreakEternityUpgradesTemp()
@@ -45,13 +45,13 @@ function updateTemp() {
 	tmp.sacPow = calcTotalSacrificeBoost()
 	updateQCRewardsTemp()
 
-	if (player.meta !== undefined) tmp.mdgm = getMetaDimensionGlobalMultiplier() //Update global multiplier of all Meta Dimensions
+	if (mod.ngpp) tmp.mdgm = getMetaDimensionGlobalMultiplier() //Update global multiplier of all Meta Dimensions
 	tmp.mptb = getMPTBase()
 	tmp.mpte = getMPTExp()
 	updatePostInfiTemp()
 	updateInfiniteTimeTemp()
 	updateAntiElectronGalaxiesTemp()
-	updateIntergalacticTemp() // starts with if (tmp.ngp3)
+	updateIntergalacticTemp() // starts with if (mod.ngp3)
 	if (hasBU(41)) {
 		tmp.blu[41] = bu.effects[41]()
 		tmp.it = tmp.it.times(tmp.blu[41].it)
@@ -109,7 +109,7 @@ let tmp = {
 
 function updateInfiniteTimeTemp() {
 	var x = (3 - getTickspeed().log10()) * 0.000005
-	if (tmp.ngp3) {
+	if (mod.ngp3) {
 		if (hasAch("ng3p56")) x *= 1.03
 		if (ghostified && ghSave.neutrinos.boosts>3) x *= tmp.nb[4]
 		if (tmp.be && !player.dilation.active && beSave.upgrades.includes(8)) x *= getBreakUpgMult(8)
@@ -120,11 +120,10 @@ function updateInfiniteTimeTemp() {
 }
 
 function updateIntergalacticTemp() {
-	if (!tmp.ngp3) return
+	if (!mod.ngp3) return
 	x = player.galaxies
 	if (isLEBoostUnlocked(3) && !bigRipped()) x *= tmp.leBonus[3]
 	if (tmp.be && player.dilation.active && beSave.upgrades.includes(10)) x *= getBreakUpgMult(10)
-	if (!tmp.ngp3l) x += tmp.effAeg
 	tmp.igg = x
 	tmp.igs = 0 //Intergalactic Scaling ; used in the display text
 
@@ -145,12 +144,12 @@ function updateAntiElectronGalaxiesTemp(){
 
 function updateTS232Temp() {
 	var exp = 0.2
-	if (tmp.ngp3 && player.galaxies >= 1e4 && !tmp.be) exp *= Math.max(6 - player.galaxies / 2e3,0)
+	if (mod.ngp3 && player.galaxies >= 1e4 && !tmp.be) exp *= Math.max(6 - player.galaxies / 2e3,0)
 	tmp.ts232 = Math.pow(1 + initialGalaxies() / 1000, exp)
 }
 
 function updateTS431ExtraGalTemp() {
-	tmp.eg431 = tmp.effAeg * (tmp.ngp3l ? 0.1 : 5)
+	tmp.eg431 = tmp.effAeg * 5
 	if (isLEBoostUnlocked(1)) {
 		tmp.leBonus[1].total = (colorBoosts.g + tmp.pe - 1) * tmp.leBonus[1].effect
 		tmp.eg431 += tmp.leBonus[1].total
@@ -171,7 +170,7 @@ function updateReplicantiTemp() {
 	data.speeds = getReplSpeed()
 	data.interval = getReplicantiFinalInterval()
 
-	if (tmp.ngp3 && player.masterystudies.includes("t273")) {
+	if (mod.ngp3 && player.masterystudies.includes("t273")) {
 		data.chance = E_pow(data.chance, tmp.mts[273])
 		data.freq = 0
 		if (data.chance.gte("1e9999998")) data.freq = tmp.mts[273].times(Math.log10(player.replicanti.chance + 1) / Math.log10(2))
@@ -231,7 +230,7 @@ function updateGhostifyTempStuff(){
 function updateNeutrinoBoostsTemp() {
 	tmp.nb = {}
 
-	if (!tmp.ngp3) return
+	if (!mod.ngp3) return
 	if (!ghostified) return
 
 	var nt = []
@@ -269,7 +268,7 @@ function updateNU12Temp(){
 	tmp.nu[12] = { 
 		normal: Math.sqrt(player.galaxies * .0035 + 1),
 		free: player.dilation.freeGalaxies * .035 + 1,
-		replicated: Math.sqrt(getTotalRG()) * (tmp.ngp3l ? .035 : .0175) + 1 //NU12 
+		replicated: Math.sqrt(getTotalRG()) * .0175 + 1 //NU12 
 	}
 }
 
@@ -329,7 +328,7 @@ function updateBreakEternityUpgrade5Temp(){
 	var log1 = ep.div("1e2230").add(1).log10()
 	var log2 = ts.div(1e90).add(1).log10()
 	var exp = Math.pow(log1, 1/3) + Math.pow(log2, 1/3)
-	if (aarMod.ngudpV && exp > 100) exp = Math.log10(exp) * 50
+	if (mod.udp && exp > 100) exp = Math.log10(exp) * 50
 	exp *= 4
 	tmp.beu[5] = pow10(exp)
 }
@@ -347,7 +346,7 @@ function updateBreakEternityUpgrade6Temp(){
 
 function updateBreakEternityUpgrade8Temp(){
 	var x = Math.log10(player.dilation.tachyonParticles.div(1e200).add(1).log10() / 100 + 1) * 3 + 1
-	if (aarMod.ngudpV && x > 2.2) x = 1.2 + Math.log10(x + 7.8)
+	if (mod.udp && x > 2.2) x = 1.2 + Math.log10(x + 7.8)
 	tmp.beu[8] = x
 }
 
@@ -445,10 +444,10 @@ function updateBigRipUpgradesTemp(){
 function updatePhotonsUnlockedBRUpgrades(){
 	var bigRipUpg18base = 1 + brSave.spaceShards.div(1e140).add(1).log10()
 	var bigRipUpg18exp = Math.max(brSave.spaceShards.div(1e140).add(1).log10() / 10, 1)
-	if (bigRipUpg18base > 10 && tmp.ngp3e) bigRipUpg18base *= Math.log10(bigRipUpg18base)
+	if (bigRipUpg18base > 10 && mod.p3ep) bigRipUpg18base *= Math.log10(bigRipUpg18base)
 	tmp.bru[18] = E_pow(bigRipUpg18base, bigRipUpg18exp) // BRU18
 	
-	var bigRipUpg19exp = Math.sqrt(player.timeShards.add(1).log10()) / (tmp.ngp3e ? 60 : 80)
+	var bigRipUpg19exp = Math.sqrt(player.timeShards.add(1).log10()) / (mod.p3ep ? 60 : 80)
 	tmp.bru[19] = pow10(bigRipUpg19exp) // BRU19
 }
 
@@ -462,8 +461,7 @@ function updateNanoEffectUsages() {
 	nanoRewards.effectsUsed[1] = data2
 
 	//Fifth reward
-	var data2 = ["dil_effect_exp"]
-	if (!tmp.ngp3l) data2.push("light_threshold_speed")
+	var data2 = ["dil_effect_exp", "light_threshold_speed"]
 	nanoRewards.effectsUsed[5] = data2
 
 	//Seventh reward
@@ -500,7 +498,7 @@ function updateNanoRewardEffects() {
 function updateNanoRewardTemp() {
 	tmp.nf = {}
 
-	if (!tmp.ngp3) return
+	if (!mod.ngp3) return
 	if (!player.masterystudies.includes("d11")) return
 
 	updateNanoEffectUsages()

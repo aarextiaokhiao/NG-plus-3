@@ -49,7 +49,7 @@ function breakDilation() {
 }
 
 function brokeDilation() {
-	return tmp.ngp3 && ghSave.breakDilation.break
+	return mod.ngp3 && ghSave.breakDilation.break
 }
 
 function getCRGain() {

@@ -90,31 +90,8 @@ function changeSaveDesc(saveId, placement) {
 		var isSaveCurrent = metaSave.current == saveId
 		var temp = isSaveCurrent ? player : get_save(saveId)
 		if (temp.aarexModifications == null) temp.aarexModifications = {}
-		var msg = ""
-		var exp = ""
-		if (temp.aarexModifications.newGameExpVersion) exp += "^"
-		if (temp.aarexModifications.newGameMult) exp += "*"
-		if (temp.exdilation) {
-			msg += (temp.meta || exp != "" || temp.aarexModifications.newGameMinusVersion || temp.galacticSacrifice) ? "Ud" : " Update"
-			if (temp.aarexModifications.nguepV) msg += "^"
-			if (temp.aarexModifications.ngumuV) msg += "*"
-			if (temp.aarexModifications.nguspV) msg += "S'"
-			else if (temp.aarexModifications.ngudpV) msg += "'"
-			msg += exp
-			if (!temp.aarexModifications.nguspV && !temp.aarexModifications.ngudpV && temp.meta) msg += "+"
-		} else if (temp.meta) msg += exp + "++" + (temp.masterystudies ? "+" : "")
-		else if (temp.aarexModifications.newGamePlusVersion) msg += exp + "+"
-		if (temp.masterystudies && !temp.aarexModifications.ngp4V && temp.aarexModifications.newGamePlusVersion) msg += ", The Marathon [No NG+4]"
-		if (temp.aarexModifications.ngmX>=4) msg += "-" + temp.aarexModifications.ngmX
-		else if (temp.galacticSacrifice) msg += "--" + (temp.tickspeedBoosts != undefined ? "-" : "")
-		else if (temp.aarexModifications.newGameMinusVersion) msg += "-"
-		var ex=temp.aarexModifications.ngexV
-		if (temp.boughtDims) msg = msg != "" || ex ? "ER" + msg : "Eternity Respecced"
-		else if (temp.masterystudies) msg = "Post-NG" + msg
-		else msg = "NG" + msg
-		if (temp.galacticSacrifice&&temp.aarexModifications.newGameMinusVersion) msg += ", NG-"
-		if ((temp.exdilation || temp.meta) && !temp.aarexModifications.newGamePlusVersion) msg += ", The Grand Run [No NG+]"
-		msg = (msg == "NG" ? "" : msg + "<br>") + (isSaveCurrent ? "Selected<br>" : "Played for " + timeDisplayShort(temp.totalTimePlayed) + "<br>")
+		var msg = modAbbs(checkMods(temp)) + "<br>"
+
 		var originalBreak = player.break
 		var originalNotation = player.options.notation
 		var originalCommas = player.options.commas
@@ -552,26 +529,13 @@ function toggleOfflineProgress() {
 
 //Player Creation
 function updateNewPlayer(mode, preset) {
-    var modsChosen = modes
+    var modsChosen = modChosen
 	if (mode == "reset") {
-		var modsChosen = {
-			ngm: aarMod.newGameMinusVersion !== undefined,
-			ngp: aarMod.ngp4V !== undefined ? 2 : aarMod.newGamePlusVersion !== undefined ? 1 : 0,
-			arrows: aarMod.newGameExpVersion !== undefined,
-			ngpp: player.meta == undefined ? false : tmp.ngp3 ? 2 : 1,
-			ngmm: Math.max(tmp.ngmX - 1, 0),
-			rs: player.boughtDims !== undefined,
-			ngud: aarMod.nguspV !== undefined ? 3 : aarMod.ngudpV !== undefined ? 2 : player.exdilation !== undefined ? 1 : 0,
-			nguep: aarMod.nguepV !== undefined,
-			ngmu: aarMod.newGameMult === 1,
-			ngumu: aarMod.ngumuV !== undefined,
-			ngex: aarMod.ngexV !== undefined,
-			aau: aarMod.aau !== undefined
-		}
+		modsChosen = {... mod}
 	} else if (mode == "quick") {
 		modsChosen = modPresets[preset]
 	} else if (mode == "new") {
-		modsChosen = modes
+		modsChosen = modChosen
 	} else if (mode == "meta_started") {
 		modsChosen = modPresets.ngp3
 	}
@@ -872,17 +836,16 @@ function updateNewPlayer(mode, preset) {
 	if (modsChosen.ngp > 1) doNGPlusFourPlayer()
 
 	if (modsChosen.ngmu) doNGMultipliedPlayer()
-	if (modsChosen.arrows) doNGEXPNewPlayer()
+	if (modsChosen.ngep) doNGEXPNewPlayer()
 
 	if (modsChosen.ngud) doNGUDNewPlayer()
 	if (modsChosen.ngud == 2) aarMod.ngudpV = 1.12
 	if (modsChosen.ngud == 3) doNGUDSemiprimePlayer()
 	if (modsChosen.nguep) aarMod.nguepV = 1.03
 	if (modsChosen.ngumu) aarMod.ngumuV = 1.03
-	if (modsChosen.ngex) aarMod.ngexV = 0.1
 
 	if (modsChosen.ngmm) {
-		tmp.ngmX = modsChosen.ngmm+1
+		mod.ngmX = modsChosen.ngmm+1
 		aarMod.ngmX = modsChosen.ngmm+1
 		doNGMinusTwoNewPlayer()
 	}
@@ -986,22 +949,22 @@ function doNGMinusTwoNewPlayer(){
 	player.options.gSacrificeConfirmation = true
 }
 
-function getBrandNewReplicantsData(){
+function getBrandNewReplicantsData() {
 	return {
-		amount: 0,
-		requirement: "1e3000000",
-		quarks: 0,
+		amount: E(0),
+		requirement: E("1e3000000"),
+		quarks: E(0),
 		quantumFood: 0,
-		quantumFoodCost: 2e46,
+		quantumFoodCost: E(2e46),
 		limit: 1,
 		limitDim: 1,
-		limitCost: 1e49,
+		limitCost: E(1e49),
 		eggonProgress: 0,
-		eggons: 0,
+		eggons: E(0),
 		hatchSpeed: 20,
 		hatchSpeedCost: 1e49,
 		babyProgress: 0,
-		babies: 0,
+		babies: E(0),
 		ageProgress: 0
 	}
 }
@@ -1192,7 +1155,6 @@ function doNGPlusThreeNewPlayer(){
 	quSave.challengeRecords = {}
 	quSave.pairedChallenges = getBrandNewPCData()
 	quSave.qcsNoDil = {}
-	quSave.qcsMods = {current:[]}
 	player.dilation.bestTP = 0
 	player.old = true
 	quSave.autoOptions = {}

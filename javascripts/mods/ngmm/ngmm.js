@@ -211,7 +211,7 @@ let galCosts = {
 }
 
 function getGalaxyUpgradeCost(i){
-	if (tmp.ngmX==4){
+	if (mod.ngmX==4){
 		if (galCosts[i+"ngm4"]) return E(galCosts[i+"ngm4"])
 	}
 	return galCosts[i]
@@ -823,16 +823,17 @@ function doGalSacAni() {
 
 //Global
 function inNGM(x) {
-	return tmp.ngmX >= x
+	return mod.ngmX >= x
 }
 
 function inOnlyNGM(x) {
-	return tmp.ngmX == x
+	return mod.ngmX == x
 }
 
-function getNGMX() {
-	if (aarMod.ngmX) return aarMod.ngmX
-	return player.tdBoosts !== undefined ? 4 :
-		player.tickspeedBoosts !== undefined ? 3 :
-		player.galacticSacrifice ? 2 : 0
+function getNGMX(save = player) {
+	let aMod = save.aarMod
+	if (aMod?.ngmX) return aMod.ngmX
+	return save.tdBoosts !== undefined ? 4 :
+		save.tickspeedBoosts !== undefined ? 3 :
+		save.galacticSacrifice !== undefined ? 2 : 0
 }

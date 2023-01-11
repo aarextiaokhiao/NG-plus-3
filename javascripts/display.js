@@ -52,7 +52,7 @@ function dimensionTabDisplay(){
 			el("A" + tier).textContent = getDimensionDescription(tier)
 		}
 	}
-	setAndMaybeShow("mp10d", aarMod.newGameMult, "'Multiplier per 10 Dimensions: '+shorten(getDimensionPowerMultiplier(\"non-random\"))+'x'")
+	setAndMaybeShow("mp10d", mod.ngmu, "'Multiplier per 10 Dimensions: '+shorten(getDimensionPowerMultiplier(\"non-random\"))+'x'")
 	dimShiftDisplay()
 	tickspeedBoostDisplay()
 	galaxyReqDisplay()
@@ -153,7 +153,7 @@ function preBreakUpgradeDisplay(){
 	infinityUpgradesDisplay()
 	if (inNGM(2)) {
 		var base = !inNGM(3) ? 2 : 1
-		if (aarMod.newGameExpVersion) base *= 10
+		if (mod.ngep) base *= 10
 		el("infi21").innerHTML = "Increase the multiplier for buying 10 Dimensions based on Infinities<br>"+base+"x -> "+(infUpg12Pow()*base).toPrecision(4)+"x<br>Cost: 1 IP"
 		el("infi33").innerHTML = "Dimension Boosts are stronger based on Infinity Points<br>Currently: " + (1.2 + 0.05 * player.infinityPoints.max(1).log(10)).toFixed(2) + "x<br>Cost: 7 IP"
 	}
@@ -253,7 +253,7 @@ function breakNGm2UpgradeRow5Display(){
 	else if (player.infinityPoints.gte(!inNGM(3) ? 1e37 : 1e29)) el("postinfi53").className = "infinistorebtn1"
 	else el("postinfi53").className = "infinistorebtnlocked"
 	el("postinfi50").innerHTML = "Dimension Boost cost increases by 0.5 less.<br>Currently: " + getDimboostCostIncrease() + (player.infinityUpgrades.includes("postinfi50") ? "" : " -> " + (getDimboostCostIncrease() - 0.5)) + "<br>Cost: " + shortenCosts(!inNGM(3) ? 1e25 : 1e18) + " IP"
-	el("postinfi51").innerHTML = "Galaxies are " + (player.tickspeedBoosts ? 15 : 20) + "% more stronger.<br>Cost: " + shortenCosts(!inNGM(3) ? 1e29 : 1e20) + " IP"
+	el("postinfi51").innerHTML = "Galaxies are " + (inNGM(3) ? 15 : 20) + "% more stronger.<br>Cost: " + shortenCosts(!inNGM(3) ? 1e29 : 1e20) + " IP"
 	let inf52text = ''
 	if (!inNGM(3)){
 		inf52text = "Galaxy cost increases by 3 less.<br>Currently: " + Math.round(getGalaxyReqMultiplier() * 10) / 10 + (player.infinityUpgrades.includes("postinfi52") ? "" : " -> " + Math.round(getGalaxyReqMultiplier() * 10 - 30) / 10) + "<br>Cost: " + shortenCosts(1e33) + " IP"
@@ -276,7 +276,7 @@ function breakNGm2UpgradeRow6Display(){
 	if (player.infinityUpgrades.includes("postinfi63")) el("postinfi63").className = "infinistorebtnbought"
 	else if (player.infinityPoints.gte("1e2000")) el("postinfi63").className = "infinistorebtn1"
 	else el("postinfi63").className = "infinistorebtnlocked"
-	el("postinfi60").innerHTML = "You gain more " + (player.tickspeedBoosts ? "Galaxy Points" : tmp.ngp3l ? "Infinity Points" : "antimatter") + " based on your galaxies." + (player.tickspeedBoosts ? "" : "<br>Currently: " + shorten(getNewB60Mult()) + "x") + "<br>Cost: " + shortenCosts(1e50) + " IP"
+	el("postinfi60").innerHTML = "You gain more " + (inNGM(3) ? "Galaxy Points" : "antimatter") + " based on your galaxies." + (inNGM(3) ? "" : "<br>Currently: " + shorten(getNewB60Mult()) + "x") + "<br>Cost: " + shortenCosts(1e50) + " IP"
 	el("postinfi61").innerHTML = "g11 formula is better.<br>Cost: " + shortenCosts(E("1e450")) + " IP"
 	el("postinfi62").innerHTML = "Dimension Boosts make g13 stronger.<br>Cost: " + shortenCosts(E("1e700")) + " IP"
 	el("postinfi63").innerHTML = "Unlock 2 new rows of Galaxy Point upgrades.<br>Cost: " + shortenCosts(E("1e2000")) + " IP"
@@ -307,7 +307,7 @@ function eternityUpgradesDisplay(){
 	el("eter4").innerHTML = "Your achievement bonus affects Time Dimensions"+"<br>Cost: "+shortenCosts(1e16)+" EP"
 	el("eter5").innerHTML = "Time Dimensions gain a multiplier based on your unspent Time Theorems"+"<br>Cost: "+shortenCosts(1e40)+" EP"
 	el("eter6").innerHTML = "Time Dimensions gain a multiplier based on days played"+"<br>Cost: "+shortenCosts(1e50)+" EP"
-	if (player.exdilation != undefined && player.dilation.studies.includes(1)) {
+	if (mod.ngud && player.dilation.studies.includes(1)) {
 		el("eter7").innerHTML = "Dilated time gain is boosted by antimatter<br>Currently: "+(1 + Math.log10(Math.max(1, player.money.log(10))) / 40).toFixed(3)+"x<br>Cost: "+shortenCosts(E("1e1500"))+" EP"
 		el("eter8").innerHTML = "Dilated time gain is boosted by Infinity Points<br>Currently: "+(1 + Math.log10(Math.max(1, player.infinityPoints.log(10))) / 20).toFixed(3)+"x<br>Cost: "+shortenCosts(E("1e2000"))+" EP"
 		el("eter9").innerHTML = "Dilated time gain is boosted by Eternity Points<br>Currently: "+(1 + Math.log10(Math.max(1, player.eternityPoints.log(10))) / 10).toFixed(3)+"x<br>Cost: "+shortenCosts(E("1e3000"))+" EP"
@@ -338,7 +338,7 @@ function exdilationDisplay(){
 function mainDilationDisplay(){
 	if (player.dilation.active) uponDilationDisplay()
 	else el("enabledilation").textContent = "Dilate time."+((player.eternityBuyer.isOn&&player.eternityBuyer.dilationMode?!isNaN(player.eternityBuyer.statBeforeDilation):false) ? " "+player.eternityBuyer.statBeforeDilation+ " left before dilation." : "")
-	if (player.exdilation==undefined||aarMod.ngudpV?false:player.blackhole.unl) {
+	if (mod.ngud == 1 || mod.ngud == 3) {
 		exdilationDisplay()
 	} else el("reversedilationdiv").style.display = "none"
 
@@ -393,7 +393,7 @@ function replicantiDisplay() {
 		var replGalCostPortion = player.infinityPoints.lt(pow10(1e10)) ? "<br>+1 Cost: " + shortenCosts(getRGCost()) + " IP" : ""
 		el("replicantimax").innerHTML = replGalName + ": " + getFullExpansion(player.replicanti.gal) + (replGalOver > 1 ? "+" + getFullExpansion(replGalOver) : "") + replGalCostPortion
 		el("replicantireset").innerHTML = (hasAch("ng3p67") ? "Get " : hasAch("ngpp16") ? "Divide replicanti by " + shorten(Number.MAX_VALUE) + " for" : "Reset replicanti amount for") + " 1 galaxy.<br>" + getFullExpansion(player.replicanti.galaxies) + (extraReplGalaxies ? "+" + getFullExpansion(extraReplGalaxies) : "") + " replicanti galax" + (getTotalRG() == 1 ? "y" : "ies") + " created."
-		el("replicantiapprox").innerHTML = tmp.ngp3 && player.dilation.upgrades.includes("ngpp1") && player.timestudy.studies.includes(192) && player.replicanti.amount.gte(Number.MAX_VALUE) && (!aarMod.nguspV || aarMod.nguepV) ? 
+		el("replicantiapprox").innerHTML = mod.ngp3 && player.dilation.upgrades.includes("ngpp1") && player.timestudy.studies.includes(192) && player.replicanti.amount.gte(Number.MAX_VALUE) && (!aarMod.nguspV || aarMod.nguepV) ? 
 			"Replicanti increases by " + (tmp.rep.est < Math.log10(2) ? "x2.00 per " + timeDisplayShort(Math.log10(2) / tmp.rep.est * 10) : (tmp.rep.est.gte(1e4) ? shorten(tmp.rep.est) + " OoMs" : "x" + shorten(pow10(tmp.rep.est.toNumber()))) + " per second") + ".<br>" +
 			"Replicate interval slows down by " + tmp.rep.speeds.inc.toFixed(3) + "x per " + getFullExpansion(Math.floor(tmp.rep.speeds.exp)) + " OoMs.<br>" +
 			"(2x slower per " + getFullExpansion(Math.floor(tmp.rep.speeds.exp * Math.log10(2) / Math.log10(tmp.rep.speeds.inc))) + " OoMs)" :
@@ -403,7 +403,7 @@ function replicantiDisplay() {
 		el("replicantiinterval").className = (player.infinityPoints.gte(player.replicanti.intervalCost) && isIntervalAffordable()) ? "storebtn" : "unavailablebtn"
 		el("replicantimax").className = (player.infinityPoints.gte(getRGCost())) ? "storebtn" : "unavailablebtn"
 		el("replicantireset").className = (canGetReplicatedGalaxy()) ? "storebtn" : "unavailablebtn"
-		el("replicantireset").style.height = (hasAch("ngpp16") && (tmp.ngp3l || !hasAch("ng3p67")) ? 90 : 70) + "px"
+		el("replicantireset").style.height = (hasAch("ngpp16") && !hasAch("ng3p67") ? 90 : 70) + "px"
 	} else {
 		el("replicantiunlock").innerHTML = "Unlock Replicantis<br>Cost: " + shortenCosts(inOnlyNGM(2) ? 1e80 : 1e140) + " IP"
 		el("replicantiunlock").className = (player.infinityPoints.gte(inOnlyNGM(2) ? 1e80 : 1e140)) ? "storebtn" : "unavailablebtn"
@@ -413,7 +413,7 @@ function replicantiDisplay() {
 function initialTimeStudyDisplay(){
 	el("11desc").textContent = "Currently: " + shortenMoney(tsMults[11]()) + "x"
 	el("32desc").textContent = "You gain " + getFullExpansion(tsMults[32]()) + "x more Infinities (based on Dimension Boosts)"
-	el("51desc").textContent = "You gain " + shortenCosts(aarMod.newGameExpVersion ? 1e30 : 1e15) + "x more IP"
+	el("51desc").textContent = "You gain " + shortenCosts(mod.ngep ? 1e30 : 1e15) + "x more IP"
 	el("71desc").textContent = "Currently: " + shortenMoney(tmp.sacPow.pow(0.25).max(1).min("1e210000")) + "x"
 	el("72desc").textContent = "Currently: " + shortenMoney(tmp.sacPow.pow(0.04).max(1).min("1e30000")) + "x"
 	el("73desc").textContent = "Currently: " + shortenMoney(tmp.sacPow.pow(0.005).max(1).min("1e1300")) + "x"
@@ -427,8 +427,8 @@ function initialTimeStudyDisplay(){
 	el("142desc").textContent = "You gain " + shortenCosts(1e25) + "x more IP"
 	el("143desc").textContent = "Currently: " + shortenMoney(E_pow(15, Math.log(player.thisInfinityTime)*Math.pow(player.thisInfinityTime, 0.125))) + "x"
 	el("151desc").textContent = shortenCosts(1e4) + "x multiplier on all Time Dimensions"
-	el("161desc").textContent = shortenCosts(pow10((inNGM(2) ? 6660 : 616) *  ( aarMod.newGameExpVersion ? 5 : 1))) + "x multiplier on all normal dimensions"
-	el("162desc").textContent = shortenCosts(pow10((inNGM(2) ? 234 : 11) * (aarMod.newGameExpVersion ? 5 : 1))) + "x multiplier on all Infinity dimensions"
+	el("161desc").textContent = shortenCosts(pow10((inNGM(2) ? 6660 : 616) *  ( mod.ngep ? 5 : 1))) + "x multiplier on all normal dimensions"
+	el("162desc").textContent = shortenCosts(pow10((inNGM(2) ? 234 : 11) * (mod.ngep ? 5 : 1))) + "x multiplier on all Infinity dimensions"
 	el("192desc").textContent = "You can get beyond " + shortenMoney(Number.MAX_VALUE) + " replicantis, but the interval is increased the more you have"
 	el("193desc").textContent = "Currently: " + shortenMoney(E_pow(1.03, Decimal.min(1e7, getEternitied())).min("1e13000")) + "x"
 	el("212desc").textContent = "Currently: " + ((tsMults[212]() - 1) * 100).toFixed(2) + "%"
@@ -437,7 +437,7 @@ function initialTimeStudyDisplay(){
 }
 
 function eternityChallengeUnlockDisplay(){
-	var ec1Mult=aarMod.newGameExpVersion?1e3:2e4
+	var ec1Mult=mod.ngep?1e3:2e4
 	if (player.etercreq !== 1) el("ec1unl").innerHTML = "Eternity Challenge 1<span>Requirement: "+(ECComps("eterc1")+1)*ec1Mult+" Eternities<span>Cost: 30 Time Theorems"
 	else el("ec1unl").innerHTML = "Eternity Challenge 1<span>Cost: 30 Time Theorems"
 	if (player.etercreq !== 2) el("ec2unl").innerHTML = "Eternity Challenge 2<span>Requirement: "+(1300+(ECComps("eterc2")*150))+" Tickspeed upgrades gained from time dimensions<span>Cost: 35 Time Theorems"
@@ -467,7 +467,7 @@ function mainTimeStudyDisplay(){
 	initialTimeStudyDisplay()
 	eternityChallengeUnlockDisplay()
 	el("dilstudy1").innerHTML = "Unlock time dilation" + (player.dilation.studies.includes(1) ? "" : "<span>Requirement: 5 EC11 and EC12 completions and " + getFullExpansion(getDilationTotalTTReq()) + " total theorems")+"<span>Cost: " + getFullExpansion(5e3) + " Time Theorems"
-	if (tmp.ngp3) {
+	if (mod.ngp3) {
 		var ts232display = tmp.ts232 * 100 - 100
 		el("221desc").textContent = "Currently: "+shorten(E_pow(1.0025, player.resets))+"x"
 		el("227desc").textContent = "Currently: "+shorten(Math.pow(tmp.sacPow.max(10).log10(), 10))+"x"
@@ -481,7 +481,7 @@ function ABTypeDisplay(){
 	else el("togglecrunchmode").style.display = "none"
 	if (getEternitied() > 8 || player.autobuyers[10].bulkBought) el("galaxybulk").style.display = "inline-block"
 	else el("galaxybulk").style.display = "none"
-	if (getEternitied() > 99 && player.meta) el("toggleautoetermode").style.display = "inline-block"
+	if (getEternitied() > 99 && mod.ngpp) el("toggleautoetermode").style.display = "inline-block"
 	else el("toggleautoetermode").style.display = "none"
 }
 
@@ -594,13 +594,13 @@ let PRESTIGES = {
 		got: _ => getEternitied() > 0 || quantumed,
 	},
 	qu: {
-		modReq: _ => player.meta !== undefined,
+		modReq: _ => mod.ngpp,
 		prequsite: _ => false,
 		reached: _ => isQuantumReached(),
 		got: _ => quantumed,
 	},
 	fund: {
-		modReq: _ => tmp.ngp3,
+		modReq: _ => mod.ngp3,
 		prequsite: _ => player.masterystudies.includes("d14"),
 		reached: _ => isQuantumReached() && bigRipped(),
 		got: _ => ghostified,
@@ -655,7 +655,7 @@ function updateResetTierButtons(){
 	el("block_header").style.height = (blockLen * 120) + "px"
 	el("bigcrunch").parentElement.style.top = (blockLen * 120 + 19) + "px"
 
-	if (!player.meta) return
+	if (!mod.ngpp) return
 
 	let bigRip = bigRipped()
 	el("quantumbtn").className = bigRip ? "bigripbtn" : "quantumbtn"

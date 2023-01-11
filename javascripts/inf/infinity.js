@@ -98,7 +98,7 @@ function gainedInfinityPoints(next) {
 
 	var ret = pow10(player.money.e / div - 0.75).times(getIPMult())
 	if (player.timestudy.studies.includes(41)) ret = ret.times(E_pow(tsMults[41](), player.galaxies + player.replicanti.galaxies))
-	if (player.timestudy.studies.includes(51)) ret = ret.times(aarMod.newGameExpVersion?1e30:1e15)
+	if (player.timestudy.studies.includes(51)) ret = ret.times(mod.ngep?1e30:1e15)
 	if (player.timestudy.studies.includes(141)) ret = ret.times(E(1e45).dividedBy(E_pow(15, Math.log(player.thisInfinityTime+1)*Math.pow(player.thisInfinityTime+1, 0.125))).max(1))
 	if (player.timestudy.studies.includes(142)) ret = ret.times(1e25)
 	if (player.timestudy.studies.includes(143)) ret = ret.times(E_pow(15, Math.log(player.thisInfinityTime+1)*Math.pow(player.thisInfinityTime+1, 0.125)))
@@ -238,6 +238,17 @@ function checkOnCrunchAchievements(){
 	if (player.currentChallenge == "postc8") giveAchievement("Anti-antichallenged");
 }
 
+function checkSecondSetOnCrunchAchievements(){
+	checkForEndMe()
+	giveAchievement("To infinity!");
+	if (player.infinitied >= 10) giveAchievement("That's a lot of infinites");
+	if (player.infinitied >= 1 && !player.challenges.includes("challenge1")) player.challenges.push("challenge1");
+	if (player.bestInfinityTime <= 0.01) giveAchievement("Less than or equal to 0.001");
+	if (player.challenges.length >= 2) giveAchievement("Daredevil")
+	if (player.challenges.length >= getTotalNormalChallenges() + 1) giveAchievement("AntiChallenged")
+	if (player.challenges.length >= getTotalNormalChallenges() + order.length + 1) giveAchievement("Anti-antichallenged")
+}
+
 //CHALLENGES
 var challNames = [null, null, "Second Dimension Autobuyer Challenge", "Third Dimension Autobuyer Challenge", "Fourth Dimension Autobuyer Challenge", "Fifth Dimension Autobuyer Challenge", "Sixth Dimension Autobuyer Challenge", "Seventh Dimension Autobuyer Challenge", "Eighth Dimension Autobuyer Challenge", "Tickspeed Autobuyer Challenge", "Automated Dimension Boosts Challenge", "Automated Galaxies Challenge", "Automated Big Crunches Challenge", "Automated Dimensional Sacrifice Challenge", "Automated Galactic Sacrifice Challenge", "Automated Tickspeed Boosts Challenge", "Automated Time Dimension Boosts Challenge"]
 var challOrder = [null, 1, 2, 3, 8, 6, 10, 9, 11, 5, 4, 12, 7, 13, 14, 15, 16]
@@ -274,11 +285,6 @@ function startNormalChallenge(x) {
 }
 
 function inNC(x, n) {
-	if (x == 6) {
-		if (n == 1 && aarMod.ngexV && (player.currentChallenge == "" || player.currentChallenge.indexOf("postc") == 0) && player.currentChallenge != "postc1") return true
-		if (n == 1 && aarMod.ngexV && player.currentChallenge == "challenge6") return false
-		if (n == 2 && !aarMod.ngexV) return false
-	}
 	if (inNGM(4)) {
 		return x==0 ? !player.galacticSacrifice.chall : player.galacticSacrifice.chall == x
 	} else {
@@ -312,7 +318,7 @@ function updateNCVisuals() {
 	if (inNC(14) && inNGM(4)) el("c14Resets").style.display = "block"
 	else el("c14Resets").style.display = "none"
 
-	if (inNC(6, 2) || inNC(9) || inNC(12) || ((inNC(5) || inNC(14) || chall == "postc4" || chall == "postc5") && !inNGM(3)) || chall == "postc1" || chall == "postc6" || chall == "postc8") el("quickReset").style.display = "inline-block"
+	if (inNC(9) || inNC(12) || ((inNC(5) || inNC(14) || chall == "postc4" || chall == "postc5") && !inNGM(3)) || chall == "postc1" || chall == "postc6" || chall == "postc8") el("quickReset").style.display = "inline-block"
 	else el("quickReset").style.display = "none"
 }
 
@@ -359,7 +365,6 @@ function updateWorstChallengeBonus() {
 
 //BREAK INFINITY
 function canBreakInfinity() {
-	if (aarMod.ngexV) return player.challenges.length >= getTotalNormalChallenges() + 1
 	return player.autobuyers[11] % 1 != 0 && player.autobuyers[11].interval <= 100
 }
 

@@ -322,7 +322,7 @@ function formatValue(notation, value, places, placesUnder1000, noInf) {
 			}
 		}
 		if (notation === "Game percentages") {
-			return (Math.log10(Decimal.log10(value)) / Math.log10(tmp.ngp3 ? 1e18 : 3.5e8) * 100).toFixed(4) + '%'
+			return (Math.log10(Decimal.log10(value)) / Math.log10(mod.ngp3 ? 1e18 : 3.5e8) * 100).toFixed(4) + '%'
 		}
 		if (notation === "Engineering" || notation === "Mixed engineering" || notation === "Explained engineering") pow = power - (power % 3)
 		else pow = power
@@ -980,7 +980,7 @@ function onNotationChange() {
 	updateDilationUpgradeCosts()
 	updateExdilation()
 	updateMilestones()
-	if (tmp.ngp3) {
+	if (mod.ngp3) {
 		updateQuarksTabOnUpdate()
 		updateGluonsTabOnUpdate("notation")
 		updateQuantumWorth("notation")

@@ -141,7 +141,7 @@ function buyTimeStudy(name, check, quickBuy) {
 }
 
 function getDilationTotalTTReq() {
-	return tmp.ngex ? 12950 : 13000
+	return 13000
 }
 
 function buyDilationStudy(name, cost) {
@@ -153,7 +153,7 @@ function buyDilationStudy(name, cost) {
 			if (player.blackhole != undefined) updateEternityUpgrades()
 		} else if (name > 5) {
 			updateDilationUpgradeCosts()
-			if (quantumed || !tmp.ngp3) {
+			if (quantumed || !mod.ngp3) {
 				showTab("dimensions")
 				showDimTab("metadimensions")
 			} else ngp3_feature_notify("md")
@@ -313,9 +313,9 @@ function updateTimeStudyButtons(changed, forceupdate = false) {
 		else if (player.timestudy.theorem >= ([null, 5e3, 1e6, 1e7, 1e8, 1e9, 1e24])[i] && (player.dilation.studies.includes(i - 1) || (i < 2 && ECComps("eterc11") > 4 && ECComps("eterc12") > 4 && getTotalTT(player) >= 13e3))) el("dilstudy" + i).className = "dilationupg"
 		else el("dilstudy" + i).className = "timestudylocked"
 	}
-	el("dilstudy6").style.display = player.meta ? "" : "none"
+	el("dilstudy6").style.display = mod.ngpp ? "" : "none"
 	el("masteryportal").style.display = player.masterystudies ? "" : "none"
-	if (tmp.ngp3) {
+	if (mod.ngp3) {
 		el("masteryportal").innerHTML = player.dilation.upgrades.includes("ngpp6") ? "Mastery portal<span>Continue into mastery studies.</span>" : !player.dilation.studies.includes(1) ? "To be continued...." : "Mastery portal (" + (player.dilation.studies.includes(6) ? "66%: requires "+shortenCosts(1e100)+" dilated time upgrade)" : "33%: requires meta-dimensions)") 
 		el("masteryportal").className = player.dilation.upgrades.includes("ngpp6") ? "dilationupg" : "timestudylocked"
 	}
@@ -594,7 +594,7 @@ function save_preset(id) {
 		presets[id].preset=l.join('/');
 	} else {
 		var mtsstudies=[]
-		if (tmp.ngp3) {
+		if (mod.ngp3) {
 			for (var mid = 0; mid < player.masterystudies.length; mid++) {
 				var t = player.masterystudies[mid].split("t")[1]
 				if (t) mtsstudies.push(t)
@@ -731,45 +731,41 @@ let tsMults = {
 		let bigRip = bigRipped()
 		let log = -player.tickspeed.div(1e3).pow(0.005).times(0.95).plus(player.tickspeed.div(1e3).pow(0.0003).times(0.95)).log10()
 		if (bigRip && log > 900) log = Math.sqrt(log * 900)
-		else if (aarMod.newGameExpVersion) log = Math.min(log, 25000) // buff to NG+++^
+		else if (mod.ngep) log = Math.min(log, 25000) // buff to NG+++^
 		else if (!inNGM(2)) log = Math.min(log, 2500)
 		if (log < 0) log = 0
-		
-		if (inNGM(2)) return pow10(log)
-		if (tmp.ngp3l || !bigRip) return pow10(log)
-		log = softcap(log, "ts11_log_big_rip", 1)
-		
+
+		if (bigRip) log = softcap(log, "ts11_log_big_rip", 1)
 		return pow10(log)
 	},
 	32: function() {
-		return Math.pow(Math.max(player.resets, 1), aarMod.newGameMult ? 4 : 1)
+		return Math.pow(Math.max(player.resets, 1), mod.ngmu ? 4 : 1)
 	},
 	41: function() {
-		return aarMod.newGameExpVersion ? 1.5 : 1.2
+		return mod.ngep ? 1.5 : 1.2
 	},
 	42: function() {
-		return (aarMod.newGameExpVersion ? 12 : 13) / 15
+		return (mod.ngep ? 12 : 13) / 15
 	},
 	61: function() {
-		return aarMod.newGameExpVersion ? 100 : 10
+		return mod.ngep ? 100 : 10
 	},
 	62: function() {
-		let r = aarMod.newGameExpVersion ? 4 : 3
-		if (tmp.ngex) r--
+		let r = mod.ngep ? 4 : 3
 		return r
 	},
 	211: function() {
-		return !inNGM(2) ? 5 : tmp.ngp3l ? 0 : 1
+		return !inNGM(2) ? 5 : 1
 	},
 	212: function() {
 		let r = player.timeShards.max(2).log2()
-		if (aarMod.newGameExpVersion) return Math.min(Math.pow(r, 0.006), 1.15)
+		if (mod.ngep) return Math.min(Math.pow(r, 0.006), 1.15)
 		return Math.min(Math.pow(r, 0.005), 1.1)
 	},
 	213: function() {
-		return tmp.ngex ? 10 : 20
+		return 20
 	},
 	222: function() {
-		return !inNGM(2) ? 2 : tmp.ngp3l ? 0 : .5
+		return !inNGM(2) ? 2 : .5
 	}
 }

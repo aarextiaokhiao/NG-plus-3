@@ -3,7 +3,7 @@ var speedrunMilestonesReached
 var speedrunMilestones = [null, 43200, 32400, 21600, 16200, 10800, 7200, 3600, 3200, 2800, 2400, 2000, 1600, 1200, 800, 400, 300, 240, 210, 180, 150, 120, 90, 60, 30, 20, 15, 10, 5]
 function updateSpeedruns() {
 	speedrunMilestonesReached = 0
-	if (!tmp.ngp3) return
+	if (!mod.ngp3) return
 	if (ghSave.milestones >= 1) speedrunMilestonesReached = 28
 	else {
 		for (var i = 1; i <= 28; i++) {

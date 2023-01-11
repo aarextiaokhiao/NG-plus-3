@@ -45,7 +45,7 @@ function getNormalDimensionVanillaTimeStudyBonus(tier){
 	if (player.timestudy.studies.includes(91)) mult = mult.times(pow10(Math.min(player.thisEternity, 18000) / 60));
 	let useHigherNDReplMult = !player.dilation.active ? false : !player.masterystudies ? false : player.masterystudies.includes("t323")
 	if (!useHigherNDReplMult) mult = mult.times(tmp.nrm)
-	if (player.timestudy.studies.includes(161)) mult = mult.times(pow10((inNGM(2) ? 6660 : 616) * (aarMod.newGameExpVersion ? 5 : 1)))
+	if (player.timestudy.studies.includes(161)) mult = mult.times(pow10((inNGM(2) ? 6660 : 616) * (mod.ngep ? 5 : 1)))
 	if (player.timestudy.studies.includes(234) && tier == 1) mult = mult.times(tmp.sacPow)
 	if (player.timestudy.studies.includes(193)) mult = mult.times(E_pow(1.03, getEternitied()).min("1e13000"))
 	if (tier == 8 && player.timestudy.studies.includes(214)) mult = mult.times((tmp.sacPow.pow(8)).min("1e46000").times(tmp.sacPow.pow(1.1).min(E("1e125000"))))
@@ -243,9 +243,9 @@ function canBuyDimension(tier) {
 function getDimensionPowerMultiplier(focusOn, debug) {
 	let ret = focusOn || inNC(9) || player.currentChallenge=="postc1" ? getMPTBase(focusOn) : tmp.mptb
 	let exp = 1
-	if (tmp.ngp3 && focusOn != "linear") exp = focusOn == "no-rg4" ? getMPTExp(focusOn) : tmp.mpte
+	if (mod.ngp3 && focusOn != "linear") exp = focusOn == "no-rg4" ? getMPTExp(focusOn) : tmp.mpte
 	if (exp > 1) ret = E_pow(ret, exp)
-	if (aarMod.newGameMult !== undefined) {
+	if (mod.ngmu) {
 		ret = Decimal.times(ret, Math.log10(player.resets + 1) + 1)
 		ret = Decimal.times(ret, Math.log10(Math.max(player.galaxies, 0) + 1) * 5 + 1)
 	}
@@ -259,8 +259,8 @@ function getMPTBase(focusOn) {
 	}
 	let ret = 2
 	if (inNGM(3)) ret = 1
-	if (aarMod.newGameExpVersion) ret *= 10
-	if (aarMod.newGameMult) ret *= 2.1
+	if (mod.ngep) ret *= 10
+	if (mod.ngmu) ret *= 2.1
 	if (player.infinityUpgrades.includes("dimMult")) ret *= infUpg12Pow()
 	if ((inNC(9) || player.currentChallenge === "postc1") && !focusOn) ret = Math.pow(10 / 0.30, Math.random()) * 0.30
 	if (hasAch("r58")) {
@@ -273,7 +273,7 @@ function getMPTBase(focusOn) {
 	ret += getECReward(3)
 	if (inNGM(2)) if (hasGalUpg(33) && ((!inNC(14) && player.currentChallenge != "postcngm3_3") || !inNGM(3) || inNGM(4)) && player.currentChallenge != "postcngm3_4") ret *= galMults.u33();
 	if (focusOn == "no-QC5") return ret
-	if (tmp.ngp3) {
+	if (mod.ngp3) {
 		ret += tmp.qcRewards[5]
 		if (isNanoEffectUsed("per_10_power")) ret += tmp.nf.effects.per_10_power
 	}
@@ -282,14 +282,14 @@ function getMPTBase(focusOn) {
 
 function getMPTExp(focusOn) {
 	let x = 1
-	if (tmp.ngp3 && player.masterystudies.includes("d7")) x = getElectronBoost(focusOn)
+	if (mod.ngp3 && player.masterystudies.includes("d7")) x = getElectronBoost(focusOn)
 	return x
 }
 
 function infUpg12Pow() {
 	if (inNGM(3)) return 1.05 + .01 * Math.min(Math.max(player.infinitied, 0), 45)
 	if (inNGM(2)) return 1.05 + .0025 * Math.min(Math.max(player.infinitied, 0), 60)
-	if (aarMod.newGameExpVersion) return 1.2
+	if (mod.ngep) return 1.2
 	return 1.1
 }
 	

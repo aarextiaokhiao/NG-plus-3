@@ -336,15 +336,15 @@ function giveAchievement(name, noUpdate) {
 	if (hasAch(allAchievementNums[name])) return false
 
 	var ngudAchId = allAchievementNums[name].split("ngud")[1]
-	if (ngudAchId != undefined) if (player.exdilation == undefined) return
+	if (ngudAchId != undefined) if (!mod.ngud) return
 
 	var ngppAchId = allAchievementNums[name].split("ngpp")[1]
 	if (ngppAchId != undefined) {
 		ngppAchId = parseInt(ngppAchId)
-		if (player.meta == undefined && (player.exdilation == undefined || (ngppAchId != 13 && ngppAchId != 18))) return
+		if (!mod.ngpp && (!mod.ngud || (ngppAchId != 13 && ngppAchId != 18))) return
 	}
 
-	if (allAchievementNums[name].split("ng3p")[1] && !tmp.ngp3) return false
+	if (allAchievementNums[name].split("ng3p")[1] && !mod.ngp3) return false
 
 	if (player.boughtDims) {
 		var r = allAchievementNums[name].split("r")[1]
@@ -365,7 +365,7 @@ function giveAchievement(name, noUpdate) {
 		for (i = 1; i <= 8; i++) el("td" + i + 'auto').style.visibility = "visible"
 		el('togglealltimedims').style.display = ""
 		el('epmultauto').style.display = ""
-		if (aarMod.ngudpV) el("blackholeAuto").style.display = ""
+		if (mod.udp) el("blackholeAuto").style.display = ""
 	}
 	if (name == "It will never be enough") el('replicantibulkmodetoggle').style.display="inline-block"
 	if (name == "I already got rid of you..." || name == "No dilation means no production.") {
@@ -425,7 +425,7 @@ function updateAchievements() {
 			rownum = i - 15
 			rowid = "ng3p" + rownum
 		} else if (i > 14) {
-			shown = player.meta
+			shown = mod.ngpp
 			rowid = "ngpp1"
 		} else if (i > 13) {
 			shown = player.exdilation
@@ -488,7 +488,7 @@ function updateAchievements() {
 		var shown = true
 		var rowid = "secretAchRow" + i
 		if (i > 3) {
-			shown = tmp.ngp3
+			shown = mod.ngp3
 			rowid = "secretAchRowng3p" + (i - 3)
 		}
 		var n = 0
@@ -585,7 +585,7 @@ function achMultLabelUpdate() {
 }
 
 function metaAchMultLabelUpdate() {
-    if (!tmp.ngp3) {
+    if (!mod.ngp3) {
         el("metaAchMultLabel").style.display = "none"
         return
     }

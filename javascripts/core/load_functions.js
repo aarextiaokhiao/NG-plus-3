@@ -524,7 +524,7 @@ function dov7tov10(){
 	el(inERS?"r35":"r76").appendChild(el("One for each dimension"))
 	el(inERS?"r41":"r22").appendChild(el("Fake News"))
 	el(inERS?"r76":"r41").appendChild(el("Spreading Cancer"))
-	el("Universal harmony").style["background-image"]="url(images/"+(!tmp.ngp3?104:"104-ngp3")+".png)"
+	el("Universal harmony").style["background-image"]="url(images/"+(!mod.ngp3?104:"104-ngp3")+".png)"
 	el("Infinite time").style["background-image"]="url(images/"+(inERS?79:69)+".png)"
 
 	if (player.version < 9.5) {
@@ -651,7 +651,6 @@ function doNGP3NewPlayerStuff(){
                 respec: false
         }
         quSave.qcsNoDil = {}
-        quSave.qcsMods = {current:[]}
         player.dilation.bestTP = 0
         player.old = false
         quSave.autoOptions = {}
@@ -801,7 +800,7 @@ function doInitNGp2NOT3Stuff(){
                         var migratedUpgrades = []
                         var v2_1check=player.version>13
                         for (id=5;id<(v2_1check?18:14);id++) if (player.dilation.upgrades.includes(id)) migratedUpgrades.push(id>16?10:(id>12&&v2_1check)?("ngpp"+(id-10)):(id%4<1)?("ngpp"+(id/4-1)):Math.floor(id/4)*3+id%4)
-                        if (player.meta) {
+                        if (mod.ngpp) {
                                 for (dim=1;dim<9;dim++) {
                                         player.meta[dim].bought += player.meta[dim].tensBought * 10
                                         delete player.meta[dim].tensBought
@@ -1320,8 +1319,8 @@ function doPostNGP3Versions() {
                 if (!hasAch("r131")) player.achievements.push("r131")
                 aarMod.newGamePlusVersion=2
         }
-        if (aarMod.newGameMinusMinusVersion === undefined && !player.meta) {
-                if (player.exdilation == undefined && player.version == 13) player.version = 12
+        if (aarMod.newGameMinusMinusVersion === undefined && !mod.ngpp) {
+                if (!mod.ngud && player.version == 13) player.version = 12
                 if (inNGM(2)) {
                         player.galacticSacrifice.time = (player.lastUpdate - player.galacticSacrifice.last) / 100
                         aarMod.newGameMinusMinusVersion = 1.29
@@ -1495,11 +1494,11 @@ function doNGm3v21tov3202() {
                 for (var u=0;u<player.galacticSacrifice.upgrades.length;u++) if (player.galacticSacrifice.upgrades[u]!=34) newUpgs.push(player.galacticSacrifice.upgrades[u])
                 player.galacticSacrifice.upgrades=newUpgs
                 aarMod.newGame3MinusVersion = 3
-                tmp.ngmX=aarMod.newGame4MinusVersion?4:3
+                mod.ngmX=aarMod.newGame4MinusVersion?4:3
                 if (inNGM(4)) reduceDimCosts()
-        } else if (!tmp.ngmX && inNGM(3)) {
+        } else if (!mod.ngmX && inNGM(3)) {
                 aarMod.newGame4MinusVersion = 1
-                tmp.ngmX=4
+                mod.ngmX=4
                 reduceDimCosts()
         }
         if (aarMod.newGame3MinusVersion < 3.201) {
@@ -1562,12 +1561,12 @@ function doERSv0tov102(){
 }
 
 function doNGExpv0tov111(){
-        if (aarMod.newGameExpVersion === undefined && !player.masterystudies && Decimal.gt(player.infMultCost,10) && Math.round(Decimal.div(player.infMultCost,10).log(4)*1e3)%1e3<1) aarMod.newGameExpVersion = 1
+        if (mod.ngep === undefined && !player.masterystudies && Decimal.gt(player.infMultCost,10) && Math.round(Decimal.div(player.infMultCost,10).log(4)*1e3)%1e3<1) aarMod.newGameExpVersion = 1
         if (aarMod.newGameExpVersion < 1.11) aarMod.newGameExpVersion = 1.11
 }
 
 function doNGUdv0tov11(){
-        if (aarMod.newGameUpdateVersion === undefined && player.exdilation != undefined) {
+        if (aarMod.newGameUpdateVersion === undefined && mod.ngud) {
                 aarMod.newGameUpdateVersion=1.01
                 aarMod.dilationConf=player.options.dilationconfirm
                 var newAchievements=[]
@@ -1599,13 +1598,13 @@ function doNGUdv0tov11(){
 }
 
 function doExdilationIfUndefined(){
-        if (player.exdilation !== undefined) {
+        if (mod.ngud) {
                 if (player.options.exdilationconfirm === undefined) player.options.exdilationconfirm = true
                 if (player.options.exdilationConfirm !== undefined) {
                         player.options.exdilationconfirm = player.options.exdilationConfirm
                         delete player.options.exdilationConfirm
                 }
-                if (player.meta !== undefined && player.exdilation.spent[4] === undefined) player.exdilation.spent[4] = 0
+                if (mod.ngpp && player.exdilation.spent[4] === undefined) player.exdilation.spent[4] = 0
         }
 }
 
@@ -1638,7 +1637,7 @@ function doInitInfMultStuff(){
         ipMultPower=2
         if (player.masterystudies) if (player.masterystudies.includes("t241")) ipMultPower=2.2
         if (GUBought("gb3")) ipMultPower=2.3
-        if (aarMod.newGameExpVersion !== undefined) ipMultCostIncrease=4
+        if (mod.ngep) ipMultCostIncrease=4
         else ipMultCostIncrease=10
         el("infiMult").innerHTML = "You gain " + ipMultPower + "x more IP.<br>Currently: "+shortenDimensions(getIPMult()) +"x<br>Cost: "+shortenCosts(player.infMultCost)+" IP"
 }
@@ -1661,7 +1660,7 @@ function dov12tov122(){
         if (player.version < 12.2) {
                 player.version = 12.2
                 player.sixthCost = Decimal.times(player.sixthCost, 10)
-                if (player.meta) player.meta[6].cost = Decimal.times(player.meta[6].cost, 10)
+                if (mod.ngpp) player.meta[6].cost = Decimal.times(player.meta[6].cost, 10)
         }
 }
 
@@ -1675,7 +1674,7 @@ function updateVersionsONLOAD(){
 	//NG+3
 	doQuantumRestore()
 	doQuantumUpdates()
-	if (tmp.ngp3) {
+	if (mod.ngp3) {
 		doFundamentUpdates()
 		doPNGP3RUpdates()
 	}
@@ -1696,18 +1695,18 @@ function updateVersionsONLOAD(){
 }
 
 function doNGp3Init2(){
-        ghostified = tmp.ngp3 && ghSave.times > 0 
-        quantumed = player.meta !== undefined && (ghostified || quSave.times > 0)
+        ghostified = mod.ngp3 && ghSave.times > 0 
+        quantumed = mod.ngpp && (ghostified || quSave.times > 0)
 
         updateBosonicLimits()
-        if (tmp.ngp3) {
+        if (mod.ngp3) {
                 setupMasteryStudies()
                 updateUnlockedMasteryStudies()
                 updateSpentableMasteryStudies()
         }
         updateTemp()
         
-        if (tmp.ngp3) {
+        if (mod.ngp3) {
                 delete player.eternityBuyer.presets
                 el('prioritydil').value=player.eternityBuyer.dilationPerAmount
                 if (player.meta.bestOverQuantums === undefined) player.meta.bestOverQuantums = player.meta.bestAntimatter
@@ -1718,7 +1717,6 @@ function doNGp3Init2(){
                 updateQuantumWorth()
                 if (quSave.autoOptions === undefined) quSave.autoOptions = {}
                 if (quSave.nonMAGoalReached === undefined || !quSave.nonMAGoalReached.length) quSave.nonMAGoalReached = []
-                if (quSave.qcsMods === undefined) quSave.qcsMods = {current:[]}
                 if (quSave.challengeRecords === undefined) quSave.challengeRecords = {}
                 if (quSave.pairedChallenges.completions === undefined) quSave.pairedChallenges.completions = {}
                 if (quSave["10ofield"] !== undefined) {
@@ -1771,7 +1769,7 @@ function setConfirmationsDisplay(){
         el("eternityconf").style.display = (player.eternities !== 0 || quantumed) ? "inline-block" : "none"
         el("dilationConfirmBtn").style.display = (player.dilation.studies.includes(1) || quantumed) ? "inline-block" : "none"
         el("quantumConfirmBtn").style.display = quantumed ? "inline-block" : "none"
-        el("bigRipConfirmBtn").style.display = (!tmp.ngp3 ? false : brSave.times) ? "inline-block" : "none"
+        el("bigRipConfirmBtn").style.display = (!mod.ngp3 ? false : brSave.times) ? "inline-block" : "none"
         el("ghostifyConfirmBtn").style.display = ghostified ? "inline-block" : "none"
         el("leConfirmBtn").style.display = ghostified && ghSave.ghostlyPhotons.enpowerments ? "inline-block" : "none"
 
@@ -1784,7 +1782,7 @@ function setConfirmationsDisplay(){
         el("dilationConfirmBtn").textContent = "Dilation confirmation: O" + (aarMod.dilationConf ? "N" : "FF")
         el("exdilationConfirmBtn").textContent = "Reverse dilation confirmation: O" + (player.options.exdilationconfirm ? "N" : "FF")
         el("quantumConfirmBtn").textContent = "Quantum confirmation: O" + (aarMod.quantumConf ? "N" : "FF")
-        el("bigRipConfirmBtn").textContent = "Big Rip confirmation: O" + ((!tmp.ngp3 ? false : brSave.conf) ? "N" : "FF")
+        el("bigRipConfirmBtn").textContent = "Big Rip confirmation: O" + ((!mod.ngp3 ? false : brSave.conf) ? "N" : "FF")
         el("ghostifyConfirmBtn").textContent = "Fundament confirmation: O" + (aarMod.ghostifyConf ? "N" : "FF")
         el("leConfirmBtn").textContent = "Spectral Ion confirmation: O" + (aarMod.leNoConf ? "FF" : "N")
 }
@@ -1799,7 +1797,7 @@ function setOptionsDisplaysStuff1(){
         el("maxHighestTD").parentElement.parentElement.style.display = inNGM(4) ? "" : "none"
         el("maxHighestTD").textContent = "Max only highest Time Dimensions: O"+(aarMod.maxHighestTD?"N":"FF")
 
-        el("infmultbuyer").style.display = getEternitied()>0||tmp.ngp3?"inline-block":"none"
+        el("infmultbuyer").style.display = getEternitied()>0||mod.ngp3?"inline-block":"none"
         if (!player.options.hotkeys) el("hotkeys").textContent = "Enable hotkeys"
 
         document.getElementsByClassName("hideInMorse").display = player.options.notation == "Morse code" ? "none" : ""
@@ -1824,7 +1822,7 @@ function setDisplaysStuff1(){
                 el("galaxy11").innerHTML = "Normal"+(inNGM(4)?" and Time D":" d")+"imensions are "+(player.infinitied>0||getEternitied()!==0||quantumed?"cheaper based on your Infinities.<br>Currently: <span id='galspan11'></span>x":"99% cheaper.")+"<br>Cost: 1 GP"
                 el("galaxy15").innerHTML = "Normal and Time Dimensions produce "+(player.infinitied>0||getEternitied()!==0||quantumed?"faster based on your Infinities.<br>Currently: <span id='galspan15'></span>x":"100x faster")+".<br>Cost: 1 GP"
         } else {
-                el("infi21").innerHTML = "Increase the multiplier for buying 10 Dimensions<br>"+(aarMod.newGameExpVersion?"20x -> 24x":"2x -> 2.2x")+"<br>Cost: 1 IP"
+                el("infi21").innerHTML = "Increase the multiplier for buying 10 Dimensions<br>"+(mod.ngep?"20x -> 24x":"2x -> 2.2x")+"<br>Cost: 1 IP"
                 el("infi33").innerHTML = "Increase Dimension Boost multiplier<br>2x -> 2.5x<br>Cost: 7 IP"
         }
         var resetSkipCosts=[20,40,80]
@@ -1836,7 +1834,7 @@ function setChallengeDisplay(){
         var showMoreBreak = inNGM(2) ? "" : "none"
         for (i=1;i<5;i++) el("postinfi0"+i).parentElement.style.display=showMoreBreak
         el("d1AutoChallengeDesc").textContent=(inNGM(4)?"Galactic Sacrifice":"Big Crunch")+" for the first time."
-        el("d5AutoChallengeDesc").textContent=aarMod.ngexV?"Each Dimension Boost reduces your tickspeed reduction by 0.1% additively, but galaxies are 50% stronger.":inNGM(2)?"Tickspeed upgrades"+(!inNGM(3)?"":" and Tickspeed Boosts")+(inNGM(4)?" are weaker":" start out useless")+", but galaxies make them stronger.":"Tickspeed starts at 7%."
+        el("d5AutoChallengeDesc").textContent=inNGM(2)?"Tickspeed upgrades"+(!inNGM(3)?"":" and Tickspeed Boosts")+(inNGM(4)?" are weaker":" start out useless")+", but galaxies make them stronger.":"Tickspeed starts at 7%."
         el("tbAutoChallengeDesc").textContent=!inNGM(3)?"Whenever you buy 10 of a dimension or tickspeed, everything else of equal cost will increase to its next cost step.":"You can't get Tickspeed Boosts and Antimatter Galaxies are 25% weaker."
         el("autoDBChallengeDesc").textContent="There are only 6 dimensions, with Dimension Boost"+(!inNGM(3)?"":", Tickspeed Boost,")+" and Antimatter Galaxy costs modified."
         el("autoCrunchChallengeDesc").textContent="Each Normal Dimension produces the Dimension 2 tiers before it; First Dimensions produce reduced antimatter. "+(inNGM(2)?"Galaxies are far more powerful.":"")
@@ -1922,9 +1920,9 @@ function setTSDisplay(){
         el("181desc").textContent = inOnlyNGM(2) ? "1% of your GP and IP gain on next reset" : "1% of your IP gained on crunch"
         el("211desc").textContent=tsMults[211]()
         el("213desc").textContent=tsMults[213]()
-        el("221").style["font-size"] = tmp.ngp3 ? "0.45rem" : "0.55rem"
+        el("221").style["font-size"] = mod.ngp3 ? "0.45rem" : "0.55rem"
         el("222desc").textContent=tsMults[222]()
-        el("231").style["font-size"] = tmp.ngp3 ? "0.55rem" : "0.65rem"
+        el("231").style["font-size"] = mod.ngp3 ? "0.55rem" : "0.65rem"
 }
 
 function updateNGp3DisplayStuff(){
@@ -1982,23 +1980,23 @@ function updateNGp3DisplayStuff(){
 }
 
 function setSomeQuantumAutomationDisplay(){
-        var suffix = "NG" + (player.meta != undefined ? "pp" : "ud")
+        var suffix = "NG" + (mod.ngpp ? "pp" : "ud")
         el("uhDiv" + suffix).appendChild(el("Universal harmony"))
         el("feDiv" + suffix).appendChild(el("In the grim darkness of the far endgame"))
         el("dil14desc").textContent = aarMod.nguspV ? "The TP multiplier upgrade is more powerful." : "Increase the exponent of the TP formula."
-        el("dil52").style["font-size"] = !tmp.ngp3 || aarMod.nguspV !== undefined ? "10px" : "9px"
-        el("dil52formula").style.display = !tmp.ngp3 || aarMod.nguspV !== undefined ? "none" : ""
+        el("dil52").style["font-size"] = !mod.ngp3 || aarMod.nguspV !== undefined ? "10px" : "9px"
+        el("dil52formula").style.display = !mod.ngp3 || aarMod.nguspV !== undefined ? "none" : ""
         el("exDilationDesc").innerHTML = aarMod.nguspV ? 'making galaxies <span id="exDilationBenefit" style="font-size:25px; color: black">0</span>% stronger in dilation.' : 'making dilation <span id="exDilationBenefit" style="font-size:25px; color: black">0</span>% less severe.'
         el("metaAntimatterEffectType").textContent=inQC(3) ? "multiplier on all Infinity Dimensions" : "extra multiplier per Dimension Boost"
-        if (player.meta) {
+        if (mod.ngpp) {
                 el('epmultauto').textContent="Auto: O"+(player.autoEterOptions.epmult?"N":"FF")
                 for (i=1;i<9;i++) el("td"+i+'auto').textContent="Auto: O"+(player.autoEterOptions["td"+i]?"N":"FF")
         }
         el('replicantibulkmodetoggle').textContent="Mode: "+(player.galaxyMaxBulk?"Max":"Singles")
         el('versionMod').textContent = "Post-NG+3: Respecced"
-        el('versionDesc').style.display = tmp.ngp3 ? "" : "none"
+        el('versionDesc').style.display = mod.ngp3 ? "" : "none"
         el('toggleautoquantummode').style.display=(player.masterystudies?quSave.reachedInfQK||hasAch("ng3p25"):false)?"":"none"
-        var autoAssignUnl = tmp.ngp3 && (ghostified || quSave.reachedInfQK)
+        var autoAssignUnl = mod.ngp3 && (ghostified || quSave.reachedInfQK)
         el('autoAssign').style.display = autoAssignUnl ? "" : "none"
         el('autoAssignRotate').style.display = autoAssignUnl ? "" : "none"
         el('autoReset').style.display=hasAch("ng3p47")?"":"none"
@@ -2007,11 +2005,11 @@ function setSomeQuantumAutomationDisplay(){
 function setReplAutoDisplay(){
 	el('replicantigalaxypowerdiv').style.display=hasAch("r106")&&player.boughtDims?"":"none"
 	el("dilationeterupgrow").style.display="none"
-	if (player.exdilation != undefined) {
+	if (mod.ngud) {
 		if (player.dilation.studies.includes(1)) el("dilationeterupgrow").style.display="table-row"
-		el("blackholeMax").style.display = aarMod.ngudpV || aarMod.nguspV ? "" : "none"
-		el("blackholeAuto").style.display = aarMod.ngudpV && hasAch("ngpp17") ? "" : "none"
-		el('blackholeAuto').textContent="Auto: O"+(aarMod.ngudpV&&player.autoEterOptions.blackhole?"N":"FF")
+		el("blackholeMax").style.display = mod.udp || aarMod.nguspV ? "" : "none"
+		el("blackholeAuto").style.display = mod.udp && hasAch("ngpp17") ? "" : "none"
+		el('blackholeAuto').textContent="Auto: O"+(mod.udp&&player.autoEterOptions.blackhole?"N":"FF")
 		if (player.blackhole.unl == true) {
 			el("blackholediv").style.display="inline-block"
 			el("blackholeunlock").style.display="none"
@@ -2023,40 +2021,14 @@ function setReplAutoDisplay(){
 }
 
 function updateNGModeMessage(){
-        ngModeMessages=[]
-        if (aarMod.newGameMult) ngModeMessages.push("Welcome to NG Multiplied, made by Despacit and Soul147! This mode adds many buffs which may break the game, similar to NG^.")
-        if (aarMod.newGameExpVersion) ngModeMessages.push("Welcome to NG^, made by Naruyoko! This mode adds many buffs to features that can end up unbalancing the game significantly.")
-        if (player.meta!==undefined||player.exdilation!==undefined) {
-                if (!aarMod.newGamePlusVersion) ngModeMessages.push("You have disabled NG+ features on NG++. This means you start off from the beginning of Antimatter Dimensions without any buffs, and with NG+3 enabled, it can be considered as The Grand Run. If you want to go for it, good luck.")
-                if (player.exdilation!==undefined) {
-                if (aarMod.nguspV) ngModeMessages.push("Welcome to NG Update Semiprime, made by Aarex! This is like NGUd', but with balancing changes implemented. Good luck! :)")
-                if (aarMod.ngumuV||aarMod.nguepV) {
-                        if (aarMod.ngumuV) ngModeMessages.push("Welcome to NG Update Multiplied Prime, made by Aarex! This is a NG*-like mod of NGUd'. This mod will thus be very fast, but it's unlikely that you will break it.")
-                        if (aarMod.nguepV) ngModeMessages.push("Welcome to NG Update Exponential Prime, made by pg132! NGUd^' is like NGUd', but nerfs unrelated to the Black Hole are removed to make NGUd^' a NG^-like mod of NGUd'. This mod will be fast as a result, but it is somewhat unlikely that you will break it.")
-                } else if (aarMod.nguspV) {}
-                else if (aarMod.ngudpV) ngModeMessages.push("Welcome to NG Update Prime, made by pg132! NGUd' is like NGUd+, but you can't reverse dilation. Good luck for beating this mod. >:)")
-                else if (player.meta!==undefined) ngModeMessages.push("Welcome to NG Update+, a combination made by Soul147 (Sigma)! This is a combination of dan-simon's NG Update and Aarex's NG+++, which can end up unbalancing the game because of some mechanics.")
-                else ngModeMessages.push("Welcome to NG Update, made by dan-simon! In this mod, Black Hole and Ex-Dilation are available after the endgame of the vanilla Antimatter Dimensions.")
-                } else if (player.masterystudies&&!aarMod.ngp3lV&&!aarMod.ngp3mpV) ngModeMessages.push("Welcome to Post-NG+3R, Aarex's fanmade rework to MrRedShark77's Post-NG+3; extending NG+2 and +3! " + (aarMod.ngp4V ? "If you haven't experienced NG+3 yet, do it without NG+4." : "You are now on the marathon of NG+3, I wish you dedication."))
-                else if (!aarMod.ngp4V) ngModeMessages.push("Welcome to NG++, made by dan-simon! In this mode, more Dilation upgrades and Meta Dimensions are added to push the endgame further. Disclaimer: This is not NG+3, there is no Quantum content available.")
-        } else if (aarMod.newGamePlusVersion) ngModeMessages.push("Welcome to NG+ v2, made by usavictor and Aarex! You start with many things unlocked and given to you immediately to get through the early game faster.")
-        if (player.boughtDims) ngModeMessages.push('Welcome to Eternity Respecced, created by dan-simon! In this mode, Eternity is changed to be balanced better without any scaling. Note: The port is not complete on this site, so you should search for the separate website for the mod itself to get the latest version.')
-        if (inNGM(2)) {
-                if (inNGM(4)) ngModeMessages.push('Welcome to NG-4, the nerfed version of NG-3! This mode features even more changes from NG---, and is very hardcore. WIP by Nyan Cat and edited by Aarex.')
-                else if (aarMod.newGame3MinusVersion) ngModeMessages.push('Welcome to NG-3, the nerfed version of NG--! This mode reduces tickspeed multiplier multiplier and nerfs galaxies, but has a new feature called \"Tickspeed Boosts\" and many more changes to NG--.')
-                else ngModeMessages.push('Welcome to NG--, created by Nyan cat! You are always in Dilation and IC3, but there is a new layer called Galactic Sacrifice.')
-        }
-        if (aarMod.newGameMinusVersion) ngModeMessages.push("Welcome to NG-, created by slabdrill! Originally made as a save file modification, NG- is now ported as a 'mod'. Everything in the original Antimatter Dimensions is nerfed, making the endgame harder to reach.")
-        if (aarMod.aau) ngModeMessages.push("You have applied the AAU 'mod', made by Apeirogon. This will unbalance many areas of the game, as you get all achievements available in your save. It is not recommended to choose this 'mod' for this reason, unless you want fast gameplay.")
-        if (inflationCheck) ngModeMessages = ["I'm terribly sorry, but it seems there has been an inflation problem in your save, which is why this save file has been reset."]
-        if (infiniteCheck) ngModeMessages = ["I'm terribly sorry, but there has been an Infinite bug detected within your save file, which is why said save file will get reset. Luckily, you can export your save before this reset. Thanks! :)"]
-        if (forceToQuantumAndRemove) {
-                quantum(false, true, 0)
-                ngModeMessages = ["Due to balancing changes, you are forced to quantum and reset your TT and your best TP, but you are given  " + shorten(setTTAfterQuantum) + " TT as compensation."]
-                player.timestudy.theorem = setTTAfterQuantum
-                player.dilation.bestTP = E(0)
-                el('bestTP').textContent = "Your best ever Tachyon particles was 0."
-        }
+	ngModeMessages=welcomeMods()
+	if (forceToQuantumAndRemove) {
+			quantum(false, true, 0)
+			ngModeMessages = ["Due to balancing changes, you are forced to quantum and reset your TT and your best TP, but you are given  " + shorten(setTTAfterQuantum) + " TT as compensation."]
+			player.timestudy.theorem = setTTAfterQuantum
+			player.dilation.bestTP = E(0)
+			el('bestTP').textContent = "Your best ever Tachyon particles was 0."
+	}
 }
 
 
@@ -2073,9 +2045,7 @@ function onLoad(noOffline) {
 	aarMod = player.aarexModifications
 
 	//reload mods
-	tmp.ngmX = getNGMX()
-	tmp.ngp3 = player.masterystudies!==undefined
-	tmp.ngp3e = aarMod.newGameExpVersion!==undefined
+	cacheMods()
 
 	ghostifyDenied = 0
 	setEverythingPreNGp3onLoad()
@@ -2109,7 +2079,7 @@ function onLoad(noOffline) {
 	setTSDisplay()
 	setReplAutoDisplay()
 	setSomeQuantumAutomationDisplay()
-	if (tmp.ngp3) updateNGp3DisplayStuff()
+	if (mod.ngp3) updateNGp3DisplayStuff()
 	hideDimensions()
 	updateChallenges()
 	updateNCVisuals()
@@ -2149,7 +2119,7 @@ function onLoad(noOffline) {
 	setAndMaybeShow('bestTP',hasAch("ng3p18") || hasAch("ng3p37"),'"Your best"+(ghostified ? "" : " ever")+" Tachyon particles"+(ghostified ? " in this Fundament" : "")+" was "+shorten(player.dilation.bestTP)+"."')
 	setAndMaybeShow('bestTPOverGhostifies',(hasAch("ng3p18") || hasAch("ng3p37")) && ghostified,'"Your best-ever Tachyon particles was "+shorten(player.dilation.bestTPOverGhostifies)+"."')
 	el('dilationmode').style.display=speedrunMilestonesReached>4?"":"none"
-	el('rebuyupgmax').style.display=speedrunMilestonesReached<26&&tmp.ngp3?"":"none"
+	el('rebuyupgmax').style.display=speedrunMilestonesReached<26&&mod.ngp3?"":"none"
 	el('rebuyupgauto').style.display=speedrunMilestonesReached>6?"":"none"
 	el('toggleallmetadims').style.display=speedrunMilestonesReached>7?"":"none"
 	el('metaboostauto').style.display=speedrunMilestonesReached>14?"":"none"
@@ -2383,7 +2353,7 @@ function conToDeciPreEter(){
 }
 
 function conToDeciLateEter(){
-        if (player.exdilation !== undefined) {
+        if (mod.ngud) {
         player.blackhole.power = E(player.blackhole.power)
 
         for (var d=1;d<9;d++) {
@@ -2402,7 +2372,7 @@ function conToDeciLateEter(){
         if (player.exdilation.spent[4] !== undefined) player.exdilation.spent[4] = E(player.exdilation.spent[4])
         }
 
-        if (player.meta !== undefined) {
+        if (mod.ngpp) {
         player.meta.antimatter = E(player.meta.antimatter);
         player.meta.bestAntimatter = E(player.meta.bestAntimatter);
         for (let i = 1; i <= 8; i++) {

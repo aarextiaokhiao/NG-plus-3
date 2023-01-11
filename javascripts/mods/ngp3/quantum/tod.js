@@ -178,7 +178,7 @@ function getDecayRate(branch) {
 
 function getMilestone14SpinMult(){
 	var logSpin = getLogTotalSpin() - Math.log10(3) //so at e25 of each it is 10x, not slight over
-	if (logSpin <= 25 || tmp.ngp3l) return 10
+	if (logSpin <= 25) return 10
 	return Math.pow(logSpin, 2) / 625 * 10
 }
 
@@ -191,7 +191,7 @@ function getQuarkSpinProduction(branch) {
 		if (isBigRipUpgradeActive(19)) ret = ret.times(tmp.bru[19])
 		if (hasNU(12)) ret = ret.times(tmp.nu[12].normal)
 	}
-	if (!tmp.ngp3l) ret = ret.times(E_pow(1.1, nfSave.rewards - 12))
+	ret = ret.times(E_pow(1.1, nfSave.rewards - 12))
 	ret = ret.times(todspeed)
 	return ret
 }
@@ -500,10 +500,8 @@ function getMaximumUnstableQuarks() {
 function getTreeUpgradeEfficiencyText(){
 	let text = ""
 	if (ghSave.neutrinos.boosts >= 7) text += "Neutrino Boost 7: +" + shorten(tmp.nb[7]) + ", "
-	if (!tmp.ngp3l) {
-		if (hasAch("ng3p62") && !bigRipped()) text += "Finite Time Reward: +10%, "
-		if (hasBU(43)) text += "Bosonic Lab Upgrade 18: " + shorten(tmp.blu[43]) + "x, "
-	}
+	if (hasAch("ng3p62") && !bigRipped()) text += "Finite Time Reward: +10%, "
+	if (hasBU(43)) text += "Bosonic Lab Upgrade 18: " + shorten(tmp.blu[43]) + "x, "
 	if (text == "") return "No multipliers currently"
 	return text.slice(0, text.length-2)
 }
@@ -511,10 +509,8 @@ function getTreeUpgradeEfficiencyText(){
 function getTreeUpgradeEfficiency(mod) {
 	let r = 1
 	if (ghSave.neutrinos.boosts >= 7 && (bigRipped() || mod == "br") && mod != "noNB") r += tmp.nb[7]
-	if (!tmp.ngp3l) {
-		if (hasAch("ng3p62") && !bigRipped()) r += 0.1
-		if (hasBU(43)) r *= tmp.blu[43]
-	}
+	if (hasAch("ng3p62") && !bigRipped()) r += 0.1
+	if (hasBU(43)) r *= tmp.blu[43]
 	return r
 }
 

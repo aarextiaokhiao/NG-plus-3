@@ -44,7 +44,7 @@ function displayEternityStats() {
 	if (dil) {
 		el("dilated").textContent = "You have succesfully dilated "+getFullExpansion(player.dilation.times)+" times."
 
-		if (player.exdilation == undefined ? false : player.exdilation.times > 1) el("exdilated").textContent = "You have reversed Dilation " + getFullExpansion(player.exdilation.times) + " times."
+		if (mod.ngud && player.exdilation.times) el("exdilated").textContent = "You have reversed Dilation " + getFullExpansion(player.exdilation.times) + " times."
 		else el("exdilated").textContent = ""
 	}
 }

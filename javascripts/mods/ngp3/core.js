@@ -1,6 +1,6 @@
 //VERSION: 2.41R
 let ngp3_ver = 2.41
-let ngp3_build = 20230109
+let ngp3_build = 20230110
 function doPNGP3RUpdates() {
 	if (!aarMod.ngp3_build) aarMod.ngp3_build = 0
 	if (aarMod.ngp3_build < 20221230) quSave.multPower = 0
@@ -71,9 +71,7 @@ function doAutoMetaTick() {
 		}
 	}
 	for (var d = 1; d <= 8; d++) {
-		var dim = d
-		if (tmp.ngp3l) dim = 9 - d
-		if (player.autoEterOptions["md" + dim] && speedrunMilestonesReached >= 6 + dim) buyMaxMetaDimension(dim)
+		if (player.autoEterOptions["md" + d] && speedrunMilestonesReached >= 6 + d) buyMaxMetaDimension(d)
 	}
 	if (player.autoEterOptions.metaboost && speedrunMilestonesReached > 14) metaBoost()
 }
@@ -368,221 +366,11 @@ function switchAB() {
 	updateAutoEterMode()
 }
 
-function getGHPGain() {
-	if (!tmp.ngp3 || !bigRipped()) return E(0)
-	if (!ghostified) return E(1)
-	let log = brSave && brSave.bestThisRun.log10() / getQCGoal(undefined,true) - 1
-	if (log < 0) return E(0)
-	if (hasAch("ng3p58")) { 
-		//the square part of the formula maxes at e10, and gets weaker after ~e60 total
-		let x = Math.min(7, log / 2) + Math.min(3, log / 2)
-		y = ghSave.ghostParticles.plus(pow10(log)).plus(10).log10()
-		if (!hasAch("ng3p84")) x = Math.min(x, 600 / y)
-		log += x
-	}
-	let x = pow10(log).times(getGHPMult())
-	//x = doStrongerPowerReductionSoftcapDecimal(x,E("e30000"),0.5)
-	return x.floor()
-}
-
-function getGHPBaseMult() {
-	return E_pow(3, ghSave.multPower - 1)
-}
-
-function getGHPMult() {
-	let x = getGHPBaseMult()
-	if (hasAch("ng3p93")) x = x.times(500)
-	if (hasAch("ng3p97")) x = x.times(E_pow(ghSave.times + 1, 1/3))
-	return x
-}
-
-ghostified = false
-function ghostify(auto, force) {
-	if (!force&&(!isQuantumReached()||!bigRipped()||implosionCheck)) return
-	if (!auto && !force && aarMod.ghostifyConf && !confirm("Fundament will reset everything up to this point, except achievements. Are you ready for this?")) {
-		denyGhostify()
-		return
-	}
-	if (!ghostified && !confirm("Are you really sure? Do you want to enlarge yourself for particles, in exchange of everything?")) {
-		denyGhostify()
-		return
-	}
-	if (!ghostified && !confirm("Last chance. You will not be able to come back.")) {
-		denyGhostify()
-		return
-	}
-	var implode = !force && !auto && isAnimationOn("ghostify")
-	if (implode) {
-		var gain = getGHPGain()
-		var amount = ghSave.ghostParticles.add(gain).round()
-		var seconds = ghostified ? 4 : 10
-		implosionCheck=1
-		dev.ghostify(gain, amount, seconds)
-		setTimeout(function(){
-			showTab("")
-		}, seconds * 250)
-		setTimeout(function(){
-			if (Math.random()<1e-3) giveAchievement("Boo!")
-			ghostifyReset(true, gain, amount)
-		}, seconds * 750)
-		setTimeout(function(){
-			implosionCheck=0
-		}, seconds * 1000)
-	} else ghostifyReset(false, 0, 0, force)
-	updateAutoQuantumMode()
-}
-
-var ghostifyDenied
-function denyGhostify() {
-	ghostifyDenied++
-	if (ghostifyDenied >= 15) giveAchievement("You are supposed to become a ghost!")
-}
-
-function ghostifyReset(implode, gain, amount, force) {
-	var bulk = getGhostifiedGain()
-	if (!force) {
-		if (quSave.times >= 1e3 && ghSave.milestones >= 16) giveAchievement("Scared of ghosts?")
-		if (!implode) {
-			var gain = getGHPGain()
-			ghSave.ghostParticles = ghSave.ghostParticles.add(gain).round()
-		} else ghSave.ghostParticles = amount
-		for (var i=ghSave.last10.length-1; i>0; i--) ghSave.last10[i] = ghSave.last10[i-1]
-		ghSave.last10[0] = [ghSave.time, gain]
-		ghSave.times = nA(ghSave.times, bulk)
-		ghSave.best = Math.min(ghSave.best, ghSave.time)
-		while (quSave.times <= tmp.bm[ghSave.milestones]) ghSave.milestones++
-	}
-	if (bigRipped()) switchAB()
-	var bm = ghSave.milestones
-	var nBRU = []
-	var nBEU = []
-	for (var u = 20; u > 0; u--) {
-		if (nBRU.includes(u + 1) || hasRipUpg(u)) nBRU.push(u)
-		if (u < 12 && u != 7 && (nBEU.includes(u + 1) || beSave.upgrades.includes(u))) nBEU.push(u)
-	}
-	if (bm > 2) for (var c=1;c<9;c++) quSave.electrons.mult += .5 - QCIntensity(c) * .25
-	if (bm > 6 && !force && hasAch("ng3p68")) gainNeutrinos(Decimal.times(2e3 * brSave.bestGals, bulk), "all")
-	if (bm > 15) giveAchievement("I rather oppose the theory of everything")
-	if (player.eternityPoints.e>=22e4&&ghSave.under) giveAchievement("Underchallenged")
-	//achievement placeholder
-	if (ghSave.best<=6) giveAchievement("Running through Big Rips")
-	ghSave.time = 0
-	doGhostifyResetStuff(implode, gain, amount, force, bulk, nBRU, nBEU)
-	
-	quSave = player.quantum
-	updateInQCs()
-	doPreInfinityGhostifyResetStuff()
-	doInfinityGhostifyResetStuff(implode, bm)
-	doEternityGhostifyResetStuff(implode, bm)	
-	doQuantumGhostifyResetStuff(implode, bm)
-	doGhostifyGhostifyResetStuff(bm, force)
-
-	//After that...
-	resetUP()
-}
-
-function toggleGhostifyConf() {
-	aarMod.ghostifyConf = !aarMod.ghostifyConf
-	el("ghostifyConfirmBtn").textContent = "Fundament confirmation: O" + (aarMod.ghostifyConf ? "N" : "FF")
-}
-
-function getGHPRate(num) {
-	if (num.lt(1 / 60)) return (num * 1440).toFixed(1) + " ElP/day"
-	if (num.lt(1)) return (num * 60).toFixed(1) + " ElP/hr"
-	return shorten(num) + " ElP/min"
-}
-
-var averageGHP = E(0)
-var bestGHP
-function updateLastTenGhostifies() {
-	if (!tmp.ngp3) return
-	var listed = 0
-	var tempTime = E(0)
-	var tempGHP = E(0)
-	for (var i=0; i<10; i++) {
-		if (ghSave.last10[i][1].gt(0)) {
-			var qkpm = ghSave.last10[i][1].dividedBy(ghSave.last10[i][0]/600)
-			var tempstring = shorten(qkpm) + " ElP/min"
-			if (qkpm<1) tempstring = shorten(qkpm*60) + " ElP/hour"
-			var msg = "The Fundament " + (i+1) + " ago took " + timeDisplayShort(ghSave.last10[i][0], false, 3) + " and gave " + shortenDimensions(ghSave.last10[i][1]) +" ElP. "+ tempstring
-			el("ghostifyrun"+(i+1)).textContent = msg
-			tempTime = tempTime.plus(ghSave.last10[i][0])
-			tempGHP = tempGHP.plus(ghSave.last10[i][1])
-			bestGHP = ghSave.last10[i][1].max(bestGHP)
-			listed++
-		} else el("ghostifyrun"+(i+1)).textContent = ""
-	}
-	if (listed > 1) {
-		tempTime = tempTime.dividedBy(listed)
-		tempGHP = tempGHP.dividedBy(listed)
-		var qkpm = tempGHP.dividedBy(tempTime/600)
-		var tempstring = shorten(qkpm) + " ElP/min"
-		averageGHP = tempGHP
-		if (qkpm<1) tempstring = shorten(qkpm*60) + " ElP/hour"
-		el("averageGhostifyRun").textContent = "Last " + listed + " Fundaments average time: "+ timeDisplayShort(tempTime, false, 3)+" Average ElP gain: "+shortenDimensions(tempGHP)+" ElP. "+tempstring
-	} else el("averageGhostifyRun").textContent = ""
-}
-
 function updateBraveMilestones() {
 	if (ghostified) {
 		for (var m = 1; m < 17;m++) el("braveMilestone" + m).className = "achievement achievement" + (ghSave.milestones < m ? "" : "un") + "locked"
 		for (var r = 1; r < 3; r++) el("braveRow" + r).className = ghSave.milestones < r * 8 ? "" : "completedrow"
 	}
-}
-
-function showGhostifyTab(tabName) {
-	//iterate over all elements in div_tab class. Hide everything that's not tabName and show tabName
-	var tabs = document.getElementsByClassName('ghostifytab');
-	var tab;
-	var oldTab
-	for (var i = 0; i < tabs.length; i++) {
-		tab = tabs.item(i);
-		if (tab.style.display == 'block') oldTab = tab.id
-		if (tab.id === tabName) {
-			tab.style.display = 'block';
-		} else {
-			tab.style.display = 'none';
-		}
-	}
-	if (oldTab !== tabName) aarMod.tabsSave.tabGhostify = tabName
-	closeToolTip()
-}
-
-function updateGhostifyTabs() {
-	if (el("neutrinos").style.display == "block") updateNeutrinosTab()
-	if (el("automaticghosts").style.display == "block") {
-		if (ghSave.milestones > 7) updateQuantumWorth("display")
-		updateAutomatorHTML()
-	}
-	if (el("gphtab").style.display == "block" && ghSave.ghostlyPhotons.unl) updatePhotonsTab()
-	if (el("anni").style.display == "block" && ghSave.ghostlyPhotons.unl) updateBDTab()
-}
-
-function buyGHPMult() {
-	let sum = ghSave.neutrinos.electron.add(ghSave.neutrinos.mu).add(ghSave.neutrinos.tau).round()
-	let cost = getGHPMultCost()
-	if (sum.lt(cost)) return
-	subNeutrinos(cost)
-	ghSave.multPower++
-	ghSave.automatorGhosts[15].a = ghSave.automatorGhosts[15].a.times(5)
-	el("autoGhost15a").value = formatValue("Scientific", ghSave.automatorGhosts[15].a, 2, 1)
-	el("ghpMult").textContent = shortenDimensions(getGHPBaseMult())
-	el("ghpMultUpgCost").textContent = shortenDimensions(getGHPMultCost())
-}
-
-function maxGHPMult() {
-	let sum = ghSave.neutrinos.electron.add(ghSave.neutrinos.mu).add(ghSave.neutrinos.tau).round()
-	let cost = getGHPMultCost()
-	if (sum.lt(cost)) return
-
-	let toBuy=Math.min(Math.floor(sum.div(cost).times(24).add(1).log(25)),85-ghSave.multPower)
-	subNeutrinos(E_pow(25,toBuy).sub(1).div(24).times(cost))
-	ghSave.multPower+=toBuy
-	ghSave.automatorGhosts[15].a=ghSave.automatorGhosts[15].a.times(E_pow(5,toBuy))
-
-	el("autoGhost15a").value = formatValue("Scientific", ghSave.automatorGhosts[15].a, 2, 1)
-	el("ghpMult").textContent = shortenDimensions(getGHPBaseMult())
-	el("ghpMultUpgCost").textContent = shortenDimensions(getGHPMultCost())
 }
 
 //v2.1
@@ -595,15 +383,9 @@ function startEC10() {
 	startEternityChallenge(10)
 }
 
-function getGHPMultCost(offset=0) {
-	let lvl=ghSave.multPower+offset
-	return E_pow(5, lvl * 2 - 1).times(25e8)
-
-}
-
 //v2.2
 function canBuyGalaxyThresholdUpg() {
-	return !tmp.ngp3 || player.dilation.rebuyables[2] < 60
+	return !mod.ngp3 || player.dilation.rebuyables[2] < 60
 }
 
 function showAntTab(tabName) {
@@ -624,12 +406,6 @@ function showAntTab(tabName) {
 	closeToolTip()
 }
 
-function getGhostifiedGain() {
-	let r = 1
-	if (hasBU(15)) r = nN(tmp.blu[15].gh)
-	return r
-}
-
 function toggleLEConf() {
 	aarMod.leNoConf = !aarMod.leNoConf
 	el("leConfirmBtn").textContent = "Spectral Ion confirmation: O" + (aarMod.leNoConf ? "FF" : "N")
@@ -643,7 +419,7 @@ function getOldAgeRequirement() {
 
 //v2.302
 function NGP3andVanillaCheck() {
-	return (tmp.ngp3) || !aarMod.newGamePlusPlusVersion
+	return (mod.ngp3) || !aarMod.newGamePlusPlusVersion
 }
 
 // Gathered from NG+3R v0.7 - Fluctuate
@@ -835,7 +611,7 @@ function ngp3_feature_notify(k) {
 
 //v2.4: Moved from old functions...
 function doPerSecondNGP3Stuff(){
-	if (!tmp.ngp3) return
+	if (!mod.ngp3) return
 
 	//Post-NG+3
 	doPostNGP3UnlockStuff()
@@ -893,8 +669,6 @@ function doNGP3UnlockStuff(){
 	if (!ghSave.reached && bigRipped() && brSave.bestThisRun.gte(pow10(getQCGoal(undefined, true)))) {
 		doGhostifyUnlockStuff()
 	}
-	var inEasierModeCheck = !inEasierMode()
-	if (player.masterystudies && (player.masterystudies.includes("d14")||hasAch("ng3p51")) && !metaSave.ngp4 && !inEasierModeCheck) doNGP4UnlockStuff()
 	if (player.eternityPoints.gte("1e1200") && bigRipped() && !beSave.unlocked) doBreakEternityUnlockStuff()
 	if (player.money.gte(pow10(4.7e9)) && bigRipped() && !ghSave.ghostlyPhotons.unl) doPhotonsUnlockStuff()
 	if (canUnlockBosonicLab() && !ghSave.wzb.unl) doBosonsUnlockStuff()

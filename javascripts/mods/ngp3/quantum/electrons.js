@@ -8,7 +8,7 @@ function updateElectronsTab() {
 }
 
 function updateElectrons(retroactive) {
-	if (!tmp.ngp3 || !player.masterystudies.includes("d7")) {
+	if (!mod.ngp3 || !player.masterystudies.includes("d7")) {
 		el("electronstabbtn").style.display = "none"
 		return
 	} else el("electronstabbtn").style.display = ""
@@ -103,7 +103,7 @@ function buyElectronUpg(u, quick) {
 	if (u == 1) player.timestudy.theorem -= cost
 	else if (u == 2) player.dilation.dilatedTime = player.dilation.dilatedTime.sub(cost)
 	else if (u == 3) player.meta.antimatter = player.meta.antimatter.sub(cost)
-	else if (u == 4 && (tmp.ngp3l || !hasAch("ng3p64"))) {
+	else if (u == 4 && !hasAch("ng3p64")) {
 		player.meta.resets -= cost
 		player.meta.antimatter = getMetaAntimatterStart()
 		clearMetaDimensions()
@@ -112,7 +112,7 @@ function buyElectronUpg(u, quick) {
 	quSave.electrons.rebuyables[u - 1]++
 	if (quick) return true
 	quSave.electrons.mult += getElectronUpgIncrease(u)
-	updateElectrons(!tmp.ngp3l)
+	updateElectrons(true)
 }
 
 function canBuyElectronUpg(id) {

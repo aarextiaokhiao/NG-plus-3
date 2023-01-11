@@ -53,7 +53,6 @@ function calcNGM2atleastTDPreVPostDilMultiplier(tier){
 	if (player.eternityUpgrades.includes(4)) ret2 = ret2.times(player.achPow)
 	if (player.eternityUpgrades.includes(5)) ret2 = ret2.times(Math.max(player.timestudy.theorem, 1))
 	if (player.eternityUpgrades.includes(6)) ret2 = ret2.times((player.totalTimePlayed + ngPlus) / 10 / 60 / 60 / 24)
-	if (tmp.ngex) ret2 = ret2.div(10 / tier)
 	return ret2
 }
 
@@ -111,17 +110,16 @@ function getTimeDimensionProduction(tier) {
   	if (inNGM(4)&&(inNC(2)||player.currentChallenge=="postc1")) ret = ret.times(player.chall2Pow)
   	if (player.currentEternityChall == "eterc7") ret = dilates(ret.dividedBy(player.tickspeed.dividedBy(1000)))
   	if (inNGM(4)&&(tier>1||!hasAch("r12"))) ret = ret.div(100)
-  	if (aarMod.ngexV) ret = ret.div(10 / tier)
   	if (player.currentEternityChall == "eterc1") return E(0)
   	return ret
 }
 
 function getIC3EffFromFreeUpgs() {
 	let x = 0
-	if (tmp.ngp3) {
+	if (mod.ngp3) {
 		if (player.currentEternityChall=='eterc14') x = 5
 		else {
-			x = ECComps("eterc14") * (tmp.ngp3l ? 2 : 4)
+			x = ECComps("eterc14") * 4
 			if (hasNU(12)) if (bigRipped()) x *= tmp.nu[12].replicated
 		}
 	}
@@ -180,7 +178,7 @@ function updateTimeDimensions() {
 
 function updateTimeShards() {
 	let p = getTimeDimensionProduction(1)
-	el("itmult").textContent = tmp.ngp3 && hasAch('r105') ? 'Your "Infinite Time" multiplier is currently ' + shorten(tmp.it) + 'x.':''
+	el("itmult").textContent = mod.ngp3 && hasAch('r105') ? 'Your "Infinite Time" multiplier is currently ' + shorten(tmp.it) + 'x.':''
 	el("timeShardAmount").textContent = shortenMoney(player.timeShards)
 	el("tickThreshold").textContent = shortenMoney(player.tickThreshold)
 	if (player.currentEternityChall == "eterc7") el("timeShardsPerSec").textContent = "You are getting " + shortenDimensions(p) + " Eighth Infinity Dimensions per second."

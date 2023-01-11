@@ -11,7 +11,7 @@ function updateConvertSave(convertMod) {
 }
 
 function eligibleConvert() {
-	if (aarMod.newGame3PlusVersion == undefined && !tmp.ngmX && (aarMod.newGameMult || aarMod.newGameExpVersion) == undefined && (aarMod.newGameUpdateVersion == undefined) && (aarMod.ngexV == undefined) && (aarMod.ersVersion || aarMod.irsVersion) == undefined) {
+	if (aarMod.newGame3PlusVersion == undefined && !mod.ngmX && !mod.ngud && !inEasierMode() && !aarMod.ersVersion) {
 		convert = "NG+3";
 	} else
 		convert = undefined;

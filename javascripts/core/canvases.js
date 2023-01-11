@@ -301,7 +301,7 @@ function drawStudyTree() {
     drawTreeBranch("dilstudy2", "dilstudy3")
     drawTreeBranch("dilstudy3", "dilstudy4")
     drawTreeBranch("dilstudy4", "dilstudy5")
-    if (player.meta) drawTreeBranch("dilstudy5", "dilstudy6")
+    if (mod.ngpp) drawTreeBranch("dilstudy5", "dilstudy6")
     if (player.masterystudies) drawTreeBranch("dilstudy6", "masteryportal")
     if (shiftDown && el("eternitystore").style.display !== "none" && el("timestudies").style.display !== "none") {
         for (i=0; i<all.length; i++) {

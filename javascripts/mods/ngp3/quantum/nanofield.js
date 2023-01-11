@@ -106,8 +106,7 @@ var nanoRewards = {
 		},
 		meta_boost_power: function(x) {
 			let y = 2
-			if (tmp.ngp3l) y = 3
-			else if (player.dilation.upgrades.includes("ngpp4")) y = getDil15Bonus()
+			if (player.dilation.upgrades.includes("ngpp4")) y = getDil15Bonus()
 			return x * 1.34 + y
 		},
 		remote_start: function(x) {
@@ -120,7 +119,6 @@ var nanoRewards = {
 			return x * 0.76
 		},
 		preon_energy: function(x) {
-			if (tmp.ngp3l) return x > 0 ? 2.5 : 1
 			return E_pow(2.5, Math.sqrt(x))
 		},
 		supersonic_start: function(x) {

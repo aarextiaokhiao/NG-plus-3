@@ -77,9 +77,9 @@ function checkYoDawg(){
 
 function checkUniversalHarmony() {
 	if (hasAch("ngpp18")) return
-	if (player.meta != undefined) {
+	if (mod.ngpp) {
 		if (player.galaxies < 700 || player.replicanti.galaxies + extraReplGalaxies < 700 || player.dilation.freeGalaxies < 700) return
-	} else if (player.exdilation != undefined) {
+	} else if (mod.ngud) {
 		if (player.galaxies != player.replicanti.galaxies || player.galaxies != player.dilation.freeGalaxies || player.galaxies < 300) return
 	} else return
 	giveAchievement("Universal harmony")
@@ -93,7 +93,7 @@ function checkEPReqAchieve(){
 
 function checkIPReqAchieve(){
 	var checkEmpty = player.timestudy.studies.length < 1
-	if (tmp.ngp3) for (id=0;id<player.masterystudies.length;id++) {
+	if (mod.ngp3) for (id=0;id<player.masterystudies.length;id++) {
 		if (player.masterystudies[id].split("t")[1]) checkEmpty = false
 	}
 	var ableToGetRid2 = checkEmpty && player.dilation.active 
@@ -119,7 +119,7 @@ function checkReplicantiBasedReqAchieve(){
 	if (player.replicanti.amount.gte(Number.MAX_VALUE) && player.thisInfinityTime < 600*30) giveAchievement("Is this safe?");
 	if (player.replicanti.galaxies >= 10 && player.thisInfinityTime < 150) giveAchievement("The swarm");
 	if (player.replicanti.galaxies >= 180 * player.galaxies && player.galaxies >= 1) giveAchievement("Popular music")
-	if (player.replicanti.amount.gt(E(tmp.ngex?"1e15000":"1e20000"))) giveAchievement("When will it be enough?")
+	if (player.replicanti.amount.gt(E("1e20000"))) giveAchievement("When will it be enough?")
 	if (player.boughtDims && player.replicanti.amount.gt("1e1000000")) giveAchievement("Do you really need a guide for this?");
 	if (player.replicanti.amount.gt(E("1e100000"))) giveAchievement("It will never be enough")
 }
@@ -162,18 +162,18 @@ function newDimension() {
 
 function checkOtherPreNGp3Achieve(){
 	var ableToGetRid2 = player.timestudy.studies.length < 1 && player.dilation.active 
-	if (tmp.ngp3) for (id = 0; id < player.masterystudies.length; id++) {
+	if (mod.ngp3) for (id = 0; id < player.masterystudies.length; id++) {
 		if (player.masterystudies[id].split("t")[1]) ableToGetRid2 = false
 	}
 	if (player.why >= 1e6) giveAchievement("Should we tell them about buy max...")
-	if (player.exdilation !== undefined) {
+	if (mod.ngud) {
 		let ableToGetRid3 = ableToGetRid2 && player.dilation.upgrades.length === 0 && player.dilation.rebuyables[1] === 0 && player.dilation.rebuyables[2] === 0 && player.dilation.rebuyables[3] === 0
 		if (player.blackhole.power.gt(0)) giveAchievement("A newer beginning.")
 		if (player.blackhole.power.gt(1e6)) giveAchievement("1 million is still a lot")
 		if (player.exdilation.unspent.gt(1e5)) giveAchievement("Finally I'm out of that channel");
 		if (ableToGetRid2 && player.infinityPoints.log10() >= 20000) giveAchievement("I already got rid of you.")
 	}
-	if (player.meta && player.dilation.studies.includes(5)) giveAchievement("I'm so meta")
+	if (mod.ngpp && player.dilation.studies.includes(5)) giveAchievement("I'm so meta")
 	checkUniversalHarmony()
 	if (infchallengeTimes < 7.5) giveAchievement("Never again")
 	if (player.totalTimePlayed >= 10 * 60 * 60 * 24 * 8) giveAchievement("One for each dimension")
@@ -189,7 +189,7 @@ function checkOtherPreNGp3Achieve(){
 	if (player.spreadingCancer >= 1000000) giveAchievement("Cancer = Spread")
 	if (player.infinitied >= 10) giveAchievement("That's a lot of infinites");
 	if (player.break) giveAchievement("Limit Break")
-	if (player.meta) if (player.meta.resets >= 10) giveAchievement("Meta-boosting to the max")
+	if (mod.ngpp) if (player.meta.resets >= 10) giveAchievement("Meta-boosting to the max")
 	if (tmp.sacPow >= 600) giveAchievement("The Gods are pleased");
 	if (tmp.sacPow.gte(Number.MAX_VALUE)) giveAchievement("Yet another infinity reference")
 	if (tmp.sacPow.gte(pow10(9000)) && !inNC(11)) giveAchievement("IT'S OVER 9000")
@@ -212,7 +212,7 @@ function getTwoDecaysBool(){
 
 function ngP3AchieveCheck(){
 	let checkEmpty = player.timestudy.studies.length < 1
-	if (tmp.ngp3) for (id = 0; id < player.masterystudies.length; id++) {
+	if (mod.ngp3) for (id = 0; id < player.masterystudies.length; id++) {
 		if (player.masterystudies[id].split("t")[1]) checkEmpty = false
 	}
 	let ableToGetRid2 = checkEmpty && player.dilation.active
@@ -251,7 +251,7 @@ function ngP3AchieveCheck(){
 	if (quSave.replicants.requirement.gte("1e12500000")) giveAchievement("Stop blocking me!")
 	if (player.infinityPoints.gte(pow10(2.75e5)) && ableToGetRid6) giveAchievement("Are you currently dying?")
 	if (nfSave.rewards >= 21 && noTree) giveAchievement("But I don't want to grind!")
-	if (player.replicanti.amount.log10() >= (aarMod.ngudpV ? 268435456 : 36e6)) giveAchievement("Will it be enough?")
+	if (player.replicanti.amount.log10() >= (mod.udp ? 268435456 : 36e6)) giveAchievement("Will it be enough?")
 	if (bigRipped()) {
 		let ableToGetRid7 = ableToGetRid2 && player.epmult.eq(1)
 		let ableToGetRid8 = ableToGetRid7 && !beSave.did
@@ -302,5 +302,5 @@ function ALLACHIEVECHECK(){
 	checkTickspeedReqAchieve() //Tickspeed/tick upgs based
 	checkOtherPreNGp3Achieve() //Other
 	
-	if (tmp.ngp3) ngP3AchieveCheck()
+	if (mod.ngp3) ngP3AchieveCheck()
 }
