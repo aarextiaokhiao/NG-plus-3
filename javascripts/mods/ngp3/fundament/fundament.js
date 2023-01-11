@@ -200,5 +200,4 @@ function updateGhostifyTabs() {
 		updateAutomatorHTML()
 	}
 	if (el("gphtab").style.display == "block" && ghSave.ghostlyPhotons.unl) updatePhotonsTab()
-	if (el("anni").style.display == "block" && ghSave.ghostlyPhotons.unl) updateBDTab()
 }

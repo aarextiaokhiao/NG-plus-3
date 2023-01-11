@@ -197,7 +197,6 @@ function updateBreakEternity() {
 		el("breakUpg7MultIncrease").textContent = shortenDimensions(1e9)
 		el("breakUpg7Mult").textContent = shortenDimensions(getBreakUpgMult(7))
 		el("breakUpgRS").style.display = bigRipped() ? "" : "none"
-		el("breakUpgR4").style.display = ghSave.breakDilation.unl ? "" : "none"
 	} else {
 		el("breakEternityReq").textContent = "You need to get " + shorten(E("1e1200")) + " EP before you can Break Eternity."
 		el("breakEternityNoBigRip").style.display = "none"
@@ -249,19 +248,6 @@ function brokeEternity() {
 function getEMGain() {
 	let log = player.timeShards.div(1e9).log10() * 0.25
 	if (log > 15) log = Math.sqrt(log * 15)
-	
-	let log2log = Math.log10(log) / Math.log10(2)
-	let start = 10 //Starts at e1024.
-	if (log2log > start) {
-		if (hasBDUpg(3)) {
-			let exp = 1.5
-			log2log = (log2log*start**(exp-1))**(1/exp)
-		} else {
-			let capped = Math.min(Math.floor(Math.log10(Math.max(log2log + 2 - start, 1)) / Math.log10(2)), 20 - start)
-			log2log = (log2log - Math.pow(2, capped) - start + 2) / Math.pow(2, capped) + capped + start - 1
-		}
-		log = Math.pow(2, log2log)
-	}
 
 	let x = pow10(log)
 	if (hasAch("ng3p104")) x = x.pow(1.1)
@@ -308,6 +294,5 @@ function getBEUnls() {
 	//Upgrades
 	let x = 8
 	if (ghSave.ghostlyPhotons.unl) x += 3
-	if (ghSave.breakDilation.unl) x += 1
 	return x
 }

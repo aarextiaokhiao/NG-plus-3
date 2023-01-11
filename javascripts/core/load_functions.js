@@ -1283,13 +1283,8 @@ function doFundamentUpdates(){
 		delete tmp.hb.field
 	}
 
-	//v2.41R: Gravity Well + Break Dilation
-	if (ghSave.gravitons === undefined) skip++ //v2.4 adds Gravitons
-	if (ghSave.breakDilation === undefined) skip++ //v2.41 adds Break Dilation
-	if (aarMod.newGame3PlusVersion < 2.41) {
-		skip++ //v2.41R reworks them
-		if (player.ghostify.times) giveAchievement("A ghost fate")
-	}
+	//v2.31: Ghostify Respecced
+	if (aarMod.newGame3PlusVersion < 2.31) skip++ //v2.31 reworks them
 	if (skip > 1) giveAchievement("Waiting, I see...")
 }
 
@@ -1676,10 +1671,9 @@ function updateVersionsONLOAD(){
 	doQuantumUpdates()
 	if (mod.ngp3) {
 		doFundamentUpdates()
-		doPNGP3RUpdates()
+		doNGP3Updates()
 	}
 
-	doPostNGP3Versions()
 	doNGm2v11tov3()
 	doNGm3v21tov3202()
 	doERSv0tov102()
@@ -1993,7 +1987,7 @@ function setSomeQuantumAutomationDisplay(){
                 for (i=1;i<9;i++) el("td"+i+'auto').textContent="Auto: O"+(player.autoEterOptions["td"+i]?"N":"FF")
         }
         el('replicantibulkmodetoggle').textContent="Mode: "+(player.galaxyMaxBulk?"Max":"Singles")
-        el('versionMod').textContent = "Post-NG+3: Respecced"
+        el('versionMod').textContent = "New Game Plus 3"
         el('versionDesc').style.display = mod.ngp3 ? "" : "none"
         el('toggleautoquantummode').style.display=(player.masterystudies?quSave.reachedInfQK||hasAch("ng3p25"):false)?"":"none"
         var autoAssignUnl = mod.ngp3 && (ghostified || quSave.reachedInfQK)
@@ -2550,16 +2544,13 @@ function deepUndefinedAndDecimal(obj, data) {
 }
 
 function transformSaveToDecimal() {
-
-        conToDeciPreEter()
-        player.eternities = nP(player.eternities)
-        if (player.eternitiesBank !== undefined) player.eternitiesBank = nP(player.eternitiesBank)
-        conToDeciTD()
-        conToDeciLateEter()
-        conToDeciMS()
-        conToDeciGhostify()
-
-        conToDeciPostNGP3()
+	conToDeciPreEter()
+	player.eternities = nP(player.eternities)
+	if (player.eternitiesBank !== undefined) player.eternitiesBank = nP(player.eternitiesBank)
+	conToDeciTD()
+	conToDeciLateEter()
+	conToDeciMS()
+	conToDeciGhostify()
 }
 
 

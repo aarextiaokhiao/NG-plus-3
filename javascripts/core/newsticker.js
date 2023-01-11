@@ -492,7 +492,7 @@ newsArray = [//always true
 ["In an alternate universe, @TruthNotScam9 convinced Aarex to add Scamify, leaving many sparks of outrage from the players. Both of them died soon afterward.", "mod.ngp3", "am281"],
 ["~<: NEXTA COMMUNINC: CONSTELLA' THE STARS ~:> Stellarika Aarex's speaking to Sollings: The infamous \"Kibb's Point\" [<.>] has been disintegrated! aSAN~1,318,273^{*.*++} has been landed in release, featuring unseen methods extending to Kibb's Axioms! Be warned! Monstrous Xaliens pulled a nefarious abduct against aSAN~1,318,271! One is that -=>> is a numerous burst to (1,(((1,1,2),2)),2) arrays! Our megalo-arithmetic lab is working tediously for a drone evaluating their n...", "mod.ngp3", "am282"],
 ["It's 2023. Aarex managed to release an content update, but inflation seems to force him to reduce the formulas or underestimate the growth rate.", "mod.ngp3", "am283"],
-["We are getting close to the true nature of Quantum. More to seem soon...", "hasAch('ng3p111')", "am284"],
+["We are getting close to the true nature of Quantum. More to seem soon...", "ghostified", "am284"],
 ["~<: NEXTA COMMUNINC: CONSTELLA' THE STARS ~:> It seems that Higgs Field are messing up our Nanofield...", "hasAch('ng3p91')", "am285"],
 ["There is no April Fools 2022 event for my incremental games. :)", "mod.ngp3", "am286"],
 ["Hello there. You might see recent updates in few months, but still... be patient! ~ Aarex, Lightning Incrementalist", "mod.ngp3", "am287"],

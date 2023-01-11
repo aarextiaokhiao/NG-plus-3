@@ -1,18 +1,4 @@
 var softcap_data = {
-	ts_reduce_log: {
-		1: {
-			func: "pow",
-			start: 1e6,
-			pow: () => adjustTSSoftcapPow(0.75),
-			derv: false
-		},
-		2: {
-			func: "pow",
-			start: 2e6,
-			pow: () => adjustTSSoftcapPow(0.7),
-			derv: false
-		},
-	},
 	ts11_log_big_rip: {
 		1: {
 			func: "pow",
@@ -72,26 +58,6 @@ var softcap_data = {
 			func: "pow",
 			start: E(1e80),
 			pow: 0.8,
-			derv: true
-		}
-	},
-	working_ts: {
-		1: {
-			func: "pow",
-			start: 1e15,
-			pow: () => adjustTSSoftcapPow(0.9),
-			derv: true
-		},
-		2: {
-			func: "pow",
-			start: 1e16,
-			pow: () => adjustTSSoftcapPow(0.85),
-			derv: true
-		},
-		3: {
-			func: "pow",
-			start: 1e17,
-			pow: () => adjustTSSoftcapPow(0.8),
 			derv: true
 		}
 	},

@@ -32,8 +32,6 @@ function updateNeutrinoAmountDisplay(){
 }
 
 function updateNeutrinoUpgradeDisplay(){
-	el("gravRow").style.display = ghSave.gravitons.unl ? "" : "none"
-
 	el("neutrinoUpg1Pow").textContent = tmp.nu[1]
 	el("neutrinoUpg3Pow").textContent = shorten(tmp.nu[3])
 	el("neutrinoUpg4Pow").textContent = shorten(tmp.nu[4])
@@ -47,12 +45,10 @@ function updateNeutrinoUpgradeDisplay(){
 		el("neutrinoUpg14Pow").textContent=shorten(tmp.nu[14])
 		el("neutrinoUpg15Pow").textContent=shorten(tmp.nu[15])
 	}
-	if (ghSave.gravitons.unl) el("neutrinoUpg16Pow").textContent=shorten(tmp.nu[7])
 	var sum = ghSave.neutrinos.electron.add(ghSave.neutrinos.mu).add(ghSave.neutrinos.tau).round()
-	for (var u = 1; u < 18; u++) {
+	for (var u = 1; u < 15; u++) {
 		var e = false
-		if (u > 15) e = ghSave.gravitons.unl
-		else if (u > 12) e = ghSave.ghostlyPhotons.unl
+		if (u > 12) e = ghSave.ghostlyPhotons.unl
 		else e = ghSave.times + 3 > u || u < 5
 		if (e) {
 			if (hasNU(u)) el("neutrinoUpg" + u).className = "gluonupgradebought neutrinoupg"
@@ -88,7 +84,7 @@ function onNotationChangeNeutrinos() {
 	el("neutrinoMultUpgCost").textContent=shortenDimensions(E_pow(4, ghSave.neutrinos.multPower-1).times(2))
 	el("ghpMult").textContent=shortenDimensions(getGHPBaseMult())
 	el("ghpMultUpgCost").textContent=shortenDimensions(getGHPMultCost())
-	for (var u = 1; u < 18; u++) el("neutrinoUpg" + u + "Cost").textContent=shortenDimensions(E(tmp.nuc[u]))
+	for (var u = 1; u < 15; u++) el("neutrinoUpg" + u + "Cost").textContent=shortenDimensions(E(tmp.nuc[u]))
 }
 
 function getNeutrinoGain() {

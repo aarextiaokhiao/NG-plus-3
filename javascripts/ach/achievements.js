@@ -179,7 +179,7 @@ const allAchievements = {
   ng3p75 : "Radioactive Decaying to the max!",
   ng3p76 : "Running through Big Rips",
   ng3p77 : "The Theory of Ultimate Studies",
-  ng3p78 : "Aren't you already dead?",
+  ng3p78 : "ng3p78",
 
   ng3p81 : "Even Ghostlier than before",
   ng3p82 : "ng3p82",
@@ -198,19 +198,6 @@ const allAchievements = {
   ng3p96 : "ng3p96",
   ng3p97 : "The Ghostliest Side",
   ng3p98 : "Meta-Quintillion",
-
-  ng3p101 : `The Layer of Recreation`,
-  ng3p102 : `Ungraceful Mistake`,
-  ng3p103 : `ng3p103`,
-  ng3p104 : `This achievement doesn't exist 5`,
-  ng3p105 : `Quantized Reproduction`,
-  ng3p106 : `Spectral Phasing`,
-  ng3p107 : `Mega Boo!`,
-  ng3p108 : `Temporality`,
-
-  ng3p111 : `Baby Age`,
-  ng3p112 : `Scammed Tickspeed`,
-  ng3p113 : `Microfield`,
 
   s11 : "The first one's always free",
   s12 : "Just in case",
@@ -416,7 +403,7 @@ function updateAchievements() {
 	var amount = 0
 	var rowsShown = 0
 	var rowsNum = 0
-	for (var i = 1; i < 27; i++) {
+	for (var i = 1; i < 25; i++) {
 		var shown=true
 		var rowid = i
 		var rownum = i

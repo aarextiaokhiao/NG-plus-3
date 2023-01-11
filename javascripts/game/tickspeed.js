@@ -113,7 +113,6 @@ function getGalaxyTickSpeedMultiplier() {
 	}
 
 	var log = Math.log10(0.965) * (galaxies-linearGalaxies) + Math.log10(baseMultiplier)
-	if (log < 0) log = -softcap(-log, "ts_reduce_log")
 	return pow10(log)
 }
 
@@ -279,10 +278,7 @@ function buyMaxTickSpeed() {
 }
 
 function getTickspeed() {
-	var log = -player.tickspeed.log10()
-	if (mod.ngp3) log = softcap(log, "working_ts")
-	tick = pow10(-log)
-	return tick
+	return player.tickspeed
 }
 
 function updateTickspeed() {

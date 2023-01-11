@@ -216,7 +216,7 @@ function automatorTick(diff) {
 			let ag = ghSave.automatorGhosts[17]
 
 			let change = getRemainingExtractTime().gte(ag.s || 60)
-			if (!change) change = ag.oc && ag.t >= 2 / (hasAch("ng3p103") ? 10 : 1)
+			if (!change) change = ag.oc && ag.t >= 2
 			if (change) changeTypeToExtract(tmp.bl.typeToExtract % br.limit + 1)
 
 			if (!tmp.bl.extracting) extract()

@@ -329,8 +329,6 @@ function setupHTMLAndData() {
 	setupBosonicUpgrades()
 	setupBosonicRunes()
 	setupAutobuyerHTMLandData()
-
-	setupPostNGp3HTML()
 }
 
 //Theme stuff
@@ -412,7 +410,7 @@ function showTab(tabName, init) {
 
 
 function updateMoney() {
-	el("z").textContent = "AD: PNG+3R | " + shortenMoney(player.money) + (player.money.e >= 1e6 ? "" : " antimatter")
+	el("z").textContent = "AD: NG+3 | " + shortenMoney(player.money) + (player.money.e >= 1e6 ? "" : " antimatter")
 	el("coinAmount").textContent = shortenMoney(player.money)
 
 	var element2 = el("matter");
@@ -3162,7 +3160,6 @@ function gameLoop(diff) {
 			if (ghSave.wzb.unl) WZBosonsUpdating(diff) // Bosonic Lab
 			if (ghSave.ghostlyPhotons.unl) ghostlyPhotonsUpdating(diff) // Photons
 		}
-		postNGp3Updating(diff)
 
 		doQuantumButtonDisplayUpdating(diff)
 		doGhostifyButtonDisplayUpdating(diff)

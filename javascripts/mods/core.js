@@ -23,7 +23,6 @@ function showNextModeMessage() {
 var modsShown = false
 var modPresets = {
 	vanilla: {},
-	pngp3: {ngpp: 2, ngp: 2},
 	ngp3: {ngpp: 2, ngp: 1},
 	grand_run: {ngpp: 2},
 }
@@ -43,7 +42,7 @@ var modFullNames = {
 }
 var modSubNames = {
 	ngp: ["OFF", "ON", "NG+4"],
-	ngpp: ["OFF", "ON", "PNG+3R"/*, "NG+5R"*/],
+	ngpp: ["OFF", "ON", "NG+3"],
 	//ngep: ["Linear (↑⁰)", "Exponential (↑)"/*, "Tetrational (↑↑)"*/],
 	ngmm: ["OFF", "ON", "NG---", "NG-4"],
 	ngud: ["OFF", "ON", "Prime (')", "Semiprime (S')"/*, "Semiprime.1 (S'.1)"*/],
@@ -196,7 +195,6 @@ let welcomeMsgs = {
 	["UdMuP"]: "Welcome to NG Update Multiplied Prime, made by Aarex! This is a NG*-like mod of NGUd'. This mod will thus be very fast, but it's unlikely that you will break it.",
 	["UdEpP"]: "Welcome to NG Update Exponential Prime, made by pg132! NGUd^' is like NGUd', but nerfs unrelated to the Black Hole are removed to make NGUd^' a NG^-like mod of NGUd'. This mod will be fast as a result, but it is somewhat unlikely that you will break it.",
 
-	["+P3R"]: "Welcome to Post-NG+3R, Aarex's fanmade rework to MrRedShark77's Post-NG+3; extending NG+2 and +3!",
 	["Mu"]: "Welcome to NG Multiplied, made by Despacit and Soul147! This mode adds many buffs which may break the game, similar to NG^.",
 	["Ep"]: "Welcome to NG^, made by Naruyoko! This mode adds many buffs to features that can end up unbalancing the game significantly.",
 	["ER"]: "Welcome to Eternity Respecced, created by dan-simon! In this mode, Eternity is changed to be balanced better without any scaling. Note: The port is not complete on this site, so you should search for the separate website for the mod itself to get the latest version.",
@@ -219,10 +217,7 @@ function welcomeMods(mods) {
 		if (frag.includes("+3")) type.push("Ud+")
 		else type.push("Ud")
 	} else if (frag.includes("+3") && !frag.includes("GR")) {
-		if (!frag.includes("+4")) {
-			type.push("+3")
-			type.push("+P3R")
-		}
+		if (!frag.includes("+4")) type.push("+3")
 	} else if (frag.includes("+2")) type.push("+2")
 	else if (frag.includes("+1")) type.push("+1")
 

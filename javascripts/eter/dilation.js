@@ -40,7 +40,6 @@ function getBaseDTProduction(){
 
 function getDilTimeGainPerSecond() {
 	let gain = getBaseDTProduction()
-	if (brokeDilation()) gain = gain.div(tmp.bd.crEff)
 	return gain.times(pow2(getDilUpgPower(1)))	
 }
 
@@ -69,7 +68,6 @@ function getDilPower() {
 		if (hasAch("ng3p11")) ret = ret.times(Math.max(getTotalRG() / 125, 1))
 		if (player.masterystudies.includes("t264")) ret = ret.times(getMTSMult(264))
 		if (GUBought("br1")) ret = ret.times(getBR1Effect())
-		if (hasBDUpg(0)) ret = ret.mul(tmp.bd.upg_eff[0])
 	}
 	return ret
 }
@@ -523,7 +521,6 @@ function resetDilationGalaxies() {
 }
 
 function startDilatedEternity(auto) {
-	if (brokeDilation()) return
 	if (!player.dilation.studies.includes(1)) return
 
 	var onActive = !player.dilation.active
@@ -534,7 +531,6 @@ function startDilatedEternity(auto) {
 
 function updateDilationDisplay() {
 	if (el("dilation").style.display == "block" && el("eternitystore").style.display == "block") {
-		el("enabledilation").style.display = brokeDilation() ? "none" : ""
 		el("tachyonParticleAmount").textContent = shortenMoney(player.dilation.tachyonParticles)
 		el("dilatedTimeAmount").textContent = shortenMoney(player.dilation.dilatedTime)
 		el("dilatedTimePerSecond").textContent = "+" + shortenMoney(getDilTimeGainPerSecond()) + "/s"

@@ -241,7 +241,6 @@ function updateBosonicLabTab(){
 	if (el("bextab").style.display=="block") updateBosonExtractorTab()
 	if (el("butab").style.display=="block") updateBosonicUpgradeDescs()
 	if (el("wzbtab").style.display=="block") updateWZBosonsTab()
-	if (el("gravtab").style.display == "block") updateGravitonsTab()
 }
 
 function updateBosonicStuffCosts() {

@@ -255,13 +255,11 @@ function ngP3AchieveCheck(){
 	if (bigRipped()) {
 		let ableToGetRid7 = ableToGetRid2 && player.epmult.eq(1)
 		let ableToGetRid8 = ableToGetRid7 && !beSave.did
-		let ableToGetRid9 = ableToGetRid8 && noTree
 		if (player.currentEternityChall == "eterc7" && player.galaxies == 1 && player.money.log10() >= 8e7) giveAchievement("Time Immunity")
 		if (!player.timestudy.studies.includes(11) && player.timeShards.log10() >= 215) giveAchievement("You're not really smart.")
 		if (ableToGetRid7 && player.infinityPoints.log10() >= 3.5e5) giveAchievement("And so your life?")
 		if (beSave && beSave.eternalMatter.gte(9.999999e99)) giveAchievement("This achievement doesn't exist 4")
 		if (ableToGetRid8 && player.infinityPoints.log10() >= 9.5e5) giveAchievement("Please answer me why you are dying.")
-		if (ableToGetRid9 && player.infinityPoints.log10() >= 1.8e6) giveAchievement("Aren't you already dead?")
 		if (player.matter.log10() >= 5000) giveAchievement("Really?")
 	}
 	if (brSave.spaceShards.log10() >= 33 && !beSave.did) giveAchievement("Finite Time")
@@ -287,8 +285,6 @@ function ngP3AchieveCheck(){
 	if (ghSave.times >= Math.pow(Number.MAX_VALUE, 1/4)) giveAchievement("The Ghostliest Side")
 	if (player.money.log10() >= 1e18) giveAchievement("Meta-Quintillion")
 	if (player.unstableThisGhostify <= 10 && getTwoDecaysBool()) giveAchievement("... references to EC8?")
-
-	postNGp3AchsCheck()
 }
 
 function ALLACHIEVECHECK(){

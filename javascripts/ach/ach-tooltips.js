@@ -453,14 +453,13 @@ function setR21Tooltip(){
 	let radioDecay = el("Radioactive Decaying to the max!")
 	//ng3p76/////
 	//ng3p77/////
-	let arent = el("Aren't you already dead?")
+	//ng3p78/////
 
 	//ACHIEVEMENT ROW 21
 	uc.setAttribute('ach-tooltip', "Become a ghost with at least "+shortenCosts(pow10(2.2e5))+" EP without starting Eternity Challenge 10 while Big Ripped. Reward: Gain more 2x Photonic Sources.")
 	mi.setAttribute('ach-tooltip', "Get "+shorten(Number.MAX_VALUE)+" infinities. Reward: Gain Banked Infinities and Eternities on Quantum and Big Rip.")
 	wd.setAttribute('ach-tooltip', "Get "+shortenCosts(pow10(1e12))+" "+getUQNameFromDecays(2)+" quarks for each Branch without Big Ripping in this Fundament. Reward: Normal duplicant autobuyer buys max.")
 	radioDecay.setAttribute('ach-tooltip', "Get 10 total Radioactive Decays. Reward: Produce 1 galaxy worth of Neutrinos per second.")
-	arent.setAttribute('ach-tooltip', "Reach " + shortenCosts(pow10(1.8e6)) + " IP while dilated and Big Ripped and without having studies, EP mult upgrades, Tree Upgrades, and Break Eternity within this Fundament. Reward: Tree Upgrade 8 speeds up Nanofield.")
 }
 
 function setR22Tooltip(){
@@ -539,6 +538,5 @@ function setAchieveTooltip() {
 	if (mod.ngp3) {
 		setPreNGP3p1AchievementTooltip()
 		setNGP3p1AchievementTooltip()
-		setPostR23Tooltip()
 	}
 }

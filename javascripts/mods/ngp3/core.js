@@ -1,7 +1,7 @@
-//VERSION: 2.41R
-let ngp3_ver = 2.41
-let ngp3_build = 20230110
-function doPNGP3RUpdates() {
+//VERSION: 2.31
+let ngp3_ver = 2.31
+let ngp3_build = 20230111
+function doNGP3Updates() {
 	if (!aarMod.ngp3_build) aarMod.ngp3_build = 0
 	if (aarMod.ngp3_build < 20221230) quSave.multPower = 0
 	aarMod.newGame3PlusVersion = ngp3_ver
@@ -540,28 +540,11 @@ var ngp3Features = {
 	bl: {
 		name: "Bosonic Lab",
 		threshold: () => "Get 4 Spectral Ions",
-		next: "gw",
 		tab() {
 			showTab("ghostify")
 			showGhostifyTab('bltab')
 		}
-	},
-	gw: {
-		name: "Gravity Well",
-		threshold: () => "Get " + shortenCosts(pow10(1e18)) + " antimatter",
-		next: "an",
-		tab() {
-			showTab("bltab")
-			showBLTab('gravtab')
-		}
-	},
-	an: {
-		name: "Annihilation",
-		threshold: () => "Get " + shortenCosts(pow10(4e12)) + " antimatter in Big Rip",
-		tab() {
-			toAnniTab()
-		}
-	},
+	}
 }
 
 function ngp3_feature_notify(k) {
@@ -612,9 +595,6 @@ function ngp3_feature_notify(k) {
 //v2.4: Moved from old functions...
 function doPerSecondNGP3Stuff(){
 	if (!mod.ngp3) return
-
-	//Post-NG+3
-	doPostNGP3UnlockStuff()
 
 	//NG+3: Automators
 	automatorPerSec()

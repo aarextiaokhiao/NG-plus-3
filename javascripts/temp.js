@@ -10,7 +10,6 @@ function updateTemp() {
 	if (player.timestudy.studies.includes(101)) tmp.nrm = player.replicanti.amount.max(1)
 	tmp.rg4 = false
 	if (mod.ngp3) {
-		updatePostNGp3TempStuff()
 		updateGhostifyTempStuff()
 		if (beSave && beSave.unlocked) updateBreakEternityUpgradesTemp()
 		if (player.masterystudies.includes("d14")) updateBigRipUpgradesTemp()
@@ -383,10 +382,6 @@ function updateBreakEternityUpgradesTemp() {
 		updateBreakEternityUpgrade8Temp()
 		updateBreakEternityUpgrade9Temp()
 		updateBreakEternityUpgrade10Temp()
-	}
-
-	if (ghSave.breakDilation.unl) {
-		updateBreakEternityUpgrade11Temp()
 	}
 }
 
