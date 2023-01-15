@@ -45,6 +45,10 @@ function point(x, y, ctz){
 }
 
 const ANIMATIONS = {
+	gSac: {
+		unl: _ => inNGM(2) && (player.galacticSacrifice.times > 0 ||player.infinities > 0 || getEternitied() > 0 || quantumed),
+		title: "Galactic Sacrifice"
+	},
 	bigCrunch: {
 		unl: _ => player.infinities > 0 || getEternitied() > 0 || quantumed,
 		title: "Big Crunch"
@@ -302,7 +306,7 @@ function drawStudyTree() {
     drawTreeBranch("dilstudy3", "dilstudy4")
     drawTreeBranch("dilstudy4", "dilstudy5")
     if (mod.ngpp) drawTreeBranch("dilstudy5", "dilstudy6")
-    if (player.masterystudies) drawTreeBranch("dilstudy6", "masteryportal")
+    if (mod.ngp3) drawTreeBranch("dilstudy6", "masteryportal")
     if (shiftDown && el("eternitystore").style.display !== "none" && el("timestudies").style.display !== "none") {
         for (i=0; i<all.length; i++) {
             var start = el(all[i]).getBoundingClientRect();

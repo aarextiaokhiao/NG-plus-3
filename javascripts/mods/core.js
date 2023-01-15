@@ -236,11 +236,11 @@ function welcomeMods(mods) {
 	return msgs
 }
 
-function modAbbs(mods = mod) {
+function modAbbs(mods = mod, short) {
 	let r = "NG"
 	let end = ""
 
-	if (mods.rs) r = "Eternity Respecced"
+	if (mods.rs) r = short ? "ER" : "Eternity Respecced"
 
 	if (mods.ngud) {
 		r += "Ud"
@@ -268,5 +268,5 @@ function modAbbs(mods = mod) {
 	if (ngpRecommended(mods)) end += (mods.ngpp == 2 ? ", The Grand Run" : ", No NG+")
 	if (mods.aau) end += ", AAU"
 
-	return r + end
+	return r + (short ? "" : end)
 }

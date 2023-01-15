@@ -585,7 +585,7 @@ let PRESTIGES = {
 		modReq: _ => inNGM(2),
 		prequsite: _ => false,
 		reached: _ => getGSAmount().gt(0),
-		got: _ => player.galacticSacrifice.times > 0 || player.infinitied > 0 || getEternitied() > 0,
+		got: _ => player.galacticSacrifice.times > 0 || player.infinitied > 0 || getEternitied() > 0 || quantumed,
 	},
 	inf: {
 		modReq: _ => true,

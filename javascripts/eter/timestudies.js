@@ -373,7 +373,7 @@ function respecTimeStudies(force, presetLoad) {
 	var respecTime = player.respec || (force && (presetLoad || player.eternityChallUnlocked < 13))
 	var respecMastery = false
 	var gotAch = respecTime || player.timestudy.studies.length < 1
-	if (player.masterystudies) {
+	if (mod.ngp3) {
 		respecMastery=player.respecMastery||force
 		gotAch=gotAch&&(respecMastery||player.masterystudies.length<1)
 		delete quSave.autoECN
@@ -392,7 +392,7 @@ function respecTimeStudies(force, presetLoad) {
 					gotAch=false
 				}
 			}
-			if (player.masterystudies) if (player.timestudy.studies.length>1) quSave.wasted = false
+			if (mod.ngp3 && player.timestudy.studies.length>1) quSave.wasted = false
 			player.timestudy.studies = bru7activated ? [192] : []
 			var ECCosts = [null, 30, 35, 40, 70, 130, 85, 115, 115, 415, 550, 1, 1]
 			player.timestudy.theorem += ECCosts[player.eternityChallUnlocked]
@@ -464,7 +464,7 @@ function exportStudyTree() {
 
 	parent.style.display = "";
 	var mtsstudies=[]
-	if (player.masterystudies) {
+	if (mod.ngp3) {
 		for (id = 0; id < player.masterystudies.length; id++) {
 			var t = player.masterystudies[id].split("t")[1]
 			if (t) mtsstudies.push(t)
@@ -506,7 +506,7 @@ function importStudyTree(input) {
 		var earlyDLStudies = []
 		var laterDLStudies = []
 		var oldLength = player.timestudy.length
-		if (player.masterystudies) var oldLengthMS = player.masterystudies.length
+		if (mod.ngp3) var oldLengthMS = player.masterystudies.length
 		for (var i = 0; i < studiesToBuy.length; i++) {
 			var study=parseInt(studiesToBuy[i])
 			if ((study < 120 || study > 150 || (secondSplitPick < 1 || study % 10 == secondSplitPick)) && (study < 220 || study > 240 || earlyDLStudies.includes(study + (study % 2 > 0 ? - 1 : 1)))) {
@@ -556,7 +556,7 @@ function new_preset(importing) {
 		var input=l.join('/');
 	} else {
 		var mtsstudies=[]
-		if (player.masterystudies) {
+		if (mod.ngp3) {
 			for (var id = 0; id < player.masterystudies.length; id++) {
 				var t = player.masterystudies[id].split("t")[1]
 				if (t) mtsstudies.push(t)

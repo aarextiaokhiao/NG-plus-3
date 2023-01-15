@@ -152,12 +152,14 @@ function galacticSacrifice(auto, force, chall) {
 		updateChallengeTimes()
 		updateAutobuyers()
 	}
-	GPminpeak = E(0)
-	player.galacticSacrifice.time = 0
-	doReset("galSac")
+
+	if (!auto && !force && isAnimationOn("gSac")) {
+		doGalSacAni()
+		setTimeout(() => doReset("galSac"), 1000)
+	} else doReset("galSac")
 }
 
-function resetGalacticSacrifice(eternity) {
+function resetGalacticSacrificeData(eternity) {
 	return inNGM(2) ? {
 		galaxyPoints: hasAch("r33") && !eternity ? player.infinityPoints.div(10).pow(2) : E(0),
 		time: 0,
@@ -173,7 +175,7 @@ function newGalacticDataOnInfinity(eternity) {
 		if (inNGM(3)) data.times = 0
 		data.time = 0
 		return data
-	} else return resetGalacticSacrifice()
+	} else return resetGalacticSacrificeData()
 }
 
 function isIC3Trapped() {
@@ -398,10 +400,6 @@ function upgradeSacAutobuyer() {
 		if (player.autoSacrifice.interval > 120) player.autoSacrifice.cost *= 2; // if your last purchase wont be very strong, dont double the cost
 	}
 	updateAutobuyers();
-}
-
-el("buyerBtnGalSac").onclick = function () {
-	buyAutobuyer(12);
 }
 
 //v1.4

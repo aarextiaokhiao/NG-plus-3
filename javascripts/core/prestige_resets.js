@@ -95,12 +95,19 @@ let RESETS = {
 	},
 	inf: {
 		doReset(order) {
-			if (isEmptiness) showTab("dimensions")
-			if (inNGM(2)) player.galacticSacrifice = newGalacticDataOnInfinity(order != "inf")
-			player.infinityPower = E(1)
 			player.thisInfinityTime = 0
 			IPminpeak = E(0)
 			Marathon2 = 0
+
+			if (isEmptiness) showTab("dimensions")
+			if (inNGM(2)) player.galacticSacrifice = newGalacticDataOnInfinity(order != "inf")
+			player.infinityPower = E(1)
+
+			let keepRep = hasAch("r95")
+			if (!keepRep) player.replicanti.amount = E(1)
+
+			let keepRepGal = speedrunMilestonesReached >= 28 || hasAch("ng3p67")
+			if (!keepRepGal) player.replicanti.galaxies = (order == "inf" && player.timestudy.studies.includes(33)) ? Math.floor(player.replicanti.galaxies / 2) : 0
 		}
 	},
 	eter: {
@@ -126,11 +133,7 @@ let RESETS = {
 			player.challenges = challengesCompletedOnEternity()
 			updateChallenges()
 
-			if (getEternitied() < 2) {
-				player.autobuyers = []
-				for (var i = 1; i <= getTotalNormalChallenges() + 1; i++) player.autobuyers.push(i)
-				player.break = false
-			}
+			if (getEternitied() < 2) player.break = false
 			updateAutobuyers()
 
 			if (getEternitied() <= 20) {
@@ -161,11 +164,12 @@ let RESETS = {
 			if (!hasAch("ng3p67") || player.dilation.active) {
 				let keepPartial = mod.ngp3 && player.dilation.upgrades.includes("ngpp3") && getEternitied() >= 2e10
 				player.replicanti.chance = keepPartial ? Math.min(player.replicanti.chance, 1) : 0.01
-				player.replicanti.interval = keepPartial ? Math.max(player.replicanti.interval, player.timestudy.studies.includes(22) ? 1 : 50) : 1000
-				player.replicanti.gal = 0
 				player.replicanti.chanceCost = E_pow(1e15, player.replicanti.chance * 100).times(inNGM(2) ? 1e75 : 1e135)
+				player.replicanti.interval = keepPartial ? Math.max(player.replicanti.interval, player.timestudy.studies.includes(22) ? 1 : 50) : 1000
 				player.replicanti.intervalCost = E_pow(1e10, Math.round(Math.log10(1000 / player.replicanti.interval) / -Math.log10(0.9))).times(inNGM(2) ? 1e80 : 1e140)
+				player.replicanti.gal = 0
 				player.replicanti.galCost = E(inNGM(2) ? 1e110 : 1e170)
+				player.replicanti.galaxies = 0
 			}
 			if (getEternitied() < 3) player.replicanti.galaxybuyer = undefined
 
@@ -222,7 +226,10 @@ let RESETS = {
 			player.epmult = E(1)
 			player.epmultCost = E(5)
 
-			if (mod.ngp3 && (!isRewardEnabled(3) || bigRip)) player.eternityChalls = challengesCompletedOnEternity(bigRip)
+			if (bigRip ? !hasRipUpg(2) : !isRewardEnabled(3)) {
+				player.eternityChalls = {}
+				updateEternityChallenges()
+			}
 			player.eternityChallGoal = E(Number.MAX_VALUE)
 			player.currentEternityChall = ""
 			player.eternityChallUnlocked = isRewardEnabled(11) ? player.eternityChallUnlocked : 0

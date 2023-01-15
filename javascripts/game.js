@@ -24,67 +24,23 @@ var gameSpeed = 1
 
 //TO-DO: Move setup into another file.
 function setupAutobuyerHTMLandData(){
-	el("buyerBtn" + 1).onclick = function () { 
-		buyAutobuyer(1 - 1);
+	for (let [i, key] of Object.entries(autoBuyerKeys)) {
+		el("ab_" + key + "_upg").onclick = () => buyAutobuyer(i)
 	}
 
-	el("buyerBtn" + 2).onclick = function () { 
-		buyAutobuyer(2 - 1);
-	}
-
-	el("buyerBtn" + 3).onclick = function () { 
-		buyAutobuyer(3 - 1);
-	}
-
-	el("buyerBtn" + 4).onclick = function () { 
-		buyAutobuyer(4 - 1);
-	}
-
-	el("buyerBtn" + 5).onclick = function () { 
-		buyAutobuyer(5 - 1);
-	}
-
-	el("buyerBtn" + 6).onclick = function () { 
-		buyAutobuyer(6 - 1);
-	}
-
-	el("buyerBtn" + 7).onclick = function () { 
-		buyAutobuyer(7 - 1);
-	}
-
-	el("buyerBtn" + 8).onclick = function () { 
-		buyAutobuyer(8 - 1);
-	}
-
-	el("buyerBtnTickSpeed").onclick = function () {
-		buyAutobuyer(8);
-	}
-
-	el("buyerBtnDimBoost").onclick = function () {
-		buyAutobuyer(9);
-	}
-
-	el("buyerBtnGalaxies").onclick = function () {
-		buyAutobuyer(10);
-	}
-
-	el("buyerBtnInf").onclick = function () {
-		buyAutobuyer(11);
-	}
-
-	for (let abnum = 1; abnum <= 8; abnum ++){
-		el("toggleBtn" + abnum).onclick = function () {
-			toggleAutobuyerTarget(abnum)
+	for (let abdim = 1; abdim <= 8; abdim ++){
+		el("ab_d" + abdim + "_toggle").onclick = function () {
+			toggleAutobuyerTarget(abdim)
 		}
 	}
 
-	el("toggleBtnTickSpeed").onclick = function () {
+	el("ab_ts_toggle").onclick = function () {
 		if (player.autobuyers[8].target == 1) {
 			player.autobuyers[8].target = 10
-			el("toggleBtnTickSpeed").textContent = "Buys max"
+			el("ab_ts_toggle").textContent = "Buys max"
 		} else {
 			player.autobuyers[8].target = 1
-			el("toggleBtnTickSpeed").textContent = "Buys singles"
+			el("ab_ts_toggle").textContent = "Buys singles"
 		}
 	}
 }
@@ -410,7 +366,8 @@ function showTab(tabName, init) {
 
 
 function updateMoney() {
-	el("z").textContent = "AD: NG+3 | " + shortenMoney(player.money) + (player.money.e >= 1e6 ? "" : " antimatter")
+	let abbs = modAbbs(mod, true)
+	el("z").textContent = (abbs.length > 8 ? "" : "AD: ") + abbs + " | " + shortenMoney(player.money) + (player.money.e >= 1e6 ? "" : " antimatter")
 	el("coinAmount").textContent = shortenMoney(player.money)
 
 	var element2 = el("matter");
@@ -548,7 +505,7 @@ function checkICID(name) {
 
 function updateEternityChallenges() {
 	tmp.ec=0
-	var locked = true
+	var locked=!quantumed
 	for (ec=1;ec<15;ec++) {
 		var property = "eterc"+ec 
 		var ecdata = player.eternityChalls[property]
@@ -568,9 +525,9 @@ function updateEternityChallenges() {
 		el(property).textContent=onchallenge?"Running":"Start"
 		el(property).className=onchallenge?"onchallengebtn":"challengesbtn"
 	}
-	el("eterctabbtn").parentElement.style.display = locked?"none":""
-	el("autoEC").style.display=quantumed&&mod.ngp3?"inline-block":"none"
-	if (quantumed&&mod.ngp3) el("autoEC").className=quSave.autoEC?"timestudybought":"storebtn"
+	el("eterctabbtn").parentElement.style.display=locked?"none":""
+	el("autoEC").style.display=quantumed?"inline-block":"none"
+	if (quantumed) el("autoEC").className=quSave.autoEC?"timestudybought":"storebtn"
 }
 
 function glowText(id) {
@@ -1067,203 +1024,105 @@ el("sacrifice").onclick = function () {
 }
 
 var ndAutobuyersUsed = 0
+var autoBuyers = {
+	d1: {
+		interval: _ => 1500,
+	},
+	d2: {
+		interval: _ => 2000,
+	},
+	d3: {
+		interval: _ => 2500,
+	},
+	d4: {
+		interval: _ => 3000,
+	},
+	d5: {
+		interval: _ => 4000,
+	},
+	d6: {
+		interval: _ => 5000,
+	},
+	d7: {
+		interval: _ => 6000,
+	},
+	d8: {
+		interval: _ => 7500,
+	},
+	ts: {
+		interval: _ => 5000,
+	},
+	db: {
+		interval: _ => 8000,
+	},
+	gal: {
+		interval: _ => inNGM(2) ? 60000 : 15000,
+	},
+	inf: {
+		interval: _ => inNGM(2) ? 60000 : 300000,
+	},
+	sac: {
+		interval: _ => inNGM(2) ? 15000 : 100,
+	},
+	gSac: {
+		interval: _ => 15000,
+	},
+	tsb: {
+		interval: _ => 15000,
+	},
+	tdb: {
+		interval: _ => 15000,
+	}
+}
+var autoBuyerKeys = []
+for (var i of Object.keys(autoBuyers)) autoBuyerKeys.push(i)
+
 function updateAutobuyers() {
-	var autoBuyerDim1 = new Autobuyer(1)
-	var autoBuyerDim2 = new Autobuyer(2)
-	var autoBuyerDim3 = new Autobuyer(3)
-	var autoBuyerDim4 = new Autobuyer(4)
-	var autoBuyerDim5 = new Autobuyer(5)
-	var autoBuyerDim6 = new Autobuyer(6)
-	var autoBuyerDim7 = new Autobuyer(7)
-	var autoBuyerDim8 = new Autobuyer(8)
-	var autoBuyerDimBoost = new Autobuyer(9)
-	var autoBuyerGalaxy = new Autobuyer(el("secondSoftReset"))
-	var autoBuyerTickspeed = new Autobuyer(el("tickSpeed"))
-	var autoBuyerInf = new Autobuyer(el("bigcrunch"))
-	var autoSacrifice = new Autobuyer(13)
-
-	if (mod.ngep) {
-		autoBuyerDim1.interval = 1000
-		autoBuyerDim2.interval = 1000
-		autoBuyerDim3.interval = 1000
-		autoBuyerDim4.interval = 1000
-		autoBuyerDim5.interval = 1000
-		autoBuyerDim6.interval = 1000
-		autoBuyerDim7.interval = 1000
-		autoBuyerDim8.interval = 1000
-	} else {
-		autoBuyerDim1.interval = 1500
-		autoBuyerDim2.interval = 2000
-		autoBuyerDim3.interval = 2500
-		autoBuyerDim4.interval = 3000
-		autoBuyerDim5.interval = 4000
-		autoBuyerDim6.interval = 5000
-		autoBuyerDim7.interval = 6000
-		autoBuyerDim8.interval = 7500
-	}
-	autoBuyerDim1.tier = 1
-	autoBuyerDim2.tier = 2
-	autoBuyerDim3.tier = 3
-	autoBuyerDim4.tier = 4
-	autoBuyerDim5.tier = 5
-	autoBuyerDim6.tier = 6
-	autoBuyerDim7.tier = 7
-	autoBuyerDim8.tier = 8
-	autoBuyerTickSpeed.tier = 9
-
-	autoBuyerDimBoost.interval = 8000
-	autoBuyerGalaxy.interval = inNGM(2) ? 6e4 : 1.5e4
-	autoBuyerTickspeed.interval = 5000
-	autoBuyerInf.interval = inNGM(2) ? 6e4 : 3e5
-	if (player.boughtDims) {
-		autoBuyerInf.requireMaxReplicanti = false
-		autoBuyerInf.requireIPPeak = false
-	}
-
-	autoSacrifice.interval = inNGM(2) ? 1.5e4 : 100
-	autoSacrifice.priority = 5
-	
-	if (inNGM(2)) {
-		var autoGalSacrifice = new Autobuyer(14)
-		autoGalSacrifice.interval = 1.5e4
-		autoGalSacrifice.priority = 5
-	}
-	if (inNGM(3)) {
-		var autoTickspeedBoost = new Autobuyer(15)
-		autoTickspeedBoost.interval = 1.5e4
-		autoTickspeedBoost.priority = 5
-	}
-	if (inNGM(4)) {
-		var autoTDBoost = new Autobuyer(16)
-		autoTDBoost.interval = 15e3
-		autoTDBoost.priority = 5
-		autoTDBoost.overXGals = 0
-	}
-
 	var intervalUnits = player.infinityUpgrades.includes("autoBuyerUpgrade") ? 1/2000 : 1/1000
-	if (player.challenges.includes("challenge1")) {
-		if (player.autobuyers[0] % 1 === 0) player.autobuyers[0] = autoBuyerDim1
-		el("autoBuyer1").style.display = "inline-block"
-	} else el("autoBuyer1").style.display = "none"
-	if (player.challenges.includes("challenge2")) {
-		if (player.autobuyers[1] % 1 === 0) player.autobuyers[1] = autoBuyerDim2
-		el("autoBuyer2").style.display = "inline-block"
-	} else el("autoBuyer2").style.display = "none"
-	if (player.challenges.includes("challenge3")) {
-		if (player.autobuyers[2] % 1 === 0) player.autobuyers[2] = autoBuyerDim3
-		el("autoBuyer3").style.display = "inline-block"
-	} else el("autoBuyer3").style.display = "none"
-	if (player.challenges.includes("challenge4")) {
-		if (player.autobuyers[9] % 1 === 0) player.autobuyers[9] = autoBuyerDimBoost
-		el("autoBuyerDimBoost").style.display = "inline-block"
-		el("intervalDimBoost").textContent = "Current interval: " + (player.autobuyers[9].interval * intervalUnits).toFixed(2) + " seconds"
-	} else {
-		el("autoBuyerDimBoost").style.display = "none"
-		el("buyerBtnDimBoost").style.display = ""
-	}
-	if (player.challenges.includes("challenge5")) {
-		if (player.autobuyers[8] % 1 === 0) player.autobuyers[8] = autoBuyerTickspeed
-		el("autoBuyerTickSpeed").style.display = "inline-block"
-		el("intervalTickSpeed").textContent = "Current interval: " + (player.autobuyers[8].interval * intervalUnits).toFixed(2) + " seconds"
-		if (player.autobuyers[8].interval <= 100) {
-			el("buyerBtnTickSpeed").style.display = "none"
-			el("toggleBtnTickSpeed").style.display = "inline-block"
-			maxedAutobuy++;
-		}
-	} else {
-		el("autoBuyerTickSpeed").style.display = "none"
-		el("buyerBtnTickSpeed").style.display = ""
-	}
-	if (player.challenges.includes("challenge6")) {
-		if (player.autobuyers[4] % 1 === 0) player.autobuyers[4] = autoBuyerDim5
-		el("autoBuyer5").style.display = "inline-block"
-	} else el("autoBuyer5").style.display = "none"
-	if (player.challenges.includes("challenge7")) {
-		if (player.autobuyers[11] % 1 === 0) player.autobuyers[11] = autoBuyerInf
-		el("autoBuyerInf").style.display = "inline-block"
-		el("intervalInf").textContent = "Current interval: " + (player.autobuyers[11].interval * intervalUnits).toFixed(2) + " seconds"
-		if (player.autobuyers[11].interval <= 100) {
-			el("buyerBtnInf").style.display = "none"
-			maxedAutobuy++
-		}
-	} else {
-		el("autoBuyerInf").style.display = "none"
-		el("buyerBtnInf").style.display = ""
-	}
-	if (player.challenges.includes("challenge8")) {
-		if (player.autobuyers[3] % 1 === 0) player.autobuyers[3] = autoBuyerDim4
-		el("autoBuyer4").style.display = "inline-block"
-	} else el("autoBuyer4").style.display = "none"
-	if (player.challenges.includes("challenge9")) {
-		if (player.autobuyers[6] % 1 === 0) player.autobuyers[6] = autoBuyerDim7
-		el("autoBuyer7").style.display = "inline-block"
-	} else el("autoBuyer7").style.display = "none"
-	if (player.challenges.includes("challenge10")) {
-		if (player.autobuyers[5] % 1 === 0) player.autobuyers[5] = autoBuyerDim6
-		el("autoBuyer6").style.display = "inline-block"
-	} else el("autoBuyer6").style.display = "none"
-	if (player.challenges.includes("challenge11")) {
-		if (player.autobuyers[7] % 1 === 0) player.autobuyers[7] = autoBuyerDim8
-		el("autoBuyer8").style.display = "inline-block"
-	} else el("autoBuyer8").style.display = "none"
-	if (player.challenges.includes("challenge12")) {
-		if (player.autobuyers[10] % 1 === 0) player.autobuyers[10] = autoBuyerGalaxy
-		el("autoBuyerGalaxies").style.display = "inline-block"
-		el("buyerBtnGalaxies").style.display = ""
-		el("intervalGalaxies").textContent = "Current interval: " + (player.autobuyers[10].interval * intervalUnits).toFixed(2) + " seconds"
-	} else el("autoBuyerGalaxies").style.display = "none"
-	if (player.challenges.includes("postc2") || player.challenges.includes("challenge13")) {
-		if (player.autoSacrifice % 1 === 0) player.autoSacrifice = autoSacrifice
-		el("autoBuyerSac").style.display = "inline-block"
-		el("buyerBtnSac").style.display = ""
-		el("intervalSac").textContent = "Current interval: " + (player.autoSacrifice.interval * intervalUnits).toFixed(2) + " seconds"
-		if (player.autoSacrifice.interval <= 100) {
-			el("buyerBtnSac").style.display = "none"
-			if (inNGM(2)) maxedAutobuy++;
-		}
-	} else el("autoBuyerSac").style.display = "none"
-	if (player.challenges.includes("challenge14")) {
-		if (player.autobuyers[12] % 1 === 0) player.autobuyers[12] = autoGalSacrifice
-		el("autoBuyerGalSac").style.display = "inline-block"
-		el("buyerBtnGalSac").style.display = ""
-		el("intervalGalSac").textContent = "Current interval: " + (player.autobuyers[12].interval * intervalUnits).toFixed(2) + " seconds"
-	} else el("autoBuyerGalSac").style.display = "none"
-	if (player.challenges.includes("challenge15")) {
-		if (player.autobuyers[13] % 1 === 0) player.autobuyers[13] = autoTickspeedBoost
-		el("autoBuyerTickspeedBoost").style.display = "inline-block"
-		el("buyerBtnTickspeedBoost").style.display = ""
-		el("intervalTickspeedBoost").textContent = "Current interval: " + (player.autobuyers[13].interval * intervalUnits).toFixed(2) + " seconds"
-	} else el("autoBuyerTickspeedBoost").style.display = "none"
-	if (player.challenges.includes("challenge16")) {
-		if (player.autobuyers[14] % 1 === 0) player.autobuyers[14] = autoTDBoost
-		el("autoTDBoost").style.display = "inline-block"
-		el("intervalTDBoost").textContent = "Current interval: " + (player.autobuyers[14].interval * intervalUnits).toFixed(2) + " seconds"
-		el("buyerBtnTDBoost").style.display = ""
-	} else el("autoTDBoost").style.display = "none"
+	var maxedAutobuy
+	var e100autobuy
 
-	el("autoBuyerEter").style.display = getEternitied() >= 100 ? "inline-block" : "none"
+	for (let [i, key] of Object.entries(autoBuyerKeys)) {
+		i = parseInt(i) + 1
 
-	for (var tier = 1; tier <= 8; ++tier) el("interval" + tier).textContent = "Current interval: " + (player.autobuyers[tier-1].interval * intervalUnits).toFixed(2) + " seconds"
+		let ab_data = autoBuyers[key]
+		let ab = new Autobuyer(i)
 
-	var maxedAutobuy = 0;
-	var e100autobuy = 0;
-	var currencyEnd = inNGM(4) ? " GP" : " IP"
-	for (let tier = 1; tier <= 8; ++tier) {
-		el("toggleBtn" + tier).style.display = "inline-block";
-		if (player.autobuyers[tier-1].bulk >= 1e100) {
-			player.autobuyers[tier-1].bulk = 1e100;
-			el("buyerBtn" + tier).textContent = shortenDimensions(player.autobuyers[tier-1].bulk)+"x bulk purchase";
-			e100autobuy++;
-		} else {
-			if (player.autobuyers[tier-1].interval <= 100) {
-				if (player.autobuyers[tier-1].bulk * 2 >= 1e100) {
-					el("buyerBtn" + tier).innerHTML = shortenDimensions(1e100)+"x bulk purchase<br>Cost: " + shortenDimensions(player.autobuyers[tier-1].cost) + currencyEnd;
-				} else {
-					el("buyerBtn" + tier).innerHTML = shortenDimensions(player.autobuyers[tier-1].bulk*2)+"x bulk purchase<br>Cost: " + shortenDimensions(player.autobuyers[tier-1].cost) + currencyEnd;
-				}
-				maxedAutobuy++;
+		ab.interval = tmp.ngep ? 1e3 : ab_data.interval()
+		if (key[0] == "d") ab.bulk = 1
+		ab.cost = 1
+		ab.priority = i
+
+		var unl = player.challenges.includes("challenge" + challOrder[i])
+		if (i == 13) unl = unl || player.challenges.includes("postc2")
+
+		//Player
+		var ret = i
+		if (unl) {
+			ret = i > 13 ? player.autobuyers[i-2] : i == 13 ? player.autoSacrifice : player.autobuyers[i-1]
+			if (!(ret % 1 !== 0)) ret = ab
+			if (ret === undefined) ret = ab
+			if (ret && ret.interval < 100) ret.interval = 100
+		}
+
+		if (i > 13 && i <= getTotalNormalChallenges() + 1) player.autobuyers[i-2] = ret
+		else if (i == 13) player.autoSacrifice = ret
+		else if (i < 13) player.autobuyers[i-1] = ret
+
+		//HTML
+		let currencyEnd = key != "inf" && inNGM(4) ? " GP" : " IP"
+		el("ab_" + key).style.display = unl ? "inline-block" : ""
+		if (unl) {
+			el("ab_" + key + "_int").innerHTML = "Current interval: " + (ret.interval * intervalUnits).toFixed(2) + " seconds"
+			el("ab_" + key + "_upg").innerHTML = "40% smaller interval<br>Cost: " + shortenDimensions(ret.cost) + currencyEnd
+			el("ab_" + key + "_upg").style.display = ret.interval == 100 ? "none" : ""
+
+			if (ret.interval == 100) maxedAutobuy++
+			if (i <= 8 && ret.interval == 100 && ret.bulk < 1e100) {
+				el("ab_" + key + "_upg").innerHTML = shortenDimensions(ret.bulk*2)+"x bulk purchase<br>Cost: " + shortenDimensions(ret.cost) + currencyEnd
+				el("ab_" + key + "_upg").style.display = ""
 			}
-			else el("buyerBtn" + tier).innerHTML = "40% smaller interval <br>Cost: " + shortenDimensions(player.autobuyers[tier-1].cost) + currencyEnd
+			if (ret.bulk >= 1e100) e100autobuy++
 		}
 	}
 
@@ -1281,57 +1140,11 @@ function updateAutobuyers() {
 		el("break").textContent = "BREAK INFINITY"
 	}
 
-		if (inNGM(2)) if (player.autobuyers[12].interval <= 100) {
-			el("buyerBtnGalSac").style.display = "none"
-			maxedAutobuy++;
-		}
-		if (inNGM(3)) if (player.autobuyers[13].interval <= 100) {
-			el("buyerBtnTickspeedBoost").style.display = "none"
-			maxedAutobuy++;
-		}
-		if (inNGM(4)) if (player.autobuyers[14].interval <= 100) {
-			el("buyerBtnTDBoost").style.display = "none"
-			maxedAutobuy++;
-		}
-
-	el("buyerBtnTickSpeed").innerHTML = "40% smaller interval <br>Cost: " + player.autobuyers[8].cost + currencyEnd
-	el("buyerBtnDimBoost").innerHTML = "40% smaller interval <br>Cost: " + player.autobuyers[9].cost + currencyEnd
-	el("buyerBtnGalaxies").innerHTML = "40% smaller interval <br>Cost: " + player.autobuyers[10].cost + currencyEnd
-	el("buyerBtnInf").innerHTML = "40% smaller interval <br>Cost: " + player.autobuyers[11].cost + " IP"
-	el("buyerBtnSac").innerHTML = "40% smaller interval <br>Cost: " + player.autoSacrifice.cost + currencyEnd
-	if (player.autobuyers[9].interval <= 100) {
-		el("buyerBtnDimBoost").style.display = "none"
-		maxedAutobuy++;
-	}
-	if (player.autobuyers[10].interval <= 100) {
-		el("buyerBtnGalaxies").style.display = "none"
-		maxedAutobuy++;
-	}
-	if (inNGM(2)) el("buyerBtnGalSac").innerHTML = "40% smaller interval <br>Cost: " + player.autobuyers[12].cost + currencyEnd
-	if (inNGM(3)) el("buyerBtnTickspeedBoost").innerHTML = "40% smaller interval <br>Cost: " + player.autobuyers[13].cost + currencyEnd
-	if (inNGM(4)) el("buyerBtnTDBoost").innerHTML = "40% smaller interval <br>Cost: " + player.autobuyers[14].cost + currencyEnd
-
 	if (maxedAutobuy >= 9) giveAchievement("Age of Automation");
 	if (maxedAutobuy >= getTotalNormalChallenges() + 1) giveAchievement("Definitely not worth it");
 	if (e100autobuy >= 8) giveAchievement("Professional bodybuilder");
 
-	for (var i=1; i<=12; i++) {
-		player.autobuyers[i-1].isOn = el(i + "ison").checked;
-	}
-
-	player.autoSacrifice.isOn = el("13ison").checked
-	if (inNGM(2)) {
-		if (player.autobuyers[12]%1 !== 0) el("autoBuyerGalSac").style.display = "inline-block"
-		player.autobuyers[12].isOn = el("14ison").checked
-	}
-	if (inNGM(3)) {
-		if (player.autobuyers[13]%1 !== 0) el("autoBuyerTickspeedBoost").style.display = "inline-block"
-		player.autobuyers[13].isOn = el("15ison").checked
-	}
-	if (inNGM(4)) {
-		if (player.autobuyers[14]%1 !== 0) el("autoTDBoost").style.display = "inline-block"
-		player.autobuyers[14].isOn = el("16ison").checked
-	}
+	el("autoBuyerEter").style.display = getEternitied() >= 100 ? "inline-block" : "none"
 	player.eternityBuyer.isOn = el("eternityison").checked
 	if (mod.ngp3) {
 		player.eternityBuyer.dilationMode = el("dilatedeternityison").checked
@@ -1343,7 +1156,9 @@ function updateAutobuyers() {
 		}
 		if (quSave && quSave.autobuyer) quSave.autobuyer.enabled = el("quantumison").checked
 	}
-	priorityOrder()
+
+	loadAutoBuyerSettings()
+
 	ndAutobuyersUsed=0
 	for (i = 0; i < 9; i++) if (player.autobuyers[i] % 1 !== 0 && player.autobuyers[i].isOn) ndAutobuyersUsed++
 	el("maxall").style.display=ndAutobuyersUsed>8&&player.challenges.includes("postc8") ? "none" : ""
@@ -1792,7 +1607,6 @@ function eternity(force, auto, dil, presetLoad) {
 	if (player.eternities == 1 && !quantumed) {
 		showTab("dimensions")
 		showDimTab("timedimensions")
-		loadAutoBuyerSettings()
 	}
 
 	if (mod.ngp3) {
@@ -1849,7 +1663,7 @@ function exitChallenge() {
 		updateEternityChallenges();
 		return
 	}
-	if (mod.ngp3) if (!inQC(0)) quantum(false, true, 0)
+	if (mod.ngp3 && !inQC(0)) quantum(false, true, 0)
 }
 
 function onChallengeFail() {
@@ -3318,7 +3132,7 @@ function dimBoostABTick(){
 
 var timer = 0
 function autoBuyerTick() {
-	if (mod.ngp3) if (speedrunMilestonesReached>22&&quSave.autobuyer.enabled&&!bigRipped()) autoQuantumABTick()
+	if (mod.ngp3 && speedrunMilestonesReached>22&&quSave.autobuyer.enabled&&!bigRipped()) autoQuantumABTick()
 	
 	if (getEternitied() >= 100 && isEterBuyerOn()) autoEternityABTick()
 

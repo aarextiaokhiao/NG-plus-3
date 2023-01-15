@@ -25,7 +25,7 @@ function dimBoost(bulk, tier=1) {
 	if (tmp.ri) return
 
 	player.resets += bulk;
-	if (player.masterystudies) if (player.resets > 4) player.old = false
+	if (mod.ngp3 && player.resets > 4) player.old = false
 	if (inNC(14) && !inNGM(3)) player.tickBoughtThisInf.pastResets.push({resets: player.resets, bought: player.tickBoughtThisInf.current})
 	if (mod.ngp3 && getEternitied() >= 1e9 && player.dilation.upgrades.includes("ngpp6") && tier < 2) {
 		skipResets()
@@ -176,7 +176,7 @@ function getSupersonicStart() {
 function getSupersonicMultIncrease() {
 	if (inQC(5)) return 20
 	let r = 4
-	if (player.masterystudies) if (player.masterystudies.includes("t331")) r = 1
+	if (mod.ngp3 && player.masterystudies.includes("t331")) r = 1
 	return r
 }
 

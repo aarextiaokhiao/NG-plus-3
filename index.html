@@ -650,7 +650,7 @@
 				<br><br>
 
 				<b>(Update v2.31: Ghostify Respecced)</b><br>
-				<b class="red">(Beta: 1/13/23 Build)</b>
+				<b class="red">(Beta: 1/15/23 Build)</b>
 				<br><br>
 
 				NG++ is by dan-simon and NG+4 is by Soul147.
@@ -2731,10 +2731,10 @@
 				</tr>
 				<tr>
 					<td>
-						<div class="autoBuyerDiv" id="autoBuyerDimBoost" style="font-size: 11px;">
-							<div>Automatic DimBoosts</div>
-							<button class="autobuyerbtn" id="buyerBtnDimBoost">46% smaller interval<br>Cost: 2 points</button>
-							<div style="font-size: 80%"id="intervalDimBoost">Current interval: 30 seconds</div>
+						<div class="autoBuyerDiv" id="ab_db">
+							<div>Automatic Dimensional Boosts</div>
+							<button class="autobuyerbtn" id="ab_db_upg"></button>
+							<div style="font-size: 80%"id="ab_db_int"></div>
 							<span style="font-size: 80%">Max 8ths used on reset:</span>
 							<input type="text" onchange="updatePriorities()" id="priority10"></input>
 							<br>
@@ -2751,10 +2751,10 @@
 						</div>
 					</td>
 					<td>
-						<div class="autoBuyerDiv" id="autoBuyerGalaxies">
-							<div>Automated Galaxies</div>
-							<button class="autobuyerbtn" id="buyerBtnGalaxies">46% smaller interval<br>Cost: 2 points</button>
-							<div style="font-size: 80%"id="intervalGalaxies">Current interval: 30 seconds</div>
+						<div class="autoBuyerDiv" id="ab_gal">
+							<div>Automatic Galaxies</div>
+							<button class="autobuyerbtn" id="ab_gal_upg"></button>
+							<div style="font-size: 80%"id="ab_gal_int"></div>
 							<span>Max Galaxies:</span>
 							<input type="text" onchange="updatePriorities()" id="priority11"></input>
 							<br>
@@ -2768,10 +2768,10 @@
 						</div>
 					</td>
 					<td>
-						<div class="autoBuyerDiv" id="autoBuyerInf">
-							<div>Automatic Big Crunch</div>
-							<button class="autobuyerbtn" id="buyerBtnInf">46% smaller interval<br>Cost: 2 points</button>
-							<div style="font-size: 80%"id="intervalInf">Current interval: 60 seconds</div>
+						<div class="autoBuyerDiv" id="ab_inf">
+							<div>Automatic Big Crunches</div>
+							<button class="autobuyerbtn" id="ab_inf_upg"></button>
+							<div style="font-size: 80%"id="ab_inf_int"></div>
 							<div id="iplimit"><span id="limittext">Amount of IP to wait until reset:</span>
 							<input type="text" onchange="updatePriorities()" id="priority12"></input></div>
 							<br>
@@ -2792,11 +2792,11 @@
 				</tr>
 				<tr>
 					<td>
-						<div class="autoBuyerDiv" id="autoBuyer1">
-							<div>1st Dimension Autobuyer</div>
-							<button class="autobuyerbtn" id="buyerBtn1">46% smaller interval<br>Cost: 2 points</button>
-							<button class="autobuyerbtn" id="toggleBtn1">Buys singles</button>
-							<div style="font-size: 80%"id="interval1">Current interval: 5 seconds<br></div>
+						<div class="autoBuyerDiv" id="ab_d1">
+							<div>Automatic 1st Dimensions</div>
+							<button class="autobuyerbtn" id="ab_d1_upg"></button>
+							<button class="autobuyerbtn" id="ab_d1_toggle"></button>
+							<div style="font-size: 80%" id="ab_d1_int"></div>
 							<span>Priority:</span>
 							<select onchange="updatePriorities()" id="priority1">
 							<option value="1">1</option>
@@ -2815,11 +2815,11 @@
 						</div>
 					</td>
 					<td>
-						<div class="autoBuyerDiv" id="autoBuyer2">
-							<div>2nd Dimension Autobuyer</div>
-							<button class="autobuyerbtn" id="buyerBtn2">46% smaller interval<br>Cost: 2 points</button>
-							<button class="autobuyerbtn" id="toggleBtn2">Buys singles</button>
-							<div style="font-size: 80%"id="interval2">Current interval: 5 seconds<br></div>
+						<div class="autoBuyerDiv" id="ab_d2">
+							<div>Automatic 2nd Dimensions</div>
+							<button class="autobuyerbtn" id="ab_d2_upg"></button>
+							<button class="autobuyerbtn" id="ab_d2_toggle"></button>
+							<div style="font-size: 80%" id="ab_d2_int"></div>
 							<span>Priority:</span>
 							<select onchange="updatePriorities()" id="priority2">
 							<option value="1">1</option>
@@ -2838,11 +2838,11 @@
 						</div>
 					</td>
 					<td>
-						<div class="autoBuyerDiv" id="autoBuyer3">
-							<div>3rd Dimension Autobuyer</div>
-							<button class="autobuyerbtn" id="buyerBtn3">46% smaller interval<br>Cost: 2 points</button>
-							<button class="autobuyerbtn" id="toggleBtn3">Buys singles</button>
-							<div style="font-size: 80%"id="interval3">Current interval: 5 seconds<br></div>
+						<div class="autoBuyerDiv" id="ab_d3">
+							<div>Automatic 3rd Dimensions</div>
+							<button class="autobuyerbtn" id="ab_d3_upg"></button>
+							<button class="autobuyerbtn" id="ab_d3_toggle"></button>
+							<div style="font-size: 80%" id="ab_d3_int"></div>
 							<span>Priority:</span>
 							<select onchange="updatePriorities()" id="priority3">
 							<option value="1">1</option>
@@ -2863,11 +2863,11 @@
 				</tr>
 				<tr>
 					<td>
-						<div class="autoBuyerDiv" id="autoBuyer4">
-							<div>4th Dimension Autobuyer</div>
-							<button class="autobuyerbtn" id="buyerBtn4">46% smaller interval<br>Cost: 2 points</button>
-							<button class="autobuyerbtn" id="toggleBtn4">Buys singles</button>
-							<div style="font-size: 80%"id="interval4">Current interval: 5 seconds<br></div>
+						<div class="autoBuyerDiv" id="ab_d4">
+							<div>Automatic 4th Dimensions</div>
+							<button class="autobuyerbtn" id="ab_d4_upg"></button>
+							<button class="autobuyerbtn" id="ab_d4_toggle"></button>
+							<div style="font-size: 80%" id="ab_d4_int"></div>
 							<span>Priority:</span>
 							<select onchange="updatePriorities()" id="priority4">
 							<option value="1">1</option>
@@ -2886,11 +2886,11 @@
 						</div>
 					</td>
 					<td>
-						<div class="autoBuyerDiv" id="autoBuyer5">
-							<div>5th Dimension Autobuyer</div>
-							<button class="autobuyerbtn" id="buyerBtn5">46% smaller interval<br>Cost: 2 points</button>
-							<button class="autobuyerbtn" id="toggleBtn5">Buys singles</button>
-							<div style="font-size: 80%"id="interval5">Current interval: 5 seconds<br></div>
+						<div class="autoBuyerDiv" id="ab_d5">
+							<div>Automatic 5th Dimensions</div>
+							<button class="autobuyerbtn" id="ab_d5_upg"></button>
+							<button class="autobuyerbtn" id="ab_d5_toggle"></button>
+							<div style="font-size: 80%" id="ab_d5_int"></div>
 							<span>Priority:</span>
 							<select onchange="updatePriorities()" id="priority5">
 							<option value="1">1</option>
@@ -2909,11 +2909,11 @@
 						</div>
 					</td>
 					<td>
-						<div class="autoBuyerDiv" id="autoBuyer6">
-							<div>6th Dimension Autobuyer</div>
-							<button class="autobuyerbtn" id="buyerBtn6">46% smaller interval<br>Cost: 2 points</button>
-							<button class="autobuyerbtn" id="toggleBtn6">Buys singles</button>
-							<div style="font-size: 80%"id="interval6">Current interval: 5 seconds<br></div>
+						<div class="autoBuyerDiv" id="ab_d6">
+							<div>Automatic 6th Dimensions</div>
+							<button class="autobuyerbtn" id="ab_d6_upg"></button>
+							<button class="autobuyerbtn" id="ab_d6_toggle"></button>
+							<div style="font-size: 80%" id="ab_d6_int"></div>
 							<span>Priority:</span>
 							<select onchange="updatePriorities()" id="priority6">
 							<option value="1">1</option>
@@ -2934,11 +2934,11 @@
 				</tr>
 				<tr>
 					<td>
-						<div class="autoBuyerDiv" id="autoBuyer7">
-							<div>7th Dimension Autobuyer</div>
-							<button class="autobuyerbtn" id="buyerBtn7">46% smaller interval<br>Cost: 2 points</button>
-							<button class="autobuyerbtn" id="toggleBtn7">Buys singles</button>
-							<div style="font-size: 80%"id="interval7">Current interval: 5 seconds<br></div>
+						<div class="autoBuyerDiv" id="ab_d7">
+							<div>Automatic 7th Dimensions</div>
+							<button class="autobuyerbtn" id="ab_d7_upg"></button>
+							<button class="autobuyerbtn" id="ab_d7_toggle"></button>
+							<div style="font-size: 80%" id="ab_d7_int"></div>
 							<span>Priority:</span>
 							<select onchange="updatePriorities()" id="priority7">
 							<option value="1">1</option>
@@ -2957,11 +2957,11 @@
 						</div>
 					</td>
 					<td>
-						<div class="autoBuyerDiv" id="autoBuyer8">
-							<div>8th Dimension Autobuyer</div>
-							<button class="autobuyerbtn" id="buyerBtn8">46% smaller interval<br>Cost: 2 points</button>
-							<button class="autobuyerbtn" id="toggleBtn8">Buys singles</button>
-							<div style="font-size: 80%"id="interval8">Current interval: 5 seconds<br></div>
+						<div class="autoBuyerDiv" id="ab_d8">
+							<div>Automatic 8th Dimensions</div>
+							<button class="autobuyerbtn" id="ab_d8_upg"></button>
+							<button class="autobuyerbtn" id="ab_d8_toggle"></button>
+							<div style="font-size: 80%" id="ab_d8_int"></div>
 							<span>Priority:</span>
 							<select onchange="updatePriorities()" id="priority8">
 							<option value="1">1</option>
@@ -2980,11 +2980,11 @@
 						</div>
 					</td>
 					<td>
-						<div class="autoBuyerDiv" id="autoBuyerTickSpeed">
-							<div>Tickspeed Autobuyer</div>
-							<button class="autobuyerbtn" id="buyerBtnTickSpeed">46% smaller interval<br>Cost: 2 points</button>
-							<button class="autobuyerbtn" id="toggleBtnTickSpeed">Buys singles</button>
-							<div style="font-size: 80%"id="intervalTickSpeed">Current interval: 5 seconds<br></div>
+						<div class="autoBuyerDiv" id="ab_ts">
+							<div>Automatic Tickspeed</div>
+							<button class="autobuyerbtn" id="ab_ts_upg"></button>
+							<button class="autobuyerbtn" id="ab_ts_toggle"></button>
+							<div style="font-size: 80%" id="ab_ts_int"></div>
 							<span>Priority:</span>
 							<select onchange="updatePriorities()" id="priority9">
 							<option value="1">1</option>
@@ -3005,10 +3005,10 @@
 				</tr>
 				<tr>
 					<td>
-						<div class="autoBuyerDiv" id="autoBuyerTickspeedBoost">
+						<div class="autoBuyerDiv" id="ab_tsb">
 							<div>Automatic Tickspeed Boosts</div>
-							<button class="autobuyerbtn" id="buyerBtnTickspeedBoost"></button>
-							<div style="font-size: 80%"id="intervalTickspeedBoost"></div>
+							<button class="autobuyerbtn" id="ab_tsb_upg"></button>
+							<div style="font-size: 80%"id="ab_tsb_int"></div>
 							<span style="font-size: 80%">Max 8ths used on reset:</span>
 							<input type="text" onchange="updatePriorities()" id="priority15"></input>
 							<br>
@@ -3025,10 +3025,10 @@
 						</div>
 					</td>
 					<td>
-						<div class="autoBuyerDiv" id="autoBuyerSac">
+						<div class="autoBuyerDiv" id="ab_sac">
 							<div>Automatic Sacrifice</div>
-							<button class="autobuyerbtn" id="buyerBtnSac" onclick="upgradeSacAutobuyer()"></button>
-							<div id="intervalSac" style="font-size: 80%">Current interval: 0.10 seconds</div>
+							<button class="autobuyerbtn" id="ab_sac_upg"></button>
+							<div style="font-size: 80%"id="ab_sac_int"></div>
 							<div><span>Sacrifice when the multiplier is over:</span>
 							<input type="text" onchange="updatePriorities()" id="prioritySac"></input></div>
 							<br>
@@ -3037,10 +3037,10 @@
 						</div>
 					</td>
 					<td>
-						<div class="autoBuyerDiv" id="autoBuyerGalSac">
+						<div class="autoBuyerDiv" id="ab_gSac">
 							<div>Automatic Galactic Sacrifice</div>
-							<button class="autobuyerbtn" id="buyerBtnGalSac"></button>
-							<div style="font-size: 80%"id="intervalGalSac"></div>
+							<button class="autobuyerbtn" id="ab_gSac_upg"></button>
+							<div style="font-size: 80%"id="ab_gSac_int"></div>
 							<div><span>Galactic sacrifice when GP gain is over:</span>
 							<input type="text" onchange="updatePriorities()" id="priority14"></input></div>
 							<br>
@@ -3052,10 +3052,10 @@
 				<tr>
 					<td></td>
 					<td>
-						<div class="autoBuyerDiv" id="autoTDBoost">
+						<div class="autoBuyerDiv" id="ab_tdb">
 							<div>Automatic Time Dimension Boosts</div>
-							<button class="autobuyerbtn" id="buyerBtnTDBoost"></button>
-							<div style="font-size: 80%"id="intervalTDBoost"></div>
+							<button class="autobuyerbtn" id="ab_tdb_upg"></button>
+							<div style="font-size: 80%"id="ab_tdb_int"></div>
 							<span style="font-size: 80%">Max 8ths used on reset:</span>
 							<input type="text" onchange="updatePriorities()" id="priority16"></input>
 							<br>

@@ -1,6 +1,6 @@
 //VERSION: 2.31
 let ngp3_ver = 2.31
-let ngp3_build = 20230113
+let ngp3_build = 20230115
 function doNGP3Updates() {
 	if (!aarMod.ngp3_build) aarMod.ngp3_build = 0
 	if (aarMod.ngp3_build < 20221230) quSave.multPower = 0
@@ -182,7 +182,7 @@ function maxAllDilUpgs() {
 //v1.99874
 function maybeShowFillAll() {
 	var display = "none"
-	if (player.masterystudies) if (player.masterystudies.includes("t302")) display = "block"
+	if (mod.ngp3 && player.masterystudies.includes("t302")) display = "block"
 	el("fillAll").style.display = display
 	el("fillAll2").style.display = display
 }
@@ -352,18 +352,6 @@ function switchAB() {
 	}
 	brSave["savedAutobuyers" + (bigRip ? "No" : "") + "BR"] = {}
 	updateCheckBoxes()
-	loadAutoBuyerSettings()
-	if (player.autoCrunchMode == "amount") {
-		el("togglecrunchmode").textContent = "Auto crunch mode: amount"
-		el("limittext").textContent = "Amount of IP to wait until reset:"
-	} else if (player.autoCrunchMode == "time") {
-		el("togglecrunchmode").textContent = "Auto crunch mode: time"
-		el("limittext").textContent = "Seconds between crunches:"
-	} else {
-		el("togglecrunchmode").textContent = "Auto crunch mode: X times last crunch"
-		el("limittext").textContent = "X times last crunch:"
-	}
-	updateAutoEterMode()
 }
 
 function updateBraveMilestones() {

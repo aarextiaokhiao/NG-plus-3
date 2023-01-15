@@ -58,9 +58,18 @@ function doBigCrunch(auto) {
 
 function checkChallengesOnCrunch() {
 	el("challengeconfirmation").style.display = "inline-block"
+	if (!player.challenges.includes("challenge1")) {
+		player.challenges.push("challenge1")
+		updateAutobuyers()
+	}
 
 	var isChal = player.currentChallenge != ""
 	if (!isChal) return
+
+	if (!player.challenges.includes(player.currentChallenge)) {
+		player.challenges.push(player.currentChallenge)
+		updateAutobuyers()
+	}
 
 	var challNumber
 	var split = player.currentChallenge.split("challenge")
@@ -148,30 +157,39 @@ function doCrunchInfinitiesGain(){
 	player.infinitied = nA(player.infinitied, infGain)
 }
 
+function updateAutoCrunchMode() {
+	let mode = player.autoCrunchMode
+	if (mode == "amount") {
+		el("togglecrunchmode").textContent = "Auto crunch mode: amount"
+		el("limittext").textContent = "Amount of IP to wait until reset:"
+	} else if (mode == "time"){
+		el("togglecrunchmode").textContent = "Auto crunch mode: Time"
+		el("limittext").textContent = "Seconds between crunches:"
+	} else if (mode == "relative"){
+		el("togglecrunchmode").textContent = "Auto crunch mode: X times last crunch"
+		el("limittext").textContent = "X times last crunch:"
+	} else if (mod == "replicanti") {
+		el("togglecrunchmode").innerHTML = "Auto crunch mode: Replicated Galaxies"
+		el("limittext").innerHTML = "Replicanti galaxies needed for crunch:"
+	}
+	el("maxReplicantiCrunchSwitchDiv").style.display = mod == "replicanti" ? "inline" : 'none'
+}
+
 function toggleCrunchMode(freeze) {
 	if (player.autoCrunchMode == "amount") {
 		player.autoCrunchMode = "time"
-		el("togglecrunchmode").textContent = "Auto crunch mode: Time"
-		el("limittext").textContent = "Seconds between crunches:"
 	} else if (player.autoCrunchMode == "time"){
 		player.autoCrunchMode = "relative"
-		el("togglecrunchmode").textContent = "Auto crunch mode: X times last crunch"
-		el("limittext").textContent = "X times last crunch:"
-	} else if (player.autoCrunchMode == "relative" && player.boughtDims){
+	} else if (player.autoCrunchMode == "relative" && player.boughtDims) {
 		player.autoCrunchMode = "replicanti"
-		el("togglecrunchmode").innerHTML = "Auto crunch mode: Replicated Galaxies"
-		el("limittext").innerHTML = "Replicanti galaxies needed for crunch:"
-		el("maxReplicantiCrunchSwitchDiv").style.display = 'inline'
 	} else {
 		player.autoCrunchMode = "amount"
-		el("togglecrunchmode").textContent = "Auto crunch mode: amount"
-		el("limittext").textContent = "Amount of IP to wait until reset:"
-		el("maxReplicantiCrunchSwitchDiv").style.display = 'none'
 		if (!freeze&&player.autobuyers[11].priority.toString().toLowerCase()=="max") {
 			player.autobuyers[11].priority = E(1)
 			el("priority12").value=1
 		}
 	}
+	updateAutoCrunchMode()
 }
 
 var bestRunIppm = E(0)
@@ -234,7 +252,6 @@ function checkOnCrunchAchievements(){
 
 	if (player.currentChallenge == "postc5" && player.thisInfinityTime <= 100) giveAchievement("Hevipelle did nothing wrong")
 	if (inNGM(3) && player.thisInfinityTime <= 100 && player.currentChallenge == "postc7") giveAchievement("Hevipelle did nothing wrong")
-	if (player.currentChallenge != "" && !player.challenges.includes(player.currentChallenge)) player.challenges.push(player.currentChallenge);
 	if (player.currentChallenge == "postc8") giveAchievement("Anti-antichallenged");
 }
 

@@ -471,7 +471,6 @@ function setSomeEterEraStuff2(){
 	if (inNGM(4)) el("autobuyers").style.display="none"
 	el("autobuyers").className=(inNGM(4)?"":"inf")+"tab"
 	el("autobuyersbtn").style.display=inNGM(4)?"none":""
-	loadAutoBuyerSettings();
 	var updatedLTR = []
 	for (var lastRun = 0; lastRun < 10; lastRun++) {
 		if (typeof(player.lastTenRuns[lastRun]) !== "number") if (player.lastTenRuns[lastRun][0] != 26784000 || player.lastTenRuns[lastRun][1].neq(1)) updatedLTR.push(player.lastTenRuns[lastRun])
@@ -1622,7 +1621,7 @@ function doNGSPUpdatingVersion(){
 
 function doInitInfMultStuff(){
         ipMultPower=2
-        if (player.masterystudies) if (player.masterystudies.includes("t241")) ipMultPower=2.2
+        if (mod.ngp3 && player.masterystudies.includes("t241")) ipMultPower=2.2
         if (GUBought("gb3")) ipMultPower=2.3
         if (mod.ngep) ipMultCostIncrease=4
         else ipMultCostIncrease=10
@@ -2422,7 +2421,7 @@ function conToDeciLateEter(){
 }
 
 function conToDeciMS(){
-        if (player.masterystudies) {
+        if (mod.ngp3) {
                 player.dbPower = E(player.dbPower)
                 player.meta.bestOverQuantums = Decimal.max(player.meta.bestOverQuantums, player.meta.bestAntimatter)
                 if (quSave ? quSave.usedQuarks : false) {
@@ -2547,44 +2546,49 @@ function transformSaveToDecimal() {
 
 
 function loadAutoBuyerSettings() {
-        for (var i=0; i<9; i++) {
-                el("priority" + (i+1)).selectedIndex = player.autobuyers[i].priority-1
-                if (i == 8 && player.autobuyers[i].target == 10) el("toggleBtnTickSpeed").textContent = "Buys max"
-                else if (i == 8 && player.autobuyers[i].target !== 10) el("toggleBtnTickSpeed").textContent = "Buys singles"
-                else if (player.autobuyers[i].target > 10) el("toggleBtn" + (i+1)).textContent = "Buys until 10"
-                else el("toggleBtn" + (i+1)).textContent = "Buys singles"
-        }
-        el("priority10").value = player.autobuyers[9].priority
-        el("priority11").value = player.autobuyers[10].priority
-        el("priority12").value = player.autoCrunchMode == "amount" ? formatValue("Scientific", player.autobuyers[11].priority, 2, 0) : player.autobuyers[11].priority
-        el("overGalaxies").value = player.overXGalaxies
-        el("bulkDimboost").value = player.autobuyers[9].bulk
-        el("prioritySac").value = player.autoSacrifice.priority
-        el("bulkgalaxy").value = player.autobuyers[10].bulk
-        el("priority13").value = formatValue("Scientific", E(player.eternityBuyer.limit), 2, 0)
-        if (player.eternityBuyer.dilationPerAmount !== undefined) el('prioritydil').value=player.eternityBuyer.dilationPerAmount
-        if (player.autobuyers[12] !== undefined) el("priority14").value = formatValue("Scientific", E(player.autobuyers[12].priority), 2, 0)
-        if (player.autobuyers[13] !== undefined) {
-                el("priority15").value = player.autobuyers[13].priority
-                el("overGalaxiesTickspeedBoost").value = player.overXGalaxiesTickspeedBoost
-                el("bulkTickBoost").value = player.autobuyers[13].bulk
-        }
-        if (player.autobuyers[14] !== undefined) {
-                el("priority16").value = player.autobuyers[14].priority
-                el("overGalaxiesTDBoost").value = player.autobuyers[14].overXGals
-                el("bulkTickBoost").value = player.autobuyers[14].bulk
-        }
-        if (player.boughtDims) {
-                el("maxReplicantiCrunchSwitch").checked = player.autobuyers[11].requireMaxReplicanti;
-                el("requireIPPeak").checked = player.autobuyers[11].requireIPPeak;
-        }
-        if (player.masterystudies) {
-                el("prioritydil").value = player.eternityBuyer.dilationPerAmount
-                if (quSave && quSave.autobuyer) {
-                        if (isNaN(break_infinity_js ? quSave.autobuyer.limit : quSave.autobuyer.limit.l)) quSave.autobuyer.limit = E(1)
-                        el("priorityquantum").value = quSave.autobuyer.mode == "amount" || quSave.autobuyer.mode == "relative" ? formatValue("Scientific", quSave.autobuyer.limit, 2, 0) : quSave.autobuyer.limit
-                }
-        }
+	for (var i=0; i<9; i++) {
+		el("priority" + (i+1)).selectedIndex = player.autobuyers[i].priority-1
+
+		let key = autoBuyerKeys[i]
+		let elm = el("ab_" + key + "_toggle")
+		if (i == 8 && player.autobuyers[i].target == 10) elm.textContent = "Buys max"
+		else if (i == 8 && player.autobuyers[i].target !== 10) elm.textContent = "Buys singles"
+		else if (player.autobuyers[i].target > 10) elm.textContent = "Buys until 10"
+		else elm.textContent = "Buys singles"
+	}
+
+	priorityOrder()
+	el("priority10").value = player.autobuyers[9].priority
+	el("priority11").value = player.autobuyers[10].priority
+	el("priority12").value = player.autoCrunchMode == "amount" ? formatValue("Scientific", player.autobuyers[11].priority, 2, 0) : player.autobuyers[11].priority
+	el("overGalaxies").value = player.overXGalaxies
+	el("bulkDimboost").value = player.autobuyers[9].bulk
+	el("prioritySac").value = player.autoSacrifice.priority
+	el("bulkgalaxy").value = player.autobuyers[10].bulk
+	updateAutoCrunchMode()
+	el("priority13").value = formatValue("Scientific", E(player.eternityBuyer.limit), 2, 0)
+	if (player.eternityBuyer.dilationPerAmount !== undefined) el('prioritydil').value=player.eternityBuyer.dilationPerAmount
+	updateAutoEterMode()
+
+	if (player.autobuyers[12] !== undefined) el("priority14").value = formatValue("Scientific", E(player.autobuyers[12].priority), 2, 0)
+	if (player.autobuyers[13] !== undefined) {
+		el("priority15").value = player.autobuyers[13].priority
+		el("overGalaxiesTickspeedBoost").value = player.overXGalaxiesTickspeedBoost
+		el("bulkTickBoost").value = player.autobuyers[13].bulk
+	}
+	if (player.autobuyers[14] !== undefined) {
+		el("priority16").value = player.autobuyers[14].priority
+		el("overGalaxiesTDBoost").value = player.autobuyers[14].overXGals
+		el("bulkTickBoost").value = player.autobuyers[14].bulk
+	}
+	if (player.boughtDims) el("requireIPPeak").checked = player.autobuyers[11].requireIPPeak;
+	if (mod.ngp3) {
+		el("prioritydil").value = player.eternityBuyer.dilationPerAmount
+		if (quSave && quSave.autobuyer) {
+			if (isNaN(break_infinity_js ? quSave.autobuyer.limit : quSave.autobuyer.limit.l)) quSave.autobuyer.limit = E(1)
+			el("priorityquantum").value = quSave.autobuyer.mode == "amount" || quSave.autobuyer.mode == "relative" ? formatValue("Scientific", quSave.autobuyer.limit, 2, 0) : quSave.autobuyer.limit
+		}
+	}
 }
 
 function set_save(id, value) {

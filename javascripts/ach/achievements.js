@@ -365,8 +365,6 @@ function giveAchievement(name, noUpdate) {
 	if (name == "To the new dimension!") brSave.bestGals = 1
 	if (name == "Quantum doesn't take so long") {
 		updateAutobuyers()
-		updateAutoEterMode()
-		loadAutoBuyerSettings()
 	}
 	if (name == "Kee-hee-hee!" && (hasAch("ng3p18") || hasAch("ng3p37"))) {
 		setAndMaybeShow('bestTPOverGhostifies', true, '"Your best-ever Tachyon particles was "+shorten(player.dilation.bestTPOverGhostifies)+"."')

@@ -38,10 +38,6 @@ el("challenge15").onclick = function () {
 	startNormalChallenge(15)
 }
 
-el("buyerBtnTickspeedBoost").onclick = function () {
-	buyAutobuyer(13);
-}
-
 function autoTickspeedBoostBoolean() {
 	var req = getTickspeedBoostRequirement()
 	var amount = getAmount(req.tier)

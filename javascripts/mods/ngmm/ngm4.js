@@ -54,10 +54,6 @@ function cantReset() {
 	return inNGM(4) && inNC(14) && getTotalResets() > 9
 }
 
-el("buyerBtnTDBoost").onclick = function () {
-	buyAutobuyer(14)
-}
-
 function maxHighestTD() {
 	aarMod.maxHighestTD=!aarMod.maxHighestTD
 	el("maxHighestTD").textContent = "Buy Max the highest tier of Time Dimensions: O"+(aarMod.maxHighestTD?"N":"FF")

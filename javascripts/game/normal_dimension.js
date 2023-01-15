@@ -254,7 +254,7 @@ function getDimensionPowerMultiplier(focusOn, debug) {
 	
 function getMPTBase(focusOn) {
 	if (((inQC(5) || inQC(7)) && focusOn != "linear") || (((inNC(13) && !inNGM(3)) || player.currentChallenge == "postc1" || player.currentChallenge == "postcngm3_1") && inNGM(2))) {
-		if (player.masterystudies) if (player.masterystudies.includes("t321")) return E("1e430")
+		if (mod.ngp3 && player.masterystudies.includes("t321")) return E("1e430")
 		return 1
 	}
 	let ret = 2
@@ -317,7 +317,7 @@ function onBuyDimension(tier) {
 	player.postC8Mult = E(1)
 	if (tier != 8) player.dimlife = false
 	if (tier != 1) player.dead = false
-	if (player.masterystudies) if (tier > 4) player.old = false
+	if (mod.ngp3 && tier > 4) player.old = false
 }
 	
 function getAmount(tier) {

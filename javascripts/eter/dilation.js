@@ -111,7 +111,7 @@ function getTotalTachyonParticleGain(){
 function getDilGain() {
 	if (player.money.lt(10)) return E(0)
 	var log = Math.log10(player.money.log10() / 400) * getDilExp() + getDilPower().log10()
-	if (mod.ngp3) if (!tmp.be && bigRipped()) {
+	if (mod.ngp3 && !tmp.be && bigRipped()) {
 		if (log > 100) log = Math.sqrt(100 * log)
 	}
 	return pow10(log)

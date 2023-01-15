@@ -60,7 +60,7 @@ function getReplicantiLimit() {
 }
 
 function isIntervalAffordable() {
-	if (mod.ngp3) if (player.masterystudies.includes("t271")) return true
+	if (mod.ngp3 && player.masterystudies.includes("t271")) return true
 	return player.replicanti.interval > (player.timestudy.studies.includes(22) || player.boughtDims ? 1 : 50)
 }
 
@@ -233,7 +233,7 @@ function getReplicantiInterval() {
 	if (mod.ngud) interval = interval.div(getBlackholePowerEffect().pow(1/3))
 	if (player.dilation.upgrades.includes('ngpp1') && aarMod.nguspV && !aarMod.nguepV) interval = interval.div(player.dilation.dilatedTime.max(1).pow(0.05))
 	if (player.dilation.upgrades.includes("ngmm9")) interval = interval.div(getDil72Mult())
-	if (mod.ngp3) if (player.masterystudies.includes("t332")) interval = interval.div(getMTSMult(332))
+	if (mod.ngp3 && player.masterystudies.includes("t332")) interval = interval.div(getMTSMult(332))
 	return interval
 }
 
