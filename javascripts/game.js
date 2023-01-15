@@ -1142,19 +1142,19 @@ function updateAutobuyers() {
 
 	var intervalUnits = player.infinityUpgrades.includes("autoBuyerUpgrade") ? 1/2000 : 1/1000
 	if (player.challenges.includes("challenge1")) {
-		player.autobuyers[0] = autoBuyerDim1
+		if (player.autobuyers[0] % 1 === 0) player.autobuyers[0] = autoBuyerDim1
 		el("autoBuyer1").style.display = "inline-block"
 	} else el("autoBuyer1").style.display = "none"
 	if (player.challenges.includes("challenge2")) {
-		player.autobuyers[1] = autoBuyerDim2
+		if (player.autobuyers[1] % 1 === 0) player.autobuyers[1] = autoBuyerDim2
 		el("autoBuyer2").style.display = "inline-block"
 	} else el("autoBuyer2").style.display = "none"
 	if (player.challenges.includes("challenge3")) {
-		player.autobuyers[2] = autoBuyerDim3
+		if (player.autobuyers[2] % 1 === 0) player.autobuyers[2] = autoBuyerDim3
 		el("autoBuyer3").style.display = "inline-block"
 	} else el("autoBuyer3").style.display = "none"
 	if (player.challenges.includes("challenge4")) {
-		player.autobuyers[9] = autoBuyerDimBoost
+		if (player.autobuyers[9] % 1 === 0) player.autobuyers[9] = autoBuyerDimBoost
 		el("autoBuyerDimBoost").style.display = "inline-block"
 		el("intervalDimBoost").textContent = "Current interval: " + (player.autobuyers[9].interval * intervalUnits).toFixed(2) + " seconds"
 	} else {
@@ -1162,7 +1162,7 @@ function updateAutobuyers() {
 		el("buyerBtnDimBoost").style.display = ""
 	}
 	if (player.challenges.includes("challenge5")) {
-		player.autobuyers[8] = autoBuyerTickspeed
+		if (player.autobuyers[8] % 1 === 0) player.autobuyers[8] = autoBuyerTickspeed
 		el("autoBuyerTickSpeed").style.display = "inline-block"
 		el("intervalTickSpeed").textContent = "Current interval: " + (player.autobuyers[8].interval * intervalUnits).toFixed(2) + " seconds"
 		if (player.autobuyers[8].interval <= 100) {
@@ -1175,11 +1175,11 @@ function updateAutobuyers() {
 		el("buyerBtnTickSpeed").style.display = ""
 	}
 	if (player.challenges.includes("challenge6")) {
-		player.autobuyers[4] = autoBuyerDim5
+		if (player.autobuyers[4] % 1 === 0) player.autobuyers[4] = autoBuyerDim5
 		el("autoBuyer5").style.display = "inline-block"
 	} else el("autoBuyer5").style.display = "none"
 	if (player.challenges.includes("challenge7")) {
-		player.autobuyers[11] = autoBuyerInf
+		if (player.autobuyers[11] % 1 === 0) player.autobuyers[11] = autoBuyerInf
 		el("autoBuyerInf").style.display = "inline-block"
 		el("intervalInf").textContent = "Current interval: " + (player.autobuyers[11].interval * intervalUnits).toFixed(2) + " seconds"
 		if (player.autobuyers[11].interval <= 100) {
@@ -1191,29 +1191,29 @@ function updateAutobuyers() {
 		el("buyerBtnInf").style.display = ""
 	}
 	if (player.challenges.includes("challenge8")) {
-		player.autobuyers[3] = autoBuyerDim4
+		if (player.autobuyers[3] % 1 === 0) player.autobuyers[3] = autoBuyerDim4
 		el("autoBuyer4").style.display = "inline-block"
 	} else el("autoBuyer4").style.display = "none"
 	if (player.challenges.includes("challenge9")) {
-		player.autobuyers[6] = autoBuyerDim7
+		if (player.autobuyers[6] % 1 === 0) player.autobuyers[6] = autoBuyerDim7
 		el("autoBuyer7").style.display = "inline-block"
 	} else el("autoBuyer7").style.display = "none"
 	if (player.challenges.includes("challenge10")) {
-		player.autobuyers[5] = autoBuyerDim6
+		if (player.autobuyers[5] % 1 === 0) player.autobuyers[5] = autoBuyerDim6
 		el("autoBuyer6").style.display = "inline-block"
 	} else el("autoBuyer6").style.display = "none"
 	if (player.challenges.includes("challenge11")) {
-		player.autobuyers[7] = autoBuyerDim8
+		if (player.autobuyers[7] % 1 === 0) player.autobuyers[7] = autoBuyerDim8
 		el("autoBuyer8").style.display = "inline-block"
 	} else el("autoBuyer8").style.display = "none"
 	if (player.challenges.includes("challenge12")) {
-		player.autobuyers[10] = autoBuyerGalaxy
+		if (player.autobuyers[10] % 1 === 0) player.autobuyers[10] = autoBuyerGalaxy
 		el("autoBuyerGalaxies").style.display = "inline-block"
 		el("buyerBtnGalaxies").style.display = ""
 		el("intervalGalaxies").textContent = "Current interval: " + (player.autobuyers[10].interval * intervalUnits).toFixed(2) + " seconds"
 	} else el("autoBuyerGalaxies").style.display = "none"
 	if (player.challenges.includes("postc2") || player.challenges.includes("challenge13")) {
-		player.autoSacrifice = autoSacrifice
+		if (player.autoSacrifice % 1 === 0) player.autoSacrifice = autoSacrifice
 		el("autoBuyerSac").style.display = "inline-block"
 		el("buyerBtnSac").style.display = ""
 		el("intervalSac").textContent = "Current interval: " + (player.autoSacrifice.interval * intervalUnits).toFixed(2) + " seconds"
@@ -1223,19 +1223,19 @@ function updateAutobuyers() {
 		}
 	} else el("autoBuyerSac").style.display = "none"
 	if (player.challenges.includes("challenge14")) {
-		player.autobuyers[12] = autoGalSacrifice
+		if (player.autobuyers[12] % 1 === 0) player.autobuyers[12] = autoGalSacrifice
 		el("autoBuyerGalSac").style.display = "inline-block"
 		el("buyerBtnGalSac").style.display = ""
 		el("intervalGalSac").textContent = "Current interval: " + (player.autobuyers[12].interval * intervalUnits).toFixed(2) + " seconds"
 	} else el("autoBuyerGalSac").style.display = "none"
 	if (player.challenges.includes("challenge15")) {
-		player.autobuyers[13] = autoTickspeedBoost
+		if (player.autobuyers[13] % 1 === 0) player.autobuyers[13] = autoTickspeedBoost
 		el("autoBuyerTickspeedBoost").style.display = "inline-block"
 		el("buyerBtnTickspeedBoost").style.display = ""
 		el("intervalTickspeedBoost").textContent = "Current interval: " + (player.autobuyers[13].interval * intervalUnits).toFixed(2) + " seconds"
 	} else el("autoBuyerTickspeedBoost").style.display = "none"
 	if (player.challenges.includes("challenge16")) {
-		player.autobuyers[14] = autoTDBoost
+		if (player.autobuyers[14] % 1 === 0) player.autobuyers[14] = autoTDBoost
 		el("autoTDBoost").style.display = "inline-block"
 		el("intervalTDBoost").textContent = "Current interval: " + (player.autobuyers[14].interval * intervalUnits).toFixed(2) + " seconds"
 		el("buyerBtnTDBoost").style.display = ""
