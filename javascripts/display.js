@@ -380,7 +380,11 @@ function updateDimensionsDisplay() {
 }
 
 function replicantiDisplay() {
-	if (player.replicanti.unl) {
+	let unl = player.replicanti.unl
+	el("replicantidiv").style.display=unl?"":"none"
+	el("replicantiunlock").style.display=!unl?"":"none"
+
+	if (unl) {
 		let replGalOver = getMaxRG() - player.replicanti.gal
 		let chance = Decimal.times(tmp.rep.chance, 100)
 		el("replicantiamount").textContent = shortenDimensions(player.replicanti.amount)
@@ -404,6 +408,8 @@ function replicantiDisplay() {
 		el("replicantimax").className = (player.infinityPoints.gte(getRGCost())) ? "storebtn" : "unavailablebtn"
 		el("replicantireset").className = (canGetReplicatedGalaxy()) ? "storebtn" : "unavailablebtn"
 		el("replicantireset").style.height = (hasAch("ngpp16") && !hasAch("ng3p67") ? 90 : 70) + "px"
+
+		for (var i = i; i <= 3; i++) el("replauto"+i).textContent = "Auto: " + (player.replicanti.auto[i-1] ? "ON" : "OFF")
 	} else {
 		el("replicantiunlock").innerHTML = "Unlock Replicantis<br>Cost: " + shortenCosts(inOnlyNGM(2) ? 1e80 : 1e140) + " IP"
 		el("replicantiunlock").className = (player.infinityPoints.gte(inOnlyNGM(2) ? 1e80 : 1e140)) ? "storebtn" : "unavailablebtn"
@@ -513,7 +519,7 @@ function IDABDisplayCorrection(){
 	}
 }
 
-function replicantiAutoDisplay(){
+function replicantiAutoDisplay() {
 	if (getEternitied() >= 40) el("replauto1").style.visibility = "visible"
 	else el("replauto1").style.visibility = "hidden"
 	if (getEternitied() >= 60) el("replauto2").style.visibility = "visible"

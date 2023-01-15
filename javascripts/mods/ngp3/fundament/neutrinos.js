@@ -126,7 +126,6 @@ function getMaxUnlockedNeutrinoBoosts() {
 	let x = 9
 	if (ghSave.wzb.unl) x++
 	if (ghSave.hb.higgs > 0) x++
-	if (ghSave.gravitons.unl) x++
 	return x
 }
 

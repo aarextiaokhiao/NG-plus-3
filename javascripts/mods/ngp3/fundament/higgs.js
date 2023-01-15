@@ -28,7 +28,6 @@ function updateBLParticleUnlocks() {
 function updateBLParticleDisplay() {
 	el("nextParticle").style.display = ""
 	if (!ghSave.hb.unl) el("nextParticle").textContent = "To unlock Higgs, you need to get " + shortenCosts(pow10(2e17)) + " antimatter and " + shortenCosts(getHiggsRequirement()) + " Bosons first."
-	else if (!ghSave.gravitons.unl) el("nextParticle").textContent = "To unlock Gravitons, you need to get " + shortenCosts(pow10(1e18)) + " antimatter."
 	else el("nextParticle").style.display = "none"
 }
 

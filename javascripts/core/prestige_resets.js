@@ -127,10 +127,8 @@ let RESETS = {
 			updateChallenges()
 
 			if (getEternitied() < 2) {
-				player.autobuyers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
-				if (inNGM(2)) player.autobuyers.push(13)
-				if (inNGM(3)) player.autobuyers.push(14)
-				if (inNGM(4)) player.autobuyers.push(15)
+				player.autobuyers = []
+				for (var i = 1; i <= getTotalNormalChallenges() + 1; i++) player.autobuyers.push(i)
 				player.break = false
 			}
 			updateAutobuyers()
@@ -168,9 +166,6 @@ let RESETS = {
 				player.replicanti.chanceCost = E_pow(1e15, player.replicanti.chance * 100).times(inNGM(2) ? 1e75 : 1e135)
 				player.replicanti.intervalCost = E_pow(1e10, Math.round(Math.log10(1000 / player.replicanti.interval) / -Math.log10(0.9))).times(inNGM(2) ? 1e80 : 1e140)
 				player.replicanti.galCost = E(inNGM(2) ? 1e110 : 1e170)
-
-				el("replicantidiv").style.display="inline-block"
-				el("replicantiunlock").style.display="none"
 			}
 			if (getEternitied() < 3) player.replicanti.galaxybuyer = undefined
 

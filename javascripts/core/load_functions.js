@@ -441,14 +441,6 @@ function doNGp3Init1(){
 }
 
 function setSomeEterEraStuff() {
-    if (player.replicanti.unl == true) {
-		el("replicantidiv").style.display="inline-block"
-		el("replicantiunlock").style.display="none"
-	} else {
-		el("replicantidiv").style.display="none"
-		el("replicantiunlock").style.display="inline-block"
-	}
-    for (var i = i; i <= 3; i++) el("replauto"+i).textContent = "Auto: " + (player.replicanti.auto[i-1] ? "ON" : "OFF")
 
 	updateNotationOption()
 

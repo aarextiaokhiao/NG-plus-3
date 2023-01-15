@@ -253,6 +253,60 @@ function checkSecondSetOnCrunchAchievements(){
 var challNames = [null, null, "Second Dimension Autobuyer Challenge", "Third Dimension Autobuyer Challenge", "Fourth Dimension Autobuyer Challenge", "Fifth Dimension Autobuyer Challenge", "Sixth Dimension Autobuyer Challenge", "Seventh Dimension Autobuyer Challenge", "Eighth Dimension Autobuyer Challenge", "Tickspeed Autobuyer Challenge", "Automated Dimension Boosts Challenge", "Automated Galaxies Challenge", "Automated Big Crunches Challenge", "Automated Dimensional Sacrifice Challenge", "Automated Galactic Sacrifice Challenge", "Automated Tickspeed Boosts Challenge", "Automated Time Dimension Boosts Challenge"]
 var challOrder = [null, 1, 2, 3, 8, 6, 10, 9, 11, 5, 4, 12, 7, 13, 14, 15, 16]
 
+function updateChallenges() {
+	var buttons = Array.from(el("normalchallenges").getElementsByTagName("button")).concat(Array.from(el("breakchallenges").getElementsByTagName("button")))
+	for (var i=0; i < buttons.length; i++) {
+		buttons[i].className = "challengesbtn";
+		buttons[i].textContent = "Start"
+	}
+
+	tmp.cp=0
+	infDimPow=1
+	for (var i=0; i < player.challenges.length; i++) {
+		el(player.challenges[i]).className = "completedchallengesbtn";
+		el(player.challenges[i]).textContent = "Completed"
+		if (player.challenges[i].search("postc")==0) tmp.cp++
+		if (player.challenges.includes("postc1")) if (player.challenges[i].split("postc")[1]) infDimPow*=inNGM(2)?2:1.3
+	}
+	
+	var challengeRunning
+	if (player.currentChallenge === "") {
+		if (!player.challenges.includes("challenge1")) challengeRunning="challenge1"
+	} else challengeRunning=player.currentChallenge
+	if (challengeRunning!==undefined) {
+		el(challengeRunning).className = "onchallengebtn";
+		el(challengeRunning).textContent = "Running"
+	}
+
+	if (inNGM(4)) {
+		var chall=player.galacticSacrifice.chall
+		if (chall) {
+			chall="challenge"+chall
+			el(chall).className = "onchallengebtn";
+			el(chall).textContent = "Running"
+		}
+	}
+
+	el("challenge7").parentElement.parentElement.style.display = player.infinitied < 1 && player.eternities < 1 && !quantumed ? "none" : ""
+	if (inQC(4)) {
+		el("challenge7").className = "onchallengebtn";
+		el("challenge7").textContent = "Trapped in"
+	}
+
+	if (inQC(6)) for (i=2;i<9;i++) if (i<3||i>5) {
+		el("postc"+i).className = "onchallengebtn";
+		el("postc"+i).textContent = "Trapped in"
+	}
+
+	if (isIC3Trapped()) {
+		el("postc3").className = "onchallengebtn";
+		el("postc3").textContent = "Trapped in"
+	}
+
+	if (player.postChallUnlocked > 0 || Object.keys(player.eternityChalls).length > 0 || player.eternityChallUnlocked !== 0 || quantumed) el("challTabButtons").style.display = "table"
+	for (c=0;c<order.length;c++) el(order[c]).parentElement.parentElement.style.display=player.postChallUnlocked<c+1?"none":""
+}
+
 function startChallenge(name) {
 	if (name == "postc3" && isIC3Trapped()) return
 	if (name == "challenge7" && inQC(4)) return

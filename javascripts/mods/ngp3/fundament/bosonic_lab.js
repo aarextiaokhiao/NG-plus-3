@@ -154,7 +154,6 @@ function updateBosonicLimits() {
 
 	//Hypotheses / Theories
 	br.limit = br.maxLimit
-	if (!ghSave.gravitons.unl) br.limit = 4
 	if (ghSave.hb.higgs == 0) br.limit = 3
 	var width = 100 / br.limit
 	for (var r = 1; r <= br.maxLimit; r++) {
@@ -169,13 +168,11 @@ function updateBosonicLimits() {
 
 	//Bosonic Upgrades
 	bu.rows = bu.maxRows
-	if (!ghSave.gravitons.unl) bu.rows = 4
 	if (ghSave.hb.higgs == 0) bu.rows = 2
 	for (var r = 3; r <= bu.maxRows; r++) el("bUpgRow" + r).style.display = bu.rows >= r ? "" : "none"
 
 	//Enchants
 	bEn.limit = bEn.maxLimit
-	if (!ghSave.gravitons.unl) bEn.limit = 5
 	if (ghSave.hb.higgs == 0) bEn.limit = 2
 }
 

@@ -1,7 +1,5 @@
 function unlockReplicantis() {
 	if (player.infinityPoints.gte(inOnlyNGM(2)?1e80:1e140)) {
-		el("replicantidiv").style.display = "inline-block"
-		el("replicantiunlock").style.display = "none"
 		player.replicanti.unl = true
 		player.replicanti.amount = E(1)
 		player.infinityPoints = player.infinityPoints.minus(inOnlyNGM(2) ? 1e80 : 1e140)
@@ -288,5 +286,4 @@ function continuousReplicantiUpdating(diff){
 
 function toggleReplAuto(i) {
 	player.replicanti.auto[i] = !player.replicanti.auto[i]
-	el("replauto"+(i+1)).textContent = "Auto: "+(player.replicanti.auto[i]?"ON":"OFF")
 }
