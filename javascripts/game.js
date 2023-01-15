@@ -1805,7 +1805,7 @@ function eternity(force, auto, dil, presetLoad) {
 
 function challengesCompletedOnEternity() {
 	var array = []
-	if (getEternitied() > 1 || hasAch("ng3p51") || bigRipped()) for (var i of player.challenges) if (i[0] = "c") array.push(i)
+	if (getEternitied() > 1 || hasAch("ng3p51") || bigRipped()) for (var i = 1; i <= getTotalNormalChallenges() + 1; i++) array.push("challenge" + i)
 	if (hasAch("r133")) for (i = 0; i < order.length; i++) array.push(order[i])
 	return array
 }
