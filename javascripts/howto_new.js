@@ -6,17 +6,17 @@ let HOW_TO = [
 		title: "Dimensions",
 		layer: "",
 		desc: `<b>Dimensions:</b>
-		Dimensions are your production units in game.	The first Dimension produces your Antimatter.	Each consecutive dimension produces the previous one, allowing you to have steady growth. There are eight dimensions total.
+		Dimensions are your production units in game. The first Dimension produces your Antimatter. Each consecutive dimension produces the previous one, allowing you to have steady growth. There are eight dimensions total.
 		<br>
-		<b>Dimension Multiplier:</b> Beside the dimension there is a multiplier (example: First Dimension x1.0). The base production of each dimension is multiplied by this number.	This multiplier increases by 2x(Base) for every 10 of that dimension purchased. Each time this occurs, the price of the dimension will increase.
+		<b>Dimension Multiplier:</b> Beside the dimension there is a multiplier (example: First Dimension x1.0). The base production of each dimension is multiplied by this number. This multiplier increases by 2x(Base) for every 10 of that dimension purchased. Each time this occurs, the price of the dimension will increase.
 		<br>
 		<b>Accumulated Dimension Quantity:</b> The next column is your current amount of that dimension you own. This is a combination of how many you have purchased with antimatter, as well as produced from the higher dimension.
 		<br>
-		<b>Purchased Dimensions Quantity:</b>	Next to each accumulated quantity of owned dimensions, the amount of that dimension purchased toward the next multiplier upgrade is displayed in brackets.	If you have (4) next to your accumulated dimension quantity, you will need 6 more of that dimension for the next multiplier increase.
+		<b>Purchased Dimensions Quantity:</b> Next to each accumulated quantity of owned dimensions, the amount of that dimension purchased toward the next multiplier upgrade is displayed in brackets. If you have (4) next to your accumulated dimension quantity, you will need 6 more of that dimension for the next multiplier increase.
 		<br>
-		<b>Dimension Growth Percent:</b>	This number represents the amount of growth that dimension experiences per second. +100% means the dimension is doubling each second.	This allows you to judge overall growth.
+		<b>Dimension Growth Percent:</b> This number represents the amount of growth that dimension experiences per second. +100% means the dimension is doubling each second. This allows you to judge overall growth.
 		<br>
-		<b>Cost & until 10:</b> You can buy a single quantity of each dimension with antimatter when the cost button is highlighted.	Alternatively, if the Until 10 button is highlighted, you can buy whatever quantity gets you to that dimensions next dimension multiplier.
+		<b>Cost & until 10:</b> You can buy a single quantity of each dimension with antimatter when the cost button is highlighted. Alternatively, if the Until 10 button is highlighted, you can buy whatever quantity gets you to that dimensions next dimension multiplier.
 		<br>
 		<b>Max all:</b> Max all will buy max tickspeed (see below), then will buy until 10 of 8th dimension until it can't anymore, then 7th, and so on.
 		<br>
