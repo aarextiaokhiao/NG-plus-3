@@ -153,7 +153,7 @@ let HOW_TO = [
 		<br>
 		The double autobuyer tick speed upgrade will have all autobuyers buy twice as fast.<br>
 		<b>Toggle All Autobuyers:</b> This button will turn all of your autobuyers on or off.
-			<br>
+		<br>
 		<b>Hotkey: A</b> (for toggle all autobuyers)`
 	}, {
 		mod: _ => true,
