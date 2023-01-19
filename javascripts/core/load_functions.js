@@ -1621,7 +1621,7 @@ function doNGSPUpdatingVersion(){
 
 function doInitInfMultStuff(){
         ipMultPower=2
-        if (mod.ngp3 && player.masterystudies.includes("t241")) ipMultPower=2.2
+        if (hasMasteryStudy("t241")) ipMultPower=2.2
         if (GUBought("gb3")) ipMultPower=2.3
         if (mod.ngep) ipMultCostIncrease=4
         else ipMultCostIncrease=10
@@ -1797,7 +1797,7 @@ function setDisplaysStuff1(){
         el("secretstudy").style.opacity = 0
         el("secretstudy").style.cursor = "pointer"
   
-        el("bestAntimatterType").textContent = player.masterystudies && quantumed ? "Your best meta-antimatter for this quantum" : "Your best-ever meta-antimatter"
+        el("bestAntimatterType").textContent = quantumed ? "Your best meta-antimatter for this quantum" : "Your best-ever meta-antimatter"
 
         el("masterystudyunlock").style.display = player.dilation.upgrades.includes("ngpp6") && player.masterystudies ? "" : "none"
         el("respecMastery").style.display = player.dilation.upgrades.includes("ngpp6") && player.masterystudies ? "block" : "none"
@@ -1832,49 +1832,57 @@ function setChallengeDisplay(){
         el("ngm4chall").style.display=inNGM(4)?"":"none"
 }
 
+function setInfChallengeOrder(){
+	if (inNGM(3)) {
+		order=['postcngmm_1','postcngmm_2','postcngm3_1','postcngm3_2','postcngmm_3','postc1','postc2','postcngm3_3','postc4','postcngm3_4','postc5','postc6','postc7','postc8']
+	} else if (inNGM(2)) {
+		order=['postcngmm_1','postcngmm_2','postcngmm_3','postc1','postc2','postc4','postc5','postc6','postc7','postc8']
+	} else {
+		order=['postc1','postc2','postc3','postc4','postc5','postc6','postc7','postc8']
+	}
+}
+
 function setInfChallengeDisplay(){
-        if (inNGM(2)) {
-                order=['postcngmm_1','postcngmm_2','postcngmm_3','postc1','postc2','postc4','postc5','postc6','postc7','postc8']
-                el("icngmm_row").style.display=""
-                el("icngmm_3div").style.display=""
-                el("ic2div").style.display="none"
-                el("icngmm_4div").style.display=""
-                el("ic3div").style.display="none"
-                el("icngmm_4div").appendChild(el("postc2").parentElement.parentElement)
-        } else {
-                order=['postc1','postc2','postc3','postc4','postc5','postc6','postc7','postc8']
-                el("icngmm_row").style.display="none"
-                el("icngmm_3div").style.display="none"
-                el("ic2div").style.display=""
-                el("icngmm_4div").style.display="none"
-                el("ic3div").style.display=""
-                el("ic2div").appendChild(el("postc2").parentElement.parentElement)
-        }
-        el("postc2reward").textContent = "Reward: "+(inNGM(2)?"S":"Get the sacrifice autobuyer, and s")+"acrifice is more powerful."
-        if (!inNGM(3)) {
-                el("icngm3_row").style.display="none"
-                el("icngm3_row2").style.display="none"
-                el("icngm3_div1").style.display="none"
-                galCosts[31]=2
-	        galCosts[12]=3
-	        galCosts[32]=8
-	        galCosts[13]=20
-	        galCosts[33]=1e3
-                el("ic4div").appendChild(el("postc4").parentElement.parentElement)
-                el("ic4div").style.display=""
-        } else {
-                el("icngm3_row").style.display=""
-                el("icngm3_row2").style.display=""
-                el("icngm3_div1").style.display=""
-                order=['postcngmm_1','postcngmm_2','postcngm3_1','postcngm3_2','postcngmm_3','postc1','postc2','postcngm3_3','postc4','postcngm3_4','postc5','postc6','postc7','postc8']
-	        galCosts[31]=5
-	        galCosts[12]=5
-	        galCosts[32]=20
-	        galCosts[13]=50
-	        galCosts[33]=1e15
-                el("icngm3_div2").appendChild(el("postc4").parentElement.parentElement)
-                el("ic4div").style.display="none"
-        }
+	if (inNGM(2)) {
+		el("icngmm_row").style.display=""
+		el("icngmm_3div").style.display=""
+		el("ic2div").style.display="none"
+		el("icngmm_4div").style.display=""
+		el("ic3div").style.display="none"
+		el("icngmm_4div").appendChild(el("postc2").parentElement.parentElement)
+	} else {
+		order=['postc1','postc2','postc3','postc4','postc5','postc6','postc7','postc8']
+		el("icngmm_row").style.display="none"
+		el("icngmm_3div").style.display="none"
+		el("ic2div").style.display=""
+		el("icngmm_4div").style.display="none"
+		el("ic3div").style.display=""
+		el("ic2div").appendChild(el("postc2").parentElement.parentElement)
+	}
+	el("postc2reward").textContent = "Reward: "+(inNGM(2)?"S":"Get the sacrifice autobuyer, and s")+"acrifice is more powerful."
+	if (!inNGM(3)) {
+		el("icngm3_row").style.display="none"
+		el("icngm3_row2").style.display="none"
+		el("icngm3_div1").style.display="none"
+		galCosts[31]=2
+		galCosts[12]=3
+		galCosts[32]=8
+		galCosts[13]=20
+		galCosts[33]=1e3
+		el("ic4div").appendChild(el("postc4").parentElement.parentElement)
+		el("ic4div").style.display=""
+	} else {
+		el("icngm3_row").style.display=""
+		el("icngm3_row2").style.display=""
+		el("icngm3_div1").style.display=""
+		galCosts[31]=5
+		galCosts[12]=5
+		galCosts[32]=20
+		galCosts[13]=50
+		galCosts[33]=1e15
+		el("icngm3_div2").appendChild(el("postc4").parentElement.parentElement)
+		el("ic4div").style.display="none"
+	}
 }
 
 function setOtherChallDisplay(){
@@ -1936,9 +1944,6 @@ function updateNGp3DisplayStuff(){
 	el('autoAssign').textContent="Auto: O"+(quSave.autoOptions.assignQK?"N":"FF")
 	el('autoAssignRotate').textContent="Rotation: "+(quSave.autoOptions.assignQKRotate>1?"Left":quSave.autoOptions.assignQKRotate?"Right":"None")
 	el('autoReset').textContent="Auto: O"+(quSave.autoOptions.replicantiReset?"N":"FF")
-	el("antTabs").style.display=player.masterystudies.includes("d11")?"":"none"
-	NF.shown()
-	el("riptabbtn").style.display=player.masterystudies.includes("d14")?"":"none"
 	for (var u=5;u<13;u++) {
 			if (u%3==1) el("neutrinoUpg"+u).parentElement.parentElement.style.display=u>ghSave.times+2?"none":""
 			else el("neutrinoUpg"+u).style.display=u>ghSave.times+2?"none":""

@@ -43,7 +43,7 @@ function getNormalDimensionVanillaTimeStudyBonus(tier){
 	var mult = E(1)
 	if (player.timestudy.studies.includes(71) && tier !== 8) mult = mult.times(tmp.sacPow.pow(0.25).min("1e210000"));
 	if (player.timestudy.studies.includes(91)) mult = mult.times(pow10(Math.min(player.thisEternity, 18000) / 60));
-	let useHigherNDReplMult = !player.dilation.active ? false : !player.masterystudies ? false : player.masterystudies.includes("t323")
+	let useHigherNDReplMult = !player.dilation.active ? false : !player.masterystudies ? false : hasMasteryStudy("t323")
 	if (!useHigherNDReplMult) mult = mult.times(tmp.nrm)
 	if (player.timestudy.studies.includes(161)) mult = mult.times(pow10((inNGM(2) ? 6660 : 616) * (mod.ngep ? 5 : 1)))
 	if (player.timestudy.studies.includes(234) && tier == 1) mult = mult.times(tmp.sacPow)
@@ -154,7 +154,7 @@ function getDimensionFinalMultiplier(tier) {
 	if (mult.gt(10)) mult = dilates(mult.max(1), 1)
 	if (player.dilation.upgrades.includes(6)) mult = mult.times(player.dilation.dilatedTime.max(1).pow(308))
 	if (tier == 1 && !inNGM(3) && player.infinityUpgrades.includes("postinfi60")) mult = mult.times(getNewB60Mult())
-	let useHigherNDReplMult = !player.dilation.active ? false : !player.masterystudies ? false : player.masterystudies.includes("t323")
+	let useHigherNDReplMult = !player.dilation.active ? false : !player.masterystudies ? false : hasMasteryStudy("t323")
 	if (useHigherNDReplMult) mult = mult.times(tmp.nrm)
 	if (player.dilation.active && isNanoEffectUsed("dil_effect_exp")) mult = mult.pow(tmp.nf.effects.dil_effect_exp)
 	if (isBigRipUpgradeActive(1)) mult = mult.times(tmp.bru[1])
@@ -254,7 +254,7 @@ function getDimensionPowerMultiplier(focusOn, debug) {
 	
 function getMPTBase(focusOn) {
 	if (((inQC(5) || inQC(7)) && focusOn != "linear") || (((inNC(13) && !inNGM(3)) || player.currentChallenge == "postc1" || player.currentChallenge == "postcngm3_1") && inNGM(2))) {
-		if (mod.ngp3 && player.masterystudies.includes("t321")) return E("1e430")
+		if (hasMasteryStudy("t321")) return E("1e430")
 		return 1
 	}
 	let ret = 2
@@ -282,7 +282,7 @@ function getMPTBase(focusOn) {
 
 function getMPTExp(focusOn) {
 	let x = 1
-	if (mod.ngp3 && player.masterystudies.includes("d7")) x = getElectronBoost(focusOn)
+	if (hasMasteryStudy("d7")) x = getElectronBoost(focusOn)
 	return x
 }
 

@@ -207,7 +207,7 @@ function updateColorPowers(log) {
 	let m = 1
 	colorBoosts.g = Math.pow(log.g+1, 1/3) * 2 - 1
 	if (ghSave.ghostlyPhotons.unl) m *= tmp.le[3]
-	if (aarMod.ngumuV && player.masterystudies.includes("t362")) {
+	if (aarMod.ngumuV && hasMasteryStudy("t362")) {
 		m += quSave.replicants.quarks.add(1).log10()/10
 		if (m > 4) m = Math.sqrt(m * 4)
 	}
@@ -347,7 +347,7 @@ function updateQuarksTab(tab) {
 	el("greenTranslation").textContent=msg
 	el("blueTranslation").textContent=shortenMoney(colorBoosts.b)
 
-	if (player.masterystudies.includes("t383")) el("blueTranslationMD").textContent=shorten(getMTSMult(383))
+	if (hasMasteryStudy("t383")) el("blueTranslationMD").textContent=shorten(getMTSMult(383))
 	if (ghSave.milestones>7) {
 		var assortAmount=getAssortAmount()
 		var colors=['r','g','b']
@@ -373,13 +373,13 @@ function updateGluonsTab() {
 	el("brupg2current").textContent = "Currently: " + shortenMoney(E_pow(2.2, Math.pow(tmp.sacPow.log10() / 1e6, 0.25))) + "x"
 	el("rgupg3current").textContent = "Currently: " + shorten(getRG3Effect()) + "x"
 	el("brupg4current").textContent = "Currently: " + shortenMoney(E_pow(getDimensionPowerMultiplier(hasNU(13) && "no-rg4"), 0.0003).max(1)) + "x"
-	if (player.masterystudies.includes("d9")) {
+	if (hasMasteryStudy("d9")) {
 		el("gbupg6current").textContent = "Currently: " + (100-100/(1 + Math.pow(player.infinityPower.plus(1).log10(),0.25)/2810)).toFixed(1) + "%"
 		el("brupg6current").textContent = "Currently: " + (100-100/(1 + player.meta.resets/340)).toFixed(1) + "%"
 		el("gbupg7current").textContent = "Currently: " + (100-100/(1 + Math.log10(1+player.infinityPoints.max(1).log10())/100)).toFixed(1) + "%"
 		el("brupg7current").textContent = "Currently: " + (100-100/(1 + Math.log10(1+player.eternityPoints.max(1).log10())/80)).toFixed(1) + "%"
 	}
-	if (player.masterystudies.includes("d13")) {
+	if (hasMasteryStudy("d13")) {
 		el("rgupg8current").textContent = "Currently: " + shorten(getGU8Effect("rg")) + "x"
 		el("gbupg8current").textContent = "Currently: " + shorten(getGU8Effect("gb")) + "x"
 		el("brupg8current").textContent = "Currently: " + shorten(getGU8Effect("br")) + "x"
@@ -417,8 +417,8 @@ function updateQuarksTabOnUpdate(mode) {
 		el(pair + "next").textContent = shortenDimensions(uq[pair[0]].sub(diff).round())
 	}
 	el("assignAllButton").className = canAssign ? "storebtn" : "unavailablebtn"
-	el("bluePowerMDEffect").style.display = player.masterystudies.includes("t383") ? "" : "none"
-	if (player.masterystudies.includes("d13")) el("redQuarksToD").textContent = shortenDimensions(quSave.usedQuarks.r)
+	el("bluePowerMDEffect").style.display = hasMasteryStudy("t383") ? "" : "none"
+	if (hasMasteryStudy("d13")) el("redQuarksToD").textContent = shortenDimensions(quSave.usedQuarks.r)
 }
 
 function updateGluonsTabOnUpdate(mode) {
@@ -432,8 +432,8 @@ function updateGluonsTabOnUpdate(mode) {
 	}
 	if (ghSave.milestones<8) mode = undefined
 	var names = ["rg","gb","br"]
-	var sevenUpgrades = player.masterystudies.includes("d9")
-	var eightUpgrades = player.masterystudies.includes("d13")
+	var sevenUpgrades = hasMasteryStudy("d9")
+	var eightUpgrades = hasMasteryStudy("d13")
 	if (mode == undefined) for (r = 3; r < 5; r++) el("gupgrow" + r).style.display = sevenUpgrades ? "" : "none"
 	for (c = 0; c < 3; c++) {
 		if (mode==undefined) {

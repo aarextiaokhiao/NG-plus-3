@@ -1,9 +1,6 @@
 let NF = {
 	unl() {
-		return player.masterystudies && player.masterystudies.includes("d12")
-	},
-	shown() {
-		el("nanofieldtabbtn").style.display=NF.unl()?"":"none"
+		return hasMasteryStudy("d12")
 	},
 }
 
@@ -45,7 +42,7 @@ function updateNanoverseTab() {
 function getQuarkChargeProduction(noSpeed) {
 	let ret = E(1)
 	if (isNanoEffectUsed("preon_charge")) ret = ret.times(tmp.nf.effects.preon_charge)
-	if (player.masterystudies.includes("t421")) ret = ret.times(getMTSMult(421))
+	if (hasMasteryStudy("t421")) ret = ret.times(getMTSMult(421))
 	if (hasNU(3)) ret = ret.times(tmp.nu[3])
 	if (hasNU(7)) ret = ret.times(tmp.nu[7])
 	if (!noSpeed) ret = ret.times(getNanofieldFinalSpeed())
@@ -68,14 +65,14 @@ function getQuarkLossProduction() {
 function getQuarkEnergyProduction() {
 	let ret = nfSave.charge.mul(5).sqrt()
 	if (isNanoEffectUsed("preon_energy")) ret = ret.times(tmp.nf.effects.preon_energy)
-	if (player.masterystudies.includes("t411")) ret = ret.times(getMTSMult(411))
+	if (hasMasteryStudy("t411")) ret = ret.times(getMTSMult(411))
 	ret = ret.times(getNanofieldFinalSpeed())
 	return ret
 }
 
 function getQuarkAntienergyProduction() {
 	let ret = nfSave.charge.sqrt()
-	if (player.masterystudies.includes("t401")) ret = ret.div(getMTSMult(401))
+	if (hasMasteryStudy("t401")) ret = ret.div(getMTSMult(401))
 	ret = ret.times(getNanofieldFinalSpeed())
 	return ret
 }

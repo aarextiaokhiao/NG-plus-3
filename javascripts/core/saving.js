@@ -935,8 +935,7 @@ function doNGPlusTwoNewPlayer(){
 
 function doNGMinusTwoNewPlayer(){
 	aarMod.newGameMinusMinusVersion = 2.41
-	player.galacticSacrifice = {}
-	player.galacticSacrifice = resetGalacticSacrifice()
+	player.galacticSacrifice = resetGalacticSacrificeData()
 	player.totalBoughtDims = {}
 	player.tickBoughtThisInf = resetTickBoughtThisInf()
 	player.challengeTimes.push(600*60*24*31)
@@ -959,13 +958,13 @@ function getBrandNewReplicantsData() {
 		limit: 1,
 		limitDim: 1,
 		limitCost: E(1e49),
-		eggonProgress: 0,
+		eggonProgress: E(0),
 		eggons: E(0),
 		hatchSpeed: 20,
 		hatchSpeedCost: 1e49,
-		babyProgress: 0,
+		babyProgress: E(0),
 		babies: E(0),
-		ageProgress: 0
+		ageProgress: E(0)
 	}
 }
 

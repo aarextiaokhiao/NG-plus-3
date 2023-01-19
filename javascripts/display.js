@@ -607,7 +607,7 @@ let PRESTIGES = {
 	},
 	fund: {
 		modReq: _ => mod.ngp3,
-		prequsite: _ => player.masterystudies.includes("d14"),
+		prequsite: _ => hasMasteryStudy("d14"),
 		reached: _ => isQuantumReached() && bigRipped(),
 		got: _ => ghostified,
 	},
@@ -632,7 +632,6 @@ function updateHeaders() {
 
 	//Side-Tabs
 	el("challengesbtn").style.display = chal ? "inline-block" : "none"
-	el("tab_ant").style.display = quan && player.masterystudies.includes("d10") ? "inline-block" : "none"
 	el("tab_bl").style.display = funda && ghSave.wzb.unl ? "inline-block" : "none"
 }
 
@@ -667,7 +666,7 @@ function updateResetTierButtons(){
 	el("quantumbtn").className = bigRip ? "bigripbtn" : "quantumbtn"
 	el("quantumbtn").style.display = bigRip || isQuantumReached() ? "" : "none"
 
-	el("bigripbtn").style.display = !bigRip ? "" : "none"
+	el("bigripbtn").style.display = bigRip || !quantumed || !hasMasteryStudy("d14") ? "none" : ""
 	el("ghostifybtn").style.display = bigRip && isQuantumReached() ? "" : "none"
 	el("ghostparticles").style.display = ghostified ? "" : "none"
 	if (ghostified) {

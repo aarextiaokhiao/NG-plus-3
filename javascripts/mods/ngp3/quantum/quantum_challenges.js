@@ -4,15 +4,11 @@ var quantumChallenges = {
 }
 
 function updateQuantumChallenges() {
-	if (!mod.ngp3 || !player.masterystudies.includes("d8")) {
-		el("qctabbtn").style.display = "none"
-		el("pctabbtn").style.display = "none"
-		return
-	} else el("qctabbtn").style.display = ""
+	if (!hasMasteryStudy("d8")) return
+
 	assigned = []
 	var assignedNums = {}
-	el("pctabbtn").style.display = player.masterystudies.includes("d9") ? "" : "none"
-	el("respecPC").style.display = player.masterystudies.includes("d9") ? "" : "none"
+	el("respecPC").style.display = hasMasteryStudy("d9") ? "" : "none"
 	for (var pc = 1; pc <= 4; pc++) {
 		var subChalls = quSave.pairedChallenges.order[pc]
 		if (subChalls) for (var sc=0; sc < 2; sc++) {
@@ -22,7 +18,7 @@ function updateQuantumChallenges() {
 				assignedNums[subChall] = pc
 			}
 		}
-		if (player.masterystudies.includes("d9")) {
+		if (hasMasteryStudy("d9")) {
 			var property = "pc" + pc
 			var sc1 = quSave.pairedChallenges.order[pc] ? quSave.pairedChallenges.order[pc][0] : 0
 			var sc2 = (sc1 ? quSave.pairedChallenges.order[pc].length > 1 : false) ? quSave.pairedChallenges.order[pc][1] : 0
@@ -34,7 +30,7 @@ function updateQuantumChallenges() {
 
 			var sc1t = Math.min(sc1, sc2)
 			var sc2t = Math.max(sc1, sc2)
-			if (player.masterystudies.includes("d14")) {
+			if (hasMasteryStudy("d14")) {
 				el(property + "br").style.display = ""
 				el(property + "br").textContent = sc1t != 6 || sc2t != 8 ? "QC6 & 8" : bigRipped() ? "Big Ripped" : quSave.pairedChallenges.completed + 1 < pc ? "Locked" : "Big Rip"
 				el(property + "br").className = sc1t != 6 || sc2t != 8 ? "lockedchallengesbtn" : bigRipped() ? "onchallengebtn" : quSave.pairedChallenges.completed + 1 < pc ? "lockedchallengesbtn" : "bigripbtn"

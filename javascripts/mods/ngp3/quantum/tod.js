@@ -46,7 +46,10 @@ function updateTreeOfDecayTab(){
 		else eff = "4"
 		el(color + "UpgEffDesc").innerHTML = " " + eff + "x"
 
-		for (var u = 1; u <= 3; u++) el(color + "upg" + u).className = "gluonupgrade " + (branch.spin.lt(getBranchUpgCost(shorthand, u)) ? "unavailablebtn" : shorthand)
+		for (var u = 1; u <= 3; u++) {
+			updateBranchUpgrade(shorthand, u)
+			el(color + "upg" + u).className = "gluonupgrade " + (branch.spin.lt(getBranchUpgCost(shorthand, u)) ? "unavailablebtn" : shorthand)
+		}
 		if (ghostified) el(shorthand+"RadioactiveDecay").className = "gluonupgrade "  +(branch.quarks.lt(pow10(Math.pow(2, 50))) ? "unavailablebtn" : shorthand)
 	} //for loop
 
@@ -86,13 +89,8 @@ function updateBranchUpgrade(b, u) {
 }
 
 function updateTODStuff() {
-	if (player.masterystudies ? !player.masterystudies.includes("d13") : true) {
-		el("todtabbtn").style.display = "none"
-		return
-	} else {
-		el("todtabbtn").style.display = ""
-		
-	}
+	if (!tmp.ngp3 || !hasMasteryStudy("d13")) return
+
 	var colors = ["red", "green", "blue"]
 	var shorthands = ["r", "g", "b"]
 	for (var c = 0; c < 1; c++) {
@@ -101,7 +99,6 @@ function updateTODStuff() {
 		var name = getUQName(shorthand)
 		el(shorthand + "UQName").innerHTML = name
 
-		for (var b = 1; b <= 3; b++) updateBranchUpgrade(shorthand, b)
 		if (ghostified) {
 			el(shorthand+"RadioactiveDecay").parentElement.parentElement.style.display = ""
 			el(shorthand+"RDReq").innerHTML = "(requires "+shorten(pow10(Math.pow(2, 50))) + " of " + name + " preons)"
@@ -133,7 +130,7 @@ function getBranchSpeedText(){
 	let text = ""
 	if (E(getTreeUpgradeEffect(3)).gt(1)) text += "Tree Upgrade 3: " + shorten(getTreeUpgradeEffect(3)) + "x, "
 	if (E(getTreeUpgradeEffect(5)).gt(1)) text += "Tree Upgrade 5: " + shorten(getTreeUpgradeEffect(5)) + "x, "
-	if (player.masterystudies.includes("t431")) if (getMTSMult(431).gt(1)) text += "Mastery Study 431: " + shorten(getMTSMult(431)) + "x, "
+	if (hasMasteryStudy("t431") && getMTSMult(431).gt(1)) text += "Mastery Study 431: " + shorten(getMTSMult(431)) + "x, "
 	if (getGluonBranchSpeed().gt(1)) text += "Gluon Upgrades: " + shorten(getGluonBranchSpeed()) + "x, "
 	if (bigRipped() && isBigRipUpgradeActive(19)) text += "19th Big Rip upgrade: " + shorten(tmp.bru[19]) + "x, "
 	if (hasAch("ng3p48")) if (player.meta.resets > 1) text += "'Are you currently dying?' reward: " + shorten (Math.sqrt(player.meta.resets + 1)) + "x, "
@@ -155,7 +152,7 @@ function getGluonBranchSpeed() {
 }
 function getBranchSpeed() { // idea: when you hold shift you can see where the multipliers of branch speed are
 	let x = Decimal.times(getTreeUpgradeEffect(3), getTreeUpgradeEffect(5))
-	if (player.masterystudies.includes("t431")) x = x.times(getMTSMult(431))
+	if (hasMasteryStudy("t431")) x = x.times(getMTSMult(431))
 	x = x.times(getGluonBranchSpeed())
 	if (bigRipped() && isBigRipUpgradeActive(19)) x = x.times(tmp.bru[19])
 	if (hasAch("ng3p48")) x = x.times(Math.sqrt(player.meta.resets + 1))
@@ -297,7 +294,6 @@ function buyBranchUpg(branch, upg) {
 	bData.spin = bData.spin.sub(getBranchUpgCost(branch, upg))
 	if (bData.upgrades[upg] == undefined) bData.upgrades[upg] = 0
 	bData.upgrades[upg]++
-	updateBranchUpgrade(branch, upg)
 }
 
 function getBranchUpgLevel(branch,upg) {
@@ -453,7 +449,6 @@ function maxBranchUpg(branch, weak) {
 			if (bData.upgrades[u] === undefined) bData.upgrades[u] = 0
 			bData.upgrades[u] += toAdd
 		}
-		if (bData.upgrades[u] > oldLvl) updateBranchUpgrade(branch, u)
 	}
 }
 

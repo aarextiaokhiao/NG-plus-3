@@ -319,16 +319,16 @@ var masteryStudies = {
 			return quantumed
 		},
 		322: function() {
-			return player.masterystudies.includes("d10") || ghostified
+			return hasMasteryStudy("d10") || ghostified
 		},
 		361: function() {
-			return player.masterystudies.includes("d11") || ghostified
+			return hasMasteryStudy("d11") || ghostified
 		},
 		r40: function() {
 			return NF.unl() || ghostified
 		},
 		r43: function() {
-			return player.masterystudies.includes("d13") || ghostified
+			return hasMasteryStudy("d13") || ghostified
 		}
 	},
 	unlocked: [],
@@ -375,7 +375,7 @@ function updateMasteryStudyCosts() {
 	for (id = 0; id < masteryStudies.timeStudies.length; id++) {
 		var name = masteryStudies.timeStudies[id]
 		if (!masteryStudies.unlocked.includes(name)) break
-		if (!player.masterystudies.includes("t"+name)) setMasteryStudyCost(name,"t")
+		if (!hasMasteryStudy("t"+name)) setMasteryStudyCost(name,"t")
 	}
 	for (id = 13; id <= masteryStudies.ecsUpTo; id++) {
 		if (!masteryStudies.unlocked.includes("ec"+id)) break
@@ -468,7 +468,7 @@ function addSpentableMasteryStudies(x) {
 		var ecId = !isNum&&id.split("ec")[1]
 		var canAdd = false
 		if (ecId) canAdd = ECComps("eterc"+ecId)
-		else canAdd = player.masterystudies.includes(isNum?"t"+id:id)
+		else canAdd = hasMasteryStudy(isNum?"t"+id:id)
 		if (masteryStudies.unlocked.includes(id) && !masteryStudies.spentable.includes(id)) masteryStudies.spentable.push(id)
 		if (canAdd) {
 			var paths = getMasteryStudyConnections(id)
@@ -517,7 +517,6 @@ function buyingDilStudyED(){
 	teleportToEDs()
 	el("timestudy361").style.display = ""
 	el("timestudy362").style.display = ""
-	el("antTabs").style.display = ""
 	updateReplicants()
 }
 
@@ -539,7 +538,6 @@ function buyingDilStudyToD(){
 function buyingDilStudyRip(){
 	showTab("quantumtab")
 	showQuantumTab("bigrip")
-	el("riptabbtn").style.display = ""
 }
 
 function buyingDilationStudy(id){
@@ -642,11 +640,11 @@ function buyMasteryStudy(type, id, quick=false) {
 
 function canBuyMasteryStudy(type, id) {
 	if (type == 't') {
-		if (player.timestudy.theorem < masteryStudies.costs.time[id] || player.masterystudies.includes('t' + id) || player.eternityChallUnlocked > 12 || !masteryStudies.timeStudies.includes(id)) return false
+		if (player.timestudy.theorem < masteryStudies.costs.time[id] || hasMasteryStudy('t' + id) || player.eternityChallUnlocked > 12 || !masteryStudies.timeStudies.includes(id)) return false
 		if (masteryStudies.latestBoughtRow > Math.floor(id / 10)) return false
 		if (!masteryStudies.spentable.includes(id)) return false
 	} else if (type == 'd') {
-		if (player.timestudy.theorem < masteryStudies.costs.dil[id] || player.masterystudies.includes('d' + id)) return false
+		if (player.timestudy.theorem < masteryStudies.costs.dil[id] || hasMasteryStudy('d' + id)) return false
 		if (ghSave.milestones < 3 && masteryStudies.unlockReqConditions[id]()) return false
 		if (!masteryStudies.spentable.includes("d" + id)) return false
 	} else {
@@ -658,6 +656,10 @@ function canBuyMasteryStudy(type, id) {
 	}
 	return true
 }
+
+function hasMasteryStudy(x) {
+	return mod.ngp3 && player.masterystudies.includes(x)
+}
 	
 function updateMasteryStudyButtons() {
 	if (!mod.ngp3) return
@@ -666,7 +668,7 @@ function updateMasteryStudyButtons() {
 		if (name + 0 == name) {
 			var className
 			var div = el("timestudy" + name)
-			if (player.masterystudies.includes("t" + name)) className = "timestudybought"
+			if (hasMasteryStudy("t" + name)) className = "timestudybought"
 			else if (canBuyMasteryStudy('t', name)) className = "timestudy"
 			else className = "timestudylocked"
 			if (div.className !== className) div.className = className
@@ -686,7 +688,7 @@ function updateMasteryStudyButtons() {
 	for (id = 7; id <= masteryStudies.unlocksUpTo; id++) {
 		var div = el("dilstudy" + id)
 		if (!masteryStudies.unlocked.includes("d" + id)) break
-		if (player.masterystudies.includes("d" + id)) div.className = "dilationupgbought"
+		if (hasMasteryStudy("d" + id)) div.className = "dilationupgbought"
 		else if (canBuyMasteryStudy('d', id)) div.className = "dilationupg"
 		else div.className = "timestudylocked"
 	}
@@ -727,8 +729,8 @@ function drawMasteryBranch(id1, id2) {
 	msctx.lineWidth = 15;
 	msctx.beginPath();
 	var drawBoughtLine = true
-	if (type1 == "t" || type1 == "d") drawBoughtLine = player.masterystudies.includes(type1+id1.split("study")[1])
-	if (type2 == "t" || type2 == "d") drawBoughtLine = drawBoughtLine && player.masterystudies.includes(type2 + id2.split("study")[1])
+	if (type1 == "t" || type1 == "d") drawBoughtLine = hasMasteryStudy(type1+id1.split("study")[1])
+	if (type2 == "t" || type2 == "d") drawBoughtLine = drawBoughtLine && hasMasteryStudy(type2 + id2.split("study")[1])
 	if (type2 == "c") drawBoughtLine = drawBoughtLine && player.eternityChallUnlocked == id2.slice(2,4)
 	if (drawBoughtLine) {
 		if (type2 == "d" && player.options.theme == "Aarex's Modifications") {

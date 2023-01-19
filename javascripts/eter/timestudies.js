@@ -220,7 +220,7 @@ function canBuyStudy(name) {
 			if (player.timestudy.studies.includes((row-1)*10 + col)) return true; else return false
 			break;
 		case 12:
-			if (hasRow(row-1) && (!hasRow(row) || (player.masterystudies ? player.masterystudies.includes("t272") : false))) return true; else return false
+			if (hasRow(row-1) && (!hasRow(row) || (player.masterystudies ? hasMasteryStudy("t272") : false))) return true; else return false
 			break;
 		case 7:
 			if (!player.timestudy.studies.includes(61)) return false;
@@ -235,11 +235,11 @@ function canBuyStudy(name) {
 			break;
 
 		case 22:
-			return player.timestudy.studies.includes(210 + Math.round(col/2)) && (((name%2 == 0) ? !player.timestudy.studies.includes(name-1) : !player.timestudy.studies.includes(name+1)) || (player.masterystudies ? player.masterystudies.includes("t302") : false))
+			return player.timestudy.studies.includes(210 + Math.round(col/2)) && (((name%2 == 0) ? !player.timestudy.studies.includes(name-1) : !player.timestudy.studies.includes(name+1)) || (player.masterystudies ? hasMasteryStudy("t302") : false))
 			break;
 
 		case 23:
-			return (player.timestudy.studies.includes(220 + Math.floor(col*2)) || player.timestudy.studies.includes(220 + Math.floor(col*2-1))) && (!player.timestudy.studies.includes((name%2 == 0) ? name-1 : name+1) || (player.masterystudies ? player.masterystudies.includes("t302") : false))
+			return (player.timestudy.studies.includes(220 + Math.floor(col*2)) || player.timestudy.studies.includes(220 + Math.floor(col*2-1))) && (!player.timestudy.studies.includes((name%2 == 0) ? name-1 : name+1) || (player.masterystudies ? hasMasteryStudy("t302") : false))
 			break;
 	}
 }
@@ -403,7 +403,7 @@ function respecTimeStudies(force, presetLoad) {
 	if (respecMastery) {
 		var respecedMS = []
 		player.timestudy.theorem += masteryStudies.ttSpent
-		if (player.masterystudies.includes("t373")) updateColorCharge()
+		if (hasMasteryStudy("t373")) updateColorCharge()
 		for (var id = 0; id < player.masterystudies.length; id++) {
 			var d = player.masterystudies[id].split("d")[1]
 			if (d) respecedMS.push(player.masterystudies[id])
@@ -438,7 +438,7 @@ function respecUnbuyableTimeStudies() {
 	for (var t = 0; t < all.length; t++) {
 		var id = all[t]
 		if (player.timestudy.studies.includes(id)) {
-			if ((id < 120 || id > 150 || !secondSplitPick || secondSplitPick == id % 10 || player.masterystudies.includes("t272")) && (id < 220 || !earlyDLStudies.includes(id % 2 > 0 ? id + 1 : id - 1) || player.masterystudies.includes("t302"))) {
+			if ((id < 120 || id > 150 || !secondSplitPick || secondSplitPick == id % 10 || hasMasteryStudy("t272")) && (id < 220 || !earlyDLStudies.includes(id % 2 > 0 ? id + 1 : id - 1) || hasMasteryStudy("t302"))) {
 				respecedTS.push(id)
 				if (id > 120 && id < 130) secondSplitPick = id % 10
 				if (id > 220) earlyDLStudies.push(id)

@@ -433,14 +433,10 @@ function setR20Tooltip(){
 }
 
 function setBMTooltip(){
-	// Brave Milestones (3/16)
-	let bm1 = el("braveMilestone1")
-	let bm10 = el("braveMilestone10")
+	// Brave Milestones (1/16)
 	let bm14 = el("braveMilestone14")
 
 	//BRAVE MILESTONES
-	bm1.setAttribute('ach-tooltip', "Reward: Keep Speedrun Milestones, Paired Challenges, Big Rip Upgrades, and assignation features. Also, gain quarks based on your best MA for this Quantum.")
-	bm10.setAttribute('ach-tooltip', "Reward: Start with 10 Fourth Emperor Dimensions" + (mod.udp ? ", and start Big Rips with the 3rd row of Eternity upgrades." : "."))
 	bm14.setAttribute('ach-tooltip', "Reward: Start with " + shortenCosts(1e25) + " Quark Spins and Spins speed up Branches.")
 }
 

@@ -55,14 +55,14 @@ function getMetaDimensionGlobalMultiplier() {
 	if (hasAch("ngpp12")) ret = ret.times(1.1)
 	if (mod.ngp3) {
 		//Mastery Study Boosts
-		if (player.masterystudies.includes("t262")) ret = ret.times(getMTSMult(262))
-		if (player.masterystudies.includes("t282")) ret = ret.times(getMTSMult(282))
-		if (player.masterystudies.includes("t303")) ret = ret.times(getMTSMult(303))
-		if (player.masterystudies.includes("t351")) ret = ret.times(getMTSMult(351))
-		if (player.masterystudies.includes("t373")) ret = ret.times(getMTSMult(373))
-		if (player.masterystudies.includes("t382")) ret = ret.times(getMTSMult(382))
-		if (player.masterystudies.includes("t383")) ret = ret.times(getMTSMult(383))
-		if (player.masterystudies.includes("t393")) ret = ret.times(getMTSMult(393))
+		if (hasMasteryStudy("t262")) ret = ret.times(getMTSMult(262))
+		if (hasMasteryStudy("t282")) ret = ret.times(getMTSMult(282))
+		if (hasMasteryStudy("t303")) ret = ret.times(getMTSMult(303))
+		if (hasMasteryStudy("t351")) ret = ret.times(getMTSMult(351))
+		if (hasMasteryStudy("t373")) ret = ret.times(getMTSMult(373))
+		if (hasMasteryStudy("t382")) ret = ret.times(getMTSMult(382))
+		if (hasMasteryStudy("t383")) ret = ret.times(getMTSMult(383))
+		if (hasMasteryStudy("t393")) ret = ret.times(getMTSMult(393))
 
 		//Quantum Upgrades
 		if (GUBought("br4")) ret = ret.times(E_pow(getDimensionPowerMultiplier(), 0.0003).max(1))
@@ -96,7 +96,7 @@ function getMetaBoostPower() {
 	if (mod.ngp3) {
 		if (isNanoEffectUsed("meta_boost_power")) r = tmp.nf.effects.meta_boost_power
 
-		if (player.masterystudies.includes("t312")) exp = 1.045
+		if (hasMasteryStudy("t312")) exp = 1.045
 		if (hasAch("ng3p26")) exp *= Math.log10(9 + Math.max(player.meta.resets / 75 + 0.25, 1))
 	}
 	if (hasAch("ngpp14")) r *= 1.01
@@ -142,10 +142,10 @@ function getMetaShiftRequirement() {
 	var inQC4 = inQC(4)
 	data.mult = inQC4 ? 5.5 : 15
 	if (mod.ngp3) {
-		if (player.masterystudies.includes("t312")) data.mult -= 1
+		if (hasMasteryStudy("t312")) data.mult -= 1
 	}
 	data.amount += data.mult * Math.max(mdb - 4, 0)
-	if (mod.ngp3 && player.masterystudies.includes("d13")) data.amount -= getTreeUpgradeEffect(1)
+	if (hasMasteryStudy("d13")) data.amount -= getTreeUpgradeEffect(1)
 	if (hasNU(1)) data.amount -= tmp.nu[1]
 
 	data.scalingStart = inQC4 ? 55 : 15
@@ -354,7 +354,7 @@ function getExtraDimensionBoostPowerExponent(ma) {
 	power += getECReward(13)
 	if (mod.ngp3) {
 		if (isNanoEffectUsed("ma_effect_exp")) power += tmp.nf.effects.ma_effect_exp
-		if (player.masterystudies.includes("d13")) power += getTreeUpgradeEffect(8)
+		if (hasMasteryStudy("d13")) power += getTreeUpgradeEffect(8)
 	}
 	return power
 }
@@ -370,7 +370,7 @@ function getDil17Bonus() {
 function updateOverallMetaDimensionsStuff(){
 	el("metaAntimatterAmount").textContent = shortenMoney(player.meta.antimatter)
 	el("metaAntimatterBest").textContent = shortenMoney(player.meta.bestAntimatter)
-	el("bestAntimatterQuantum").textContent = player.masterystudies && quantumed ? "Your best" + (ghostified ? "" : "-ever") + " meta-antimatter" + (ghostified ? " in this Ghostify" : "") + " was " + shortenMoney(player.meta.bestOverQuantums) + "." : ""
+	el("bestAntimatterQuantum").textContent = quantumed ? "Your best" + (ghostified ? "" : "-ever") + " meta-antimatter" + (ghostified ? " in this Ghostify" : "") + " was " + shortenMoney(player.meta.bestOverQuantums) + "." : ""
 	el("bestAntimatterTranslation").innerHTML = (mod.ngp3 && aarMod.nguspV === undefined && player.currentEternityChall != "eterc14" && (inQC(3) || nfSave.rewards >= 2) && !inQC(7)) ? 'Raised to the power of <span id="metaAntimatterPower" style="font-size:35px; color: black">'+formatValue(player.options.notation, getExtraDimensionBoostPowerExponent(getExtraDimensionBoostPowerUse()), 2, 1)+'</span>, t' : "T"
 	setAndMaybeShow("bestMAOverGhostifies", ghostified, '"Your best-ever meta-antimatter was " + shortenMoney(player.meta.bestOverGhostifies) + "."')
 	el("metaAntimatterEffect").textContent = shortenMoney(getExtraDimensionBoostPower())

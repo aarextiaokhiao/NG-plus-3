@@ -8,10 +8,8 @@ function updateElectronsTab() {
 }
 
 function updateElectrons(retroactive) {
-	if (!mod.ngp3 || !player.masterystudies.includes("d7")) {
-		el("electronstabbtn").style.display = "none"
-		return
-	} else el("electronstabbtn").style.display = ""
+	if (!hasMasteryStudy("d7")) return
+
 	var mult = getElectronGainFinalMult()
 	el("electronsGainMult").textContent = mult.toFixed(2)
 	if (retroactive) quSave.electrons.amount = getElectronGainFinalMult() * quSave.electrons.sacGals
@@ -55,7 +53,7 @@ function getElectronBoost(mod) {
 	
 	if (amount > 37460 + s) amount = Math.sqrt((amount-s) * 37460) + s
 	if (tmp.rg4 && mod != "no-rg4") amount *= 0.7
-	if (player.masterystudies !== undefined && player.masterystudies.includes("d13") && mod != "noTree") amount *= getTreeUpgradeEffect(4)
+	if (player.masterystudies !== undefined && hasMasteryStudy("d13") && mod != "noTree") amount *= getTreeUpgradeEffect(4)
 	amount += 1
 	return amount
 }

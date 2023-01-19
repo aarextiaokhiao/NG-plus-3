@@ -204,6 +204,7 @@ let RESETS = {
 			player.eternities = speedrunMilestonesReached >= 1 ? 2e4 : mod.ngp3 ? 0 : 100
 			player.lastTenEternities = [[600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)]]
 			updateLastTenEternities()
+			updateMilestones()
 
 			player.eternityPoints = E(0)
 			player.eternityBuyer = getEternitied() < 100 ? player.eternityBuyer : {
@@ -244,7 +245,6 @@ let RESETS = {
 			player.dilation.upgrades = []
 			player.dilation.times = 0
 			if (unl) {
-				let keepTP = hasAch("ng3p71") ? true : bigRip ? hasRipUpg(11) : hasAch("ng3p37")
 				if (bigRip) {
 					player.dilation.studies = hasRipUpg(12) ? [1,2,3,4,5,6] : [1]
 					if (hasRipUpg(12)) player.dilation.upgrades = oldUpgs
@@ -253,12 +253,17 @@ let RESETS = {
 					player.dilation.dilatedTime = unl && speedrunMilestonesReached >= 22 ? E(1e100) : E(0)
 					if (speedrunMilestonesReached >= 6) player.dilation.upgrades = oldUpgs
 				}
-				if (keepTP) player.dilation.tachyonParticles = player.dilation.bestTP.pow((hasAch("ng3p71") ? true : bigRip ? false : qc ? ghSave.milestones > 15 : ghSave.milestones > 3) ? 1 : 0.5)
+				if (order == "qu") {
+					let keepTPHalf = bigRip ? hasRipUpg(11) : hasAch("ng3p37")
+					let keepTP = bigRip ? ghSave.milestones >= 16 : ghSave.milestones >= 4
+					if (keepTP) player.dilation.tachyonParticles = player.dilation.bestTP
+					else if (keepTPHalf) player.dilation.tachyonParticles = player.dilation.bestTP.pow(0.5)
+				}
 			}
 			player.dilation.totalTachyonParticles = player.dilation.tachyonParticles
 			resetDilationGalaxies()
 
-			doMetaDimensionsReset(bigRip, !mod.ngp3, qc)
+			doMetaDimensionsReset(order, qc)
 			if (mod.ngud) {
 				player.exdilation = {
 					unspent: E(0),
@@ -288,38 +293,159 @@ let RESETS = {
 					el("blackholeunlock").style.display = "inline-block"
 				}
 			}
-			if (mod.ngp3) {
-				if (speedrunMilestonesReached >= 4 && !isRewardEnabled(4)) {
-					for (var s = 0; s < player.masterystudies.length; s++) {
-						if (player.masterystudies[s].indexOf("t") >= 0) player.timestudy.theorem += masteryStudies.costs.time[player.masterystudies[s].split("t")[1]]
-						else player.timestudy.theorem += masteryStudies.costs.dil[player.masterystudies[s].split("d")[1]]
-					}
-				}
-				if (isRewardEnabled(11) && (bigRip && !hasRipUpg(12))) {
-					if (player.eternityChallUnlocked > 12) player.timestudy.theorem += masteryStudies.costs.ec[player.eternityChallUnlocked]
-					else player.timestudy.theorem += ([0, 30, 35, 40, 70, 130, 85, 115, 115, 415, 550, 1, 1])[player.eternityChallUnlocked]
-				}
 
-				player.masterystudies = bigRip && !hasRipUpg(12) ? ["d7", "d8", "d9", "d10", "d11", "d12", "d13", "d14"] : speedrunMilestonesReached >= 16 && isRewardEnabled(11) ? player.masterystudies : []
-				player.respecMastery = false
-				updateMasteryStudyCosts()
-
-				ipMultPower = GUBought("gb3") ? 2.3 : player.masterystudies.includes("t241") ? 2.2 : 2
-				if (!qc) {
-					quSave.electrons.amount = 0
-					quSave.electrons.sacGals = 0
-					if (speedrunMilestonesReached < 25 && player.quantum.autoOptions.sacrifice) toggleAutoQuantumContent('sacrifice')
-					tmp.aeg = 0
+			//NG+3
+			if (speedrunMilestonesReached >= 4 && !isRewardEnabled(4)) {
+				for (var s = 0; s < player.masterystudies.length; s++) {
+					if (player.masterystudies[s].indexOf("t") >= 0) player.timestudy.theorem += masteryStudies.costs.time[player.masterystudies[s].split("t")[1]]
+					else player.timestudy.theorem += masteryStudies.costs.dil[player.masterystudies[s].split("d")[1]]
 				}
-				drawMasteryTree()
-				replicantsResetOnQuantum(qc)
-				nanofieldResetOnQuantum()
 			}
+			if (isRewardEnabled(11) && (bigRip && !hasRipUpg(12))) {
+				if (player.eternityChallUnlocked > 12) player.timestudy.theorem += masteryStudies.costs.ec[player.eternityChallUnlocked]
+				else player.timestudy.theorem += ([0, 30, 35, 40, 70, 130, 85, 115, 115, 415, 550, 1, 1])[player.eternityChallUnlocked]
+			}
+
+			player.masterystudies = bigRip && !hasRipUpg(12) ? ["d7", "d8", "d9", "d10", "d11", "d12", "d13", "d14"] : speedrunMilestonesReached >= 16 && isRewardEnabled(11) ? player.masterystudies : []
+			player.respecMastery = false
+			updateMasteryStudyCosts()
+
+			ipMultPower = GUBought("gb3") ? 2.3 : hasMasteryStudy("t241") ? 2.2 : 2
+			if (!qc) {
+				quSave.electrons.amount = 0
+				quSave.electrons.sacGals = 0
+				if (speedrunMilestonesReached < 25 && player.quantum.autoOptions.sacrifice) toggleAutoQuantumContent('sacrifice')
+				tmp.aeg = 0
+			}
+			drawMasteryTree()
+			replicantsResetOnQuantum(qc)
+			nanofieldResetOnQuantum()
 
 			quSave.time = 0
 			QKminpeak = E(0)
 			QKminpeakValue = E(0)
 			el("metaAntimatterEffectType").textContent = inQC(3) ? "multiplier on all Infinity Dimensions" : "extra multiplier per Dimension Boost"
+		}
+	},
+	funda: {
+		resetQuantums() {
+			quSave.times = 0
+			quSave.best = 9999999999
+			quSave.last10 = [[600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)]]
+			updateSpeedruns()
+			updateLastTenQuantums()
+		},
+		resetQuarkGluons(bm) {
+			quSave.quarks = E(0)
+			quSave.usedQuarks = {
+				r: E(0),
+				g: E(0),
+				b: E(0),
+			}
+			quSave.colorPowers = {
+				r: E(0),
+				g: E(0),
+				b: E(0),
+			}
+			quSave.gluons = {
+				rg: E(0),
+				gb: E(0),
+				br: E(0),
+			}
+			quSave.multPower = 0
+			if (bm < 2) quSave.upgrades = []
+			if (bm < 1) quSave.reachedInfQK = false
+
+			updateQuantumWorth("quick")
+			updateColorCharge()
+			updateGluonsTabOnUpdate("prestige")
+		},
+		resetElectrons(bm) {
+			if (bm == 3) return
+
+			quSave.electrons.mult = 2
+			quSave.electrons.rebuyables = [0, 0, 0, 0]
+		},
+		resetQCs(bm) {
+			quSave.challenge = []
+			quSave.challenges = {}
+			quSave.pairedChallenges.order = {}
+			quSave.pairedChallenges.current = 0
+			quSave.pairedChallenges.completed = 0
+			updateInQCs()
+			updateQuantumChallenges()
+			updateQuantumTabDisplays()
+			updatePCCompletions()
+		},
+		resetDuplicants(bm) {
+			quSave.replicants = getBrandNewReplicantsData()
+
+			let permUnlocks = [null, 7, 9, 10, 10, 11, 11, 12, 12]
+			for (let d = 1; d <= 8; d++) {
+				let keep10 = bm >= permUnlocks[d]
+				EDsave[d].perm = keep10 ? 10 : 0
+				if (keep10) quSave.replicants.limitDim = d
+			}
+			if (quSave.replicants.limitDim >= 1) {
+				quSave.replicants.limit = 10
+				quSave.replicants.limitCost = E_pow(200, quSave.replicants.limitDim * 9).times(1e49)
+				quSave.replicants.quantumFoodCost = E_pow(5, quSave.replicants.limitDim * 30).times(2e46)
+			}
+			updateEmperorDimensions()
+
+			nfSave.rewards = bm >= 13 ? 5 : 0
+			updateNanoRewardTemp()
+		},
+		resetDecay(bm) {
+			todSave.r.quarks = E(0)
+			todSave.r.spin = E(0)
+			todSave.r.upgrades = {}
+			todSave.r.decays = hasAch("ng3p86") ? Math.floor(todSave.r.decays * .75) : 0
+			todSave.upgrades = { 1: bm >= 4 ? 5 : 0 }
+			updateTODStuff()
+		},
+		resetRip(bm) {
+			brSave.active = false
+			brSave.bestGals = 0
+			if (bm < 1) brSave.upgrades = []
+
+			if (bm < 3) {
+				beSave.unlocked = false
+				beSave.break = false
+			}
+			beSave.eternalMatter = E(0)
+			beSave.upgrades = []
+			beSave.epMultPower = 0
+			updateBreakEternity()
+		},
+
+		doReset() {
+			let bm = ghSave.milestones
+			ghSave.time = 0
+			GHPminpeak = E(0)
+			GHPminpeakValue = E(0)
+
+			player.infinitiedBank = 0
+			player.eternitiesBank = 0
+			updateBankedEter()
+			player.dilation.bestTP = E(0)
+			player.meta.bestOverQuantums = E(0)
+			if (bm < 3) {
+				var keepMS = []
+				for (var i of player.masterystudies) if (i[0] != "d") keepMS.push(i)
+				player.masterystudies = keepMS
+			}
+
+			this.resetQuantums(bm)
+			this.resetQuarkGluons(bm)
+			this.resetElectrons(bm)
+			this.resetQCs(bm)
+			this.resetDuplicants(bm)
+			this.resetDecay(bm)
+			this.resetRip(bm)
+
+			updateAutoQuantumMode()
+			doGhostifyGhostifyResetStuff()
 		}
 	}
 }
@@ -333,31 +459,13 @@ function doReset(order) {
 }
 
 //OLD CODE
-function onQuantumAM(){
-	let x = 10
-	if (player.challenges.includes("challenge1")) x = 100
-	if (inNGM(4)) x = 200
-	if (hasAch("r37")) x = 1000
-	if (hasAch("r54")) x = 2e5
-	if (hasAch("r55")) x = 1e10
-	if (hasAch("r78")) x = 2e25
-	return E(x)
-}
-
-function NC10NDCostsOnReset(){
-	if (inNC(10) || player.currentChallenge == "postc1") {
-		player.thirdCost = E(100)
-		player.fourthCost = E(500)
-		player.fifthCost = E(2500)
-		player.sixthCost = E(2e4)
-		player.seventhCost = E(2e5)
-		player.eightCost = E(4e6)
+function replicantsResetOnQuantum(qc) {
+	let keepAnt = ghSave.milestones >= 6 && !qc
+	if (!keepAnt) {
+		quSave.replicants.requirement = E("1e3000000")
+		quSave.replicants.amount = E(0)
 	}
-}
-
-function replicantsResetOnQuantum(challid){
-	quSave.replicants.requirement = E("1e3000000")
-	quSave.replicants.quarks = (!challid && hasAch("ng3p45")) ? quSave.replicants.quarks.pow(2/3) : E(0)
+	quSave.replicants.quarks = (!qc && hasAch("ng3p45")) ? quSave.replicants.quarks.pow(2/3) : E(0)
 	quSave.replicants.eggonProgress = E(0)
 	quSave.replicants.eggons = E(0)
 	quSave.replicants.babyProgress = E(0)
@@ -365,7 +473,7 @@ function replicantsResetOnQuantum(challid){
 	quSave.replicants.growupProgress = E(0)
 	for (let d = 1; d <= 8; d++) {
 		if (d == 8 || EDsave[d].perm < 10) quSave.replicants.quantumFood += Math.round(EDsave[d].progress.toNumber() * 3) % 3
-		if (d != 1 || (!hasAch("ng3p46")) || challid) {
+		if (d != 1 || !hasAch("ng3p46") || qc) {
 			EDsave[d].workers = E(EDsave[d].perm)
 			EDsave[d].progress = E(0)
 		} else {
@@ -383,13 +491,14 @@ function nanofieldResetOnQuantum(){
 	nfSave.powerThreshold = E(50)
 }
 		
-function doMetaDimensionsReset(bigRip, headstart, challid){
+function doMetaDimensionsReset(order, qc) {
+	let keepMDB = ghSave.milestones >= 5 && order == "qu" && !qc
 	player.meta = {
-		antimatter: getMetaAntimatterStart(bigRip),
-		bestAntimatter: headstart ? player.meta.bestAntimatter : getMetaAntimatterStart(bigRip),
+		antimatter: getMetaAntimatterStart(),
+		bestAntimatter: getMetaAntimatterStart(),
 		bestOverQuantums: player.meta.bestOverQuantums,
 		bestOverGhostifies: player.meta.bestOverGhostifies,
-		resets: isRewardEnabled(27) ? (!challid && ghSave.milestones > 4 ? player.meta.resets : 4) : 0,
+		resets: keepMDB ? player.meta.resets : isRewardEnabled(27) ? 4 : 0,
 		'1': {
 			amount: E(0),
 			bought: 0,
@@ -431,33 +540,6 @@ function doMetaDimensionsReset(bigRip, headstart, challid){
 			cost: E(1e24)
 		}
 	}
-}
-
-function completelyResetNormalDimensions(){
-	player.firstCost = E(10)
-	player.secondCost = E(100)
-	player.thirdCost = E(10000)
-	player.fourthCost = E(1000000)
-	player.fifthCost = E(1e9)
-	player.sixthCost = E(1e13)
-	player.seventhCost = E(1e18)
-	player.eightCost = E(1e24)
-	player.firstAmount = E(0)
-	player.secondAmount = E(0)
-	player.thirdAmount = E(0)
-	player.fourthAmount = E(0)
-	player.firstBought = 0
-	player.secondBought = 0
-	player.thirdBought = 0
-	player.fourthBought = 0
-	player.fifthAmount = E(0)
-	player.sixthAmount = E(0)
-	player.seventhAmount = E(0)
-	player.eightAmount = E(0)
-	player.fifthBought = 0
-	player.sixthBought = 0
-	player.seventhBought = 0
-	player.eightBought = 0
 }
 
 function completelyResetInfinityDimensions(){
@@ -568,223 +650,6 @@ function completelyResetTimeDimensions(){
 		power: E(1),
 		bought: 0
 	}
-}
-
-function getToDOnGhostifyData(bm) {
-	let ret = {
-		r: {
-			quarks: E(0),
-			spin: E(bm > 13 ? 1e25 : 0),
-			upgrades: {}
-		},
-		g: {
-			quarks: E(0),
-			spin: E(bm > 13 ? 1e25 : 0),
-			upgrades: {}
-		},
-		b: {
-			quarks: E(0),
-			spin: E(bm > 13 ? 1e25 : 0),
-			upgrades: {}
-		},
-		upgrades: {}
-	}
-	if (todSave.b.decays && hasAch("ng3p86")) ret.b.decays = Math.floor(todSave.b.decays * .75)
-	if (todSave.r.decays && hasAch("ng3p86")) ret.r.decays = Math.floor(todSave.r.decays * .75)
-	if (todSave.g.decays && hasAch("ng3p86")) ret.g.decays = Math.floor(todSave.g.decays * .75)
-	return ret
-}
-
-function getBigRipOnGhostifyData(bm, nBRU){
-	return {
-		active: false,
-		conf: brSave.conf,
-		times: 0,	
-		bestThisRun: E(0),
-		totalAntimatter: brSave.totalAntimatter,
-		bestGals: brSave.bestGals,
-		savedAutobuyersNoBR: brSave.savedAutobuyersNoBR,
-		savedAutobuyersBR: brSave.savedAutobuyersBR,
-		spaceShards: E(0),
-		upgrades: bm ? nBRU : []
-	}
-}
-
-function getBreakEternityDataOnGhostify(nBEU, bm){
-	return {
-		unlocked: bm > 14,
-		break: bm > 14 ? beSave.break : false,
-		eternalMatter: E(0),
-		upgrades: bm > 14 ? nBEU : [],
-		epMultPower: 0
-	}
-}
-
-function getQuantumOnGhostifyData(bm, nBRU, nBEU){
-	return {
-		reached: true,
-		times: 0,
-		time: 0,
-		best: 9999999999,
-		last10: [[600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)]],
-		autoEC: quSave.autoEC,
-		disabledRewards: quSave.disabledRewards,
-		metaAutobuyerWait: 0,
-		autobuyer: {
-			enabled: false,
-			limit: E(0),
-			mode: "amount",
-			peakTime: 0
-		},
-		autoOptions: {
-			assignQK: quSave.autoOptions.assignQK,
-			assignQKRotate: quSave.autoOptions.assignQKRotate,
-			sacrifice: bm ? quSave.autoOptions.sacrifice : false,
-			replicantiReset: quSave.autoOptions.replicantiReset
-		},
-		assortPercentage: quSave.assortPercentage,
-		assignAllRatios: quSave.assignAllRatios,
-		quarks: E(0),
-		usedQuarks: {
-			r: E(0),
-			g: E(0),
-			b: E(0)
-		},
-		colorPowers: {
-			r: E(0),
-			g: E(0),
-			b: E(0)
-		},
-		gluons: {
-			rg: E(0),
-			gb: E(0),
-			br: E(0)
-		},
-		multPower: 0,
-		electrons: {
-			amount: 0,
-			sacGals: 0,
-			mult: bm > 2 ? quSave.electrons.mult : bm ? 6 : 2,
-			rebuyables: bm > 2 ? quSave.electrons.rebuyables : [0,0,0,0]
-		},
-		challenge: [],
-		challenges: {},
-		nonMAGoalReached: quSave.nonMAGoalReached,
-		challengeRecords: {},
-		pairedChallenges: {
-			order: bm ? quSave.pairedChallenges.order : {},
-			current: 0,
-			completed: bm ? 4 : 0,
-			completions: quSave.pairedChallenges.completions,
-			fastest: quSave.pairedChallenges.fastest,
-			pc68best: quSave.pairedChallenges.pc68best,
-			respec: false
-		},
-		qcsNoDil: quSave.qcsNoDil,
-		replicants: getBrandNewReplicantsData(),
-		emperorDimensions: {},
-		nanofield: {
-			charge: E(0),
-			energy: E(0),
-			antienergy: E(0),
-			power: 0,
-			powerThreshold: E(50),
-			rewards: bm>12?16:0,
-			producingCharge: false
-		},
-		reachedInfQK: bm,
-		tod: getToDOnGhostifyData(bm),
-		bigRip: getBigRipOnGhostifyData(bm, nBRU),
-		breakEternity: getBreakEternityDataOnGhostify(nBEU, bm),
-		notrelative: true,
-		wasted: true,
-		producedGluons: 0,
-		realGluons: 0,
-		bosons: {
-			'w+': 0,
-			'w-': 0,
-			'z0': 0
-		},
-		neutronstar: {
-			quarks: 0,
-			metaAntimatter: 0,
-			dilatedTime: 0
-		},
-		rebuyables: {
-			1: 0,
-			2: 0
-		},
-		upgrades: bm > 1 ? quSave.upgrades : [],
-		rg4: false
-	}
-}
-
-function doGhostifyResetStuff(bm, nBRU, nBEU){
-	quSave = getQuantumOnGhostifyData(bm, nBRU, nBEU)
-	player.quantum = quSave
-	doQuantumGhostifyResetStuff(bm)
-	doGhostifyGhostifyResetStuff(bm)
-
-	doReset("qu")
-}
-
-function doQuantumGhostifyResetStuff(implode, bm) {
-	nfSave = quSave.nanofield
-	brSave = quSave.bigRip
-	beSave = quSave.breakEternity
-
-	if (!bm && !hasAch("ng3p77")) {
-		el("electronstabbtn").style.display = "none"
-		el("antTabs").style.display = "none"
-		NF.shown()
-		el("riptabbtn").style.display = "none"
-	}
-
-	if (bm > 6) {
-		quSave.replicants.limit = 10
-		quSave.replicants.limitCost = E_pow(200, quSave.replicants.limitDim * 9).times(1e49)
-		quSave.replicants.quantumFoodCost = E_pow(5, quSave.replicants.limitDim * 30).times(2e46)
-	}
-
-	EDsave = quSave.emperorDimensions
-	var permUnlocks = [7,9,10,10,11,11,12,12]
-	for (var i = 1; i < 9; i++) {
-		var num = bm >= permUnlocks[i - 1] ? 10 : 0
-		EDsave[i] = {workers: E(num), progress: E(0), perm: num}
-		if (num > 9) quSave.replicants.limitDim = i
-	}
-
-	if (bm > 3) {
-		var colors = ['r', 'g', 'b']
-		for (var c = 0; c < 3; c++) todSave[colors[c]].upgrades[1] = 5
-	}
-
-	todSave = quSave.tod
-	if (bm) for (var i = 1; i < 9; i++) quSave.challenges[i] = 2
-	else {
-		el('rebuyupgauto').style.display="none"
-		el('toggleallmetadims').style.display="none"
-		el('metaboostauto').style.display="none"
-		el("autoBuyerQuantum").style.display="none"
-		el('toggleautoquantummode').style.display="none"
-	}
-
-	el('bestTP').textContent = "Your best Tachyon particles in this Ghostify was " + shorten(player.dilation.bestTP) + "."
-	updateLastTenQuantums()
-	updateSpeedruns()
-	updateColorCharge()
-	updateGluonsTabOnUpdate("prestige")
-	updateQuantumWorth("quick")
-	updateBankedEter()
-	updateInQCs()
-	updateQuantumChallenges()
-	updatePCCompletions()
-	updateReplicants("prestige")
-	updateEmperorDimensions()
-	updateNanoRewardTemp()
-	updateTODStuff()
-	updateBreakEternity()
-	updateAutoQuantumMode()
 }
 
 function doGhostifyGhostifyResetStuff(bm, force){

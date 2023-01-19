@@ -305,7 +305,7 @@ function loadInfAutoBuyers() {
 var infDimPow = 1
 
 function getIDReplMult() {
-	if (mod.ngp3 && player.masterystudies.includes('t311')) return tmp.rm.pow(17.3)
+	if (hasMasteryStudy('t311')) return tmp.rm.pow(17.3)
 	return tmp.rm
 }
 

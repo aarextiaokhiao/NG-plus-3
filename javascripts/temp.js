@@ -12,18 +12,18 @@ function updateTemp() {
 	if (mod.ngp3) {
 		updateGhostifyTempStuff()
 		if (beSave && beSave.unlocked) updateBreakEternityUpgradesTemp()
-		if (player.masterystudies.includes("d14")) updateBigRipUpgradesTemp()
+		if (hasMasteryStudy("d14")) updateBigRipUpgradesTemp()
 		if (tmp.nrm !== 1 && bigRipped()) {
 			if (!player.dilation.active && hasRipUpg(14)) tmp.nrm = tmp.nrm.pow(tmp.bru[14])
 			if (tmp.nrm.log10() > 1e9) tmp.nrm = pow10(1e9 * Math.pow(tmp.nrm.log10() / 1e9, 2/3))
 		}
-		if (player.masterystudies.includes("d13")) updateTS431ExtraGalTemp()
-		if (player.masterystudies.includes("d9")) {
+		if (hasMasteryStudy("d13")) updateTS431ExtraGalTemp()
+		if (hasMasteryStudy("d9")) {
 			tmp.twr = getTotalWorkers()
 			tmp.tra = getTotalReplicants()
 		}
 		updateMasteryStudyTemp()
-		if (player.masterystudies.includes("d13")) tmp.branchSpeed = getBranchSpeed()
+		if (hasMasteryStudy("d13")) tmp.branchSpeed = getBranchSpeed()
 		if (NF.unl() && tmp.nf !== undefined && tmp.nf.rewardsUsed !== undefined) {
 			var x = getNanoRewardPowerEff()
 			var y = nfSave.rewards+tmp.nanofield_free_rewards
@@ -36,7 +36,7 @@ function updateTemp() {
 				updateNanoRewardEffects()
 			}
 		}
-		if (player.masterystudies.includes("d10")) tmp.edgm = getEmperorDimensionGlobalMultiplier() //Update global multiplier of all Emperor Dimensions
+		if (hasMasteryStudy("d10")) tmp.edgm = getEmperorDimensionGlobalMultiplier() //Update global multiplier of all Emperor Dimensions
 		tmp.be = brokeEternity()
 		tmp.rg4 = quSave.upgrades.includes("rg4")
 		tmp.tue = getTreeUpgradeEfficiency()
@@ -169,7 +169,7 @@ function updateReplicantiTemp() {
 	data.speeds = getReplSpeed()
 	data.interval = getReplicantiFinalInterval()
 
-	if (mod.ngp3 && player.masterystudies.includes("t273")) {
+	if (hasMasteryStudy("t273")) {
 		data.chance = E_pow(data.chance, tmp.mts[273])
 		data.freq = 0
 		if (data.chance.gte("1e9999998")) data.freq = tmp.mts[273].times(Math.log10(player.replicanti.chance + 1) / Math.log10(2))
@@ -494,7 +494,7 @@ function updateNanoRewardTemp() {
 	tmp.nf = {}
 
 	if (!mod.ngp3) return
-	if (!player.masterystudies.includes("d11")) return
+	if (!hasMasteryStudy("d11")) return
 
 	updateNanoEffectUsages()
 	//The rest is calculated by updateTemp().

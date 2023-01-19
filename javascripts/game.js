@@ -1974,9 +1974,8 @@ function updateBlinkOfAnEye(){
 
 function canQuickBigRip() {
 	var x = false
-	if (mod.ngp3 && player.masterystudies.includes("d14") && inQC(0) && quSave.electrons.amount >= 62500) {
-		if (ghSave.milestones >= 2) x = true
-		else for (var p = 1; p < 5; p++) {
+	if (hasMasteryStudy("d14") && inQC(0) && quSave.electrons.amount >= 62500) {
+		for (var p = 1; p < 5; p++) {
 			var pcData = quSave.pairedChallenges.order[p]
 			if (pcData) {
 				var pc1 = Math.min(pcData[0], pcData[1])
@@ -2005,9 +2004,9 @@ function idAutoTick() {
 function replicantiAutoTick() {
 	if (getEternitied() >= 40 && player.replicanti.auto[0] && player.currentEternityChall !== "eterc8" && isChanceAffordable()) {
 		var chance = Math.round(player.replicanti.chance * 100)
-		var maxCost = (mod.ngp3 ? player.masterystudies.includes("t265") : false) ? 1 / 0 : E("1e1620").div(inOnlyNGM(2) ? 1e60 : 1);
+		var maxCost = (mod.ngp3 ? hasMasteryStudy("t265") : false) ? 1 / 0 : E("1e1620").div(inOnlyNGM(2) ? 1e60 : 1);
 		var bought = Math.max(Math.floor(player.infinityPoints.min(maxCost).div(player.replicanti.chanceCost).log(1e15) + 1), 0)
-		if (!mod.ngp3 || !player.masterystudies.includes("t265")) bought = Math.min(bought, 100 - chance)
+		if (!hasMasteryStudy("t265")) bought = Math.min(bought, 100 - chance)
 		player.replicanti.chance = (chance + bought) / 100
 		player.replicanti.chanceCost = player.replicanti.chanceCost.times(E_pow(1e15, bought))
 	}
@@ -2048,8 +2047,9 @@ function notifyGhostifyMilestones(){
 	if (typeof notifyId2 == "undefined") notifyId2 = 16
 	if (notifyId2 <= 0) notifyId2 = 0
 	if (ghSave.milestones > notifyId2) {
-		$.notify("You became a ghost in at most "+getFullExpansion(tmp.bm[notifyId2])+" quantumed stat! "+(["You now start with all Speedrun Milestones and all "+shorten(Number.MAX_VALUE)+" QK assignation features unlocked, all Paired Challenges completed, all Big Rip upgrades bought, Nanofield is 2x faster until you reach 16 rewards, and you get quarks based on your best MA this quantum", "From now on, colored quarks do not cancel, you keep your gluon upgrades, you can quick Big Rip, and completing an Eternity Challenge doesn't respec your Time Studies.", "You now keep your Electron upgrades", "From now on, Quantum doesn't reset your Tachyon particles unless you are in a QC, unstabilizing quarks doesn't lose your colored quarks, and you start with 5 of 1st upgrades of each Tree Branch", "From now on, Quantum doesn't reset your Meta-Dimension Boosts unless you are in a QC or undoing Big Rip", "From now on, Quantum doesn't reset your normal duplicants unless you are in a QC or undoing Big Rip", "You now start with 10 worker duplicants and Ghostify now doesn't reset Neutrinos.", "You are now gaining ^0.5 amount of quarks, ^0.5 amount of gluons, and 1% of Space Shards gained on Quantum per second.", "You now start with 10 Emperor Dimensions of each tier up to the second tier"+(mod.udp?", and from now on, start Big Rips with the 3rd row of Eternity Upgrades":""), "You now start with 10 Emperor Dimensions of each tier up to the fourth tier", "You now start with 10 Emperor Dimensions of each tier up to the sixth tier, and the IP multiplier no longer costs IP", "You now start with 10 of each Emperor Dimension", "You now start with 16 Nanorewards", "You now start with "+shortenCosts(1e25)+" quark spins, and Branches are faster based on your spins", "You now start with Break Eternity unlocked and all Break Eternity upgrades bought and generate 1% of Eternal Matter gained on Eternity per second", "From now on, you gain 1% of quarks you will gain per second and you keep your Tachyon particles on Quantum and Ghostify outside of Big Rip."])[notifyId2]+".","success")
-		notifyId2++
+		notifyId2 = ghSave.milestones
+		$.notify("You fundamented with under "+getFullExpansion(tmp.bm[notifyId2-1])+" Quantum resets!", "success")
+		setTimeout(() => $.notify(el("braveMilestone"+notifyId2).getAttribute("ach-tooltip"), "info"), 2e3)
 	}
 }
 
@@ -2136,13 +2136,10 @@ function updatePerSecond() {
 	updateOrderGoals()
 	bankedInfinityDisplay()
 	doPerSecondNGP3Stuff()
-	notifyQuantumMilestones()
-	updateQuantumWorth()
 	updateNGM2RewardDisplay()
 	updateGalaxyUpgradesDisplay()
 	updateTimeStudyButtons(false, true)
 	updateHotkeys()
-	updateQCDisplaysSpecifics()
 	updateConvertSave(eligibleConvert())
 
 	//Rounding errors
@@ -2398,7 +2395,7 @@ function replicantiIncrease(diff) {
 	else notContinuousReplicantiUpdating()
 	if (player.replicanti.amount.gt(0)) replicantiTicks += diff
 
-	if (mod.ngp3 && player.masterystudies.includes("d10") && quSave.autoOptions.replicantiReset && player.replicanti.amount.gt(quSave.replicants.requirement)) replicantReset(true)
+	if (hasMasteryStudy("d10") && quSave.autoOptions.replicantiReset && player.replicanti.amount.gt(quSave.replicants.requirement)) replicantReset(true)
 	if (player.replicanti.galaxybuyer && canGetReplicatedGalaxy() && canAutoReplicatedGalaxy()) replicantiGalaxy()
 }
 
@@ -2735,7 +2732,7 @@ function d8SacDisplay(){
 }
 
 function EPonEternityPassiveGain(diff){
-	if (mod.ngp3 && player.masterystudies.includes("t291")) {
+	if (hasMasteryStudy("t291")) {
 		player.eternityPoints = player.eternityPoints.plus(gainedEternityPoints().times(diff / 100))
 	}
 }
@@ -2743,7 +2740,7 @@ function EPonEternityPassiveGain(diff){
 function ngp3DilationUpdating(){
 	let gain = getDilGain()
 	if (inNGM(2)) player.dilation.bestIP = player.infinityPoints.max(player.dilation.bestIP)
-	if (player.dilation.tachyonParticles.lt(gain) && player.masterystudies.includes("t292")) setTachyonParticles(gain)
+	if (player.dilation.tachyonParticles.lt(gain) && hasMasteryStudy("t292")) setTachyonParticles(gain)
 }
 
 function setTachyonParticles(x) {
@@ -2899,7 +2896,7 @@ function gameLoop(diff) {
 			if (player.dilation.tachyonParticles.lt(gain)) setTachyonParticles(gain)
 		}
 		if (ghSave.milestones>7) passiveQuantumLevelStuff(diff)
-		if (player.masterystudies.includes('t291')) updateEternityUpgrades() // to fix the 5ep upg display
+		if (hasMasteryStudy('t291')) updateEternityUpgrades() // to fix the 5ep upg display
 		if (quantumed) quantumOverallUpdating(diff)
 		if (ghostified) {
 			if (ghSave.wzb.unl) WZBosonsUpdating(diff) // Bosonic Lab

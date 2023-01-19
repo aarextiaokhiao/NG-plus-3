@@ -251,7 +251,7 @@ function automatorTick(diff) {
 
 	//Quantum Layer
 	let limit = ghSave.automatorGhosts[13].o || 1 / 0
-	if (player.masterystudies.includes("d13") && isAutoGhostActive(13)) {
+	if (hasMasteryStudy("d13") && isAutoGhostActive(13)) {
 		if (bigRipped()) {
 			if (quSave.time >= ghSave.automatorGhosts[13].u * 10 && brSave.times <= limit) doQuantum(true, true)
 		} else if (quSave.time >= ghSave.automatorGhosts[13].t * 10 && brSave.times < limit) bigRip(true)
@@ -269,7 +269,7 @@ function automatorTick(diff) {
 		}
 		if (isAutoGhostActive(6)) maxTreeUpg()
 	}
-	if (player.masterystudies.includes("d11") && isAutoGhostActive(11)) {
+	if (hasMasteryStudy("d11") && isAutoGhostActive(11)) {
 		let ag = ghSave.automatorGhosts[11]
 		ag.t = (ag.t || 0) + diff
 

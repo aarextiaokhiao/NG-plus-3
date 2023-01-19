@@ -36,7 +36,7 @@ function upgradeReplicantiChance() {
 }
 
 function isChanceAffordable() {
-	return player.replicanti.chance < 1 || (mod.ngp3 && player.masterystudies.includes("t265"))
+	return player.replicanti.chance < 1 || hasMasteryStudy("t265")
 }
 
 function upgradeReplicantiInterval() {
@@ -60,7 +60,7 @@ function getReplicantiLimit() {
 }
 
 function isIntervalAffordable() {
-	if (mod.ngp3 && player.masterystudies.includes("t271")) return true
+	if (hasMasteryStudy("t271")) return true
 	return player.replicanti.interval > (player.timestudy.studies.includes(22) || player.boughtDims ? 1 : 50)
 }
 
@@ -77,7 +77,7 @@ function getRGCost(offset = 0, costChange) {
 				if (mod.ngud) for (var g = Math.max(player.replicanti.gal, 399); g < player.replicanti.gal + offset; g++) increase += Math.pow(g - 389, 2)
 				if (mod.ngpp) {
 					var isReduced = false
-					if (player.masterystudies != undefined) if (player.masterystudies.includes("t266")) isReduced = true
+					if (player.masterystudies != undefined) if (hasMasteryStudy("t266")) isReduced = true
 					if (isReduced) {
 						increase += (offset - Math.max(399 - player.replicanti.gal, 0)) * (1500 * (offset - Math.max(399 - player.replicanti.gal, 0) + Math.max(player.replicanti.gal, 399) * 2) - 1183500)
 						if (player.replicanti.gal + offset > 2998) increase += (offset - Math.max(2998 - player.replicanti.gal, 0)) * (5e3 * (offset - Math.max(2998 - player.replicanti.gal, 0) + Math.max(player.replicanti.gal, 2998) * 2) - 29935e3)
@@ -181,10 +181,10 @@ function updateExtraReplGalaxies() {
 			normal: 1/3,
 			ts362: 0.4
 		}
-		let expVarName=(player.masterystudies.includes("t362")?"ts362":"")
+		let expVarName=(hasMasteryStudy("t362")?"ts362":"")
 		if (expVarName=="") expVarName="normal"
 		let exp=expData[expVarName]
-		if (player.masterystudies.includes("t412")) exp=.5
+		if (hasMasteryStudy("t412")) exp=.5
 
 		tmp.pe=Math.pow(quSave.replicants.quarks.add(1).log10(),exp)*0.8
 		if (ghSave.ghostlyPhotons.unl) tmp.pe *= tmp.le[3]
@@ -233,7 +233,7 @@ function getReplicantiInterval() {
 	if (mod.ngud) interval = interval.div(getBlackholePowerEffect().pow(1/3))
 	if (player.dilation.upgrades.includes('ngpp1') && aarMod.nguspV && !aarMod.nguepV) interval = interval.div(player.dilation.dilatedTime.max(1).pow(0.05))
 	if (player.dilation.upgrades.includes("ngmm9")) interval = interval.div(getDil72Mult())
-	if (mod.ngp3 && player.masterystudies.includes("t332")) interval = interval.div(getMTSMult(332))
+	if (hasMasteryStudy("t332")) interval = interval.div(getMTSMult(332))
 	return interval
 }
 

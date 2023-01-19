@@ -1,6 +1,6 @@
 //VERSION: 2.31
 let ngp3_ver = 2.31
-let ngp3_build = 20230115
+let ngp3_build = 20230118
 function doNGP3Updates() {
 	if (!aarMod.ngp3_build) aarMod.ngp3_build = 0
 	if (aarMod.ngp3_build < 20221230) quSave.multPower = 0
@@ -182,7 +182,7 @@ function maxAllDilUpgs() {
 //v1.99874
 function maybeShowFillAll() {
 	var display = "none"
-	if (mod.ngp3 && player.masterystudies.includes("t302")) display = "block"
+	if (hasMasteryStudy("t302")) display = "block"
 	el("fillAll").style.display = display
 	el("fillAll2").style.display = display
 }
@@ -582,6 +582,8 @@ function ngp3_feature_notify(k) {
 
 //v2.4: Moved from old functions...
 function doPerSecondNGP3Stuff(){
+	updateQuantumTabDisplays()
+
 	if (!mod.ngp3) return
 
 	//NG+3: Automators
@@ -599,6 +601,11 @@ function doPerSecondNGP3Stuff(){
 	doNGP3UnlockStuff()
 	notifyGhostifyMilestones()
 	givePerSecondNeuts()
+
+	notifyQuantumMilestones()
+	updateQuantumWorth()
+	updateQCDisplaysSpecifics()
+	updateQuantumTabDisplays()
 }
 
 function doGhostifyUnlockStuff(){
@@ -649,10 +656,10 @@ function quantumOverallUpdating(diff){
 	//Color Powers
 	for (var c=0;c<3;c++) quSave.colorPowers[colorShorthands[c]]=quSave.colorPowers[colorShorthands[c]].add(getColorPowerProduction(colorShorthands[c]).times(diff))
 	updateColorPowers()
-	if (player.masterystudies.includes("d10")) replicantOverallUpdating(diff)
-	if (player.masterystudies.includes("d11")) emperorDimUpdating(diff)
+	if (hasMasteryStudy("d10")) replicantOverallUpdating(diff)
+	if (hasMasteryStudy("d11")) emperorDimUpdating(diff)
 	if (NF.unl()) nanofieldUpdating(diff)
-	if (player.masterystudies.includes("d13")) treeOfDecayUpdating(diff)
+	if (hasMasteryStudy("d13")) treeOfDecayUpdating(diff)
 	if (bigRipped()) {
 		brSave.totalAntimatter = brSave.totalAntimatter.max(player.money)
 		brSave.bestThisRun = brSave.bestThisRun.max(player.money)
@@ -668,4 +675,18 @@ function quantumOverallUpdating(diff){
 		}
 	}
 	thisQuantumTimeUpdating()
+}
+
+function updateQuantumTabDisplays() {
+	el("qctabbtn").style.display = hasMasteryStudy("d8") ? "" : "none"
+	el("pctabbtn").style.display = hasMasteryStudy("d9") ? "" : "none"
+	el("tab_ant").style.display = hasMasteryStudy("d10") ? "inline-block" : "none"
+
+	if (!quantumed) return
+	el("electronstabbtn").style.display = hasMasteryStudy("d7") ? "" : "none"
+	el("antTabs").style.display = hasMasteryStudy("d11") ? "" : "none"
+	el("nanofieldtabbtn").style.display = NF.unl() ? "" : "none"
+	el("todtabbtn").style.display = hasMasteryStudy("d13") ? "" : "none"
+	el("riptabbtn").style.display = hasMasteryStudy("d14") ? "" : "none"
+	el("betabbtn").style.display = beSave.unlocked ? "" : "none"
 }

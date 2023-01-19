@@ -1,5 +1,5 @@
 function bigRip(auto) {
-	if (!player.masterystudies.includes("d14") || quSave.electrons.amount < 62500 || !inQC(0)) return
+	if (!hasMasteryStudy("d14") || quSave.electrons.amount < 62500 || !inQC(0)) return
 	if (ghSave.milestones > 1) {
 		quSave.pairedChallenges.order = {1: [1, 2], 2: [3, 4], 3: [5, 7], 4:[6, 8]}
 		quSave.pairedChallenges.completed = 4
@@ -47,7 +47,7 @@ function unstoreTT() {
 		if (num<240) newTS.push(num)
 		else newMS.push("t"+num)
 	}
-	for (var s = 7; s < 15; s++) if (player.masterystudies.includes("d" + s)) newMS.push("d" + s)
+	for (var s = 7; s < 15; s++) if (hasMasteryStudy("d" + s)) newMS.push("d" + s)
 	player.timestudy.studies = newTS
 	player.masterystudies = newMS
 	updateBoughtTimeStudies()
@@ -185,9 +185,7 @@ function updateBreakEternity() {
 	if (!mod.ngp3) return
 
 	let unl = beSave && beSave.unlocked
-	el("betabbtn").style.display = unl ? "" : "none"
 	el("breakEternityReq").style.display = unl ? "none" : ""
-	el("breakEternityShop").style.display = unl ? "" : "none"
 
 	if (unl) {
 		el("breakEternityNoBigRip").style.display = bigRipped() ? "none" : ""
@@ -216,7 +214,6 @@ function breakEternityDisplay(){
 		el("eterShortcutEP").textContent=shortenDimensions(player.eternityPoints)
 		el("eterShortcutTP").textContent=shortenMoney(player.dilation.tachyonParticles)
 	}
-	updateBDInBE()
 }
 
 function doBreakEternityUnlockStuff(){

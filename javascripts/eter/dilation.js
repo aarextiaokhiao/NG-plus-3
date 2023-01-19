@@ -2,11 +2,11 @@ function getDTMultPostBRU11(){
 	let gain = E(1)
 	if (hasAch("ng3p11")) gain = gain.times(Math.max(player.galaxies / 600 + 0.5, 1))
 	if (hasAch("ng3p41")) gain = gain.times(E_pow(4,Math.sqrt(nfSave.rewards)))
-	if (player.masterystudies.includes("t263")) gain = gain.times(getMTSMult(263))
-	if (player.masterystudies.includes("t281")) gain = gain.times(getMTSMult(281))
+	if (hasMasteryStudy("t263")) gain = gain.times(getMTSMult(263))
+	if (hasMasteryStudy("t281")) gain = gain.times(getMTSMult(281))
 	gain = gain.times(tmp.qcRewards[1])
-	if (player.masterystudies.includes("t322")) gain = gain.times(getMTSMult(322))
-	if (player.masterystudies.includes("t341")) gain = gain.times(getMTSMult(341))
+	if (hasMasteryStudy("t322")) gain = gain.times(getMTSMult(322))
+	if (hasMasteryStudy("t341")) gain = gain.times(getMTSMult(341))
 	gain = gain.times(getTreeUpgradeEffect(7))
 	gain = gain.times(colorBoosts.b)
 	if (GUBought("br2")) gain = gain.times(E_pow(2.2, Math.pow(tmp.sacPow.max(1).log10()/1e6, 0.25)))
@@ -66,7 +66,7 @@ function getDilPower() {
 	if (player.dilation.upgrades.includes("ngud1")) ret = getD18Bonus().times(ret)
 	if (mod.ngp3) {
 		if (hasAch("ng3p11")) ret = ret.times(Math.max(getTotalRG() / 125, 1))
-		if (player.masterystudies.includes("t264")) ret = ret.times(getMTSMult(264))
+		if (hasMasteryStudy("t264")) ret = ret.times(getMTSMult(264))
 		if (GUBought("br1")) ret = ret.times(getBR1Effect())
 	}
 	return ret
@@ -94,7 +94,7 @@ function getDilExp(disable) {
 	if (mod.ngep) ret += .001
 	if (mod.ngpp && !aarMod.nguspV) ret += getDilUpgPower(4) / 4
 	if (mod.ngp3) {
-		if ((!bigRipped() || hasRipUpg(11)) && player.masterystudies.includes("d13") && disable != "TU3") ret += getTreeUpgradeEffect(2)
+		if ((!bigRipped() || hasRipUpg(11)) && hasMasteryStudy("d13") && disable != "TU3") ret += getTreeUpgradeEffect(2)
 		if (ghostified && ghSave.neutrinos.boosts && disable != "neutrinos") ret += tmp.nb[1]
 	}
 	return ret

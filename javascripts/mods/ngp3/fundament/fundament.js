@@ -3,7 +3,7 @@ function ghostify(auto, force) {
 	if (implosionCheck) return
 	if (!force && !canGhostify()) return
 
-	if (!auto && !force && aarMod.ghostifyConf && !confirm("Fundament will reset everything up to this point, except achievements. Are you ready for this?")) {
+	if (!auto && !force && aarMod.ghostifyConf && !confirm("Fundament will reset everything up to this point, except achievements and some quantum statistics. Are you ready for this?")) {
 		denyGhostify()
 		return
 	}
@@ -87,7 +87,7 @@ function ghostifyReset(force, gain) {
 	}
 
 	ghSave.time = 0
-	doGhostifyResetStuff(bm, nBRU, nBEU)
+	doReset("funda")
 }
 
 function canGhostify() {

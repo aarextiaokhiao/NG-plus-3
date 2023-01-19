@@ -131,8 +131,8 @@ function getRemoteScalingStart(galaxies) {
 	}
 	else if (inNGM(2)) n += 1e7
 	if (mod.ngp3) {
-		for (var t = 251; t < 254; t++) if (player.masterystudies.includes("t" + t)) n += getMTSMult(t)
-		if (player.masterystudies.includes("t301")) n += getMTSMult(301)
+		for (var t = 251; t < 254; t++) if (hasMasteryStudy("t" + t)) n += getMTSMult(t)
+		if (hasMasteryStudy("t301")) n += getMTSMult(301)
 		if (isNanoEffectUsed("remote_start")) n += tmp.nf.effects.remote_start
 		if (galaxies > 1/0 && !tmp.be) n -= galaxies - 1/0 
 	}

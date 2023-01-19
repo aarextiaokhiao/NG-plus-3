@@ -78,12 +78,6 @@ function isABBuyUntil10(id) {
 	return player.autobuyers[id - 1].target >= 10
 }
 
-function updateABBulks() {
-	for (var i = 0; i <= 8; i++) {
-		el("toggleBtn" + (i == 8 ? "TickSpeed" : i + 1)).textContent = "Buys " + (!isABBuyUntil10(i + 1) ? "singles" : i == 8 ? "max" : "until 10")
-	}
-}
-
 function toggleAllABBulks() {
 	var cond = false
 	for (var i = 0; i <= 8; i++) {
@@ -97,5 +91,6 @@ function toggleAllABBulks() {
 		if (player.autobuyers[d-1] % 1 !== 0) player.autobuyers[d-1].target = (cond ? 10 : 0) + d
 	}
 	if (player.autobuyers[8] % 1 !== 0) player.autobuyers[8].target = cond ? 10 : 0
-	updateABBulks()
+
+	updateAutobuyers()
 }

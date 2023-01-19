@@ -152,7 +152,7 @@ function getDimboostCostIncrease () {
 		if (player.infinityUpgrades.includes('dimboostCost')) ret -= 1
 		if (player.infinityUpgrades.includes("postinfi50")) ret -= 0.5
 	} else {
-		if (mod.ngp3 && player.masterystudies.includes("t261")) ret -= 1
+		if (hasMasteryStudy("t261")) ret -= 1
 		if (inNC(4)) ret += 5
 		if (player.boughtDims && hasAch('r101')) ret -= Math.min(8, Math.pow(player.eternityPoints.max(1).log(10), .25))
 	}
@@ -167,7 +167,7 @@ function getSupersonicStart() {
 	let r = 56e4
 	if (aarMod.nguspV && !aarMod.nguepV) r = 1e5
 	if (mod.ngp3) {
-		if (player.masterystudies.includes("t331")) r += 24e4
+		if (hasMasteryStudy("t331")) r += 24e4
 		if (isNanoEffectUsed("supersonic_start")) if (tmp.nf.effects.supersonic_start) r += tmp.nf.effects.supersonic_start 
 	}
 	return r
@@ -176,7 +176,7 @@ function getSupersonicStart() {
 function getSupersonicMultIncrease() {
 	if (inQC(5)) return 20
 	let r = 4
-	if (mod.ngp3 && player.masterystudies.includes("t331")) r = 1
+	if (hasMasteryStudy("t331")) r = 1
 	return r
 }
 

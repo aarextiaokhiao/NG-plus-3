@@ -273,7 +273,7 @@ function ngP3AchieveCheck(){
 	if (speedrunMilestonesReached >= 24) giveAchievement("And the winner is...")
 	if (speedrunMilestonesReached >= 28) giveAchievement("Special Relativity")
 	if (quSave.best <= 10) giveAchievement("Quantum doesn't take so long")
-	if (player.masterystudies.includes("d13")) giveAchievement("Do protons decay?")
+	if (hasMasteryStudy("d13")) giveAchievement("Do protons decay?")
 	if (getRadioactiveDecays('r') >= 4) giveAchievement("Radioactive Decaying to the max!")
 	if (quantumed) giveAchievement("Sub-atomic")
 

@@ -438,7 +438,7 @@ function updateQuarkDisplay() {
 	let msg = ""
 	if (quantumed) {
 		msg += "You have <b class='QKAmount'>"+shortenDimensions(quSave.quarks)+"</b> "	
-		if (mod.ngp3&&player.masterystudies.includes("d14")) msg += " QK and <b class='SSAmount'>" + shortenDimensions(brSave.spaceShards) + "</b> Space Shard" + (brSave.spaceShards.round().eq(1) ? "" : "s")
+		if (hasMasteryStudy("d14")) msg += " QK and <b class='SSAmount'>" + shortenDimensions(brSave.spaceShards) + "</b> Space Shard" + (brSave.spaceShards.round().eq(1) ? "" : "s")
 		else msg += "anti-quark" + (quSave.quarks.round().eq(1) ? "" : "s")
 		msg += "."
 	}

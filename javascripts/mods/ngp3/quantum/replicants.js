@@ -83,7 +83,7 @@ var antTabs = {
 function updateReplicants(mode) {
 	if (!mod.ngp3 ? true : ghSave.milestones < 8) mode = undefined
 	if (mode === undefined) {
-		if (player.masterystudies ? !player.masterystudies.includes("d10") : true) return
+		if (player.masterystudies ? !hasMasteryStudy("d10") : true) return
 	}
 	if (mode === undefined || mode === "display") {
 		el("quantumFoodAmount").textContent = getFullExpansion(quSave.replicants.quantumFood)
@@ -92,7 +92,7 @@ function updateReplicants(mode) {
 		if (quSave.quarks.lt(pow10(1e5))) el("breakLimit").innerHTML = "Limit of workers: " + getLimitMsg() + (isLimitUpgAffordable() ? " -> " + getNextLimitMsg() + "<br>Cost: " + shortenDimensions(quSave.replicants.limitCost) + " for all 3 gluons" : "")
 		el("breakLimit").className = (quSave.gluons.rg.min(quSave.gluons.gb).min(quSave.gluons.br).lt(quSave.replicants.limitCost) || !isLimitUpgAffordable() ? "unavailabl" : "stor") + "ebtn"
 		el("reduceHatchSpeed").className = (quSave.gluons.rg.min(quSave.gluons.gb).min(quSave.gluons.br).lt(quSave.replicants.hatchSpeedCost) ? "unavailabl" : "stor") + "ebtn"
-		if (player.masterystudies.includes('d11')) {
+		if (hasMasteryStudy('d11')) {
 			el("quantumFoodAmountED").textContent = getFullExpansion(quSave.replicants.quantumFood)
 			if (quSave.quarks.lt(pow10(1e5))) el("buyQuantumFoodED").innerHTML = "Buy 1 quantum food<br>Cost: "+shortenDimensions(quSave.replicants.quantumFoodCost)+" for all 3 gluons"
 			el("buyQuantumFoodED").className = "gluonupgrade " + (quSave.gluons.rg.min(quSave.gluons.gb).min(quSave.gluons.br).lt(quSave.replicants.quantumFoodCost) ? "unavailabl" : "stor") + "ebtn"
@@ -117,7 +117,7 @@ function updateReplicants(mode) {
 
 function getGatherRate() {
 	var mult = E(1)
-	if (player.masterystudies.includes("t373")) mult = getMTSMult(373)
+	if (hasMasteryStudy("t373")) mult = getMTSMult(373)
 	var data = {
 		normal: quSave.replicants.amount.times(mult),
 		babies: quSave.replicants.babies.times(mult).div(20),
@@ -181,9 +181,9 @@ function getEmperorDimensionMultiplier(dim) {
 
 function getEmperorDimensionGlobalMultiplier() {
 	let ret = E(1)
-	if (player.masterystudies.includes("t392")) ret = getMTSMult(392)
-	if (player.masterystudies.includes("t402")) ret = ret.times(30)
-	if (player.masterystudies.includes("d13")) ret = ret.times(getTreeUpgradeEffect(6))
+	if (hasMasteryStudy("t392")) ret = getMTSMult(392)
+	if (hasMasteryStudy("t402")) ret = ret.times(30)
+	if (hasMasteryStudy("d13")) ret = ret.times(getTreeUpgradeEffect(6))
 	if (hasBU(35)) ret = ret.times(tmp.blu[35].eds)
 	return ret
 }
@@ -265,29 +265,29 @@ function canFeedReplicant(tier, auto) {
 }
 
 function isLimitUpgAffordable() {
-	if (!player.masterystudies.includes("d11")) return quSave.replicants.limit < 10
+	if (!hasMasteryStudy("d11")) return quSave.replicants.limit < 10
 	return true
 }
 
 function getLimitMsg() {
-	if (!player.masterystudies.includes("d11")) return quSave.replicants.limit
+	if (!hasMasteryStudy("d11")) return quSave.replicants.limit
 	return getFullExpansion(quSave.replicants.limit) + " ED" + quSave.replicants.limitDim + "s"
 }
 
 function getNextLimitMsg() {
-	if (!player.masterystudies.includes("d11")) return quSave.replicants.limit+1
+	if (!hasMasteryStudy("d11")) return quSave.replicants.limit+1
 	if (quSave.replicants.limit > 9 && quSave.replicants.limitDim < 8) return "1 ED" + (quSave.replicants.limitDim + 1) + "s"
 	return getFullExpansion(quSave.replicants.limit + 1) + " ED" + quSave.replicants.limitDim + "s"
 }
 
 function getHatchSpeed() {
 	var speed = quSave.replicants.hatchSpeed
-	if (player.masterystudies.includes("t361")) speed /= getMTSMult(361)
-	if (player.masterystudies.includes("t371")) speed /= getMTSMult(371)
-	if (player.masterystudies.includes("t372")) speed /= getMTSMult(372)
-	if (player.masterystudies.includes("t381")) speed /= getMTSMult(381)
-	if (player.masterystudies.includes("t391")) speed /= getMTSMult(391)
-	if (player.masterystudies.includes("t402")) speed /= 30
+	if (hasMasteryStudy("t361")) speed /= getMTSMult(361)
+	if (hasMasteryStudy("t371")) speed /= getMTSMult(371)
+	if (hasMasteryStudy("t372")) speed /= getMTSMult(372)
+	if (hasMasteryStudy("t381")) speed /= getMTSMult(381)
+	if (hasMasteryStudy("t391")) speed /= getMTSMult(391)
+	if (hasMasteryStudy("t402")) speed /= 30
 	if (isNanoEffectUsed("hatch_speed")) speed /= tmp.nf.effects.hatch_speed
 	speed /= 5
 	return speed
@@ -373,7 +373,7 @@ function breakLimit() {
 function maxBuyLimit() {
 	var min=quSave.gluons.rg.min(quSave.gluons.gb).min(quSave.gluons.br)
 	if (!min.gte(quSave.replicants.limitCost) && isLimitUpgAffordable()) return
-	for (var i = 0; i < (player.masterystudies.includes("d11") ? 3 : 1); i++) {
+	for (var i = 0; i < (hasMasteryStudy("d11") ? 3 : 1); i++) {
 		if (i == 1) {
 			var toAdd = Math.floor(min.div(quSave.replicants.limitCost).log(200) / 9)
 			if (toAdd) {
