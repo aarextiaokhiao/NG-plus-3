@@ -50,7 +50,7 @@ function updateQuantumChallenges() {
 
 function updateQCDisplaysSpecifics(){
 	el("qc2reward").textContent = Math.round(tmp.qcRewards[2] * 100 - 100)
-	el("qc7desc").textContent = "Dimension and Tickspeed cost multiplier increases are " + shorten(Number.MAX_VALUE) + "x. Multiplier per ten Dimensions and meta-Antimatter boost to Dimension Boosts are disabled."
+	el("qc7desc").textContent = "Dimensions and Tickspeed scale at " + shorten(Number.MAX_VALUE) + "x. Per-10 Dimension multipliers and meta-antimatter boost to dimension boosts do nothing."
 	el("qc7reward").textContent = (100 - tmp.qcRewards[7] * 100).toFixed(2)
 	el("qc8reward").textContent = tmp.qcRewards[8]
 }
