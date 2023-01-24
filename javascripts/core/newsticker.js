@@ -268,7 +268,7 @@ newsArray = [//always true
 ["You know, you should really turn off the news ticker.", "player.newsArray.length >= 260", "am57"],
 ["What's next? NG++++?", "player.masterystudies !== undefined", "am58"],
 ["People talk about this 9th dimension, but what about the 10th dimension?", "(player.resets >= 5 || player.galaxies > 0)", "am59"],
-["When life gives you antimatter, you hold your finger down on the M key", "(player.dilation.studies.includes(6) || quantumed)", "am60"],
+["When life gives you antimatter, you hold your finger down on the M key", "(hasDilStudy(6) || quantumed)", "am60"],
 ["Don't you hate when people say like if you agree? Like if you agree", true, "am61"],
 ["When dilating time, shouldn't these messages go by slower?", "player.dilation.active", "am62"],
 ["Did you know that -1% of people believe the 9th Dimension exists?", "(player.resets >= 5 || player.galaxies > 0)", "am63"],
@@ -282,7 +282,7 @@ newsArray = [//always true
 ["The year is 2120. Aarex is somehow still alive. However, the next update isn't out. Aarex is supposed to be working on the 8th prestige layer, but has invented approximately 72423985051 other mods and games, so he can't. Updates only come out approximately ever 5 years. (And you thought the 5 hours meme was funny.)", "player.masterystudies !== undefined", "am71"],
 ["Breaking News: Aarex has announced NG-9. It includes you starting with the ability to purchase IDs, ubt everything starts 1e308x slower! Estimated time to complete: 10,000 years.", "inNGM(3)", "am72"],
 ["There are a lot of news tickers, how did you find this one?", true, "am73"],
-["In the beginning, there was only the abyss of Matter. But then, an antimatter singularity rose and created the god Hevipelle, and he said, \"Let there be antimatter.\" And so there was. Hevipelle then said, \"Let there be Infinity Points.\" And so there was, creating the stars, planets, dimensions, and galaxies. Then, the first day passed, and there was the second day. Hevipelle said, \"Seperate the normal dimensions and infinity dimensions from each other, and let there be tickspeed upgrades, to measure the time.\" So the normal dimensions and infinity dimensions were seperated, and there were tickspeed upgrades. Then Hevipelle said, \"Let there be eternity points to sew the fabric of time together, and let there be time studies and time theorems, to let humanity progress.\" And so there were eternity points, time theorems, and time stuides. Then, the second day passed and the third day began. \"Let there be life,\" Hevipelle said, creating humanity and other intelligent species. Then, he said, \"Let there be Time Dimensions, and let them be a different dimension than the others.\" And so there were time dimensions, speeding up tickspeed upgrades. Then Hevipelle snapped his fingers and created a computer. \"With this, I will be able to update my universe,\" he said. But as he was working on making break_infinity.js up to 1e1e1e308 instead of 1e1e308, a rift opened to the 9th dimension, and the serpent Slabdrill, the lord of all Unhevi, slithered out. \"I will cause an apocalypse for humanity with Cancer mode,\" Slabdrill said. And so, the world became imperfect, leading to war. If only there was break_eternity.js...", "player.dilation.studies.includes(6)", "am74"],
+["In the beginning, there was only the abyss of Matter. But then, an antimatter singularity rose and created the god Hevipelle, and he said, \"Let there be antimatter.\" And so there was. Hevipelle then said, \"Let there be Infinity Points.\" And so there was, creating the stars, planets, dimensions, and galaxies. Then, the first day passed, and there was the second day. Hevipelle said, \"Seperate the normal dimensions and infinity dimensions from each other, and let there be tickspeed upgrades, to measure the time.\" So the normal dimensions and infinity dimensions were seperated, and there were tickspeed upgrades. Then Hevipelle said, \"Let there be eternity points to sew the fabric of time together, and let there be time studies and time theorems, to let humanity progress.\" And so there were eternity points, time theorems, and time stuides. Then, the second day passed and the third day began. \"Let there be life,\" Hevipelle said, creating humanity and other intelligent species. Then, he said, \"Let there be Time Dimensions, and let them be a different dimension than the others.\" And so there were time dimensions, speeding up tickspeed upgrades. Then Hevipelle snapped his fingers and created a computer. \"With this, I will be able to update my universe,\" he said. But as he was working on making break_infinity.js up to 1e1e1e308 instead of 1e1e308, a rift opened to the 9th dimension, and the serpent Slabdrill, the lord of all Unhevi, slithered out. \"I will cause an apocalypse for humanity with Cancer mode,\" Slabdrill said. And so, the world became imperfect, leading to war. If only there was break_eternity.js...", "hasDilStudy(6)", "am74"],
 ["If you find cancer in your computer, please call 119", true, "am75"],
 ["Breaking news! News is broken!", true, "am76"],
 ["There are a lot of news tickers, how did you find this one?", true, "am77"],
@@ -322,7 +322,7 @@ newsArray = [//always true
 ["I like garlic, because it allows me to have my daily intake of vitamin G.", true, "am111"],
 ["Florida man puts tetraethyllead in Aarex's car so he has to stay at home so he can update NG+++", '(player.masterystudies !== undefined ? player.dilation.upgrades.includes("ngpp6") || quantumed : false)', "am112"],
 ["Florida man attempts AD in real life, destroys Florida", true, "am113"],
-["Florida man who tries to get 100 quarks on his first quantum, stopped by heat death of universe", 'player.dilation.studies.includes(6)', "am114"],
+["Florida man who tries to get 100 quarks on his first quantum, stopped by heat death of universe", 'hasDilStudy(6)', "am114"],
 ["Hello, antimatter amount? break_infinity.js broke. Understandable, have a nice Infinity.", 'player.totalmoney.gte(pow10(9e15))', "am115"],
 ["Whale complained he can't give Aarex money", true, "am116"],
 ["Meta-dimension tickspeed when?", true, "am117"],
@@ -499,7 +499,7 @@ newsArray = [//always true
 ["Fly on, zappie. Altar awaits your adventure- oh wait. Is Spectraglow coming to get me? Whatever...", "mod.ngp3", "am288"],
 
 /* Post-NG+3R: 300 - ??? */
-["Gravity seems to so strong, that it intensifies anything.", 'mod.ngp3 && ghSave.gravitons.unl', "am301"],
+/*["Gravity seems to so strong, that it intensifies anything.", 'mod.ngp3 && ghSave.gravitons.unl', "am301"],
 ["There's a rumor that Study 999 is darkness.", "hasAch('ng3p71')", "am302"],
 ["NG+Pi: The continuation fork of NG+3.1. It seems like underworldly for NG+3R players.", "mod.ngp3", "am303"],
 ["By now, you might have Gamma Rays infested inside.", "mod.ngp3 && ghSave.ghostlyPhotons.enpowerments >= 20", "am303"],
@@ -509,7 +509,7 @@ newsArray = [//always true
 ["This news ticker has 'am308' id on it! Meta^-1-Infinity, or Preludity?", "true", "am308"],
 ["Pata-Infinity when? (ee1.79e308)", "true", "am309"],
 ["This might be extended by a lot, to disthrone 'The Longest Incremental.'", "true", "am310"],
-["This isn't the longest game you are looking for.", "true", "am311"],
+["This isn't the longest game you are looking for.", "true", "am311"],*/
 ];}
 
 document.addEventListener("visibilitychange", function() {if (!document.hidden) {scrollNextMessage();}}, false);

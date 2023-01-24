@@ -133,8 +133,8 @@ let RESETS = {
 			player.challenges = challengesCompletedOnEternity()
 			updateChallenges()
 
-			if (getEternitied() < 2) player.break = false
 			updateAutobuyers()
+			if (!canBreakInfinity()) player.break = false
 
 			if (getEternitied() <= 20) {
 				player.tickSpeedMultDecrease = 10
@@ -194,225 +194,15 @@ let RESETS = {
 
 			resetUP()
 		}
-	},
-	qu: {
-		doReset(order) {
-			let bigRip = bigRipped()
-			let qc = !inQC(0)
-
-			player.infinitiedBank = 0
-			player.eternities = speedrunMilestonesReached >= 1 ? 2e4 : mod.ngp3 ? 0 : 100
-			player.lastTenEternities = [[600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)]]
-			updateLastTenEternities()
-			updateMilestones()
-
-			player.eternityPoints = E(0)
-			if (getEternitied() < 100) player.eternityBuyer.isOn = false
-			player.eternityBuyer.statBeforeDilation = 0
-			completelyResetTimeDimensions()
-
-			player.respec = false
-			if (bigRip ? !hasRipUpg(12) : !isRewardEnabled(11)) player.timestudy = {
-				theorem: 0,
-				amcost: E("1e20000"),
-				ipcost: E(1),
-				epcost: E(1),
-				studies: [],
-			}
-
-			if (bigRip ? !hasRipUpg(12) : !isRewardEnabled(3)) player.eternityUpgrades = []
-			player.epmult = E(1)
-			player.epmultCost = E(5)
-
-			if (bigRip ? !hasRipUpg(2) : !isRewardEnabled(3)) {
-				player.eternityChalls = {}
-				updateEternityChallenges()
-			}
-			player.eternityChallGoal = E(Number.MAX_VALUE)
-			player.currentEternityChall = ""
-			player.eternityChallUnlocked = isRewardEnabled(11) ? player.eternityChallUnlocked : 0
-			player.etercreq = 0
-
-			player.dilation.tachyonParticles = E(0)
-			player.dilation.dilatedTime = E(0)
-			player.dilation.studies = (bigRip ? hasRipUpg(10) : isRewardEnabled(4)) ? (
-				(bigRip ? hasRipUpg(12) : speedrunMilestonesReached >= 4) ? player.dilation.studies : [1]
-			) : []
-			resetDilation(order)
-
-			doMetaDimensionsReset(order, qc)
-			if (mod.ngud) {
-				player.exdilation = {
-					unspent: E(0),
-					spent: {
-						1: E(0),
-						2: E(0),
-						3: E(0),
-						4: E(0)
-					},
-					times: 0
-				}
-				resetBlackhole()
-			}
-
-			//NG+3
-			if (speedrunMilestonesReached >= 4 && !isRewardEnabled(4)) {
-				for (var s = 0; s < player.masterystudies.length; s++) {
-					if (player.masterystudies[s].indexOf("t") >= 0) player.timestudy.theorem += masteryStudies.costs.time[player.masterystudies[s].split("t")[1]]
-					else player.timestudy.theorem += masteryStudies.costs.dil[player.masterystudies[s].split("d")[1]]
-				}
-			}
-			if (isRewardEnabled(11) && (bigRip && !hasRipUpg(12))) {
-				if (player.eternityChallUnlocked > 12) player.timestudy.theorem += masteryStudies.costs.ec[player.eternityChallUnlocked]
-				else player.timestudy.theorem += ([0, 30, 35, 40, 70, 130, 85, 115, 115, 415, 550, 1, 1])[player.eternityChallUnlocked]
-			}
-
-			player.masterystudies = bigRip && !hasRipUpg(12) ? ["d7", "d8", "d9", "d10", "d11", "d12", "d13", "d14"] : speedrunMilestonesReached >= 16 && isRewardEnabled(11) ? player.masterystudies : []
-			player.respecMastery = false
-			updateMasteryStudyCosts()
-
-			ipMultPower = GUBought("gb3") ? 2.3 : hasMasteryStudy("t241") ? 2.2 : 2
-			if (!qc) {
-				quSave.electrons.amount = 0
-				quSave.electrons.sacGals = 0
-				if (speedrunMilestonesReached < 25 && player.quantum.autoOptions.sacrifice) toggleAutoQuantumContent('sacrifice')
-				tmp.aeg = 0
-			}
-			drawMasteryTree()
-			replicantsResetOnQuantum(qc)
-			nanofieldResetOnQuantum()
-
-			quSave.time = 0
-			QKminpeak = E(0)
-			QKminpeakValue = E(0)
-			el("metaAntimatterEffectType").textContent = inQC(3) ? "multiplier on all Infinity Dimensions" : "extra multiplier per Dimension Boost"
-		}
-	},
-	funda: {
-		resetQuantums() {
-			quSave.times = 0
-			quSave.best = 9999999999
-			quSave.last10 = [[600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)]]
-			updateSpeedruns()
-			updateLastTenQuantums()
-		},
-		resetQuarkGluons(bm) {
-			quSave.quarks = E(0)
-			quSave.usedQuarks = {
-				r: E(0),
-				g: E(0),
-				b: E(0),
-			}
-			quSave.colorPowers = {
-				r: E(0),
-				g: E(0),
-				b: E(0),
-			}
-			quSave.gluons = {
-				rg: E(0),
-				gb: E(0),
-				br: E(0),
-			}
-			quSave.multPower = 0
-			if (bm < 2) quSave.upgrades = []
-			if (bm < 1) quSave.reachedInfQK = false
-
-			updateQuantumWorth("quick")
-			updateColorCharge()
-			updateGluonsTabOnUpdate("prestige")
-		},
-		resetElectrons(bm) {
-			if (bm == 3) return
-
-			quSave.electrons.mult = 2
-			quSave.electrons.rebuyables = [0, 0, 0, 0]
-		},
-		resetQCs(bm) {
-			quSave.challenge = []
-			quSave.challenges = {}
-			quSave.pairedChallenges.order = {}
-			quSave.pairedChallenges.current = 0
-			quSave.pairedChallenges.completed = 0
-			updateInQCs()
-			updateQuantumChallenges()
-			updateQuantumTabDisplays()
-			updatePCCompletions()
-		},
-		resetDuplicants(bm) {
-			quSave.replicants = getBrandNewReplicantsData()
-
-			let permUnlocks = [null, 7, 9, 10, 10, 11, 11, 12, 12]
-			for (let d = 1; d <= 8; d++) {
-				let keep10 = bm >= permUnlocks[d]
-				EDsave[d].perm = keep10 ? 10 : 0
-				if (keep10) quSave.replicants.limitDim = d
-			}
-			if (quSave.replicants.limitDim >= 1) {
-				quSave.replicants.limit = 10
-				quSave.replicants.limitCost = E_pow(200, quSave.replicants.limitDim * 9).times(1e49)
-				quSave.replicants.quantumFoodCost = E_pow(5, quSave.replicants.limitDim * 30).times(2e46)
-			}
-			updateEmperorDimensions()
-
-			nfSave.rewards = bm >= 13 ? 5 : 0
-			updateNanoRewardTemp()
-		},
-		resetDecay(bm) {
-			todSave.r.quarks = E(0)
-			todSave.r.spin = E(0)
-			todSave.r.upgrades = {}
-			todSave.r.decays = hasAch("ng3p86") ? Math.floor(todSave.r.decays * .75) : 0
-			todSave.upgrades = { 1: bm >= 4 ? 5 : 0 }
-			updateTODStuff()
-		},
-		resetRip(bm) {
-			brSave.active = false
-			brSave.bestGals = 0
-			if (bm < 1) brSave.upgrades = []
-
-			if (bm < 3) {
-				beSave.unlocked = false
-				beSave.break = false
-			}
-			beSave.eternalMatter = E(0)
-			beSave.upgrades = []
-			beSave.epMultPower = 0
-			updateBreakEternity()
-		},
-
-		doReset() {
-			let bm = ghSave.milestones
-			ghSave.time = 0
-			GHPminpeak = E(0)
-			GHPminpeakValue = E(0)
-
-			player.infinitiedBank = 0
-			player.eternitiesBank = 0
-			updateBankedEter()
-			player.dilation.bestTP = E(0)
-			player.meta.bestOverQuantums = E(0)
-			if (bm < 3) {
-				var keepMS = []
-				for (var i of player.masterystudies) if (i[0] != "d") keepMS.push(i)
-				player.masterystudies = keepMS
-			}
-
-			this.resetQuantums(bm)
-			this.resetQuarkGluons(bm)
-			this.resetElectrons(bm)
-			this.resetQCs(bm)
-			this.resetDuplicants(bm)
-			this.resetDecay(bm)
-			this.resetRip(bm)
-
-			updateAutoQuantumMode()
-			doGhostifyGhostifyResetStuff()
-		}
 	}
 }
-let RESET_ORDER = Object.keys(RESETS)
-let RESET_INDEX = {}
-for (var [i, r] of Object.entries(RESET_ORDER)) RESET_INDEX[r] = i
+let RESET_ORDER, RESET_INDEX
+
+function setupResetData() {
+	RESET_ORDER = Object.keys(RESETS)
+	RESET_INDEX = {}
+	for (var [i, r] of Object.entries(RESET_ORDER)) RESET_INDEX[r] = i
+}
 
 function doReset(order) {
 	let start = RESET_INDEX[order]

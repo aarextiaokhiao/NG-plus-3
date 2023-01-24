@@ -285,32 +285,41 @@ function canAffordMetaDimension(cost) {
 	return cost.lte(player.meta.antimatter);
 }
 
-for (let i = 1; i <= 8; i++) {
-	el("meta" + i).onclick = function () {
-		if (speedrunMilestonesReached > i + 5) player.autoEterOptions["md" + i] = !player.autoEterOptions["md" + i]
-		else metaBuyOneDimension(i);
-		if (speedrunMilestonesReached > 27) {
-			var removeMaxAll=false
-			for (var d = 1; d < 9; d++) {
-				if (player.autoEterOptions["md" + d]) {
-					if (d > 7) removeMaxAll = true
-				} else break
+function setupMetaDimensions() {
+	var html = ""
+	for (let d = 1; d <= 8; d++) {
+		html += `<tr id="${d}MetaRow" style="display: none; font-size: 15px">
+			<td id="${d}MetaD" class="rel"></td>
+			<td id="meta${d}Amount"></td>
+			<td width="10%"><button id="meta${d}" style="color:black; height: 25px; font-size: 10px; width: 135px" class="storebtn"></button></td>
+			<td width="10%"><button id="metaMax${d}" style="color:black; width:210px; height: 25px; font-size: 10px" class="storebtn"></button></td>
+		</tr>`
+	}
+	el("metaDimTable").innerHTML = html
+
+	for (let i = 1; i <= 8; i++) {
+		el("meta" + i).onclick = function () {
+			if (speedrunMilestonesReached > i + 5) player.autoEterOptions["md" + i] = !player.autoEterOptions["md" + i]
+			else metaBuyOneDimension(i);
+			if (speedrunMilestonesReached > 27) {
+				var removeMaxAll=false
+				for (var d = 1; d < 9; d++) {
+					if (player.autoEterOptions["md" + d]) {
+						if (d > 7) removeMaxAll = true
+					} else break
+				}
+				el("metaMaxAllDiv").style.display = removeMaxAll ? "none" : ""
 			}
-			el("metaMaxAllDiv").style.display = removeMaxAll ? "none" : ""
+		}
+		el("metaMax" + i).onclick = function () {
+			if (shiftDown && speedrunMilestonesReached > i + 5) metaBuyOneDimension(i)
+			else metaBuyManyDimension(i);
 		}
 	}
-	el("metaMax" + i).onclick = function () {
-		if (shiftDown && speedrunMilestonesReached > i + 5) metaBuyOneDimension(i)
-		else metaBuyManyDimension(i);
+
+	el("metaMaxAll").onclick = function () {
+		for (let i = 1; i <= 8; i++) buyMaxMetaDimension(i)
 	}
-}
-
-el("metaMaxAll").onclick = function () {
-	for (let i = 1; i <= 8; i++) buyMaxMetaDimension(i)
-}
-
-el("metaSoftReset").onclick = function () {
-	metaBoost();
 }
 
 function getMetaDimensionProduction(tier) {

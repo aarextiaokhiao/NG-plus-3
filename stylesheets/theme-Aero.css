@@ -700,14 +700,12 @@ newdim:hover {
     box-shadow: inset 0 0 25px #f8f5, inset 0 0 15px #f075, 0 0 8px #f8f7;
 }
 
-#galaxy .infinistorebtn1, #galaxy .infinistorebtn2,
-#galaxy .infinistorebtn3, #galaxy .infinistorebtn4 {
+.galaxyupgbtn {
     background: linear-gradient(#336, #113) !important;
     color: #99f !important;
     border: 1px solid #99f !important;
 }
-#galaxy .infinistorebtn1:hover, #galaxy .infinistorebtn2:hover, 
-#galaxy .infinistorebtn3:hover, #galaxy .infinistorebtn4:hover {
+.galaxyupgbtn:hover {
     box-shadow: 0 0 8px #99f7 !important;
 }
 #galaxy .infinistorebtnbought,
@@ -1372,66 +1370,6 @@ td .timestudybought.pos_study {
     //display: inline-block !important;
 }
 
-.acceleratebtn {
-    background: 
-        linear-gradient(#0007, #000), 
-        linear-gradient(90deg, #770 25%, #ff0 45%, #ff0 55%, #770 75%);
-    background-size: 100% 100%, 200% 100%;
-    color: #cc0 !important;
-    text-shadow: 0 0 3px #000, 0 0 5px #ff0 !important;
-    border: 1px solid #663 !important;
-    animation: 15s accel ease-in-out infinite !important;
-    box-shadow: inset 0 0 5px #cc03;
-}
-.acceleratebtn:hover {
-    box-shadow: inset 0 0 5px #cc03, 0 0 8px #cc07;
-}
-#accTabBtn {
-    position: relative;
-    overflow: hidden;
-}
-#accTabBtn::before {
-    content: "α";
-    top: -80px; left: 0; right: 0;
-    font-size: 6em;
-    font-weight: 100;
-    opacity: .1;
-    position: absolute;
-    transform: rotate(-20deg);
-}
-@keyframes accel {
-	0% {
-		background-position: 0% 0%, 0% 0%;
-	}
-	100% {
-		background-position: 0% 0%, 2000% 0%;
-	}
-}
-
-.paradoxbtn {
-    background: linear-gradient(#424, #000) !important;
-    color: #f8f !important;
-    border: 1px solid #557 !important;
-    box-shadow: inset 0 0 10px #f075;
-    text-shadow: 0 0 3px #000, 0 0 5px #f07;
-}
-.paradoxbtn:hover {
-    box-shadow: inset 0 0 10px #f075, 0 0 8px #88f7;
-}
-#paradoxbtn {
-    position: relative;
-    overflow: hidden;
-}
-#paradoxbtn::before {
-    content: "ξ";
-    top: -70px; left: 0; right: 0;
-    font-size: 6em;
-    font-weight: 100;
-    opacity: .1;
-    position: absolute;
-    transform: rotate(-20deg);
-}
-
 .galaxybtn {
     background: 
         linear-gradient(#114, #000) !important;
@@ -1442,11 +1380,11 @@ td .timestudybought.pos_study {
 .galaxybtn:hover {
     box-shadow: inset 0 0 5px #99f3, 0 0 8px #99f7;
 }
-#galaxybtn {
+#tab_galSac {
     position: relative;
     overflow: hidden;
 }
-#galaxybtn::before {
+#tab_galSac::before {
     content: "γ";
     top: -80px; left: 0; right: 0;
     font-size: 6em;
@@ -1469,11 +1407,11 @@ td .timestudybought.pos_study {
 .postinfcrunch:hover {
     box-shadow: inset 0 0 5px #fa73, 0 0 8px #fa77;
 }
-#infinitybtn {
+#tab_inf {
     position: relative;
     overflow: hidden;
 }
-#infinitybtn::before {
+#tab_inf::before {
     content: "∞";
     top: -60px; left: 0; right: 0;
     font-size: 6em;
@@ -1482,27 +1420,21 @@ td .timestudybought.pos_study {
     position: absolute;
     transform: rotate(-20deg);
 }
-#repMajorBtn {
-    background: linear-gradient(#630, #310) !important;
-    border: 1px solid #754 !important;
-    color: #fa0 !important;
-    overflow: hidden;
-}
 
-.eternitybtn, .eternitytabbtn {
+.eternitybtn {
     background: linear-gradient(#204, #000) !important;
     color: #caf !important;
     border: 1px solid #657 !important;
     box-shadow: inset 0 0 5px #caf3;
 }
-.eternitybtn:hover, .eternitytabbtn:hover {
+.eternitybtn:hover {
     box-shadow: inset 0 0 5px #caf3, 0 0 8px #caf7;
 }
-#eternitystorebtn {
+#tab_eter {
     position: relative;
     overflow: hidden;
 }
-#eternitystorebtn::before {
+#tab_eter::before {
     content: "Δ";
     top: -60px; left: 0; right: 0;
     font-size: 6em;
@@ -1545,29 +1477,6 @@ td .timestudybought.pos_study {
     }
 }
 
-.singularitybtn {
-    background: linear-gradient(#444, #000) !important;
-    color: #ccc !important;
-    border: 1px solid #555;
-    box-shadow: inset 0 0 15px #000a, inset 0 0 5px #ccc7;
-}
-.singularitybtn:hover {
-    box-shadow: inset 0 0 15px #000a, inset 0 0 5px #ccc7, 0 0 8px #ccc7;
-}
-#sgTabBtn {
-    position: relative;
-    overflow: hidden;
-}
-#sgTabBtn::before {
-    content: "σ";
-    top: -65px; left: 0; right: 0;
-    font-size: 6em;
-    font-weight: 100;
-    opacity: .1;
-    position: absolute;
-    transform: rotate(-20deg);
-}
-
 .quantumbtn {
     background: linear-gradient(#040, #000) !important;
     color: #bf7 !important;
@@ -1577,11 +1486,11 @@ td .timestudybought.pos_study {
 .quantumbtn:hover {
     box-shadow: inset 0 0 5px #bf73, 0 0 8px #bf77;
 }
-#quantumtabbtn {
+#tab_qu {
     position: relative;
     overflow: hidden;
 }
-#quantumtabbtn::before {
+#tab_qu::before {
     content: "ᴨ";
     top: -70px; left: 0; right: 0;
     font-size: 6em;
@@ -1602,11 +1511,11 @@ td .timestudybought.pos_study {
 .ghostifybtn:hover {
     box-shadow: inset 0 0 5px #7007, 0 0 8px #7f77;
 }
-#ghostifytabbtn {
+#tab_fund {
     position: relative;
     overflow: hidden;
 }
-#ghostifytabbtn::before {
+#tab_fund::before {
     content: "φ";
     top: -70px; left: 0; right: 0;
     font-size: 6em;
@@ -1631,34 +1540,6 @@ td .timestudybought.pos_study {
 		color: #a4f;
 		text-shadow: 0px 0px 3px #000, 0px 0px 3px #fff7, 0px 0px 8px #a4f7;
 	}
-}
-
-.planckbtn {
-    background: 
-        linear-gradient(#340c, #000),
-        repeating-conic-gradient(#cf0 0% 25%, #000 0% 50%) 50% !important;
-    background-size: 100% 100%, 2.71828px 2.71828px !important;
-    color: #cf0 !important;
-    text-shadow: 0px 0px 3px #000, 0 0 8px #cf0 !important;
-    border: 1px solid #673 !important;
-    box-shadow: inset 0 0 10px #cf03;
-}
-.planckbtn:hover {
-    box-shadow: inset 0 0 10px #cf03, 0 0 8px #cf07;
-    background-size: 100% 100%, 2.71828px 2.71828px !important;
-}
-#plancktabbtn {
-    position: relative;
-    overflow: hidden;
-}
-#plancktabbtn::before {
-    content: "κ";
-    top: -80px; left: 0; right: 0;
-    font-size: 6em;
-    font-weight: 100;
-    opacity: .1;
-    position: absolute;
-    transform: rotate(-20deg);
 }
 
 /*=============

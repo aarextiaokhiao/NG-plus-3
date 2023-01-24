@@ -866,7 +866,7 @@ function doNGP2v2tov2302(){
                 player.autoEterOptions=autoEterOptions
         }
         if (aarMod.newGamePlusPlusVersion < 2.301) {
-                var metaAchCheck = player.dilation.studies.includes(6)
+                var metaAchCheck = hasDilStudy(6)
                 var noD9AchCheck = player.meta[8].bought > 0 || player.meta.resets > 4
                 var metaBoostCheck = player.meta.resets > 9
                 if (metaBoostCheck) giveAchievement("And still no ninth dimension...")
@@ -1294,7 +1294,7 @@ function doPostNGP3Versions() {
                         for (var c=2;c<(inNGM(3)?16:inNGM(2)?15:13);c++) if (!player.challenges.includes("challenge"+c)) player.challenges.push("challenge"+c)
                         player.replicanti.unl=true
                         player.replicanti.amount=Decimal.max(player.replicanti.amount,1)
-                        if (!player.dilation.studies.includes(1)) player.dilation.studies.push(1)
+                        if (!hasDilStudy(1)) player.dilation.studies.push(1)
                 }
                 if (!hasAch("r77")) player.achievements.push("r77")
                 if (!hasAch("r78")) player.achievements.push("r78")
@@ -1928,7 +1928,6 @@ function updateNGp3DisplayStuff(){
 	el('dilUpgsauto').textContent="Auto-buy dilation upgrades: O"+(player.autoEterOptions.dilUpgs?"N":"FF")
 	el('metaboostauto').textContent="Meta-boost auto: O"+(player.autoEterOptions.metaboost?"N":"FF")
 	el('priorityquantum').value=formatValue("Scientific", E(quSave.autobuyer.limit), 2, 0)
-	el("respecPC").className=quSave.pairedChallenges.respec?"quantumbtn":"storebtn"
 	el('sacrificeAuto').textContent="Auto: O"+(quSave.autoOptions.sacrifice?"N":"FF")
 	el("produceQuarkCharge").innerHTML="S" + (nfSave.producingCharge ? "top" : "tart") + " production of nanocharge." + (nfSave.producingCharge ? "" : "<br>(You will not get pilons when you do this.)")
 	el("ratio_r").value = quSave.assignAllRatios.r
@@ -1987,7 +1986,7 @@ function setSomeQuantumAutomationDisplay(){
 
 function setReplAutoDisplay(){
 	el('replicantigalaxypowerdiv').style.display=hasAch("r106")&&player.boughtDims?"":"none"
-	el("dilationeterupgrow").style.display=player.dilation.studies.includes(1)&&mod.ngud?"":"none"
+	el("dilationeterupgrow").style.display=hasDilStudy(1)&&mod.ngud?"":"none"
 }
 
 function updateNGModeMessage(){
@@ -2203,41 +2202,42 @@ no one should have a AD save from back then
 I guess we shoudln't but ew its laggy, maybe a variable that says if we have done so
 */
 
-function setup_data() {
+function setupBugfixData() {
 	if (break_infinity_js == null) {
 		break_infinity_js = false
 		initCost = [null, E(10), E(1e2), E(1e4), E(1e6), E(1e9), E(1e13), E(1e18), E(1e24)]
 		costMults = [null, E(1e3), E(1e4), E(1e5), E(1e6), E(1e8), E(1e10), E(1e12), E(1e15)]
 		nextAt = {postc1: E("1e2000"), postc1_ngmm: E("1e3000"), postc1_ngm3:E("1e3760"),
-                    postc2:E("1e5000"),
-                    postc3:E("1e12000"),
-                    postc4:E("1e14000"),
-                    postc5:E("1e18000"), postc5_ngm3:E("1e21500"),
-                    postc6:E("1e20000"), postc6_ngm3:E("1e23000"),
-                    postc7:E("1e23000"), postc7_ngm3:E("1e25500"),
-                    postc8:E("1e28000"), postc8_ngm3:E("1e39000"),
-                    postcngmm_1:E("1e750"),postcngmm_1_ngm3:E("1e1080"),
-                    postcngmm_2:E("1e1350"),
-                    postcngmm_3:E("1e2000"), postcngmm_3_ngm3:E("1e2650"),
-                    postcngm3_1:E("1e1560"),
-                    postcngm3_2:E("1e2085"),
-                    postcngm3_3:E("1e8140"),
-                    postcngm3_4:E("1e17000")}
+			postc2:E("1e5000"),
+			postc3:E("1e12000"),
+			postc4:E("1e14000"),
+			postc5:E("1e18000"), postc5_ngm3:E("1e21500"),
+			postc6:E("1e20000"), postc6_ngm3:E("1e23000"),
+			postc7:E("1e23000"), postc7_ngm3:E("1e25500"),
+			postc8:E("1e28000"), postc8_ngm3:E("1e39000"),
+			postcngmm_1:E("1e750"),postcngmm_1_ngm3:E("1e1080"),
+			postcngmm_2:E("1e1350"),
+			postcngmm_3:E("1e2000"), postcngmm_3_ngm3:E("1e2650"),
+			postcngm3_1:E("1e1560"),
+			postcngm3_2:E("1e2085"),
+			postcngm3_3:E("1e8140"),
+			postcngm3_4:E("1e17000")}
 		goals = {postc1: E("1e850"), postc1_ngmm: E("1e650"), postc1_ngm3:E("1e375"),
-                    postc2:E("1e10500"), postc2_ngm3:E("1e4250"),
-                    postc3:E("1e5000"),
-                    postc4:E("1e13000"), postc4_ngm3:E("1e4210"),
-                    postc5:E("1e11111"), postc5_ngm3:E("7.77e7777"),
-                    postc6:E("2e22222"),
-                    postc7:E("1e10000"), postc7_ngmm:E("1e15000"), postc7_ngm3:E("1e5100"),
-                    postc8:E("1e27000"), postc8_ngm3:E("1e35000"), 
-                    postcngmm_1:E("1e550"), postcngmm_1_ngm3:E("1e650"), postcngmm_1_ngm4:E("1e950"),
-                    postcngmm_2:E("1e950"), postcngmm_2_ngm3:E("1e1090"), postcngmm_2_ngm4:E("1e1200"),
-                    postcngmm_3:E("1e1200"), postcngmm_3_ngm3:E("1e1230"), postcngmm_3_ngm4:E("1e1530"),
-                    postcngm3_1:E("1e550"), postcngm3_1_ngm4:E("1e1210"),
-                    postcngm3_2:E("1e610"), postcngm3_2_ngm4:E("1e750"),
-                    postcngm3_3:E("8.8888e888"),
-                    postcngm3_4:E("1e12345")}
+			postc2:E("1e10500"), postc2_ngm3:E("1e4250"),
+			postc3:E("1e5000"),
+			postc4:E("1e13000"), postc4_ngm3:E("1e4210"),
+			postc5:E("1e11111"), postc5_ngm3:E("7.77e7777"),
+			postc6:E("2e22222"),
+			postc7:E("1e10000"), postc7_ngmm:E("1e15000"), postc7_ngm3:E("1e5100"),
+			postc8:E("1e27000"), postc8_ngm3:E("1e35000"), 
+			postcngmm_1:E("1e550"), postcngmm_1_ngm3:E("1e650"), postcngmm_1_ngm4:E("1e950"),
+			postcngmm_2:E("1e950"), postcngmm_2_ngm3:E("1e1090"), postcngmm_2_ngm4:E("1e1200"),
+			postcngmm_3:E("1e1200"), postcngmm_3_ngm3:E("1e1230"), postcngmm_3_ngm4:E("1e1530"),
+			postcngm3_1:E("1e550"), postcngm3_1_ngm4:E("1e1210"),
+			postcngm3_2:E("1e610"), postcngm3_2_ngm4:E("1e750"),
+			postcngm3_3:E("8.8888e888"),
+			postcngm3_4:E("1e12345")}
+
 		order = ['postc1','postc2','postc3','postc4','postc5','postc6','postc7','postc8']
 		setUnlocks = [E_pow(Number.MAX_VALUE, 2.9)]
 	}

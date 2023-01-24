@@ -397,19 +397,6 @@ function doQuantum(force, auto, qc = {}) {
 	updateQCTimes()
 	updateQuantumChallenges()
 	updatePCCompletions()
-	if (!force && quSave.pairedChallenges.respec) {
-		quSave.electrons.mult -= quSave.pairedChallenges.completed * 0.5
-		quSave.pairedChallenges = {
-			order: {},
-			current: 0,
-			completed: 0,
-			completions: quSave.pairedChallenges.completions,
-			fastest: quSave.pairedChallenges.fastest,
-			respec: false
-		}
-		for (qc = 1; qc < 9; qc++) quSave.challenges[qc] = 1
-		el("respecPC").className = "storebtn"
-	}
 
 	//Achievements
 	if (!force) {
@@ -429,6 +416,100 @@ function doQuantum(force, auto, qc = {}) {
 	//Post-Quantum
 	if (bigRip) for (var u = 0; u < brSave.upgrades.length; u++) tweakBigRip(brSave.upgrades[u])
 	if (ghostified) ghSave.neutrinos.generationGain = ghSave.neutrinos.generationGain % 3 + 1
+}
+
+RESETS.qu = {
+	doReset(order) {
+		let bigRip = bigRipped()
+		let qc = !inQC(0)
+
+		player.infinitiedBank = 0
+		player.eternities = speedrunMilestonesReached >= 1 ? 2e4 : mod.ngp3 ? 0 : 100
+		player.lastTenEternities = [[600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)]]
+		updateLastTenEternities()
+		updateMilestones()
+
+		player.eternityPoints = E(0)
+		if (getEternitied() < 100) player.eternityBuyer.isOn = false
+		player.eternityBuyer.statBeforeDilation = 0
+		completelyResetTimeDimensions()
+
+		player.respec = false
+		if (bigRip ? !hasRipUpg(12) : !isRewardEnabled(11)) player.timestudy = {
+			theorem: 0,
+			amcost: E("1e20000"),
+			ipcost: E(1),
+			epcost: E(1),
+			studies: [],
+		}
+
+		if (bigRip ? !hasRipUpg(12) : !isRewardEnabled(3)) player.eternityUpgrades = []
+		player.epmult = E(1)
+		player.epmultCost = E(5)
+
+		if (bigRip ? !hasRipUpg(2) : !isRewardEnabled(3)) {
+			player.eternityChalls = {}
+			updateEternityChallenges()
+		}
+		player.eternityChallGoal = E(Number.MAX_VALUE)
+		player.currentEternityChall = ""
+		player.eternityChallUnlocked = isRewardEnabled(11) ? player.eternityChallUnlocked : 0
+		player.etercreq = 0
+
+		player.dilation.tachyonParticles = E(0)
+		player.dilation.dilatedTime = E(0)
+		player.dilation.studies = (bigRip ? hasRipUpg(10) : isRewardEnabled(4)) ? (
+			(bigRip ? hasRipUpg(12) : speedrunMilestonesReached >= 4) ? player.dilation.studies : [1]
+		) : []
+		resetDilation(order)
+
+		doMetaDimensionsReset(order, qc)
+		if (mod.ngud) {
+			player.exdilation = {
+				unspent: E(0),
+				spent: {
+					1: E(0),
+					2: E(0),
+					3: E(0),
+					4: E(0)
+				},
+				times: 0
+			}
+			resetBlackhole()
+		}
+
+		//NG+3
+		if (speedrunMilestonesReached >= 4 && !isRewardEnabled(4)) {
+			for (var s = 0; s < player.masterystudies.length; s++) {
+				if (player.masterystudies[s].indexOf("t") >= 0) player.timestudy.theorem += masteryStudies.costs.time[player.masterystudies[s].split("t")[1]]
+				else player.timestudy.theorem += masteryStudies.costs.dil[player.masterystudies[s].split("d")[1]]
+			}
+		}
+		if (isRewardEnabled(11) && (bigRip && !hasRipUpg(12))) {
+			if (player.eternityChallUnlocked > 12) player.timestudy.theorem += masteryStudies.costs.ec[player.eternityChallUnlocked]
+			else player.timestudy.theorem += ([0, 30, 35, 40, 70, 130, 85, 115, 115, 415, 550, 1, 1])[player.eternityChallUnlocked]
+		}
+
+		player.masterystudies = bigRip && !hasRipUpg(12) ? ["d7", "d8", "d9", "d10", "d11", "d12", "d13", "d14"] : speedrunMilestonesReached >= 16 && isRewardEnabled(11) ? player.masterystudies : []
+		player.respecMastery = false
+		updateMasteryStudyCosts()
+
+		ipMultPower = GUBought("gb3") ? 2.3 : hasMasteryStudy("t241") ? 2.2 : 2
+		if (!qc) {
+			quSave.electrons.amount = 0
+			quSave.electrons.sacGals = 0
+			if (speedrunMilestonesReached < 25 && player.quantum.autoOptions.sacrifice) toggleAutoQuantumContent('sacrifice')
+			tmp.aeg = 0
+		}
+		drawMasteryTree()
+		replicantsResetOnQuantum(qc)
+		nanofieldResetOnQuantum()
+
+		quSave.time = 0
+		QKminpeak = E(0)
+		QKminpeakValue = E(0)
+		el("metaAntimatterEffectType").textContent = inQC(3) ? "multiplier on all Infinity Dimensions" : "extra multiplier per Dimension Boost"
+	}
 }
 
 function updateQuarkDisplay() {

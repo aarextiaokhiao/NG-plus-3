@@ -80,28 +80,33 @@ function load_saves() {
 }
 
 function getSaveLayout(id) {
-	return "<b id='save_"+id+"_title'>Save #"+(loadedSaves+1)+"</b><div id='save_"+id+"_desc'></div><button class='storebtn' onclick='overwrite_save("+id+")'>Save</button><button class='storebtn' onclick='change_save("+id+")'>Load</button><button class='storebtn' onclick='rename_save("+id+")'>Rename</button><button class='storebtn' onclick='export_save("+id+")'>Export</button><button class='storebtn' onclick='import_save("+id+")'>Import</button><button class='storebtn' onclick='move("+id+",-1)'>Move up</button><button class='storebtn' onclick='move("+id+",1)'>Move down</button><button class='storebtn' onclick='delete_save("+id+")'>Delete</button>"
+	return `<b id='save_${id}_title'>Save #${loadedSaves+1}</b>
+	<div id='save_${id}_desc'></div>
+	<button class='storebtn' onclick='overwrite_save(${id})'>Save</button>
+	<button class='storebtn' onclick='change_save(${id})'>Load</button>
+	<button class='storebtn' onclick='rename_save(${id})'>Rename</button>
+	<button class='storebtn' onclick='export_save(${id})'>Export</button>
+	<button class='storebtn' onclick='import_save(${id})'>Import</button>
+	<span class='metaOpts'>
+		<button class='storebtn' onclick='move(${id}, -1)'>⭡</button>
+		<button class='storebtn' onclick='move(${id}, 1)'>⭣</button>
+		<button class='storebtn' onclick='delete_save(${id})'>X</button>
+	</span>`
 }
 
 function changeSaveDesc(saveId, placement) {
 	var element = el("save_" + saveId + "_desc")
+
 	if (element == undefined) return
+
 	try {
 		var isSaveCurrent = metaSave.current == saveId
 		var temp = isSaveCurrent ? player : get_save(saveId)
 		if (temp.aarexModifications == null) temp.aarexModifications = {}
 		var msg = modAbbs(checkMods(temp)) + "<br>"
 
-		var originalBreak = player.break
-		var originalNotation = player.options.notation
-		var originalCommas = player.options.commas
-		if (!isSaveCurrent) {
-			player.break = temp.achievements.includes("r51")
-			player.options.notation = temp.options.notation
-			player.options.commas = temp.options.commas
-		}
-		var isSaveGhostified = temp.ghostify ? temp.ghostify.times > 0 : false
-		var isSaveQuantumed = temp.quantum ? temp.quantum.times > 0 : false
+		var isSaveGhostified = temp?.ghostify?.times > 0
+		var isSaveQuantumed = temp?.quantum?.times > 0
 		if (isSaveGhostified) {
 			if (temp.achievements.includes("ng3p101")) {
 				var data=temp.ghostify
@@ -123,8 +128,7 @@ function changeSaveDesc(saveId, placement) {
 			else if (temp.masterystudies.includes('d14')) msg+="Total antimatter in Big Rips: "+shortenDimensions(E(temp.quantum.bigRip.totalAntimatter))+", Space Shards: "+shortenDimensions(E(temp.quantum.bigRip.spaceShards))+(temp.achievements.includes("ng3p55")?", Eternal Matter: "+shortenDimensions(E(temp.quantum.breakEternity.eternalMatter)):"")
 			else {
 				msg+="Quarks: "+shortenDimensions(Decimal.add(temp.quantum.quarks,temp.quantum.usedQuarks.r).add(temp.quantum.usedQuarks.g).add(temp.quantum.usedQuarks.b))
-				if (temp.quantum.gluons.rg) msg+=", Gluons: "+shortenDimensions(Decimal.add(temp.quantum.gluons.rg,temp.quantum.gluons.gb).add(temp.quantum.gluons.br))
-				if (temp.masterystudies.includes('d13')) msg+=", Quark Spins: "+shortenDimensions(Decimal.add(temp.quantum.tod.r.spin, temp.quantum.tod.g.spin).add(temp.quantum.tod.b.spin))
+				if (temp.masterystudies.includes('d13')) msg+=", Preonic Spins: "+shortenDimensions(E(temp.quantum.tod.r.spin))
 				else if (temp.masterystudies.includes('d12')) msg+=", Nanocharge: "+shortenDimensions(E(temp.quantum.nanofield.charge))+", Nanorewards: "+getFullExpansion(temp.quantum.nanofield.rewards)
 				else if (temp.masterystudies.includes('d10')) msg+=", Duplicants: "+shortenDimensions(getTotalDuplicants(temp))+", Worker duplicants: "+shortenDimensions(getTotalWorkers(temp))
 				else if (temp.masterystudies.includes('d9')) msg+=", Paired challenges: "+temp.quantum.pairedChallenges.completed
@@ -134,8 +138,9 @@ function changeSaveDesc(saveId, placement) {
 					else for (c=1;c<9;c++) if (temp.quantum.challenges[c]) completions++
 					msg+=", Challenge completions: "+completions
 				} else {
-					msg+=", Best quantum: "+timeDisplayShort(temp.quantum.best)
+					if (temp.quantum.gluons.rg) msg+=", Gluons: "+shortenDimensions(Decimal.add(temp.quantum.gluons.rg,temp.quantum.gluons.gb).add(temp.quantum.gluons.br))
 					if (temp.masterystudies.includes('d7')) msg+=", Electrons: "+shortenDimensions(temp.quantum.electrons.amount)
+					msg+=", Best quantum: "+timeDisplayShort(temp.quantum.best)
 				}
 			}
 		} else if (temp.exdilation==undefined?false:temp.blackhole.unl) {
@@ -166,11 +171,8 @@ function changeSaveDesc(saveId, placement) {
 			else if (temp.galacticSacrifice?temp.galacticSacrifice.times>0:false) msg+="Antimatter: "+shortenMoney(E(temp.money))+", Galaxy points: "+shortenDimensions(E(temp.galacticSacrifice.galaxyPoints))
 			else msg+="Antimatter: "+shortenMoney(E(temp.money))+", Dimension Shifts/Boosts: "+temp.resets+((temp.tickspeedBoosts != undefined ? (temp.resets > 0 || temp.tickspeedBoosts > 0 || temp.galaxies > 0 || temp.infinitied > 0 || temp.eternities != 0 || isSaveQuantumed) : false)?", Tickspeed boosts: "+getFullExpansion(temp.tickspeedBoosts):"")+", Galaxies: "+temp.galaxies
 		}
-		player.break=originalBreak
-		player.options.notation=originalNotation
-		player.options.commas=originalCommas
 
-		el("save_"+saveId+"_title").textContent=temp.aarexModifications.save_name?temp.aarexModifications.save_name:"Save #"+placement
+		el("save_"+saveId+"_title").textContent = (temp?.aarexModifications?.save_name || "Save #"+placement) + (isSaveCurrent ? " (selected)" : "")
 	} catch (_) {
 		var msg = "New game"
 	}
@@ -215,32 +217,14 @@ function change_save(id) {
 
 function export_save(id) {
 	var placement=1
-	if (!id) id=metaSave.current
-	while (metaSave.saveOrder[placement-1]!=id) placement++
+	if (!id) id = metaSave.current
+	while (metaSave.saveOrder[placement-1] != id) placement++
 
-	let output = el('output')
-	let parent = output.parentElement
+	let data
+	if (id == metaSave.current) data = btoa(JSON.stringify(player, function(k, v) { return (v === Infinity) ? "Infinity" : v }))
+	else data = localStorage.getItem(btoa(savePrefix + id))
 
-	parent.style.display = ""
-	if (id == metaSave.current) output.value = btoa(JSON.stringify(player, function(k, v) { return (v === Infinity) ? "Infinity" : v }))
-	else output.value = localStorage.getItem(btoa(savePrefix+id))
-
-	output.onblur = function() {
-		parent.style.display = "none"
-	}
-
-	output.focus()
-	output.select()
-
-	try {
-		if (document.execCommand('copy')) {
-			$.notify("Exported save #"+placement+" to clipboard", "info")
-			output.blur()
-			output.onblur()
-		}
-	} catch(ex) {
-		// well, we tried.
-	}
+	exportData(data, "Exported save #"+placement+" to clipboard")
 }
 
 //Credits to MrRedShark77 from https://github.com/MrRedShark77/incremental-mass-rewritten/blob/main/js/saves.js
@@ -252,6 +236,27 @@ function export_file() {
     a.download = "NG+3 v2.31 Beta - "+new Date().toGMTString()+".txt"
     a.click()
 }
+
+function exportData(encoded, success) {
+	let output = el('output');
+	let parent = output.parentElement;
+
+	parent.style.display = "";
+	output.value = encoded
+	output.onblur = function() { parent.style.display = "none";}
+	output.focus();
+	output.select();
+	
+	try {
+		if (document.execCommand('copy')) {
+			$.notify(success || "Exported to clipboard", "info");
+			output.blur();
+			output.onblur();
+		}
+	} catch(ex) {
+		// well, we tried.
+	}
+};
 
 var onImport = false
 function import_save(type) {

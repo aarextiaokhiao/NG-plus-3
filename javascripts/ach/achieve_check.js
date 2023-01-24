@@ -173,7 +173,7 @@ function checkOtherPreNGp3Achieve(){
 		if (player.exdilation.unspent.gt(1e5)) giveAchievement("Finally I'm out of that channel");
 		if (ableToGetRid2 && player.infinityPoints.log10() >= 20000) giveAchievement("I already got rid of you.")
 	}
-	if (mod.ngpp && player.dilation.studies.includes(5)) giveAchievement("I'm so meta")
+	if (mod.ngpp && hasDilStudy(5)) giveAchievement("I'm so meta")
 	checkUniversalHarmony()
 	if (infchallengeTimes < 7.5) giveAchievement("Never again")
 	if (player.totalTimePlayed >= 10 * 60 * 60 * 24 * 8) giveAchievement("One for each dimension")
@@ -227,7 +227,7 @@ function ngP3AchieveCheck(){
 		else noTree = true
 	}
 	if (player.meta.antimatter.gte(Number.MAX_VALUE)) giveAchievement("I don't have enough fuel!")
-	if (player.galaxies >= 900 && !player.dilation.studies.includes(1)) giveAchievement("No more tax fraud!")
+	if (player.galaxies >= 900 && !hasDilStudy(1)) giveAchievement("No more tax fraud!")
 	if (player.money.gte(getOldAgeRequirement())) giveAchievement("Old age")
 	if (player.infinityPoints.log10() >= 4e5 && ableToGetRid3) giveAchievement("I already got rid of you...")
 	if (player.meta.resets == 8 && player.meta.antimatter.log10() >= 1500) giveAchievement("We are not going squared.")

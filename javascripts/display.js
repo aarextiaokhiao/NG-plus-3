@@ -16,9 +16,20 @@ function tickspeedBoostDisplay(){
 
 function galaxyReqDisplay(){
 	var nextGal = getGalaxyRequirement(0, true)
-	var totalReplGalaxies = getTotalRG()
-	var totalTypes = tmp.aeg ? 4 : player.dilation.freeGalaxies ? 3 : totalReplGalaxies ? 2 : 1
-	el("secondResetLabel").innerHTML = getGalaxyScaleName(nextGal.scaling) + (nextGal.scaling <= 3 ? "Antimatter " : "") + ' Galaxies ('+ getFullExpansion(player.galaxies) + (totalTypes > 1 ? ' + ' + getFullExpansion(totalReplGalaxies) : '') + (totalTypes > 2 ? ' + ' + getFullExpansion(Math.round(player.dilation.freeGalaxies)) : '') + (totalTypes > 3 ? ' + ' + getFullExpansion(tmp.aeg) : '') +'): requires ' + getFullExpansion(nextGal.amount) + ' '+DISPLAY_NAMES[inNC(4) ? 6 : 8]+' Dimensions'
+	var totalRepl = getTotalRG()
+	var totalDil = Math.floor(player.dilation.freeGalaxies)
+	var totalTypes = totalDil ? 3 : totalRepl ? 2 : 1
+
+	var msg = getGalaxyScaleName(nextGal.scaling) + (nextGal.scaling <= 3 ? "Antimatter " : "") + ' Galaxies '
+	msg += "(" + getFullExpansion(player.galaxies)
+	if (totalTypes >= 2) msg += " + " + getFullExpansion(totalRepl)
+	if (totalTypes >= 3) msg += " + " + getFullExpansion(totalDil)
+	if (totalTypes >= 2 && shiftDown) msg += " = " + getFullExpansion(player.galaxies + totalRepl + totalDil)
+
+	msg += "): "
+	if (totalTypes >= 3) msg += "<br>"
+	msg += 'requires ' + getFullExpansion(nextGal.amount) + ' ' + DISPLAY_NAMES[inNC(4) ? 6 : 8] + ' Dimensions'
+	el("secondResetLabel").innerHTML =  msg
 }
 
 var galaxyScalings = ["", "Distant ", "Farther ", "Remote ", "Obscure ", "Dark ", "Spectre ", "Ethereal ", "Ethereal++ ", "Ethereal IV ", "Ethereal V "]
@@ -162,6 +173,8 @@ function preBreakUpgradeDisplay(){
 }
 
 function breakInfinityUpgradeDisplay(){
+	el("break").textContent = (player.break ? "FIX" : "BREAK") + " INFINITY"
+
 	if (player.infinityUpgrades.includes("totalMult")) el("postinfi11").className = "infinistorebtnbought"
 	else if (player.infinityPoints.gte(1e4)) el("postinfi11").className = "infinistorebtn1"
 	else el("postinfi11").className = "infinistorebtnlocked"
@@ -307,7 +320,7 @@ function eternityUpgradesDisplay(){
 	el("eter4").innerHTML = "Your achievement bonus affects Time Dimensions"+"<br>Cost: "+shortenCosts(1e16)+" EP"
 	el("eter5").innerHTML = "Time Dimensions gain a multiplier based on your unspent Time Theorems"+"<br>Cost: "+shortenCosts(1e40)+" EP"
 	el("eter6").innerHTML = "Time Dimensions gain a multiplier based on days played"+"<br>Cost: "+shortenCosts(1e50)+" EP"
-	if (mod.ngud && player.dilation.studies.includes(1)) {
+	if (mod.ngud && hasDilStudy(1)) {
 		el("eter7").innerHTML = "Dilated time gain is boosted by antimatter<br>Currently: "+(1 + Math.log10(Math.max(1, player.money.log(10))) / 40).toFixed(3)+"x<br>Cost: "+shortenCosts(E("1e1500"))+" EP"
 		el("eter8").innerHTML = "Dilated time gain is boosted by Infinity Points<br>Currently: "+(1 + Math.log10(Math.max(1, player.infinityPoints.log(10))) / 20).toFixed(3)+"x<br>Cost: "+shortenCosts(E("1e2000"))+" EP"
 		el("eter9").innerHTML = "Dilated time gain is boosted by Eternity Points<br>Currently: "+(1 + Math.log10(Math.max(1, player.eternityPoints.log(10))) / 10).toFixed(3)+"x<br>Cost: "+shortenCosts(E("1e3000"))+" EP"
@@ -348,7 +361,6 @@ function updateDimensionsDisplay() {
 		if (el("antimatterdimensions").style.display == "block") dimensionTabDisplay()
 		if (el("infinitydimensions").style.display == "block") updateInfinityDimensions()
 		if (el("timedimensions").style.display == "block") updateTimeDimensions()
-		if (el("pdims").style.display == "block") paradoxDimDisplay()
 		if (el("metadimensions").style.display == "block") updateMetaDimensions()
 	}
 	tickspeedDisplay()
@@ -454,7 +466,7 @@ function eternityChallengeUnlockDisplay(){
 function mainTimeStudyDisplay(){
 	initialTimeStudyDisplay()
 	eternityChallengeUnlockDisplay()
-	el("dilstudy1").innerHTML = "Unlock time dilation" + (player.dilation.studies.includes(1) ? "" : "<span>Requirement: 5 EC11 and EC12 completions and " + getFullExpansion(getDilationTotalTTReq()) + " total theorems")+"<span>Cost: " + getFullExpansion(5e3) + " Time Theorems"
+	el("dilstudy1").innerHTML = "Unlock time dilation" + (hasDilStudy(1) ? "" : "<span>Requirement: 5 EC11 and EC12 completions and " + getFullExpansion(getDilationTotalTTReq()) + " total theorems")+"<span>Cost: " + getFullExpansion(5e3) + " Time Theorems"
 	if (mod.ngp3) {
 		var ts232display = tmp.ts232 * 100 - 100
 		el("221desc").textContent = "Currently: "+shorten(E_pow(1.0025, player.resets))+"x"
@@ -558,7 +570,7 @@ function showHideConfirmations() {
 
 	el("sacConfirmBtn").style.display = (player.resets > 4 || player.galaxies > 0 || gSac || inf) ? "inline-block" : "none"
 	el("gSacConfirmBtn").style.display = gSac ? "inline-block" : "none"
-	el("dilationConfirmBtn").style.display = (player.dilation.studies.includes(1) || quantumed) ? "inline-block" : "none"
+	el("dilationConfirmBtn").style.display = (hasDilStudy(1) || quantumed) ? "inline-block" : "none"
 	el("exdilationConfirmBtn").style.display = exdilated() ? "" : "none"
 	el("quantumConfirmBtn").style.display = quantumed ? "inline-block" : "none"
 	el("bigRipConfirmBtn").style.display = brSave?.times ? "inline-block" : "none"

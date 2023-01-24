@@ -301,13 +301,13 @@ function isDilUpgUnlocked(id) {
 	if (ngmm) {
 		let r = inNGM(2)
 		if (ngmm == 6) r = r && mod.ngpp
-		if (ngmm >= 7) r = r && player.dilation.studies.includes(6)
+		if (ngmm >= 7) r = r && hasDilStudy(6)
 		return r
 	}
 	if (ngpp) {
 		ngpp = parseInt(ngpp)
 		let r = mod.ngpp
-		if (ngpp >= 3) r = r && player.dilation.studies.includes(6)
+		if (ngpp >= 3) r = r && hasDilStudy(6)
 		return r
 	}
 	if (id.split("ngud")[1]) {
@@ -317,7 +317,7 @@ function isDilUpgUnlocked(id) {
 	}
 	if (id.split("ngusp")[1]) {
 		let r = aarMod.nguspV !== undefined
-		if (id != "ngusp1") r = r && player.dilation.studies.includes(6)
+		if (id != "ngusp1") r = r && hasDilStudy(6)
 		return r
 	}
 	return true
@@ -442,7 +442,7 @@ function updateDilationUpgradeButtons() {
 	el("dil13desc").textContent = power > 3 ? "Gain " + shorten(power) + "x more Tachyon Particles." : "Triple the amount of Tachyon Particles gained."
 	el("dil31desc").textContent = "Currently: " + shortenMoney(player.dilation.dilatedTime.max(1).pow(1000).max(1)) + "x"
 	el("dil41desc").textContent = "Currently: " + shortenMoney(hasAch("ng3p44") && player.timestudy.theorem / genSpeed < 3600 ? genSpeed * 10 : genSpeed)+"/s"
-	if (player.dilation.studies.includes(6)) {
+	if (hasDilStudy(6)) {
 		el("dil51desc").textContent = "Currently: " + shortenMoney(getDil14Bonus()) + 'x';
 		el("dil52desc").textContent = "Currently: " + shortenMoney(getDil15Bonus()) + 'x';
 		el("dil54formula").textContent = "(log(x)^0.5" + (mod.ngp3 ? ")" : "/2)")
@@ -456,7 +456,7 @@ function updateDilationUpgradeButtons() {
 	if (inNGM(2)) {
 		el("dil44desc").textContent = "Currently: +" + shortenMoney(getDil44Mult())
 		el("dil45desc").textContent = "Currently: " + shortenMoney(getDil45Mult()) + "x"
-		if (player.dilation.studies.includes(6)) {
+		if (hasDilStudy(6)) {
 			el("dil71desc").textContent = "Currently: ^" + shortenMoney(getDil71Mult())
 			el("dil72desc").textContent = "Currently: " + shortenMoney(getDil72Mult()) + "x"
 		}
@@ -521,7 +521,7 @@ function resetDilationGalaxies() {
 }
 
 function startDilatedEternity(auto) {
-	if (!player.dilation.studies.includes(1)) return
+	if (!hasDilStudy(1)) return
 
 	var onActive = !player.dilation.active
 	if (!auto && onActive && aarMod.dilationConf && !confirm("Dilating time will start a new Eternity where all of your Normal/Infinity/Time Dimension multiplier's exponents and the Tickspeed multiplier's exponent will be reduced to ^0.75. If you can Eternity while dilated, you'll be rewarded with tachyon particles based on your antimatter and tachyon particles.")) return
@@ -544,7 +544,7 @@ function resetDilation(order = "qu") {
 
 	player.dilation.times = 0
 
-	let unl = player.dilation.studies.includes(1)
+	let unl = hasDilStudy(1)
 	let keepUpg = unl && (bigRip ? hasRipUpg(12) : speedrunMilestonesReached >= 6)
 	if (!keepUpg) player.dilation.upgrades = []
 	for (var i in player.dilation.rebuyables) player.dilation.rebuyables[i] = 0

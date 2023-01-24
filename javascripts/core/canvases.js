@@ -164,7 +164,7 @@ function drawTreeBranch(num1, num2) {
     var y2 = end.top + (end.height / 2) + (document.documentElement.scrollTop || document.body.scrollTop);
     ctx.lineWidth=15;
     ctx.beginPath();
-    if ((player.timestudy.studies.includes(name1) && player.timestudy.studies.includes(name2) && !isECName) || (player.timestudy.studies.includes(name1) && (player.eternityChallUnlocked === name2 && isECName)) || (player.dilation.studies.includes(name2-1) && (player.dilation.studies.includes(name2) && isDilStudyName))) {
+    if ((player.timestudy.studies.includes(name1) && player.timestudy.studies.includes(name2) && !isECName) || (player.timestudy.studies.includes(name1) && (player.eternityChallUnlocked === name2 && isECName)) || (hasDilStudy(name2-1) && (hasDilStudy(name2) && isDilStudyName))) {
         if (name2 == 6 && isDilStudyName && (player.options.theme == "Aarex's Modifications" || player.options.theme == "Aarex's Mods II")) {
             ctx.strokeStyle="#00E5E5";
         } else if (name2 < 20 && isECName) {

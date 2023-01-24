@@ -298,6 +298,21 @@ function teleportToEDs() {
 	showAntTab("emperordimensions")
 }
 
+function setupEmpDimensionHTML() {
+	var edsDiv = el("empDimTable")
+	for (let d = 1; d <= 8; d++) {
+		var row = edsDiv.insertRow(d - 1)
+		row.id = "empRow" + d
+		row.style["font-size"] = "15px"
+		row.innerHTML = `<td id="empD${d}" width="41%"></td>
+		<td id="empAmount${d}"></td>
+		<td><span class="empQuarks" id="empQuarks${d}">0</span> pilons/s</td>
+		<td width="2.5%"><button id="empFeedMax${d}" style="color:black; width:70px; font-size:10px" class="storebtn" onclick="feedReplicant(${d}, true)">Max</button></td>
+		<td width="7.5%"><button id="empFeed${d}" style="color:black; width:195px; font-size:10px" class="storebtn" onclick="feedReplicant(${d})"></button></td>`
+	}
+}
+
+
 function updateEmperorDimensions() {
 	let production = getGatherRate()
 	let mults = {}

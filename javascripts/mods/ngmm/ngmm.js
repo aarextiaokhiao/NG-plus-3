@@ -321,7 +321,7 @@ function galacticUpgradeButtonTypeDisplay () {
 					if (hasGalUpg(+(i + '' + j))) {
 						e.className = 'infinistorebtnbought'
 					} else if (player.galacticSacrifice.galaxyPoints.gte(getGalaxyUpgradeCost(i + '' + j)) && (i === 1 || hasGalUpg(+((i - 1) + '' + j)))) {
-						e.className = 'infinistorebtn' + ((j-1)%4+1);
+						e.className = 'galaxyupgbtn'
 					} else {
 						e.className = 'infinistorebtnlocked'
 					}

@@ -89,6 +89,128 @@ function ghostifyReset(force, gain) {
 	doReset("funda")
 }
 
+RESETS.funda = {
+	resetQuantums() {
+		quSave.times = 0
+		quSave.best = 9999999999
+		quSave.last10 = [[600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)]]
+		updateSpeedruns()
+		updateLastTenQuantums()
+	},
+	resetQuarkGluons(bm) {
+		quSave.quarks = E(0)
+		quSave.usedQuarks = {
+			r: E(0),
+			g: E(0),
+			b: E(0),
+		}
+		quSave.colorPowers = {
+			r: E(0),
+			g: E(0),
+			b: E(0),
+		}
+		quSave.gluons = {
+			rg: E(0),
+			gb: E(0),
+			br: E(0),
+		}
+		quSave.multPower = 0
+		if (bm < 2) quSave.upgrades = []
+		if (bm < 1) quSave.reachedInfQK = false
+
+		updateQuantumWorth("quick")
+		updateColorCharge()
+		updateGluonsTabOnUpdate("prestige")
+	},
+	resetElectrons(bm) {
+		if (bm == 3) return
+
+		quSave.electrons.mult = 2
+		quSave.electrons.rebuyables = [0, 0, 0, 0]
+	},
+	resetQCs(bm) {
+		quSave.challenge = []
+		quSave.challenges = {}
+		quSave.pairedChallenges.order = {}
+		quSave.pairedChallenges.current = 0
+		quSave.pairedChallenges.completed = 0
+		updateInQCs()
+		updateQuantumChallenges()
+		updateQuantumTabDisplays()
+		updatePCCompletions()
+	},
+	resetDuplicants(bm) {
+		quSave.replicants = getBrandNewReplicantsData()
+
+		let permUnlocks = [null, 7, 9, 10, 10, 11, 11, 12, 12]
+		for (let d = 1; d <= 8; d++) {
+			let keep10 = bm >= permUnlocks[d]
+			EDsave[d].perm = keep10 ? 10 : 0
+			if (keep10) quSave.replicants.limitDim = d
+		}
+		if (quSave.replicants.limitDim >= 1) {
+			quSave.replicants.limit = 10
+			quSave.replicants.limitCost = E_pow(200, quSave.replicants.limitDim * 9).times(1e49)
+			quSave.replicants.quantumFoodCost = E_pow(5, quSave.replicants.limitDim * 30).times(2e46)
+		}
+		updateEmperorDimensions()
+
+		nfSave.rewards = bm >= 13 ? 5 : 0
+		updateNanoRewardTemp()
+	},
+	resetDecay(bm) {
+		todSave.r.quarks = E(0)
+		todSave.r.spin = E(0)
+		todSave.r.upgrades = {}
+		todSave.r.decays = hasAch("ng3p86") ? Math.floor(todSave.r.decays * .75) : 0
+		todSave.upgrades = { 1: bm >= 4 ? 5 : 0 }
+		updateTODStuff()
+	},
+	resetRip(bm) {
+		brSave.active = false
+		brSave.bestGals = 0
+		if (bm < 1) brSave.upgrades = []
+
+		if (bm < 3) {
+			beSave.unlocked = false
+			beSave.break = false
+		}
+		beSave.eternalMatter = E(0)
+		beSave.upgrades = []
+		beSave.epMultPower = 0
+		updateBreakEternity()
+	},
+
+	doReset() {
+		let bm = ghSave.milestones
+		ghSave.time = 0
+		GHPminpeak = E(0)
+		GHPminpeakValue = E(0)
+
+		player.infinitiedBank = 0
+		player.eternitiesBank = 0
+		updateBankedEter()
+		player.dilation.bestTP = E(0)
+		player.meta.bestOverQuantums = E(0)
+		if (bm < 3) {
+			var keepMS = []
+			for (var i of player.masterystudies) if (i[0] != "d") keepMS.push(i)
+			player.masterystudies = keepMS
+		}
+
+		this.resetQuantums(bm)
+		this.resetQuarkGluons(bm)
+		this.resetElectrons(bm)
+		this.resetQCs(bm)
+		this.resetDuplicants(bm)
+		this.resetDecay(bm)
+		this.resetRip(bm)
+
+		updateAutoQuantumMode()
+		doGhostifyGhostifyResetStuff()
+	}
+}
+
 function canGhostify() {
 	return isQuantumReached() && bigRipped()
 }
@@ -174,6 +296,10 @@ function updateLastTenGhostifies() {
 }
 
 //Brave Milestones
+function setupBraveMilestones(){
+	for (var m = 1; m <= 16; m++) el("braveMilestone" + m).textContent=getFullExpansion(tmp.bm[m - 1])+"x quantumed"+(m==1?" or lower":"")
+}
+
 function updateBraveMilestones() {
 	if (ghostified) {
 		for (var m = 1; m < 17;m++) el("braveMilestone" + m).className = "achievement achievement" + (ghSave.milestones < m ? "" : "un") + "locked"

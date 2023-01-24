@@ -133,7 +133,7 @@ function isTDUnlocked(t) {
 		if ((inNC(4) || player.currentChallenge == "postc1") && t > 6) return
 		return player.tdBoosts > t - 2
 	}
-	return t < 5 || player.dilation.studies.includes(t - 3)
+	return t < 5 || hasDilStudy(t - 3)
 }
 
 function getTimeDimensionRateOfChange(tier) {

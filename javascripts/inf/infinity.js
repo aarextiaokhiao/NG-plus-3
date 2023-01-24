@@ -441,18 +441,7 @@ function canBreakInfinity() {
 
 function breakInfinity() {
 	if (!canBreakInfinity()) return false
-	if (player.break && !player.currentChallenge.includes("post")) {
-		player.break = false
-		el("break").textContent = "BREAK INFINITY"
-	} else {
-		player.break = true
-		el("break").textContent = "FIX INFINITY"
-	}
-	if (inNGM(2)) if (player.eternities == 0 && player.infinityPoints.lt(Number.MAX_VALUE) && !quantumed) {
-		el("quantumBlock").style.display=player.break?"":"none"
-		el("sacpos").className=player.break?"quantumpos":"eterpos"
-		el("galaxyPoints2").className=player.break?"QK":"EP"
-	}
+	player.break = !player.break
 }
 
 function onPostBreak() {

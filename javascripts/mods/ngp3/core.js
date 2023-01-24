@@ -1,6 +1,6 @@
 //VERSION: 2.31
 let ngp3_ver = 2.31
-let ngp3_build = 20230120
+let ngp3_build = 20230124
 function doNGP3Updates() {
 	if (!aarMod.ngp3_build) aarMod.ngp3_build = 0
 	if (aarMod.ngp3_build < 20221230) quSave.multPower = 0
@@ -87,12 +87,6 @@ function toggleAllMetaDims() {
 	}
 	for (id = 1; id < stop; id++) player.autoEterOptions["md" + id] = turnOn
 	el("metaMaxAllDiv").style.display = turnOn && stop > 7 && speedrunMilestonesReached > 27 ? "none" : ""
-}
-
-//v1.997
-function respecTogglePC() {
-	quSave.pairedChallenges.respec = !quSave.pairedChallenges.respec
-	el("respecPC").className = quSave.pairedChallenges.respec ? "quantumbtn" : "storebtn"
 }
 
 //v1.99799
@@ -685,4 +679,17 @@ function updateQuantumTabDisplays() {
 	el("todtabbtn").style.display = hasMasteryStudy("d13") ? "" : "none"
 	el("riptabbtn").style.display = hasMasteryStudy("d14") ? "" : "none"
 	el("betabbtn").style.display = beSave.unlocked ? "" : "none"
+}
+
+//Setup
+function setupNGP3HTMLAndData() {
+	setupMasteryStudiesHTML()
+	setupPCTable()
+	setupEmpDimensionHTML()
+	setupNanofieldHTML()
+	setupToDHTML()
+	setupBraveMilestones()
+	setupBosonicExtraction()
+	setupBosonicUpgrades()
+	setupBosonicRunes()
 }

@@ -10,13 +10,8 @@
 	background: radial-gradient(#000f17, transparent), radial-gradient(farthest-corner at 100% 0%, #001f2f, #000000)
 }
 
-.container, div, b, input {
+* {
 	color: #7fdfff;
-	font-family: 'Arial', sans-serif;
-	letter-spacing: 0.05em
-}
-
-.container span {
 	font-family: 'Arial', sans-serif;
 	letter-spacing: 0.05em
 }
@@ -226,7 +221,7 @@ button:hover {
 }
 
 /* Eternity */
-.eternitybtn, .eternitytabbtn,
+.eternitybtn,
 #tdtabbtn button, .eternityupbtn,
 #eterctabbtn {
 	background: rgba(191, 0, 255, 0.75) linear-gradient(transparent, #df00ff, transparent) !important;

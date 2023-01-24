@@ -261,7 +261,34 @@ function updateNextPreonEnergyThreshold(){
 	nfSave.powerThreshold = getNanoRewardReq(1)
 }
 
-//UPDATES
+//HTML
+function setupNanofieldHTML() {
+	var nfRewards = el("nfRewards")
+	var row = 0
+	for (var r = 1; r <= 5; r += 4) {
+		nfRewards.insertRow(row).innerHTML = 
+			"<td id='nfRewardHeader" + r + "' class='milestoneText'></td>" +
+			"<td id='nfRewardHeader" + (r + 1) + "' class='milestoneText'></td>"+
+			"<td id='nfRewardHeader" + (r + 2) + "' class='milestoneText'></td>"+
+			"<td id='nfRewardHeader" + (r + 3) + "' class='milestoneText'></td>"
+		row++
+		nfRewards.insertRow(row).innerHTML = 
+			"<td id='nfRewardTier" + r + "' class='milestoneTextSmall'></td>" +
+			"<td id='nfRewardTier" + (r + 1) + "' class='milestoneTextSmall'></td>"+
+			"<td id='nfRewardTier" + (r + 2) + "' class='milestoneTextSmall'></td>"+
+			"<td id='nfRewardTier" + (r + 3) + "' class='milestoneTextSmall'></td>"
+		row++
+		nfRewards.insertRow(row).innerHTML = 
+			"<td><button class='nfRewardlocked' id='nfReward" + r + "'></button></td>" +
+			"<td><button class='nfRewardlocked' id='nfReward" + (r + 1) + "'></button></td>"+
+			"<td><button class='nfRewardlocked' id='nfReward" + (r + 2) + "'></button></td>"+
+			"<td><button class='nfRewardlocked' id='nfReward" + (r + 3) + "'></button></td>"
+		row++
+	}
+	el("nfReward7").style["font-size"] = "10px"
+	el("nfReward8").style["font-size"] = "10px"
+}
+
 function nanofieldUpdating(diff){
 	var AErate = getQuarkAntienergyProduction()
 	var toAddAE = AErate.times(diff).min(getQuarkChargeProductionCap().sub(nfSave.antienergy))

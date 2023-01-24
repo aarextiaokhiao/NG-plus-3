@@ -6,46 +6,17 @@ var quantumChallenges = {
 function updateQuantumChallenges() {
 	if (!hasMasteryStudy("d8")) return
 
-	assigned = []
-	var assignedNums = {}
-	el("respecPC").style.display = hasMasteryStudy("d9") ? "" : "none"
-	for (var pc = 1; pc <= 4; pc++) {
-		var subChalls = quSave.pairedChallenges.order[pc]
-		if (subChalls) for (var sc=0; sc < 2; sc++) {
-			var subChall = subChalls[sc]
-			if (subChall) {
-				pcAssigned.push(subChall)
-				assignedNums[subChall] = pc
-			}
-		}
-		if (hasMasteryStudy("d9")) {
-			var property = "pc" + pc
-			var sc1 = quSave.pairedChallenges.order[pc] ? quSave.pairedChallenges.order[pc][0] : 0
-			var sc2 = (sc1 ? quSave.pairedChallenges.order[pc].length > 1 : false) ? quSave.pairedChallenges.order[pc][1] : 0
-			el(property+"desc").textContent = "Paired Challenge "+pc+": Both Quantum Challenge " + (sc1 ? sc1 : "?") + " and " + (sc2 ? sc2 : "?") + " are applied."
-			el(property+"cost").textContent = "Cost: " + (sc2 ? getFullExpansion(getQCCost(pc + 8)) : "???") + " electrons"
-			el(property+"goal").textContent = "Goal: " + (sc2 ? shortenCosts(pow10(getQCGoal(pc + 8))) : "???") + " antimatter"
-			el(property).textContent = pcFocus == pc ? "Cancel" : (quSave.pairedChallenges.order[pc] ? quSave.pairedChallenges.order[pc].length < 2 : true) ? "Assign" : quSave.pairedChallenges.completed >= pc ? "Completed" : quSave.pairedChallenges.completed + 1 < pc ? "Locked" : quSave.pairedChallenges.current == pc ? "Running" : "Start"
-			el(property).className = pcFocus == pc || (quSave.pairedChallenges.order[pc] ? quSave.pairedChallenges.order[pc].length < 2 : true) ? "challengesbtn" : quSave.pairedChallenges.completed >= pc ? "completedchallengesbtn" : quSave.pairedChallenges.completed + 1 <pc ? "lockedchallengesbtn" : quSave.pairedChallenges.current == pc ? "onchallengebtn" : "challengesbtn"
-
-			var sc1t = Math.min(sc1, sc2)
-			var sc2t = Math.max(sc1, sc2)
-			if (hasMasteryStudy("d14")) {
-				el(property + "br").style.display = ""
-				el(property + "br").textContent = sc1t != 6 || sc2t != 8 ? "QC6 & 8" : bigRipped() ? "Big Ripped" : quSave.pairedChallenges.completed + 1 < pc ? "Locked" : "Big Rip"
-				el(property + "br").className = sc1t != 6 || sc2t != 8 ? "lockedchallengesbtn" : bigRipped() ? "onchallengebtn" : quSave.pairedChallenges.completed + 1 < pc ? "lockedchallengesbtn" : "bigripbtn"
-			} else el(property + "br").style.display = "none"
-		}
-	}
 	for (var qc = 1; qc <= 8; qc++) {
 		var property = "qc" + qc
 		el(property + "div").style.display = (qc < 2 || QCIntensity(qc - 1)) ? "inline-block" : "none"
-		el(property).textContent = ((!pcAssigned.includes(qc) && pcFocus) ? "Choose" : inQC(qc) ? "Running" : QCIntensity(qc) ? (pcAssigned.includes(qc) ? "Assigned" : "Completed") : "Start") + (pcAssigned.includes(qc) ? " (PC" + assignedNums[qc] + ")" : "")
-		el(property).className = (!pcAssigned.includes(qc) && pcFocus) ? "challengesbtn" : inQC(qc) ? "onchallengebtn" : QCIntensity(qc) ? "completedchallengesbtn" : "challengesbtn"
+		el(property).textContent = pcFocus ? "Choose" : QCIntensity(qc) ? "Completed" : inQC(qc) ? "Running" : "Start"
+		el(property).className = pcFocus ? "challengesbtn" : QCIntensity(qc) ? "completedchallengesbtn" : inQC(qc) ? "onchallengebtn" : "challengesbtn"
 		el(property + "cost").textContent = "Cost: " + getFullExpansion(quantumChallenges.costs[qc]) + " electrons"
 		el(property + "goal").textContent = "Goal: " + shortenCosts(pow10(getQCGoal(qc))) + " antimatter"
 	}
+
 	updateQCDisplaysSpecifics()
+	updatePairedChallenges()
 }
 
 function updateQCDisplaysSpecifics(){
@@ -181,10 +152,10 @@ function getQCIdCost(qcs) {
 
 function selectQC(x) {
 	if (pcFocus) {
-		let orderSave = quSave.pairedChallenges.order
-		let order = orderSave[pcFocus] || []
-		orderSave[pcFocus] = order.concat(x)
-		if (orderSave[pcFocus].length == 2) {
+		if (pcAssigned.includes(x)) return
+		pcChosen.push(x)
+		if (pcChosen.length == 2) {
+			quSave.pairedChallenges.order[pcFocus] = pcChosen
 			showChallengesTab("pChalls")
 			pcFocus = 0
 		}
@@ -193,8 +164,38 @@ function selectQC(x) {
 }
 
 //Paired Challenges
+function updatePairedChallenges() {
+	if (!hasMasteryStudy("d9")) return
+
+	pcAssigned = []
+	for (var pc = 1; pc <= 4; pc++) {
+		var subChalls = quSave.pairedChallenges.order[pc]
+		if (subChalls) for (var qc of subChalls) assignPC(pc, qc)
+
+		var property = "pc" + pc
+		var sc1 = quSave.pairedChallenges.order[pc] ? quSave.pairedChallenges.order[pc][0] : 0
+		var sc2 = (sc1 ? quSave.pairedChallenges.order[pc].length > 1 : false) ? quSave.pairedChallenges.order[pc][1] : 0
+		el(property+"desc").textContent = "Paired Challenge "+pc+": Both Quantum Challenge " + (sc1 ? sc1 : "?") + " and " + (sc2 ? sc2 : "?") + " are applied."
+		el(property+"cost").textContent = "Cost: " + (sc2 ? getFullExpansion(getQCCost(pc + 8)) : "???") + " electrons"
+		el(property+"goal").textContent = "Goal: " + (sc2 ? shortenCosts(pow10(getQCGoal(pc + 8))) : "???") + " antimatter"
+		el(property).textContent = pcFocus == pc ? "Cancel" : (quSave.pairedChallenges.order[pc] ? quSave.pairedChallenges.order[pc].length < 2 : true) ? "Assign" : quSave.pairedChallenges.completed >= pc ? "Completed" : quSave.pairedChallenges.completed + 1 < pc ? "Locked" : quSave.pairedChallenges.current == pc ? "Running" : "Start"
+		el(property).className = pcFocus == pc || (quSave.pairedChallenges.order[pc] ? quSave.pairedChallenges.order[pc].length < 2 : true) ? "challengesbtn" : quSave.pairedChallenges.completed >= pc ? "completedchallengesbtn" : quSave.pairedChallenges.completed + 1 <pc ? "lockedchallengesbtn" : quSave.pairedChallenges.current == pc ? "onchallengebtn" : "challengesbtn"
+
+		var sc1t = Math.min(sc1, sc2)
+		var sc2t = Math.max(sc1, sc2)
+		if (hasMasteryStudy("d14")) {
+			el(property + "br").style.display = ""
+			el(property + "br").textContent = sc1t != 6 || sc2t != 8 ? "QC6 & 8" : bigRipped() ? "Big Ripped" : quSave.pairedChallenges.completed + 1 < pc ? "Locked" : "Big Rip"
+			el(property + "br").className = sc1t != 6 || sc2t != 8 ? "lockedchallengesbtn" : bigRipped() ? "onchallengebtn" : quSave.pairedChallenges.completed + 1 < pc ? "lockedchallengesbtn" : "bigripbtn"
+		} else el(property + "br").style.display = "none"
+	}
+
+	if (pcFocus) for (var qc of pcChosen) assignPC(pcFocus, qc)
+}
+
 var pcFocus = 0
 var pcAssigned = []
+var pcChosen = []
 function selectPC(loc, bigRip) {
 	let pc = quSave.pairedChallenges.order[loc] || []
 	if (pc.length == 2) {
@@ -204,8 +205,54 @@ function selectPC(loc, bigRip) {
 	} else if (pcFocus == loc) pcFocus = 0
 	else {
 		pcFocus = loc
+		pcChosen = []
 		showChallengesTab("quantumchallenges")
 	}
+	updateQuantumChallenges()
+}
+
+function assignPC(pc, qc) {
+	pcAssigned.push(qc)
+	el("qc"+qc).textContent = `Paired (PC${pc})`
+	el("qc"+qc).className = "onchallengebtn"
+}
+
+function respecPC(force) {
+	if (!force && !confirm("Are you sure to respec your challenges? This will force a Quantum without rewards!")) return
+
+	quantum(false, !isQuantumReached() || bigRipped())
+	quSave.electrons.mult -= quSave.pairedChallenges.completed * 0.5
+	for (qc = 1; qc <= 8; qc++) quSave.challenges[qc] = 1
+	quSave.pairedChallenges.order = {}
+	quSave.pairedChallenges.current = 0
+	quSave.pairedChallenges.completed = 0
+	if (!force) updateQuantumChallenges()
+}
+
+function getPCStr() {
+	let order = quSave.pairedChallenges.order
+	let str = ""
+	for (var pc = 1; pc <= 4; pc++) {
+		str += order?.[pc]?.[0] ?? 0
+		str += order?.[pc]?.[1] ?? 0
+		str += "+"
+	}
+	return str
+}
+
+function importPC() {
+	let str = prompt("This will force a Quantum and respec your Paired Challenges!")
+	if (str == "") return
+
+	let check = {}
+	str = str.split("+")
+	for (var pc = 1; pc <= 4; pc++) {
+		if (str[pc-1][0] == str[pc-1][1]) return
+		check[pc] = [str[pc-1][0], str[pc-1][1]]
+	}
+
+	respecPC(true)
+	quSave.pairedChallenges.order = check
 	updateQuantumChallenges()
 }
 
@@ -237,6 +284,25 @@ function updatePCCompletions() {
 	updatePCTable()
 	
 	ranking = r // its global
+}
+
+function setupPCTable() {
+	var pcct = el("pccompletionstable")
+	var row = pcct.insertRow(0)
+	for (let c = 0; c <= 8; c++) {
+		var col = row.insertCell(c)
+		if (c > 0) col.textContent = "#" + c
+	}
+	for (let r = 1; r <= 8; r++) {
+		row = pcct.insertRow(r)
+		for (let c = 0; c <= 8; c++) {
+			var col = row.insertCell(c)
+			if (c < 1) col.textContent = "#" + r
+			else if (c == r) {
+				col.id = "qcC" + r
+			} else col.id = "pc" + r + c
+		}
+	}
 }
 
 function updatePCTable() {

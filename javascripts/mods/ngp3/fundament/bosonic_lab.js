@@ -389,6 +389,26 @@ function getEnchantEffect(id, desc) {
 	return bEn.effects[id](l)
 }
 
+function setupBosonicExtraction(){
+	var ben = el("enchants")
+	for (var g2 = 2; g2 <= br.maxLimit; g2++) {
+		var row = ben.insertRow(g2 - 2)
+		row.id = "bEnRow" + (g2 - 1)
+		for (var g1 = 1; g1 < g2; g1++) {
+			var col = row.insertCell(g1 - 1)
+			var id = (g1 * 10 + g2)
+			col.innerHTML = "<button id='bEn" + id + "' class='gluonupgrade unavailablebtn' style='font-size: 9px' onclick='takeEnchantAction("+id+")'>"+(bEn.descs[id]||"???")+"<br>"+
+			"Currently: <span id='bEnEffect" + id + "'>???</span><br>"+
+			"<span id='bEnLvl" + id + "'></span><br>" +
+			"<span id='bEnOn" + id + "'></span><br>" +
+			"Cost: <span id='bEnG1Cost" + id + "'></span> <div class='bRune' type='" + g1 + "'></div> & <span id='bEnG2Cost" + id + "'></span> <div class='bRune' type='" + g2 + "'></div></button><br>"
+		}
+	}
+	var toeDiv = ""
+	for (var g = 1; g <= br.maxLimit; g++) toeDiv += ' <button id="typeToExtract' + g + '" class="storebtn" onclick="changeTypeToExtract(' + g + ')" style="width: 25px; font-size: 12px"><div class="bRune" type="' + g + '"></div></button>'
+	el("typeToExtract").innerHTML=toeDiv
+}
+
 function updateBosonExtractorTab(){
 	let data = ghSave.bl
 	let speed = data.speed * (data.battery.gt(0) ? data.odSpeed : 1)
@@ -399,6 +419,24 @@ function updateBosonExtractorTab(){
 	else if (data.extracting) el("extractTime").textContent=shorten(time.times(Decimal.sub(1,data.extractProgress)))+" seconds left..."
 	else el("extractTime").textContent="This will take "+shorten(time)+" seconds."
 	updateEnchantDescs()
+}
+
+function setupBosonicRunes(){
+	var brTable=el("bRunes")
+	for (var g = 1; g <= br.maxLimit; g++) {
+		var col = brTable.rows[0].insertCell(g - 1)
+		col.id = "bRuneCol" + g
+		col.innerHTML = '<div class="bRune" type="' + g + '"></div>: <span id="bRune' + g + '"></span>'
+	}
+	var glyphs=document.getElementsByClassName("bRune")
+	for (var g = 0 ; g < glyphs.length; g++) {
+		var glyph = glyphs[g]
+		var type = glyph.getAttribute("type")
+		if (type > 0 && type <= br.maxLimit) {
+			glyph.className = "bRune " + br.names[type]
+			glyph.setAttribute("ach-tooltip", br.names[type] + " Hypothesis")
+		}
+	}
 }
 
 function updateEnchantDescs() {
@@ -552,6 +590,23 @@ function updateBosonicEnchantsTemp(){
 }
 
 //Bosonic Upgrades
+function setupBosonicUpgrades(){
+	setupBosonicUpgReqData()
+	var buTable=el("bUpgs")
+	for (r = 1; r <= bu.maxRows; r++) {
+		var row = buTable.insertRow(r - 1)
+		row.id = "bUpgRow" + r
+		for (c = 1; c < 6; c++) {
+			var col = row.insertCell(c - 1)
+			var id = (r * 10 + c)
+			col.innerHTML = "<button id='bUpg" + id + "' class='gluonupgrade unavailablebtn' style='font-size: 9px' onclick='buyBosonicUpgrade(" + id + ")'>" + (bu.descs[id] || "???") + "<br>" +
+			(bu.effects[id] !== undefined ? "Currently: <span id='bUpgEffect" + id + "'>0</span><br>" : "") +
+			"Cost: <span id='bUpgCost" + id + "'></span> Bosons<br>" +
+			"Requires: <span id='bUpgG1Req" + id + "'></span> <div class='bRune' type='" + bu.reqData[id][2] + "'></div> & <span id='bUpgG2Req" + id + "'></span> <div class='bRune' type='" + bu.reqData[id][4] + "'></div></button>"
+		}
+	}
+}
+
 function setupBosonicUpgReqData() {
 	for (var r = 1; r <= bu.maxRows; r++) for (var c = 1; c < 6; c++) {
 		var id = r * 10 + c

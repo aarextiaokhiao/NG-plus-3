@@ -21,7 +21,7 @@
 	<div id='ghostlyNewsTicker'><span id='ghostlyNewsTickerText'></span></div>
 	<div id="snow" style="display: none; "></div>
 	<div id="bg" style="display: none"></div>
-	<div id="container" class="container" style="color:#4F5957; font-family: Typewriter; text-align:center; font-size: 11px; display:none">
+	<div id="container" class="container" style="color:#4F5957; text-align:center; font-size: 11px; display:none">
 		<div id='ghostlyNewsTickerBlock'></div>
 		<div id='game' style='display:none'>
 			<div id='news'>.</div>
@@ -81,23 +81,23 @@
 				<div id="tickSpeedAmount" style="visibility: hidden">Tickspeed: 1000</div>
 			</div>
 		</div><div id="tab_header">
-			<button id="dimensionsbtn" style="font-family: Typewriter; font-size: 20px" class="tabbtn" onclick="showTab('dimensions')">Dimensions</button>
-			<button id="optionsbtn" style="font-family: Typewriter; font-size: 20px" class="tabbtn" onclick="showTab('options')">Options</button>
-			<button id="statisticsbtn" style="font-family: Typewriter; font-size: 20px" class="tabbtn" onclick="showTab('statistics')">Statistics</button>
-			<button id="achievementsbtn" style="font-family: Typewriter; font-size: 20px" class="tabbtn" onclick="showTab('achievements')">Achievements</button>
-			<button id="challengesbtn" style="font-family: Typewriter; font-size: 20px" class="tabbtn" onclick="showTab('challenges')">Challenges</button>
-			<button id="automationbtn" style="font-family: Typewriter; font-size: 20px" class="tabbtn" onclick='showTab("autobuyers")'>Automation</button>
+			<button id="dimensionsbtn" style="font-size: 20px" class="tabbtn" onclick="showTab('dimensions')">Dimensions</button>
+			<button id="optionsbtn" style="font-size: 20px" class="tabbtn" onclick="showTab('options')">Options</button>
+			<button id="statisticsbtn" style="font-size: 20px" class="tabbtn" onclick="showTab('statistics')">Statistics</button>
+			<button id="achievementsbtn" style="font-size: 20px" class="tabbtn" onclick="showTab('achievements')">Achievements</button>
+			<button id="challengesbtn" style="font-size: 20px" class="tabbtn" onclick="showTab('challenges')">Challenges</button>
+			<button id="automationbtn" style="font-size: 20px" class="tabbtn" onclick='showTab("autobuyers")'>Automation</button>
 			<span id="tab_break"><br></span>
-			<button id="tab_galSac" style="font-family: Typewriter; font-size: 20px; display: none" class="galaxybtn" onclick='showTab("galaxy")'>Galaxy</button>
-			<button id="tab_inf" style="font-family: Typewriter; font-size: 20px; display: none" class="infinitybtn" onclick="showTab('infinity')">Infinity</button>
-			<button id="tab_eter" style="font-family: Typewriter; font-size: 20px; display: none" class="eternitybtn" onclick="showTab('eternitystore')">Eternity</button>
-			<button id="tab_qu" style="font-family: Typewriter; font-size: 20px; display: none" class="quantumbtn" onclick='showTab("quantumtab")'>Quantum</button>
-			<button id="tab_ant" style="font-family: Typewriter; font-size: 20px" class="anttabbtn" onclick='showTab("replicants")'>Duplicants</button>
-			<button id="tab_fund" style="font-family: Typewriter; font-size: 20px" class="ghostifybtn" onclick='showTab("ghostify")'>Fundament</button>
-			<button id="tab_bl" style="font-family: Typewriter; font-size: 20px" class="bltabbtn" onclick='showTab("bltab")'>Bosonic Lab</button>
+			<button id="tab_galSac" style="font-size: 20px; display: none" class="galaxybtn" onclick='showTab("galaxy")'>Galaxy</button>
+			<button id="tab_inf" style="font-size: 20px; display: none" class="infinitybtn" onclick="showTab('infinity')">Infinity</button>
+			<button id="tab_eter" style="font-size: 20px; display: none" class="eternitybtn" onclick="showTab('eternitystore')">Eternity</button>
+			<button id="tab_qu" style="font-size: 20px; display: none" class="quantumbtn" onclick='showTab("quantumtab")'>Quantum</button>
+			<button id="tab_ant" style="font-size: 20px" class="anttabbtn" onclick='showTab("replicants")'>Duplicants</button>
+			<button id="tab_fund" style="font-size: 20px" class="ghostifybtn" onclick='showTab("ghostify")'>Fundament</button>
+			<button id="tab_bl" style="font-size: 20px" class="bltabbtn" onclick='showTab("bltab")'>Bosonic Lab</button>
 		</div>
 		<div style="position:absolute; left: 0; right: 0; margin-left: auto; margin-right: auto; width: 360px; top: 19px">
-			<button class="infinitybtn" id="bigcrunch" style="font-family: Typewriter; font-size: 50px; width: 360px; height: 100px;" onclick="bigCrunch()">Big Crunch</button>
+			<button class="infinitybtn" id="bigcrunch" style="font-size: 50px; width: 360px; height: 100px;" onclick="bigCrunch()">Big Crunch</button>
 		</div><div id="emptiness" class="tab" style="font-size: 150%">
 			<br><br><br>
 			<br><br><br>
@@ -123,7 +123,7 @@
 				<button id="maxall" class="storebtn" style="font-size: 12px">Max all (M)</Button>
 				<span id="chall2Pow"></span>
 				<span id="chall3Pow"></span>
-				<table id="parent" class="table" style="width: 100%"><tbody></tbody></table>
+				<table id="dimTable" class="table" style="width: 100%"><tbody></tbody></table>
 				<table style="width: 100%">
 					<tr style="font-size: 15px">
 						<td id="resetLabel">
@@ -161,393 +161,42 @@
 				</div>
 				<div id="infPowPerSec">You are getting 0 Infinity Power per second.</div>
 				<button id="maxAllID" class="storebtn" style="font-size: 12px" onclick="maxAllID()">Max all</Button>
-				<table class="table" >
-					<tr style="font-size: 16px" id="infRow1">
-						<td id="infD1" width="41%">
-							First Infinity Dimension x1
-						</td>
-						<td>
-							<div id="infAmount1">0 (0)</div>
-						</td>
-						<td>
-							<button id="infauto1" style="width:70px; font-size: 10px; float: right; visibility: hidden" onclick="switchAutoInf(1)" class="storebtn">Auto: ON</button>
-						</td>
-						<td align="right" width="10%">
-							<button id="infMax1" style="color:black; width:195px; height:30px" class="storebtn" align="right" onclick="buyManyInfinityDimension(1)">Cost: 10</button>
-						</td>
-					</tr>
-					<tr id="infRow2" style="display: none; font-size: 16px">
-						<td id="infD2">
-							Second Infinity Dimension x1
-						</td>
-						<td>
-							<div id="infAmount2" align="left">0 (0)</div>
-						</td>
-						<td>
-							<button id="infauto2" style="width:70px; font-size: 10px; float: right; visibility: hidden" onclick="switchAutoInf(2)" class="storebtn">Auto: ON</button>
-						</td>
-						<td>
-							<button id="infMax2" style="color:black; width:195px; height:30px" class="storebtn" onclick="buyManyInfinityDimension(2)">Cost: 10</button>
-						</td>
-					</tr>
-					<tr id="infRow3" style="display: none; font-size: 16px">
-						<td id="infD3">
-							Third Infinity Dimension x1
-						</td>
-						<td>
-							<div id="infAmount3" align="left">0 (0)</div>
-						</td>
-						<td>
-							<button id="infauto3" style="width:70px; font-size: 10px; float: right; visibility: hidden" onclick="switchAutoInf(3)" class="storebtn">Auto: ON</button>
-						</td>
-						<td>
-							<button id="infMax3" style="color:black; width:195px; height:30px" class="storebtn" onclick="buyManyInfinityDimension(3)">Cost: 10</button>
-						</td>
-					</tr>
-					<tr id="infRow4" style="display: none; font-size: 16px">
-						<td id="infD4">
-							Fourth Infinity Dimension x1
-						</td>
-						<td>
-							<div id="infAmount4" align="left">0 (0)</div>
-						</td>
-						<td>
-							<button id="infauto4" style="width:70px; font-size: 10px; float: right; visibility: hidden" onclick="switchAutoInf(4)" class="storebtn">Auto: ON</button>
-						</td>
-						<td>
-							<button id="infMax4" style="color:black; width:195px; height:30px" class="storebtn" onclick="buyManyInfinityDimension(4)">Cost: 10</button>
-						</td>
-					</tr>
-					<tr id="infRow5" style="display: none; font-size: 16px">
-						<td id="infD5">
-							Fourth Infinity Dimension x1
-						</td>
-						<td>
-							<div id="infAmount5" align="left">0 (0)</div>
-						</td>
-						<td>
-							<button id="infauto5" style="width:70px; font-size: 10px; float: right; visibility: hidden" onclick="switchAutoInf(5)" class="storebtn">Auto: ON</button>
-						</td>
-						<td>
-							<button id="infMax5" style="color:black; width:195px; height:30px" class="storebtn" onclick="buyManyInfinityDimension(5)">Cost: 10</button>
-						</td>
-					</tr>
-					<tr id="infRow6" style="display: none; font-size: 16px">
-						<td id="infD6">
-							Fourth Infinity Dimension x1
-						</td>
-						<td>
-							<div id="infAmount6" align="left">0 (0)</div>
-						</td>
-						<td>
-							<button id="infauto6" style="width:70px; font-size: 10px; float: right; visibility: hidden" onclick="switchAutoInf(6)" class="storebtn">Auto: ON</button>
-						</td>
-						<td>
-							<button id="infMax6" style="color:black; width:195px; height:30px" class="storebtn" onclick="buyManyInfinityDimension(6)">Cost: 10</button>
-						</td>
-					</tr>
-					<tr id="infRow7" style="display: none; font-size: 16px">
-							<td id="infD7">
-								Fourth Infinity Dimension x1
-							</td>
-							<td>
-								<div id="infAmount7" align="left">0 (0)</div>
-							</td>
-							<td>
-								<button id="infauto7" style="width:70px; font-size: 10px; float: right; visibility: hidden" onclick="switchAutoInf(7)" class="storebtn">Auto: ON</button>
-							</td>
-							<td>
-								<button id="infMax7" style="color:black; width:195px; height:30px" class="storebtn" onclick="buyManyInfinityDimension(7)">Cost: 10</button>
-							</td>
-						</tr>
-						<tr id="infRow8" style="display: none; font-size: 16px">
-								<td id="infD8">
-									Fourth Infinity Dimension x1
-								</td>
-								<td>
-									<div id="infAmount8" align="left">0 (0)</div>
-								</td>
-								<td>
-									<button id="infauto8" style="width:70px; font-size: 10px; float: right; visibility: hidden" onclick="switchAutoInf(8)" class="storebtn">Auto: ON</button>
-								</td>
-								<td>
-									<button id="infMax8" style="color:black; width:195px; height:30px" class="storebtn" onclick="buyManyInfinityDimension(8)">Cost: 10</button>
-								</td>
-							</tr>
-				</table>
+				<table id="infDimTable" class="table"></table>
 				<div id="eterc8ids" style="display: none;"></div>
 				<button id="toggleallinfdims"style="width:140px; height: 30px; font-size: 12px; visibility: hidden" onclick="toggleAllInfDims()" class="storebtn">Toggle all ON/OFF</button>
 			</div>
 			<div id="timedimensions" class="dimtab">
-					<div>
-						<p id="itmult"></p>
-						<p id="totaltickgained">You've gained 0 tickspeed upgrades.</p>
-							<p>You have <span id="timeShardAmount" style="font-size:35px; color: black">0</span> Time Shards. The next tickspeed upgrade is at <span id="tickThreshold" style="font-size:35px; color: black">0</span></p>
-						</div>
+				<div>
+					<p id="itmult"></p>
+					<p id="totaltickgained">You've gained 0 tickspeed upgrades.</p>
+					<p>You have <span id="timeShardAmount" style="font-size:35px; color: black">0</span> Time Shards. The next tickspeed upgrade is at <span id="tickThreshold" style="font-size:35px; color: black">0</span></p>
+				</div>
 
-						<div id="timeShardsPerSec">You are getting 0 Time Shards per second.</div>
-						<button id="maxTimeDimensions" class="storebtn" style="font-size: 12px" onclick="buyMaxTimeDimensions()">Max all</Button>
-						<table class="table" >
-							<tr style="font-size: 17px" id="timeRow1">
-								<td id="timeD1" width="43%">
-									First Time Dimension x1
-								</td>
-								<td>
-									<div id="timeAmount1">0 (0)</div>
-								</td>
-								<td>
-									<button id="td1auto" style="width:70px; font-size: 10px; float: right; visibility: hidden" onclick="toggleAutoEter('td1')" class="storebtn">Auto: ON</button>
-								</td>
-								<td align="right" width="10%">
-									<button id="timeMax1" style="color:black; width:195px; height:30px" class="storebtn" align="right" onclick="buyTimeDimension(1)">Cost: 10</button>
-								</td>
-							</tr>
-							<tr id="timeRow2" style="font-size: 17px">
-								<td id="timeD2">
-									Second Time Dimension x1
-								</td>
-								<td>
-									<div id="timeAmount2" align="left">0 (0)</div>
-								</td>
-								<td>
-									<button id="td2auto" style="width:70px; font-size: 10px; float: right; visibility: hidden" onclick="toggleAutoEter('td2')" class="storebtn">Auto: ON</button>
-								</td>
-								<td>
-									<button id="timeMax2" style="color:black; width:195px; height:30px" class="storebtn" onclick="buyTimeDimension(2)">Cost: 10</button>
-								</td>
-							</tr>
-							<tr id="timeRow3" style="font-size: 17px">
-								<td id="timeD3">
-									Third Time Dimension x1
-								</td>
-								<td>
-									<div id="timeAmount3" align="left">0 (0)</div>
-								</td>
-								<td>
-									<button id="td3auto" style="width:70px; font-size: 10px; float: right; visibility: hidden" onclick="toggleAutoEter('td3')" class="storebtn">Auto: ON</button>
-								</td>
-								<td>
-									<button id="timeMax3" style="color:black; width:195px; height:30px" class="storebtn" onclick="buyTimeDimension(3)">Cost: 10</button>
-								</td>
-							</tr>
-							<tr id="timeRow4" style="font-size: 17px">
-								<td id="timeD4">
-									Fourth Time Dimension x1
-								</td>
-								<td>
-									<div id="timeAmount4" align="left">0 (0)</div>
-								</td>
-								<td>
-									<button id="td4auto" style="width:70px; font-size: 10px; float: right; visibility: hidden" onclick="toggleAutoEter('td4')" class="storebtn">Auto: ON</button>
-								</td>
-								<td>
-									<button id="timeMax4" style="color:black; width:195px; height:30px" class="storebtn" onclick="buyTimeDimension(4)">Cost: 10</button>
-								</td>
-							</tr>
-							<tr id="timeRow5" style="font-size: 17px">
-								<td id="timeD5">
-									Fifth Time Dimension x1
-								</td>
-								<td>
-									<div id="timeAmount5" align="left">0 (0)</div>
-								</td>
-								<td>
-									<button id="td5auto" style="width:70px; font-size: 10px; float: right; visibility: hidden" onclick="toggleAutoEter('td5')" class="storebtn">Auto: ON</button>
-								</td>
-								<td>
-									<button id="timeMax5" style="color:black; width:195px; height:30px" class="storebtn" onclick="buyTimeDimension(5)">Cost: 10</button>
-								</td>
-							</tr>
-							<tr id="timeRow6" style="font-size: 17px">
-								<td id="timeD6">
-									Sixth Time Dimension x1
-								</td>
-								<td>
-									<div id="timeAmount6" align="left">0 (0)</div>
-								</td>
-								<td>
-									<button id="td6auto" style="width:70px; font-size: 10px; float: right; visibility: hidden" onclick="toggleAutoEter('td6')" class="storebtn">Auto: ON</button>
-								</td>
-								<td>
-									<button id="timeMax6" style="color:black; width:195px; height:30px" class="storebtn" onclick="buyTimeDimension(6)">Cost: 10</button>
-								</td>
-							</tr>
-							<tr id="timeRow7" style="font-size: 17px">
-								<td id="timeD7">
-									Seventh Time Dimension x1
-								</td>
-								<td>
-									<div id="timeAmount7" align="left">0 (0)</div>
-								</td>
-								<td>
-									<button id="td7auto" style="width:70px; font-size: 10px; float: right; visibility: hidden" onclick="toggleAutoEter('td7')" class="storebtn">Auto: ON</button>
-								</td>
-								<td>
-									<button id="timeMax7" style="color:black; width:195px; height:30px" class="storebtn" onclick="buyTimeDimension(7)">Cost: 10</button>
-								</td>
-							</tr>
-							<tr id="timeRow8" style="font-size: 17px">
-								<td id="timeD8">
-									Eighth Time Dimension x1
-								</td>
-								<td>
-									<div id="timeAmount8" align="left">0 (0)</div>
-								</td>
-								<td>
-									<button id="td8auto" style="width:70px; font-size: 10px; float: right; visibility: hidden" onclick="toggleAutoEter('td8')" class="storebtn">Auto: ON</button>
-								</td>
-								<td>
-									<button id="timeMax8" style="color:black; width:195px; height:30px" class="storebtn" onclick="buyTimeDimension(8)">Cost: 10</button>
-								</td>
-							</tr>
-							<tr id="tdReset" style="font-size: 17px">
-								<td id="tdResetLabel" colspan=3></td>
-								<td><button id="tdResetBtn" style="color:black; width: 195px; height: 25px; font-size: 9px" class="storebtn" onclick="tdBoost(1)"></button></td>
-							</tr>
-						</table>
-						<button id="togglealltimedims"style="width:140px; height: 30px; font-size: 12px; visibility: hidden" onclick="toggleAllTimeDims()" class="storebtn">Toggle all ON/OFF</button>
-			</div>
-			<div id="pdims" class="dimtab">
-				<div>You have <span id="pPow" style="font-size:35px; color: #ff00ff">0</span> Paradox Power, translated to <span id="pPowEffect" style="font-size:35px; color: #ff00ff">0</span> extra seconds (used when matter exceeds your antimatter).</div>
-				<div id="pPowProduction">You are getting 0 Paradox Power per second.</div>
-				<button class="storebtn" style="font-size: 12px" onclick="maxPDs()">Max all</Button>
-				<table id="pdTable" class="table"></table>
+				<div id="timeShardsPerSec">You are getting 0 Time Shards per second.</div>
+				<button id="maxTimeDimensions" class="storebtn" style="font-size: 12px" onclick="buyMaxTimeDimensions()">Max all</Button>
+				<table id="timeDimTable" class="table"></table>
+				<button id="togglealltimedims" style="width:140px; height: 30px; font-size: 12px; visibility: hidden" onclick="toggleAllTimeDims()" class="storebtn">Toggle all ON/OFF</button>
 			</div>
 			<div id="metadimensions" class="dimtab">
-				  <div>
-					  <p>You have <span id="metaAntimatterAmount" style="font-size:35px; color: black">0</span> meta-antimatter.<p>
-					  <p><span id="bestAntimatterType"></span> was <span id="metaAntimatterBest" style="font-size:35px; color: black">0</span>. <span id="bestAntimatterTranslation"></span>ranslated to <span id="metaAntimatterEffect" style="font-size:35px; color: black">0</span>x <span id="metaAntimatterEffectType"></span>.</p>
-					  <p id="bestAntimatterQuantum"></p>
-					  <p id="bestMAOverGhostifies"></p>
-				  </div>
-				  <div id="metaAntimatterPerSec">You are getting 0 meta-antimatter per second.</div>
-				  <div id="metaMaxAllDiv">
-					  <br/>
-					  <button id="metaMaxAll" class="storebtn" style="font-size: 12px">Max all (M)</button>
-				  </div>
-				  <table>
-					<tbody>
-					  <tr id="1MetaRow" style="display: none; font-size: 15px">
-						  <td id="1MetaD" class="rel">
-							  First Meta Dimension
-						  </td>
-						  <td>
-							  <div id="meta1Amount" align="left">0 (0)</div>
-						  </td>
-						  <td align="right" width="10%">
-							  <button id="meta1" style="color:black; height: 25px; font-size: 10px; width: 135px" class="storebtn">Cost: 1000000</button>
-						  </td>
-						  <td align="right" width="10%">
-							  <button id="metaMax1" style="color:black; width:210px; height: 25px; font-size: 10px" class="storebtn">Cost: 10</button>
-						  </td>
-					  </tr>
-					  <tr id="2MetaRow" style="display: none; font-size: 15px">
-						  <td id="2MetaD" class="rel">
-							  Second Meta Dimension
-						  </td>
-						  <td>
-							  <div id="meta2Amount" align="left">0 (0)</div>
-						  </td>
-						  <td align="right" width="10%">
-							  <button id="meta2" style="color:black; height: 25px; font-size: 10px; width: 135px" class="storebtn">Cost: 1000000</button>
-						  </td>
-						  <td align="right" width="10%">
-							  <button id="metaMax2" style="color:black; width:210px; height: 25px; font-size: 10px" class="storebtn">Cost: 10</button>
-						  </td>
-					  </tr>
-					  <tr id="3MetaRow" style="display: none; font-size: 15px">
-						  <td id="3MetaD" class="rel">
-							  Third Meta Dimension
-						  </td>
-						  <td>
-							  <div id="meta3Amount" align="left">0 (0)</div>
-						  </td>
-						  <td align="right" width="10%">
-							  <button id="meta3" style="color:black; height: 25px; font-size: 10px; width: 135px" class="storebtn">Cost: 1000000</button>
-						  </td>
-						  <td align="right" width="10%">
-							  <button id="metaMax3" style="color:black; width:210px; height: 25px; font-size: 10px" class="storebtn">Cost: 10</button>
-						  </td>
-					  </tr>
-					  <tr id="4MetaRow" style="display: none; font-size: 15px">
-						  <td id="4MetaD" class="rel">
-							  Fourth Meta Dimension
-						  </td>
-						  <td>
-							  <div id="meta4Amount" align="left">0 (0)</div>
-						  </td>
-						  <td align="right" width="10%">
-							  <button id="meta4" style="color:black; height: 25px; font-size: 10px; width: 135px" class="storebtn">Cost: 1000000</button>
-						  </td>
-						  <td align="right" width="10%">
-							  <button id="metaMax4" style="color:black; width:210px; height: 25px; font-size: 10px" class="storebtn">Cost: 10</button>
-						  </td>
-					  </tr>
-					  <tr id="5MetaRow" style="display: none; font-size: 15px">
-						  <td id="5MetaD" class="rel">
-							  Fifth Meta Dimension
-						  </td>
-						  <td>
-							  <div id="meta5Amount" align="left">0 (0)</div>
-						  </td>
-						  <td align="right" width="10%">
-							  <button id="meta5" style="color:black; height: 25px; font-size: 10px; width: 135px" class="storebtn">Cost: 1000000</button>
-						  </td>
-						  <td align="right" width="10%">
-							  <button id="metaMax5" style="color:black; width:210px; height: 25px; font-size: 10px" class="storebtn">Cost: 10</button>
-						  </td>
-					  </tr>
-					  <tr id="6MetaRow" style="display: none; font-size: 15px">
-						  <td id="6MetaD" class="rel">
-							  Sixth Meta Dimension
-						  </td>
-						  <td>
-							  <div id="meta6Amount" align="left">0 (0)</div>
-						  </td>
-						  <td align="right" width="10%">
-							  <button id="meta6" style="color:black; height: 25px; font-size: 10px; width: 135px" class="storebtn">Cost: 1000000</button>
-						  </td>
-						  <td align="right" width="10%">
-							  <button id="metaMax6" style="color:black; width:210px; height: 25px; font-size: 10px" class="storebtn">Cost: 10</button>
-						  </td>
-					  </tr>
-					  <tr id="7MetaRow" style="display: none; font-size: 15px">
-						  <td id="7MetaD" class="rel">
-							  Seventh Meta Dimension
-						  </td>
-						  <td>
-							  <div id="meta7Amount" align="left">0 (0)</div>
-						  </td>
-						  <td align="right" width="10%">
-							  <button id="meta7" style="color:black; height: 25px; font-size: 10px; width: 135px" class="storebtn">Cost: 1000000</button>
-						  </td>
-						  <td align="right" width="10%">
-							  <button id="metaMax7" style="color:black; width:210px; height: 25px; font-size: 10px" class="storebtn">Cost: 10</button>
-						  </td>
-					  </tr>
-					  <tr id="8MetaRow" style="display: none; font-size: 15px">
-						  <td id="8MetaD" class="rel">
-							  Eighth Meta Dimension
-						  </td>
-						  <td>
-							  <div id="meta8Amount" align="left">0 (0)</div>
-						  </td>
-						  <td align="right" width="10%">
-							  <button id="meta8" style="color:black; height: 25px; font-size: 10px; width: 135px" class="storebtn">Cost: 1000000</button>
-						  </td>
-						  <td align="right" width="10%">
-							  <button id="metaMax8" style="color:black; width:210px; height: 25px; font-size: 10px" class="storebtn">Cost: 10</button>
-						  </td>
-					  </tr>
-					</tbody>
-				</table>
+				<div>
+					<p>You have <span id="metaAntimatterAmount" style="font-size:35px; color: black">0</span> meta-antimatter.<p>
+					<p><span id="bestAntimatterType"></span> was <span id="metaAntimatterBest" style="font-size:35px; color: black">0</span>. <span id="bestAntimatterTranslation"></span>ranslated to <span id="metaAntimatterEffect" style="font-size:35px; color: black">0</span>x <span id="metaAntimatterEffectType"></span>.</p>
+					<p id="bestAntimatterQuantum"></p>
+					<p id="bestMAOverGhostifies"></p>
+				</div>
+				<div id="metaAntimatterPerSec">You are getting 0 meta-antimatter per second.</div>
+				<div id="metaMaxAllDiv">
+					<br/>
+					<button id="metaMaxAll" class="storebtn" style="font-size: 12px">Max all (M)</button>
+				</div>
+				<table id="metaDimTable"></table>
 				<table style="width: 100%">
 					<tr style="font-size: 15px">
 					  <td id="metaResetLabel">
 						  Meta-Dimension Shift: requires 20 Fourth Meta Dimensions
 					  </td>
 					  <td>
-						  <button id="metaSoftReset" style="color:black; width: 200px; height: 25px; font-size: 9px" class="storebtn">Reset the game for a new Dimension</button>
+						  <button id="metaSoftReset" style="color:black; width: 200px; height: 25px; font-size: 9px" class="storebtn" onclick="metaBoost()">Reset the game for a new Dimension</button>
 					  </td>
 				  </tr>
 				  <tr id="quantumbuttondiv" style="font-size: 15px">
@@ -650,13 +299,13 @@
 				<br><br>
 
 				<b>(Update v2.31: Ghostify Respecced)</b><br>
-				<b class="red">(Beta: 1/20/23 Build)</b>
+				<b class="red">(Beta: 1/24/23 Build)</b>
 				<br><br>
 
 				NG++ is by dan-simon and NG+4 is by Soul147.
 			</p>
 		</div>
-		<div id="statistics" class="tab" align="center" style="color: black; font-size: 12px; font-family: Typewriter; margin: 0 auto">
+		<div id="statistics" class="tab" align="center" style="color: black; font-size: 12px; margin: 0 auto">
 			<div id='statstabs'>
 				<br>
 				<button class="secondarytabbtn" onclick="showStatsTab('stats')">General</button>
@@ -1036,471 +685,471 @@
 						</td>
 					</tr>
 					<tr id="achRow7">
-							<td>
-								<div id="ERROR 909: Dimension not found" class="achievement achievementlocked" style="background-image: url(images/41.png)"><br></div>
-							</td>
-							<td>
-								<div id="Can't hold all these infinities" class="achievement achievementlocked" style="background-image: url(images/42.png)"><br></div>
-							</td>
-							<td>
-								<div id="This achievement doesn't exist" class="achievement achievementlocked" style="background-image: url(images/43.png)" ach-tooltip="Get 9.9999e9999 antimatter. Reward: Dimensions are more powerful the more unspent antimatter you have."><br></div>
-							</td>
-							<td>
-								<div id="End me" class="achievement achievementlocked" style="background-image: url(images/44.png)" ach-tooltip="Get the sum of all Normal Challenge times under 5 seconds. Reward: All Normal Dimensions are 40% stronger in challenges."><br></div>
-							</td>
-							<td>
-								<div id="NEW DIMENSIONS???" class="achievement achievementlocked" style="background-image: url(images/45.png)"><br></div>
-							</td>
-							<td id="r76">
-								<div id="One for each dimension" class="achievement achievementlocked" style="background-image: url(images/21.png)" ach-tooltip="Play for 8 days. Reward: Gain an extremely small time multiplier to your Normal Dimensions."><br></div>
-							</td>
-							<td>
-								<div id="How the antitables have turned" class="achievement achievementlocked" style="background-image: url(images/47.png)"><br></div>
-							</td>
-							<td>
-								<div id="Blink of an eye" class="achievement achievementlocked" style="background-image: url(images/48.gif)" ach-tooltip="Get to Infinity in under 200 milliseconds. Reward: Start with 1e25 antimatter and all dimensions are stronger in first 300ms of infinity."><br></div>
-							</td>
-						</tr>
-						<tr id="achRow8">
-							<td>
-								<div id="Hevipelle did nothing wrong" class="achievement achievementlocked" style="background-image: url(images/49.png)" ach-tooltip="Beat Infinity Challenge 5 in 10 seconds or less."><br></div>
-							</td>
-							<td>
-								<div id="Anti-antichallenged" class="achievement achievementlocked" style="background-image: url(images/50.png)" ach-tooltip="Complete 8 Infinity Challenges."><br></div>
-							</td>
-							<td>
-								<div id="YOU CAN GET 50 GALAXIES!??" class="achievement achievementlocked" style="background-image: url(images/51.png)" ach-tooltip="Get 50 galaxies. Reward: Tickspeed is 5% lower per galaxy."><br></div>
-							</td>
-							<td>
-								<div id="I got a few to spare" class="achievement achievementlocked" style="background-image: url(images/52.png)" ach-tooltip="Reach 1e35000 antimatter. Reward: Dimensions are more powerful the more unspent antimatter you have."><br></div>
-							</td>
-							<td>
-								<div id="All your IP are belong to us" class="achievement achievementlocked" style="background-image: url(images/53.png)" ach-tooltip="Big Crunch for 1e150 IP. Reward: Gain an additional 4x multiplier to IP."><br></div>
-							</td>
-							<td>
-								<div id="Do you even bend time bro?" class="achievement achievementlocked" style="background-image: url(images/54.png)" ach-tooltip="Reach -99.9% tickspeed per upgrade. Reward: Galaxies are 1% more powerful."><br></div>
-							</td>
-							<td>
-								<div id="2 Million Infinities" class="achievement achievementlocked" style="background-image: url(images/55.png)" ach-tooltip="Infinity 2000000 times. Reward: Infinities more than 5 seconds long give 250 infinitied stat."><br></div>
-							</td>
-							<td>
-								<div id="Yet another infinity reference" class="achievement achievementlocked" style="background-image: url(images/56.png)" ach-tooltip="Get xInfinity multiplier in a single sacrifice. Reward: Sacrifices are stronger."><br></div>
-							</td>
-						</tr>
-						<tr id="achRow9">
-							<td>
-								<div id="Ludicrous Speed" class="achievement achievementlocked" style="background-image: url(images/57.png)" ach-tooltip="Big Crunch for 1e200 IP in 2 seconds or less. Reward: All Normal Dimensions are significantly stronger in the first 5 seconds of an Infinity."><br></div>
-							</td>
-							<td>
-								<div id="I brake for nobody" class="achievement achievementlocked" style="background-image: url(images/58.png)" ach-tooltip="Big Crunch for 1e250 IP in 20 seconds or less. Reward: All Normal Dimensions are significantly stronger in the first 60 seconds of an Infinity."><br></div>
-							</td>
-							<td>
-								<div id="MAXIMUM OVERDRIVE" class="achievement achievementlocked" style="background-image: url(images/59.png)" ach-tooltip="Reach 1e300 IP/min. Reward: Gain an additional 4x multiplier to IP."><br></div>
-							</td>
-							<td>
-								<div id="Minute of infinity" class="achievement achievementlocked" style="background-image: url(images/60.png)" ach-tooltip="Reach 1e260 infinity power. Reward: Double infinity power gain."><br></div>
-							</td>
-							<td>
-								<div id="Is this safe?" class="achievement achievementlocked" style="background-image: url(images/61.png)" ach-tooltip="Gain Infinite replicanti in 30 minutes. Reward: Infinity doesn't reset your replicanti amount."><br></div>
-							</td>
-							<td>
-								<div id="Time is relative" class="achievement achievementlocked" style="background-image: url(images/62.png)" ach-tooltip="Go Eternal."><br></div>
-							</td>
-							<td>
-								<div id="Yes. This is hell." class="achievement achievementlocked" style="background-image: url(images/63.png)" ach-tooltip="Get the sum of Infinity Challenge times under 6.66 seconds."><br></div>
-							</td>
-							<td>
-								<div id="0 degrees from infinity" class="achievement achievementlocked" style="background-image: url(images/64.png)"><br></div>
-							</td>
-						</tr>
-						<tr id="achRow10">
-							<td>
-								<div id="Costco sells dimboosts now" class="achievement achievementlocked" style="background-image: url(images/65.png)"><br></div>
-							</td>
-							<td>
-								<div id="This mile took an Eternity" class="achievement achievementlocked" style="background-image: url(images/66.png)"><br></div>
-							</td>
-							<td>
-								<div id="This achievement doesn't exist II" class="achievement achievementlocked" style="background-image: url(images/67.png)" ach-tooltip="Reach 9.99999e999 IP. Reward: Gain more IP based on the amount of antimatter you had upon a Big Crunch."><br></div>
-							</td>
-							<td>
-								<div id="That wasn't an eternity" class="achievement achievementlocked" style="background-image: url(images/68.png)" ach-tooltip="Eternity in under 30 seconds. Reward: Start Eternities with 2e25 IP."><br></div>
-							</td>
-							<td>
-								<div id="Infinite time" class="achievement achievementlocked" style="background-image: url(images/69.png)" ach-tooltip="Get 308 tickspeed upgrades (in one eternity) from Time Dimensions. Reward: Tickspeed effects on Time Dimension multipliers are slightly increased."><br></div>
-							</td>
-							<td>
-								<div id="The swarm" class="achievement achievementlocked" style="background-image: url(images/70.png)" ach-tooltip="Get 10 replicanti galaxies in 15 seconds."><br></div>
-							</td>
-							<td>
-								<div id="Do you really need a guide for this?" class="achievement achievementlocked" style="background-image: url(images/71.png)" ach-tooltip="Eternity with less than 10 infinities."><br></div>
-							</td>
-							<td>
-								<div id="We could afford 9" class="achievement achievementlocked" style="background-image: url(images/72.png)" ach-tooltip="Eternity with exactly 9 replicanti."><br></div>
-							</td>
-						</tr>
-						<tr id="achRow11">
-							<td>
-								<div id="Yo dawg, I heard you liked infinities..." class="achievement achievementlocked" style="background-image: url(images/73.png)" ach-tooltip="Have all your past 10 infinities be at least 1.79e308 times higher IP than the previous one. Reward: Your antimatter doesn't reset on dimboost/galaxy"><br></div>
-							</td>
-							<td>
-								<div id="Never again" class="achievement achievementlocked" style="background-image: url(images/74.png)" ach-tooltip="Max out your third Eternity upgrade. Reward: The limit of Eternity Upgrade 3 is slightly increased."><br></div>
-							</td>
-							<td>
-								<div id="Long lasting relationship" class="achievement achievementlocked" style="background-image: url(images/75.png)" ach-tooltip="Have your Infinity Power per second exceed your Infinity Power amount for 60 consecutive seconds during a single infinity."><br></div>
-							</td>
-							<td>
-								<div id="You're a mistake" class="achievement achievementlocked" style="background-image: url(images/76.png)" ach-tooltip="Fail an Eternity challenge. Reward: A fading sense of accomplishment."><br></div>
-							</td>
-							<td>
-								<div id="I wish I had gotten 7 eternities" class="achievement achievementlocked" style="background-image: url(images/77.png)" ach-tooltip="Start an Infinity Challenge inside an Eternity Challenge."><br></div>
-							</td>
-							<td>
-								<div id="Do I really need to infinity" class="achievement achievementlocked" style="background-image: url(images/78.png)" ach-tooltip="Eternity with only 1 Infinity. Reward: Gain a multiplier to IP based on your Infinities."><br></div>
-							</td>
-							<td>
-								<div id="8 nobody got time for that" class="achievement achievementlocked" style="background-image: url(images/79.png)" ach-tooltip="Eternity while only buying 8th Normal Dimensions."><br></div>
-							</td>
-							<td>
-								<div id="IT'S OVER 9000" class="achievement achievementlocked" style="background-image: url(images/80.png)" ach-tooltip="Get a total sacrifice multiplier of 1e9000. Reward: Sacrifice doesn't reset your dimensions."><br></div>
-							</td>
-						</tr>
-						<tr id="achRow12">
-							<td>
-								<div id="Can you get infinite IP?" class="achievement achievementlocked" style="background-image: url(images/81.png)" ach-tooltip="Reach 1e30008 IP."><br></div>
-							</td>
-							<td>
-								<div id="You're already dead." class="achievement achievementlocked" style="background-image: url(images/82.png)" ach-tooltip="Eternity while only buying 1st Normal Dimensions."><br></div>
-							</td>
-							<td>
-								<div id="5 more eternities until the update" class="achievement achievementlocked" style="background-image: url(images/83.png)"><br></div>
-							</td>
-							<td>
-								<div id="Eternities are the new infinity" class="achievement achievementlocked" style="background-image: url(images/84.png)"><br></div>
-							</td>
-							<td>
-								<div id="Like feasting on a behind" class="achievement achievementlocked" style="background-image: url(images/85.png)" ach-tooltip="Get 1e100 IP without any Infinities, Dimensions, or resets (not including upgrades). Reward: Gain a multiplier to IP based on time spent in this Infinity."><br></div>
-							</td>
-							<td>
-								<div id="Popular music" class="achievement achievementlocked" style="background-image: url(images/86.png)" ach-tooltip="Have 180 times more non-bonus replicanti galaxies than normal galaxies. Reward: Replicanti galaxies divide your replicanti by 1.79e308 instead of resetting them to 1."><br></div>
-							</td>
-							<td>
-								<div id="But I wanted another prestige layer..." class="achievement achievementlocked" style="background-image: url(images/87.png)" ach-tooltip="Reach 1e308 EP."><br></div>
-							</td>
-							<td>
-								<div id="What do I have to do to get rid of you" class="achievement achievementlocked" style="background-image: url(images/88.png)" ach-tooltip="Reach 1e22000 IP without any time studies. Reward: Time dimensions are multiplied by the number of studies you have."><br></div>
-							</td>
-						</tr>
-						<tr id="achRow13">
-							<td>
-								<div id="No ethical consumption" class="achievement achievementlocked" style="background-image: url(images/89.png)" ach-tooltip="Get 5 billion banked infinities. Reward: You permanently bank 5% of your Infinities when you Eternity."><br></div>
-							</td>
-							<td>
-								<div id="Unique snowflakes" class="achievement achievementlocked" style="background-image: url(images/90.png)"><br></div>
-							</td>
-							<td>
-								<div id="I never liked this infinity stuff anyway" class="achievement achievementlocked" style="background-image: url(images/91.png)" ach-tooltip="Reach 1e140,000 IP without buying IDs or IP multipliers."><br></div>
-							</td>
-							<td>
-								<div id="When will it be enough?" class="achievement achievementlocked" style="background-image: url(images/92.png)" ach-tooltip="Reach 1e20,000 replicanti. Reward: You gain replicanti 2 times faster while you have under 1.79e308 replicanti."><br></div>
-							</td>
-							<td>
-								<div id="Faster than a potato^286078" class="achievement achievementlocked" style="background-image: url(images/93.png)" ach-tooltip="Get more than 1e8,296,262 ticks per second."><br></div>
-							</td>
-							<td>
-								<div id="I told you already, time is relative" class="achievement achievementlocked" style="background-image: url(images/94.png)" ach-tooltip="Dilate time."><br></div>
-							</td>
-							<td>
-								<div id="Now you're thinking with dilation!" class="achievement achievementlocked" style="background-image: url(images/95.png)" ach-tooltip="Eternity for 1e600 EP in 1 minute or less while dilated."><br></div>
-							</td>
-							<td>
-								<div id="This is what I have to do to get rid of you." class="achievement achievementlocked" style="background-image: url(images/96.png)" ach-tooltip="Reach 1e20000 IP without any time studies while dilated."><br></div>
-							</td>
-						</tr>
-						<tr id="achRowngud1">
-							<td>
-								<div id="A newer beginning." class="achievement achievementlocked" style="background-image: url(images/121.png)" ach-tooltip="Begin generation of black hole power."><br></div>
-							</td>
-							<td>
-								<div id="1 million is still a lot" class="achievement achievementlocked" style="background-image: url(images/122.png)"><br></div>
-							</td>
-							<td>
-								<div id="Time is absolute" class="achievement achievementlocked" style="background-image: url(images/123.png)" ach-tooltip="Reverse dilation."><br></div>
-							</td>
-							<td>
-								<div id="Finally I'm out of that channel" class="achievement achievementlocked" style="background-image: url(images/124.png)"><br></div>
-							</td>
-							<td id="uhDivNGud">
-								<div id="Universal harmony" class="achievement achievementlocked" style="background-image: url(images/104.png)"><br></div>
-							</td>
-							<td>
-								<div id="We couldn't afford 5" class="achievement achievementlocked" style="background-image: url(images/125.png)" ach-tooltip="Buy the fourth Blackhole Dimension."><br></div>
-							</td>
-							<td id="feDivNGud">
-								<div id="In the grim darkness of the far endgame" class="achievement achievementlocked" style="background-image: url(images/99.png)"><br></div>
-							</td>
-							<td>
-								<div id="I already got rid of you." class="achievement achievementlocked" style="background-image: url(images/126.png)"><br></div>
-							</td>
-						</tr>
-						<tr id="achRowngpp1">
-							<td>
-								<div id="I'm so meta" class="achievement achievementlocked" style="background-image: url(images/97.png)" ach-tooltip="Unlock Meta Dimensions."><br></div>
-							</td>
-							<td>
-								<div id="And still no ninth dimension..." class="achievement achievementlocked" style="background-image: url(images/98.png)" ach-tooltip="Buy a Eighth Meta Dimension. Reward: All meta-dimensions are 10% stronger, and you start with 100 meta-antimatter on reset."><br></div>
-							</td>
-							<td id="feDivNGpp">
-							</td>
-							<td>
-								<div id="Meta-boosting to the max" class="achievement achievementlocked" style="background-image: url(images/100.png)" ach-tooltip="Get 10 Meta-Dimension Boosts. Reward: Meta-dimension boosts are 1% stronger."><br></div>
-							</td>
-							<td>
-								<div id="The cap is a million, not a trillion" class="achievement achievementlocked" style="background-image: url(images/101.png)" ach-tooltip="Get 1e12 eternities. Reward: Eternity Upgrade 2 uses a better formula."><br></div>
-							</td>
-							<td>
-								<div id="It will never be enough" class="achievement achievementlocked" style="background-image: url(images/102.png)" ach-tooltip="Reach 1e100,000 replicanti. Reward: You can buy maximum replicanti galaxies."><br></div>
-							</td>
-							<td>
-								<div id="GAS GAS GAS" class="achievement achievementlocked" style="background-image: url(images/103.png)" ach-tooltip="Get 1,000,000 tickspeed upgrades from Time Dimensions. Reward: Unlock autobuyers for Time Dimensions and 5x EP upgrades."><br></div>
-							</td>
-							<td id="uhDivNGpp">
-							</td>
-						</tr>
-						<tr id="achRowng3p1">
-							<td>
-								<div id="I don't have enough fuel!" class="achievement achievementlocked" style="background-image: url(images/105.png)"><br></div>
-							</td>
-							<td>
-								<div id="Sub-atomic" class="achievement achievementlocked" style="background-image: url(images/106.png)" ach-tooltip="Go quantum. Reward: You gain 20x more Eternities up to 100,000 Eternities, start with Eternities based on your fastest Quantum (up to 10,000), and unlock the 'Don't respec studies and auto-reunlock ECs' option in the Eternity Challenges menu."><br></div>
-							</td>
-							<td>
-								<div id="Hadronization" class="achievement achievementlocked" style="background-image: url(images/107.png)" ach-tooltip="Have colored quarks, but have no color charge."><br></div>
-							</td>
-							<td>
-								<div id="Work harder." class="achievement achievementlocked" style="background-image: url(images/108.png)" ach-tooltip="Unlock Time Dilation without buying Eternity Upgrades."><br></div>
-							</td>
-							<td>
-								<div id="No more tax fraud!" class="achievement achievementlocked" style="background-image: url(images/109.png)" ach-tooltip="Have 900 galaxies without unlocking Time Dilation. Reward: You permanently keep your banked Infinities, and bank 5% of your Eternities on Quantum."><br></div>
-							</td>
-							<td>
-								<div id="And the winner is..." class="achievement achievementlocked" style="background-image: url(images/110.png)"><br></div>
-							</td>
-							<td>
-								<div id="Old age" class="achievement achievementlocked" style="background-image: url(images/111.png)"><br></div>
-							</td>
-							<td>
-								<div id="I already got rid of you..." class="achievement achievementlocked" style="background-image: url(images/112.png)"><br></div>
-							</td>
-						</tr>
-						<tr id="achRowng3p2">
-							<td>
-								<div id="Special Relativity" class="achievement achievementlocked" style="background-image: url(images/113.png)"><br></div>
-							</td>
-							<td>
-								<div id="We are not going squared." class="achievement achievementlocked" style="background-image: url(images/114.png)"><br></div>
-							</td>
-							<td>
-								<div id="This achievement doesn't exist 3" class="achievement achievementlocked" style="background-image: url(images/115.png)" ach-tooltip="Reach 9e99,999,999 EP. Reward: Gain more EP based on the amount of IP you had on Eternity."><br></div>
-							</td>
-							<td>
-								<div id="Old memories come true" class="achievement achievementlocked" style="background-image: url(images/placeholder.png)">Old memories come true</div>
-							</td>
-							<td>
-								<div id="Twice in a row" class="achievement achievementlocked" style="background-image: url(images/117.png)" ach-tooltip="Complete Paired Challenge 4. Reward: Unlock the '# of dilated' mode for the Quantum autobuyer."><br></div>
-							</td>
-							<td>
-								<div id="Infinity Morals" class="achievement achievementlocked" style="background-image: url(images/118.png)"><br></div>
-							</td>
-							<td>
-								<div id="Intergalactic" class="achievement achievementlocked" style="background-image: url(images/119.png)" ach-tooltip="Reach 4,000,000 Eighth Dimensions without any replicated or Tachyonic Galaxies. Reward: Eighth Dimensions are stronger based on your normal galaxies."><br></div>
-							</td>
-							<td>
-								<div id="Seriously, I already got rid of you." class="achievement achievementlocked" style="background-image: url(images/120.png)"><br></div>
-							</td>
-						</tr>
-						<tr id="achRowng3p3">
-							<td>
-								<div id="ERROR 500: INTERNAL DIMENSION ERROR" class="achievement achievementlocked" style="background-image: url(images/127.png)"></div>
-							</td>
-							<td>
-								<div id="The truth of anti-challenged" class="achievement achievementlocked" style="background-image: url(images/placeholder.png)">The truth of anti-challenged</div>
-							</td>
-							<td>
-								<div id="Never make paradoxes!" class="achievement achievementlocked" style="background-image: url(images/129.png)"></div>
-							</td>
-							<td>
-								<div id="The Challenging Day" class="achievement achievementlocked" style="background-image: url(images/130.png)" ach-tooltip="Complete 24 unique paired challenge combinations. Reward: Matter can bypass antimatter in QC6."></div>
-							</td>
-							<td>
-								<div id="An ant office?" class="achievement achievementlocked" style="background-image: url(images/131.png)" ach-tooltip="Promote a worker into the second Emperor Dimension. Reward: Duplicants feed babies 10x faster."></div>
-							</td>
-							<td>
-								<div id="I can’t get my multipliers higher!" class="achievement achievementlocked" style="background-image: url(images/132.png)"><br></div>
-							</td>
-							<td>
-								<div id="No dilation means no production." class="achievement achievementlocked" style="background-image: url(images/placeholder.png)">No dilation means no production.</div>
-							</td>
-							<td>
-								<div id="I don't want you to live anymore." class="achievement achievementlocked" style="background-image: url(images/134.png)"></div>
-							</td>
-						</tr>
-						<tr id="achRowng3p4">
-							<td>
-								<div id="Time is not relative" class="achievement achievementlocked" style="background-image: url(images/135.png)"></div>
-							</td>
-							<td>
-								<div id="ERROR 404: DIMENSIONS NOT FOUND" class="achievement achievementlocked" style="background-image: url(images/136.png)"></div>
-							</td>
-							<td>
-								<div id="Impossible expectations" class="achievement achievementlocked" style="background-image: url(images/137.png)"></div>
-							</td>
-							<td>
-								<div id="Studies are wasted" class="achievement achievementlocked" style="background-image: url(images/138.png)"></div>
-							</td>
-							<td>
-								<div id="Do protons decay?" class="achievement achievementlocked" style="background-image: url(images/139.png)" ach-tooltip="Unlock Quark Decay. Reward: You keep the two thirds power of your pilons upon quantum when outside of a Quantum Challenge."></div>
-							</td>
-							<td>
-								<div id="Hardly marked" class="achievement achievementlocked" style="background-image: url(images/140.png)" ach-tooltip="Complete a PC with the QC3 & 8 combination. Reward: You keep the cube root of your normal duplicants upon quantum when outside of a Quantum Challenge."></div>
-							</td>
-							<td>
-								<div id="Stop blocking me!" class="achievement achievementlocked" style="background-image: url(images/141.png)"></div>
-							</td>
-							<td>
-								<div id="Are you currently dying?" class="achievement achievementlocked" style="background-image: url(images/142.png)"></div>
-							</td>
-						</tr>
-						<tr id="achRowng3p5">
-							<td>
-								<div id="To the new dimension!" class="achievement achievementlocked" style="background-image: url(images/143.png)" ach-tooltip='Big Rip the universe. Reward: Keep your Infinity Upgrades and autobuyers, Time Theorem production is multiplied by 100, unlock the "X times eternitied" mode of the Eternity autobuyer, and every completion of EC11 gives a completion of EC12.'></div>
-							</td>
-							<td>
-								<div id="Quantum doesn't take so long" class="achievement achievementlocked" style="background-image: url(images/144.png)" ach-tooltip="Quantum in under 1 second. Reward: Duplicants no longer decrease and Meta-Dimension Boosts never reset."></div>
-							</td>
-							<td>
-								<div id="Gonna go fast" class="achievement achievementlocked" style="background-image: url(images/145.png)"></div>
-							</td>
-							<td>
-								<div id="We can really afford 9." class="achievement achievementlocked" style="background-image: url(images/146.png)" ach-tooltip="Undo the big rip with exactly 9 galaxies, 9 replicated galaxies, and 9 Fourth Time Dimensions. Reward: Gain a multiplier to duplicants based on spins."></div>
-							</td>
-							<td>
-								<div id="Time Breaker" class="achievement achievementlocked" style="background-image: url(images/147.png)" ach-tooltip="Break Eternity. Reward: Galaxies don't reset your Dimension Boosts, and Quantum Challenges are free."></div>
-							</td>
-							<td>
-								<div id="Time Immunity" class="achievement achievementlocked" style="background-image: url(images/148.png)"></div>
-							</td>
-							<td>
-								<div id="You're not really smart." class="achievement achievementlocked" style="background-image: url(images/149.png)"></div>
-							</td>
-							<td>
-								<div id="And so your life?" class="achievement achievementlocked" style="background-image: url(images/150.png)"></div>
-							</td>
-						</tr>
-						<tr id="achRowng3p6">
-							<td>
-								<div id="Kee-hee-hee!" class="achievement achievementlocked" style="background-image: url(images/151.png)"></div>							
-							</td>
-							<td>
-								<div id="Finite Time" class="achievement achievementlocked" style="background-image: url(images/152.png)"></div>
-							</td>
-							<td>
-								<div id="This achievement doesn't exist 4" class="achievement achievementlocked" style="background-image: url(images/153.png)" ach-tooltip="Reach 9.999999e99 Eternal Matter. Reward: Gain more QK based on amount of MA you had when going quantum, and Meta Dimensions are no longer affected by dilation outside of Quantum Challenges."></div>
-							</td>
-							<td>
-								<div id="Really?" class="achievement achievementlocked" style="background-image: url(images/154.png)"></div>
-							</td>
-							<td>
-								<div id="But I don't want to grind!" class="achievement achievementlocked" style="background-image: url(images/155.png)" ach-tooltip="Get the 21st Nanoreward without having Tree Upgrades. Reward: Gain more quarks based on radioactive decays."></div>
-							</td>
-							<td>
-								<div id="I rather oppose the theory of everything" class="achievement achievementlocked" style="background-image: url(images/156.png)"></div>
-							</td>
-							<td>
-								<div id="Will it be enough?" class="achievement achievementlocked" style="background-image: url(images/157.png)"></div>
-							</td>
-							<td>
-								<div id="Please answer me why you are dying." class="achievement achievementlocked" style="background-image: url(images/placeholder.png)">Please answer me why you are dying.</div>
-							</td>
-						</tr>
-						<tr id="achRowng3p7">
-							<td>
-								<div id="Progressing as a Ghost" class="achievement achievementlocked" style="background-image: url(images/159.png)" ach-tooltip="Unlock Photons. Reward: Preons and baby duplicants no longer decrease."></div>
-							</td>
-							<td>
-								<div id="Underchallenged" class="achievement achievementlocked" style="background-image: url(images/placeholder.png)">Underchallenged</div>
-							</td>
-							<td>
-								<div id="Meta-Infinity confirmed?" class="achievement achievementlocked" style="background-image: url(images/161.png)"></div>
-							</td>
-							<td>
-								<div id="Weak Decay" class="achievement achievementlocked" style="background-image: url(images/162.png)"></div>
-							</td>
-							<td>
-								<div id="Radioactive Decaying to the max!" class="achievement achievementlocked" style="background-image: url(images/163.png)" ach-tooltip="Get 10 total Radioactive Decays. Reward: You get 1 galaxy worth of generated neutrinos per second."></div>
-							</td>
-							<td>
-								<div id="Running through Big Rips" class="achievement achievementlocked" style="background-image: url(images/164.png)" ach-tooltip="Fundament in 0.6 seconds. Reward: You can go Quantum until next Fundament."></div>
-							</td>
-							<td>
-								<div id="The Theory of Ultimate Studies" class="achievement achievementlocked" style="background-image: url(images/165.png)" ach-tooltip="Have at least 48 Mastery Studies. Reward: Start with all Time Studies and Eternity Challenges on Fundament."></div>
-							</td>
-							<td>
-								<div id="ng3p78" class="achievement achievementlocked" style="background-image: url(images/placeholder.png)" ach-tooltip="Placeholder. Reward: Tree Upgrade 8 speeds up Nanofield."></div>
-							</td>
-						</tr>
-						<tr id="achRowng3p8">
-							<td>
-								<div id="Even Ghostlier than before" class="achievement achievementlocked" style="background-image: url(images/167.png)"></div>
-							</td>
-							<td>
-								<div id="ng3p82" class="achievement achievementlocked" style="background-image: url(images/placeholder.png)" ach-tooltip="Placeholder. Reward: Remove the second Nanoreward scaling."></div>
-							</td>
-							<td>
-								<div id="ng3p83" class="achievement achievementlocked" style="background-image: url(images/placeholder.png)" ach-tooltip="Placeholder."></div>
-							</td>
-							<td>
-								<div id="Big Rip isn't enough" class="achievement achievementlocked" style="background-image: url(images/170.png)"></div>
-							</td>
-							<td>
-								<div id="Everlasting Eternities" class="achievement achievementlocked" style="background-image: url(images/171.png)"></div>
-							</td>
-							<td>
-								<div id="Back to Challenge One" class="achievement achievementlocked" style="background-image: url(images/placeholder.png)">Back to Challenge One</div>
-							</td>
-							<td>
-								<div id="ng3p87" class="achievement achievementlocked" style="background-image: url(images/placeholder.png)" ach-tooltip="Placeholder. Reward: Remove the quadratic cost scaling and the level softcap of fifth Quark Decay upgrade and make it based on best meta-antimatter over Fundaments, instead of over quantums."></div>
-							</td>
-							<td>
-								<div id="ng3p88" class="achievement achievementlocked" style="background-image: url(images/placeholder.png)" ach-tooltip="Placeholder. Reward: Remove the cap of 'And so your life?'"></div>
-							</td>
-						</tr>
-						<tr id="achRowng3p9">
-							<td>
-								<div id="The Holy Particle" class="achievement achievementlocked" style="background-image: url(images/175.png)" ach-tooltip="Get a Higgs Boson. Reward: Achievement Power gives you more Bosonic Force and Spectral Ions never reset."></div>
-							</td>
-							<td>
-								<div id="Bright as the Anti-Sun" class="achievement achievementlocked" style="background-image: url(images/176.png)" ach-tooltip="Reach 25 Spectral Ions. Reward: You always have the 12th Bosonic Upgrade and start with 5 levels of first Bosonic Enchant."></div>
-							</td>
-							<td>
-								<div id="Are these another..." class="achievement achievementlocked" style="background-image: url(images/placeholder.png)">Are these another...</div>
-							</td>
-							<td>
-								<div id="... references to EC8?" class="achievement achievementlocked" style="background-image: url(images/placeholder.png)" ach-tooltip="Get at least 2 Radioactive Decays of every color with at most 10 gains of Unstable Quarks. Reward: Get Branch Upgrade 2 per 1 Radioactive Decay.">... references to EC8?</div>
-							</td>
-							<td>
-								<div id="Bosonic Semipowerment" class="achievement achievementlocked" style="background-image: url(images/placeholder.png)" ach-tooltip="Reach 50% of Spectral Ion requirement without buying Bosonic Upgrades. Reward: Spectral Ions are 1 cheaper.">Bosonic Semipowerment</div>
-							</td>
-							<td>
-								<div id="ng3p96" class="achievement achievementlocked" style="background-image: url(images/placeholder.png)" ach-tooltip="Placeholder. Reward: Decrease Quantum and Paired Challenge goals by 5%, except Big Rip."></div>
-							</td>
-							<td>
-								<div id="The Ghostliest Side" class="achievement achievementlocked" style="background-image: url(images/placeholder.png)">The Ghostliest Side</div>
-							</td>
-							<td>
-								<div id="Meta-Quintillion" class="achievement achievementlocked" style="background-image: url(images/182.png)"></div>
-							</td>
-						</tr>
+						<td>
+							<div id="ERROR 909: Dimension not found" class="achievement achievementlocked" style="background-image: url(images/41.png)"><br></div>
+						</td>
+						<td>
+							<div id="Can't hold all these infinities" class="achievement achievementlocked" style="background-image: url(images/42.png)"><br></div>
+						</td>
+						<td>
+							<div id="This achievement doesn't exist" class="achievement achievementlocked" style="background-image: url(images/43.png)" ach-tooltip="Get 9.9999e9999 antimatter. Reward: Dimensions are more powerful the more unspent antimatter you have."><br></div>
+						</td>
+						<td>
+							<div id="End me" class="achievement achievementlocked" style="background-image: url(images/44.png)" ach-tooltip="Get the sum of all Normal Challenge times under 5 seconds. Reward: All Normal Dimensions are 40% stronger in challenges."><br></div>
+						</td>
+						<td>
+							<div id="NEW DIMENSIONS???" class="achievement achievementlocked" style="background-image: url(images/45.png)"><br></div>
+						</td>
+						<td id="r76">
+							<div id="One for each dimension" class="achievement achievementlocked" style="background-image: url(images/21.png)" ach-tooltip="Play for 8 days. Reward: Gain an extremely small time multiplier to your Normal Dimensions."><br></div>
+						</td>
+						<td>
+							<div id="How the antitables have turned" class="achievement achievementlocked" style="background-image: url(images/47.png)"><br></div>
+						</td>
+						<td>
+							<div id="Blink of an eye" class="achievement achievementlocked" style="background-image: url(images/48.gif)" ach-tooltip="Get to Infinity in under 200 milliseconds. Reward: Start with 1e25 antimatter and all dimensions are stronger in first 300ms of infinity."><br></div>
+						</td>
+					</tr>
+					<tr id="achRow8">
+						<td>
+							<div id="Hevipelle did nothing wrong" class="achievement achievementlocked" style="background-image: url(images/49.png)" ach-tooltip="Beat Infinity Challenge 5 in 10 seconds or less."><br></div>
+						</td>
+						<td>
+							<div id="Anti-antichallenged" class="achievement achievementlocked" style="background-image: url(images/50.png)" ach-tooltip="Complete 8 Infinity Challenges."><br></div>
+						</td>
+						<td>
+							<div id="YOU CAN GET 50 GALAXIES!??" class="achievement achievementlocked" style="background-image: url(images/51.png)" ach-tooltip="Get 50 galaxies. Reward: Tickspeed is 5% lower per galaxy."><br></div>
+						</td>
+						<td>
+							<div id="I got a few to spare" class="achievement achievementlocked" style="background-image: url(images/52.png)" ach-tooltip="Reach 1e35000 antimatter. Reward: Dimensions are more powerful the more unspent antimatter you have."><br></div>
+						</td>
+						<td>
+							<div id="All your IP are belong to us" class="achievement achievementlocked" style="background-image: url(images/53.png)" ach-tooltip="Big Crunch for 1e150 IP. Reward: Gain an additional 4x multiplier to IP."><br></div>
+						</td>
+						<td>
+							<div id="Do you even bend time bro?" class="achievement achievementlocked" style="background-image: url(images/54.png)" ach-tooltip="Reach -99.9% tickspeed per upgrade. Reward: Galaxies are 1% more powerful."><br></div>
+						</td>
+						<td>
+							<div id="2 Million Infinities" class="achievement achievementlocked" style="background-image: url(images/55.png)" ach-tooltip="Infinity 2000000 times. Reward: Infinities more than 5 seconds long give 250 infinitied stat."><br></div>
+						</td>
+						<td>
+							<div id="Yet another infinity reference" class="achievement achievementlocked" style="background-image: url(images/56.png)" ach-tooltip="Get xInfinity multiplier in a single sacrifice. Reward: Sacrifices are stronger."><br></div>
+						</td>
+					</tr>
+					<tr id="achRow9">
+						<td>
+							<div id="Ludicrous Speed" class="achievement achievementlocked" style="background-image: url(images/57.png)" ach-tooltip="Big Crunch for 1e200 IP in 2 seconds or less. Reward: All Normal Dimensions are significantly stronger in the first 5 seconds of an Infinity."><br></div>
+						</td>
+						<td>
+							<div id="I brake for nobody" class="achievement achievementlocked" style="background-image: url(images/58.png)" ach-tooltip="Big Crunch for 1e250 IP in 20 seconds or less. Reward: All Normal Dimensions are significantly stronger in the first 60 seconds of an Infinity."><br></div>
+						</td>
+						<td>
+							<div id="MAXIMUM OVERDRIVE" class="achievement achievementlocked" style="background-image: url(images/59.png)" ach-tooltip="Reach 1e300 IP/min. Reward: Gain an additional 4x multiplier to IP."><br></div>
+						</td>
+						<td>
+							<div id="Minute of infinity" class="achievement achievementlocked" style="background-image: url(images/60.png)" ach-tooltip="Reach 1e260 infinity power. Reward: Double infinity power gain."><br></div>
+						</td>
+						<td>
+							<div id="Is this safe?" class="achievement achievementlocked" style="background-image: url(images/61.png)" ach-tooltip="Gain Infinite replicanti in 30 minutes. Reward: Infinity doesn't reset your replicanti amount."><br></div>
+						</td>
+						<td>
+							<div id="Time is relative" class="achievement achievementlocked" style="background-image: url(images/62.png)" ach-tooltip="Go Eternal."><br></div>
+						</td>
+						<td>
+							<div id="Yes. This is hell." class="achievement achievementlocked" style="background-image: url(images/63.png)" ach-tooltip="Get the sum of Infinity Challenge times under 6.66 seconds."><br></div>
+						</td>
+						<td>
+							<div id="0 degrees from infinity" class="achievement achievementlocked" style="background-image: url(images/64.png)"><br></div>
+						</td>
+					</tr>
+					<tr id="achRow10">
+						<td>
+							<div id="Costco sells dimboosts now" class="achievement achievementlocked" style="background-image: url(images/65.png)"><br></div>
+						</td>
+						<td>
+							<div id="This mile took an Eternity" class="achievement achievementlocked" style="background-image: url(images/66.png)"><br></div>
+						</td>
+						<td>
+							<div id="This achievement doesn't exist II" class="achievement achievementlocked" style="background-image: url(images/67.png)" ach-tooltip="Reach 9.99999e999 IP. Reward: Gain more IP based on the amount of antimatter you had upon a Big Crunch."><br></div>
+						</td>
+						<td>
+							<div id="That wasn't an eternity" class="achievement achievementlocked" style="background-image: url(images/68.png)" ach-tooltip="Eternity in under 30 seconds. Reward: Start Eternities with 2e25 IP."><br></div>
+						</td>
+						<td>
+							<div id="Infinite time" class="achievement achievementlocked" style="background-image: url(images/69.png)" ach-tooltip="Get 308 tickspeed upgrades (in one eternity) from Time Dimensions. Reward: Tickspeed effects on Time Dimension multipliers are slightly increased."><br></div>
+						</td>
+						<td>
+							<div id="The swarm" class="achievement achievementlocked" style="background-image: url(images/70.png)" ach-tooltip="Get 10 replicanti galaxies in 15 seconds."><br></div>
+						</td>
+						<td>
+							<div id="Do you really need a guide for this?" class="achievement achievementlocked" style="background-image: url(images/71.png)" ach-tooltip="Eternity with less than 10 infinities."><br></div>
+						</td>
+						<td>
+							<div id="We could afford 9" class="achievement achievementlocked" style="background-image: url(images/72.png)" ach-tooltip="Eternity with exactly 9 replicanti."><br></div>
+						</td>
+					</tr>
+					<tr id="achRow11">
+						<td>
+							<div id="Yo dawg, I heard you liked infinities..." class="achievement achievementlocked" style="background-image: url(images/73.png)" ach-tooltip="Have all your past 10 infinities be at least 1.79e308 times higher IP than the previous one. Reward: Your antimatter doesn't reset on dimboost/galaxy"><br></div>
+						</td>
+						<td>
+							<div id="Never again" class="achievement achievementlocked" style="background-image: url(images/74.png)" ach-tooltip="Max out your third Eternity upgrade. Reward: The limit of Eternity Upgrade 3 is slightly increased."><br></div>
+						</td>
+						<td>
+							<div id="Long lasting relationship" class="achievement achievementlocked" style="background-image: url(images/75.png)" ach-tooltip="Have your Infinity Power per second exceed your Infinity Power amount for 60 consecutive seconds during a single infinity."><br></div>
+						</td>
+						<td>
+							<div id="You're a mistake" class="achievement achievementlocked" style="background-image: url(images/76.png)" ach-tooltip="Fail an Eternity challenge. Reward: A fading sense of accomplishment."><br></div>
+						</td>
+						<td>
+							<div id="I wish I had gotten 7 eternities" class="achievement achievementlocked" style="background-image: url(images/77.png)" ach-tooltip="Start an Infinity Challenge inside an Eternity Challenge."><br></div>
+						</td>
+						<td>
+							<div id="Do I really need to infinity" class="achievement achievementlocked" style="background-image: url(images/78.png)" ach-tooltip="Eternity with only 1 Infinity. Reward: Gain a multiplier to IP based on your Infinities."><br></div>
+						</td>
+						<td>
+							<div id="8 nobody got time for that" class="achievement achievementlocked" style="background-image: url(images/79.png)" ach-tooltip="Eternity while only buying 8th Normal Dimensions."><br></div>
+						</td>
+						<td>
+							<div id="IT'S OVER 9000" class="achievement achievementlocked" style="background-image: url(images/80.png)" ach-tooltip="Get a total sacrifice multiplier of 1e9000. Reward: Sacrifice doesn't reset your dimensions."><br></div>
+						</td>
+					</tr>
+					<tr id="achRow12">
+						<td>
+							<div id="Can you get infinite IP?" class="achievement achievementlocked" style="background-image: url(images/81.png)" ach-tooltip="Reach 1e30008 IP."><br></div>
+						</td>
+						<td>
+							<div id="You're already dead." class="achievement achievementlocked" style="background-image: url(images/82.png)" ach-tooltip="Eternity while only buying 1st Normal Dimensions."><br></div>
+						</td>
+						<td>
+							<div id="5 more eternities until the update" class="achievement achievementlocked" style="background-image: url(images/83.png)"><br></div>
+						</td>
+						<td>
+							<div id="Eternities are the new infinity" class="achievement achievementlocked" style="background-image: url(images/84.png)"><br></div>
+						</td>
+						<td>
+							<div id="Like feasting on a behind" class="achievement achievementlocked" style="background-image: url(images/85.png)" ach-tooltip="Get 1e100 IP without any Infinities, Dimensions, or resets (not including upgrades). Reward: Gain a multiplier to IP based on time spent in this Infinity."><br></div>
+						</td>
+						<td>
+							<div id="Popular music" class="achievement achievementlocked" style="background-image: url(images/86.png)" ach-tooltip="Have 180 times more non-bonus replicanti galaxies than normal galaxies. Reward: Replicanti galaxies divide your replicanti by 1.79e308 instead of resetting them to 1."><br></div>
+						</td>
+						<td>
+							<div id="But I wanted another prestige layer..." class="achievement achievementlocked" style="background-image: url(images/87.png)" ach-tooltip="Reach 1e308 EP."><br></div>
+						</td>
+						<td>
+							<div id="What do I have to do to get rid of you" class="achievement achievementlocked" style="background-image: url(images/88.png)" ach-tooltip="Reach 1e22000 IP without any time studies. Reward: Time dimensions are multiplied by the number of studies you have."><br></div>
+						</td>
+					</tr>
+					<tr id="achRow13">
+						<td>
+							<div id="No ethical consumption" class="achievement achievementlocked" style="background-image: url(images/89.png)" ach-tooltip="Get 5 billion banked infinities. Reward: You permanently bank 5% of your Infinities when you Eternity."><br></div>
+						</td>
+						<td>
+							<div id="Unique snowflakes" class="achievement achievementlocked" style="background-image: url(images/90.png)"><br></div>
+						</td>
+						<td>
+							<div id="I never liked this infinity stuff anyway" class="achievement achievementlocked" style="background-image: url(images/91.png)" ach-tooltip="Reach 1e140,000 IP without buying IDs or IP multipliers."><br></div>
+						</td>
+						<td>
+							<div id="When will it be enough?" class="achievement achievementlocked" style="background-image: url(images/92.png)" ach-tooltip="Reach 1e20,000 replicanti. Reward: You gain replicanti 2 times faster while you have under 1.79e308 replicanti."><br></div>
+						</td>
+						<td>
+							<div id="Faster than a potato^286078" class="achievement achievementlocked" style="background-image: url(images/93.png)" ach-tooltip="Get more than 1e8,296,262 ticks per second."><br></div>
+						</td>
+						<td>
+							<div id="I told you already, time is relative" class="achievement achievementlocked" style="background-image: url(images/94.png)" ach-tooltip="Dilate time."><br></div>
+						</td>
+						<td>
+							<div id="Now you're thinking with dilation!" class="achievement achievementlocked" style="background-image: url(images/95.png)" ach-tooltip="Eternity for 1e600 EP in 1 minute or less while dilated."><br></div>
+						</td>
+						<td>
+							<div id="This is what I have to do to get rid of you." class="achievement achievementlocked" style="background-image: url(images/96.png)" ach-tooltip="Reach 1e20000 IP without any time studies while dilated."><br></div>
+						</td>
+					</tr>
+					<tr id="achRowngud1">
+						<td>
+							<div id="A newer beginning." class="achievement achievementlocked" style="background-image: url(images/121.png)" ach-tooltip="Begin generation of black hole power."><br></div>
+						</td>
+						<td>
+							<div id="1 million is still a lot" class="achievement achievementlocked" style="background-image: url(images/122.png)"><br></div>
+						</td>
+						<td>
+							<div id="Time is absolute" class="achievement achievementlocked" style="background-image: url(images/123.png)" ach-tooltip="Reverse dilation."><br></div>
+						</td>
+						<td>
+							<div id="Finally I'm out of that channel" class="achievement achievementlocked" style="background-image: url(images/124.png)"><br></div>
+						</td>
+						<td id="uhDivNGud">
+							<div id="Universal harmony" class="achievement achievementlocked" style="background-image: url(images/104.png)"><br></div>
+						</td>
+						<td>
+							<div id="We couldn't afford 5" class="achievement achievementlocked" style="background-image: url(images/125.png)" ach-tooltip="Buy the fourth Blackhole Dimension."><br></div>
+						</td>
+						<td id="feDivNGud">
+							<div id="In the grim darkness of the far endgame" class="achievement achievementlocked" style="background-image: url(images/99.png)"><br></div>
+						</td>
+						<td>
+							<div id="I already got rid of you." class="achievement achievementlocked" style="background-image: url(images/126.png)"><br></div>
+						</td>
+					</tr>
+					<tr id="achRowngpp1">
+						<td>
+							<div id="I'm so meta" class="achievement achievementlocked" style="background-image: url(images/97.png)" ach-tooltip="Unlock Meta Dimensions."><br></div>
+						</td>
+						<td>
+							<div id="And still no ninth dimension..." class="achievement achievementlocked" style="background-image: url(images/98.png)" ach-tooltip="Buy a Eighth Meta Dimension. Reward: All meta-dimensions are 10% stronger, and you start with 100 meta-antimatter on reset."><br></div>
+						</td>
+						<td id="feDivNGpp">
+						</td>
+						<td>
+							<div id="Meta-boosting to the max" class="achievement achievementlocked" style="background-image: url(images/100.png)" ach-tooltip="Get 10 Meta-Dimension Boosts. Reward: Meta-dimension boosts are 1% stronger."><br></div>
+						</td>
+						<td>
+							<div id="The cap is a million, not a trillion" class="achievement achievementlocked" style="background-image: url(images/101.png)" ach-tooltip="Get 1e12 eternities. Reward: Eternity Upgrade 2 uses a better formula."><br></div>
+						</td>
+						<td>
+							<div id="It will never be enough" class="achievement achievementlocked" style="background-image: url(images/102.png)" ach-tooltip="Reach 1e100,000 replicanti. Reward: You can buy maximum replicanti galaxies."><br></div>
+						</td>
+						<td>
+							<div id="GAS GAS GAS" class="achievement achievementlocked" style="background-image: url(images/103.png)" ach-tooltip="Get 1,000,000 tickspeed upgrades from Time Dimensions. Reward: Unlock autobuyers for Time Dimensions and 5x EP upgrades."><br></div>
+						</td>
+						<td id="uhDivNGpp">
+						</td>
+					</tr>
+					<tr id="achRowng3p1">
+						<td>
+							<div id="I don't have enough fuel!" class="achievement achievementlocked" style="background-image: url(images/105.png)"><br></div>
+						</td>
+						<td>
+							<div id="Sub-atomic" class="achievement achievementlocked" style="background-image: url(images/106.png)" ach-tooltip="Go quantum. Reward: You gain 20x more Eternities up to 100,000 Eternities, start with Eternities based on your fastest Quantum (up to 10,000), and unlock the 'Don't respec studies and auto-reunlock ECs' option in the Eternity Challenges menu."><br></div>
+						</td>
+						<td>
+							<div id="Hadronization" class="achievement achievementlocked" style="background-image: url(images/107.png)" ach-tooltip="Have colored quarks, but have no color charge."><br></div>
+						</td>
+						<td>
+							<div id="Work harder." class="achievement achievementlocked" style="background-image: url(images/108.png)" ach-tooltip="Unlock Time Dilation without buying Eternity Upgrades."><br></div>
+						</td>
+						<td>
+							<div id="No more tax fraud!" class="achievement achievementlocked" style="background-image: url(images/109.png)" ach-tooltip="Have 900 galaxies without unlocking Time Dilation. Reward: You permanently keep your banked Infinities, and bank 5% of your Eternities on Quantum."><br></div>
+						</td>
+						<td>
+							<div id="And the winner is..." class="achievement achievementlocked" style="background-image: url(images/110.png)"><br></div>
+						</td>
+						<td>
+							<div id="Old age" class="achievement achievementlocked" style="background-image: url(images/111.png)"><br></div>
+						</td>
+						<td>
+							<div id="I already got rid of you..." class="achievement achievementlocked" style="background-image: url(images/112.png)"><br></div>
+						</td>
+					</tr>
+					<tr id="achRowng3p2">
+						<td>
+							<div id="Special Relativity" class="achievement achievementlocked" style="background-image: url(images/113.png)"><br></div>
+						</td>
+						<td>
+							<div id="We are not going squared." class="achievement achievementlocked" style="background-image: url(images/114.png)"><br></div>
+						</td>
+						<td>
+							<div id="This achievement doesn't exist 3" class="achievement achievementlocked" style="background-image: url(images/115.png)" ach-tooltip="Reach 9e99,999,999 EP. Reward: Gain more EP based on the amount of IP you had on Eternity."><br></div>
+						</td>
+						<td>
+							<div id="Old memories come true" class="achievement achievementlocked" style="background-image: url(images/placeholder.png)">Old memories come true</div>
+						</td>
+						<td>
+							<div id="Twice in a row" class="achievement achievementlocked" style="background-image: url(images/117.png)" ach-tooltip="Complete Paired Challenge 4. Reward: Unlock the '# of dilated' mode for the Quantum autobuyer."><br></div>
+						</td>
+						<td>
+							<div id="Infinity Morals" class="achievement achievementlocked" style="background-image: url(images/118.png)"><br></div>
+						</td>
+						<td>
+							<div id="Intergalactic" class="achievement achievementlocked" style="background-image: url(images/119.png)" ach-tooltip="Reach 4,000,000 Eighth Dimensions without any replicated or Tachyonic Galaxies. Reward: Eighth Dimensions are stronger based on your normal galaxies."><br></div>
+						</td>
+						<td>
+							<div id="Seriously, I already got rid of you." class="achievement achievementlocked" style="background-image: url(images/120.png)"><br></div>
+						</td>
+					</tr>
+					<tr id="achRowng3p3">
+						<td>
+							<div id="ERROR 500: INTERNAL DIMENSION ERROR" class="achievement achievementlocked" style="background-image: url(images/127.png)"></div>
+						</td>
+						<td>
+							<div id="The truth of anti-challenged" class="achievement achievementlocked" style="background-image: url(images/placeholder.png)">The truth of anti-challenged</div>
+						</td>
+						<td>
+							<div id="Never make paradoxes!" class="achievement achievementlocked" style="background-image: url(images/129.png)"></div>
+						</td>
+						<td>
+							<div id="The Challenging Day" class="achievement achievementlocked" style="background-image: url(images/130.png)" ach-tooltip="Complete 24 unique paired challenge combinations. Reward: Matter can bypass antimatter in QC6."></div>
+						</td>
+						<td>
+							<div id="An ant office?" class="achievement achievementlocked" style="background-image: url(images/131.png)" ach-tooltip="Promote a worker into the second Emperor Dimension. Reward: Duplicants feed babies 10x faster."></div>
+						</td>
+						<td>
+							<div id="I can’t get my multipliers higher!" class="achievement achievementlocked" style="background-image: url(images/132.png)"><br></div>
+						</td>
+						<td>
+							<div id="No dilation means no production." class="achievement achievementlocked" style="background-image: url(images/placeholder.png)">No dilation means no production.</div>
+						</td>
+						<td>
+							<div id="I don't want you to live anymore." class="achievement achievementlocked" style="background-image: url(images/134.png)"></div>
+						</td>
+					</tr>
+					<tr id="achRowng3p4">
+						<td>
+							<div id="Time is not relative" class="achievement achievementlocked" style="background-image: url(images/135.png)"></div>
+						</td>
+						<td>
+							<div id="ERROR 404: DIMENSIONS NOT FOUND" class="achievement achievementlocked" style="background-image: url(images/136.png)"></div>
+						</td>
+						<td>
+							<div id="Impossible expectations" class="achievement achievementlocked" style="background-image: url(images/137.png)"></div>
+						</td>
+						<td>
+							<div id="Studies are wasted" class="achievement achievementlocked" style="background-image: url(images/138.png)"></div>
+						</td>
+						<td>
+							<div id="Do protons decay?" class="achievement achievementlocked" style="background-image: url(images/139.png)" ach-tooltip="Unlock Quark Decay. Reward: You keep the two thirds power of your pilons upon quantum when outside of a Quantum Challenge."></div>
+						</td>
+						<td>
+							<div id="Hardly marked" class="achievement achievementlocked" style="background-image: url(images/140.png)" ach-tooltip="Complete a PC with the QC3 & 8 combination. Reward: You keep the cube root of your normal duplicants upon quantum when outside of a Quantum Challenge."></div>
+						</td>
+						<td>
+							<div id="Stop blocking me!" class="achievement achievementlocked" style="background-image: url(images/141.png)"></div>
+						</td>
+						<td>
+							<div id="Are you currently dying?" class="achievement achievementlocked" style="background-image: url(images/142.png)"></div>
+						</td>
+					</tr>
+					<tr id="achRowng3p5">
+						<td>
+							<div id="To the new dimension!" class="achievement achievementlocked" style="background-image: url(images/143.png)" ach-tooltip='Big Rip the universe. Reward: Keep your Infinity Upgrades and autobuyers, Time Theorem production is multiplied by 100, unlock the "X times eternitied" mode of the Eternity autobuyer, and every completion of EC11 gives a completion of EC12.'></div>
+						</td>
+						<td>
+							<div id="Quantum doesn't take so long" class="achievement achievementlocked" style="background-image: url(images/144.png)" ach-tooltip="Quantum in under 1 second. Reward: Duplicants no longer decrease and Meta-Dimension Boosts never reset."></div>
+						</td>
+						<td>
+							<div id="Gonna go fast" class="achievement achievementlocked" style="background-image: url(images/145.png)"></div>
+						</td>
+						<td>
+							<div id="We can really afford 9." class="achievement achievementlocked" style="background-image: url(images/146.png)" ach-tooltip="Undo the big rip with exactly 9 galaxies, 9 replicated galaxies, and 9 Fourth Time Dimensions. Reward: Gain a multiplier to duplicants based on spins."></div>
+						</td>
+						<td>
+							<div id="Time Breaker" class="achievement achievementlocked" style="background-image: url(images/147.png)" ach-tooltip="Break Eternity. Reward: Galaxies don't reset your Dimension Boosts, and Quantum Challenges are free."></div>
+						</td>
+						<td>
+							<div id="Time Immunity" class="achievement achievementlocked" style="background-image: url(images/148.png)"></div>
+						</td>
+						<td>
+							<div id="You're not really smart." class="achievement achievementlocked" style="background-image: url(images/149.png)"></div>
+						</td>
+						<td>
+							<div id="And so your life?" class="achievement achievementlocked" style="background-image: url(images/150.png)"></div>
+						</td>
+					</tr>
+					<tr id="achRowng3p6">
+						<td>
+							<div id="Kee-hee-hee!" class="achievement achievementlocked" style="background-image: url(images/151.png)"></div>							
+						</td>
+						<td>
+							<div id="Finite Time" class="achievement achievementlocked" style="background-image: url(images/152.png)"></div>
+						</td>
+						<td>
+							<div id="This achievement doesn't exist 4" class="achievement achievementlocked" style="background-image: url(images/153.png)" ach-tooltip="Reach 9.999999e99 Eternal Matter. Reward: Gain more QK based on amount of MA you had when going quantum, and Meta Dimensions are no longer affected by dilation outside of Quantum Challenges."></div>
+						</td>
+						<td>
+							<div id="Really?" class="achievement achievementlocked" style="background-image: url(images/154.png)"></div>
+						</td>
+						<td>
+							<div id="But I don't want to grind!" class="achievement achievementlocked" style="background-image: url(images/155.png)" ach-tooltip="Get the 21st Nanoreward without having Tree Upgrades. Reward: Gain more quarks based on radioactive decays."></div>
+						</td>
+						<td>
+							<div id="I rather oppose the theory of everything" class="achievement achievementlocked" style="background-image: url(images/156.png)"></div>
+						</td>
+						<td>
+							<div id="Will it be enough?" class="achievement achievementlocked" style="background-image: url(images/157.png)"></div>
+						</td>
+						<td>
+							<div id="Please answer me why you are dying." class="achievement achievementlocked" style="background-image: url(images/placeholder.png)">Please answer me why you are dying.</div>
+						</td>
+					</tr>
+					<tr id="achRowng3p7">
+						<td>
+							<div id="Progressing as a Ghost" class="achievement achievementlocked" style="background-image: url(images/159.png)" ach-tooltip="Unlock Photons. Reward: Preons and baby duplicants no longer decrease."></div>
+						</td>
+						<td>
+							<div id="Underchallenged" class="achievement achievementlocked" style="background-image: url(images/placeholder.png)">Underchallenged</div>
+						</td>
+						<td>
+							<div id="Meta-Infinity confirmed?" class="achievement achievementlocked" style="background-image: url(images/161.png)"></div>
+						</td>
+						<td>
+							<div id="Weak Decay" class="achievement achievementlocked" style="background-image: url(images/162.png)"></div>
+						</td>
+						<td>
+							<div id="Radioactive Decaying to the max!" class="achievement achievementlocked" style="background-image: url(images/163.png)" ach-tooltip="Get 10 total Radioactive Decays. Reward: You get 1 galaxy worth of generated neutrinos per second."></div>
+						</td>
+						<td>
+							<div id="Running through Big Rips" class="achievement achievementlocked" style="background-image: url(images/164.png)" ach-tooltip="Fundament in 0.6 seconds. Reward: You can go Quantum until next Fundament."></div>
+						</td>
+						<td>
+							<div id="The Theory of Ultimate Studies" class="achievement achievementlocked" style="background-image: url(images/165.png)" ach-tooltip="Have at least 48 Mastery Studies. Reward: Start with all Time Studies and Eternity Challenges on Fundament."></div>
+						</td>
+						<td>
+							<div id="ng3p78" class="achievement achievementlocked" style="background-image: url(images/placeholder.png)" ach-tooltip="Placeholder. Reward: Tree Upgrade 8 speeds up Nanofield."></div>
+						</td>
+					</tr>
+					<tr id="achRowng3p8">
+						<td>
+							<div id="Even Ghostlier than before" class="achievement achievementlocked" style="background-image: url(images/167.png)"></div>
+						</td>
+						<td>
+							<div id="ng3p82" class="achievement achievementlocked" style="background-image: url(images/placeholder.png)" ach-tooltip="Placeholder. Reward: Remove the second Nanoreward scaling."></div>
+						</td>
+						<td>
+							<div id="ng3p83" class="achievement achievementlocked" style="background-image: url(images/placeholder.png)" ach-tooltip="Placeholder."></div>
+						</td>
+						<td>
+							<div id="Big Rip isn't enough" class="achievement achievementlocked" style="background-image: url(images/170.png)"></div>
+						</td>
+						<td>
+							<div id="Everlasting Eternities" class="achievement achievementlocked" style="background-image: url(images/171.png)"></div>
+						</td>
+						<td>
+							<div id="Back to Challenge One" class="achievement achievementlocked" style="background-image: url(images/placeholder.png)">Back to Challenge One</div>
+						</td>
+						<td>
+							<div id="ng3p87" class="achievement achievementlocked" style="background-image: url(images/placeholder.png)" ach-tooltip="Placeholder. Reward: Remove the quadratic cost scaling and the level softcap of fifth Quark Decay upgrade and make it based on best meta-antimatter over Fundaments, instead of over quantums."></div>
+						</td>
+						<td>
+							<div id="ng3p88" class="achievement achievementlocked" style="background-image: url(images/placeholder.png)" ach-tooltip="Placeholder. Reward: Remove the cap of 'And so your life?'"></div>
+						</td>
+					</tr>
+					<tr id="achRowng3p9">
+						<td>
+							<div id="The Holy Particle" class="achievement achievementlocked" style="background-image: url(images/175.png)" ach-tooltip="Get a Higgs Boson. Reward: Achievement Power gives you more Bosonic Force and Spectral Ions never reset."></div>
+						</td>
+						<td>
+							<div id="Bright as the Anti-Sun" class="achievement achievementlocked" style="background-image: url(images/176.png)" ach-tooltip="Reach 25 Spectral Ions. Reward: You always have the 12th Bosonic Upgrade and start with 5 levels of first Bosonic Enchant."></div>
+						</td>
+						<td>
+							<div id="Are these another..." class="achievement achievementlocked" style="background-image: url(images/placeholder.png)">Are these another...</div>
+						</td>
+						<td>
+							<div id="... references to EC8?" class="achievement achievementlocked" style="background-image: url(images/placeholder.png)" ach-tooltip="Get at least 2 Radioactive Decays of every color with at most 10 gains of Unstable Quarks. Reward: Get Branch Upgrade 2 per 1 Radioactive Decay.">... references to EC8?</div>
+						</td>
+						<td>
+							<div id="Bosonic Semipowerment" class="achievement achievementlocked" style="background-image: url(images/placeholder.png)" ach-tooltip="Reach 50% of Spectral Ion requirement without buying Bosonic Upgrades. Reward: Spectral Ions are 1 cheaper.">Bosonic Semipowerment</div>
+						</td>
+						<td>
+							<div id="ng3p96" class="achievement achievementlocked" style="background-image: url(images/placeholder.png)" ach-tooltip="Placeholder. Reward: Decrease Quantum and Paired Challenge goals by 5%, except Big Rip."></div>
+						</td>
+						<td>
+							<div id="The Ghostliest Side" class="achievement achievementlocked" style="background-image: url(images/placeholder.png)">The Ghostliest Side</div>
+						</td>
+						<td>
+							<div id="Meta-Quintillion" class="achievement achievementlocked" style="background-image: url(images/182.png)"></div>
+						</td>
+					</tr>
 				</table>
 				<div id="nothingness">You completed all the normal achievements! Congratulations!</div>
 			</div>
@@ -1703,9 +1352,7 @@
 								<span style="font-size: 110%">Buying anything halts your production, gradually coming back over 3 minutes.</span>
 								<br>
 								<br>
-
 								<div class="outer">
-
 									<button id="challenge2" class="challengesbtn" onlcick="startNormalChallenge(2)">Start</button>
 									<br>
 									<span>Reward: Second Dimension autobuyer</span>
@@ -1719,9 +1366,7 @@
 								<span style="font-size: 110%">The First Dimension is heavily weakened, but gets an exponentially increasing bonus that resets on a reset.</span>
 								<br>
 								<br>
-
 								<div class="outer">
-
 									<button id="challenge3" class="challengesbtn" onlcick="startNormalChallenge(3)">Start</button>
 									<br>
 									<span>Reward: Third Dimension autobuyer</span>
@@ -1749,9 +1394,7 @@
 								<span style="font-size: 110%" id='d5AutoChallengeDesc'></span>
 								<br>
 								<br>
-
 								<div class="outer">
-
 									<button id="challenge6" class="challengesbtn" onlcick="startNormalChallenge(5)">Start</button>
 									<br>
 									<span>Reward: Fifth Dimension autobuyer</span>
@@ -1763,9 +1406,7 @@
 								<span style="font-size: 110%">Each Normal Dimension costs the Dimension 2 tiers before it (excluding the 1st and 2nd Dimensions), with modified prices.</span>
 								<br>
 								<br>
-
 								<div class="outer">
-
 									<button id="challenge10" class="challengesbtn" onlcick="startNormalChallenge(6)">Start</button>
 									<br>
 									<span>Reward: Sixth Dimension autobuyer</span>
@@ -1779,9 +1420,7 @@
 								<span style="font-size: 110%">The multiplier per 10 dimensions is random for each per-10 purchase, varying from 0.30x to 10x.</span>
 								<br>
 								<br>
-
 								<div class="outer">
-
 									<button id="challenge9" class="challengesbtn" onlcick="startNormalChallenge(7)">Start</button>
 									<br>
 									<span>Reward: Seventh Dimension autobuyer</span>
@@ -1793,9 +1432,7 @@
 								<span style="font-size: 110%">Dimension Boosts and Galaxies have no effect. Sacrifice will act similarly to a Dimension Boost, but its effect is immensely more powerful.</span>
 								<br>
 								<br>
-
 								<div class="outer">
-
 									<button id="challenge11" class="challengesbtn" onlcick="startNormalChallenge(8)">Start</button>
 									<br>
 									<span>Reward: Eighth Dimension autobuyer</span>
@@ -1809,9 +1446,7 @@
 								<span style="font-size: 110%" id='tbAutoChallengeDesc'></span>
 								<br>
 								<br>
-
 								<div class="outer">
-
 									<button id="challenge5" class="challengesbtn" onlcick="startNormalChallenge(9)">Start</button>
 									<br>
 									<span>Reward: Tickspeed autobuyer</span>
@@ -1823,9 +1458,7 @@
 								<span style="font-size: 110%" id='autoDBChallengeDesc' onlcick="startNormalChallenge(10)"></span>
 								<br>
 								<br>
-
 								<div class="outer">
-
 									<button id="challenge4" class="challengesbtn">Start</button>
 									<br>
 									<span>Reward: Automated Dimension Boosts</span>
@@ -1839,9 +1472,7 @@
 								<span style="font-size: 110%">There's normal matter which rises. If it exceeds your antimatter, it perform an Dimension Boost without bonuses.</span>
 								<br>
 								<br>
-
 								<div class="outer">
-
 									<button id="challenge12" class="challengesbtn" onlcick="startNormalChallenge(11)">Start</button>
 									<br>
 									<span>Reward: Automated Galaxies</span>
@@ -1853,9 +1484,7 @@
 								<span style="font-size: 110%" id='autoCrunchChallengeDesc'></span>
 								<br>
 								<br>
-
 								<div class="outer">
-
 									<button id="challenge7" class="challengesbtn" onlcick="startNormalChallenge(12)">Start</button>
 									<br>
 									<span>Reward: Automated Big Crunches</span>
@@ -1869,9 +1498,7 @@
 								<span style="font-size: 110%" id='autoDSChallengeDesc'></span>
 								<br>
 								<br>
-
 								<div class="outer">
-
 									<button id="challenge13" class="challengesbtn">Start</button>
 									<br>
 									<span>Reward: Automated Dimensional Sacrifice</span>
@@ -1883,9 +1510,7 @@
 								<span style="font-size: 110%" id='autoGSChallengeDesc'></span>
 								<br>
 								<br>
-
 								<div class="outer">
-
 									<button id="challenge14" class="challengesbtn">Start</button>
 									<br>
 									<span>Reward: Automated Galactic Sacrifice</span>
@@ -1899,9 +1524,7 @@
 								<span style="font-size: 110%" id="autoTBChallengeDesc"></span>
 								<br>
 								<br>
-
 								<div class="outer">
-
 									<button id="challenge15" class="challengesbtn">Start</button>
 									<br>
 									<span>Reward: Automated Tickspeed Boosts</span>
@@ -1913,9 +1536,7 @@
 								<span style="font-size: 110%">The Tickspeed Multiplier boost to Time Dimensions is weaker.</span>
 								<br>
 								<br>
-
 								<div class="outer">
-
 									<button id="challenge16" class="challengesbtn">Start</button>
 									<br>
 									<span>Reward: Automated Time Dimension Boosts</span>
@@ -2489,9 +2110,9 @@
 				</table>
 			</div>
 			<div id="pChalls" class="challengeTab">
-				<button class="storebtn" onclick="respecTogglePC()" id="respecPC" style="width:150px; height: 40px; font-size: 10px; border-width: 1px; margin: auto">Respec Paired Challenges on next quantum</button>
-				<button class="storebtn" onclick="$.notify('Soon.')" style="width:150px; height: 40px; font-size: 10px; border-width: 1px; margin: auto">Export Paired Challenges</button>
-				<button class="storebtn" onclick="$.notify('Soon.')" style="width:150px; height: 40px; font-size: 10px; border-width: 1px; margin: auto">Import Paired Challenges</button><br>
+				<button class="storebtn" onclick="respecPC()" style="width:150px; height: 40px; font-size: 10px; border-width: 1px; margin: auto">Respec</button>
+				<button class="storebtn" onclick="exportData(getPCStr())" style="width:150px; height: 40px; font-size: 10px; border-width: 1px; margin: auto">Export</button>
+				<button class="storebtn" onclick="importPC()" style="width:150px; height: 40px; font-size: 10px; border-width: 1px; margin: auto">Import</button><br>
 				<b class="warning">Assigning will bring you into Quantum Challenges tab.</b><br>
 				<table class="table" style="margin: 0 auto">
 					<tr>
@@ -4451,7 +4072,6 @@
 				<button id='breakLimitED' class='storebtn' style='width: 280px; height: 60px' onclick='breakLimit()'></button><br>
 				<button class='storebtn' style='width: 280px' onclick='maxBuyLimit()'>Buy max</button><br><br><br>
 			</div><div class='anttab' id='nanofield'>
-				<!-- <b class="red">WARNING: This mechanic will be reworked soon!</b><br> -->
 				You have <span id="quarksNanofield"></span> pilons.<br>
 				<span id="ns"></span>
 				<table class="qtable"><tr><td>
@@ -5026,7 +4646,8 @@
 		<button class="closebtn storebtn" onclick="closeToolTip()">&times;</button>
 		<button class="storebtn" style="font-size: 15px" onclick="new_preset()" style="display: inline">New preset</button>
 		<button class="storebtn" style="font-size: 15px" onclick="new_preset(true)" style="display: inline">Import</button>
-		<div style="height:270px;overflow-y:auto">
+		<button class="storebtn" id="toggle_preset_reset" style="width: 240px; font-size: 15px" onclick="toggle_preset_reset()" style="display: inline">Force eternity: OFF</button>
+		<div style="height: 270px; overflow-y: auto">
 			<table id='presets'>
 			</table>
 		</div>

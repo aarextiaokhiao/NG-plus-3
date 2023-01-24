@@ -32,26 +32,5 @@ function exportInfiniteSave() {
 }
 
 function bugExport() {
-	let output = el('output');
-	let parent = output.parentElement;
-
-	parent.style.display = "";
-	output.value = infiniteSave;
-
-	output.onblur = function() {
-		parent.style.display = "none";
-	}
-
-	output.focus()
-	output.select()
-
-	try {
-		if (document.execCommand('copy')) {
-			$.notify("Exported to clipboard", "info");
-			output.blur()
-			output.onblur()
-		}
-	} catch(ex) {
-		// well, we tried.
-	}
+	exportData(infiniteSave)
 }

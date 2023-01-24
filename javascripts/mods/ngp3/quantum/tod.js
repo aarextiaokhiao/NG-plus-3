@@ -15,6 +15,36 @@ function getTreeUpgradeEfficiencyDisplayText(){
 	return s
 }
 
+function setupToDHTML() {
+	for (var c = 0; c < 1; c++) {
+		var color = (["red", "green", "blue"])[c]
+		var shorthand = (["r", "g", "b"])[c]
+		var branchUpgrades = ["Gain <span id='" + color + "UpgPow1'></span>x preons, but preons decay <span id='" + color + "UpgSpeed1'></span>x faster.",
+			  "Boost preons.",
+			  "Preons decay <span id='" + color + "UpgEffDesc'>4x</span> slower."] //might need to change this to just "slower" once we have 1000+ upgrade 3's
+
+		var html = '<span class="' + color + '" id="' + color + 'QuarksToD" style="font-size: 35px">0</span> ' + color + ' quarks<br>'
+		html += '<button class="storebtn" id="' + color + 'UnstableGain" style="width: 210px; height: 120px" onclick="unstableQuarks(\'' + shorthand + '\')"></button><br>'
+		html += "<span class='" + color + "' id='" + color + "UnstableQuarks' style='font-size: 20px'>0</span> " + " <span id='" + shorthand + "UQName'></span> preons<br>"
+		html += "<span id='" + color + "QuarksDecayRate'></span><br>"
+		html += "(Duration: <span id='" + color + "QuarksDecayTime'></span>)<br>"
+		html += '<span class="' + color + '" id="' + color + 'QuarkSpin" style="font-size: 25px">0.0</span> ' + ' preonic spin '
+		html += '<span class="' + color + '" id="' + color + 'QuarkSpinProduction" style="font-size: 15px">+0/s</span>'
+		el("todRow").innerHTML = html
+		el("todRow").className = shorthand + "qC"
+		
+		html = "<table class='table' align='center' style='margin: auto'><tr>"
+		for (var u = 1; u <= 3; u++) {
+			html += "<td style='vertical-align: 0'><button class='gluonupgrade unavailablebtn' id='" + color + "upg" + u + "' onclick='buyBranchUpg(\"" + shorthand + "\", " + u + ")' style='font-size:10px'>" + branchUpgrades[u - 1] + "<br>" 
+			html += "Currently: <span id='" + color + "upg" + u + "current'>1</span><br><span id='" + color + "upg" + u + "cost'>?</span></button>"
+			html += (u == 2 ? "<br><button class='storebtn' style='width: 190px' onclick='maxBranchUpg(\"" + shorthand + "\")'>Max all upgrades</button>" + "<br><button class='storebtn' style='width: 190px; font-size:10px' onclick='maxBranchUpg(\"" + shorthand + "\", true)'>Max 2nd and 3rd upgrades</button>":"")+"</td>"
+		}
+		html += "</tr></tr><td></td><td><button class='gluonupgrade unavailablebtn' id='" + shorthand + "RadioactiveDecay' style='font-size:9px' onclick='radioactiveDecay(\"" + shorthand + "\")'>Reset to strengthen the 1st upgrade, but nerf this branch.<br><span id='" + shorthand + "RDReq'></span><br>Radioactive Decays: <span id='" + shorthand + "RDLvl'></span></button></td><td></td>"
+		html += "</tr></table>"
+		el(color + "Branch").innerHTML = html
+	}
+}
+
 function updateTreeOfDecayTab(){
 	var branchNum
 	var colors = ["red", "green", "blue"]

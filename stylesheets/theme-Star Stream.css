@@ -1,25 +1,17 @@
 body {
     background-color: #00080f !important
 }
-.container {
-    font-family:'IBM Plex Mono', monospace !important
+
+* {
+    font-family:'IBM Plex Mono', monospace !important;
 }
 
-.statstab {
-    font-family:'IBM Plex Mono', monospace !important
-}
-
-b {
-    font-family:'IBM Plex Mono', monospace !important
-}
-
-input {
-    font-family:'IBM Plex Mono', monospace !important
+button {
+    border-radius: 0 !important
 }
 
 #ghostlyNewsTicker span,
 #ghostifyanitext b {
-    font-family:'IBM Plex Mono' !important;
     animation: ghostifybtntext 4s linear infinite
 }
 
@@ -29,12 +21,10 @@ input {
 
 #container button,
 .popup button {
-    font-family:'IBM Plex Mono', monospace !important;
     font-weight: 500;
     background-color: #333;
     color: #ccc;
-    border-color: #ccc;
-    border-radius: 0 !important;
+    border-color: #ccc
 }
 
 #container button:hover {
@@ -82,13 +72,11 @@ input {
 }
 
 #progresspercent {
-    font-family:'IBM Plex Mono', monospace !important;
     color: #191919;
     font-weight: 900;
 }
 
 #footer {
-    font-family:'IBM Plex Mono', monospace !important;
     font-weight: 500
 }
 
@@ -162,7 +150,6 @@ input {
 }
 
 .popup {
-    font-family:'IBM Plex Mono', monospace !important;
     background-color: #191919;
     color: #e5e5e5;
     border: 2px solid #0072e5;
@@ -175,7 +162,7 @@ strong { color: #0072e5 }
     color: #00e500 !important
 }
 
-#pSac,
+/*#pSac,
 #paradoxbtn {
     background: linear-gradient(#720072, #e500e5);
     border-color: #e500e5 !important;
@@ -210,10 +197,9 @@ strong { color: #0072e5 }
     color: #FFFFFF50 !important;
     text-shadow: none;
     box-shadow: none;
-}
+}*/
 
-#galaxybtn,
-#sacrificebtn {
+.galaxybtn {
     background: linear-gradient(#06f, #99f) !important;
     border-color: #3399ff !important;
     text-shadow: 0px 0px 3px #000, 0px 0px 6px #000;
@@ -221,22 +207,14 @@ strong { color: #0072e5 }
     animation: galaxybtntext 4s linear infinite;
 }
 
-#galaxy .infinistorebtn1,
-#galaxy .infinistorebtn2,
-#galaxy .infinistorebtn3,
-#galaxy .infinistorebtn4,
-#galaxy .infinistorebtn5 {
+.galaxyupgbtn {
     background: #0072ff !important;
     border-color: #00e5ff !important;
     color: #ffffff !important;
     font-weight: normal;
 }
 
-#galaxy .infinistorebtn1:hover,
-#galaxy .infinistorebtn2:hover,
-#galaxy .infinistorebtn3:hover,
-#galaxy .infinistorebtn4:hover,
-#galaxy .infinistorebtn5:hover {
+.galaxyupgbtn:hover {
     box-shadow: inset 0px 0px 15px 0px #3ff;
 }
 
@@ -247,9 +225,8 @@ strong { color: #0072e5 }
     font-weight: normal;
 }
 
-#galaxybtn:hover,
-#sacrificebtn:hover {
-    box-shadow: inset 0px 0px 12px 0px #000;
+.galaxybtn:hover {
+    box-shadow: inset 0px 0px 15px 0px #3ff;
     font-weight:500;
 }
 
@@ -265,7 +242,6 @@ strong { color: #0072e5 }
 
 .challengediv {
     background-color: #005099 !important;
-    font-family:'IBM Plex Mono', monospace !important;
     border-color: #0072e5 !important;
     border-radius: 0px !important
 }
@@ -287,9 +263,7 @@ strong { color: #0072e5 }
     border-color: #e2bd00 !important
 }
 
-#bigcrunch,
-#infinitybtn,
-#postInfinityButton {
+.infinitybtn {
     border-color: #e2bd00 !important;
     background:linear-gradient(#ffcc00, #999900) !important;
     text-shadow: 0px 0px 5px #ff0, 0px 0px 9px #fff !important;
@@ -297,9 +271,7 @@ strong { color: #0072e5 }
     animation: inftybtntext 4s linear infinite
 }
 
-#bigcrunch:hover,
-#infinitybtn:hover,
-#postInfinityButton:hover{
+.infinitybtn:hover{
     box-shadow: inset 0px 0px 5px 2px #ff3000;
 }
 
@@ -396,7 +368,6 @@ strong { color: #0072e5 }
 
 .infchallengediv {
     background-color: #440 !important;
-    font-family:'IBM Plex Mono', monospace !important;
     border-color: #e2bd00 !important;
     border-radius: 0px !important;
 }
@@ -414,8 +385,7 @@ strong { color: #0072e5 }
     font-weight: normal;
 }
 
-#eternitybtn,
-#eternitystorebtn,
+.eternitybtn,
 .eternityttbtn {
     border-color: #7100e2 !important;
     background:linear-gradient(#000033, #6600ff) !important;
@@ -434,16 +404,10 @@ strong { color: #0072e5 }
     box-shadow: inset 0px 0px 15px 0px #f3f;
 }
 
-#eternitybtn:hover,
-#eternitystorebtn:hover,
+.eternitybtn:hover,
 .eternityttbtn:hover {
     background-color: #7100e2 !important;
     box-shadow: inset 0px 0px 5px 2px #ff0099;
-}
-
-
-#TTbuttons {
-    font-family:'IBM Plex Mono', monospace !important
 }
 
 #theorembuybackground {
@@ -454,7 +418,6 @@ strong { color: #0072e5 }
 }
 
 #TTbuttons button {
-    font-family:'IBM Plex Mono', monospace !important;
     border-radius: 0px
 }
 
@@ -589,7 +552,6 @@ strong { color: #0072e5 }
 
 .eterchallengediv {
     background-color: #306 !important;
-    font-family:'IBM Plex Mono', monospace !important;
     border-color: #7100e2 !important;
     border-radius: 0px !important
 }
@@ -803,7 +765,6 @@ strong { color: #0072e5 }
 
 .quantumchallengediv {
     background-color: #060 !important;
-    font-family:'IBM Plex Mono', monospace !important;
     border-color: #020 !important;
     border-radius: 0px !important
 }
@@ -1081,21 +1042,18 @@ strong { color: #0072e5 }
 
 .notifyjs-bootstrap-info {
     background-color: #00e5e5;
-    font-family:'IBM Plex Mono', monospace;
     border: 2px #009999 solid;
     border-radius: 0px
 }
 
 .notifyjs-bootstrap-success {
     background-color: #66ff66;
-    font-family:'IBM Plex Mono', monospace;
     border: 2px #339933 solid;
     border-radius: 0px
 }
 
 .notifyjs-bootstrap-warn {
     background-color: #e5e500;
-    font-family:'IBM Plex Mono', monospace;
     border: 2px #999900 solid;
     color: #000;
     border-radius: 0px
@@ -1103,28 +1061,11 @@ strong { color: #0072e5 }
 
 .notifyjs-bootstrap-error {
     background-color: #ff6666;
-    font-family:'IBM Plex Mono', monospace;
     border: 2px #993333 solid;
     border-radius: 0px
 }
 
-#braveMilestone1,
-#braveMilestone2,
-#braveMilestone3,
-#braveMilestone4,
-#braveMilestone5,
-#braveMilestone6,
-#braveMilestone7,
-#braveMilestone8,
-#braveMilestone9,
-#braveMilestone10,
-#braveMilestone11,
-#braveMilestone12,
-#braveMilestone13,
-#braveMilestone14,
-#braveMilestone15,
-#braveMilestone16
-{
+#bravemilestones table div {
     font-size: 18px!important;
     font-family: "IBM Plex Mono" !important;
 }

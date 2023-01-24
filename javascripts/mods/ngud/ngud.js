@@ -62,7 +62,7 @@ function isBHDimUnlocked(t) {
 }
 
 function updateBlackhole() {
-	if (player.dilation.studies.includes(1)) el("dilationeterupgrow").style.display="table-row"
+	if (hasDilStudy(1)) el("dilationeterupgrow").style.display="table-row"
 
 	let unl = player.blackhole.unl
 	el("blackholediv").style.display = unl ? "" : "none"

@@ -144,7 +144,7 @@ function tweakBigRip(id, reset) {
 		if (!hasRipUpg(12)) player.timestudy.theorem += 1350
 	}
 	if (id == 10) {
-		if (!player.dilation.studies.includes(1)) player.dilation.studies.push(1)
+		if (!hasDilStudy(1)) player.dilation.studies.push(1)
 		if (reset) {
 			showTab("eternitystore")
 			showEternityTab("dilation")

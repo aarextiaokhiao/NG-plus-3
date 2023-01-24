@@ -1,21 +1,17 @@
 body {
     background-color: #191919 !important
 }
-.container, .statstab, b, input {
-    font-family:'Inconsolata', monospace !important
-}
-#ghostlyNewsTicker b, #ghostifyanitext b {
-    font-family:'Typewriter' !important
+* {
+    font-family:'Inconsolata', monospace;
+    border-radius: 0 !important
 }
 #container div {
     color: #e5e5e5
 }
 #container button, .popup button {
-    font-family:'Inconsolata', monospace !important;
     background-color: #191919;
     color: #e5e5e5;
-    border-color: #0072e5;
-    border-radius: 0px !important
+    border-color: #0072e5
 }
 #container button:hover {
     background-color: #0072e5;
@@ -23,38 +19,28 @@ body {
 }
 .achievementlocked {
     background-color: #727272 !important;
-    border-color: #720000 !important;
-    border-radius: 0px !important
+    border-color: #720000 !important
 }
 .achievementunlocked {
     background-color: #00e500 !important;
-    border-color: #007200 !important;
-    border-radius: 0px !important
+    border-color: #007200 !important
 }
 .completedrow {
     background-color: #007200 !important
 }
 .achievementhidden {
     background-color: #727272 !important;
-    border-color: #191919 !important;
-    border-radius: 0px !important
+    border-color: #191919 !important
 }
 #progress {
     bottom: 5px !important;
-    background-color: #191919 !important;
-    border-radius: 0px !important
+    background-color: #191919 !important
 }
 #progressbar {
-    background-color: #00e500 !important;
-    border-radius: 0px !important
+    background-color: #00e500 !important
 }
 #progresspercent {
-    font-family:'Inconsolata', monospace !important;
-    color: #191919 !important;
-    border-radius: 0px !important
-}
-#footer {
-    font-family: 'Inconsolata', monospace !important
+    color: #191919 !important
 }
 #coinAmount {
     color: #0072e5 !important
@@ -62,8 +48,7 @@ body {
 .storebtn, .completedchallengesbtn, .pc4completed {
     border-color: #00e500 !important;
     background-color: #191919 !important;
-    color: #e5e5e5 !important;
-    border-radius: 0px !important
+    color: #e5e5e5 !important
 }
 .storebtn:hover {
     background-color: #00e500 !important;
@@ -78,11 +63,9 @@ body {
     color: #e5e5e5 !important
 }
 .popup {
-    font-family:'Inconsolata', monospace !important;
 	background-color: #191919;
 	color: #e5e5e5;
-	border: 2px solid #0072e5;
-	border-radius: 0px
+	border: 2px solid #0072e5
 }
 strong { color: #0072e5 }
 .floatingText {
@@ -117,10 +100,10 @@ strong { color: #0072e5 }
 	color: #e5e5e5 !important;
 	text-shadow: 0px 0px 6px #000000, 0px 0px 6px #e500e5
 }
-#galaxybtn, #galaxy .infinistorebtn1, #galaxy .infinistorebtn2, #galaxy .infinistorebtn3, #sacrificebtn {
+.galaxybtn, .galaxyupgbtn {
     border-color: #2d5be5 !important
 }
-#galaxybtn:hover, #galaxy .infinistorebtn1:hover, #galaxy .infinistorebtn2:hover, #galaxy .infinistorebtn3:hover, #sacrificebtn:hover {
+.galaxybtn:hover, .galaxyupgbtn:hover {
     background-color: #2d5be5 !important
 }
 #galaxyPoints {
@@ -132,9 +115,7 @@ strong { color: #0072e5 }
 #vanillaGalaxyPoints { display: none }
 .challengediv {
     background-color: #191919 !important;
-    font-family:'Inconsolata', monospace !important;
-    border-color: #0072e5 !important;
-    border-radius: 0px !important
+    border-color: #0072e5 !important
 }
 .challengesbtn {
     border-color: #009900 !important
@@ -176,20 +157,20 @@ strong { color: #0072e5 }
     border-color: #00e500 !important
 }
 .autoBuyerDiv {
-    border-color: #727272;
-    border-radius: 0px
+    border-color: #727272
 }
-#blackHoleTabbtn button, #blackholeunlock.storebtn, #blackholediv table .storebtn, #replicantstabbtn button, #replicantReset.storebtn, #edtabbtn button, #edtabbtn_dim button { border: 2px solid #333333 !important }
-#blackHoleTabbtn button:hover, #blackholeunlock.storebtn:hover, #blackholediv table .storebtn:hover, #replicantstabbtn button:hover, #replicantReset.storebtn:hover, #edtabbtn button:hover, #edtabbtn_dim button:hover { background-color: #333333 !important }
+#blackHoleTabbtn button, #blackholeunlock.storebtn, #blackholediv table .storebtn, #tab_ant, #replicantReset.storebtn, #edtabbtn button, #edtabbtn_dim button {
+	border: 2px solid #333333 !important;
+	text-shadow: none
+}
+#blackHoleTabbtn button:hover, #blackholeunlock.storebtn:hover, #blackholediv table .storebtn:hover, #tab_ant:hover, #replicantReset.storebtn:hover, #edtabbtn button:hover, #edtabbtn_dim button:hover { background-color: #333333 !important; }
 #darkMatter, #darkMatterPerSecond, #darkMatterDT, #nextDiscounts, #darkMatterMult, #blackholePowAmount, #DilMultAmount, #InfAndReplMultAmount, #replicantAmount, #workerReplAmount, #babyReplAmount, #workerProgress, #hatchProgress, #growupProgress, #replicantAmountED, #normalReplicantsNanofield { 
 	color: #333333 !important;
 	text-shadow: 0px 0px 3px #333333, 0px 0px 4.5px #e5e5e5
 }
 .infchallengediv {
     background-color: #191919 !important;
-    font-family:'Inconsolata', monospace !important;
-    border-color: #e2bd00 !important;
-    border-radius: 0px !important
+    border-color: #e2bd00 !important
 }
 .eternitybtn, #timedimensions td:nth-child(4) .storebtn, .eternityupbtn, .milestonereward, .timestudy, .eternityttbtn, #breakEternityTabbtn button {
     border-color: #7100e2 !important;
@@ -198,18 +179,9 @@ strong { color: #0072e5 }
 .eternitybtn:hover, #timedimensions td:nth-child(4) .storebtn:hover, .timestudy:hover, .eternityttbtn:hover, #breakEternityTabbtn button:hover {
     background-color: #7100e2 !important
 }
-#TTbuttons {
-    font-family:'Inconsolata', monospace !important
-}
 #theorembuybackground {
     background-color: #e5e5e5 !important;
     border-color: #191919 !important;
-    border-top-left-radius: 0px !important;
-    border-top-right-radius: 0px !important
-}
-#TTbuttons button {
-    font-family:'Inconsolata', monospace !important;
-    border-radius: 0px
 }
 #timestudies #footer, #masterystudies #footer {
     display:block;
@@ -314,9 +286,7 @@ strong { color: #0072e5 }
 }
 .eterchallengediv {
     background-color: #191919 !important;
-    font-family:'Inconsolata', monospace !important;
-    border-color: #7100e2 !important;
-    border-radius: 0px !important
+    border-color: #7100e2 !important
 }
 .timestudy.darkstudy {
     background-color: #191919 !important;
@@ -429,33 +399,27 @@ strong { color: #0072e5 }
 #electronsEffect { color: #00e500 !important }
 .quantumchallengediv {
     background-color: #191919 !important;
-    font-family:'Inconsolata', monospace !important;
-    border-color: #009900 !important;
-    border-radius: 0px !important
+    border-color: #009900 !important
 }
 .pc1completed {
     background-color: #191919 !important;
     border-color: #009900 !important;
-    color: #e5e5e5 !important;
-    border-radius: 0px !important
+    color: #e5e5e5 !important
 }
 .pc2completed {
     background-color: #191919 !important;
     border-color: #7100e2 !important;
-    color: #e5e5e5 !important;
-    border-radius: 0px !important
+    color: #e5e5e5 !important
 }
 .pc3completed {
     background-color: #191919 !important;
     border-color: #e2bd00 !important;
-    color: #e5e5e5 !important;
-    border-radius: 0px !important
+    color: #e5e5e5 !important
 }
 .ndcompleted {
     background-color: #191919 !important;
     border-color: #72e572 !important;
     color: #e5e5e5 !important;
-    border-radius: 0px !important;
 	animation: none
 }
 #dilstudy10.dilationupg, #dilstudy11.dilationupg { border: 2px solid #333333 !important }
@@ -551,7 +515,6 @@ strong { color: #0072e5 }
 	color: #5be567 !important
 }
 .ghostifybtn, .brCompleted {
-	border-radius: 0px;
 	border-color: transparent !important
 }
 .ghostifybtn:hover {
@@ -655,8 +618,7 @@ strong { color: #0072e5 }
 .chosenbtn {
     border-color: #191919 !important;
     background-color: #00e500 !important;
-    color: #191919 !important;
-    border-radius: 0px !important
+    color: #191919 !important
 }
 .bRune {
 	background: #e5e5e5;
@@ -721,27 +683,19 @@ strong { color: #0072e5 }
 }
 .notifyjs-bootstrap-info {
     background-color: #0072e5;
-    font-family:'Inconsolata', monospace;
-    border: 2px #004C99 solid;
-    border-radius: 0px
+    border: 2px #004C99 solid
 }
 .notifyjs-bootstrap-success {
     background-color: #00e500;
-    font-family:'Inconsolata', monospace;
-    border: 2px #009900 solid;
-    border-radius: 0px
+    border: 2px #009900 solid
 }
 .notifyjs-bootstrap-warn {
     background-color: #e5e500;
-    font-family:'Inconsolata', monospace;
-    border: 2px #999900 solid;
-    border-radius: 0px
+    border: 2px #999900 solid
 }
 .notifyjs-bootstrap-error {
     background-color: #e50000;
-    font-family:'Inconsolata', monospace;
-    border: 2px #990000 solid;
-    border-radius: 0px
+    border: 2px #990000 solid
 }
 
 @keyframes rg {

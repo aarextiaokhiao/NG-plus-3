@@ -23,7 +23,7 @@ var modChosen = {}
 var gameSpeed = 1
 
 //TO-DO: Move setup into another file.
-function setupAutobuyerHTMLandData(){
+function setupAutobuyerToggles(){
 	for (let [i, key] of Object.entries(autoBuyerKeys)) {
 		el("ab_" + key + "_upg").onclick = () => buyAutobuyer(i)
 	}
@@ -106,185 +106,55 @@ function setupInfUpgHTMLandData(){
 	}
 }
 
-function setupPCTableHTMLandData(){
-	var pcct = el("pccompletionstable")
-	var row = pcct.insertRow(0)
-	for (let c = 0; c < 9; c++) {
-		var col = row.insertCell(c)
-		if (c > 0) col.textContent = "#" + c
+function setupDimensionHTML() {
+	var html = ""
+	for (let d = 1; d <= 8; d++) {
+		html += `<tr id='${d}Row' style='font-size:15px'>
+			<td id="D${d}" width="32%"> </td>
+			<td id="A${d}"></td>
+			<td width="10%"><button id="B${d}" style="color:black; height: 25px; font-size: 10px; width: 135px" class="storebtn" onclick="buyOneDimension(${d}"></button></td>
+			<td width="10%"><button id="M${d}" style="color:black; height: 25px; font-size: 10px; width: 135px" class="storebtn" onclick="buyManyDimension(${d})"></button></td>
+		</tr>`
 	}
-	for (let r = 1; r < 9; r++) {
-		row = pcct.insertRow(r)
-		for (let c = 0; c < 9; c++) {
-			var col = row.insertCell(c)
-			if (c < 1) col.textContent = "#" + r
-			else if (c == r) {
-				col.id = "qcC" + r
-			} else col.id = "pc" + r + c
-		}
-	}
-	var ndsDiv = el("parent")
-	var pdsDiv = el("pdTable")
-	var edsDiv = el("empDimTable")
-	for (let d = 1; d < 9; d++) {
-		var row = ndsDiv.insertRow(d - 1)
-		row.id = d + "Row"
-		row.style["font-size"] = "15px"
-		var html = '<td class="rel" id="D' + d + '" align="right" width="32%"> </td>'
-		html += '<td id="A' + d + '"></td>'
-		html += '<td align="right" width="10%"><button id="B' + d + '" style="color:black; height: 25px; font-size: 10px; width: 135px" class="storebtn" onclick="buyOneDimension(' + d + ')"></button></td>'
-		html += '<td align="right" width="10%"><button id="M' + d + '" style="color:black; width:210px; height: 25px; font-size: 10px" class="storebtn" onclick="buyManyDimension(' + d + ')"></button></td>'
-		row.innerHTML = html
-		
-		var row=pdsDiv.insertRow(d-1)
-		row.id = "pR" + d
-		row.style["font-size"] = "16px"
-		var html = '<td id="pD' + d + '" width="41%">' + DISPLAY_NAMES[d] + ' Paradox Dimension x1</td>'
-		html += '<td id="pA' + d + '">0 (0)</td>'
-		html += '<td align="right" width="10%"><button id="pB'+d+'" style="color:black; width:195px; height:30px" class="storebtn" align="right" onclick="buyPD('+d+')">Cost: ??? Px</button></td></tr>'
-		row.innerHTML = html
-		
-		var row=edsDiv.insertRow(d - 1)
-		row.id = "empRow" + d
-		row.style["font-size"] = "15px"
-		var html = '<td id="empD' + d + '" width="41%">' + DISPLAY_NAMES[d] + ' Emperor Dimension x1</td>'
-		html += '<td id="empAmount' + d + '"></td>'
-		html += '<td><span class="empQuarks" id="empQuarks' + d + '">0</span> pilons/s</td>'
-		html += '<td align="right" width="2.5%"><button id="empFeedMax' + d + '" style="color:black; width:70px; font-size:10px" class="storebtn" align="right" onclick="feedReplicant('+d+', true)">Max</button></td>'
-		html += '<td align="right" width="7.5%"><button id="empFeed' + d + '" style="color:black; width:195px; height:25px; font-size:10px" class="storebtn" align="right" onclick="feedReplicant('+d+')">Feed (0%)</button></td>'
-		row.innerHTML = html
-	}
-}
+	el("dimTable").innerHTML = html
 
-function setupToDHTMLandData(){
-	for (var c = 0; c < 1; c++) {
-		var color = (["red", "green", "blue"])[c]
-		var shorthand = (["r", "g", "b"])[c]
-		var branchUpgrades = ["Gain <span id='" + color + "UpgPow1'></span>x preons, but preons decay <span id='" + color + "UpgSpeed1'></span>x faster.",
-				      "Boost preons.",
-				      "Preons decay <span id='" + color + "UpgEffDesc'>4x</span> slower."] //might need to change this to just "slower" once we have 1000+ upgrade 3's
-
-		var html = '<span class="' + color + '" id="' + color + 'QuarksToD" style="font-size: 35px">0</span> ' + color + ' quarks<br>'
-		html += '<button class="storebtn" id="' + color + 'UnstableGain" style="width: 210px; height: 120px" onclick="unstableQuarks(\'' + shorthand + '\')"></button><br>'
-		html += "<span class='" + color + "' id='" + color + "UnstableQuarks' style='font-size: 20px'>0</span> " + " <span id='" + shorthand + "UQName'></span> preons<br>"
-		html += "<span id='" + color + "QuarksDecayRate'></span><br>"
-		html += "(Duration: <span id='" + color + "QuarksDecayTime'></span>)<br>"
-		html += '<span class="' + color + '" id="' + color + 'QuarkSpin" style="font-size: 25px">0.0</span> ' + ' preonic spin '
-		html += '<span class="' + color + '" id="' + color + 'QuarkSpinProduction" style="font-size: 15px">+0/s</span>'
-		el("todRow").innerHTML = html
-		el("todRow").className = shorthand + "qC"
-		
-		html = "<table class='table' align='center' style='margin: auto'><tr>"
-		for (var u = 1; u <= 3; u++) {
-			html += "<td style='vertical-align: 0'><button class='gluonupgrade unavailablebtn' id='" + color + "upg" + u + "' onclick='buyBranchUpg(\"" + shorthand + "\", " + u + ")' style='font-size:10px'>" + branchUpgrades[u - 1] + "<br>" 
-			html += "Currently: <span id='" + color + "upg" + u + "current'>1</span><br><span id='" + color + "upg" + u + "cost'>?</span></button>"
-			html += (u == 2 ? "<br><button class='storebtn' style='width: 190px' onclick='maxBranchUpg(\"" + shorthand + "\")'>Max all upgrades</button>" + "<br><button class='storebtn' style='width: 190px; font-size:10px' onclick='maxBranchUpg(\"" + shorthand + "\", true)'>Max 2nd and 3rd upgrades</button>":"")+"</td>"
-		}
-		html += "</tr></tr><td></td><td><button class='gluonupgrade unavailablebtn' id='" + shorthand + "RadioactiveDecay' style='font-size:9px' onclick='radioactiveDecay(\"" + shorthand + "\")'>Reset to strengthen the 1st upgrade, but nerf this branch.<br><span id='" + shorthand + "RDReq'></span><br>Radioactive Decays: <span id='" + shorthand + "RDLvl'></span></button></td><td></td>"
-		html += "</tr></table>"
-		el(color + "Branch").innerHTML = html
+	var html = ""
+	for (let d = 1; d <= 8; d++) {
+		html += `<tr id='infRow${d}' style='font-size:16px'>
+			<td id="infD${d}" width="41%"></td>
+			<td id="infAmount${d}"></td>
+			<td><button id="infauto${d}" style="width:70px; font-size: 10px; float: right; visibility: hidden" onclick="switchAutoInf(${d})" class="storebtn"></button></td>
+			<td width="10%"><button id="infMax${d}" style="color:black; width:195px; height:30px" class="storebtn" align="right" onclick="buyManyInfinityDimension(${d})"></button></td>
+		</tr>`
 	}
-}
+	el("infDimTable").innerHTML = html
 
-function setupNanofieldHTMLandData(){
-	var nfRewards = el("nfRewards")
-	var row = 0
-	for (var r = 1; r <= 5; r += 4) {
-		nfRewards.insertRow(row).innerHTML = 
-			"<td id='nfRewardHeader" + r + "' class='milestoneText'></td>" +
-			"<td id='nfRewardHeader" + (r + 1) + "' class='milestoneText'></td>"+
-			"<td id='nfRewardHeader" + (r + 2) + "' class='milestoneText'></td>"+
-			"<td id='nfRewardHeader" + (r + 3) + "' class='milestoneText'></td>"
-		row++
-		nfRewards.insertRow(row).innerHTML = 
-			"<td id='nfRewardTier" + r + "' class='milestoneTextSmall'></td>" +
-			"<td id='nfRewardTier" + (r + 1) + "' class='milestoneTextSmall'></td>"+
-			"<td id='nfRewardTier" + (r + 2) + "' class='milestoneTextSmall'></td>"+
-			"<td id='nfRewardTier" + (r + 3) + "' class='milestoneTextSmall'></td>"
-		row++
-		nfRewards.insertRow(row).innerHTML = 
-			"<td><button class='nfRewardlocked' id='nfReward" + r + "'></button></td>" +
-			"<td><button class='nfRewardlocked' id='nfReward" + (r + 1) + "'></button></td>"+
-			"<td><button class='nfRewardlocked' id='nfReward" + (r + 2) + "'></button></td>"+
-			"<td><button class='nfRewardlocked' id='nfReward" + (r + 3) + "'></button></td>"
-		row++
+	var html = ""
+	for (let d = 1; d <= 8; d++) {
+		html += `<tr id='timeRow${d}' style='font-size:17px'>
+			<td id="timeD${d}" width="41%"></td>
+			<td id="timeAmount${d}"></td>
+			<td><button id="td${d}auto" style="width:70px; font-size: 10px; float: right; visibility: hidden" onclick="switchAutoEter('td${d}')" class="storebtn"></button></td>
+			<td width="10%"><button id="timeMax${d}" style="color:black; width:195px; height:30px" class="storebtn" align="right" onclick="buyTimeDimension(${d})">Cost: 10</button></td>
+		</tr>`
 	}
-	el("nfReward7").style["font-size"] = "10px"
-	el("nfReward8").style["font-size"] = "10px"
-}
-
-function setupBraveMilestones(){
-	for (var m = 1; m <= 16; m++) el("braveMilestone" + m).textContent=getFullExpansion(tmp.bm[m - 1])+"x quantumed"+(m==1?" or lower":"")
-}
-
-function setupBosonicExtraction(){
-	var ben = el("enchants")
-	for (var g2 = 2; g2 <= br.maxLimit; g2++) {
-		var row = ben.insertRow(g2 - 2)
-		row.id = "bEnRow" + (g2 - 1)
-		for (var g1 = 1; g1 < g2; g1++) {
-			var col = row.insertCell(g1 - 1)
-			var id = (g1 * 10 + g2)
-			col.innerHTML = "<button id='bEn" + id + "' class='gluonupgrade unavailablebtn' style='font-size: 9px' onclick='takeEnchantAction("+id+")'>"+(bEn.descs[id]||"???")+"<br>"+
-			"Currently: <span id='bEnEffect" + id + "'>???</span><br>"+
-			"<span id='bEnLvl" + id + "'></span><br>" +
-			"<span id='bEnOn" + id + "'></span><br>" +
-			"Cost: <span id='bEnG1Cost" + id + "'></span> <div class='bRune' type='" + g1 + "'></div> & <span id='bEnG2Cost" + id + "'></span> <div class='bRune' type='" + g2 + "'></div></button><br>"
-		}
-	}
-	var toeDiv = ""
-	for (var g = 1; g <= br.maxLimit; g++) toeDiv += ' <button id="typeToExtract' + g + '" class="storebtn" onclick="changeTypeToExtract(' + g + ')" style="width: 25px; font-size: 12px"><div class="bRune" type="' + g + '"></div></button>'
-	el("typeToExtract").innerHTML=toeDiv
-}
-
-function setupBosonicUpgrades(){
-	setupBosonicUpgReqData()
-	var buTable=el("bUpgs")
-	for (r = 1; r <= bu.maxRows; r++) {
-		var row = buTable.insertRow(r - 1)
-		row.id = "bUpgRow" + r
-		for (c = 1; c < 6; c++) {
-			var col = row.insertCell(c - 1)
-			var id = (r * 10 + c)
-			col.innerHTML = "<button id='bUpg" + id + "' class='gluonupgrade unavailablebtn' style='font-size: 9px' onclick='buyBosonicUpgrade(" + id + ")'>" + (bu.descs[id] || "???") + "<br>" +
-			(bu.effects[id] !== undefined ? "Currently: <span id='bUpgEffect" + id + "'>0</span><br>" : "") +
-			"Cost: <span id='bUpgCost" + id + "'></span> Bosons<br>" +
-			"Requires: <span id='bUpgG1Req" + id + "'></span> <div class='bRune' type='" + bu.reqData[id][2] + "'></div> & <span id='bUpgG2Req" + id + "'></span> <div class='bRune' type='" + bu.reqData[id][4] + "'></div></button>"
-		}
-	}
-}
-
-function setupBosonicRunes(){
-	var brTable=el("bRunes")
-	for (var g = 1; g <= br.maxLimit; g++) {
-		var col = brTable.rows[0].insertCell(g - 1)
-		col.id = "bRuneCol" + g
-		col.innerHTML = '<div class="bRune" type="' + g + '"></div>: <span id="bRune' + g + '"></span>'
-	}
-	var glyphs=document.getElementsByClassName("bRune")
-	for (var g = 0 ; g < glyphs.length; g++) {
-		var glyph = glyphs[g]
-		var type = glyph.getAttribute("type")
-		if (type > 0 && type <= br.maxLimit) {
-			glyph.className = "bRune " + br.names[type]
-			glyph.setAttribute("ach-tooltip", br.names[type] + " Hypothesis")
-		}
-	}
+	html += `<tr id="tdReset" style="font-size: 17px">
+		<td id="tdResetLabel" colspan=3></td>
+		<td><button id="tdResetBtn" style="color:black; width: 195px; height: 25px; font-size: 9px" class="storebtn" onclick="tdBoost(1)"></button></td>
+	</tr>`
+	el("timeDimTable").innerHTML = html
 }
 
 function setupHTMLAndData() {
+	setupResetData()
+
+	setupDimensionHTML()
 	setupAnimationBtns()
+	setupAutobuyerToggles()
 	setupInfUpgHTMLandData()
 	setupDilationUpgradeList()
-	setupMasteryStudiesHTML()
-	setupPCTableHTMLandData()
-	setupToDHTMLandData()
-	setupNanofieldHTMLandData()
-	setupBraveMilestones()
-	setupBosonicExtraction()
-	setupBosonicUpgrades()
-	setupBosonicRunes()
-	setupAutobuyerHTMLandData()
+	setupMetaDimensions()
+	setupNGP3HTMLAndData()
 }
 
 //Theme stuff
@@ -641,7 +511,7 @@ function updateEternityUpgrades() {
 	el("eter4").className = (player.eternityUpgrades.includes(4)) ? "eternityupbtnbought" : (player.eternityPoints.gte(1e16)) ? "eternityupbtn" : "eternityupbtnlocked"
 	el("eter5").className = (player.eternityUpgrades.includes(5)) ? "eternityupbtnbought" : (player.eternityPoints.gte(1e40)) ? "eternityupbtn" : "eternityupbtnlocked"
 	el("eter6").className = (player.eternityUpgrades.includes(6)) ? "eternityupbtnbought" : (player.eternityPoints.gte(1e50)) ? "eternityupbtn" : "eternityupbtnlocked"
-	if (mod.ngud && player.dilation.studies.includes(1))  {
+	if (mod.ngud && hasDilStudy(1))  {
 		el("dilationeterupgrow").style.display = ""
 		el("eter7").className = (player.eternityUpgrades.includes(7)) ? "eternityupbtnbought" : (player.eternityPoints.gte("1e1500")) ? "eternityupbtn" : "eternityupbtnlocked"
 		el("eter8").className = (player.eternityUpgrades.includes(8)) ? "eternityupbtnbought" : (player.eternityPoints.gte("1e2000")) ? "eternityupbtn" : "eternityupbtnlocked"
@@ -1576,7 +1446,7 @@ function eternity(force, auto, dil, presetLoad) {
 			setTachyonParticles(gain)
 		}
 	}
-	if (!player.dilation.studies.includes(1)) dil = false
+	if (!hasDilStudy(1)) dil = false
 	else if (!force && !dil) {
 		if (player.eternityBuyer.dilationMode) {
 			player.eternityBuyer.statBeforeDilation--
@@ -2061,8 +1931,8 @@ function dilationStuffABTick(){
 	el('distribEx').style.display = hasAch("ngud14") && aarMod.nguspV !== undefined ? "" : "none"
 	if (canAutoUpgs && player.autoEterOptions.dilUpgs) autoBuyDilUpgs()
 
-	el("dilationTabbtn").style.display = player.dilation.studies.includes(1) ? "table-cell" : "none"
-	el("blackHoleTabbtn").style.display = player.dilation.studies.includes(1) && mod.ngud ? "table-cell" : "none"
+	el("dilationTabbtn").style.display = hasDilStudy(1) ? "table-cell" : "none"
+	el("blackHoleTabbtn").style.display = hasDilStudy(1) && mod.ngud ? "table-cell" : "none"
 	updateDilationUpgradeButtons()
 }
 
@@ -2271,7 +2141,7 @@ function normalChallPowerUpdating(diff){
 
 function dimensionButtonDisplayUpdating(){
 	el("tdtabbtn").style.display = ((player.eternities > 0 || quantumed || inNGM(4)) && (!inQC(8) || tmp.be)) ? "" : "none"
-	el("mdtabbtn").style.display = player.dilation.studies.includes(6) ? "" : "none"
+	el("mdtabbtn").style.display = hasDilStudy(6) ? "" : "none"
 }
 
 function infinityTimeMetaBlackHoleDimUpdating(diff){
@@ -2639,7 +2509,7 @@ function progressBarUpdating(){
 		preEternityProgress()
 	} else if (hasAch('r127') && !hasAch('r128') && player.timestudy.studies.length == 0) {
 		r128Progress()
-	} else if (player.dilation.studies.includes(5) && player.dilation.active && !hasAch('r138') && player.timestudy.studies.length == 0) {
+	} else if (hasDilStudy(5) && player.dilation.active && !hasAch('r138') && player.timestudy.studies.length == 0) {
 		r138Progress()
 	} else if (player.dilation.active && player.dilation.totalTachyonParticles.gte(getDilGain())) {
 		gainTPProgress()
@@ -2884,7 +2754,7 @@ function gameLoop(diff) {
 	EPonEternityPassiveGain(diff)
 	TTpassiveGain(diff)
 
-	if (player.dilation.studies.includes(1)) player.dilation.dilatedTime = player.dilation.dilatedTime.plus(getDilTimeGainPerSecond().times(diff))
+	if (hasDilStudy(1)) player.dilation.dilatedTime = player.dilation.dilatedTime.plus(getDilTimeGainPerSecond().times(diff))
 	gainDilationGalaxies()
 	updateDilationDisplay()
 
@@ -3361,7 +3231,7 @@ function initGame() {
 	//Setup stuff.
 	initiateMetaSave()
 	migrateOldSaves()
-	setup_data()
+	setupBugfixData()
 	updateNewPlayer(meta_started ? "meta_started" : "")
 	setupHTMLAndData()
 	localStorage.setItem(metaSaveId, btoa(JSON.stringify(metaSave)))
@@ -3480,7 +3350,7 @@ window.addEventListener('keydown', function(event) {
 
 		case 77: // M
 			if (ndAutobuyersUsed<9||!player.challenges.includes("postc8")) el("maxall").onclick()
-			if (player.dilation.studies.includes(6)) {
+			if (hasDilStudy(6)) {
 				var maxmeta=true
 				for (d = 1; d < 9; d++) {
 					if (player.autoEterOptions["meta" + d]) {
