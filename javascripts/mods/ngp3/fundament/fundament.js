@@ -49,7 +49,6 @@ function ghostifyReset(force, gain) {
 			ghostified = true
 			ngp3_feature_notify("fu")
 			el("ghostparticles").style.display = ""
-			el("ghostifyConfirmBtn").style.display = "inline-block"
 			giveAchievement("Kee-hee-hee!")
 		} else if (ghSave.times > 2 && ghSave.times < 11) {
 			$.notify("You unlocked " + (ghSave.times+2) + "th Neutrino upgrade!", "success")
@@ -172,6 +171,14 @@ function updateLastTenGhostifies() {
 		if (qkpm<1) tempstring = shorten(qkpm*60) + " ElP/hour"
 		el("averageGhostifyRun").textContent = "Last " + listed + " Fundaments average time: "+ timeDisplayShort(tempTime, false, 3)+" Average ElP gain: "+shortenDimensions(tempGHP)+" ElP. "+tempstring
 	} else el("averageGhostifyRun").textContent = ""
+}
+
+//Brave Milestones
+function updateBraveMilestones() {
+	if (ghostified) {
+		for (var m = 1; m < 17;m++) el("braveMilestone" + m).className = "achievement achievement" + (ghSave.milestones < m ? "" : "un") + "locked"
+		for (var r = 1; r < 3; r++) el("braveRow" + r).className = ghSave.milestones < r * 8 ? "" : "completedrow"
+	}
 }
 
 //Tabs

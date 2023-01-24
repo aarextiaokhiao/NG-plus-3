@@ -265,7 +265,6 @@ function lightEmpowerment(auto=false) {
 	if (!(ghSave.ghostlyPhotons.lights[7] >= tmp.leReq)) return
 	if (!hasAch("ng3p101") && !auto) {
 		if (!aarMod.leNoConf && !confirm("You will fundament, but Photons will be reset. You will gain 1 Spectral Ion from this. Are you sure you want to proceed?")) return
-		if (!ghSave.ghostlyPhotons.enpowerments) el("leConfirmBtn").style.display = "inline-block"
 	}
 	ghSave.ghostlyPhotons.enpowerments++
 	if (hasAch("ng3p101")) return

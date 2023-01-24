@@ -32,6 +32,15 @@ function displayInfinityStats(){
 	el("infinitied").textContent = "You have Infinitied " + getFullExpansion(player.infinitied) + " time" + (player.infinitied == 1 ? "" : "s") + (player.eternities!==0||player.eternitiesBank>0 ? " this Eternity." : ".")
 }
 
+function bankedInfinityDisplay(){
+	el("infinitiedBank").style.display = (player.infinitiedBank > 0) ? "block" : "none"
+	el("infinitiedBank").textContent = "You have " + getFullExpansion(player.infinitiedBank) + " banked infinities."
+	var bankedInfGain=gainBankedInf()
+	el("bankedInfGain").style.display = bankedInfGain>0 ? "block" : "none"
+	el("bankedInfGain").textContent = "You will gain " + getFullExpansion(bankedInfGain) + " banked infinities on next Eternity."
+	if (hasAch("ng3p73")) updateBankedEter(true)
+}
+
 function displayEternityStats() {
 	/* ETERNITY */
 	el("thisEternity").textContent = "You have spent " + timeDisplay(player.thisEternity) + " in this Eternity."
@@ -43,9 +52,7 @@ function displayEternityStats() {
 	el("stats_dil").style.display = dil ? "" : "none"
 	if (dil) {
 		el("dilated").textContent = "You have succesfully dilated "+getFullExpansion(player.dilation.times)+" times."
-
-		if (mod.ngud && player.exdilation.times) el("exdilated").textContent = "You have reversed Dilation " + getFullExpansion(player.exdilation.times) + " times."
-		else el("exdilated").textContent = ""
+		el("exdilated").textContent = exdilated() ? "You have reversed Dilation " + getFullExpansion(player.exdilation.times) + " times." : ""
 	}
 }
 

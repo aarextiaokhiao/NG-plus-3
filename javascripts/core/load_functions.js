@@ -1742,55 +1742,48 @@ function doNGp3Init2(){
 }
 
 function setConfirmationsDisplay(){
-        el("confirmations").style.display = (player.resets > 4 || player.galaxies > 0 || gSacrificed() || player.infinitied !== 0 || player.eternities !== 0 || quantumed) ? "inline-block" : "none"
-        el("confirmation").style.display = (player.resets > 4 || player.infinitied > 0 || player.eternities !== 0 || quantumed) ? "inline-block" : "none"
-        el("sacrifice").style.display = (player.resets > 4 || player.infinitied > 0 || player.eternities !== 0 || quantumed) ? "inline-block" : "none"
-        el("sacConfirmBtn").style.display = (player.resets > 4 || player.galaxies > 0 || gSacrificed() || player.infinitied > 0 || player.eternities !== 0 || quantumed) ? "inline-block" : "none"
-        var gSacDisplay = !inNGM(2) ? "none" : player.galaxies > 0 || player.galacticSacrifice.times > 0 || player.infinitied > 0 || player.eternities !== 0 || quantumed ? "inline-block" : "none"
-        el("gConfirmation").style.display = gSacDisplay
-        el("gSacrifice").style.display = gSacDisplay
-        el("gSacConfirmBtn").style.display = gSacDisplay
-        el("challengeconfirmation").style.display = (player.challenges.includes("challenge1") || player.infinitied !== 0 || player.eternities !== 0 || quantumed) ? "inline-block" : "none"
-        el("eternityconf").style.display = (player.eternities !== 0 || quantumed) ? "inline-block" : "none"
-        el("dilationConfirmBtn").style.display = (player.dilation.studies.includes(1) || quantumed) ? "inline-block" : "none"
-        el("quantumConfirmBtn").style.display = quantumed ? "inline-block" : "none"
-        el("bigRipConfirmBtn").style.display = (!mod.ngp3 ? false : brSave.times) ? "inline-block" : "none"
-        el("ghostifyConfirmBtn").style.display = ghostified ? "inline-block" : "none"
-        el("leConfirmBtn").style.display = ghostified && ghSave.ghostlyPhotons.enpowerments ? "inline-block" : "none"
+	el("confirmations").style.display = (player.resets > 4 || player.galaxies > 0 || gSacrificed() || player.infinitied !== 0 || player.eternities !== 0 || quantumed) ? "inline-block" : "none"
+	el("confirmation").style.display = (player.resets > 4 || player.infinitied > 0 || player.eternities !== 0 || quantumed) ? "inline-block" : "none"
+	el("sacrifice").style.display = (player.resets > 4 || player.infinitied > 0 || player.eternities !== 0 || quantumed) ? "inline-block" : "none"
+	var gSacDisplay = !inNGM(2) ? "none" : player.galaxies > 0 || player.galacticSacrifice.times > 0 || player.infinitied > 0 || player.eternities !== 0 || quantumed ? "inline-block" : "none"
+	el("gConfirmation").style.display = gSacDisplay
+	el("gSacrifice").style.display = gSacDisplay
+	el("challengeconfirmation").style.display = (player.challenges.includes("challenge1") || player.infinitied !== 0 || player.eternities !== 0 || quantumed) ? "inline-block" : "none"
+	el("eternityconf").style.display = (player.eternities !== 0 || quantumed) ? "inline-block" : "none"
 
-        el("confirmation").checked = !player.options.sacrificeConfirmation
-        el("sacConfirmBtn").textContent = "Sacrifice confirmation: O" + (player.options.sacrificeConfirmation ? "N" : "FF")
-        el("gConfirmation").checked = !player.options.gSacrificeConfirmation
-        el("gSacConfirmBtn").textContent = "Galactic sacrifice confirmation: O" + (player.options.gSacrificeConfirmation ? "N" : "FF")
-        el("challengeconfirmation").textContent = "Challenge confirmation: O" + (player.options.challConf ? "N" : "FF")
-        el("eternityconf").textContent = "Eternity confirmation: O" + (player.options.eternityconfirm ? "N" : "FF")
-        el("dilationConfirmBtn").textContent = "Dilation confirmation: O" + (aarMod.dilationConf ? "N" : "FF")
-        el("exdilationConfirmBtn").textContent = "Reverse dilation confirmation: O" + (player.options.exdilationconfirm ? "N" : "FF")
-        el("quantumConfirmBtn").textContent = "Quantum confirmation: O" + (aarMod.quantumConf ? "N" : "FF")
-        el("bigRipConfirmBtn").textContent = "Big Rip confirmation: O" + ((!mod.ngp3 ? false : brSave.conf) ? "N" : "FF")
-        el("ghostifyConfirmBtn").textContent = "Fundament confirmation: O" + (aarMod.ghostifyConf ? "N" : "FF")
-        el("leConfirmBtn").textContent = "Spectral Ion confirmation: O" + (aarMod.leNoConf ? "FF" : "N")
+	el("confirmation").checked = !player.options.sacrificeConfirmation
+	el("sacConfirmBtn").textContent = "Sacrifice confirmation: O" + (player.options.sacrificeConfirmation ? "N" : "FF")
+	el("gConfirmation").checked = !player.options.gSacrificeConfirmation
+	el("gSacConfirmBtn").textContent = "Galactic sacrifice confirmation: O" + (player.options.gSacrificeConfirmation ? "N" : "FF")
+	el("challengeconfirmation").textContent = "Challenge confirmation: O" + (player.options.challConf ? "N" : "FF")
+	el("eternityconf").textContent = "Eternity confirmation: O" + (player.options.eternityconfirm ? "N" : "FF")
+	el("dilationConfirmBtn").textContent = "Dilation confirmation: O" + (aarMod.dilationConf ? "N" : "FF")
+	el("exdilationConfirmBtn").textContent = "Reverse dilation confirmation: O" + (player.options.exdilationconfirm ? "N" : "FF")
+	el("quantumConfirmBtn").textContent = "Quantum confirmation: O" + (aarMod.quantumConf ? "N" : "FF")
+	el("bigRipConfirmBtn").textContent = "Big Rip confirmation: O" + ((!mod.ngp3 ? false : brSave.conf) ? "N" : "FF")
+	el("ghostifyConfirmBtn").textContent = "Fundament confirmation: O" + (aarMod.ghostifyConf ? "N" : "FF")
+	el("leConfirmBtn").textContent = "Spectral Ion confirmation: O" + (aarMod.leNoConf ? "FF" : "N")
 }
 
 function setOptionsDisplaysStuff1(){
-        el("progressBarBtn").textContent = (aarMod.progressBar?"Hide":"Show")+" progress bar"
-        el("toggleLogRateChange").textContent = "Logarithm rate: O"+(aarMod.logRateChange?"N":"FF")
-        el("tabsSave").textContent = "Saved tabs: O"+(aarMod.tabsSave.on?"N":"FF")
-        updatePerformanceTicks()
-        dimDescEnd = (aarMod.logRateChange?" OoM":"%")+"/s)"
+	el("progressBarBtn").textContent = (aarMod.progressBar?"Hide":"Show")+" progress bar"
+	el("toggleLogRateChange").textContent = "Logarithm rate: O"+(aarMod.logRateChange?"N":"FF")
+	el("tabsSave").textContent = "Saved tabs: O"+(aarMod.tabsSave.on?"N":"FF")
+	updatePerformanceTicks()
+	dimDescEnd = (aarMod.logRateChange?" OoM":"%")+"/s)"
 
-        el("maxHighestTD").parentElement.parentElement.style.display = inNGM(4) ? "" : "none"
-        el("maxHighestTD").textContent = "Max only highest Time Dimensions: O"+(aarMod.maxHighestTD?"N":"FF")
+	el("maxHighestTD").parentElement.parentElement.style.display = inNGM(4) ? "" : "none"
+	el("maxHighestTD").textContent = "Max only highest Time Dimensions: O"+(aarMod.maxHighestTD?"N":"FF")
 
-        el("infmultbuyer").style.display = getEternitied()>0||mod.ngp3?"inline-block":"none"
-        if (!player.options.hotkeys) el("hotkeys").textContent = "Enable hotkeys"
+	el("infmultbuyer").style.display = getEternitied()>0||mod.ngp3?"inline-block":"none"
+	if (!player.options.hotkeys) el("hotkeys").textContent = "Enable hotkeys"
 
-        document.getElementsByClassName("hideInMorse").display = player.options.notation == "Morse code" ? "none" : ""
+	document.getElementsByClassName("hideInMorse").display = player.options.notation == "Morse code" ? "none" : ""
 
-        el("hideRepresentation").textContent=(aarMod.hideRepresentation?"Show":"Hide")+" antimatter representation"
-        el("showAchRowNums").textContent=(aarMod.showAchRowNums?"Hide":"Show")+" achievement info"
-        el("hideCompletedAchs").textContent=(aarMod.hideCompletedAchs?"Show":"Hide")+" completed rows"
-        el("hideSecretAchs").textContent=(aarMod.hideSecretAchs?"Show":"Hide")+" secret achievements"
+	el("hideRepresentation").textContent=(aarMod.hideRepresentation?"Show":"Hide")+" antimatter representation"
+	el("showAchRowNums").textContent=(aarMod.showAchRowNums?"Hide":"Show")+" achievement info"
+	el("hideCompletedAchs").textContent=(aarMod.hideCompletedAchs?"Show":"Hide")+" completed rows"
+	el("hideSecretAchs").textContent=(aarMod.hideSecretAchs?"Show":"Hide")+" secret achievements"
 }
 
 function setDisplaysStuff1(){
@@ -1985,7 +1978,7 @@ function setSomeQuantumAutomationDisplay(){
         el('replicantibulkmodetoggle').textContent="Mode: "+(player.galaxyMaxBulk?"Max":"Singles")
         el('versionMod').textContent = "New Game Plus 3"
         el('versionDesc').style.display = mod.ngp3 ? "" : "none"
-        el('toggleautoquantummode').style.display=(player.masterystudies?quSave.reachedInfQK||hasAch("ng3p25"):false)?"":"none"
+
         var autoAssignUnl = mod.ngp3 && (ghostified || quSave.reachedInfQK)
         el('autoAssign').style.display = autoAssignUnl ? "" : "none"
         el('autoAssignRotate').style.display = autoAssignUnl ? "" : "none"
@@ -1994,20 +1987,7 @@ function setSomeQuantumAutomationDisplay(){
 
 function setReplAutoDisplay(){
 	el('replicantigalaxypowerdiv').style.display=hasAch("r106")&&player.boughtDims?"":"none"
-	el("dilationeterupgrow").style.display="none"
-	if (mod.ngud) {
-		if (player.dilation.studies.includes(1)) el("dilationeterupgrow").style.display="table-row"
-		el("blackholeMax").style.display = mod.udp || aarMod.nguspV ? "" : "none"
-		el("blackholeAuto").style.display = mod.udp && hasAch("ngpp17") ? "" : "none"
-		el('blackholeAuto').textContent="Auto: O"+(mod.udp&&player.autoEterOptions.blackhole?"N":"FF")
-		if (player.blackhole.unl == true) {
-			el("blackholediv").style.display="inline-block"
-			el("blackholeunlock").style.display="none"
-		} else {
-			el("blackholediv").style.display="none"
-			el("blackholeunlock").style.display="inline-block"
-		}
-	}
+	el("dilationeterupgrow").style.display=player.dilation.studies.includes(1)&&mod.ngud?"":"none"
 }
 
 function updateNGModeMessage(){
@@ -2113,7 +2093,6 @@ function onLoad(noOffline) {
 	el('rebuyupgauto').style.display=speedrunMilestonesReached>6?"":"none"
 	el('toggleallmetadims').style.display=speedrunMilestonesReached>7?"":"none"
 	el('metaboostauto').style.display=speedrunMilestonesReached>14?"":"none"
-	el("autoBuyerQuantum").style.display=speedrunMilestonesReached>22?"":"none"
 	el("maxTimeDimensions").style.display=removeMaxTD?"none":""
 	el("metaMaxAllDiv").style.display=removeMaxMD?"none":""
 	var removeMaxTD=false

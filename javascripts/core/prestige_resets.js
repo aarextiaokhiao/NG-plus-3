@@ -207,10 +207,7 @@ let RESETS = {
 			updateMilestones()
 
 			player.eternityPoints = E(0)
-			player.eternityBuyer = getEternitied() < 100 ? player.eternityBuyer : {
-				limit: E(0),
-				isOn: false
-			}
+			if (getEternitied() < 100) player.eternityBuyer.isOn = false
 			player.eternityBuyer.statBeforeDilation = 0
 			completelyResetTimeDimensions()
 
@@ -236,32 +233,12 @@ let RESETS = {
 			player.eternityChallUnlocked = isRewardEnabled(11) ? player.eternityChallUnlocked : 0
 			player.etercreq = 0
 
-			if (!player.dilation.bestTP) player.dilation.bestTP = player.dilation.tachyonParticles
-			let unl = bigRip ? hasRipUpg(10) : isRewardEnabled(4)
-			let oldUpgs = player.dilation.upgrades
 			player.dilation.tachyonParticles = E(0)
 			player.dilation.dilatedTime = E(0)
-			player.dilation.studies = []
-			player.dilation.upgrades = []
-			player.dilation.times = 0
-			if (unl) {
-				if (bigRip) {
-					player.dilation.studies = hasRipUpg(12) ? [1,2,3,4,5,6] : [1]
-					if (hasRipUpg(12)) player.dilation.upgrades = oldUpgs
-				} else {
-					player.dilation.studies = speedrunMilestonesReached >= 6 ? [1,2,3,4,5,6] : [1]
-					player.dilation.dilatedTime = unl && speedrunMilestonesReached >= 22 ? E(1e100) : E(0)
-					if (speedrunMilestonesReached >= 6) player.dilation.upgrades = oldUpgs
-				}
-				if (order == "qu") {
-					let keepTPHalf = bigRip ? hasRipUpg(11) : hasAch("ng3p37")
-					let keepTP = bigRip ? ghSave.milestones >= 16 : ghSave.milestones >= 4
-					if (keepTP) player.dilation.tachyonParticles = player.dilation.bestTP
-					else if (keepTPHalf) player.dilation.tachyonParticles = player.dilation.bestTP.pow(0.5)
-				}
-			}
-			player.dilation.totalTachyonParticles = player.dilation.tachyonParticles
-			resetDilationGalaxies()
+			player.dilation.studies = (bigRip ? hasRipUpg(10) : isRewardEnabled(4)) ? (
+				(bigRip ? hasRipUpg(12) : speedrunMilestonesReached >= 4) ? player.dilation.studies : [1]
+			) : []
+			resetDilation(order)
 
 			doMetaDimensionsReset(order, qc)
 			if (mod.ngud) {
@@ -275,23 +252,7 @@ let RESETS = {
 					},
 					times: 0
 				}
-				player.blackhole = {
-					unl: speedrunMilestonesReached >= 5,
-					upgrades: {dilatedTime: 0, bankedInfinities: 0, replicanti: 0, total: 0},
-					power: E(0)
-				}
-				if (!hasAch("ng3p67") || !mod.udp || aarMod.ngumuV) {
-					for (var d = 1; d <= (aarMod.nguspV ? 8 : 4); d++) player["blackholeDimension" + d] = {
-						cost: blackholeDimStartCosts[d],
-						amount: E(0),
-						power: E(1),
-						bought: 0
-					}
-				}
-				if (speedrunMilestonesReached <= 4) {
-					el("blackholediv").style.display = "none"
-					el("blackholeunlock").style.display = "inline-block"
-				}
+				resetBlackhole()
 			}
 
 			//NG+3

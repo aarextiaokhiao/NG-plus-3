@@ -44,8 +44,6 @@ function getBlackholePowerEffect() {
 
 function unlockBlackhole() {
 	if (player.eternityPoints.gte('1e4000')) {
-		el("blackholediv").style.display = "inline-block"
-		el("blackholeunlock").style.display = "none"
 		player.blackhole.unl = true
 		player.eternityPoints = player.eternityPoints.minus('1e4000')
 	}
@@ -64,17 +62,34 @@ function isBHDimUnlocked(t) {
 }
 
 function updateBlackhole() {
+	if (player.dilation.studies.includes(1)) el("dilationeterupgrow").style.display="table-row"
+
+	let unl = player.blackhole.unl
+	el("blackholediv").style.display = unl ? "" : "none"
+	el("blackholeunlock").style.display = unl ? "none" : ""
+	if (!unl) {
+		el("blackholeunlock").innerHTML = "Unlock the black hole<br>Cost: " + shortenCosts(E('1e4000')) + " EP"
+		el("blackholeunlock").className = (player.eternityPoints.gte("1e4000")) ? "storebtn" : "unavailablebtn"
+		return
+	}
+
+	el("blackholeMax").style.display = mod.udp || aarMod.nguspV ? "" : "none"
+	el("blackholeAuto").style.display = mod.udp && hasAch("ngpp17") ? "" : "none"
+	el('blackholeAuto').textContent = "Auto: O"+(mod.udp&&player.autoEterOptions.blackhole?"N":"FF")
+
 	drawBlackhole();
 	el("blackholePowAmount").innerHTML = shortenMoney(player.blackhole.power);
 	el("blackholePowPerSec").innerHTML = "You are getting " + shortenMoney(getBlackholeDimensionProduction(1)) + " black hole power per second.";
 	el("DilMultAmount").innerHTML = formatValue(player.options.notation, getBlackholePowerEffect(), 2, 2)
 	el("InfAndReplMultAmount").innerHTML = formatValue(player.options.notation, getBlackholePowerEffect().pow(1/3), 2, 2)
+
 	el("blackholeDil").innerHTML = "Feed the black hole with dilated time<br>Cost: "+shortenCosts(pow10(player.blackhole.upgrades.dilatedTime+(aarMod.nguspV?18:20)))+" dilated time";
 	el("blackholeInf").innerHTML = "Feed the black hole with banked infinities<br>Cost: "+formatValue(player.options.notation, pow2(player.blackhole.upgrades.bankedInfinities).times(5e9).round(), 1, 1)+" banked infinities";
 	el("blackholeRepl").innerHTML = "Feed the black hole with replicanti<br>Cost: "+shortenCosts(E("1e20000").times(E_pow("1e1000", player.blackhole.upgrades.replicanti)))+" replicanti";
 	el("blackholeDil").className = canFeedBlackHole(1) ? 'eternityupbtn' : 'eternityupbtnlocked';
 	el("blackholeInf").className = canFeedBlackHole(2) ? 'eternityupbtn' : 'eternityupbtnlocked';
 	el("blackholeRepl").className = canFeedBlackHole(3) ? 'eternityupbtn' : 'eternityupbtnlocked';
+
 	if (el("blackhole").style.display == "block" && el("eternitystore").style.display == "block") {
 		for (let tier = 1; tier < 9; ++tier) {
 			if (isBHDimUnlocked(tier)) {
@@ -102,7 +117,7 @@ function drawBlackhole(ts) {
 	}
 }
 
-function canFeedBlackHole (i) {
+function canFeedBlackHole(i) {
 	if (i == 1) {
 		return pow10(player.blackhole.upgrades.dilatedTime + (aarMod.nguspV ? 18 : 20)).lte(player.dilation.dilatedTime)
 	} else if (i == 2) {
@@ -174,11 +189,34 @@ function buyBlackholeDimension(tier) {
 	return true
 }
 
-function resetBlackhole() {
-	player.blackhole.power = E(0);
-	el('blackHoleCanvas').getContext('2d').clearRect(0, 0, 400, 400);
-	for (var i = 1; i < 5; i++) {
+function resetBlackhole(full) {
+	player.blackhole = {
+		unl: speedrunMilestonesReached >= 5,
+		upgrades: {dilatedTime: 0, bankedInfinities: 0, replicanti: 0, total: 0},
+		power: E(0)
+	}
+
+	player.blackhole.power = E(0)
+	el('blackHoleCanvas').getContext('2d').clearRect(0, 0, 400, 400)
+
+	resetBlackholeDimensions(!hasAch("ng3p67") || !mod.udp || aarMod.ngumuV)
+}
+
+function resetBlackholeDimensions(full) {
+	if (!mod.ngud) return
+
+	player.blackhole.power = E(0)
+	el('blackHoleCanvas').getContext('2d').clearRect(0, 0, 400, 400)
+
+	for (var i = 1; i <= 8; i++) {
 		var dim = player["blackholeDimension" + i]
+		if (!dim) continue
+
+		if (full) {
+			dim.cost = blackholeDimStartCosts[d]
+			dim.bought = E(0)
+			dim.power = E(1)
+		}
 		dim.amount = E(dim.bought)
 	}
 }
@@ -203,20 +241,49 @@ function buyMaxBlackholeDimensions(){
 }
 
 //v1: ex-dilation part
+function hasExdilation() {
+	return mod.ngud == 1 || mod.ngud == 3
+}
+
+function getExdilationReq() {
+	if (aarMod.nguspV && !aarMod.nguepV) return {ep: "1e20000", dt: 1e40}
+	return {ep: "1e10000", dt: 1e30}
+}
+
 function canReverseDilation() {
-	let req=getExdilationReq()
+	let req = getExdilationReq()
 	return player.eternityPoints.gte(req.ep) && player.dilation.dilatedTime.gte(req.dt)
 }
 
+function exdilated() {
+	return hasExdilation() && (player.exdilation.times || quantumed)
+}
+
 function updateExdilation() {
-	el("xdp").style.display = "none"
-	el("xdrow").style.display = "none"
-	el("exdilationConfirmBtn").style.display = "none"
-	if (!mod.ngud || mod.udp) return
-	if (player.exdilation.times < 1 && !quantumed) return
-	el("xdp").style.display = ""
-	el("xdrow").style.display = ""
-	el("exdilationConfirmBtn").style.display = "inline"
+	updateExdilationButton()
+	updateExdilationStats()
+}
+
+function updateExdilationButton() {
+	let has = exdilated() || hasExdilation()
+	el("reversedilationdiv").style.display = has ? "" : "none"
+	if (!has) return
+	if (canReverseDilation()) {
+		el("reversedilation").className = "dilationbtn"
+		el("reversedilation").innerHTML = "Reverse dilation." + (exdilated() ? "<br>Gain "+shortenDimensions(getExDilationGain()) + " ex-dilation" : "")
+	} else {
+		let req = getExdilationReq()
+		el("reversedilation").className = "eternityupbtnlocked"
+		el("reversedilation").textContent = "Get "+(player.eternityPoints.lt(req.ep)?shortenCosts(E(req.ep))+" EP and ":"")+shortenCosts(req.dt)+" dilated time to reverse dilation."
+	}
+}
+
+function updateExdilationStats() {
+	let unl = exdilated()
+	el("xdp").style.display = unl ? "" : "none"
+	el("xdrow").style.display = unl ? "" : "none"
+	if (!unl) return
+
 	el("exDilationAmount").textContent = shortenDimensions(player.exdilation.unspent)
 	el("exDilationBenefit").textContent = (aarMod.nguspV ? exDilationBenefit() * 100 : exDilationBenefit() / 0.0075).toFixed(1)
 	for (var i = 1; i <= DIL_UPG_SIZES[0]; i++) {
@@ -224,10 +291,11 @@ function updateExdilation() {
 		if (unl) {
 			el("xd" + i).style.height = aarMod.nguspV ? "60px" : "50px"
 			el("xd" + i).className = player.exdilation.unspent.eq(0) ? "dilationupgrebuyablelocked" : "dilationupgrebuyable";
+
 			if (aarMod.nguspV !== undefined) el("xd" + i + "span").textContent = '+' + exDilationUpgradeStrength(i).toFixed(1) + ' free upgrades -> +' + exDilationUpgradeStrength(i,player.exdilation.unspent).toFixed(1)
 			else el("xd" + i + "span").textContent = exDilationUpgradeStrength(i).toFixed(2) + 'x -> ' + exDilationUpgradeStrength(i,player.exdilation.unspent).toFixed(2) + 'x'
 		}
-		el("xd"+i).style.display = unl ? "" : "none"
+		el("xd"+i).parentElement.style.display = unl ? "" : "none"
 	}
 }
 
@@ -267,41 +335,17 @@ function exDilationUpgradeStrength(x, add = 0) {
 	return 1 + ret / 2;
 }
 
-function reverseDilation () {
+function reverseDilation() {
 	if (!canReverseDilation()) return;
-	if (player.options.exdilationconfirm) if (!confirm('Reversing dilation will make you lose all your tachyon particles, ' +
-							   'dilated time, dilation upgrades, and blackhole power, but you will gain ex-dilation ' +
-							   'that makes repeatable upgrades more powerful and reduces the severity of dilation. Are you sure you want to do this?')) return;
-	var eterConf = player.options.eternityconfirm
-	player.options.eternityconfirm = false
-	eternity(true);
-	player.options.eternityconfirm = eterConf
-	player.exdilation.unspent = player.exdilation.unspent.plus(getExDilationGain());
-	player.exdilation.times++;
-	player.dilation = {
-		studies: player.dilation.studies,
-		active: false,
-		tachyonParticles: E(0),
-		dilatedTime: E(0),
-		totalTachyonParticles: E(0),
-		bestTP: player.dilation.bestTP,
-		bestTPOverGhostifies: player.dilation.bestTPOverGhostifies,
-		nextThreshold: E(1000),
-		freeGalaxies: 0,
-		upgrades: [],
-		autoUpgrades: aarMod.nguspV ? player.dilation.autoUpgrades : undefined,
-		rebuyables: {
-			1: 0,
-			2: 0,
-			3: 0
-		},
-	}
-	if (mod.ngpp) player.dilation.rebuyables[4] = 0
-	resetBlackhole();
-	updateDilation();
-	updateDilationUpgradeButtons();
-	updateDilationUpgradeCosts();
-	updateExdilation()
+	if (player.options.exdilationconfirm && !confirm(`Reversing dilation resets Time Dilation and Black Hole power in exchange for ex-dilation, which reduces dilation penalty and strengthens repeatable upgrades. Are you sure?`)) return
+
+	player.exdilation.unspent = player.exdilation.unspent.plus(getExDilationGain())
+	player.exdilation.times++
+
+	resetDilation()
+	resetBlackholeDimensions()
+	eternity(true)
+
 	giveAchievement('Time is absolute')
 }
 
@@ -313,9 +357,6 @@ function toggleExdilaConf() {
 function boostDilationUpgrade(x) {
 	player.exdilation.spent[x] = Decimal.plus(player.exdilation.spent[x] || 0, player.exdilation.unspent).round();
 	player.exdilation.unspent = E(0);
-	updateDilation();
-	updateDilationUpgradeButtons();
-	updateExdilation();
 	if (x == 2 && aarMod.nguspV) resetDilationGalaxies()
 }
 
@@ -326,10 +367,3 @@ function getD18Bonus() {
 	if (x > 100 && mod.udp) x = Math.log(x) * 50 //NGUd'
 	return E_pow(1.05, x)
 }
-
-function getExdilationReq() {
-	if (aarMod.nguspV && !aarMod.nguepV) return {ep: "1e20000", dt: 1e40}
-	return {ep: "1e10000", dt: 1e30}
-}
-
-

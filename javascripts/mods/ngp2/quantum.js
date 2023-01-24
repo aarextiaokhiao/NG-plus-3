@@ -284,7 +284,6 @@ function doQuantum(force, auto, qc = {}) {
 		if (!quantumed) {
 			quantumed = true
 			ngp3_feature_notify("qu")
-			el("quantumConfirmBtn").style.display = "inline-block"
 			el("quarks").style.display=""
 			el("bestAntimatterType").textContent = "Your best meta-antimatter for this quantum"
 			if (isEmptiness) showTab("dimensions")
@@ -298,7 +297,6 @@ function doQuantum(force, auto, qc = {}) {
 				el('autoAssign').style.display = ""
 				el('autoAssignRotate').style.display = ""
 			}
-			el('toggleautoquantummode').style.display=""
 		}
 
 		//Gluons
@@ -336,7 +334,6 @@ function doQuantum(force, auto, qc = {}) {
 	}
 	if (bigRip != oldBigRip) {
 		if (bigRip) {
-			if (brSave.times < 1) el("bigRipConfirmBtn").style.display = "inline-block"
 			brSave.times++
 			brSave.bestThisRun = E(0)
 			giveAchievement("To the new dimension!")

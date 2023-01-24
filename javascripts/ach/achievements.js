@@ -360,7 +360,6 @@ function giveAchievement(name, noUpdate) {
 		el('bestTP').style.display = ""
 		el('bestTP').textContent = "Your best ever Tachyon particles was "+shorten(player.dilation.bestTP)+"."
 	}
-	if (name == "Twice in the row") el('toggleautoquantummode').style.display = ""
 	if (name == "Stop blocking me!") el('autoReset').style.display = ""
 	if (name == "To the new dimension!") brSave.bestGals = 1
 	if (name == "Quantum doesn't take so long") {

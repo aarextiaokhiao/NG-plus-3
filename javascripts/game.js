@@ -1154,8 +1154,10 @@ function updateAutobuyers() {
 			startDilatedEternity(true)
 			return
 		}
-		if (quSave && quSave.autobuyer) quSave.autobuyer.enabled = el("quantumison").checked
 	}
+
+	el("autoBuyerQuantum").style.display = speedrunMilestonesReached >= 23 ? "" : "none"
+	if (quSave && quSave.autobuyer) quSave.autobuyer.enabled = el("quantumison").checked
 
 	loadAutoBuyerSettings()
 
@@ -2119,9 +2121,9 @@ function updatePerSecond() {
 	infPoints2Display()
 	eterPoints2Display()
 	updateResetTierButtons()
-	updateQuarkDisplay()
 	primaryStatsDisplayResetLayers()
 	updateAnimationBtns()
+	showHideConfirmations()
 
 	// EC Stuff
 	ECCompletionsDisplay()

@@ -538,3 +538,26 @@ function updateDilationDisplay() {
 		el("dilatedGalaxies").textContent = getFullExpansion(Math.floor(player.dilation.freeGalaxies))
 	}
 }
+
+function resetDilation(order = "qu") {
+	let bigRip = bigRipped()
+
+	player.dilation.times = 0
+
+	let unl = player.dilation.studies.includes(1)
+	let keepUpg = unl && (bigRip ? hasRipUpg(12) : speedrunMilestonesReached >= 6)
+	if (!keepUpg) player.dilation.upgrades = []
+	for (var i in player.dilation.rebuyables) player.dilation.rebuyables[i] = 0
+
+	if (unl) {
+		player.dilation.dilatedTime = !bigRip && speedrunMilestonesReached >= 22 ? E(1e100) : E(0)
+		if (order == "qu") {
+			let keepTPHalf = bigRip ? hasRipUpg(11) : hasAch("ng3p37")
+			let keepTP = bigRip ? ghSave.milestones >= 16 : ghSave.milestones >= 4
+			if (keepTP) player.dilation.tachyonParticles = player.dilation.bestTP
+			else if (keepTPHalf) player.dilation.tachyonParticles = player.dilation.bestTP.pow(0.5)
+		}
+	}
+	player.dilation.totalTachyonParticles = player.dilation.tachyonParticles
+	resetDilationGalaxies()
+}

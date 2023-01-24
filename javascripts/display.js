@@ -323,24 +323,9 @@ function uponDilationDisplay(){
 	el("enabledilation").innerHTML = msg + "."
 }
 
-function exdilationDisplay(){
-	el("reversedilationdiv").style.display = ""
-	if (canReverseDilation()) {
-		el("reversedilation").className = "dilationbtn"
-		el("reversedilation").innerHTML = "Reverse dilation."+(player.exdilation.times>0||quantumed?"<br>Gain "+shortenDimensions(getExDilationGain())+" ex-dilation":"")
-	} else {
-		let req = getExdilationReq()
-		el("reversedilation").className = "eternityupbtnlocked"
-		el("reversedilation").textContent = "Get "+(player.eternityPoints.lt(req.ep)?shortenCosts(E(req.ep))+" EP and ":"")+shortenCosts(req.dt)+" dilated time to reverse dilation."
-	}
-}
-
 function mainDilationDisplay(){
 	if (player.dilation.active) uponDilationDisplay()
 	else el("enabledilation").textContent = "Dilate time."+((player.eternityBuyer.isOn&&player.eternityBuyer.dilationMode?!isNaN(player.eternityBuyer.statBeforeDilation):false) ? " "+player.eternityBuyer.statBeforeDilation+ " left before dilation." : "")
-	if (mod.ngud == 1 || mod.ngud == 3) {
-		exdilationDisplay()
-	} else el("reversedilationdiv").style.display = "none"
 
 	var fgm = getFreeGalaxyGainMult()
 	el('freeGalaxyMult').textContent = fgm == 1 ? "Tachyonic Galaxy" : Math.round(fgm * 10) / 10 + " Tachyonic Galaxies"
@@ -351,14 +336,11 @@ function ETERNITYSTOREDisplay(){
 	if (el("timestudies").style.display == "block" || el("ers_timestudies").style.display == "block") updateTimeStudyButtons()
 	if (el("masterystudies").style.display == "block") updateMasteryStudyButtons()
 	if (el("eternityupgrades").style.display == "block") eternityUpgradesDisplay()
-	if (el("dilation").style.display == "block") mainDilationDisplay()
-	if (el("blackhole").style.display == "block") {
-		if (el("blackholediv").style.display == "inline-block") updateBlackhole()
-		if (el("blackholeunlock").style.display == "inline-block") {
-			el("blackholeunlock").innerHTML = "Unlock the black hole<br>Cost: " + shortenCosts(E('1e4000')) + " EP"
-			el("blackholeunlock").className = (player.eternityPoints.gte("1e4000")) ? "storebtn" : "unavailablebtn"
-		}
+	if (el("dilation").style.display == "block") {
+		mainDilationDisplay()
+		updateExdilation()
 	}
+	if (el("blackhole").style.display == "block") updateBlackhole()
 }
 
 function updateDimensionsDisplay() {
@@ -570,13 +552,18 @@ function EC8PurchasesDisplay(){
 	}
 }
 
-function bankedInfinityDisplay(){
-	el("infinitiedBank").style.display = (player.infinitiedBank > 0) ? "block" : "none"
-	el("infinitiedBank").textContent = "You have " + getFullExpansion(player.infinitiedBank) + " banked infinities."
-	var bankedInfGain=gainBankedInf()
-	el("bankedInfGain").style.display = bankedInfGain>0 ? "block" : "none"
-	el("bankedInfGain").textContent = "You will gain " + getFullExpansion(bankedInfGain) + " banked infinities on next Eternity."
-	if (hasAch("ng3p73")) updateBankedEter(true)
+function showHideConfirmations() {
+	let inf = player.infinitied > 0 || player.eternities !== 0 || quantumed
+	let gSac = gSacrificed() || inf
+
+	el("sacConfirmBtn").style.display = (player.resets > 4 || player.galaxies > 0 || gSac || inf) ? "inline-block" : "none"
+	el("gSacConfirmBtn").style.display = gSac ? "inline-block" : "none"
+	el("dilationConfirmBtn").style.display = (player.dilation.studies.includes(1) || quantumed) ? "inline-block" : "none"
+	el("exdilationConfirmBtn").style.display = exdilated() ? "" : "none"
+	el("quantumConfirmBtn").style.display = quantumed ? "inline-block" : "none"
+	el("bigRipConfirmBtn").style.display = brSave?.times ? "inline-block" : "none"
+	el("ghostifyConfirmBtn").style.display = ghostified ? "inline-block" : "none"
+	el("leConfirmBtn").style.display = ghostified && ghSave.ghostlyPhotons.enpowerments ? "inline-block" : "none"
 }
 
 //PRESTIGES

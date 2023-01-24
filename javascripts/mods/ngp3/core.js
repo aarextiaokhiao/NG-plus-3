@@ -213,6 +213,7 @@ function toggleAutoQuantumMode() {
 	else if (quSave.autobuyer.mode == "time") quSave.autobuyer.mode = "peak"
 	else if (hasAch("ng3p25") && quSave.autobuyer.mode != "dilation") quSave.autobuyer.mode = "dilation"
 	else quSave.autobuyer.mode = "amount"
+
 	updateAutoQuantumMode()
 }
 
@@ -352,13 +353,6 @@ function switchAB() {
 	}
 	brSave["savedAutobuyers" + (bigRip ? "No" : "") + "BR"] = {}
 	updateCheckBoxes()
-}
-
-function updateBraveMilestones() {
-	if (ghostified) {
-		for (var m = 1; m < 17;m++) el("braveMilestone" + m).className = "achievement achievement" + (ghSave.milestones < m ? "" : "un") + "locked"
-		for (var r = 1; r < 3; r++) el("braveRow" + r).className = ghSave.milestones < r * 8 ? "" : "completedrow"
-	}
 }
 
 //v2.1
@@ -583,6 +577,8 @@ function ngp3_feature_notify(k) {
 //v2.4: Moved from old functions...
 function doPerSecondNGP3Stuff(){
 	updateQuantumTabDisplays()
+	updateQuarkDisplay()
+	el('toggleautoquantummode').style.display = mod.ngp3 && quSave.reachedInfQK ? "" : "none"
 
 	if (!mod.ngp3) return
 
