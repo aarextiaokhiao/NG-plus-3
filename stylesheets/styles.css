@@ -2029,20 +2029,20 @@ br {
 	width:150px;
 	height: 30px;
 	color: black;
-	background: #2d7233 !important;
+	background: #373 !important;
 	font-weight: bold;
-	border: 3px solid #5be567;
+	border: 2px solid #bfb;
 	cursor: pointer;
 	border-radius: 10px;
-	color: #5be567;
+	color: #7f7;
 	font-size: 140%;
 	transition-duration: 0.2s;
 	margin: auto;
-	box-shadow: inset 0px 0px 10px 0px #5be567, inset 0px 0px 20px 0px #5be567, inset 0px 0px 30px 0px #5be567
+	box-shadow: inset 0px 0px 15px 0px #bfb
 }
 .bigripbtn:hover {
-	background: #a0e5a6 !important;
-	color: #6b996e
+	background: white !important;
+	color: #030
 }
 #pres_header .bigripbtn {
 	border-radius: 4px
@@ -2475,17 +2475,16 @@ td.lEp {
 }
 
 .gluonupgrade.hb {
-	background: radial-gradient(#ffff00, transparent 50%, transparent 100%), radial-gradient(#7f7f00, #7f7f00, transparent 60%, transparent 100%), linear-gradient(transparent, #7f7f00 50%, transparent 100%), radial-gradient(#3f3f00, black 50%, #3f3f00 100%);
+	background: radial-gradient(#bb0, transparent 75%, transparent 100%), linear-gradient(transparent, #550 50%, transparent 100%), #330;
 	background-position: center;
-	border: 1px solid #7f7f7f;
-	color: white;
-	text-shadow: 0px 0px 3px #3f3f00, 0px 0px 6px #3f3f00;
+	border: 2px solid #ff07;
+	color: #ffd;
+	text-shadow: 0px 0px 6px #ff0;
 	animation: hb 5s ease infinite
 }
 
 .gluonupgrade.hb:hover {
-	border-color: #ffff00;
-	box-shadow: 0px 0px 12px #ffff00, inset 0px 0px 24px #ffff00;
+	box-shadow: inset 0px 0px 12px #ff07;
 	cursor: pointer
 }
 

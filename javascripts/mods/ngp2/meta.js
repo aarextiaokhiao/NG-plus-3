@@ -107,7 +107,7 @@ function getMetaBoostPower() {
 
 function getMetaDimensionDescription(tier) {
 	if (tier > Math.min(7, player.meta.resets + 3) - (inQC(4) ? 1 : 0)) return getFullExpansion(player.meta[tier].bought) + ' (' + dimMetaBought(tier) + ')';
-	else return shortenDimensions(player.meta[tier].amount) + ' (' + dimMetaBought(tier) + ')  (+' + formatValue(player.options.notation, getMetaDimensionRateOfChange(tier), 2, 2) + dimDescEnd;
+	else return shortenDimensions(player.meta[tier].amount) + ' (' + dimMetaBought(tier) + ') (+' + formatValue(player.options.notation, getMetaDimensionRateOfChange(tier), 2, 2) + dimDescEnd;
 }
 
 function getMetaDimensionRateOfChange(tier) {
@@ -117,15 +117,15 @@ function getMetaDimensionRateOfChange(tier) {
 	if (aarMod.logRateChange) {
 		var change = current.add(toGain.div(10)).log10() - current.log10()
 		if (change < 0 || isNaN(change)) change = 0
-	} else var change  = toGain.times(10).dividedBy(current);
+	} else var change = toGain.times(10).dividedBy(current);
 
 	return change;
 }
 
 function canBuyMetaDimension(tier) {
-    if (tier > player.meta.resets + 4) return false;
-    if (speedrunMilestonesReached < 17 && tier > 1 && player.meta[tier - 1].amount.eq(0)) return false;
-    return true;
+	if (tier > player.meta.resets + 4) return false;
+	if (speedrunMilestonesReached < 17 && tier > 1 && player.meta[tier - 1].amount.eq(0)) return false;
+	return true;
 }
 
 function clearMetaDimensions () { //Resets costs and amounts
@@ -379,7 +379,7 @@ function getDil17Bonus() {
 function updateOverallMetaDimensionsStuff(){
 	el("metaAntimatterAmount").textContent = shortenMoney(player.meta.antimatter)
 	el("metaAntimatterBest").textContent = shortenMoney(player.meta.bestAntimatter)
-	el("bestAntimatterQuantum").textContent = quantumed ? "Your best" + (ghostified ? "" : "-ever") + " meta-antimatter" + (ghostified ? " in this Ghostify" : "") + " was " + shortenMoney(player.meta.bestOverQuantums) + "." : ""
+	el("bestAntimatterQuantum").textContent = quantumed ? "Your best" + (ghostified ? "" : "-ever") + " meta-antimatter" + (ghostified ? " in this Fundament" : "") + " was " + shortenMoney(player.meta.bestOverQuantums) + "." : ""
 	el("bestAntimatterTranslation").innerHTML = (mod.ngp3 && aarMod.nguspV === undefined && player.currentEternityChall != "eterc14" && (inQC(3) || nfSave.rewards >= 2) && !inQC(7)) ? 'Raised to the power of <span id="metaAntimatterPower" style="font-size:35px; color: black">'+formatValue(player.options.notation, getExtraDimensionBoostPowerExponent(getExtraDimensionBoostPowerUse()), 2, 1)+'</span>, t' : "T"
 	setAndMaybeShow("bestMAOverGhostifies", ghostified, '"Your best-ever meta-antimatter was " + shortenMoney(player.meta.bestOverGhostifies) + "."')
 	el("metaAntimatterEffect").textContent = shortenMoney(getExtraDimensionBoostPower())

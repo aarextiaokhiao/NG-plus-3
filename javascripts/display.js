@@ -29,7 +29,7 @@ function galaxyReqDisplay(){
 	msg += "): "
 	if (totalTypes >= 3) msg += "<br>"
 	msg += 'requires ' + getFullExpansion(nextGal.amount) + ' ' + DISPLAY_NAMES[inNC(4) ? 6 : 8] + ' Dimensions'
-	el("secondResetLabel").innerHTML =  msg
+	el("secondResetLabel").innerHTML = msg
 }
 
 var galaxyScalings = ["", "Distant ", "Farther ", "Remote ", "Obscure ", "Dark ", "Spectre ", "Ethereal ", "Ethereal++ ", "Ethereal IV ", "Ethereal V "]
@@ -420,14 +420,14 @@ function initialTimeStudyDisplay(){
 	el("82desc").textContent = "Currently: " + shortenMoney(E_pow(1.0000109, E_pow(player.resets, 2)).min(player.meta==undefined?1/0:'1e80000')) + "x"
 	el("91desc").textContent = "Currently: " + shortenMoney(pow10(Math.min(player.thisEternity, 18000)/60)) + "x"
 	el("92desc").textContent = "Currently: " + shortenMoney(pow2(600/Math.max(player.bestEternity, 20))) + "x"
-	el("93desc").textContent = "Currently: " +  shortenMoney(E_pow(player.totalTickGained, 0.25).max(1)) + "x"
+	el("93desc").textContent = "Currently: " + shortenMoney(E_pow(player.totalTickGained, 0.25).max(1)) + "x"
 	el("121desc").textContent = "Currently: " + ((253 - averageEp.dividedBy(player.epmult).dividedBy(10).min(248).max(3))/5).toFixed(1) + "x"
 	el("123desc").textContent = "Currently: " + Math.sqrt(1.39*player.thisEternity/10).toFixed(1) + "x"
 	el("141desc").textContent = "Currently: " + shortenMoney(E(1e45).dividedBy(E_pow(15, Math.log(player.thisInfinityTime)*Math.pow(player.thisInfinityTime, 0.125))).max(1)) + "x"
 	el("142desc").textContent = "You gain " + shortenCosts(1e25) + "x more IP"
 	el("143desc").textContent = "Currently: " + shortenMoney(E_pow(15, Math.log(player.thisInfinityTime)*Math.pow(player.thisInfinityTime, 0.125))) + "x"
 	el("151desc").textContent = shortenCosts(1e4) + "x multiplier on all Time Dimensions"
-	el("161desc").textContent = shortenCosts(pow10((inNGM(2) ? 6660 : 616) *  ( mod.ngep ? 5 : 1))) + "x multiplier on all normal dimensions"
+	el("161desc").textContent = shortenCosts(pow10((inNGM(2) ? 6660 : 616) * (mod.ngep ? 5 : 1))) + "x multiplier on all normal dimensions"
 	el("162desc").textContent = shortenCosts(pow10((inNGM(2) ? 234 : 11) * (mod.ngep ? 5 : 1))) + "x multiplier on all Infinity dimensions"
 	el("192desc").textContent = "You can get beyond " + shortenMoney(Number.MAX_VALUE) + " replicantis, but the interval is increased the more you have"
 	el("193desc").textContent = "Currently: " + shortenMoney(E_pow(1.03, Decimal.min(1e7, getEternitied())).min("1e13000")) + "x"
@@ -665,7 +665,8 @@ function updateResetTierButtons(){
 	el("quantumbtn").className = bigRip ? "bigripbtn" : "quantumbtn"
 	el("quantumbtn").style.display = bigRip || isQuantumReached() ? "" : "none"
 
-	el("bigripbtn").style.display = bigRip || !quantumed || !hasMasteryStudy("d14") ? "none" : ""
+	el("bigripbtn").style.display = canBigRip() ? "" : "none"
+	el("bigripbtn").innerHTML = (ghostified ? "" : "Show to the limitless! ") + "Big Rip the cosmos."
 	el("ghostifybtn").style.display = bigRip && isQuantumReached() ? "" : "none"
 	el("ghostparticles").style.display = ghostified ? "" : "none"
 	if (ghostified) {

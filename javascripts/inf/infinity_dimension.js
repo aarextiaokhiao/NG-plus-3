@@ -55,8 +55,8 @@ function DimensionRateOfChange(tier) {
 	if (aarMod.logRateChange) {
 		var change = current.add(toGain.div(10)).log10()-current.log10()
 		if (change < 0 || isNaN(change)) change = 0
-	} else var change  = toGain.times(tier > 7 ? 1 : 10).dividedBy(current);
-	return change;
+	} else var change = toGain.times(tier > 7 ? 1 : 10).dividedBy(current);
+	return change
 }
 
 function updateInfinityDimensions() {
@@ -115,39 +115,39 @@ function getStartingIDPower(tier){
 }
 
 function DimensionPower(tier) {
-  	var dim = player["infinityDimension" + tier]
-  	if (player.currentEternityChall == "eterc2" || player.currentEternityChall == "eterc10" || player.currentEternityChall == "eterc13") return E(0)
-  	if (player.currentEternityChall == "eterc11") return E(1)
-  	if (player.currentEternityChall == 'eterc14') return getIDReplMult()
-  	if (inQC(3)) return getExtraDimensionBoostPower()
-  	
+	var dim = player["infinityDimension" + tier]
+	if (player.currentEternityChall == "eterc2" || player.currentEternityChall == "eterc10" || player.currentEternityChall == "eterc13") return E(0)
+	if (player.currentEternityChall == "eterc11") return E(1)
+	if (player.currentEternityChall == 'eterc14') return getIDReplMult()
+	if (inQC(3)) return getExtraDimensionBoostPower()
+
 	var mult = getStartingIDPower(tier)
-	
-  	mult = mult.times(infDimPow)
 
-  	if (hasAch("r94") && tier == 1) mult = mult.times(2);
-  	if (hasAch("r75") && !player.boughtDims) mult = mult.times(player.achPow);
-  	if (hasAch("r66") && inNGM(2)) mult = mult.times(Math.max(1, Math.abs(player.tickspeed.log10()) / 29))
-  	if (player.replicanti.unl && player.replicanti.amount.gt(1) && inNGM(2)) mult = mult.times(getIDReplMult())
+	mult = mult.times(infDimPow)
 
-  	mult = mult.times(getInfDimPathIDMult(tier))
+	if (hasAch("r94") && tier == 1) mult = mult.times(2);
+	if (hasAch("r75") && !player.boughtDims) mult = mult.times(player.achPow);
+	if (hasAch("r66") && inNGM(2)) mult = mult.times(Math.max(1, Math.abs(player.tickspeed.log10()) / 29))
+	if (player.replicanti.unl && player.replicanti.amount.gt(1) && inNGM(2)) mult = mult.times(getIDReplMult())
+
+	mult = mult.times(getInfDimPathIDMult(tier))
 	mult = mult.times(getTotalIDEUMult())
-	
+
 	if (ECComps("eterc2") !== 0 && tier == 1) mult = mult.times(getECReward(2))
-  	if (ECComps("eterc4") !== 0) mult = mult.times(getECReward(4))
+	if (ECComps("eterc4") !== 0) mult = mult.times(getECReward(4))
 
-  	var ec9 = E(1)
-  	if (ECComps("eterc9") !== 0) ec9 = getECReward(9)
-  	if (inNGM(2)) mult = mult.times(ec9)
+	var ec9 = E(1)
+	if (ECComps("eterc9") !== 0) ec9 = getECReward(9)
+	if (inNGM(2)) mult = mult.times(ec9)
 
-  	if (inQC(6)) mult = mult.times(player.postC8Mult).dividedBy(player.matter.max(1))
+	if (inQC(6)) mult = mult.times(player.postC8Mult).dividedBy(player.matter.max(1))
 
-  	mult = dilates(mult, 2)
-  	if (player.replicanti.unl && player.replicanti.amount.gt(1) && inNGM(2)) mult = mult.times(getIDReplMult())
-  	if (inNGM(2)) mult = mult.times(ec9)
+	mult = dilates(mult, 2)
+	if (player.replicanti.unl && player.replicanti.amount.gt(1) && inNGM(2)) mult = mult.times(getIDReplMult())
+	if (inNGM(2)) mult = mult.times(ec9)
 
-  	mult = dilates(mult, 1)
-  	return mult
+	mult = dilates(mult, 1)
+	return mult
 }
 
 function resetInfDimensions() {
@@ -195,11 +195,11 @@ function getInfBuy10Mult(tier) {
 }
 
 function buyManyInfinityDimension(tier, auto) {
-  	if (player.eterc8ids <= 0 && player.currentEternityChall == "eterc8") return false
-  	var dim = player["infinityDimension" + tier]
-  	var cost = getIDCost(tier)
-  	if (player.infinityPoints.lt(cost)) return false
-  	if (!player.infDimensionsUnlocked[tier - 1]) return false
+	if (player.eterc8ids <= 0 && player.currentEternityChall == "eterc8") return false
+	var dim = player["infinityDimension" + tier]
+	var cost = getIDCost(tier)
+	if (player.infinityPoints.lt(cost)) return false
+	if (!player.infDimensionsUnlocked[tier - 1]) return false
 	if (player.eterc8ids == 0) return false
 	if (player.infinityPoints.lt(pow10(1e10))) player.infinityPoints = player.infinityPoints.minus(cost)
 	dim.amount = dim.amount.plus(10);

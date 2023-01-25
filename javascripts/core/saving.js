@@ -229,12 +229,12 @@ function export_save(id) {
 
 //Credits to MrRedShark77 from https://github.com/MrRedShark77/incremental-mass-rewritten/blob/main/js/saves.js
 function export_file() {
-    let file = new Blob([btoa(JSON.stringify(player, function(k, v) { return (v === Infinity) ? "Infinity" : v }))], {type: "text/plain"})
-    window.URL = window.URL || window.webkitURL;
-    let a = document.createElement("a")
-    a.href = window.URL.createObjectURL(file)
-    a.download = "NG+3 v2.31 Beta - "+new Date().toGMTString()+".txt"
-    a.click()
+		let file = new Blob([btoa(JSON.stringify(player, function(k, v) { return (v === Infinity) ? "Infinity" : v }))], {type: "text/plain"})
+		window.URL = window.URL || window.webkitURL;
+		let a = document.createElement("a")
+		a.href = window.URL.createObjectURL(file)
+		a.download = "NG+3 v2.31 Beta - "+new Date().toGMTString()+".txt"
+		a.click()
 }
 
 function exportData(encoded, success) {
@@ -430,7 +430,7 @@ function rename_save(id) {
 			popUpId: 0,
 			tabsSave: {on: false},
 			breakInfinity: false
-        }
+				}
 		temp_save.aarexModifications.save_name = save_name
 	}
 	set_save(id, temp_save)
@@ -534,7 +534,7 @@ function toggleOfflineProgress() {
 
 //Player Creation
 function updateNewPlayer(mode, preset) {
-    var modsChosen = modChosen
+		var modsChosen = modChosen
 	if (mode == "reset") {
 		modsChosen = {... mod}
 	} else if (mode == "quick") {
@@ -1102,7 +1102,7 @@ function getBrandNewWZBosonsData(){
 		wQkProgress: 0,
 		zNeGen: 1,
 		zNeProgress: 0,
-        zNeReq: E(1),
+				zNeReq: E(1),
 		wpb: 0,
 		wnb: 0,
 		zb: 0

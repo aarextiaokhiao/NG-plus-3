@@ -64,21 +64,12 @@ function toTier1Abb(t1, t2, aas) {
 	let h = Math.floor(t1 / 100) % 10
 
 	let r = ""
-	if (player.options.standard.useMyr && !player.options.standard.useTam && t1 >= 10 && t2 == 1) {
+	if (player.options.standard.useMyr && t1 >= 10 && t2 == 1) {
 		if (t1 >= 20) r = prefixes[0][t] + prefixes[1][h]
 		r += standardize("Myr", aas)
 		if (o > 0) r += "-" + (o > 1 ? prefixes[0][o] : "") + standardize("Mi", aas)
 	} else {
-		if (t1 > 1 || t2 == 0) {
-			if (h > 0 && player.options.standard.useTam) {
-				if (h >= 2) r += prefixes[2][h]
-				if (o > 0 || t > 0) {
-					r += prefixes[1][t]
-					r += prefixes[0][o]
-					if (h >= 2) r += prefixes[2][1]
-				}
-			} else r = prefixes[0][o] + prefixes[1][t] + prefixes[2][h]
-		}
+		if (t1 > 1 || t2 == 0) r = prefixes[0][o] + prefixes[1][t] + prefixes[2][h]
 		r += toTier2Abb(t2, aas)
 	}
 
@@ -88,40 +79,22 @@ function toTier1Abb(t1, t2, aas) {
 function toTier2Abb(t2, aas) {
 	if (!t2) return ""
 
-	let tam = player.options.standard.useTam
-	let abbs = tam ?
-		["", "M", "D", "Tr", "Te", "P", "H", "Hp", "Oc", "En"]
-	: [
+	let abbs = [
 		["", "Mi", "Mc", "Na", aas ? "Pi" : "Pc", "At", "Zp", "Yc", "Xn"],
 		["", "Me", "Du", "Tre", "Te", "Pe", "He", "Hp", "Ot", "En"],
 		["", "", "Is", "Trc", "Tec", "Pec", "Hec", "Hpc", "Otc", "Enc"],
 		["", "Hec", "DHc", "TrH", "TeH", "PeH", "HeH", "HpH", "OtH", "EnH"]
 	]
-	// Now supporting Tamara's illions!
-	// https://tamaramacadam.me/maths/largenumbers/illions.html
 
 	let o = t2 % 10
 	let t = Math.floor(t2 / 10) % 10
 	let h = Math.floor(t2 / 100) % 10
-
 	let r = ''
 
-	if (tam) {
-		if (h > 0) {
-			if (h >= 2) r += abbs[h]
-			r += "c"
-		}
-		if (t > 0) {
-			if (t >= 2) r += abbs[t]
-			r += "d"
-		}
-		r += abbs[o] + "n"
-	} else {
-        if (t2 < 10 && !tam) return abbs[0][t2]
-        if (t == 1 && o == 0) r += "Vec"
-        else r += abbs[1][o] + abbs[2][t]
-        r += abbs[3][h]
-	}
+	if (t2 < 10) return abbs[0][t2]
+	if (t == 1 && o == 0) r += "Vec"
+	else r += abbs[1][o] + abbs[2][t]
+	r += abbs[3][h]
 
 	return standardize(r, aas)
 }
@@ -357,36 +330,36 @@ function formatValue(notation, value, places, placesUnder1000, noInf) {
 		}
 
 		if (notation === "Brackets") {
-		  var table = [")", "[", "{", "]", "(", "}"];
-		  var log6 = Math.LN10 / Math.log(6) * Decimal.log10(value);
-		  if (log6 >= 1e9) return "e" + formatValue("Brackets", log6)
-		  var wholePartOfLog = Math.floor(log6);
-		  var decimalPartOfLog = log6 - wholePartOfLog;
-		  //Easier to convert a number between 0-35 to base 6 than messing with fractions and shit
-		  var decimalPartTimes36 = Math.floor(decimalPartOfLog * 36);
-		  var string = "";
-		  while (wholePartOfLog >= 6) {
+			var table = [")", "[", "{", "]", "(", "}"];
+			var log6 = Math.LN10 / Math.log(6) * Decimal.log10(value);
+			if (log6 >= 1e9) return "e" + formatValue("Brackets", log6)
+			var wholePartOfLog = Math.floor(log6);
+			var decimalPartOfLog = log6 - wholePartOfLog;
+			//Easier to convert a number between 0-35 to base 6 than messing with fractions and shit
+			var decimalPartTimes36 = Math.floor(decimalPartOfLog * 36);
+			var string = "";
+			while (wholePartOfLog >= 6) {
 			var remainder = wholePartOfLog % 6;
 			wholePartOfLog -= remainder;
 			wholePartOfLog /= 6;
 			string = table[remainder] + string;
-		  }
-		  string = "e" + table[wholePartOfLog] + string + ".";
-		  string += table[Math.floor(decimalPartTimes36 / 6)];
-		  string += table[decimalPartTimes36 % 6];
-		  return string;
+			}
+			string = "e" + table[wholePartOfLog] + string + ".";
+			string += table[Math.floor(decimalPartTimes36 / 6)];
+			string += table[decimalPartTimes36 % 6];
+			return string;
 		}
 		if (notation == "Tetration") {
-		  var base = player.options.tetration.base
-		  var count = -1;
-		  if (base >= 1e15) var prefix = formatValue("Scientific", base, 2, 0)
-		  else if (base >= 1e3) var prefix = formatValue("Mixed scientific", base, 2, 0)
-		  else var prefix = base
-		  while (value > 1) {
+			var base = player.options.tetration.base
+			var count = -1;
+			if (base >= 1e15) var prefix = formatValue("Scientific", base, 2, 0)
+			else if (base >= 1e3) var prefix = formatValue("Mixed scientific", base, 2, 0)
+			else var prefix = base
+			while (value > 1) {
 			value = E(value).log(base)
 			count++;
-		  }
-		  return prefix + "⇈" + (value + count).toFixed(Math.max(places, 0, Math.min(count-1, 4)));
+			}
+			return prefix + "⇈" + (value + count).toFixed(Math.max(places, 0, Math.min(count-1, 4)));
 		}
 
 		if (notation === "Myriads") return getMyriadStandard(value, places)
@@ -506,80 +479,80 @@ function formatPsi(mantissa,power){
 			return ls.length == 1 && equal(ls[0], player.options.psi.letter)
 		}
 	}
-    log(mantissa, power)
-    var precision = player.options.psi.precision
-    if (power == 0 && player.options.psi.letter.length == 0) {
-	    var letters = []
-	    var numbers = [mantissa]
+		log(mantissa, power)
+		var precision = player.options.psi.precision
+		if (power == 0 && player.options.psi.letter.length == 0) {
+			var letters = []
+			var numbers = [mantissa]
 	} else {
-	    var letters = [[1]]
-	    var numbers = [power, "-", mantissa]
+			var letters = [[1]]
+			var numbers = [power, "-", mantissa]
 
 	}
-    while (!lettersDone(letters) || !numbersDone(numbers,letters)) {
-    	//reduce numbers[0]
-    	while (!numbersDone(numbers, letters)) {
-	    	log(letters.map(letter), numbers, "reduce")
-    		var n = numbers.shift()
-    		numbers.unshift(Math.floor(Math.log10(n)), "-", n)
-    		letters.push([1])
-    	}
-    	//simplify letters
-    	if(!lettersDone(letters)) {
-	    	log(letters.map(letter), numbers, "simplify")
-    		var lastletter = letters.pop()
-    		var count = 1
-    		while (letters.length > 0 && equal(letters[letters.length - 1], lastletter)) {
-    			letters.pop()
-    			count++
-    		}
-    		numbers.unshift(count, "-")
-    		lastletter[0]++
-    		letters.push(lastletter)
-    	}
-    }
+		while (!lettersDone(letters) || !numbersDone(numbers,letters)) {
+			//reduce numbers[0]
+			while (!numbersDone(numbers, letters)) {
+				log(letters.map(letter), numbers, "reduce")
+				var n = numbers.shift()
+				numbers.unshift(Math.floor(Math.log10(n)), "-", n)
+				letters.push([1])
+			}
+			//simplify letters
+			if(!lettersDone(letters)) {
+				log(letters.map(letter), numbers, "simplify")
+				var lastletter = letters.pop()
+				var count = 1
+				while (letters.length > 0 && equal(letters[letters.length - 1], lastletter)) {
+					letters.pop()
+					count++
+				}
+				numbers.unshift(count, "-")
+				lastletter[0]++
+				letters.push(lastletter)
+			}
+		}
 	//remove extra terms
 	//((numbers[numbers.length-2]=="-"&&Math.log(numbers[numbers.length-1])%1==0)||(numbers[numbers.length-2]=="$"&&(Math.log(numbers[numbers.length-1])/2)%1==0))
 	while(numbers.length > 2 && Math.log10(numbers[numbers.length - 1]) % 1 == 0) {
-    	log(letters.map(letter), numbers, "remove")
+			log(letters.map(letter), numbers, "remove")
 		numbers.pop()
 		numbers.pop()
 	}
-    log(letters.map(letter), numbers, "predone")
-    while (numbers.length >= 2 * player.options.psi.args + 1) {
-    	var arg2 = numbers.pop()
-    	var op = numbers.pop()
-    	var arg1 = numbers.pop()
-    	if (op == "-") {
-    		numbers.push(arg1 + Math.log10(arg2) % 1)
-    	}
-    }
-    log(letters.map(letter),numbers,"done")
-    for (var i = 0; i < numbers.length;i++) {
-    	if (typeof numbers[i] == "number") {
-    		numbers[i] = numbers[i].toPrecision(12)
-    		if (i < 2 * player.options.psi.args - 2) {
-    			if (i == 0 && player.options.psi.side == "l") {
-    				numbers[i] = numbers[i].replace(/\.0+$/, "")
-    			} else {
-    				numbers[i] = numbers[i].replace(".", "").replace(/e[+-]\d+/, "").replace(/(?!^)0+$/, "")
+		log(letters.map(letter), numbers, "predone")
+		while (numbers.length >= 2 * player.options.psi.args + 1) {
+			var arg2 = numbers.pop()
+			var op = numbers.pop()
+			var arg1 = numbers.pop()
+			if (op == "-") {
+				numbers.push(arg1 + Math.log10(arg2) % 1)
+			}
+		}
+		log(letters.map(letter),numbers,"done")
+		for (var i = 0; i < numbers.length;i++) {
+			if (typeof numbers[i] == "number") {
+				numbers[i] = numbers[i].toPrecision(12)
+				if (i < 2 * player.options.psi.args - 2) {
+					if (i == 0 && player.options.psi.side == "l") {
+						numbers[i] = numbers[i].replace(/\.0+$/, "")
+					} else {
+						numbers[i] = numbers[i].replace(".", "").replace(/e[+-]\d+/, "").replace(/(?!^)0+$/, "")
  				}
-    		}
-    	}
-    }
-    log(numbers,"numbers")
-    if(player.options.psi.args==0){
-    	return letters.map(letter).join("")
-    }
-    if(player.options.psi.side=="l"){
+				}
+			}
+		}
+		log(numbers,"numbers")
+		if(player.options.psi.args==0){
+			return letters.map(letter).join("")
+		}
+		if(player.options.psi.side=="l"){
 		var formattedValue=numbers[0]
 		if (player.options.psi.letter[0]==1) if (numbers[0]>=1e9) formattedValue=formatValue("Mixed scientific",numbers[0],2,2)
-    	return numbers.slice(2).join("").slice(0,player.options.psi.chars).replace(/[-$]$/,"")+letters.map(letter).join("")+formattedValue
-    }
-    if(numbers.length==1&&numbers[0]=="1"&&!player.options.psi.forceNumbers){
-    	return letters.map(letter).join("")
-    }
-    return letters.map(letter).join("")+numbers.join("").slice(0,player.options.psi.chars).replace(/[-$]$/,"")
+			return numbers.slice(2).join("").slice(0,player.options.psi.chars).replace(/[-$]$/,"")+letters.map(letter).join("")+formattedValue
+		}
+		if(numbers.length==1&&numbers[0]=="1"&&!player.options.psi.forceNumbers){
+			return letters.map(letter).join("")
+		}
+		return letters.map(letter).join("")+numbers.join("").slice(0,player.options.psi.chars).replace(/[-$]$/,"")
 }
 
 function convTo(notation, num) {
@@ -635,18 +608,18 @@ function convTo(notation, num) {
 
 //Iroha code
 function bin_log (n) {
-  if (n.lt(1)) {
-    return bin_log(bin_inv(n)).negate();
-  }
-  let r = Math.floor(n.log(2));
-  let x = Decimal_BI.pow(2, r);
-  return Decimal_BI.plus(r, n.div(x).sub(1));
+	if (n.lt(1)) {
+		return bin_log(bin_inv(n)).negate();
+	}
+	let r = Math.floor(n.log(2));
+	let x = Decimal_BI.pow(2, r);
+	return Decimal_BI.plus(r, n.div(x).sub(1));
 }
 
 function bin_inv (n) {
-  let x = Decimal_BI.pow(2, Math.ceil(n.log(2)));
-  let diff = x.sub(n);
-  return Decimal_BI.div(1, x).plus(diff.div(x.pow(2)).times(2));
+	let x = Decimal_BI.pow(2, Math.ceil(n.log(2)));
+	let diff = x.sub(n);
+	return Decimal_BI.div(1, x).plus(diff.div(x.pow(2)).times(2));
 }
 
 let iroha_zero = '日';
@@ -662,36 +635,36 @@ let iroha_log = function (x) {return 'ログ' + x}
 let iroha_special = 'いろはにほへとちりぬるをわかよたれそつねならむうゐのおくやまけふこえてあさきゆめみしゑひもせアイウエオカキクケコ';
 
 function iroha (n, depth) {
-  if (!break_infinity_js) if (n instanceof Decimal) n = n.toString()
-  n = E_BI(n);
-  if (isNaN(n.e)) {
-    return '今';
-  }
-  if (depth === 0) {
-    return '';
-  }
-  if (n.eq(0)) {
-    return iroha_zero;
-  }
-  if (n.eq(1)) {
-    return iroha_one;
-  }
-  if (n.lt(0)) {
-    return iroha_negate(iroha(n.negate(), depth));
-  }
-  if (n.lt(1)) {
-    return iroha_invert(iroha(bin_inv(n), depth));
-  }
-  let log = bin_log(bin_log(n));
-  if (log < -27 || log > 55) {
-	  return iroha_log(iroha(bin_log(n), depth))
-  }
-  let prefix = (log.lt(0)) ? ((x) => x + 27) : ((x) => x);
-  log = log.abs();
-  let num = Math.round(log.floor().toNumber());
-  let rem = log.sub(num);
-  let rec = bin_inv(Decimal_BI.sub(1, rem));
-  return iroha_special[prefix(num)] + (rec.eq(1) ? '' : iroha(rec, depth - 1));
+	if (!break_infinity_js) if (n instanceof Decimal) n = n.toString()
+	n = E_BI(n);
+	if (isNaN(n.e)) {
+		return '今';
+	}
+	if (depth === 0) {
+		return '';
+	}
+	if (n.eq(0)) {
+		return iroha_zero;
+	}
+	if (n.eq(1)) {
+		return iroha_one;
+	}
+	if (n.lt(0)) {
+		return iroha_negate(iroha(n.negate(), depth));
+	}
+	if (n.lt(1)) {
+		return iroha_invert(iroha(bin_inv(n), depth));
+	}
+	let log = bin_log(bin_log(n));
+	if (log < -27 || log > 55) {
+		return iroha_log(iroha(bin_log(n), depth))
+	}
+	let prefix = (log.lt(0)) ? ((x) => x + 27) : ((x) => x);
+	log = log.abs();
+	let num = Math.round(log.floor().toNumber());
+	let rem = log.sub(num);
+	let rec = bin_inv(Decimal_BI.sub(1, rem));
+	return iroha_special[prefix(num)] + (rec.eq(1) ? '' : iroha(rec, depth - 1));
 }
 
 //Myriads
@@ -802,15 +775,15 @@ function getFullExpansion(num) {
 }
 
 shorten = function (money) {
-  return formatQuick(money, 2, 2);
+	return formatQuick(money, 2, 2);
 };
 
 shortenCosts = function (money) {
-  return formatQuick(money, 0, 0);
+	return formatQuick(money, 0, 0);
 };
 
 shortenPreInfCosts = function (money) {
-    if (money.exponent<0) return Math.round(money.mantissa) + " / " + formatQuick(pow10(-money.exponent), 0, 0)
+		if (money.exponent<0) return Math.round(money.mantissa) + " / " + formatQuick(pow10(-money.exponent), 0, 0)
 	return formatQuick(money, (money.mantissa>1&&money.exponent>308)?2:0, 0);
 };
 
@@ -823,7 +796,7 @@ shortenDimensions = function (money) {
 };
 
 shortenMoney = function (money) {
-  return formatQuick(money, 2, 1);
+	return formatQuick(money, 2, 1);
 };
 
 shortenND = function (money) {
@@ -841,21 +814,17 @@ formatQuick = function (x, acc, dpBefore1k = 2) {
 
 //Non-Number Formatting
 function timeDisplay(time) {
-  if (player.options.notation === "Blind") return ""
+	if (player.options.notation === "Blind") return ""
 
-  time = time / 10
-  if (time <= 10) return time.toFixed(3) + " seconds"
-  time = Math.floor(time)
+	time = time / 10
+	if (time <= 10) return time.toFixed(3) + " seconds"
+	time = Math.floor(time)
 
-  if (time >= 31536000) {
-      return Math.floor(time / 31536000) + " years, " + Math.floor((time % 31536000) / 86400) + " days, " + Math.floor((time % 86400) / 3600) + " hours, " + Math.floor((time % 3600) / 60) + " minutes, and " + Math.floor(time % 60) + " seconds"
-  } else if (time >= 86400) {
-      return Math.floor(time / 86400) + " days, " + Math.floor((time % 86400) / 3600) + " hours, " + Math.floor((time % 3600) / 60) + " minutes, and " + Math.floor(time % 60) + " seconds"
-  } else if (time >= 3600) {
-      return Math.floor(time / 3600) + " hours, " + Math.floor((time % 3600) / 60) + " minutes, and " + Math.floor(time % 60) + " seconds"
-  } else if (time >= 60) {
-      return Math.floor(time / 60) + " minutes, and " + Math.floor(time % 60) + " seconds"
-  } else return Math.floor(time % 60) + " seconds"
+	if (time >= 31536000) return Math.floor(time / 31536000) + " years, " + Math.floor((time % 31536000) / 86400) + " days, " + Math.floor((time % 86400) / 3600) + " hours, " + Math.floor((time % 3600) / 60) + " minutes, and " + Math.floor(time % 60) + " seconds"
+	else if (time >= 86400) return Math.floor(time / 86400) + " days, " + Math.floor((time % 86400) / 3600) + " hours, " + Math.floor((time % 3600) / 60) + " minutes, and " + Math.floor(time % 60) + " seconds"
+	else if (time >= 3600) return Math.floor(time / 3600) + " hours, " + Math.floor((time % 3600) / 60) + " minutes, and " + Math.floor(time % 60) + " seconds"
+	else if (time >= 60) return Math.floor(time / 60) + " minutes, and " + Math.floor(time % 60) + " seconds"
+	else return Math.floor(time % 60) + " seconds"
 }
 
 function preformat(int) {
@@ -1080,7 +1049,6 @@ function openNotationOptions() {
 		el("chosenSubNotation").textContent = "Sub-notation: " + (player.options.spazzy.subNotation == "Emojis" ? "Cancer" : player.options.spazzy.subNotation)
 		el("useDe").checked = player.options.aas.useDe
 		el("useMyr").checked = player.options.standard.useMyr
-		el("useTam").checked = player.options.standard.useTam
 	} else {
 		el("openpsioptions").textContent = "Notation options"
 		el("mainnotationoptions1").style.display = ""

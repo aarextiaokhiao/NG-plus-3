@@ -407,7 +407,7 @@ function doQuantum(force, auto, qc = {}) {
 
 	//Finally, do a Quantum reset!
 	var oldTime = quSave.time
-	doReset("qu")
+	doReset("qu", auto)
 
 	el("quantumbtn").style.display = "none"
 	el("bigripbtn").style.display = "none"

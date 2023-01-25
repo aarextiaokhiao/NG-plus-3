@@ -10,7 +10,7 @@ newsArray = [//always true
 ["IN THE END, IT DOESN'T ANTIMATTER -hevipelle", true, "a8"],
 ["None of this matters", true, "a9"],
 ["How does it matter if its antimatter?", true, "a10"],
-["Scientists confirm that the colour of antimatter is Blurple", true, "a11"],  
+["Scientists confirm that the colour of antimatter is Blurple", true, "a11"],	
 ["How does NASA organise a party? They planet.", true, "a12"], 
 ["Electrons are now seeing the happy things in life. We're calling these happy electrons 'Positrons.' Wait, that's taken?", true, "a13"],
 ["This completely useless sentence will get you nowhere and you know it. What a horrible obnoxious man would come up with it, he will probably go to hell, and why would the developer even implement it? Even if you kept reading it you wouldn't be able to finish it (the first time).", true, "a14"],
@@ -57,7 +57,7 @@ newsArray = [//always true
 ["As for sure as the sun rises in the west, of all the singers and poets on earth, I am the bestest. - hevipelle", true, "a55"], 
 ["I'm good at using github -hevipelle", true, "a56"],
 ["A new chat server has been created for Antimatter people to spy on Matter people, and the world has fallen into chaos and discord", true, "a57"], 
-["A new study has come out linking the consumption of potatoes with increased risk of Antimatter implosion.  Scientists suggest eating more.", true, "a58"], 
+["A new study has come out linking the consumption of potatoes with increased risk of Antimatter implosion.	Scientists suggest eating more.", true, "a58"], 
 ["I thought that I fixed that bug but apparently some update broke it again -hevipelle", true, "a59"],
 ["Maybe I'm gay then -Bootato", true, "a60"], 
 ["Breaking news! Hevipelle has just announced that the buy max button is in fact going to be removed!", true, "a61"], 
@@ -94,20 +94,20 @@ newsArray = [//always true
 ["#DimensionLivesAntimatter", true, "a92"],
 ["Do antimatter people with suicidal thoughts get depressants?", true, "a93"], 
 ["To matter or to antimatter, that is the question.", true, "a94"], 
-["Why is everything so Hevi?",  true, "a95"],
-["It has been scientifically proven ages ago, that cats made of matter are assholes. We have good news, because cats made of antimatter are still assholes",  true, "a96"],
+["Why is everything so Hevi?",	true, "a95"],
+["It has been scientifically proven ages ago, that cats made of matter are assholes. We have good news, because cats made of antimatter are still assholes",	true, "a96"],
 ["Nobody once told me the anti-world wasn’t gonna roll me", true, "a97"], 
-["Antimatter is like internet. If you're reading this, you can't have enough of it.",  true, "a98"],
-["Antimatter has made time travel possible and I'm here to make the past great again. - 2nd President of the World",  true, "a99"],
-["Please insert Disc -1 to continue playing  Antimatter Dimensions ™.", true, "a100"], 
+["Antimatter is like internet. If you're reading this, you can't have enough of it.",	true, "a98"],
+["Antimatter has made time travel possible and I'm here to make the past great again. - 2nd President of the World",	true, "a99"],
+["Please insert Disc -1 to continue playing	Antimatter Dimensions ™.", true, "a100"], 
 ["I was a part of antimatter like you once. But then I got matter in my knee.", true, "a101"], 
 ["Antimatter... antimatter never changes... until you get to quantum physics of antimatter, but we don't have enough tachyon particles for that.", true, "a102"],
 ["There is no war in Antimatter Dimensions. Here we are safe. Here we are free.", true, "a103"], 
-["Antimatter has solved global warming.  In unrelated news, the Earth no longer exists.",  true, "a104"],
-["Anti-water, anti-Earth, anti-fire, anti-air. Long ago, the four anti-nations lived together in harmony. Then, everything changed when the anti-Fire Nation attacked. Only the anti-Avatar, the master of all 4 anti-elements could bring balance to the anti-world, but when the world needed him most, he accidentally touched some regular matter and exploded.",  true, "a105"],
+["Antimatter has solved global warming.	In unrelated news, the Earth no longer exists.",	true, "a104"],
+["Anti-water, anti-Earth, anti-fire, anti-air. Long ago, the four anti-nations lived together in harmony. Then, everything changed when the anti-Fire Nation attacked. Only the anti-Avatar, the master of all 4 anti-elements could bring balance to the anti-world, but when the world needed him most, he accidentally touched some regular matter and exploded.",	true, "a105"],
 ["If you open an anti-lootbox, are you selling random possessions for in-game currency?", true, "a106"], 
-["People are beginning to question Hevipelle's existence.",  true, "a107"], 
-["Antimatter Dimensions is proud to be sponsored by Lehmä! Now offering - grass eating lessons! Learn what grass is safe to eat and what grass isn't.",  true, "a108"],
+["People are beginning to question Hevipelle's existence.",	true, "a107"], 
+["Antimatter Dimensions is proud to be sponsored by Lehmä! Now offering - grass eating lessons! Learn what grass is safe to eat and what grass isn't.",	true, "a108"],
 ["It is the year 2422. The update still isn't out. Hevi is working on balancing unfunity dimension dimensions and challenges for the 38th layer of prestige. There are over 100 rows of achievements. They're getting ready to start using breaking_breaking_breaking_infinity.js", true, "a109"],
 ["Import Christmas for a secret theme", true, "a110"],
 ["What the f*ck did you just f*cking say about me, you little b*tch? I’ll have you know I graduated top of my class in the Antimatter Seals, and I’ve been involved in numerous secret raids on the 9th Dimension, and I have over 300 NNnNeMI-NNnNe confirmed kills. I am trained in potato warfare and I’m the top sniper in the entire Antimatter Galactic armed forces. You are nothing to me but just another infinity. I will wipe you the f*ck out with Max All mashing the likes of which has never been seen before in this dimension, mark my f*cking words. You think you can get away with saying that shit to me over the Interdimensional network? Think again, f*cker. As we speak I am contacting my secret network of autobuyers across the galaxy and your IP is being traced right now so you better prepare for the Big Crunch, maggot. The Big Crunch that wipes out the pathetic little thing you call your life. You’re f*cking dead, kid. I can be anywhere, anytime, and I can kill you in over seven 😠💩 different ways, and that’s just with my mouse. Not only am I extensively trained in dimension shift combat, but I have access to the entire arsenal of the Antimatter Marine Corps and I will use it to its full extent to wipe your miserable ass off the face of the universe, you little shit. If only you could have known what unhevi retribution your little “clever” comment was about to bring down upon you, maybe you would have held your f*cking tongue. But you couldn’t, you didn’t, and now you’re buying until 10, you goddamn idiot. I will shit antimatter shit all over you and you will drown in it. You’re f*cking dead, kiddo.", true, "a111"],
@@ -129,7 +129,7 @@ newsArray = [//always true
 ["Antimatter_Dimensions.mp1.79e308", true, "a127"],
 ["https://www.youtube.com/watch?v=dQw4w9WgXcQ", true, "a128"],
 ["Click this to unlock a secret achievement.", true, "a129"],
-["Warning - We have just been informed that there is a chance of infection with a mind-virus of the Basilisk type, similar to the infamous winking parrot. This particular example is known as 'Fractal Cancer Type III'. This is believed to cause a 'crashing' of the mind, similar to a computer crash, due to the mathematical complexity of the image causing mathematical ideas that the mind can't comprehend, a Gondelian shock input eventually leading to crashing through Gondelian spoilers. All who have researched it have eventually died the same way, so it is impossible to tell exactly, but this is the common belief. Regardless, with the introduction of 'cancer' mode, as well as reports of it's spontaneous appearance, sufficient repetition of this mode's appearance may lead to  an image forming in the mind similar to 'Fractal Cancer Type III'. With this in mind, we have some suggestions if you find yourself plagued with it. First, refresh immediately and see if that fixes the issue. If not, navigate to options, and change the theme from cancer to literally anything else. And above all else, Godspeed. We can't afford to lose anymore viewers.", true, "a130"],
+["Warning - We have just been informed that there is a chance of infection with a mind-virus of the Basilisk type, similar to the infamous winking parrot. This particular example is known as 'Fractal Cancer Type III'. This is believed to cause a 'crashing' of the mind, similar to a computer crash, due to the mathematical complexity of the image causing mathematical ideas that the mind can't comprehend, a Gondelian shock input eventually leading to crashing through Gondelian spoilers. All who have researched it have eventually died the same way, so it is impossible to tell exactly, but this is the common belief. Regardless, with the introduction of 'cancer' mode, as well as reports of it's spontaneous appearance, sufficient repetition of this mode's appearance may lead to	an image forming in the mind similar to 'Fractal Cancer Type III'. With this in mind, we have some suggestions if you find yourself plagued with it. First, refresh immediately and see if that fixes the issue. If not, navigate to options, and change the theme from cancer to literally anything else. And above all else, Godspeed. We can't afford to lose anymore viewers.", true, "a130"],
 ["If I have bad English, I'll study English until I have good English.", true, "a131"],
 ["Someone once told me that antimatter is gonna roll me. I ain't the sharpest atom in the shed. WELL, the tubes start coming and they don't stop coming...", true, "a132"],
 ['Because of this game I can now use the word "infinity" as a verb.', true, "a133"],
@@ -184,7 +184,7 @@ newsArray = [//always true
 ["Somebody told me to wait five hours for the update yesterday but it's today and it still hasn't come! What do I do?", 'player.newsArray.includes("a91") && player.totalTimePlayed >= 600*300', "n8"],
 //hard
 ["You do know that you won't reach Infinity in -1 seconds, right?", "player.bestInfinityTime == 0.1", "c1"],
-["Where does Antimatter Nemo live? In a NNnNeMI-NNnNe.", "player.totalmoney.e >= 3e6", "c2"],  //might not be poss?
+["Where does Antimatter Nemo live? In a NNnNeMI-NNnNe.", "player.totalmoney.e >= 3e6", "c2"],	//might not be poss?
 ["Anti Emoji Movie MMMCMXCIX is a major hit!", "player.spreadingCancer >= 3999", "c3"],
 ["Achievement Unlocked!", "player.achievements.length == 88", "c4"],
 ["Did you use an autoclicker for that?", "player.timestudy.studies.includes(131) && player.thisInfinityTime <= 600 && player.replicanti.galaxies >= 50", "c5"],
@@ -425,13 +425,13 @@ newsArray = [//always true
 ["The Anti-Grind Research Lab is currently looking for another exploit. The estimated amount of time will be about 7 months. Why can’t they just play the game normally? Nobody knows.", true, "am213"],
 ["'I will not let players exploit the game!' ~ Aarex, 2018", true, "am214"],
 ["How come NG++ and NG+++ add content, while NG+4 is simply a boost?", "aarMod.ngp4V != undefined", "am215"],
-["You know, scientifically a big crunch would result in much more antimatter than a big rip.",  "hasAch('ng3p51')", "am216"],
+["You know, scientifically a big crunch would result in much more antimatter than a big rip.",	"hasAch('ng3p51')", "am216"],
 ["I will not develop any news tickers at the time of writing, sorry everyone!", true, "am217"],
 ["New layers coming out! Tetrify, Pentify, Sexify, Septify, Nonify and finally Decify. Also scamify. Wait, what do you mean i should rename that third one to hexify instead?", true, "am218"],
 ["Why is there a big crunch and a big rip although a heat death would be more likely to happen?", "hasAch('ng3p51')", "am219"],
 ["Thousands of people in protest as Aarex adds scamify for 1 minute.", true, "am220"],
 ["We live in not just a universe and a multiverse, but ONE MEGAVERSE.", true, "am221"],
-["Antimatter dimensions is a metaphor for communism. There is only one source of production doing all the work, AKA first dimensions, while everyone else shares the antimatter. But wait, does that mean matter is always capitalistic? That can't be true, considering that the soviets were communists, and they were made of matter. Wat, maybe they was'nt? Antimatter dimensions takes place inside the soviet union confirmed? That means the soviet union still exists, because if it does'nt, then that means it's physically impossible for antimatter dimensions to exist? But the soviet unions does'nt exist, wich means antimatterr dimensions should'nt exist. This means the universe cannot exist, because there is a paradox, but the universe DOES exist, so it can't be a paradox, there has to be some other solution. Wait, the first word of the soviet anthem is \"Soyuz\", wich means \"Union\", in english. This could mean that the antimatter dimensions are actually in union with the time BEFORE 1991, but it still exists today. Antimatter dimensions hjas confirmed that time travel is possible. Hevipelle, please show us your secret. He's probably not gonna answer, because he is technically Stalin. \"Hevipelle\", is just the project name of Stalins top secret time travel machine. Stalin then went into the machine, and tried to hide in the least popular game genre, incremental games. Stalin then decided to make an further lie by saying he's finnish. It all makes sense now! The communist dimensions and the complete dictatorship of the player. Now, you might be wondering why Stalin still existed after the time travel_. Well, the only possibility is that the time travel machine somehow moved into a timeline where he never used it. But wait, this means that Stalin never actually used the time machine. Yet another paradox! Well, this one is quite explainable. You see, there are 5 timelines. The first one, where Stalin didd use the time machine, but antimatter dimensions never existed, the second one where he did'nt use the time machine, but he still existed in the present, there is also a third one where he made a timeline union, wich connected the first and second timeline through yet another machine. There is also the 4th, where he has taken over the univerese and it's where he does most of his stuff. There is also the final and 5th one, the timeline where antimatter dimensions is happening. Tgis means that both timeline 1,2 and 5 are crossingg each other, while the third are combining them. This means i should be able to enter into the second timeline wich makes it so i can get a time machine to reach into the 4th timeline. 5 hours later and i have finally gotten into the 4th timeline, where i met face to face with Stalin himself. He looked very strong and he saw me. He immedeatly tried to talk to me and we camÃ© to the conclusion that we needed more of a crew. We went to get some help from Vladimir Putin, who quickly went under the alias of \"Aarex\", who made a 6th timeline wich is ng+++. However, Stalin got so afraid of the quality of Putins content, so he got a meantal illness. But he had one final wish. To create the \"Reality\" update, wich would end the antimatter dimensions timeline. But putin was trying to make a reworked version of ng+++. This meant creating a 7th timeline. Howeverr, i also wanted to do something. I created the \"NG+1e308\" timeline, but it ended before it even started. However, everythhing was going great until Slabdrill found us and tried to attack us. We quickly trapped him inside a ninth timeline. From there he made countless attempts of addeing his timeline into another timeline i the forrm of a ninth dimension, but Putin did nott let him. The wall between the ninth timeline and the rest was just too strong.  However, you might be wondering how you too can gain access to all of this, well, at firtrst you need t-    (Gets shot by Stalin) the AD:NGA mod, the 10th timeline with a fractal engine inspired mechanic and Rhendevous relics, you need 20 Rhendevous resets to get the 20-relic, a inter-timeline transport device with the Buy-N-Large logo, the 15-relic is a Buy-N-Large time machine.", true, "am222"],
+["Antimatter dimensions is a metaphor for communism. There is only one source of production doing all the work, AKA first dimensions, while everyone else shares the antimatter. But wait, does that mean matter is always capitalistic? That can't be true, considering that the soviets were communists, and they were made of matter. Wat, maybe they was'nt? Antimatter dimensions takes place inside the soviet union confirmed? That means the soviet union still exists, because if it does'nt, then that means it's physically impossible for antimatter dimensions to exist? But the soviet unions does'nt exist, wich means antimatterr dimensions should'nt exist. This means the universe cannot exist, because there is a paradox, but the universe DOES exist, so it can't be a paradox, there has to be some other solution. Wait, the first word of the soviet anthem is \"Soyuz\", wich means \"Union\", in english. This could mean that the antimatter dimensions are actually in union with the time BEFORE 1991, but it still exists today. Antimatter dimensions hjas confirmed that time travel is possible. Hevipelle, please show us your secret. He's probably not gonna answer, because he is technically Stalin. \"Hevipelle\", is just the project name of Stalins top secret time travel machine. Stalin then went into the machine, and tried to hide in the least popular game genre, incremental games. Stalin then decided to make an further lie by saying he's finnish. It all makes sense now! The communist dimensions and the complete dictatorship of the player. Now, you might be wondering why Stalin still existed after the time travel_. Well, the only possibility is that the time travel machine somehow moved into a timeline where he never used it. But wait, this means that Stalin never actually used the time machine. Yet another paradox! Well, this one is quite explainable. You see, there are 5 timelines. The first one, where Stalin didd use the time machine, but antimatter dimensions never existed, the second one where he did'nt use the time machine, but he still existed in the present, there is also a third one where he made a timeline union, wich connected the first and second timeline through yet another machine. There is also the 4th, where he has taken over the univerese and it's where he does most of his stuff. There is also the final and 5th one, the timeline where antimatter dimensions is happening. Tgis means that both timeline 1,2 and 5 are crossingg each other, while the third are combining them. This means i should be able to enter into the second timeline wich makes it so i can get a time machine to reach into the 4th timeline. 5 hours later and i have finally gotten into the 4th timeline, where i met face to face with Stalin himself. He looked very strong and he saw me. He immedeatly tried to talk to me and we camÃ© to the conclusion that we needed more of a crew. We went to get some help from Vladimir Putin, who quickly went under the alias of \"Aarex\", who made a 6th timeline wich is ng+++. However, Stalin got so afraid of the quality of Putins content, so he got a meantal illness. But he had one final wish. To create the \"Reality\" update, wich would end the antimatter dimensions timeline. But putin was trying to make a reworked version of ng+++. This meant creating a 7th timeline. Howeverr, i also wanted to do something. I created the \"NG+1e308\" timeline, but it ended before it even started. However, everythhing was going great until Slabdrill found us and tried to attack us. We quickly trapped him inside a ninth timeline. From there he made countless attempts of addeing his timeline into another timeline i the forrm of a ninth dimension, but Putin did nott let him. The wall between the ninth timeline and the rest was just too strong.	However, you might be wondering how you too can gain access to all of this, well, at firtrst you need t-		(Gets shot by Stalin) the AD:NGA mod, the 10th timeline with a fractal engine inspired mechanic and Rhendevous relics, you need 20 Rhendevous resets to get the 20-relic, a inter-timeline transport device with the Buy-N-Large logo, the 15-relic is a Buy-N-Large time machine.", true, "am222"],
 ["So, Spelpotatis is trying to beat me by news tickers, I will not stop until I win.", true, "am223"],
 ["[Insert a news ticker which would cause an armageddon, but doesn't really happen due to: I am being restricted in your computer. Computers can't do real life stuff, unless they are robots.]", true, "am224"],
 ["Alright. My news tickers have too many stuff made by Aarex. If you wish for a lucky moment, click me to split into 2.", true, "am225"],
@@ -516,67 +516,67 @@ document.addEventListener("visibilitychange", function() {if (!document.hidden) 
 var scrollTimeouts = [];
 var nextMsgIndex;
 function scrollNextMessage() {
-        //don't run if hidden to save performance
-        if (typeof (player) == "undefined") return
-        if (player.options.newsHidden) return false
-        var s = el('news');
-        updateNewsArray();
-        tmp.blankedOut = false
-        
-        //select a message at random
-        try {
-                do {nextMsgIndex = Math.floor(Math.random() * newsArray.length)} while (!eval(newsArray[nextMsgIndex][1]) || (newsArray[nextMsgIndex][2].indexOf("am") > -1 && !hasAch("r22")))
-        } catch(e) {
-                console.log("Newsarray doesn't work at idx " + nextMsgIndex)
-        }
-        scrollTimeouts.forEach(function(v) {clearTimeout(v);});
-        scrollTimeouts = [];
-        
-        //set the text
-        var m = newsArray[nextMsgIndex][0];
-        if (newsArray[nextMsgIndex][2] == "am37") {
-                //coded by Naruyoko
-                var m = ""
-                for (var i = 0; i < 256; i++) m += String.fromCharCode(Math.random() * 95 + 32);
-        }
-        s.textContent = m
-        
-        //get the parent width so we can start the message beyond it
-        let parentWidth = s.parentElement.clientWidth;
-        
-        //set the transition to blank so the move happens immediately
-        s.style.transition = '';
-        //move div_text to the right, beyond the edge of the div_container
-        s.style.transform = 'translateX('+parentWidth+'px)';
-        
-        //we need to use a setTimeout here to allow the browser time to move the div_text before we start the scrolling
-        scrollTimeouts.push(setTimeout( function() {
-                //distance to travel is s.parentElement.clientWidth + s.clientWidth + parent padding
-                //we want to travel at rate pixels per second so we need to travel for (distance / rate) seconds
-                let dist = s.parentElement.clientWidth + s.clientWidth + 20; //20 is div_container padding
-                let rate = 100; //change this value to change the scroll speed
-                let transformDuration = dist / rate;
-                if (!player.options.newsHidden && !player.newsArray.includes(newsArray[nextMsgIndex][2])) {
-                        player.newsArray.push(newsArray[nextMsgIndex][2]);
-                        if (player.newsArray.length>=50) giveAchievement("Fake News")
-                        if (player.newsArray.length>=400) giveAchievement("400% Breaking News")
-                }
+	//don't run if hidden to save performance
+	if (typeof (player) == "undefined") return
+	if (player.options.newsHidden) return false
+	var s = el('news');
+	updateNewsArray();
+	tmp.blankedOut = false
+	
+	//select a message at random
+	try {
+		do {nextMsgIndex = Math.floor(Math.random() * newsArray.length)} while (!eval(newsArray[nextMsgIndex][1]) || (newsArray[nextMsgIndex][2].indexOf("am") > -1 && !hasAch("r22")))
+	} catch(e) {
+		console.log("Newsarray doesn't work at idx " + nextMsgIndex)
+	}
+	scrollTimeouts.forEach(function(v) {clearTimeout(v);});
+	scrollTimeouts = [];
+	
+	//set the text
+	var m = newsArray[nextMsgIndex][0];
+	if (newsArray[nextMsgIndex][2] == "am37") {
+		//coded by Naruyoko
+		var m = ""
+		for (var i = 0; i < 256; i++) m += String.fromCharCode(Math.random() * 95 + 32);
+	}
+	s.textContent = m
+	
+	//get the parent width so we can start the message beyond it
+	let parentWidth = s.parentElement.clientWidth;
+	
+	//set the transition to blank so the move happens immediately
+	s.style.transition = '';
+	//move div_text to the right, beyond the edge of the div_container
+	s.style.transform = 'translateX('+parentWidth+'px)';
+	
+	//we need to use a setTimeout here to allow the browser time to move the div_text before we start the scrolling
+	scrollTimeouts.push(setTimeout( function() {
+		//distance to travel is s.parentElement.clientWidth + s.clientWidth + parent padding
+		//we want to travel at rate pixels per second so we need to travel for (distance / rate) seconds
+		let dist = s.parentElement.clientWidth + s.clientWidth + 20; //20 is div_container padding
+		let rate = 100; //change this value to change the scroll speed
+		let transformDuration = dist / rate;
+		if (!player.options.newsHidden && !player.newsArray.includes(newsArray[nextMsgIndex][2])) {
+			player.newsArray.push(newsArray[nextMsgIndex][2]);
+			if (player.newsArray.length>=50) giveAchievement("Fake News")
+			if (player.newsArray.length>=400) giveAchievement("400% Breaking News")
+		}
 
 
-                //set the transition duration
-                s.style.transition = 'transform '+transformDuration+'s linear';
-                let textWidth = s.clientWidth;
-                //we need to move it to -(width+parent padding) before it won't be visible
-                s.style.transform = 'translateX(-'+(textWidth+5)+'px)';
-                //automatically start the next message scrolling after this one finishes
-                //you could add more time to this timeout if you wanted to have some time between messages
-                scrollTimeouts.push(setTimeout(function() {
-		        if (newsArray[nextMsgIndex][2] == "am104") {
-			        tmp.blankedOut=true
-			        setTimeout(scrollNextMessage, 60e3)
-		        } else scrollNextMessage()
-                }, Math.ceil(transformDuration * 1000)));
-        }, 100));
+		//set the transition duration
+		s.style.transition = 'transform '+transformDuration+'s linear';
+		let textWidth = s.clientWidth;
+		//we need to move it to -(width+parent padding) before it won't be visible
+		s.style.transform = 'translateX(-'+(textWidth+5)+'px)';
+		//automatically start the next message scrolling after this one finishes
+		//you could add more time to this timeout if you wanted to have some time between messages
+		scrollTimeouts.push(setTimeout(function() {
+			if (newsArray[nextMsgIndex][2] == "am104") {
+				tmp.blankedOut=true
+				setTimeout(scrollNextMessage, 60e3)
+			} else scrollNextMessage()
+		}, Math.ceil(transformDuration * 1000)));
+	}, 100));
 }
 
 function updateGhostlyNewsArray() {
@@ -591,7 +591,7 @@ ghostlyNewsArray = [//Ghostly news ticker messages
 ["Ghosts can't die. So why humans can't be immortal?", true, "gn8"],
 ["Because neutrinos are ghostly particles, you are made of ghost particles and neutrinos.", true, "gn9"],
 ["How do you play this after you became a real ghost?", true, "gn10"],
-["R.I.P.  ------  You  ------  Died to Ghostify ------ xxxx-", true, "gn11"],
+["R.I.P.	------	You	------	Died to Ghostify ------ xxxx-", true, "gn11"],
 ["Spooky scary ghosts send neutrinos down your spine", true, "gn12"],
 ["Ghostify has nothing to do with ghostping.", true, "gn13"],
 ["Are your ghost particles ghostly? If not, talk to your ghostly boss.", true, "gn14"],

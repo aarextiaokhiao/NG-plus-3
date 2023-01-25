@@ -510,14 +510,12 @@ function buyingDilStudyReplicant(){
 	showTab("quantumtab")
 	showQuantumTab("replicants")
 	el("timestudy322").style.display=""
-	updateReplicants()
 }
 
 function buyingDilStudyED(){
 	teleportToEDs()
 	el("timestudy361").style.display = ""
 	el("timestudy362").style.display = ""
-	updateReplicants()
 }
 
 function buyingDilStudyNanofield(){

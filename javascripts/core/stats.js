@@ -80,7 +80,7 @@ function bestGhostifyDisplay(){
 function scienceNumberDisplay(){
 	var scale1 = [2.82e-45,1e-42,7.23e-30,5e-21,9e-17,6.2e-11,5e-8,3.555e-6,7.5e-4,1,2.5e3,2.6006e6,3.3e8,5e12,4.5e17,1.08e21,1.53e24,1.41e27,5e32,8e36,1.7e45,1.7e48,3.3e55,3.3e61,5e68,1e73,3.4e80,1e113,Number.MAX_VALUE,E("1e65000")];
 	var scale2 = [" protons."," nucleui."," Hydrogen atoms."," viruses."," red blood cells."," grains of sand."," grains of rice."," teaspoons."," wine bottles."," fridge-freezers."," Olympic-sized swimming pools."," Great Pyramids of Giza."," Great Walls of China."," large asteroids.",
-		      " dwarf planets."," Earths."," Jupiters."," Suns."," red giants."," hypergiant stars."," nebulas."," Oort clouds."," Local Bubbles."," galaxies."," Local Groups."," Sculptor Voids."," observable universes."," Dimensions.", " Infinity Dimensions.", " Time Dimensions."];
+					" dwarf planets."," Earths."," Jupiters."," Suns."," red giants."," hypergiant stars."," nebulas."," Oort clouds."," Local Bubbles."," galaxies."," Local Groups."," Sculptor Voids."," observable universes."," Dimensions.", " Infinity Dimensions.", " Time Dimensions."];
 	var id = 0;
 	if (player.money.times(4.22419).gt(2.82e60)) {
 		if (player.money.times(4.22419e-105).gt(scale1[scale1.length - 1])) id = scale1.length - 1;
@@ -102,24 +102,24 @@ function eventsTimeDisplay(years, thisYear){
 	var bc = years - thisYear + 1
 	var since
 	var sinceYears
-	var dates = [5.332e6, 3.5e6,  2.58e6, 7.81e5, 3.15e5, 
-		     2.5e5,   1.95e5, 1.6e5,  1.25e5, 7e4, 
-		     6.7e4,   5e4,   4.5e4,  4e4,   3.5e4, 
-		     3.3e4,   3.1e4,  2.9e4,  2.8e4,  2e4, 
-		     1.6e4,   1.5e4,  1.4e4,  11600, 1e4,
-		     8e3,    6e3,   5e3,   4e3,   3200,
-		     3000,   2600,  2500,  2300,  1800,
-		     1400,   1175,  800,   753,   653,
-		     539,    356,   200,   4,     0]
+	var dates = [5.332e6, 3.5e6,	2.58e6, 7.81e5, 3.15e5, 
+		 2.5e5,	 1.95e5, 1.6e5,	1.25e5, 7e4, 
+		 6.7e4,	 5e4,	 4.5e4,	4e4,	 3.5e4, 
+		 3.3e4,	 3.1e4,	2.9e4,	2.8e4,	2e4, 
+		 1.6e4,	 1.5e4,	1.4e4,	11600, 1e4,
+		 8e3,		6e3,	 5e3,	 4e3,	 3200,
+		 3000,	 2600,	2500,	2300,	1800,
+		 1400,	 1175,	800,	 753,	 653,
+		 539,		356,	 200,	 4,		 0]
 	var events = ["start of Pliocene epoch", "birthdate of Lucy (typical Australopithicus afarensis female)", "Quaternary period", "Calabrian age", "Homo sapiens",
-		      "Homo neanderthalensis", "emergence of anatomically modern humans", "Homo sapiens idaltu", "peak of Eemian interglacial period", "earliest abstract/symbolic art",
-		      "Upper Paleolithic", "Late Stone Age", "European early modern humans", "first human settlement", "oldest known figurative art",
-		      "oldest known domesticated dog", "Last Glacial Maximum", "oldest ovens", "oldest known twisted rope", "oldest human permanent settlement (hamlet considering built of rocks and of mammoth bones)",
-		      "rise of Kerberan culture", "colonization of North America", "domestication of the pig", "prehistoric warfare", "Holocene",
-		      "death of other human breeds", "agricultural revolution", "farmers arrived in Europe", "first metal tools", "first horse",
-		      "Sumerian cuneiform writing system", "union of Egypt", "rise of Maya", "extinct of mammoths", "rise of Akkadian Empire",
-		      "first alphabetic writing", "rise of Olmec civilization", "end of bronze age", "rise of Greek city-states", "rise of Rome",
-		      "rise of Persian Empire", "fall of Babylonian Empire", "birth of Alexander the Great", "first paper", "birth of Jesus Christ"]
+		"Homo neanderthalensis", "emergence of anatomically modern humans", "Homo sapiens idaltu", "peak of Eemian interglacial period", "earliest abstract/symbolic art",
+		"Upper Paleolithic", "Late Stone Age", "European early modern humans", "first human settlement", "oldest known figurative art",
+		"oldest known domesticated dog", "Last Glacial Maximum", "oldest ovens", "oldest known twisted rope", "oldest human permanent settlement (hamlet considering built of rocks and of mammoth bones)",
+		"rise of Kerberan culture", "colonization of North America", "domestication of the pig", "prehistoric warfare", "Holocene",
+		"death of other human breeds", "agricultural revolution", "farmers arrived in Europe", "first metal tools", "first horse",
+		"Sumerian cuneiform writing system", "union of Egypt", "rise of Maya", "extinct of mammoths", "rise of Akkadian Empire",
+		"first alphabetic writing", "rise of Olmec civilization", "end of bronze age", "rise of Greek city-states", "rise of Rome",
+		"rise of Persian Empire", "fall of Babylonian Empire", "birth of Alexander the Great", "first paper", "birth of Jesus Christ"]
 	/*
 	"the homo sapiens" is weird, as is "the homo neanderthaliensis" and "the homo sapiens idaltu"
 	*/

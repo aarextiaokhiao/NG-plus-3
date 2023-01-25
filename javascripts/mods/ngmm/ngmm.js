@@ -139,10 +139,10 @@ function galacticSacrifice(auto, force, chall) {
 			if (player.challenges.length > 1) giveAchievement("Daredevil")
 			if (player.challenges.length == getTotalNormalChallenges() + 1) giveAchievement("AntiChallenged")
 			if (player.challenges.length == getTotalNormalChallenges() + player.infchallengeTimes.length + 1) giveAchievement("Anti-antichallenged")
-			if (inNC(2)  && player.galacticSacrifice.time <= 1800) giveAchievement("Many Deaths")
+			if (inNC(2) && player.galacticSacrifice.time <= 1800) giveAchievement("Many Deaths")
 			if (inNC(11) && player.galacticSacrifice.time <= 1800) giveAchievement("Gift from the Gods")
-			if (inNC(5)  && player.galacticSacrifice.time <= 1800) giveAchievement("Is this hell?")
-			if (inNC(3)  && player.galacticSacrifice.time <= 100 ) giveAchievement("You did this again just for the achievement right?");
+			if (inNC(5) && player.galacticSacrifice.time <= 1800) giveAchievement("Is this hell?")
+			if (inNC(3) && player.galacticSacrifice.time <= 100 ) giveAchievement("You did this again just for the achievement right?");
 			if (player.firstAmount == 1 && player.resets == 0 && player.galaxies == 0 && inNC(12)) giveAchievement("ERROR 909: Dimension not found")
 		}
 		if (!chall && (force || !player.options.retryChallenge)) delete player.galacticSacrifice.chall
@@ -455,36 +455,36 @@ function isADSCRunning() {
 
 //v1.6
 el("postinfi50").onclick = function() {
-    buyInfinityUpgrade("postinfi50", !inNGM(3)?1e25:2e18);
+	buyInfinityUpgrade("postinfi50", !inNGM(3)?1e25:2e18);
 }
 
 el("postinfi51").onclick = function() {
-    buyInfinityUpgrade("postinfi51", !inNGM(3)?1e29:1e20);
+	buyInfinityUpgrade("postinfi51", !inNGM(3)?1e29:1e20);
 }
 
 el("postinfi52").onclick = function() {
-    buyInfinityUpgrade("postinfi52", !inNGM(3)?1e33:1e25);
+	buyInfinityUpgrade("postinfi52", !inNGM(3)?1e33:1e25);
 }
 
 el("postinfi53").onclick = function() {
-    buyInfinityUpgrade("postinfi53", !inNGM(3)?1e37:1e29);
+	buyInfinityUpgrade("postinfi53", !inNGM(3)?1e37:1e29);
 }
 
 //v1.9
 el("postinfi60").onclick = function() {
-    buyInfinityUpgrade("postinfi60", 1e50);
+	buyInfinityUpgrade("postinfi60", 1e50);
 }
 
 el("postinfi61").onclick = function() {
-    buyInfinityUpgrade("postinfi61", E("1e450"));
+	buyInfinityUpgrade("postinfi61", E("1e450"));
 }
 
 el("postinfi62").onclick = function() {
-    buyInfinityUpgrade("postinfi62", E("1e700"));
+	buyInfinityUpgrade("postinfi62", E("1e700"));
 }
 
 el("postinfi63").onclick = function() {
-    buyInfinityUpgrade("postinfi63", E("1e2000"));
+	buyInfinityUpgrade("postinfi63", E("1e2000"));
 }
 
 function getNewB60Mult(){
@@ -612,7 +612,7 @@ let galMults = {
 	u25: function() {
 		let r = Math.max(player.galacticSacrifice.galaxyPoints.log10() - 2, 1)
 		if (r > 2.5) r = Math.pow(r * 6.25, 1/3)
-		r =  Math.pow(r, hasGalUpg(26) ? 2 : 1)
+		r = Math.pow(r, hasGalUpg(26) ? 2 : 1)
 		if (r > 10) r = 10 * Math.log10(r)
 		return r
 	},

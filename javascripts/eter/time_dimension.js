@@ -101,17 +101,17 @@ function getTimeDimensionPower(tier) {
 }
 
 function getTimeDimensionProduction(tier) {
-  	if (player.currentEternityChall == "eterc1" || player.currentEternityChall == "eterc10" || (!tmp.be && inQC(8))) return E(0)
-  	var dim = player["timeDimension" + tier]
-  	if (player.currentEternityChall == "eterc11") return dim.amount
-  	var ret = dim.amount
-  	if (inQC(4) && tier == 1) ret = ret.plus(player.timeDimension2.amount.floor())
-  	ret = ret.times(getTimeDimensionPower(tier))
-  	if (inNGM(4)&&(inNC(2)||player.currentChallenge=="postc1")) ret = ret.times(player.chall2Pow)
-  	if (player.currentEternityChall == "eterc7") ret = dilates(ret.dividedBy(player.tickspeed.dividedBy(1000)))
-  	if (inNGM(4)&&(tier>1||!hasAch("r12"))) ret = ret.div(100)
-  	if (player.currentEternityChall == "eterc1") return E(0)
-  	return ret
+	if (player.currentEternityChall == "eterc1" || player.currentEternityChall == "eterc10" || (!tmp.be && inQC(8))) return E(0)
+	var dim = player["timeDimension" + tier]
+	if (player.currentEternityChall == "eterc11") return dim.amount
+	var ret = dim.amount
+	if (inQC(4) && tier == 1) ret = ret.plus(player.timeDimension2.amount.floor())
+	ret = ret.times(getTimeDimensionPower(tier))
+	if (inNGM(4)&&(inNC(2)||player.currentChallenge=="postc1")) ret = ret.times(player.chall2Pow)
+	if (player.currentEternityChall == "eterc7") ret = dilates(ret.dividedBy(player.tickspeed.dividedBy(1000)))
+	if (inNGM(4)&&(tier>1||!hasAch("r12"))) ret = ret.div(100)
+	if (player.currentEternityChall == "eterc1") return E(0)
+	return ret
 }
 
 function getIC3EffFromFreeUpgs() {

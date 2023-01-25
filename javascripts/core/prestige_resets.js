@@ -111,7 +111,7 @@ let RESETS = {
 		}
 	},
 	eter: {
-		doReset(order) {
+		doReset(order, auto) {
 			player.infinitied = 0
 			player.bestInfinityTime = 9999999999
 			player.lastTenRuns = [[600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)]]
@@ -133,8 +133,10 @@ let RESETS = {
 			player.challenges = challengesCompletedOnEternity()
 			updateChallenges()
 
-			updateAutobuyers()
-			if (!canBreakInfinity()) player.break = false
+			if (!auto) {
+				updateAutobuyers()
+				if (!canBreakInfinity()) player.break = false
+			}
 
 			if (getEternitied() <= 20) {
 				player.tickSpeedMultDecrease = 10
@@ -142,7 +144,7 @@ let RESETS = {
 				player.dimensionMultDecrease = 10
 				player.dimensionMultDecreaseCost = 1e8
 				player.extraDimPowerIncrease = 0
-				player.dimPowerIncreaseCost = 1e3  
+				player.dimPowerIncreaseCost = 1e3
 				player.offlineProd = 0
 				player.offlineProdCost = 1e7
 			}
@@ -204,9 +206,9 @@ function setupResetData() {
 	for (var [i, r] of Object.entries(RESET_ORDER)) RESET_INDEX[r] = i
 }
 
-function doReset(order) {
+function doReset(order, auto) {
 	let start = RESET_INDEX[order]
-	for (var layer = start; layer >= 0; layer--) RESETS[RESET_ORDER[layer]].doReset(order)
+	for (var layer = start; layer >= 0; layer--) RESETS[RESET_ORDER[layer]].doReset(order, auto)
 }
 
 //OLD CODE

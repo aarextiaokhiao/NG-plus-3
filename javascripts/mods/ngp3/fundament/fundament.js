@@ -130,10 +130,12 @@ RESETS.funda = {
 	},
 	resetQCs(bm) {
 		quSave.challenge = []
-		quSave.challenges = {}
-		quSave.pairedChallenges.order = {}
 		quSave.pairedChallenges.current = 0
-		quSave.pairedChallenges.completed = 0
+		if (bm < 1) {
+			quSave.challenges = {}
+			quSave.pairedChallenges.order = {}
+			quSave.pairedChallenges.completed = 0
+		}
 		updateInQCs()
 		updateQuantumChallenges()
 		updateQuantumTabDisplays()

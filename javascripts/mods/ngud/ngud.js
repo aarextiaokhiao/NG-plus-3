@@ -21,7 +21,7 @@ function getBlackholeDimensionRateOfChange(tier) {
 	if (aarMod.logRateChange) {
 		var change = current.add(toGain.div(10)).log10() - current.log10()
 		if (change < 0 || isNaN(change)) change = 0
-	} else var change  = toGain.times(10).dividedBy(current);
+	} else var change = toGain.times(10).dividedBy(current);
 	return change;
 }
 

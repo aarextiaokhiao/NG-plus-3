@@ -2,7 +2,7 @@
 function canUnlockBosonicLab() {
 	return ghSave.ghostlyPhotons.enpowerments >= 4
 }
-  
+
 function updateBLUnlocks() {
 	let unl = ghSave.wzb.unl
 	el("blUnl").style.display = unl ? "none" : ""
@@ -443,7 +443,7 @@ function updateEnchantDescs() {
 	let data = ghSave.bl
 	for (var g2 = 2; g2 <= br.limit; g2++) for (var g1 = 1; g1 < g2; g1++) {
 		var id = g1 * 10 + g2
-		if (bEn.action == "upgrade" || bEn.action == "max") el("bEn" + id).className = "gluonupgrade "  +(canBuyEnchant(id) ? "bl" : "unavailablebtn")
+		if (bEn.action == "upgrade" || bEn.action == "max") el("bEn" + id).className = "gluonupgrade " + (canBuyEnchant(id) ? "bl" : "unavailablebtn")
 		else if (bEn.action == "use") el("bEn" + id).className = "gluonupgrade " + (canUseEnchant(id) ? "storebtn" : "unavailablebtn")
 		if (id == 14) el("bEn14").style = "font-size: 8px"
 		if (shiftDown) el("bEnLvl" + id).textContent = "Enchant id: " + id

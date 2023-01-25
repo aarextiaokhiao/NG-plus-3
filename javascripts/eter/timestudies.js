@@ -282,7 +282,7 @@ function updateTimeStudyButtons(changed, forceupdate = false) {
 				} else if (all[i] == 221 || all[i] == 224 || all[i] == 225 || all[i] == 228 || all[i] == 231 || all[i] == 234) {
 					className = "timestudy darkstudy"
 				} else if (all[i] == 222 || all[i] == 223 || all[i] == 226 || all[i] == 227 || all[i] == 232 || all[i] == 233) {
-		      className = "timestudy lightstudy"
+					className = "timestudy lightstudy"
 				} else {
 					className = "timestudy"
 				}

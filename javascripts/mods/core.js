@@ -49,8 +49,8 @@ var modSubNames = {
 	//nguep: ["Linear' (↑⁰')", "Exponential' (↑')"/*, "Tetrational' (↑↑')"*/]
 	/*,
 	// modChosen that aren't even made yet
-	NG/   - ngdv: ["OFF", "ON"],
-	NG*   - ngmu: ["OFF", "ON", "NG**", "NG***"],
+	NG/	 - ngdv: ["OFF", "ON"],
+	NG*	 - ngmu: ["OFF", "ON", "NG**", "NG***"],
 	NGUd* - ngumu: ["OFF", "ON", "NGUd**'", "NGUd***'"],
 	*/
 }
