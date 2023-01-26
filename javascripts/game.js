@@ -971,8 +971,11 @@ function updateAutobuyers() {
 		if (unl) {
 			ret = i > 13 ? player.autobuyers[i-2] : i == 13 ? player.autoSacrifice : player.autobuyers[i-1]
 			if (!(ret % 1 !== 0)) ret = ab
-			if (ret === undefined) ret = ab
-			if (ret && ret.interval < 100) ret.interval = 100
+			else if (ret === undefined) ret = ab
+			else {
+				ret.isOn = el(i + "ison").checked
+				if (ret.interval < 100) ret.interval = 100
+			}
 		}
 
 		if (i > 13 && i <= getTotalNormalChallenges() + 1) player.autobuyers[i-2] = ret
