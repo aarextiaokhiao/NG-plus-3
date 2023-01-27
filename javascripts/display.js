@@ -2,7 +2,7 @@ function dimShiftDisplay(){
 	var shiftRequirement = getShiftRequirement(0);
 	var isShift = getNormalDimensions() < getMaxNormalDimensions()
 	el("resetLabel").textContent = 'Dimension ' + (isShift ? "Shift" : player.resets < getSupersonicStart() ? "Boost" : "Supersonic") + ' ('+ getFullExpansion(Math.ceil(player.resets)) +'): requires ' + getFullExpansion(Math.ceil(shiftRequirement.amount)) + " " + DISPLAY_NAMES[shiftRequirement.tier] + " Dimensions"
-	el("softReset").textContent = "Reset the game for a " + (isShift ? "new Dimension" : "Boost")
+	el("softReset").textContent = "Reset prior features for a " + (isShift ? "new Dimension" : "Boost")
 }
 
 function tickspeedBoostDisplay(){

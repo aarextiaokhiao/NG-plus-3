@@ -170,7 +170,7 @@ function updateTimeDimensions() {
 			var req = getTDBoostReq()
 			el("tdReset").style.display = ""
 			el("tdResetLabel").textContent = "Time Dimension "+(isShift ? "Shift" : "Boost") + " (" + getFullExpansion(player.tdBoosts) + "): requires " + getFullExpansion(req.amount) + " " + DISPLAY_NAMES[req.tier] + " Time Dimensions"
-			el("tdResetBtn").textContent = "Reset the game for a " + (isShift ? "new dimension" : "boost")
+			el("tdResetBtn").textContent = "Reset prior features for a " + (isShift ? "new dimension" : "boost")
 			el("tdResetBtn").className = (player["timeDimension" + req.tier].bought < req.amount) ? "unavailablebtn" : "storebtn"
 		} else el("tdReset").style.display = "none"
 	}

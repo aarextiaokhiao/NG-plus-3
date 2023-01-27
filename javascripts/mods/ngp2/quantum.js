@@ -427,7 +427,6 @@ RESETS.qu = {
 		player.eternities = speedrunMilestonesReached >= 1 ? 2e4 : mod.ngp3 ? 0 : 100
 		player.lastTenEternities = [[600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)]]
 		updateLastTenEternities()
-		updateMilestones()
 
 		player.eternityPoints = E(0)
 		if (getEternitied() < 100) player.eternityBuyer.isOn = false
@@ -492,7 +491,6 @@ RESETS.qu = {
 
 		player.masterystudies = bigRip && !hasRipUpg(12) ? ["d7", "d8", "d9", "d10", "d11", "d12", "d13", "d14"] : speedrunMilestonesReached >= 16 && isRewardEnabled(11) ? player.masterystudies : []
 		player.respecMastery = false
-		updateMasteryStudyCosts()
 
 		ipMultPower = GUBought("gb3") ? 2.3 : hasMasteryStudy("t241") ? 2.2 : 2
 		if (!qc) {
@@ -501,7 +499,6 @@ RESETS.qu = {
 			if (speedrunMilestonesReached < 25 && player.quantum.autoOptions.sacrifice) toggleAutoQuantumContent('sacrifice')
 			tmp.aeg = 0
 		}
-		drawMasteryTree()
 		replicantsResetOnQuantum(qc)
 		nanofieldResetOnQuantum()
 
@@ -509,6 +506,12 @@ RESETS.qu = {
 		QKminpeak = E(0)
 		QKminpeakValue = E(0)
 		el("metaAntimatterEffectType").textContent = inQC(3) ? "multiplier on all Infinity Dimensions" : "extra multiplier per Dimension Boost"
+
+		if (!auto) {
+			updateMilestones()
+			updateMasteryStudyCosts()
+			drawMasteryTree()
+		}
 	}
 }
 

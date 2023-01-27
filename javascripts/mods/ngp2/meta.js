@@ -415,15 +415,16 @@ function updateMetaDimensions () {
 	var req = getQuantumReq()
 	var reqGotten = isQuantumReached()
 	var newClassName = reqGotten ? (bigRip && player.options.theme == "Aarex's Modifications" ? "" : "storebtn ") + (bigRip ? "aarexmodsghostifybtn" : "") : 'unavailablebtn'
-	var message = 'Lose all your previous progress, but '
 	el("quantumResetLabel").textContent = (bigRip ? 'Ghostify' : 'Quantum') + ': requires ' + shorten(req) + ' meta-antimatter ' + (!inQC(0) ? "and " + shortenCosts(pow10(getQCGoal())) + " antimatter" : player.masterystudies ? "and an EC14 completion" : "")
+
+	var message = 'Lose all your prior progress'
 	if (reqGotten && bigRip && ghostified) {
 		var GS = getGHPGain()
-		message += "gain " + shortenDimensions(GS) + " Elementary Particle" + (GS.lt(2) ? "" : "s")
+		message += ", +" + shortenDimensions(GS) + " Elementary Particle" + (GS.lt(2) ? "" : "s")
 	} else if (reqGotten && !bigRip && (quSave.times || ghSave.milestones)) {
 		var QS = quarkGain()
-		message += "gain " + shortenDimensions(QS) + " quark" + (QS.lt(2) ? "" : "s") + " for boosts"
-	} else message += "get a boost"
+		message += ", +" + shortenDimensions(QS) + " quark" + (QS.lt(2) ? "" : "s")
+	} else message += " for a new layer"
 	el("quantum").textContent = message
 	if (el("quantum").className !== newClassName) el("quantum").className = newClassName
 }

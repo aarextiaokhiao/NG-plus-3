@@ -131,12 +131,6 @@ let RESETS = {
 			player.currentChallenge = ""
 			player.challengeTarget = 0
 			player.challenges = challengesCompletedOnEternity()
-			updateChallenges()
-
-			if (!auto) {
-				updateAutobuyers()
-				if (!canBreakInfinity()) player.break = false
-			}
 
 			if (getEternitied() <= 20) {
 				player.tickSpeedMultDecrease = 10
@@ -151,7 +145,6 @@ let RESETS = {
 
 			player.infDimensionsUnlocked = resetInfDimUnlocked()
 			completelyResetInfinityDimensions()
-			hideMaxIDButton()
 
 			if (getEternitied() < 7) player.autoSacrifice = 1
 			player.postC4Tier = 1
@@ -195,6 +188,13 @@ let RESETS = {
 			}
 
 			resetUP()
+
+			if (!auto) {
+				updateChallenges()
+				updateAutobuyers()
+				if (!canBreakInfinity()) player.break = false
+				hideMaxIDButton()
+			}
 		}
 	}
 }
