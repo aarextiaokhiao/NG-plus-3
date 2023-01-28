@@ -203,7 +203,7 @@ function setR11Tooltip(){
 	//ACHIEVEMENT ROW 11
 	over9000.setAttribute('ach-tooltip', "Get a total Sacrifice multiplier of "+shortenCosts(E("1e9000"))+". Reward: Sacrifice doesn't reset your dimensions.")
 	dawg.setAttribute('ach-tooltip', "Have all your past 10 Infinities be at least "+shortenMoney(Number.MAX_VALUE)+" times higher IP than the previous one. Reward: Your antimatter doesn't reset when buying a Dimension Boost or Galaxy.")
-	nobodygottime.setAttribute('ach-tooltip', "Eternity while only buying 8th Normal Dimensions. " + (inNGM(2) ? "" : "Reward: Boost g13 based on your Dimension Boosts and the square root of g13's effect."))
+	nobodygottime.setAttribute('ach-tooltip', "Eternity while only buying 8th Normal Dimensions. " + (inNGM(2) ? "Reward: Boost g13 based on your Dimension Boosts and the square root of g13's effect." : ""))
 }
 
 function setR12Tooltip(){
