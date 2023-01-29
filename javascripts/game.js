@@ -318,35 +318,17 @@ function floatText(id, text, leftOffset = 150) {
 
 function getNextAt(chall) {
 	var ret = nextAt[chall]
-	if (inNGM(2)) {
-		var retNGMM = nextAt[chall+"_ngmm"]
-		if (retNGMM) ret = retNGMM
-	}
-	if (inNGM(3)) {
-		var retNGM3 = nextAt[chall+"_ngm3"]
-		if (retNGM3) ret = retNGM3
-	}
-	if (inNGM(4)){
-		var retNGM4 = nextAt[chall+"_ngm4"]
-		if (retNGM4) ret = retNGM4
-	}
+	if (inNGM(2)) ret = nextAt[chall+"_ngmm"] || ret
+	if (inNGM(3)) ret = nextAt[chall+"_ngm3"] || ret
+	if (inNGM(4)) ret = nextAt[chall+"_ngm4"] || ret
 	return ret
 }
 
 function getGoal(chall) {
 	var ret = goals[chall]
-	if (inNGM(2)) {
-		var retNGMM = goals[chall+"_ngmm"]
-		if (retNGMM) ret = retNGMM
-	}
-	if (inNGM(3)) {
-		var retNGM3 = goals[chall+"_ngm3"]
-		if (retNGM3) ret = retNGM3
-	}
-	if (inNGM(4)){
-		var retNGM4 = goals[chall+"_ngm4"]
-		if (retNGM4) ret = retNGM4
-	}
+	if (inNGM(2)) ret = goals[chall+"_ngmm"] || ret
+	if (inNGM(3)) ret = goals[chall+"_ngm3"] || ret
+	if (inNGM(4)) ret = goals[chall+"_ngm4"] || ret
 	return ret
 }
 
