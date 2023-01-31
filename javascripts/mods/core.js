@@ -258,8 +258,11 @@ function modAbbs(mods = mod, short) {
 	if (mods.ngpp) {
 		if (!mods.ngud) plus += mods.ngpp + 1
 		if (mods.ngud == 1) plus++
-		if (mods.ngp == 2) plus++
-	} else if (mods.ngp) plus = 1
+	} else if (mods.ngp) {
+		if (mods.ngud) end += ", NG+"
+		else plus = 1
+	}
+	if (mods.ngp == 2) plus++
 	if (plus) r += "+" + (plus > 1 ? plus : "")
 
 	if (mods.ngmm) {
