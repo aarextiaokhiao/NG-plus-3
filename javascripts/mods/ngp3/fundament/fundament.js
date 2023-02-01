@@ -135,6 +135,8 @@ RESETS.funda = {
 			quSave.challenges = {}
 			quSave.pairedChallenges.order = {}
 			quSave.pairedChallenges.completed = 0
+		} else if (bm < 3) {
+			for (var comp of Object.values(quSave.challenges)) quSave.electrons.mult += .5 - comp * .25
 		}
 		updateInQCs()
 		updateQuantumChallenges()
@@ -170,6 +172,7 @@ RESETS.funda = {
 	},
 	resetRip(bm) {
 		brSave.active = false
+		brSave.times = 0
 		brSave.bestGals = 0
 		if (bm < 1) brSave.upgrades = []
 
