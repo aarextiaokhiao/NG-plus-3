@@ -118,10 +118,8 @@ function changeSaveDesc(saveId, placement) {
 				var data=temp.ghostify.wzb
 				msg+="Bosons: "+shorten(E(temp.ghostify.bl.am))+", W+ Bosons: "+shortenDimensions(E(data.wpb))+", W- Bosons: "+shortenDimensions(E(data.wnb))+", Z Bosons: "+shortenDimensions(E(data.zb))
 			} else if (temp.achievements.includes("ng3p71")) {
-				var data=temp.ghostify.ghostlyPhotons
-				var lights=0
-				for (var l=0;l<8;l++) lights+=data.lights[l]
-				msg+="Photons: "+shortenDimensions(E(data.darkMatter))+", Frequency: "+shortenDimensions(E(data.amount))+", Waves: "+shortenDimensions(E(data.ghostlyRays))+", Lights: "+getFullExpansion(lights)+", Spectral Ions: "+getFullExpansion(data.enpowerments)
+				//var data=temp.ghostify.photons
+				msg+="Elementary Particles: "+shortenDimensions(E(temp.ghostify.ghostParticles))+", Light Emissions: 0, Lightenments: 0"
 			} else msg+="Elementary Particles: "+shortenDimensions(E(temp.ghostify.ghostParticles))+", Neutrinos: "+shortenDimensions(Decimal.add(temp.ghostify.neutrinos.electron, temp.ghostify.neutrinos.mu).add(temp.ghostify.neutrinos.tau).round())
 		} else if (isSaveQuantumed) {
 			if (!temp.masterystudies) msg+="Endgame of NG++"
@@ -168,7 +166,7 @@ function changeSaveDesc(saveId, placement) {
 					msg+=", Challenge completions: "+totalChallengeCompletions
 				}
 			} else if (temp.infinitied>(temp.aarexModifications.newGameMinusVersion?990:temp.aarexModifications.newGamePlusVersion?1:0)) msg+="Infinity points: "+shortenDimensions(E(temp.infinityPoints))+", Infinities: "+temp.infinitied.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")+", Challenge completions: "+temp.challenges.length
-			else if (temp.galacticSacrifice?temp.galacticSacrifice.times>0:false) msg+="Antimatter: "+shortenMoney(E(temp.money))+", Galaxy points: "+shortenDimensions(E(temp.galacticSacrifice.galaxyPoints))
+			else if (temp?.galacticSacrifice?.times) msg+="Antimatter: "+shortenMoney(E(temp.money))+", Galaxy points: "+shortenDimensions(E(temp.galacticSacrifice.galaxyPoints))
 			else msg+="Antimatter: "+shortenMoney(E(temp.money))+", Dimension Shifts/Boosts: "+temp.resets+((temp.tickspeedBoosts != undefined ? (temp.resets > 0 || temp.tickspeedBoosts > 0 || temp.galaxies > 0 || temp.infinitied > 0 || temp.eternities != 0 || isSaveQuantumed) : false)?", Tickspeed boosts: "+getFullExpansion(temp.tickspeedBoosts):"")+", Galaxies: "+temp.galaxies
 		}
 
@@ -311,14 +309,6 @@ function import_save(type) {
 			alert('could not load the save..')
 			return
 		}
-		/*
-		// Live-server only
-		let ghostify_data=decoded_save_data.ghostify
-		if (ghostify_data&&ghostify_data.wzb&&ghostify_data.wzb.unlReal!==undefined&&ghostify_data.wzb.unl!=ghostify_data.wzb.unlReal) {
-			alert('You are not allowed to import this save as this save comes from the testing branch of the game.')
-			return
-		}
-		*/
 		if (type==metaSave.current) {
 			clearInterval(gameLoopIntervalId)
 			infiniteCheck2 = false
@@ -533,6 +523,7 @@ function toggleOfflineProgress() {
 };
 
 //Player Creation
+var player
 function updateNewPlayer(mode, preset) {
 		var modsChosen = modChosen
 	if (mode == "reset") {
@@ -903,12 +894,13 @@ function doNGPlusOneNewPlayer(){
 
 function doNGPlusTwoNewPlayer(){
 	aarMod.newGamePlusPlusVersion = 2.90142
+
 	player.autoEterMode = "amount"
 	player.dilation.rebuyables[4] = 0
 	player.meta = {resets: 0, antimatter: 10, bestAntimatter: 10}
-	for (dim = 1; dim < 9; dim++) player.meta[dim] = {amount: 0, bought: 0, cost: initCost[dim]}
-	player.autoEterOptions = {epmult:false}
-	for (dim = 1; dim < 9; dim++) player.autoEterOptions["td" + dim] = false
+	for (dim = 1; dim <= 8; dim++) player.meta[dim] = {amount: 0, bought: 0, cost: initCost[dim]}
+
+	player.autoEterOptions = {}
 	player.galaxyMaxBulk = false
 	player.quantum = {
 		times: 0,
@@ -1052,9 +1044,9 @@ function getBrandNewBreakEternityData(){
 
 function getBrandNewNeutrinoData(){
 	return {
-		electron: 0,
-		mu: 0,
-		tau: 0,
+		electron: E(0),
+		mu: E(0),
+		tau: E(0),
 		generationGain: 1,
 		boosts: 0,
 		multPower: 1,
@@ -1062,50 +1054,40 @@ function getBrandNewNeutrinoData(){
 	}
 }
 
-function getBrandNewPhotonsData(){
-	return {
-		unl: false,
-		amount: 0,
-		ghostlyRays: 0,
-		darkMatter: 0,
-		lights: [0,0,0,0,0,0,0,0],
-		maxRed: 0,
-		enpowerments: 0
-	}
-}
-
-function getBrandNewBosonicLabData(){
-	return {
-		watt: 0,
-		speed: 1,
-		ticks: 0,
-		am: 0,
+function getBrandNewBosonicLabData() {
+	let r = {
+		watt: E(0),
+		speed: E(1),
+		ticks: E(0),
+		am: E(0),
 		typeToExtract: 1,
 		extracting: false,
-		extractProgress: 0,
-		autoExtract: 0,
+		extractProgress: E(0),
+		autoExtract: E(0),
 		glyphs: [],
 		enchants: {},
 		usedEnchants: [],
 		upgrades: [],
-		battery: 0,
+		battery: E(0),
 		odSpeed: 1
 	}
+	for (var g = 1; g <= br.maxLimit; g++) r.glyphs.push(E(0))
+	return r
 }
 
-function getBrandNewWZBosonsData(){
+function getBrandNewWZBosonsData() {
 	return {
 		unl: false,
-		dP: 0,
+		dP: E(0),
 		dPUse: 0,
 		wQkUp: true,
 		wQkProgress: 0,
 		zNeGen: 1,
-		zNeProgress: 0,
-				zNeReq: E(1),
-		wpb: 0,
-		wnb: 0,
-		zb: 0
+		zNeProgress: 1,
+		zNeReq: E(1),
+		wpb: E(0),
+		wnb: E(0),
+		zb: E(0)
 	}
 }
 
@@ -1113,23 +1095,26 @@ function getBrandNewGhostifyData(){
 	return {
 		reached: false,
 		times: 0,
-		time: 0,
+		time: player.totalTimePlayed,
 		best: 9999999999,
-		last10: [[600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0]],
+		last10: [[600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)]],
 		milestones: 0,
 		disabledRewards: {},
-		ghostParticles: 0,
+		ghostParticles: E(0),
 		multPower: 1,
 		neutrinos: getBrandNewNeutrinoData(),
 		automatorGhosts: setupAutomaticGhostsData(),
-		ghostlyPhotons: getBrandNewPhotonsData(),
+		photons: setupPhotons(),
 		bl: getBrandNewBosonicLabData(),
-		wzb: getBrandNewWZBosonsData()
+		wzb: getBrandNewWZBosonsData(),
+		hb: setupHiggsSave()
 	}
 }
 
 function doNGPlusThreeNewPlayer(){
-	aarMod.newGame3PlusVersion = 2.21 //Keep that line forever due to NG+3.1 / NG+3L compatibility
+	aarMod.newGame3PlusVersion = ngp3_ver
+	aarMod.ngp3_build = ngp3_build
+
 	el("quantumison").checked = false
 	player.respecMastery = false
 	player.dbPower = 1
@@ -1176,8 +1161,7 @@ function doNGPlusThreeNewPlayer(){
 	player.meta.bestOverGhostifies = 0
 	player.ghostify = getBrandNewGhostifyData()
 	ghSave = player.ghostify
-	tmp.bl = ghSave.bl
-	for (var g = 1; g < br.maxLimit; g++) ghSave.bl.glyphs.push(0)
+	blSave = ghSave.bl
 	aarMod.ghostifyConf = true
 }
 
@@ -1239,24 +1223,24 @@ function doNGUDNewPlayer(){
 function doNGPlusFourPlayer(){
 	player.eternities = 1e13
 	for (var c = 13; c < 15; c++) player.eternityChalls["eterc" + c] = 5
+
 	player.dilation.studies = [1, 2, 3, 4, 5, 6]
 	player.dilation.dilatedTime = 1e100
 	for (var u = 4; u < 11; u++) player.dilation.upgrades.push(u)
 	for (var u = 1; u < 7; u++) player.dilation.upgrades.push("ngpp" + u)
+
 	player.meta.antimatter = 1e25
 	player.meta.resets = 4
 	quSave.times = 1
 	quSave.best = 10
 	for (var d = 7; d < 14; d++) player.masterystudies.push("d"+d)
+
 	quSave.electrons.mult = 6
 	for (var c = 1; c < 9; c++) quSave.challenges[c] = 2
 	quSave.pairedChallenges.completed = 4
 	quSave.nanofield.rewards = 19
 	quSave.reachedInfQK = true
-	quSave.tod.r.spin = 1e25
-	quSave.tod.g.spin = 1e25
-	quSave.tod.b.spin = 1e25
-	ghSave.milestones = 1
+
 	player.achievements.push("ng3p18")
 	player.achievements.push("ng3p28")
 	player.achievements.push("ng3p37")

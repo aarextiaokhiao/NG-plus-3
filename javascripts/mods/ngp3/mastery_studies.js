@@ -212,7 +212,7 @@ var masteryStudies = {
 			return ret
 		},
 		431: function(){
-			var gals = player.dilation.freeGalaxies + tmp.eg431
+			var gals = player.dilation.freeGalaxies
 			if (gals >= 1e6) gals = Math.pow(gals * 1e3, 2/3)
 
 			var effectBase = Math.max(gals / 1e4, 1)
@@ -306,9 +306,7 @@ var masteryStudies = {
 			return (x * 100 - 100).toFixed(2) + "%"
 		},
 		431: function(x) {
-			let msg = shorten(x) + "x"
-			if (shiftDown && tmp.eg431) msg += ", Galaxy amount: " + getFullExpansion(Math.floor(player.dilation.freeGalaxies)) + "+" + getFullExpansion(Math.floor(tmp.eg431))
-			return msg
+			return shorten(x) + "x"
 		}
 	},
 	ecsUpTo: 14,
@@ -586,7 +584,7 @@ function buyMasteryStudy(type, id, quick=false) {
 			if (hasAch("r93")) otherMults *= 4
 			var old = getIPMultPower()
 			ipMultPower = 2.2
-			player.infMult = player.infMult.div(otherMults).pow(Math.log10(getIPMultPower()) / Math.log10(old)).times(otherMults)
+			player.infMult = player.infMult.div(otherMults).pow(Math.log10(getIPMultPower()) / Math.log10(old)).mul(otherMults)
 		}
 		if (id == 266 && player.replicanti.gal > 399) {
 			var gal = player.replicanti.gal
@@ -781,8 +779,7 @@ function getMasteryStudyMultiplier(id, uses = ""){
 }
 
 function getMTSMult(id, uses = "") {
-	if (uses == "" && masteryStudies.unlocked.includes(id)) return tmp.mts[id]
-	return masteryStudies.timeStudyEffects[id](uses)
+	return (uses == "" && masteryStudies.unlocked.includes(id) && tmp?.mts?.[id]) || masteryStudies.timeStudyEffects[id](uses)
 }
 
 function updateMasteryStudyTemp() {

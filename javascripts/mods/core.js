@@ -41,10 +41,10 @@ var modFullNames = {
 	//ngprw: "NG+ Reworked"
 }
 var modSubNames = {
-	ngp: ["OFF", "ON", "NG+4"],
-	ngpp: ["OFF", "ON", "NG+3"],
+	ngp: ["OFF", "ON", "+4"],
+	ngpp: ["OFF", "ON", "+3"],
 	//ngep: ["Linear (↑⁰)", "Exponential (↑)"/*, "Tetrational (↑↑)"*/],
-	ngmm: ["OFF", "ON", "NG---", "NG-4"],
+	ngmm: ["OFF", "ON", "-3", "-4"],
 	ngud: ["OFF", "ON", "Prime (')", "Semiprime (S')"/*, "Semiprime.1 (S'.1)"*/],
 	//nguep: ["Linear' (↑⁰')", "Exponential' (↑')"/*, "Tetrational' (↑↑')"*/]
 	/*,
@@ -54,6 +54,7 @@ var modSubNames = {
 	NGUd* - ngumu: ["OFF", "ON", "NGUd**'", "NGUd***'"],
 	*/
 }
+var modChosen = {}
 
 function update_mod_btn(id) {
 	let mode = modChosen[id] || 0
@@ -185,10 +186,10 @@ let welcomeMsgs = {
 	["-3"]: "Welcome to NG-3, the nerfed version of NG--! This mode reduces tickspeed multiplier multiplier and nerfs galaxies, but has a new feature called \"Tickspeed Boosts\" and many more changes to NG--.",
 	["-4"]: "Welcome to NG-4, the nerfed version of NG-3! This mode features even more changes from NG---, and is very hardcore. WIP by Nyan Cat and edited by Aarex.",
 
-	["+1"]: "Welcome to NG+ v2, made by usavictor and Aarex! You start with many things unlocked and given to you immediately to get through the early game faster.",
-	["+2"]: "Welcome to NG++, made by dan-simon! In this mode, more Dilation upgrades and Meta Dimensions are added to push the endgame further. Disclaimer: This is not NG+3, there is no Quantum content available.",
-	["+3"]: "Welcome to NG+++ mode, the extension of dan-simon's NG++, made by Aarex! There is a lot of content in this mod, so good luck!",
-	["+4"]: "Welcome to NG+4 by Aarex and Soul147! This is a NG+ version of NG+3, starting you off with all features up to Big Rip unlocked. It isn't recommended to play this mode as you have some more content accessible early on compared to NG+.",
+	["+1"]: "Welcome to NG+ v2, by usavictor and Aarex! You start with many things unlocked to make early game faster.",
+	["+2"]: "Welcome to NG++, by dan-simon! New Dilation upgrades and Meta Dimensions are added to push the endgame further. Tweaked due to NG+ updates.",
+	["+3"]: "Welcome to NG+++, a long extension to NG++! There is a lot of content in this mod, so good luck!",
+	["+4"]: "Welcome to NG+4, originally by Soul147! This is a NG+ checkpoint of NG+3, starting you off with Big Rip unlocked. It is not recommend to play this due to a lot of content being accessible. Tweaked due to NG+3 updates.",
 
 	["Ud"]: "Welcome to NG Update, made by dan-simon! In this mod, Black Hole and Ex-Dilation are available after the endgame of the vanilla Antimatter Dimensions.",
 	["Ud+"]: "Welcome to NG Update+, a combination made by Soul147 (Sigma)! This is a combination of dan-simon's NG Update and Aarex's NG+++, which can end up unbalancing the game because of some mechanics.",

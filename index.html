@@ -56,7 +56,7 @@
 					You have <span id='GHPAmount'>0</span> Elementary Particles.<br>
 					<div id="quantumedBM">Quantumed <span id='quantumedBMAmount'>0</span> times</div>
 				</div>
-				<button id="bigripbtn" class="bigripbtn" onclick="bigRip()"></button>
+				<button id="bigripbtn" class="bigrip" onclick="bigRip()"></button>
 				<button id="ghostifybtn" class="ghostifybtn" onclick="ghostify()">
 					<div id="ghostifybtnFlavor" class="hideEmpty"></div>
 					<div id="GHPGain" class="hideEmpty"></div>
@@ -126,30 +126,21 @@
 				<table id="dimTable" class="table" style="width: 100%"><tbody></tbody></table>
 				<table style="width: 100%">
 					<tr style="font-size: 15px">
-						<td id="resetLabel">
-							Dimension Shift: requires 20 Fourth Dimension
-						</td>
+						<td id="resetLabel"></td>
 						<td>
 							<button id="softReset" style="color:black; width: 200px; height: 25px; font-size: 9px" class="storebtn">Reset the game for a new Dimension</button>
 						</td>
-					</tr>
-					<tr id="tickReset" style="font-size: 15px">
-						<td id="tickResetLabel">
-							Tickspeed Boost (0): requires 10 Fifth Dimensions
-						</td>
+					</tr><tr id="tickReset" style="font-size: 15px">
+						<td id="tickResetLabel"></td>
 						<td>
 							<button id="tickResetBtn" style="color:black; width: 200px; height: 35px; font-size: 9px" class="storebtn" onclick="manualTickspeedBoost()">Lose dimension boosts for better tickspeed multiplier</button>
 						</td>
-					</tr>
-					<tr style="font-size: 15px">
-						<td id="secondResetLabel">
-							Antimatter Galaxies: requires 80 Eight Dimension
-						</td>
+					</tr><tr style="font-size: 15px">
+						<td id="secondResetLabel"></td>
 						<td>
 							<button id="secondSoftReset" style="color:black; width: 200px; height: 35px; font-size: 9px" class="storebtn">Lose Dimension Boosts for a tickspeed boost</button>
 						</td>
-					</tr>
-					<tr style="font-size: 15px">
+					</tr><tr style="font-size: 15px">
 						<td id="intergalacticLabel" colspan=2></td>
 					</tr>
 				</table>
@@ -294,15 +285,15 @@
 			<br>
 			<p id='versionDesc'>
 				<b>You are playing <span id='versionMod'></span>.</b>
-				<br>
-				By <a href="https://aarextiaokhiao.github.io/">Aarex</a>, pg132, and usavictor.</a>
 				<br><br>
 
-				<b>(Update v2.31: Ghostify Respecced)</b><br>
-				<b class="red">(Beta: 1/26/23 Build)</b>
+				<b>(NG+3 v2.31: Ghostify Respecced)</b><br>
+				<b class="red">(Beta: 2/1/23 Build)</b><br>
+				By <a href="https://aarextiaokhiao.github.io/">Aarex</a>, pg132, and usavictor.
 				<br><br>
 
-				NG++ is by dan-simon and NG+4 is by Soul147.
+				NG++ is by dan-simon.
+				Part of Quantum animation is contributed by MrRedShark77.
 			</p>
 		</div>
 		<div id="statistics" class="tab" align="center" style="color: black; font-size: 12px; margin: 0 auto">
@@ -1060,7 +1051,7 @@
 							<div id="Really?" class="achievement achievementlocked" style="background-image: url(images/154.png)"></div>
 						</td>
 						<td>
-							<div id="But I don't want to grind!" class="achievement achievementlocked" style="background-image: url(images/155.png)" ach-tooltip="Get the 21st Nanoreward without having Tree Upgrades. Reward: Gain more quarks based on radioactive decays."></div>
+							<div id="But I don't want to grind!" class="achievement achievementlocked" style="background-image: url(images/155.png)" ach-tooltip="Get 21 Nanorewards without having Tree Upgrades. Reward: Gain more Quarks based on Radioactive Decays."></div>
 						</td>
 						<td>
 							<div id="I rather oppose the theory of everything" class="achievement achievementlocked" style="background-image: url(images/156.png)"></div>
@@ -1109,7 +1100,7 @@
 							<div id="ng3p83" class="achievement achievementlocked" style="background-image: url(images/placeholder.png)" ach-tooltip="Placeholder."></div>
 						</td>
 						<td>
-							<div id="Big Rip isn't enough" class="achievement achievementlocked" style="background-image: url(images/170.png)"></div>
+							<div id="Big Rip isn't enough" class="achievement achievementlocked" style="background-image: url(images/170.png)" ach-tooltip="Complete a Paired Challenge with Quantum Challenges 6 and 8 combinations."></div>
 						</td>
 						<td>
 							<div id="Everlasting Eternities" class="achievement achievementlocked" style="background-image: url(images/171.png)"></div>
@@ -1118,7 +1109,7 @@
 							<div id="Back to Challenge One" class="achievement achievementlocked" style="background-image: url(images/placeholder.png)">Back to Challenge One</div>
 						</td>
 						<td>
-							<div id="ng3p87" class="achievement achievementlocked" style="background-image: url(images/placeholder.png)" ach-tooltip="Placeholder. Reward: Remove the quadratic cost scaling and the level softcap of fifth Quark Decay upgrade and make it based on best meta-antimatter over Fundaments, instead of over quantums."></div>
+							<div id="ng3p87" class="achievement achievementlocked" style="background-image: url(images/placeholder.png)" ach-tooltip="Placeholder. Reward: Fifth Tree upgrade is based on best meta-antimatter over Fundaments."></div>
 						</td>
 						<td>
 							<div id="ng3p88" class="achievement achievementlocked" style="background-image: url(images/placeholder.png)" ach-tooltip="Placeholder. Reward: Remove the cap of 'And so your life?'"></div>
@@ -1138,7 +1129,7 @@
 							<div id="... references to EC8?" class="achievement achievementlocked" style="background-image: url(images/placeholder.png)" ach-tooltip="Get at least 2 Radioactive Decays of every color with at most 10 gains of Unstable Quarks. Reward: Get Branch Upgrade 2 per 1 Radioactive Decay.">... references to EC8?</div>
 						</td>
 						<td>
-							<div id="Bosonic Semipowerment" class="achievement achievementlocked" style="background-image: url(images/placeholder.png)" ach-tooltip="Reach 50% of Spectral Ion requirement without buying Bosonic Upgrades. Reward: Spectral Ions are 1 cheaper.">Bosonic Semipowerment</div>
+							<div id="ng3p95" class="achievement achievementlocked" style="background-image: url(images/placeholder.png)" ach-tooltip="Placeholder."></div>
 						</td>
 						<td>
 							<div id="ng3p96" class="achievement achievementlocked" style="background-image: url(images/placeholder.png)" ach-tooltip="Placeholder. Reward: Decrease Quantum and Paired Challenge goals by 5%, except Big Rip."></div>
@@ -1983,8 +1974,7 @@
 				</table>
 			</div>
 			<div id="quantumchallenges" class="challengeTab">
-				<div>Spend electrons to start quantum challenges.</div>
-				<div>If you are in a Quantum Challenge or have completed a Quantum Challenge, RG4 will be on.</div>
+				<div id='qcDisclaimer'></div>
 				<div id='electronsAmount2'></div>
 				<table class="table" style="margin: 0 auto">
 					<tr>
@@ -3460,157 +3450,78 @@
 				<button id="rebuyupgauto" style="width:210px; height: 30px; font-size: 12px" onclick="toggleAutoEter('rebuyupg')" class="storebtn"></button>
 				<button id="dilUpgsauto" style="width:240px; height: 30px; font-size: 12px" onclick="toggleAutoEter('dilUpgs')" class="storebtn"></button>
 				<button id="distribEx" style="width:180px; height: 30px; font-size: 12px" onclick="distribEx()" class="storebtn">Distribute ex-dilation</button>
-				<table>
-					<tr>
-						<td>
-							<button id="dil11" onclick="buyDilationUpgrade(11)">Double dilated time production.<br><span id="dil11cost"></span></button>
-						</td>
-						<td>
-							<button id="dil12" onclick="buyDilationUpgrade(12)">Decrease the galaxy threshold multiplier, but reset Tachyonic Galaxies and dilated time.<br><span id="dil12cost"></span></button>
-						</td>
-						<td>
-							<button id="dil13" onclick="buyDilationUpgrade(13)"><span id="dil13desc"></span><br><span id="dil13cost"></span></button>
-						</td>
-						<td>
-							<button id="dil15" onclick="buyDilationUpgrade(15)">Reduce the dilation penalty.<br><span id="dil15cost"></span></button>
-						</td>
-						<td>
-							<button id="dil14" onclick="buyDilationUpgrade(14)"><span id="dil14desc"></span><br><span id="dil14cost"></span></button>
-						</td>
-					</tr>
-				</table>
-				<table>
-					<tr id="xdrow">
-						<td>
-							<button id="xd1" style="height: 50px;" onclick="boostDilationUpgrade(1)">Boost the upgrade above with ex-dilation<br><span id="xd1span">1x -> 1.5x</span></button>
-						</td>
-						<td>
-							<button id="xd2" style="height: 50px;" onclick="boostDilationUpgrade(2)">Boost the upgrade above with ex-dilation<br><span id="xd2span">1x -> 1.5x</span></button>
-						</td>
-						<td>
-							<button id="xd3" style="height: 50px;" onclick="boostDilationUpgrade(3)">Boost the upgrade above with ex-dilation<br><span id="xd3span">1x -> 1.5x</span></button>
-						</td>
-						<td>
-							<button id="xd5" style="height: 50px;" onclick="boostDilationUpgrade(5)">Boost the upgrade above with ex-dilation<br><span id="xd5span">1x -> 1.5x</span></button>
-						</td>
-						<td>
-							<button id="xd4" style="height: 50px;" onclick="boostDilationUpgrade(4)">Boost the upgrade above with ex-dilation<br><span id="xd4span">1x -> 1.5x</span></button>
-						</td>
-					</tr>
-				</table>
-				<table>
-					<tr>
-						<td>
-							<button id="dil21" onclick="buyDilationUpgrade(21)">Gain twice as many Tachyonic Galaxies.<br><span id="dil21cost"></span></button>
-						</td>
-						<td>
-							<button id="dil22" onclick="buyDilationUpgrade(22)">Time Dimensions are affected by replicanti multiplier ^ 0.1.<br><span id="dil22cost"></span></button>
-						</td>
-						<td>
-							<button id="dil23" onclick="buyDilationUpgrade(23)">Normal Dimensions gain a multiplier based on Dilated Time, unaffected by Time Dilation.<br><span id="dil23cost"></span></button>
-						</td>
-						<td>
-							<button id="dil25" onclick="buyDilationUpgrade(25)">Gain twice as many Tachyonic Galaxies again.<br><span id="dil25cost"></span></button>
-						</td>
-						<td>
-							<button id="dil24" onclick="buyDilationUpgrade(24)">Replicanti increases faster based on Dilated Time.<br><span id="dil24cost"></span></button>
-						</td>
-					</tr>
-				</table>
-				<table>
-					<tr>
-						<td>
-							<button id="dil31" onclick="buyDilationUpgrade(31)">Gain a multiplier to IP based on dilated time.<br><span id="dil31desc"></span><br><span id="dil31cost"></span></button>
-						</td>
-						<td>
-							<button id="dil32" onclick="buyDilationUpgrade(32)">Unlock the ability to pick all the study paths from the first split.<br><span id="dil32cost"></span></button>
-						</td>
-						<td>
-							<button id="dil33" onclick="buyDilationUpgrade(33)">Reduce the dilation penalty. (^1.05 after reduction)<br><span id="dil33cost"></span></button>
-						</td>
-						<td>
-							<button id="dil35" onclick="buyDilationUpgrade(35)">Dilation penalty doesn't affect the Replicantis boost to Time Dimensions.<br><span id="dil35cost"></span></button>
-						</td>
-						<td>
-							<button id="dil34" onclick="buyDilationUpgrade(34)">Eternities and dilated time power up each other.<br><span id="dil34cost"></span></button>
-						</td>
-					</tr>
-				</table>
-				<table>
-					<tr>
-						<td>
-							<button id="dil51" onclick="buyDilationUpgrade(51)" style='font-size:10px'>Meta Dimensions gain a multiplier based on tickspeed.<br>(1+log(1+log(x)))<br><span id="dil51desc"></span><br><span id="dil51cost"></span></button>
-						</td>
-						<td>
-							<button id="dil52" onclick="buyDilationUpgrade(52)" style='font-size:10px'>Meta-dimension shifts, boosts, and per-ten upgrades are boosted by dilated time.<span id="dil52formula"> (log(log(x))+1)</span><br><span id="dil52desc"></span><br><span id="dil52cost"></span></button>
-						</td>
-						<td>
-							<button id="dil53" onclick="buyDilationUpgrade(53)">The meta-antimatter effect on dimension boosts is stronger.<br>(^8 -> ^9)<br><span id="dil53cost"></span></button>
-						</td>
-						<td>
-							<button id="dil55" onclick="buyDilationUpgrade(55)">Reduce the Meta-Dimension Boost scaling by 1 per level.<br><span id="dil55cost"></span></button>
-						</td>
-						<td>
-							<button id="dil54" onclick="buyDilationUpgrade(54)" style='font-size:10px'>Dilated time production is boosted based on best meta-antimatter.<br><span id="dil54formula"></span><br><span id="dil54desc"></span><br><span id="dil54cost"></span></button>
-						</td>
-					</tr>
-				</table>
-				<table>
-					<tr>
-						<td>
-							<button id="dil71" onclick="buyDilationUpgrade(71)" style='font-size:9px'>Time and Meta Dimensions gain a exponent boost based on your best meta-antimatter.<br><span id="dil71desc">Currently: ???</span><br><span id="dil71cost"></span></button>
-						</td>
-						<td>
-							<button id="dil72" onclick="buyDilationUpgrade(72)" style='font-size:9px'>Speed up the replicate interval based on your best meta-antimatter.<br><span id="dil72desc">Currently: ???</span><br><span id="dil72cost"></span></button>
-						</td>
-						<td>
-							<button id="dil73" onclick="buyDilationUpgrade(73)" style='font-size:10px'>Replicate interval increases faster based on dilation upgrades bought.<br><span id="dil73cost"></span></button>
-						</td>
-						<td>
-							<button id="dil74" onclick="buyDilationUpgrade(74)">Distant galaxy cost scaling starts 25 later.<br><span id="dil74cost"></span></button>
-						</td>
-						<td>
-							<button id="dil75" onclick="buyDilationUpgrade(75)">Decrease the base galaxy cost multiplier by 10.<br><span id="dil75cost"></span></button>
-						</td>
-					</tr>
-				</table>
-				<table>
-					<tr>
-						<td>
-							<button id="dil41" onclick="buyDilationUpgrade(41)">Generate time theorems based on tachyon particles.<br><span id="dil41desc"></span><br><span id="dil41cost"></span></button>
-						</td>
-						<td id="n1">
-							<button id="dil42" onclick="buyDilationUpgrade(42)">Eternities and dilated time power up each other.<br><span id="dil42cost"></span></button>
-						</td>
-						<td id="n2">
-							<button id="dil43" onclick="buyDilationUpgrade(43)">Further increase the exponent of all normal dimensions by ^0.1.<br><span id="dil43cost"></span></button>
-						</td>
-						<td id="n3">
-							<button id="dil44" onclick="buyDilationUpgrade(44)" style='font-size:9px'>Increase the exponent of Infinity Power effect based on your Tachyonic Galaxies.<br><span id="dil44desc">Currently: ???</span><br><span id="dil44cost"></span></button>
-						</td>
-						<td id="n4">
-							<button id="dil45" onclick="buyDilationUpgrade(45)" style='font-size:10px'>Replicantis boost per-10 Infinity Dimensions multiplier.<br><span id="dil45desc">Currently: ???</span><br><span id="dil45cost"></span></button>
-						</td>
-				</table>
-				<table>
-					<tr>
-						<td id="n5">
-							<button id="dil61" onclick="buyDilationUpgrade(61)">Gain 5% more Tachyon particles for each <span id="dil61oom"></span>x replicanti.<br><span id="dil61desc"></span><br><span id="dil61cost"></span></button>
-						</td>
-						<td id="n6">
-							<button id="dil62" onclick="buyDilationUpgrade(62)">Eternities and dilated time boost each other by ^0.1.<br><span id="dil62cost"></span></button>
-						</td>
-						<td id="n7">
-							<button id="dil63" onclick="buyDilationUpgrade(63)">Boost the ex-dilation gain.<br><span id="dil63cost"></span></button>
-						</td>
-						<td id="n8">
-							<button id="dil64" onclick="buyDilationUpgrade(64)" style='font-size:10px'>Buff the black hole upgrade effect based on your Eternity points.<br><span id="dil64desc"></span><br><span id="dil64cost"></span></button>
-						</td>
-						<td>
-							<button id="dil65" onclick="buyDilationUpgrade(65)" style='font-size:10px'>You gain more dilated time based on your meta-antimatter.<br><span id="dil65desc"></span><br><span id="dil65cost"></span></button>
-						</td>
-					</tr>
-				</table>
+				<table><tr>
+					<td>
+						<button id="dil11" onclick="buyDilationUpgrade(11)">Double dilated time production.<br><span id="dil11cost"></span></button>
+					</td><td>
+						<button id="dil12" onclick="buyDilationUpgrade(12)">Decrease the galaxy threshold multiplier, but reset Tachyonic Galaxies and dilated time.<br><span id="dil12cost"></span></button>
+					</td><td>
+						<button id="dil13" onclick="buyDilationUpgrade(13)"><span id="dil13desc"></span><br><span id="dil13cost"></span></button>
+					</td><td>
+						<button id="dil14" onclick="buyDilationUpgrade(14)"><span id="dil14desc"></span><br><span id="dil14cost"></span></button>
+					</td>
+				</tr><tr id="xdrow">
+					<td>
+						<button id="xd1" style="height: 50px;" onclick="boostDilationUpgrade(1)">Boost the upgrade above with ex-dilation<br><span id="xd1span">1x -> 1.5x</span></button>
+					</td><td>
+						<button id="xd2" style="height: 50px;" onclick="boostDilationUpgrade(2)">Boost the upgrade above with ex-dilation<br><span id="xd2span">1x -> 1.5x</span></button>
+					</td><td>
+						<button id="xd3" style="height: 50px;" onclick="boostDilationUpgrade(3)">Boost the upgrade above with ex-dilation<br><span id="xd3span">1x -> 1.5x</span></button>
+					</td><td>
+						<button id="xd4" style="height: 50px;" onclick="boostDilationUpgrade(4)">Boost the upgrade above with ex-dilation<br><span id="xd4span">1x -> 1.5x</span></button>
+					</td>
+				</tr></table>
+				<table><tr>
+					<td>
+						<button id="dil21" onclick="buyDilationUpgrade(21)">Gain twice as many Tachyonic Galaxies.<br><span id="dil21cost"></span></button>
+					</td><td>
+						<button id="dil22" onclick="buyDilationUpgrade(22)">Time Dimensions are affected by replicanti multiplier ^ 0.1.<br><span id="dil22cost"></span></button>
+					</td><td>
+						<button id="dil23" onclick="buyDilationUpgrade(23)">Normal Dimensions gain a multiplier based on Dilated Time, unaffected by Time Dilation.<br><span id="dil23cost"></span></button>
+					</td><td>
+						<button id="dil24" onclick="buyDilationUpgrade(24)">Replicanti increases faster based on Dilated Time.<br><span id="dil24cost"></span></button>
+					</td>
+				</tr></table>
+				<table><tr>
+					<td>
+						<button id="dil31" onclick="buyDilationUpgrade(31)">Gain a multiplier to IP based on dilated time.<br><span id="dil31desc"></span><br><span id="dil31cost"></span></button>
+					</td><td>
+						<button id="dil32" onclick="buyDilationUpgrade(32)">Unlock the ability to pick all the study paths from the first split.<br><span id="dil32cost"></span></button>
+					</td><td>
+						<button id="dil33" onclick="buyDilationUpgrade(33)">Reduce the dilation penalty. (^1.05 after reduction)<br><span id="dil33cost"></span></button>
+					</td><td>
+						<button id="dil34" onclick="buyDilationUpgrade(34)">Eternities and dilated time power up each other.<br><span id="dil34cost"></span></button>
+					</td>
+				</tr></table>
+				<table><tr>
+					<td>
+						<button id="dil51" onclick="buyDilationUpgrade(51)" style='font-size:10px'>Meta Dimensions gain a multiplier based on tickspeed.<br>(1+log(1+log(x)))<br><span id="dil51desc"></span><br><span id="dil51cost"></span></button>
+					</td><td>
+						<button id="dil52" onclick="buyDilationUpgrade(52)" style='font-size:10px'>Meta-dimension shifts, boosts, and per-ten upgrades are boosted by dilated time.<span id="dil52formula"> (log(log(x))+1)</span><br><span id="dil52desc"></span><br><span id="dil52cost"></span></button>
+					</td><td>
+						<button id="dil53" onclick="buyDilationUpgrade(53)">The meta-antimatter effect on dimension boosts is stronger.<br>(^8 -> ^9)<br><span id="dil53cost"></span></button>
+					</td><td>
+						<button id="dil54" onclick="buyDilationUpgrade(54)" style='font-size:10px'>Dilated time production is boosted based on best meta-antimatter.<br><span id="dil54formula"></span><br><span id="dil54desc"></span><br><span id="dil54cost"></span></button>
+					</td>
+				</tr></table>
+				<table><tr>
+					<td>
+						<button id="dil41" onclick="buyDilationUpgrade(41)">Generate time theorems based on tachyon particles.<br><span id="dil41desc"></span><br><span id="dil41cost"></span></button>
+					</td><td>
+						<button id="dil42" onclick="buyDilationUpgrade(42)">Gain 5% more Tachyon particles for each <span id="dil42oom"></span>x replicanti.<br><span id="dil42desc"></span><br><span id="dil42cost"></span></button>
+					</td><td>
+						<button id="dil43" onclick="buyDilationUpgrade(43)">Eternities and dilated time boost each other by ^0.1.<br><span id="dil43cost"></span></button>
+					</td><td>
+						<button id="dil44" onclick="buyDilationUpgrade(44)">Boost the ex-dilation gain.<br><span id="dil44cost"></span></button>
+					</td><td>
+						<button id="dil45" onclick="buyDilationUpgrade(45)" style='font-size:10px'>Buff the black hole upgrade effect based on your Eternity points.<br><span id="dil45desc"></span><br><span id="dil45cost"></span></button>
+					</td>
+				</tr></table>
+				<table><tr>
+					<td>
+						<button id="dil61" onclick="buyDilationUpgrade(61)" style='font-size:10px'>You gain more dilated time based on your meta-antimatter.<br><span id="dil61desc"></span><br><span id="dil61cost"></span></button>
+					</td>
+				</tr></table>
 			</div>
 			<div class="eternitytab" id="blackhole" style="font-size: 11px">
 				<br>
@@ -3910,12 +3821,13 @@
 					</tr>
 				</table>
 			</div><div class="quantumtab" id="bigrip">
-				To big rip, you need to assign a PC with QC6 & 8 first.<br>
+				To Big Rip, assign a PC with QC6 & 8 first.<br>
 				<button class="gluonupgrade bigrip" onclick="buyingDilStudyPC()">Teleport to Paired Challenges.</button><br>
-				You have <span class="SSAmount" id="spaceShards" style="font-size:35px">0</span> Space Shards.
+				<span class="SSAmount" id="spaceShards" style="font-size:35px">0</span> Space Shards<br>
+				<b class='red'>Most upgrades only work in Big Rips. Upgrades starting at 3rd nullify 1st upgrade.</b>
 				<table class="table" align="center" style="margin: auto">
 					<tr>
-						<td><button class='gluonupgrade unavailablebtn' id="bigripupg1" onclick='buyBigRipUpg(1)' style='font-size: 10px'>Infinity Points boost Normal Dimensions, but buying other upgrades except for the 2nd nullify it.<br>Currently: <span id="bigripupg1current">1.00</span>x<br>Cost: <span id="bigripupg1cost"></span> Space Shards</button></td>
+						<td><button class='gluonupgrade unavailablebtn' id="bigripupg1" onclick='buyBigRipUpg(1)'>Infinity Points boost Normal Dimensions.<br>Currently: <span id="bigripupg1current">1.00</span>x<br>Cost: <span id="bigripupg1cost"></span> Space Shards</button></td>
 						<td><button class='gluonupgrade unavailablebtn' id="bigripupg2" onclick='buyBigRipUpg(2)'>Start with all ECs and 100,000 Eternities.<br>Cost: <span id="bigripupg2cost"></span> Space Shards</button></td>
 						<td><button class='gluonupgrade unavailablebtn' id="bigripupg3" onclick='buyBigRipUpg(3)'>Gain 5 Time Theorems.<br>Cost: <span id="bigripupg3cost"></span> Space Shards</button></td>
 						<td><button class='gluonupgrade unavailablebtn' id="bigripupg4" onclick='buyBigRipUpg(4)'>Replicantis replicate 10x faster, and boost Infinity Dimensions.<br>Cost: <span id="bigripupg4cost"></span> Space Shards</button></td>
@@ -3951,7 +3863,7 @@
 			</div><div class="quantumtab" id="breakEternity" style="font-size: 11px">
 				<div id="breakEternityNoBigRip">Break Eternity only works if you big rip the universe again.</div>
 				<div id="breakEternityShop">
-					<span id="eternalMatter" style="font-size:35px"></span> Eternal Matter.<br>
+					<span id="eternalMatter" style="font-size:35px"></span> Eternal Matter<br>
 					<table class="table" style="margin: 0 auto">
 						<tr>
 							<td></td>
@@ -4113,22 +4025,20 @@
 						<td>Increase TP gain exponent to <span class="neutrinos" id="neutrinoBoost1">1.0</span>.<span style="font-size: 8px">(from <span id="preNeutrinoBoost1"></span>)</span></td>
 						<td id="neutrinoBoostCell2">Boost "replicate chance boosts itself" to <span class="neutrinos" id="neutrinoBoost2">1.0</span>.<br><span style="font-size: 8px">(from <span id="preNeutrinoBoost2"></span>, the exponent changed from <span id="preNeutrinoBoost2Exp"></span> to <span id="neutrinoBoost2Exp"></span>)</span></td>
 						<td id="neutrinoBoostCell3">Uncap the Dilation Upgrade 14 and increase it by <span class="neutrinos" id="neutrinoBoost3">3.00</span>x.</td>
-					</tr>
-					<tr class="neutrinoBoosts2" id="neutrinoBoostRow2">
+					</tr><tr class="neutrinoBoosts2" id="neutrinoBoostRow2">
 						<td>Raise Infinite Time by <span class="neutrinos" id="neutrinoBoost4">0.0</span>.</td>
 						<td id="neutrinoBoostCell5">Red power softcap is <span class="neutrinos" id="neutrinoBoost5">100.0</span>% weaker.</td>
 						<td id="neutrinoBoostCell6">Distant Antimatter Galaxies scale <span class="neutrinos" id="neutrinoBoost6">0.0</span>% slower.<br><span style="font-size: 8px">(Nerfed in Big Rip runs)</span></td>
-					</tr>
-					<tr class="neutrinoBoosts" id="neutrinoBoostRow3">
+					</tr><tr class="neutrinoBoosts" id="neutrinoBoostRow3">
 						<td>In Big Rips, strengthen Tree upgrades by <span class="neutrinos" id="neutrinoBoost7">0.0</span>%.<br><span style="font-size: 8px">(<span id="preNeutrinoBoost7Eff">100.0</span>% to <span id="neutrinoBoost7Eff">100.0</span>%)</span></td>
 						<td id="neutrinoBoostCell8">Strengthen the first Big Rip upgrade by <span class="neutrinos" id="neutrinoBoost8">0.0</span>%.</td>
 						<td id="neutrinoBoostCell9">In Big Rips, multiply IC3 effect base by <span class="neutrinos" id="neutrinoBoost9">1.00</span>x.</td>
-					</tr>
-					<tr class="neutrinoBoosts2" id="neutrinoBoostRow4">
+					</tr><tr class="neutrinoBoosts2" id="neutrinoBoostRow4">
 						<td>Decrease free tickspeed threshold by <span class="neutrinos" id="neutrinoBoost10"></span>.</td>
 						<td id="neutrinoBoostCell11">Increase the production and cap of Waves by <span class="neutrinos" id="neutrinoBoost11">1.00</span>x.</td>
 						<td id="neutrinoBoostCell12">Higgs boost Bosons by <span class="neutrinos" id="neutrinoBoost12"></span>.</td>
 					</tr>
+					<!-- UPGRADES -->
 					<tr>
 						<td><button id="neutrinoUnlock" class="gluonupgrade unavailablebtn" onclick="unlockNeutrinoBoost()">Unlock a new boost.<br>Cost: <span id="neutrinoUnlockCost">2</span> ElP</button></td>
 						<td><button id="neutrinoMultUpg" class="gluonupgrade unavailablebtn" onclick="buyNeutrinoMult()">Gain 5x more neutrinos.<br>Currently: <span id="neutrinoMult">1</span>x<br>Cost: <span id="neutrinoMultUpgCost">3</span> ElP</button><br><button class="storebtn" onclick='maxNeutrinoMult()' style='width:190px'>Max Neutrino mult</button></td>
@@ -4173,43 +4083,31 @@
 				<table style="margin: 0 auto">
 					<tr>
 						<td id="autoGhost1"><div class="autoBuyerDiv" style="display:block">
-							<b>Auto-Red Unstabilize</b>
+							<b>Auto-Decay</b>
 							<input id="isAutoGhostOn1" type="checkbox" onchange="toggleAutoGhost(1)"></input><br>
-							Power: 0.75
-						</div></td>
-						<td id="autoGhost2"><div class="autoBuyerDiv" style="display:block">
-							<b>Auto-Green Unstabilize</b>
-							<input id="isAutoGhostOn2" type="checkbox" onchange="toggleAutoGhost(2)"></input><br>
-							Power: 0.75
-						</div></td>
-						<td id="autoGhost3"><div class="autoBuyerDiv" style="display:block">
-							<b>Auto-Blue Unstabilize</b>
-							<input id="isAutoGhostOn3" type="checkbox" onchange="toggleAutoGhost(3)"></input><br>
-							Power: 0.75
-						</div></td>
-						<td id="autoGhost4"><div class="autoBuyerDiv" style="display:block">
-							<b>Auto-Unstable Rotate</b>
-							<input id="isAutoGhostOn4" type="checkbox" onchange="toggleAutoGhost(4)"></input><br>
-							Power: 1<br>
-							Rotate: <button class="storebtn" id="autoGhostMod4" onclick="changeAutoGhost('4m')" style="font-size: 100%; width: 100px; height: 20px">Every quantum</button><br>
-							Direction: <button class="storebtn" id="autoGhostRotate4" onclick="changeAutoGhost('4r')" style="font-size: 100%; width: 100px; height: 20px">Right</button>
+							Power: 1.5
 						</div></td>
 						<td id="autoGhost5"><div class="autoBuyerDiv" style="display:block">
 							<b>Auto-Branch Upgrade</b>
 							<input id="isAutoGhostOn5" type="checkbox" onchange="toggleAutoGhost(5)"></input><br>
 							Power: 2
 						</div></td>
-					</tr>
-					<tr>
 						<td id="autoGhost6"><div class="autoBuyerDiv" style="display:block">
 							<b>Auto-Tree Upgrade</b>
 							<input id="isAutoGhostOn6" type="checkbox" onchange="toggleAutoGhost(6)"></input><br>
 							Power: 2
 						</div></td>
 						<td id="autoGhost7"><div class="autoBuyerDiv" style="display:block">
-							<b>Auto-QK Mult</b>
+							<b>Auto-Quantum Mult</b>
 							<input id="isAutoGhostOn7" type="checkbox" onchange="toggleAutoGhost(7)"></input><br>
 							Power: 0.5
+						</div></td>
+					</tr>
+					<tr>
+						<td id="autoGhost18"><div class="autoBuyerDiv" style="display:block">
+							<b>Auto-Positron Mult</b>
+							<input id="isAutoGhostOn18" type="checkbox" onchange="toggleAutoGhost(18)"></input><br>
+							Power: 1
 						</div></td>
 						<td id="autoGhost8"><div class="autoBuyerDiv" style="display:block">
 							<b>Auto-Food</b>
@@ -4236,14 +4134,14 @@
 							Produce: <input id="autoGhost11cw" type="text" onchange="changeAutoGhost('11cw')"></input>s
 						</div></td>
 						<td id="autoGhost12"><div class="autoBuyerDiv" style="display:block">
-							<b>Auto-Radioactive Decay</b>
+							<b>Auto-Radioactive</b>
 							<input id="isAutoGhostOn12" type="checkbox" onchange="toggleAutoGhost(12)"></input><br>
 							Power: 0.5
 						</div></td>
 						<td id="autoGhost13"><div class="autoBuyerDiv" style="display:block">
 							<b>Auto-Big Rip</b>
 							<input id="isAutoGhostOn13" type="checkbox" onchange="toggleAutoGhost(13)"></input><br>
-							Power: 0.5<br>
+							Power: 3<br>
 							Rip in: <input id="autoGhost13t" onchange="changeAutoGhost('13t')"></input>s<br>
 							Undo: <input id="autoGhost13u" onchange="changeAutoGhost('13u')"></input>s<br>
 							Stop: <input id="autoGhost13o" onchange="changeAutoGhost('13o')"></input> times<br>(0 = always)
@@ -4251,24 +4149,19 @@
 						<td id="autoGhost14"><div class="autoBuyerDiv" style="display:block">
 							<b>Auto-BE Mult</b>
 							<input id="isAutoGhostOn14" type="checkbox" onchange="toggleAutoGhost(14)"></input><br>
-							Power: 0.5
-						</div></td>
-						<td id="autoGhost15"><div class="autoBuyerDiv" style="display:block">
-							<b>Auto-Fundament</b>
-							<input id="isAutoGhostOn15" type="checkbox" onchange="toggleAutoGhost(15)"></input><br>
-							Power: 0.5<br>
-							Amount of ElP to wait until reset: <input id="autoGhost15a" onchange="changeAutoGhost('15a')"></input>
+							Power: 1
 						</div></td>
 					</tr>
 					<tr>
+						<td id="autoGhost15"><div class="autoBuyerDiv" style="display:block">
+							<b>Auto-Fundament</b>
+							<input id="isAutoGhostOn15" type="checkbox" onchange="toggleAutoGhost(15)"></input><br>
+							Power: 4<br>
+							Seconds to wait until reset: <input id="autoGhost15a" onchange="changeAutoGhost('15a')"></input>
+						</div></td>
 						<td id="autoGhost16"><div class="autoBuyerDiv" style="display:block">
 							<b>Auto-Neutrino Repeatable</b>
 							<input id="isAutoGhostOn16" type="checkbox" onchange="toggleAutoGhost(16)"></input><br>
-							Power: 1
-						</div></td>
-						<td id="autoGhost18"><div class="autoBuyerDiv" style="display:block">
-							<b>Auto-Electron Mult</b>
-							<input id="isAutoGhostOn18" type="checkbox" onchange="toggleAutoGhost(18)"></input><br>
 							Power: 1
 						</div></td>
 						<td id="autoGhost17"><div class="autoBuyerDiv" style="display:block">
@@ -4284,13 +4177,13 @@
 							(doesn't consume your Hypotheses, enchant per 2 seconds)<br>
 							Power: 3
 						</div></td>
+					</tr>
+					<tr>
 						<td id="autoGhost20"><div class="autoBuyerDiv" style="display:block">
 							<b>Auto-Bosonic Upgrader</b>
 							<input id="isAutoGhostOn20" type="checkbox" onchange="toggleAutoGhost(20)"></input><br>
 							Power: 9
 						</div></td>
-					</tr>
-					<tr>
 						<td id="autoGhost21"><div class="autoBuyerDiv" style="display:block">
 							<b>Auto-W & Z Boson</b>
 							<input id="isAutoGhostOn21" type="checkbox" onchange="toggleAutoGhost(21)"></input><br>
@@ -4308,10 +4201,10 @@
 				Fundament with least Quantums as possbile for a Reward!
 				<table style="margin: auto">
 					<tr id="braveRow1">
-						<td><div id="braveMilestone1" class="achievement achievementlocked" ach-tooltip="Reward: Keep features on infinite QK, Speedrun Milestones, Quantum Challenges, and Big Rip upgrades."></div></td>
+						<td><div id="braveMilestone1" class="achievement achievementlocked" ach-tooltip="Reward: Keep Speedrun Milestones, Quantum Challenges, and Big Rip upgrades."></div></td>
 						<td><div id="braveMilestone2" class="achievement achievementlocked" ach-tooltip="Reward: Colored quarks don't cancel and keep your gluon upgrades."></div></td>
 						<td><div id="braveMilestone3" class="achievement achievementlocked" ach-tooltip="Reward: Keep Electron upgrades and Quantum features."></div></td>
-						<td><div id="braveMilestone4" class="achievement achievementlocked" ach-tooltip="Reward: Tachyon particles don't reset on Quantum except when entering a QC, unstabilizing quarks don't lose colored quarks, and you start with 5 of 1st Branch Upgrades for each branch."></div></td>
+						<td><div id="braveMilestone4" class="achievement achievementlocked" ach-tooltip="Reward: Tachyon particles don't reset on Quantum except when entering a QC, unstabilizing quarks don't lose colored quarks, and you start with 5 of 1st Branch Upgrades."></div></td>
 						<td><div id="braveMilestone5" class="achievement achievementlocked" ach-tooltip="Reward: Meta-Dimension Boosts don't reset on Quantum except in challenges."></div></td>
 						<td><div id="braveMilestone6" class="achievement achievementlocked" ach-tooltip="Reward: Normal duplicants don't reset on Quantum except in challenges."></div></td>
 						<td><div id="braveMilestone7" class="achievement achievementlocked" ach-tooltip="Reward: Start with 10 workers."></div></td>
@@ -4323,7 +4216,7 @@
 						<td><div id="braveMilestone11" class="achievement achievementlocked" ach-tooltip="Reward: Start with 10 of each one of the first 6 Emperor Dimensions."></div></td>
 						<td><div id="braveMilestone12" class="achievement achievementlocked" ach-tooltip="Reward: Start with 10 of each Emperor Dimension."></div></td>
 						<td><div id="braveMilestone13" class="achievement achievementlocked" ach-tooltip="Reward: Start with 16 Nanorewards."></div></td>
-						<td><div id="braveMilestone14" class="achievement achievementlocked" ach-tooltip="Reward: Start with 10 Fourth Emperor Dimensions."></div></td>
+						<td><div id="braveMilestone14" class="achievement achievementlocked"></div></td>
 						<td><div id="braveMilestone15" class="achievement achievementlocked" ach-tooltip="Reward: Keep Break Eternity and passively produce 1% of Eternal Matter per second."></div></td>
 						<td><div id="braveMilestone16" class="achievement achievementlocked" ach-tooltip="Reward: Passively produce 1% of Quarks per second."></div></td>
 					</tr>
@@ -4332,133 +4225,36 @@
 			<div id="gphtab" class="ghostifytab">
 				<div id="gphUnl"></div>
 				<div id="gphDiv">
-					<b class="red">Warning: This will be rewritten soon!</b><br>
-					You have <span id="dtGPH">0</span> dilated time.<br>
-					You are gaining <span class="gphAmount" id="gphProduction">0</span> <span id="gphProductionType">Photons</span> per second.<br>
-					<table class='qtable'><tr>
-						<td>
-							<span class="dmAmount" id="dm" style="font-size:35px"></span> Photons<br>
-							Translated to <span class="dmAmount" id="ghrCap"></span> Wave cap
+					<table class="table" style="margin: 0 auto">
+						<td style='width: 240px; text-align: center'>
+							<span id='ph_emission' style='font-size: 24px'></span>
+							Light Emissions
+						</td><td style='width: 240px; text-align: center'>
+							<span id='ph_amt' style='font-size: 24px'></span>
+							Photons
+							<span id='ph_prod'></span>
 						</td>
-						<td>
-							<span class="gphAmount" id="gph" style="font-size:35px"></span> Frequency<br>
-							Translated to <span class="gphAmount" id="ghrProduction"></span>/s Wave production
-						</td>
-						<td>
-							<span class="ghr" id="ghr" style="font-size:35px"></span> Waves
-						</td>
-					</tr></table>
-					<table class="qtable_4col"><tr>
-						<td class="red">
-							<span id="light1" style="font-size:35px"></span> red Light
-							<span id="lightStrength1" style="font-size:15px"></span>
-							<br>
-							Next: <span class="ghr" id="lightThreshold1"></span> Waves<br>
-							Best: <span id="lightMax1"></span>
-						</td>
-						<td class="orange">
-							<span id="light2" style="font-size:35px"></span> orange Light
-							<span id="lightStrength2" style="font-size:15px"></span><br>
-							Next: <span class="ghr" id="lightThreshold2"></span> Waves
-						</td>
-						<td class="yellow">
-							<span id="light3" style="font-size:35px"></span> yellow Light
-							<span id="lightStrength3" style="font-size:15px"></span><br>
-							Next: <span class="ghr" id="lightThreshold3"></span> Waves
-						</td>
-						<td class="green">
-							<span id="light4" style="font-size:35px"></span> green Light
-							<span id="lightStrength4" style="font-size:15px"></span><br>
-							Next: <span class="ghr" id="lightThreshold4"></span> Waves
-						</td>
-					</tr><tr>
-						<td>
-							Raise Tachyon Particles by ^<span class="red" id="lightBoost1" style="font-size:20px"></span>.
-						</td>
-						<td>
-							Preon Power scales <span class="orange" id="lightBoost2" style="font-size:20px"></span>x slower.
-						</td>
-						<td>
-							Electron softcap scales <span class="yellow" id="lightBoost3" style="font-size:20px"></span> later.
-						</td>
-						<td>
-							Increase Green Power effect by <span class="green" id="lightBoost4" style="font-size:20px"></span>.
-						</td>
-					</tr><tr>
-						<td id="le3">
-							In non-Big Rips, Red Light strengthens 'Intergalactic' by <span class="red" id="leBoost3" style="font-size:20px"></span>x.<br>(Your best red Light doesn't boost this.)
-						</td>
-						<td id="le9">
-							Boost something by <span class="orange" id="leBoost9" style="font-size:20px"></span>.
-						</td>
-						<td id="le6">
-							Produce Time Theorems <span class="yellow" id="leBoost6" style="font-size:20px"></span>x faster.
-						</td>
-						<td id="le1">
-							Green Power effect adds <span class="green" id="leBoost1" style="font-size:20px"></span> to TS431's galaxies.
-						</td>
-					</tr><tr>
-						<td class="blue">
-							<span class="blue" id="light5" style="font-size:35px"></span> blue Light
-							<span id="lightStrength5" style="font-size:15px"></span><br>
-							Next: <span class="ghr" id="lightThreshold5"></span> Waves
-						</td>
-						<td class="indigo">
-							<span class="indigo" id="light6" style="font-size:35px"></span> indigo Light
-							<span id="lightStrength6" style="font-size:15px"></span><br>
-							Next: <span class="ghr" id="lightThreshold6"></span> Waves
-						</td>
-						<td class="violet">
-							<span class="violet" id="light7" style="font-size:35px"></span> violet Light
-							<span id="lightStrength7" style="font-size:15px"></span><br>
-							Next: <span class="ghr" id="lightThreshold7"></span> Waves
-						</td>
-						<td class="uv">
-							<span class="uv" id="light8" style="font-size:35px"></span> ultraviolet Light<br>
-							Next: <span class="ghr" id="lightThreshold8"></span> Waves
-						</td>
-					</tr><tr>
-						<td>
-							Raise Blue Power effect by ^<span class="blue" id="lightBoost5" style="font-size:20px"></span>.
-						</td>
-						<td>
-							Branches are <span class="indigo" id="lightBoost6" style="font-size:20px"></span>x faster.
-						</td>
-						<td>
-							In Big Rips, tickspeed multiplier boosts sixth Time Dimensions by <span class="violet" id="lightBoost7" style="font-size:20px"></span>x.
-						</td>
-						<td id="le4">
-							Sharing with Spectral Ions, they boost Violet Light.
-						</td>
-					</tr><tr>
-						<td id="le2">
-							In Big Rips, weaken Ghostly Galaxies by <span class="blue" id="leBoost2" style="font-size:20px"></span>%.
-						</td>
-						<td id="le7">
-							Strengthen Neutrino Boosts 1, 6, and 9 by <span class="indigo" id="leBoost7" style="font-size:20px"></span>%.
-						</td>
-						<td id="le8">
-							Strengthen Infinite Time by <span class="violet" id="leBoost8" style="font-size:20px"></span>% stronger.
-						</td>
-						<td></td>
-					</tr><tr>
-						<td class="lEp" colspan=4>
-							You have <span class="lEp" id="lightEmpowerments" style="font-size:35px">0</span> <span id="lightEmpowermentScaling"></span>.
-						</td>
-					</tr><tr>
-						<td colspan=4>
-							<button class="gluonupgrade gph" id="lightEmpowerment" onclick="lightEmpowerment()"><span id="lightEmpowermentDesc"></span><br>(requires <span id="lightEmpowermentReq"></span> ultraviolet)</button>
-						</td>
-					</tr><tr>
-						<td></td>
-						<td>
-							Strengthen all Lights by +<span class="lEp" id="lightEmpowermentsEffect" style="font-size:20px"></span>x
-						</td>
-						<td id="le5">
-							Lights boost prior Lights by <span class="lEp" id="leBoost5" style="font-size:20px"></span><br>(from (x+1)^0.5)
-						</td>
-						<td></td>
-					</tr></table>
+					</table>
+					<div id="ph_shop"></div>
+					<br>
+					<button class='storebtn' style='width: 120px; height: 48px' onclick="PHOTON.release()">Release!</button>
+					<table id="light_table" class="table" style="margin: 0 auto">
+						<tr>
+							<td class="red" id="ph_light_0"></td>
+							<td class="orange" id="ph_light_1"></td>
+							<td class="yellow" id="ph_light_2"></td>
+							<td class="green" id="ph_light_3"></td>
+						</tr><tr>
+							<td class="blue" id="ph_light_4"></td>
+							<td class="violet" id="ph_light_5"></td>
+							<td class="uv" id="ph_light_6"></td>
+							<td class="lEp">
+								<span id="ph_lighten" style='font-size: 24px'></span>
+								Lightenments<br>
+								<b id="ph_lighten_req"></b>
+							</td>
+						</tr>
+					</table>
 					<i style="opacity: 0.1">You were too spectral. Tributes to Ghostify!</i>
 				</div>
 				<div id="blUnl"></div>
@@ -4620,26 +4416,24 @@
 			Select a mod first before you start your new journey.<br>
 			<button class="storebtn" onclick="reset_mods()">Reset Mods</button>
 			<br><br>
-			<b>Expansion Mods</b><br>
-			<button class="storebtn longbtn" id='ngppBtn' style="font-size: 15px" onclick="toggle_mod('ngpp')" style="display: inline" ach-tooltip="Adds new several end-game content. Featuring NG+3, the most popular mod yet!">NG++: OFF</button>
-			<button class="storebtn longbtn" id='ngudBtn' style="font-size: 15px" onclick="toggle_mod('ngud')" style="display: inline" ach-tooltip="Adds some end-game content including Black Hole.">NGUd: OFF</button>
+			<b>Expansion</b><br>
+			<button class="storebtn longbtn" id='ngppBtn' onclick="toggle_mod('ngpp')" style="display: inline" ach-tooltip="Adds new several end-game content. Featuring NG+3, the most popular mod yet!">NG++: OFF</button>
+			<button class="storebtn longbtn" id='ngudBtn' onclick="toggle_mod('ngud')" style="display: inline" ach-tooltip="Adds some end-game content including Black Hole.">NGUd: OFF</button><br>
+			<button class="storebtn longbtn" id='ngpBtn' onclick="toggle_mod('ngp')" style="display: inline" ach-tooltip="Start at Time Dilation.">NG+: OFF</button>
 			<br><br>
-			<b>Hellish Mods</b><br>
-			<button class="storebtn longbtn" id='ngmBtn' style="font-size: 15px" onclick="toggle_mod('ngm')" style="display: inline">NG-: OFF</button>
-			<button class="storebtn longbtn" id='ngmmBtn' style="font-size: 15px" onclick="toggle_mod('ngmm')" style="display: inline" ach-tooltip="Make this game harder, but adds some mechanics to compromise.">NG--: OFF</button>
+			<b>Hellish</b><br>
+			<button class="storebtn longbtn" id='ngmBtn' onclick="toggle_mod('ngm')" style="display: inline">NG-: OFF</button>
+			<button class="storebtn longbtn" id='ngmmBtn' onclick="toggle_mod('ngmm')" style="display: inline" ach-tooltip="Make this game harder, but adds some mechanics to compromise.">NG--: OFF</button>
 			<br><br>
-			<b>Easy Mods</b><br>
-			<button class="storebtn longbtn" id='ngpBtn' style="font-size: 15px" onclick="toggle_mod('ngp')" style="display: inline" ach-tooltip="Make this game faster and start at Time Dilation.">NG+: OFF</button>
-			<button class="storebtn longbtn" id='aauBtn' style="font-size: 15px" onclick="toggle_mod('aau')" style="display: inline" ach-tooltip="Start with all achievements unlocked.">AAU: OFF</button>
+			<b>Buff</b><br>
+			<button class="storebtn longbtn" id='ngmuBtn' onclick="toggle_mod('ngmu')" style="display: inline" ach-tooltip="A spinoff to NG^, which is slower than NG^, but faster than NG=.">NG*: OFF</button>
+			<button class="storebtn longbtn" id='ngepBtn' onclick="toggle_mod('ngep')" style="display: inline" ach-tooltip="A original mod that starts buffed mods.">NG↑: OFF</button>
+			<button class="storebtn longbtn" id='ngumuBtn' onclick="toggle_mod('ngumu')" style="display: inline" ach-tooltip="A mod which buffs some boosts to NG Update Prime.">NGUd*': OFF</button>
+			<button class="storebtn longbtn" id='nguepBtn' onclick="toggle_mod('nguep')" style="display: inline" ach-tooltip="A mod which greatly buffs some boosts to NG Update Prime.">NGUd↑': OFF</button>
 			<br><br>
-			<b>Buffed Mods</b><br>
-			<button class="storebtn longbtn" id='ngmuBtn' style="font-size: 15px" onclick="toggle_mod('ngmu')" style="display: inline" ach-tooltip="A spinoff to NG^, which is slower than NG^, but faster than NG=.">NG*: OFF</button>
-			<button class="storebtn longbtn" id='ngepBtn' style="font-size: 15px" onclick="toggle_mod('ngep')" style="display: inline" ach-tooltip="A original mod that starts buffed mods.">NG↑: OFF</button>
-			<button class="storebtn longbtn" id='ngumuBtn' style="font-size: 15px" onclick="toggle_mod('ngumu')" style="display: inline" ach-tooltip="A mod which buffs some boosts to NG Update Prime.">NGUd*': OFF</button>
-			<button class="storebtn longbtn" id='nguepBtn' style="font-size: 15px" onclick="toggle_mod('nguep')" style="display: inline" ach-tooltip="A mod which greatly buffs some boosts to NG Update Prime.">NGUd↑': OFF</button>
-			<br><br>
-			<b>Other Mods</b><br>
-			<button class="storebtn longbtn" id='rsBtn' style="font-size: 15px" onclick="toggle_mod('rs')" style="display: inline">Respecced: OFF</button>
+			<b>Others</b><br>
+			<button class="storebtn longbtn" id='rsBtn' onclick="toggle_mod('rs')" style="display: inline">Respecced: OFF</button>
+			<button class="storebtn longbtn" id='aauBtn' onclick="toggle_mod('aau')" style="display: inline" ach-tooltip="Start with all achievements unlocked.">AAU: OFF</button>
 		</div>
 	</div>
 	<div class="popup loadmenu" id="presetsmenu" style="overflow-y:hidden">
@@ -4678,7 +4472,6 @@
 			<button id="quantumConfirmBtn" class="storebtn" onclick="toggleQuantumConf()" style="width: 200px; height: 55px; font-size: 15px" style="display: inline"></button>
 			<button id="bigRipConfirmBtn" class="storebtn" onclick="toggleBigRipConf()" style="width: 200px; height: 55px; font-size: 15px" style="display: inline"></button>
 			<button id="ghostifyConfirmBtn" class="storebtn" onclick="toggleGhostifyConf()" style="width: 200px; height: 55px; font-size: 15px" style="display: inline"></button>
-			<button id="leConfirmBtn" class="storebtn" onclick="toggleLEConf()" style="width: 200px; height: 55px; font-size: 15px" style="display: inline"></button>
 		</div>
 	</div>
 	<div class="popup optionmenu" id="notationmenu">
@@ -4787,6 +4580,7 @@
 		<div id="gsacani1"></div>
 		<div id="gsacani2"></div>
 	</div>
+	<div id="quani"></div>
 	<div id="ghostifyani">
 		<div id="ghostifyanibg"></div>
 		<div id="ghostifyanitext" style="font-size:24px"><b style="font-size:48px">You have enlarged!</b><br><span id="ghostifyanigained"></span></div>
@@ -4854,7 +4648,7 @@
 	<script type="text/javascript" src="javascripts/mods/ngp3/fundament/fundament.js"></script>
 	<script type="text/javascript" src="javascripts/mods/ngp3/fundament/auto.js"></script>
 	<script type="text/javascript" src="javascripts/mods/ngp3/fundament/neutrinos.js"></script>
-	<script type="text/javascript" src="javascripts/mods/ngp3/fundament/photons.js"></script>
+	<script type="text/javascript" src="javascripts/mods/ngp3/fundament/photons_new.js"></script>
 	<script type="text/javascript" src="javascripts/mods/ngp3/fundament/bosonic_lab.js"></script>
 	<script type="text/javascript" src="javascripts/mods/ngp3/fundament/higgs.js"></script>
 	<script type="text/javascript" src="javascripts/mods/ngp3/core.js"></script>

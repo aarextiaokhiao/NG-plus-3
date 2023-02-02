@@ -1,9 +1,14 @@
 //VERSION: 2.31
 let ngp3_ver = 2.31
-let ngp3_build = 20230126
+let ngp3_build = 20230201
 function doNGP3Updates() {
 	if (!aarMod.ngp3_build) aarMod.ngp3_build = 0
 	if (aarMod.ngp3_build < 20221230) quSave.multPower = 0
+	if (aarMod.ngp3_build < 20220201) {
+		if (!quSave.qcsNoDil) quSave.qcsNoDil = {}
+		delete ghSave.ghostlyPhotons
+		delete aarMod.leNoConf
+	}
 	aarMod.newGame3PlusVersion = ngp3_ver
 	aarMod.ngp3_build = ngp3_build
 }
@@ -60,7 +65,7 @@ function toggleAutoTT() {
 }
 
 //v1.8
-const MAX_DIL_UPG_PRIORITIES = [5, 4, 3, 1, 2]
+const MAX_DIL_UPG_PRIORITIES = [4, 3, 1, 2]
 function doAutoMetaTick() {
 	if (!player.masterystudies) return
 	if (player.autoEterOptions.rebuyupg && speedrunMilestonesReached > 6) {
@@ -144,8 +149,8 @@ function maxAllDilUpgs() {
 			if (id == "r1") {	
 				var cost = pow10(player.dilation.rebuyables[1] + 5)
 				if (player.dilation.dilatedTime.gte(cost)) {
-					var toBuy = Math.floor(player.dilation.dilatedTime.div(cost).times(9).add(1).log10())
-					var toSpend = pow10(toBuy).sub(1).div(9).times(cost)
+					var toBuy = Math.floor(player.dilation.dilatedTime.div(cost).mul(9).add(1).log10())
+					var toSpend = pow10(toBuy).sub(1).div(9).mul(cost)
 					player.dilation.dilatedTime = player.dilation.dilatedTime.sub(player.dilation.dilatedTime.min(cost))
 					player.dilation.rebuyables[1] += toBuy
 					update = true
@@ -155,8 +160,8 @@ function maxAllDilUpgs() {
 					if (speedrunMilestonesReached > 21) {
 						var cost = pow10(player.dilation.rebuyables[2] * 2 + 6)
 						if (player.dilation.dilatedTime.gte(cost)) {
-							var toBuy = Math.min(Math.floor(player.dilation.dilatedTime.div(cost).times(99).add(1).log(100)), 60 - player.dilation.rebuyables[2])
-							var toSpend = E_pow(100,toBuy).sub(1).div(99).times(cost)
+							var toBuy = Math.min(Math.floor(player.dilation.dilatedTime.div(cost).mul(99).add(1).log(100)), 60 - player.dilation.rebuyables[2])
+							var toSpend = E_pow(100,toBuy).sub(1).div(99).mul(cost)
 							player.dilation.dilatedTime = player.dilation.dilatedTime.sub(player.dilation.dilatedTime.min(cost))
 							player.dilation.rebuyables[2] += toBuy
 							resetDilationGalaxies()
@@ -382,11 +387,6 @@ function showAntTab(tabName) {
 	closeToolTip()
 }
 
-function toggleLEConf() {
-	aarMod.leNoConf = !aarMod.leNoConf
-	el("leConfirmBtn").textContent = "Spectral Ion confirmation: O" + (aarMod.leNoConf ? "FF" : "N")
-}
-
 //v2.21: NG+3.1
 function getOldAgeRequirement() {
 	let year = new Date().getFullYear() || 2022
@@ -494,6 +494,9 @@ var ngp3Features = {
 		tab() {
 			showTab("quantumtab")
 			showQuantumTab('bigrip')
+
+			el("welcome").style.display = "flex"
+			el("welcomeMessage").innerHTML = "<h1>Your journey is not over...</h1>Anyways, welcome to NG+4, originally by Soul147! You have reached the NG+4 checkpoint. However, many features remain for you to dominate."
 		}
 	},
 	fu: {
@@ -506,7 +509,7 @@ var ngp3Features = {
 	},
 	ph: {
 		name: "Photons",
-		threshold: () => "Get " + shortenCosts(pow10(6e9)) + " antimatter in Big Rip",
+		threshold: () => "Get " + shortenCosts(pow10(1e10)) + " antimatter in Big Rip",
 		next: "bl",
 		tab() {
 			showTab("ghostify")
@@ -516,16 +519,23 @@ var ngp3Features = {
 	bl: {
 		name: "Bosonic Lab",
 		threshold: () => "Get 4 Spectral Ions",
+		next: "hb",
 		tab() {
-			showTab("ghostify")
-			showGhostifyTab('bltab')
+			showTab("bltab")
+		}
+	},
+	hb: {
+		name: "Higgs",
+		threshold: () => "???",
+		tab() {
+			showTab("bltab")
 		}
 	}
 }
 
 function ngp3_feature_notify(k) {
 	ngp3Features[k].tab()
-	$.notify("Congratulations! You have unlocked " + ngp3Features[k].name + "!", "success")
+	$.notify("Congratulations! You unlocked " + ngp3Features[k].name + "!", "success")
 
 	el("ngp3_feature_ani").style.display = ""
 	el("ngp3_feature_ani_4").textContent = ngp3Features[k].name + " is now unlocked!"
@@ -578,7 +588,6 @@ function doPerSecondNGP3Stuff(){
 
 	//NG+3: Automators
 	automatorPerSec()
-
 	if (quSave.autoECN !== undefined) {
 		justImported = true
 		if (quSave.autoECN > 12) buyMasteryStudy("ec", quSave.autoECN,true)
@@ -624,27 +633,37 @@ function doNGP3UnlockStuff(){
 	if (chall.length < 2) chall = chall[0]
 	else if (chall[0] > chall[1]) chall = chall[1] * 10 + chall[0]
 	else chall = chall[0] * 10 + chall[1]
-	if (!quSave.reached && isQuantumReached()) doQuantumUnlockStuff()
-	let MAbool = player.meta.bestAntimatter.lt(getQuantumReq())
-	let DONEbool = !quSave.nonMAGoalReached.includes(chall)
-	let TIMEbool = quSave.time > 10
-	if (chall && player.money.gt(pow10(getQCGoal())) && MAbool && DONEbool && TIMEbool) {
-		doReachAMGoalStuff(chall)
+
+	if (ghostified) {
+		if (!PHOTON.unlocked() && PHOTON.req()) unlockPhotons()
+		if (!ghSave.wzb.unl && canUnlockBosonicLab()) doBosonsUnlockStuff()
+		if (!ghSave.hb.unl && canUnlockHiggs()) unlockHiggs()
 	}
-	if (!ghSave.reached && bigRipped() && brSave.bestThisRun.gte(pow10(getQCGoal(undefined, true)))) {
-		doGhostifyUnlockStuff()
-	}
-	if (player.eternityPoints.gte("1e1200") && bigRipped() && !beSave.unlocked) doBreakEternityUnlockStuff()
-	if (player.money.gte(pow10(4.7e9)) && bigRipped() && !ghSave.ghostlyPhotons.unl) doPhotonsUnlockStuff()
-	if (canUnlockBosonicLab() && !ghSave.wzb.unl) doBosonsUnlockStuff()
-	if (!tmp.ng3l) unlockHiggs()
+	if (quantumed) {
+		let MAbool = player.meta.bestAntimatter.lt(getQuantumReq())
+		let DONEbool = !quSave.nonMAGoalReached.includes(chall)
+		let TIMEbool = quSave.time > 10
+
+		if (!inQC(0) && player.money.gt(pow10(getQCGoal())) && MAbool && DONEbool && TIMEbool) doReachAMGoalStuff(chall)
+		if (!beSave.unlocked && player.eternityPoints.gte("1e1200") && bigRipped()) doBreakEternityUnlockStuff()
+		if (!ghSave.reached && isQuantumReached() && bigRipped()) doGhostifyUnlockStuff()
+
+		if (quSave.quarks.gte(Number.MAX_VALUE) && !quSave.reachedInfQK) {
+			quSave.reachedInfQK = true
+
+			el("welcome").style.display = "flex"
+			el("welcomeMessage").innerHTML = "Congratulations for getting " + shorten(Number.MAX_VALUE) + " anti-Quarks! You have unlocked autobuyer modes and auto-assignation!"
+			el('autoAssign').style.display = ""
+			el('autoAssignRotate').style.display = ""
+		}
+	} else if (!quSave.reached && isQuantumReached()) doQuantumUnlockStuff()
 }
 
 function quantumOverallUpdating(diff){
 	var colorShorthands=["r","g","b"]
 
 	//Color Powers
-	for (var c=0;c<3;c++) quSave.colorPowers[colorShorthands[c]]=quSave.colorPowers[colorShorthands[c]].add(getColorPowerProduction(colorShorthands[c]).times(diff))
+	for (var c=0;c<3;c++) quSave.colorPowers[colorShorthands[c]]=quSave.colorPowers[colorShorthands[c]].add(getColorPowerProduction(colorShorthands[c]).mul(diff))
 	updateColorPowers()
 	if (hasMasteryStudy("d10")) replicantOverallUpdating(diff)
 	if (hasMasteryStudy("d11")) emperorDimUpdating(diff)
@@ -681,6 +700,17 @@ function updateQuantumTabDisplays() {
 	el("betabbtn").style.display = beSave.unlocked ? "" : "none"
 }
 
+function beatNGP3() {
+	el("welcome").style.display = "flex"
+	el("welcomeMessage").innerHTML = `
+	You reached the inner depths of lab...<br>
+	<b class='red'>(but for now...)</b><br><br>
+	<h1>You have beaten ${modAbbs(mod, true)}!</h1>
+	This took you ${timeDisplayShort(player.totalTimePlayed)} and ${player.achievements.length} achievements.<br><br>
+	Post-game is coming soon!<br>
+	Thanks for playing!`
+}
+
 //Setup
 function setupNGP3HTMLAndData() {
 	setupMasteryStudiesHTML()
@@ -689,6 +719,7 @@ function setupNGP3HTMLAndData() {
 	setupNanofieldHTML()
 	setupToDHTML()
 	setupBraveMilestones()
+	setupPhotonTab()
 	setupBosonicExtraction()
 	setupBosonicUpgrades()
 	setupBosonicRunes()

@@ -45,7 +45,6 @@ function getMetaDimensionMultiplier(tier) {
 	if (tier == 1 && hasAch("ng3p17")) ret = ret.times(Math.max(1,Math.log10(player.totalmoney.plus(10).log10())))
 	
 	ret = dilates(dilates(ret.max(1), 2), "meta")
-	if (player.dilation.upgrades.includes("ngmm8")) ret = ret.pow(getDil71Mult())
 	return ret
 }
 
@@ -262,7 +261,7 @@ function buyMaxMetaDimension(tier) {
 	if (num > 1) {
 		while (num > 0) {
 			var temp = tempMA
-			var cost = getMetaCost(tier,currentBought + num - 1).times(num > 1 ? 10 : 10 - dimMetaBought(tier))
+			var cost = getMetaCost(tier,currentBought + num - 1).mul(num > 1 ? 10 : 10 - dimMetaBought(tier))
 			if (cost.gt(tempMA)) {
 				tempMA = player.meta.antimatter.sub(cost)
 				bought--
@@ -271,7 +270,7 @@ function buyMaxMetaDimension(tier) {
 			num--
 		}
 	} else {
-		tempMA = tempMA.sub(getMetaCost(tier, currentBought).times(10 - dimMetaBought(tier)))
+		tempMA = tempMA.sub(getMetaCost(tier, currentBought).mul(10 - dimMetaBought(tier)))
 		bought = 1
 	}
 	player.meta.antimatter = tempMA
@@ -447,8 +446,8 @@ function getMetaUnlCost() {
 }
 
 function metaDimsUpdating(diff){
-	player.meta.antimatter = player.meta.antimatter.plus(getMetaDimensionProduction(1).times(diff))
-	if (inQC(4)) player.meta.antimatter = player.meta.antimatter.plus(getMetaDimensionProduction(1).times(diff))
+	player.meta.antimatter = player.meta.antimatter.plus(getMetaDimensionProduction(1).mul(diff))
+	if (inQC(4)) player.meta.antimatter = player.meta.antimatter.plus(getMetaDimensionProduction(1).mul(diff))
 	player.meta.bestAntimatter = player.meta.bestAntimatter.max(player.meta.antimatter)
 	if (mod.ngp3) {
 		player.meta.bestOverQuantums = player.meta.bestOverQuantums.max(player.meta.antimatter)

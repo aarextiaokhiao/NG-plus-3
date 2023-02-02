@@ -16,7 +16,7 @@ function getTickThreshold(timeshards, num) {
 }
 
 function tickCost(x) {
-	return E_pow(get_c(), x - 1).times(E_pow(1.001, (x - 1) * (x - 2) / 2));
+	return E_pow(get_c(), x - 1).mul(E_pow(1.001, (x - 1) * (x - 2) / 2));
 }
 
 function getTotalTickGained(next) {

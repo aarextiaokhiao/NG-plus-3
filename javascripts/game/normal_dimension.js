@@ -48,7 +48,7 @@ function getNormalDimensionVanillaTimeStudyBonus(tier){
 	if (player.timestudy.studies.includes(161)) mult = mult.times(pow10((inNGM(2) ? 6660 : 616) * (mod.ngep ? 5 : 1)))
 	if (player.timestudy.studies.includes(234) && tier == 1) mult = mult.times(tmp.sacPow)
 	if (player.timestudy.studies.includes(193)) mult = mult.times(E_pow(1.03, getEternitied()).min("1e13000"))
-	if (tier == 8 && player.timestudy.studies.includes(214)) mult = mult.times((tmp.sacPow.pow(8)).min("1e46000").times(tmp.sacPow.pow(1.1).min(E("1e125000"))))
+	if (tier == 8 && player.timestudy.studies.includes(214)) mult = mult.times((tmp.sacPow.pow(8)).min("1e46000").mul(tmp.sacPow.pow(1.1).min(E("1e125000"))))
 	return mult
 }
 
@@ -67,7 +67,7 @@ function getNormalDimensionGalaxyUpgradesBonus(tier,mult){
 function getAfterDefaultDilationLayerAchBonus(tier){
 	mult = E(1)
 	let timeAndDimMult = timeMult()
-	if (hasInfinityMult(tier) && !inNGM(3)) timeAndDimMult = dimMults().times(timeAndDimMult)
+	if (hasInfinityMult(tier) && !inNGM(3)) timeAndDimMult = dimMults().mul(timeAndDimMult)
 	if (player.challenges.includes("postcngmm_1")||player.currentChallenge=="postcngmm_1") mult = mult.times(timeAndDimMult)
 	if (inNGM(2)) return mult
 	if (hasAch("r56") && player.thisInfinityTime < 1800) mult = mult.times(3600 / (player.thisInfinityTime + 1800));
@@ -121,7 +121,7 @@ function getDimensionFinalMultiplier(tier) {
 	mult = mult.times(getPostBreakInfNDMult())
 
 	let timeAndDimMult = timeMult()
-	if (hasInfinityMult(tier) && !inNGM(3)) timeAndDimMult = dimMults().times(timeAndDimMult)
+	if (hasInfinityMult(tier) && !inNGM(3)) timeAndDimMult = dimMults().mul(timeAndDimMult)
 	if (!inNGM(3)) mult = mult.times(dimMults())
 	if (!player.challenges.includes("postcngmm_1") && player.currentChallenge!="postcngmm_1") mult = mult.times(timeAndDimMult)
 	
@@ -182,7 +182,7 @@ function getDimensionRateOfChange(tier) {
 	if (tier == 8 || (player.currentEternityChall == "eterc3" && tier > 3)) return 0;
 
 	let toGain = getDimensionProductionPerSecond(tier + 1)
-	if (tier == 7 && player.currentEternityChall == "eterc7") toGain = DimensionProduction(1).times(10)
+	if (tier == 7 && player.currentEternityChall == "eterc7") toGain = DimensionProduction(1).mul(10)
 
 	var name = TIER_NAMES[tier];
 	if (inNC(7) || player.currentChallenge == "postcngm3_3" || inQC(4)) {
@@ -414,8 +414,8 @@ function buyBulkDimension(tier, bulk, auto) {
 		let mult = getDimensionCostMultiplier(tier)
 		let max = Number.POSITIVE_INFINITY
 		if (!inNC(10) && player.currentChallenge != "postc1") max = Math.ceil(Decimal.div(Number.MAX_VALUE, cost).log(mult) + 1)
-		var toBuy = Math.min(Math.min(Math.floor(resource.div(cost).times(mult-1).add(1).log(mult)), bulk-bought), max)
-		getOrSubResource(tier, E_pow(mult, toBuy).sub(1).div(mult-1).times(cost))
+		var toBuy = Math.min(Math.min(Math.floor(resource.div(cost).mul(mult-1).add(1).log(mult)), bulk-bought), max)
+		getOrSubResource(tier, E_pow(mult, toBuy).sub(1).div(mult-1).mul(cost))
 		player[name + "Amount"] = player[name + "Amount"].add(toBuy * 10)
 		recordBought(name, toBuy*10)
 		player[name + "Cost"] = player[name + "Cost"].times(E_pow(mult, toBuy))
@@ -443,7 +443,7 @@ function buyBulkDimension(tier, bulk, auto) {
 		if (d < 0) break
 		let toBuy = Math.min(Math.floor(( -b + Math.sqrt(d)) / (2 * a)) + 1, bulk - bought)
 		if (toBuy < 1) break
-		let newCost = player[name + "Cost"].times(E_pow(player.costMultipliers[tier - 1], toBuy - 1).times(E_pow(mi, (toBuy - 1) * (toBuy - 2) / 2)))
+		let newCost = player[name + "Cost"].times(E_pow(player.costMultipliers[tier - 1], toBuy - 1).mul(E_pow(mi, (toBuy - 1) * (toBuy - 2) / 2)))
 		let newMult = player.costMultipliers[tier - 1].times(E_pow(mi, toBuy - 1))
 		if (!inQC(1)) {
 			if (player.money.gte(newCost)) player.money = player.money.sub(newCost)

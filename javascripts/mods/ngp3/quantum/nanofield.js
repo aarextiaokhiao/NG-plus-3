@@ -56,7 +56,7 @@ function startProduceQuarkCharge() {
 
 function getQuarkLossProduction() {
 	let ret = getQuarkChargeProduction(true)
-	ret = ret.pow(2).times(4e25)
+	ret = ret.pow(2).mul(4e25)
 	if (hasNU(3)) ret = ret.div(10)
 	ret = ret.times(getNanofieldFinalSpeed())
 	return ret
@@ -240,7 +240,6 @@ function getNanoRewardReqFixed(n){
 	let s = getNanoScalingsStart()
 	if (n >= s[0] && a[0]) x = x.times(E_pow(4.0, (n - s[0])))
 	if (n >= s[1] && a[1]) x = x.times(E_pow(2.0, (n - s[1]) * (n - s[1] + 3)))
-	if (!ghSave.ghostlyPhotons.unl) return x
 	return x.pow(tmp.ppti || 1)
 }
 
@@ -259,6 +258,32 @@ function updateNextPreonEnergyThreshold(){
 	}
 	nfSave.power += toSkip
 	nfSave.powerThreshold = getNanoRewardReq(1)
+}
+
+function updateNanofieldTemp() {
+	updateNanorewardTemp()
+	updatePPTITemp() //pilon power threshold increase
+}
+
+function updateNanorewardTemp() {
+	if (NF.unl() && tmp.nf !== undefined && tmp.nf.rewardsUsed !== undefined) {
+		var x = getNanoRewardPowerEff()
+		var y = nfSave.rewards+tmp.nanofield_free_rewards
+		tmp.ns = getNanofieldSpeed()
+		if (tmp.nf.powerEff !== x || tmp.nf.rewards !== y) {
+			tmp.nf.powerEff = x
+			tmp.nf.rewards = y
+
+			updateNanoRewardPowers()
+			updateNanoRewardEffects()
+		}
+	}
+}
+
+function updatePPTITemp() {
+	let x = 1
+	if (hasAch("ng3p113")) x /= 2
+	tmp.ppti = x
 }
 
 //HTML
@@ -295,7 +320,7 @@ function nanofieldUpdating(diff){
 	if (nfSave.producingCharge) nanofieldProducingChargeUpdating(diff)
 	if (toAddAE.gt(0)) {
 		nfSave.antienergy = nfSave.antienergy.add(toAddAE).min(getQuarkChargeProductionCap())
-		nfSave.energy = nfSave.energy.add(toAddAE.div(AErate).times(getQuarkEnergyProduction()))
+		nfSave.energy = nfSave.energy.add(toAddAE.div(AErate).mul(getQuarkEnergyProduction()))
 		tmp.nanofield_free_rewards = 0
 		updateNextPreonEnergyThreshold()
 		if (nfSave.power > nfSave.rewards) nfSave.rewards = nfSave.power
@@ -310,7 +335,7 @@ function nanofieldProducingChargeUpdating(diff){
 		nfSave.producingCharge = false
 		el("produceQuarkCharge").innerHTML="Start production of nanocharge.<br>(You will not get pilons when you do this.)"
 	} else {
-		let chGain = toSub.div(loss).times(rate)
+		let chGain = toSub.div(loss).mul(rate)
 		if (!hasAch("ng3p71")) quSave.replicants.quarks = quSave.replicants.quarks.sub(toSub)
 		nfSave.charge = nfSave.charge.add(chGain)
 	}

@@ -34,7 +34,6 @@ function getGalaxyPower(ng, bi, noDil) {
 		let dilGals = Math.floor(player.dilation.freeGalaxies)
 		otherGalPower += dilGals * ((player.masterystudies ? hasMasteryStudy("t343") : false) ? replGalEff : 1)
 	}
-	otherGalPower += tmp.effAeg
 
 	let galaxyPower = ng
 	if (!tmp.be) galaxyPower = Math.max(ng - (bi ? 2 : 0), 0) + otherGalPower
@@ -222,7 +221,7 @@ function buyMaxPostInfTickSpeed(mult) {
 		player.tickspeed = player.tickspeed.times(E_pow(mult, buying));
 		if (player.challenges.includes("postc3") || player.currentChallenge == "postc3" || isIC3Trapped()) player.postC3Reward = player.postC3Reward.times(E_pow(getPostC3Mult(), buying))
 	}
-	player.tickSpeedCost = player.tickSpeedCost.times(player.tickspeedMultiplier.pow(buying-1)).times(E_pow(mi, (buying-1)*(buying-2)/2))
+	player.tickSpeedCost = player.tickSpeedCost.times(player.tickspeedMultiplier.pow(buying-1)).mul(E_pow(mi, (buying-1)*(buying-2)/2))
 	player.tickspeedMultiplier = player.tickspeedMultiplier.times(E_pow(mi, buying-1))
 	if (!quantum){
 		if (player.money.gte(player.tickSpeedCost)) player.money = player.money.minus(player.tickSpeedCost)
@@ -245,10 +244,10 @@ function buyMaxTickSpeed() {
 	if (((!inNC(5) && player.currentChallenge != "postc5") || inNGM(3)) && !inNC(9) && !costIncreaseActive(player.tickSpeedCost)) {
 		let max = Number.POSITIVE_INFINITY
 		if (!inNC(10) && player.currentChallenge != "postc1") max = Math.ceil(Decimal.div(Number.MAX_VALUE, cost).log(10))
-		var toBuy = Math.min(Math.floor(player.money.div(cost).times(9).add(1).log(10)), max)
-		getOrSubResource(1, pow10(toBuy).sub(1).div(9).times(cost))
+		var toBuy = Math.min(Math.floor(player.money.div(cost).mul(9).add(1).log(10)), max)
+		getOrSubResource(1, pow10(toBuy).sub(1).div(9).mul(cost))
 		if (!tmp.be || player.currentEternityChall == "eterc10") {
-			player.tickspeed = E_pow(tmp.tsReduce, toBuy).times(player.tickspeed)
+			player.tickspeed = E_pow(tmp.tsReduce, toBuy).mul(player.tickspeed)
 			if (player.challenges.includes("postc3") || player.currentChallenge == "postc3" || isIC3Trapped()) player.postC3Reward = player.postC3Reward.times(E_pow(getPostC3Mult(), toBuy))
 		}
 		player.tickSpeedCost = player.tickSpeedCost.times(pow10(toBuy))
@@ -296,7 +295,6 @@ function updateTickspeed() {
 		}
 	}
 	if (player.galacticSacrifice || player.currentChallenge == "postc3" || isIC3Trapped()) label = (showTickspeed ? label + ", Tickspeed m" : "M") + "ultiplier: " + formatValue(player.options.notation, player.postC3Reward, 2, 3)
-	if (gameSpeed != 1) label += ", Game speed: " + (gameSpeed < 1 ? shorten(1 / gameSpeed) + "x slower" : shorten(tmp.gameSpeed) + "x faster")
 	if (inOnlyNGM(2) && inNC(14)) {
 		label += "<br>You have "+(308-player.tickBoughtThisInf.current)+" tickspeed purchases left."
 		el("tickSpeedAmount").innerHTML = label

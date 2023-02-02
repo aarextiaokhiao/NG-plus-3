@@ -14,23 +14,31 @@ function quantum(auto, force, qc, bigRip = false) {
 	if (!(auto||force) && aarMod.quantumConf && !confirm("Quantum will reset everything up to and including Eternity features will be reset, in exchange of anti-quarks. Ready?")) return
 	if (!quantumed && !confirm("Are you sure you want to do this? You will lose everything you have!")) return
 
-	if (!auto && qc) {
+	if (qc) {
 		let cost = getQCIdCost(qc.qc)
 		if (quSave.electrons.amount < cost) return
-		if (quSave.pairedChallenges.completed <= qc.pc - 1) return
 
-		if (bigRip && confirm("Big Ripping the universe starts PC6+8, but with various changes. You can give your Time Theorems and Time Studies back by undoing Big Rip. If you can beat this, you will be able to unlock the next layer.")) return
-		else if (qc.pc && (player.options.challConf || (quSave.pairedChallenges.completions.length < 1 && !ghostified)) && confirm("You will start a Quantum Challenge, but as a Paired Challenge, there will be two challenges at once. Completing it boosts the rewards of the Quantum Challenges that you chose in this Paired Challenge. You will keep electrons & sacrificed galaxies, but they don't work in this Challenge.")) return
-		else if (qc.qc.length && (player.options.challConf || (QCIntensity(1) == 0 && !ghostified)) && confirm("You will do a Quantum reset, but you will not gain quarks, you keep your electrons & sacrificed galaxies, and you can't buy electron upgrades. You have to reach the set goal of antimatter while getting the meta-antimatter requirement to Quantum to complete this challenge. Electrons and banked eternities have no effect in Quantum Challenges and your electrons and sacrificed galaxies don't reset until you end the challenge.")) return
+		let conf = player.options.challConf
+		if (auto) conf = false
+		if (qc.pc) {
+			if (quSave.pairedChallenges.completed < qc.pc - 1) return
+			if (bigRip && !hasAch("ng3p41")) conf = true
+			if (!bigRip && quSave.pairedChallenges.completions.length < 1 && !ghostified) conf = true
+			if (conf) {
+				if (bigRip && confirm("Big Ripping the universe starts PC6+8, but with various changes. You can give your Time Theorems and Time Studies back by undoing Big Rip. If you can beat this, you will be able to unlock the next layer.")) return
+				if (!bigRip && confirm("You will start a Quantum Challenge, but as a Paired Challenge, there will be two challenges at once. Completing it boosts the rewards of the Quantum Challenges that you chose in this Paired Challenge. You will keep electrons & sacrificed galaxies, but they don't work in this Challenge.")) return
+			}
+		} else {
+			if (QCIntensity(1) == 0 && !ghostified) conf = true
+			if (conf && confirm("You will do a Quantum reset, but you will not gain quarks, you keep your electrons & sacrificed galaxies, and you can't buy electron upgrades. You have to reach the set goal of antimatter while getting the meta-antimatter requirement to Quantum to complete this challenge. Electrons and banked eternities have no effect in Quantum Challenges and your electrons and sacrificed galaxies don't reset until you end the challenge.")) return
+		}
 
 		quSave.electrons.amount -= cost
 	}
 
 	var implode = !auto && !force && isAnimationOn("quantum")
 	if (implode) {
-		implosionCheck = 1
-		el("body").style.animation = "quantum 2s 1"
-		setTimeout(function(){
+		quantumAni(function(){
 			if (!speedrunMilestonesReached) {
 				showDimTab("antimatterdimensions")
 				showChallengesTab("challenges")
@@ -39,11 +47,7 @@ function quantum(auto, force, qc, bigRip = false) {
 				showTab("dimensions")
 			}
 			doQuantum(force, auto, qc)
-		},1000)
-		setTimeout(function(){
-			implosionCheck = 0
-			el("body").style.animation = ""
-		},2000)
+		})
 	} else doQuantum(force, auto, qc)
 }
 
@@ -55,8 +59,12 @@ function isQuantumReached() {
 	if (!mod.ngpp) return
 
 	let ma = player.meta.antimatter.max(hasAch("ng3p76") ? player.meta.bestOverQuantums : 0)
-	let got = ma.gte(getQuantumReq(undefined, bigRipped()))
-	if (mod.ngp3) got = got && ECComps("eterc14") && quarkGain().gt(0)
+	let got = ma.gte(getQuantumReq())
+	if (mod.ngp3) {
+		got = got && quarkGain().gt(0)
+		if (inQC(0)) got = got && ECComps("eterc14")
+		if (!inQC(0)) got = got && player.money.gte(pow10(getQCGoal(null, bigRipped())))
+	}
 	return got
 }
 
@@ -107,16 +115,15 @@ function getNGP3p1totalQKMult(){
 	if (hasAch("ng3p33")) log += Math.log10(getQCtoQKEffect())
 	if (hasAch("ng3p53")) log += brSave && brSave.spaceShards.plus(1).log10()
 	if (hasAch("ng3p65")) log += getRadioactiveDecays('r') * 3
-	if (hasAch("ng3p85")) log += Math.pow(ghSave.ghostlyPhotons.enpowerments, 2)
 	return log
 }
 
 function quarkGain() {
 	let ma = player.meta.antimatter.max(1)
 	if (!mod.ngp3) return pow10(ma.log(10) / Math.log10(Number.MAX_VALUE) - 1).floor()
-	
+
 	if (!quantumed) return E(1)
-	if (ghSave.milestones) ma = player.meta.bestAntimatter.max(1)
+	ma = player.meta.bestAntimatter.max(1)
 
 	let log = (ma.log10() - 379.4) / (hasAch("ng3p63") ? 279.8 : 280)
 	let logBoost = 2
@@ -187,7 +194,7 @@ function doQuantumProgress() {
 			if (player.meta.antimatter.lt(quantumReq)) id = 1
 			else if (!beSave.unlocked) id = 4
 			else if (!ghostified || player.money.lt(getQCGoal(undefined, true)) || Decimal.lt(gg, 2)) id = 5
-			else if (ghSave.neutrinos.boosts > 8 && hasNU(12) && !ghSave.ghostlyPhotons.unl) id = 7
+			else if (ghSave.neutrinos.boosts > 8 && hasNU(12) && !PHOTON.unlocked()) id = 7
 			else id = 6
 		} else if (inQC(0)) {
 			var gqk = quarkGain()
@@ -254,10 +261,11 @@ function doQuantum(force, auto, qc = {}) {
 	if (hasAch("ng3p73")) player.infinitiedBank = nA(player.infinitiedBank, gainBankedInf())
 	if (!force) {
 		//Stats
-		player.eternitiedBank = nA(player.eternitiesBank, bankedEterGain)
+		player.eternitiesBank = nA(player.eternitiesBank, bankedEterGain)
+		updateBankedEter()
+
 		quSave.times++
 		if (quSave.times >= 1e4) giveAchievement("Prestige No-lifer")
-		updateBankedEter()
 
 		if (quSave.best > quSave.time) {
 			quSave.best = quSave.time
@@ -288,16 +296,6 @@ function doQuantum(force, auto, qc = {}) {
 			el("bestAntimatterType").textContent = "Your best meta-antimatter for this quantum"
 			if (isEmptiness) showTab("dimensions")
 		}
-		if (quSave.quarks.gte(Number.MAX_VALUE) && !quSave.reachedInfQK) {
-			quSave.reachedInfQK = true
-			if (!ghostified) {
-				el("welcome").style.display = "flex"
-				el("welcomeMessage").innerHTML = "Congratulations for getting " + shorten(Number.MAX_VALUE) + " quarks! You have unlocked new QoL features, like quantum autobuyer modChosen, assign all, and auto-assignation!"
-				el('assignAll').style.display = ""
-				el('autoAssign').style.display = ""
-				el('autoAssignRotate').style.display = ""
-			}
-		}
 
 		//Gluons
 		if (!quSave.gluons.rg) {
@@ -316,12 +314,11 @@ function doQuantum(force, auto, qc = {}) {
 
 	//Big Rip
 	if (oldBigRip) {
-		brSave.spaceShards = brSave && brSave.spaceShards.add(getSpaceShardsGain())
-		if (ghSave.milestones < 8) brSave.spaceShards = brSave && brSave.spaceShards.round()
+		brSave.spaceShards = brSave.spaceShards.add(getSpaceShardsGain()).round()
 		if (player.matter.gt("1e5000")) giveAchievement("Really?")
 	}
 	if (bigRip && !hasRipUpg(12)) {
-		brSave.storedTS={
+		brSave.storedTS = {
 			tt: player.timestudy.theorem,
 			studies: player.timestudy.studies,
 			boughtA: Decimal.div(player.timestudy.amcost, "1e20000").log("1e20000"),
@@ -432,6 +429,12 @@ RESETS.qu = {
 		if (getEternitied() < 100) player.eternityBuyer.isOn = false
 		player.eternityBuyer.statBeforeDilation = 0
 		completelyResetTimeDimensions()
+		if (bigRip && hasAch("ng3p58")) player.timeDimension8 = {
+			cost: timeDimCost(8, 1),
+			amount: E(1),
+			power: E(2),
+			bought: 1
+		}
 
 		player.respec = false
 		if (bigRip ? !hasRipUpg(12) : !isRewardEnabled(11)) player.timestudy = {
@@ -497,7 +500,6 @@ RESETS.qu = {
 			quSave.electrons.amount = 0
 			quSave.electrons.sacGals = 0
 			if (speedrunMilestonesReached < 25 && player.quantum.autoOptions.sacrifice) toggleAutoQuantumContent('sacrifice')
-			tmp.aeg = 0
 		}
 		replicantsResetOnQuantum(qc)
 		nanofieldResetOnQuantum()
@@ -529,4 +531,25 @@ function updateQuarkDisplay() {
 function metaReset2() {
 	if (bigRipped()) ghostify()
 	else quantum(false, false, 0)
+}
+
+/*
+	ANIMATIONS
+	Credit to MrRedShark77
+	http://github.com/MrRedShark77/NG-plus-3CR/
+*/
+function quantumAni(def) {
+    let q = el('quani')
+	implosionCheck = 1
+
+	el("container").style.animation = "qu 2s 1"
+    q.style.opacity = 0.5
+    setTimeout(()=>{
+		if (def) def()
+        q.style.opacity = 0
+    },1000)
+    setTimeout(()=>{
+		el("container").style.animation = ""
+		implosionCheck = 0
+    },2000)
 }

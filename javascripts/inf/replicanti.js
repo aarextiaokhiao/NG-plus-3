@@ -187,7 +187,6 @@ function updateExtraReplGalaxies() {
 		if (hasMasteryStudy("t412")) exp=.5
 
 		tmp.pe=Math.pow(quSave.replicants.quarks.add(1).log10(),exp)*0.8
-		if (ghSave.ghostlyPhotons.unl) tmp.pe *= tmp.le[3]
 		extraReplGalaxies*=colorBoosts.g+tmp.pe
 	}
 	extraReplGalaxies = Math.floor(extraReplGalaxies)
@@ -212,7 +211,6 @@ function getReplSpeed() {
 		inc /= Math.min(x, 200)
 		if (x > 200) exp += x / 10 - 20
 	}
-	if (player.dilation.upgrades.includes("ngmm10")) exp += player.dilation.upgrades.length
 	inc = inc + 1
 	if (GUBought("gb2")) exp *= 2
 	if (hasBU(35)) exp += tmp.blu[35].rep
@@ -232,14 +230,13 @@ function getReplicantiInterval() {
 	interval = E(interval)
 	if (mod.ngud) interval = interval.div(getBlackholePowerEffect().pow(1/3))
 	if (player.dilation.upgrades.includes('ngpp1') && aarMod.nguspV && !aarMod.nguepV) interval = interval.div(player.dilation.dilatedTime.max(1).pow(0.05))
-	if (player.dilation.upgrades.includes("ngmm9")) interval = interval.div(getDil72Mult())
 	if (hasMasteryStudy("t332")) interval = interval.div(getMTSMult(332))
 	return interval
 }
 
 function getReplicantiFinalInterval() {
 	let x = getReplicantiInterval()
-	if (player.replicanti.amount.gt(Number.MAX_VALUE)) x = player.boughtDims ? Math.pow(hasAch("r107") ? Math.max(player.replicanti.amount.log(2)/1024,1) : 1, -.25) * x.toNumber() : E_pow(tmp.rep.speeds.inc, Math.max(player.replicanti.amount.log10() - tmp.rep.speeds.exp, 0)/tmp.rep.speeds.exp).times(x)
+	if (player.replicanti.amount.gt(Number.MAX_VALUE)) x = player.boughtDims ? Math.pow(hasAch("r107") ? Math.max(player.replicanti.amount.log(2)/1024,1) : 1, -.25) * x.toNumber() : E_pow(tmp.rep.speeds.inc, Math.max(player.replicanti.amount.log10() - tmp.rep.speeds.exp, 0)/tmp.rep.speeds.exp).mul(x)
 	return x
 }
 

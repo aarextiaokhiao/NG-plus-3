@@ -194,7 +194,7 @@ const allAchievements = {
 	ng3p92 : "Bright as the Anti-Sun",
 	ng3p93 : "Are these another...",
 	ng3p94 : "... references to EC8?",
-	ng3p95 : "Bosonic Semipowerment",
+	ng3p95 : "ng3p95",
 	ng3p96 : "ng3p96",
 	ng3p97 : "The Ghostliest Side",
 	ng3p98 : "Meta-Quintillion",
@@ -382,10 +382,11 @@ function giveAchievement(name, noUpdate) {
 			if (!hasAch("ng3p6" + i)) player.achievements.push("ng3p6" + i)
 		}
 	}
-	if (name == "Bright as the Anti-Sun" && !hasBU(32)) tmp.bl.upgrades.push(32)
+	if (name == "Bright as the Anti-Sun" && !hasBU(32)) blSave.upgrades.push(32)
 	if (name == "... references to EC8?") updateTODStuff()
 	if (name == "Not-so-very-challenging") updateQuantumChallenges()
-				if (!noUpdate) {
+	if (name == "Meta-Quintillion") beatNGP3()
+	if (!noUpdate) {
 		if (name == "A sound financial decision") localStorage.setItem(btoa("dsAM_asfd"),"")
 		else $.notify(name, "success");
 		updateAchievements()

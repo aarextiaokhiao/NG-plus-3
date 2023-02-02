@@ -1,5 +1,5 @@
 function babyRateUpdating(){
-	var eggonRate = tmp.twr.times(getEmperorDimensionMultiplier(1)).times(3).div((hasAch("ng3p35")) ? 1 : 10).times(getSpinToReplicantiSpeed())
+	var eggonRate = tmp.twr.times(getEmperorDimensionMultiplier(1)).mul(3).div((hasAch("ng3p35")) ? 1 : 10).mul(getSpinToReplicantiSpeed())
 	if (eggonRate.lt(3)){
 		el("eggonRate").textContent = shortenDimensions(eggonRate.times(60))
 		el("eggonRateTimeframe").textContent = "hour"
@@ -21,7 +21,7 @@ function preonGatherRateUpdating(){
 }
 
 function getGrowupRatePerMinute(){
-	return tmp.twr.plus(quSave.replicants.amount).times(hasAch("ng3p35") ? 3 : 0.3).times(getSpinToReplicantiSpeed())
+	return tmp.twr.plus(quSave.replicants.amount).mul(hasAch("ng3p35") ? 3 : 0.3).mul(getSpinToReplicantiSpeed())
 }
 
 function growupRateUpdating(){
@@ -127,7 +127,7 @@ function getGatherRate() {
 	data.total = data.normal.add(data.babies)
 	data.workersTotal = E(0)
 	for (var d = 1; d < 9; d++) {
-		data.workers[d] = EDsave[d].workers.times(mult).times(E_pow(20, d))
+		data.workers[d] = EDsave[d].workers.times(mult).mul(E_pow(20, d))
 		data.workersTotal = data.workersTotal.add(data.workers[d])
 	}
 	data.total = data.total.add(data.workersTotal)
@@ -189,7 +189,7 @@ function getEmperorDimensionGlobalMultiplier() {
 
 function getEmperorDimensionRateOfChange(dim) {
 	if (!canFeedReplicant(dim, true)) return 0
-	let toGain = getEmperorDimensionMultiplier(dim + 1).times(EDsave[dim + 1].workers).div(2)
+	let toGain = getEmperorDimensionMultiplier(dim + 1).mul(EDsave[dim + 1].workers).div(2)
 
 	var current = EDsave[dim].workers.add(EDsave[dim].progress).max(1)
 	if (aarMod.logRateChange) {
@@ -236,9 +236,9 @@ function getTotalWorkers(data) {
 
 function buyMaxQuantumFood() {
 	let minGluons = quSave.gluons.rg.min(quSave.gluons.gb).min(quSave.gluons.br)
-	let toBuy = Math.floor(minGluons.div(quSave.replicants.quantumFoodCost).times(4).add(1).log(5))
+	let toBuy = Math.floor(minGluons.div(quSave.replicants.quantumFoodCost).mul(4).add(1).log(5))
 	if (toBuy < 1) return
-	let toSpend = E_pow(5, toBuy).minus(1).div(4).times(quSave.replicants.quantumFoodCost)
+	let toSpend = E_pow(5, toBuy).minus(1).div(4).mul(quSave.replicants.quantumFoodCost)
 	quSave.gluons.rg = quSave.gluons.rg.sub(quSave.gluons.rg.min(toSpend))
 	quSave.gluons.gb = quSave.gluons.gb.sub(quSave.gluons.gb.min(toSpend))
 	quSave.gluons.br = quSave.gluons.br.sub(quSave.gluons.br.min(toSpend))
@@ -337,9 +337,9 @@ function updateEmperorDimensions() {
 
 function maxReduceHatchSpeed() {
 	let minGluons = quSave.gluons.rg.min(quSave.gluons.gb).min(quSave.gluons.br)
-	let toBuy = Math.floor(minGluons.div(quSave.replicants.hatchSpeedCost).times(9).add(1).log10())
+	let toBuy = Math.floor(minGluons.div(quSave.replicants.hatchSpeedCost).mul(9).add(1).log10())
 	if (toBuy < 1) return
-	let toSpend = pow10(toBuy).minus(1).div(9).times(quSave.replicants.hatchSpeedCost)
+	let toSpend = pow10(toBuy).minus(1).div(9).mul(quSave.replicants.hatchSpeedCost)
 	if (toSpend.gt(quSave.gluons.rg)) quSave.gluons.rg = E(0)
 	else quSave.gluons.rg = quSave.gluons.rg.sub(toSpend)
 	if (toSpend.gt(quSave.gluons.gb)) quSave.gluons.gb = E(0)
@@ -386,7 +386,7 @@ function maxBuyLimit() {
 		if (i == 1) {
 			var toAdd = Math.floor(min.div(quSave.replicants.limitCost).log(200) / 9)
 			if (toAdd) {
-				var toSpend = E_pow(200, toAdd * 9).times(quSave.replicants.limitCost)
+				var toSpend = E_pow(200, toAdd * 9).mul(quSave.replicants.limitCost)
 				quSave.gluons.rg = quSave.gluons.rg.sub(quSave.gluons.rg.min(toSpend))
 				quSave.gluons.gb = quSave.gluons.gb.sub(quSave.gluons.gb.min(toSpend))
 				quSave.gluons.br = quSave.gluons.br.sub(quSave.gluons.br.min(toSpend))
@@ -395,8 +395,8 @@ function maxBuyLimit() {
 			}
 		} else {
 			var limit = quSave.replicants.limit
-			var toAdd = Math.max(Math.min(Math.floor(min.div(quSave.replicants.limitCost).times(199).add(1).log(200)), 10 - limit % 10), 0)
-			var toSpend = E_pow(200,toAdd).sub(1).div(199).round().times(quSave.replicants.limitCost)
+			var toAdd = Math.max(Math.min(Math.floor(min.div(quSave.replicants.limitCost).mul(199).add(1).log(200)), 10 - limit % 10), 0)
+			var toSpend = E_pow(200,toAdd).sub(1).div(199).round().mul(quSave.replicants.limitCost)
 			quSave.gluons.rg = quSave.gluons.rg.sub(quSave.gluons.rg.min(toSpend))
 			quSave.gluons.gb = quSave.gluons.gb.sub(quSave.gluons.gb.min(toSpend))
 			quSave.gluons.br = quSave.gluons.br.sub(quSave.gluons.br.min(toSpend))
@@ -430,11 +430,11 @@ function replicantOverallUpdating(diff){
 	if (quSave.replicants.eggons.lt(1)) quSave.replicants.babyProgress = E(0)
 	replicantBabiesGrowingUpUpdating(diff)
 	if (quSave.replicants.babies.lt(1)) quSave.replicants.ageProgress = E(0)
-	if (!nfSave.producingCharge) quSave.replicants.quarks = quSave.replicants.quarks.add(getGatherRate().total.max(0).times(diff))
+	if (!nfSave.producingCharge) quSave.replicants.quarks = quSave.replicants.quarks.add(getGatherRate().total.max(0).mul(diff))
 }
 
 function replicantEggonUpdating(diff){
-	var newBabies = tmp.twr.times(getEmperorDimensionMultiplier(1)).times(getSpinToReplicantiSpeed()).times(diff/20)
+	var newBabies = tmp.twr.times(getEmperorDimensionMultiplier(1)).mul(getSpinToReplicantiSpeed()).mul(diff/20)
 	if (hasAch("ng3p35")) newBabies = newBabies.times(10)
 	quSave.replicants.eggonProgress = quSave.replicants.eggonProgress.add(newBabies)
 	var toAdd = quSave.replicants.eggonProgress.floor()
@@ -461,7 +461,7 @@ function replicantBabyHatchingUpdating(diff){
 
 function replicantBabiesGrowingUpUpdating(diff){
 	if (quSave.replicants.babies.gt(0)&&tmp.tra.gt(0)) {
-		quSave.replicants.ageProgress = quSave.replicants.ageProgress.add(getGrowupRatePerMinute().div(60).times(diff)).min(quSave.replicants.babies)
+		quSave.replicants.ageProgress = quSave.replicants.ageProgress.add(getGrowupRatePerMinute().div(60).mul(diff)).min(quSave.replicants.babies)
 		var toAdd = quSave.replicants.ageProgress.floor()
 		if (toAdd.gt(0)) {
 			if (!hasAch("ng3p71")) {
@@ -480,7 +480,7 @@ function emperorDimUpdating(diff){
 		var promote = hasNU(2) ? 1/0 : getWorkerAmount(dim-2)
 		if (canFeedReplicant(dim-1,true)) {
 			if (dim>2) promote = EDsave[dim-2].workers.sub(10).round().min(promote)
-			EDsave[dim-1].progress = EDsave[dim-1].progress.add(EDsave[dim].workers.times(getEmperorDimensionMultiplier(dim)).times(diff/20)).min(promote)
+			EDsave[dim-1].progress = EDsave[dim-1].progress.add(EDsave[dim].workers.times(getEmperorDimensionMultiplier(dim)).mul(diff/20)).min(promote)
 			var toAdd = EDsave[dim-1].progress.floor()
 			if (toAdd.gt(0)) {
 				if (!hasAch("ng3p52")) {

@@ -28,7 +28,7 @@ function canBigRip() {
 }
 
 function bigRipped() {
-	return mod.ngp3 && brSave.active
+	return brSave?.active
 }
 
 function toggleBigRipConf() {
@@ -66,7 +66,7 @@ function unstoreTT() {
 
 function getSpaceShardsGain() {
 	let ret = bigRipped() ? brSave.bestThisRun : player.money
-	ret = E_pow(ret.add(1).log10() / 2000, 1.5).times(player.dilation.dilatedTime.add(1).pow(0.05)).div(50)
+	ret = E_pow(ret.add(1).log10() / 2000, 1.5).mul(player.dilation.dilatedTime.add(1).pow(0.05)).div(50)
 	if (tmp.be) {
 		if (beSave && beSave.upgrades.includes(3)) ret = ret.times(getBreakUpgMult(3))
 		if (beSave && beSave.upgrades.includes(6)) ret = ret.times(getBreakUpgMult(6))
@@ -103,7 +103,7 @@ function bigRipUpgradeUpdating(){
 	el("bigripupg15current").textContent=bru15effect < 999.995 ? bru15effect.toFixed(2) : getFullExpansion(Math.round(bru15effect))
 	el("bigripupg16current").textContent=shorten(tmp.bru[16])
 	el("bigripupg17current").textContent=tmp.bru[17]
-	if (ghSave.ghostlyPhotons.unl) {
+	if (PHOTON.unlocked()) {
 		el("bigripupg18current").textContent=shorten(tmp.bru[18])
 		el("bigripupg19current").textContent=shorten(tmp.bru[19])
 	}
@@ -168,19 +168,20 @@ function tweakBigRip(id, reset) {
 }
 
 function hasRipUpg(x) {
+	if (!mod.ngp3) return
 	return brSave.upgrades.includes(x)
 }
 
 function getMaxBigRipUpgrades() {
-	if (ghSave.ghostlyPhotons.unl) return 20
+	if (PHOTON.unlocked()) return 20
 	return 17
 }
 
 function isBigRipUpgradeActive(id) {
-	if (!bigRipped()) return false
-	if (id == 1) if (!hasRipUpg(17)) for (var u = 3; u < 18; u++) if (hasRipUpg(u)) return false
+	if (id == 1 && !hasRipUpg(17)) for (var u = 3; u < 18; u++) if (hasRipUpg(u)) return false
 	if (id > 2 && id != 4 && id < 9) if (hasRipUpg(9) && (id != 8 || !hasNU(11))) return false
-	if (id == 4) if (hasRipUpg(11)) return false
+	if (id == 4 && hasRipUpg(11)) return false
+	if (id != 18 && !bigRipped()) return false
 	return hasRipUpg(id)
 }
 
@@ -258,7 +259,7 @@ function getEMGain() {
 
 var breakUpgCosts = [1, 1e3, 2e6, 2e11, 8e17, 1e45, null, 1e290, E("1e350"), E("1e375"), E("e1450")]
 function getBreakUpgCost(id) {
-	if (id == 7) return pow2(beSave.epMultPower).times(1e5)
+	if (id == 7) return pow2(beSave.epMultPower).mul(1e5)
 	return breakUpgCosts[id - 1]
 }
 
@@ -282,7 +283,7 @@ function maxBuyBEEPMult() {
 	let cost = getBreakUpgCost(7)
 	if (!beSave.eternalMatter.gte(cost)) return
 	let toBuy = Math.floor(beSave.eternalMatter.div(cost).add(1).log(2))
-	let toSpend = pow2(toBuy).sub(1).times(cost).min(beSave.eternalMatter)
+	let toSpend = pow2(toBuy).sub(1).mul(cost).min(beSave.eternalMatter)
 	beSave.epMultPower += toBuy
 	beSave.eternalMatter = beSave.eternalMatter.sub(toSpend)
 	if (ghSave.milestones < 15) beSave.eternalMatter = beSave.eternalMatter.round()
@@ -294,6 +295,6 @@ function maxBuyBEEPMult() {
 function getBEUnls() {
 	//Upgrades
 	let x = 8
-	if (ghSave.ghostlyPhotons.unl) x += 3
+	if (PHOTON.unlocked()) x += 3
 	return x
 }

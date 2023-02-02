@@ -18,7 +18,7 @@ function ghostify(auto, force) {
 		var amt = ghSave.ghostParticles.add(gain).round()
 		var seconds = ghostified ? 4 : 10
 		implosionCheck = 1
-		dev.ghostify(gain, amt, seconds)
+		ghostifyAni(gain, amt, seconds)
 		setTimeout(function(){
 			showTab("")
 		}, seconds * 250)
@@ -61,31 +61,21 @@ function ghostifyReset(force, gain) {
 		ghSave.best = Math.min(ghSave.best, ghSave.time)
 	}
 
-	//Brave Milestones and Achievements
+	//Brave Milestones & Achievements
 	if (!force) {
 		while (quSave.times <= tmp.bm[ghSave.milestones]) ghSave.milestones++
 		updateBraveMilestones()
+
+		giveAchievement("Kee-hee-hee!")
+		if (bm == 16) giveAchievement("I rather oppose the theory of everything")
+		if (player.eternityPoints.e >= 22e4 && ghSave.under) giveAchievement("Underchallenged")
+		if (ghSave.best <= 6) giveAchievement("Running through Big Rips")
+		if (quSave.times >= 1e3 && ghSave.milestones >= 16) giveAchievement("Scared of ghosts?")
 	}
 
 	var bm = ghSave.milestones
-	if (bm > 2) for (var c=1;c<=8;c++) quSave.electrons.mult += .5 - QCIntensity(c) * .25
 	if (!force && bm > 6 && hasAch("ng3p68")) gainNeutrinos(Decimal.times(2e3 * brSave.bestGals, bulk), "all")
 
-	//Achievements
-	if (bm > 15) giveAchievement("I rather oppose the theory of everything")
-	if (player.eternityPoints.e >= 22e4 && ghSave.under) giveAchievement("Underchallenged")
-	if (ghSave.best <= 6) giveAchievement("Running through Big Rips")
-	if (!force && quSave.times >= 1e3 && ghSave.milestones >= 16) giveAchievement("Scared of ghosts?")
-
-	//?!??!
-	var nBRU = []
-	var nBEU = []
-	for (var u = 20; u > 0; u--) {
-		if (nBRU.includes(u + 1) || hasRipUpg(u)) nBRU.push(u)
-		if (u < 12 && u != 7 && (nBEU.includes(u + 1) || beSave.upgrades.includes(u))) nBEU.push(u)
-	}
-
-	ghSave.time = 0
 	doReset("funda")
 }
 
@@ -116,15 +106,13 @@ RESETS.funda = {
 		}
 		quSave.multPower = 0
 		if (bm < 2) quSave.upgrades = []
-		if (bm < 1) quSave.reachedInfQK = false
 
 		updateQuantumWorth("quick")
 		updateColorCharge()
 		updateGluonsTabOnUpdate("prestige")
 	},
 	resetElectrons(bm) {
-		if (bm == 3) return
-
+		if (bm >= 3) return
 		quSave.electrons.mult = 2
 		quSave.electrons.rebuyables = [0, 0, 0, 0]
 	},
@@ -154,8 +142,8 @@ RESETS.funda = {
 		}
 		if (quSave.replicants.limitDim >= 1) {
 			quSave.replicants.limit = 10
-			quSave.replicants.limitCost = E_pow(200, quSave.replicants.limitDim * 9).times(1e49)
-			quSave.replicants.quantumFoodCost = E_pow(5, quSave.replicants.limitDim * 30).times(2e46)
+			quSave.replicants.limitCost = E_pow(200, quSave.replicants.limitDim * 9).mul(1e49)
+			quSave.replicants.quantumFoodCost = E_pow(5, quSave.replicants.limitDim * 30).mul(2e46)
 		}
 		updateEmperorDimensions()
 
@@ -164,7 +152,7 @@ RESETS.funda = {
 	},
 	resetDecay(bm) {
 		todSave.r.quarks = E(0)
-		todSave.r.spin = E(0)
+		todSave.r.spin = bm >= 14 ? E(1e25) : E(0)
 		todSave.r.upgrades = {}
 		todSave.r.decays = hasAch("ng3p86") ? Math.floor(todSave.r.decays * .75) : 0
 		todSave.upgrades = { 1: bm >= 4 ? 5 : 0 }
@@ -193,7 +181,7 @@ RESETS.funda = {
 		GHPminpeakValue = E(0)
 
 		player.infinitiedBank = 0
-		player.eternitiesBank = 0
+		player.eternitiesBank = ghostified ? 1e5 : 0
 		updateBankedEter()
 		player.dilation.bestTP = E(0)
 		player.meta.bestOverQuantums = E(0)
@@ -231,22 +219,60 @@ function toggleGhostifyConf() {
 	el("ghostifyConfirmBtn").textContent = "Fundament confirmation: O" + (aarMod.ghostifyConf ? "N" : "FF")
 }
 
+ghostifyAni = function(gain, amount, seconds=4) {
+	el("ghostifyani").style.display = ""
+	el("ghostifyani").style.width = "100%"
+	el("ghostifyani").style.height = "100%"
+	el("ghostifyani").style.left = "0%"
+	el("ghostifyani").style.top = "0%"
+	el("ghostifyani").style.transform = "rotateZ(0deg)"
+	el("ghostifyani").style["transition-duration"] = (seconds / 4) + "s"
+	el("ghostifyanitext").style["transition-duration"] = (seconds / 8) + "s"
+	setTimeout(function() {
+		el("ghostifyanigained").innerHTML = ghostified ? "You now have <b>" + shortenDimensions(amount) + "</b> Elementary Particles. (+" + shortenDimensions(gain) + ")" : "We became small. You have enlarged enough to see first particles!<br>Congratulations for beating a PC with QCs 6 & 8 combination!"
+		el("ghostifyanitext").style.left = "0%"
+		el("ghostifyanitext").style.opacity = 1
+	}, seconds * 250)
+	setTimeout(function() {
+		el("ghostifyanitext").style.left = "100%"
+		el("ghostifyanitext").style.opacity = 0
+	}, seconds * 625)
+	setTimeout(function() {
+		el("ghostifyani").style.width = "0%"
+		el("ghostifyani").style.height = "0%"
+		el("ghostifyani").style.left = "50%"
+		el("ghostifyani").style.top = "50%"
+		el("ghostifyani").style.transform = "rotateZ(45deg)"
+	}, seconds * 750)
+	setTimeout(function() {
+		el("ghostifyani").style.width = "0%"
+		el("ghostifyani").style.height = "0%"
+		el("ghostifyani").style.left = "50%"
+		el("ghostifyani").style.top = "50%"
+		el("ghostifyani").style.transform = "rotateZ(-45deg)"
+		el("ghostifyani").style["transition-duration"] = "0s"
+		el("ghostifyanitext").style.left = "-100%"
+		el("ghostifyanitext").style["transition-duration"] = "0s"
+	}, seconds * 1000)
+}
+
 //GHP
 function getGHPGain() {
-	if (!mod.ngp3 || !bigRipped()) return E(0)
+	if (!bigRipped()) return E(0)
 	if (!ghostified) return E(1)
-	let log = brSave && brSave.bestThisRun.log10() / getQCGoal(undefined,true) - 1
+
+	let log = brSave.bestThisRun.log10() / getQCGoal(undefined, true) - 1
 	if (log < 0) return E(0)
-	if (hasAch("ng3p58")) { 
-		//the square part of the formula maxes at e10, and gets weaker after ~e60 total
-		let x = Math.min(7, log / 2) + Math.min(3, log / 2)
-		y = ghSave.ghostParticles.plus(pow10(log)).plus(10).log10()
-		if (!hasAch("ng3p84")) x = Math.min(x, 600 / y)
-		log += x
-	}
-	let x = pow10(log).times(getGHPMult())
-	//x = doStrongerPowerReductionSoftcapDecimal(x,E("e30000"),0.5)
-	return x.floor()
+
+	let x = pow10(log)
+	//ng3p58 reward was now free
+	//the square part of the formula maxes at e10, and gets weaker after ~e60 total
+	let boost = Math.min(7, log / 2) + Math.min(3, log / 2)
+	let softcap = x.plus(pow10(log)).plus(10).log10()
+	boost = Math.min(boost, 600 / softcap)
+	log += boost
+
+	return x.times(getGHPMult()).floor()
 }
 
 function getGHPMult() {
@@ -337,5 +363,5 @@ function updateGhostifyTabs() {
 		if (ghSave.milestones > 7) updateQuantumWorth("display")
 		updateAutomatorHTML()
 	}
-	if (el("gphtab").style.display == "block" && ghSave.ghostlyPhotons.unl) updatePhotonsTab()
+	if (el("gphtab").style.display == "block") updatePhotonTab()
 }

@@ -59,7 +59,7 @@ function maxTheorems() {
 	gainTT = Math.floor(player.eternityPoints.div(player.timestudy.epcost).plus(1).log2())
 	if (gainTT > 0 && canBuyTTWithEP()) {
 		player.timestudy.theorem += gainTT
-		player.eternityPoints = player.eternityPoints.sub(pow2(gainTT).sub(1).times(player.timestudy.epcost))
+		player.eternityPoints = player.eternityPoints.sub(pow2(gainTT).sub(1).mul(player.timestudy.epcost))
 		if (!break_infinity_js && isNaN(player.eternityPoints.logarithm)) player.eternityPoints = E(0)
 		player.timestudy.epcost = player.timestudy.epcost.times(pow2(gainTT))
 	}
@@ -530,7 +530,7 @@ function importStudyTree(input) {
 let tsMults = {
 	11: function() {
 		let bigRip = bigRipped()
-		let log = -player.tickspeed.div(1e3).pow(0.005).times(0.95).plus(player.tickspeed.div(1e3).pow(0.0003).times(0.95)).log10()
+		let log = -player.tickspeed.div(1e3).pow(0.005).mul(0.95).plus(player.tickspeed.div(1e3).pow(0.0003).mul(0.95)).log10()
 		if (bigRip && log > 900) log = Math.sqrt(log * 900)
 		else if (mod.p3ep) log = Math.min(log, 25000) // buff to NG^+++
 		else if (!inNGM(2)) log = Math.min(log, 2500)

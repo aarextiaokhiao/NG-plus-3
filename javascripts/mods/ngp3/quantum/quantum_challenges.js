@@ -11,7 +11,7 @@ function updateQuantumChallenges() {
 		el(property + "div").style.display = (qc < 2 || QCIntensity(qc - 1)) ? "inline-block" : "none"
 		el(property).textContent = pcFocus ? "Choose" : QCIntensity(qc) ? "Completed" : inQC(qc) ? "Running" : "Start"
 		el(property).className = pcFocus ? "challengesbtn" : QCIntensity(qc) ? "completedchallengesbtn" : inQC(qc) ? "onchallengebtn" : "challengesbtn"
-		el(property + "cost").textContent = "Cost: " + getFullExpansion(quantumChallenges.costs[qc]) + " electrons"
+		el(property + "cost").textContent = isQCFree() ? "" : "Cost: " + getFullExpansion(quantumChallenges.costs[qc]) + " electrons"
 		el(property + "goal").textContent = "Goal: " + shortenCosts(pow10(getQCGoal(qc))) + " antimatter"
 	}
 
@@ -90,7 +90,7 @@ let qcRewards = {
 	effects: {
 		1: function(comps) {
 			if (comps == 0) return 1
-			let base = getDimensionFinalMultiplier(1).times(getDimensionFinalMultiplier(2)).max(1).log10()
+			let base = getDimensionFinalMultiplier(1).mul(getDimensionFinalMultiplier(2)).max(1).log10()
 			let exp = 0.225 + comps * .025
 			return pow10(Math.pow(base, exp) / 200)
 		},
@@ -109,7 +109,7 @@ let qcRewards = {
 		},
 		4: function(comps) {
 			if (comps == 0) return 1
-			let mult = player.meta[2].amount.times(player.meta[4].amount).times(player.meta[6].amount).times(player.meta[8].amount).max(1)
+			let mult = player.meta[2].amount.times(player.meta[4].amount).mul(player.meta[6].amount).mul(player.meta[8].amount).max(1)
 			if (comps <= 1) return E_pow(10 * comps, Math.sqrt(mult.log10()) / 10)
 			return mult.pow(comps / 150)
 			
@@ -138,12 +138,16 @@ function updateQCRewardsTemp() {
 	for (var c = 1; c <= 8; c++) tmp.qcRewards[c] = qcRewards.effects[c](QCIntensity(c))
 }
 
+function isQCFree() {
+	return hasAch("ng3p55")
+}
+
 function getQCCost(num) {
 	return getQCIdCost(num > 8 ? quSave.pairedChallenges.order[num - 8] : [num])
 }
 
 function getQCIdCost(qcs) {
-	if (hasAch("ng3p55")) return 0
+	if (isQCFree()) return 0
 
 	let r = 0
 	for (var qc of qcs) r += quantumChallenges.costs[qc]
@@ -176,7 +180,7 @@ function updatePairedChallenges() {
 		var sc1 = quSave.pairedChallenges.order[pc] ? quSave.pairedChallenges.order[pc][0] : 0
 		var sc2 = (sc1 ? quSave.pairedChallenges.order[pc].length > 1 : false) ? quSave.pairedChallenges.order[pc][1] : 0
 		el(property+"desc").textContent = "Paired Challenge "+pc+": Both Quantum Challenge " + (sc1 ? sc1 : "?") + " and " + (sc2 ? sc2 : "?") + " are applied."
-		el(property+"cost").textContent = "Cost: " + (sc2 ? getFullExpansion(getQCCost(pc + 8)) : "???") + " electrons"
+		el(property+"cost").textContent = isQCFree() ? "" : "Cost: " + (sc2 ? getFullExpansion(getQCCost(pc + 8)) : "???") + " electrons"
 		el(property+"goal").textContent = "Goal: " + (sc2 ? shortenCosts(pow10(getQCGoal(pc + 8))) : "???") + " antimatter"
 		el(property).textContent = pcFocus == pc ? "Cancel" : (quSave.pairedChallenges.order[pc] ? quSave.pairedChallenges.order[pc].length < 2 : true) ? "Assign" : quSave.pairedChallenges.completed >= pc ? "Completed" : quSave.pairedChallenges.completed + 1 < pc ? "Locked" : quSave.pairedChallenges.current == pc ? "Running" : "Start"
 		el(property).className = pcFocus == pc || (quSave.pairedChallenges.order[pc] ? quSave.pairedChallenges.order[pc].length < 2 : true) ? "challengesbtn" : quSave.pairedChallenges.completed >= pc ? "completedchallengesbtn" : quSave.pairedChallenges.completed + 1 <pc ? "lockedchallengesbtn" : quSave.pairedChallenges.current == pc ? "onchallengebtn" : "challengesbtn"
@@ -186,7 +190,7 @@ function updatePairedChallenges() {
 		if (hasMasteryStudy("d14")) {
 			el(property + "br").style.display = ""
 			el(property + "br").textContent = sc1t != 6 || sc2t != 8 ? "QC6 & 8" : bigRipped() ? "Big Ripped" : quSave.pairedChallenges.completed + 1 < pc ? "Locked" : "Big Rip"
-			el(property + "br").className = sc1t != 6 || sc2t != 8 ? "lockedchallengesbtn" : bigRipped() ? "onchallengebtn" : quSave.pairedChallenges.completed + 1 < pc ? "lockedchallengesbtn" : "bigripbtn"
+			el(property + "br").className = sc1t != 6 || sc2t != 8 ? "lockedchallengesbtn" : bigRipped() ? "onchallengebtn" : quSave.pairedChallenges.completed + 1 < pc ? "lockedchallengesbtn" : "challengesbtn bigrip"
 		} else el(property + "br").style.display = "none"
 	}
 

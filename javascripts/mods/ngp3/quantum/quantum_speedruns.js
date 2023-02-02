@@ -4,6 +4,7 @@ var speedrunMilestones = [null, 43200, 32400, 21600, 16200, 10800, 7200, 3600, 3
 function updateSpeedruns() {
 	speedrunMilestonesReached = 0
 	if (!mod.ngp3) return
+
 	if (ghSave.milestones >= 1) speedrunMilestonesReached = 28
 	else {
 		for (var i = 1; i <= 28; i++) {
@@ -11,8 +12,10 @@ function updateSpeedruns() {
 			speedrunMilestonesReached++
 		}
 	}
+
 	for (var i = 1; i <= 28; i++) el("speedrunMilestone"+i).className = "achievement achievement" + (speedrunMilestonesReached >= i ? "un" : "") + "locked"
-	for (var i = 1; i <= 4; i++) el("speedrunRow"+i).className = speedrunMilestonesReached < ( i > 3 ? 28 : i * 8) ? "" : "completedrow"
+	for (var i = 1; i <= 4; i++) el("speedrunRow"+i).className = speedrunMilestonesReached < (i > 3 ? 28 : i * 8) ? "" : "completedrow"
+
 	if (speedrunMilestonesReached >= 26) el('rebuyupgmax').style.display = "none"
 	if (speedrunMilestonesReached >= 28) {
 		var removeMaxAll = false

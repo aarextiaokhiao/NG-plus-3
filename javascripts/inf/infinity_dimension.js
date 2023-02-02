@@ -15,8 +15,8 @@ function maxAllID() {
 		if (player.infDimensionsUnlocked[t - 1] && player.infinityPoints.gte(dim.cost)) {
 			var costMult = getIDCostMult(t)
 			if (player.infinityPoints.lt(pow10(1e10))) {
-				var toBuy = Math.max(Math.floor(player.infinityPoints.div(9 - t).div(cost).times(costMult - 1).add(1).log(costMult)), 1)
-				var toSpend = E_pow(costMult, toBuy).sub(1).div(costMult-1).times(cost).round()
+				var toBuy = Math.max(Math.floor(player.infinityPoints.div(9 - t).div(cost).mul(costMult - 1).add(1).log(costMult)), 1)
+				var toSpend = E_pow(costMult, toBuy).sub(1).div(costMult-1).mul(cost).round()
 				if (toSpend.gt(player.infinityPoints)) player.infinityPoints = E(0)
 				else player.infinityPoints = player.infinityPoints.sub(toSpend)
 			} else var toBuy = Math.floor(player.infinityPoints.div(cost).log(costMult))
@@ -190,7 +190,6 @@ function getIDCostMult(tier) {
 function getInfBuy10Mult(tier) {
 	let ret = infPowerMults[inOnlyNGM(2) ? 1 : 0][tier]
 	if (hasGalUpg(41)) ret *= player.galacticSacrifice.galaxyPoints.max(10).log10()
-	if (player.dilation.upgrades.includes("ngmm6")) ret *= getDil45Mult()
 	return ret
 }
 
@@ -258,7 +257,6 @@ function getPreInfinityPowerEffectExp() {
 		x = Math.max(x , 7)
 	}
 	if (x > 100) x = 50 * Math.log10(x)
-	if (player.dilation.upgrades.includes("ngmm5")) x += getDil44Mult()
 	return x
 }
 
@@ -318,7 +316,7 @@ function getEU2Mult() {
 	if (e > 1e5) soft = nS(e, cap)
 	var achReward = 1
 	if (hasAch("ngpp15")) achReward = pow10(Math.pow(Decimal.log10(e), 4.75))
-	return E_pow(cap/200 + 1, Math.log(cap * 2 + 1) / Math.log(4)).times(Decimal.div(soft, 200).add(1).times(Decimal.times(soft, 2).add(1).log(4)).max(1)).max(achReward)
+	return E_pow(cap/200 + 1, Math.log(cap * 2 + 1) / Math.log(4)).mul(Decimal.div(soft, 200).add(1).mul(Decimal.times(soft, 2).add(1).log(4)).max(1)).max(achReward)
 }
 
 function getEU3Mult() {

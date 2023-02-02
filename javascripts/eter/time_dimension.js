@@ -6,7 +6,6 @@ function getBreakEternityTDMult(tier){
 	if (beSave && beSave.upgrades.includes(1) && tier < 5) ret = ret.times(getBreakUpgMult(1))
 	if (beSave && beSave.upgrades.includes(4) && tier > 3 && tier < 7) ret = ret.times(getBreakUpgMult(4))
 	if (hasRipUpg(13)) ret = ret.times(player.replicanti.amount.max(1).pow(1e-6))
-	if (tier == 6 && ghSave.ghostlyPhotons.unl) ret = ret.times(tmp.le[6])
 	if (tier == 7 && hasRipUpg(16)) ret = ret.times(tmp.bru[16])
 	if (beSave && beSave.upgrades.includes(11) && bigRipped()) ret = ret.mul(tmp.beu[11]||1)
 	if (tier == 8 && hasAch("ng3p62")) ret = ret.pow(Math.log10(ghSave.time/10+1)/100+1)
@@ -87,15 +86,12 @@ function getTimeDimensionPower(tier) {
 	if (ECComps("eterc10") !== 0) ret = ret.times(getECReward(10))
 	if (hasAch("r128")) ret = ret.times(Math.max(player.timestudy.studies.length, 1))
 	if (hasGalUpg(43)) ret = ret.times(galMults.u43())
-	if (!player.dilation.upgrades.includes("ngmm2") && player.dilation.upgrades.includes(5) && player.replicanti.amount.gt(1)) ret = ret.times(tmp.rm.pow(0.1))
 	if (inQC(6)) ret = ret.times(player.postC8Mult).dividedBy(player.matter.max(1))
 
 	ret = dilates(ret, 2)
 	if (inNGM(2)) ret = ret.times(ret2)
 
 	ret = dilates(ret, 1)
-	if (player.dilation.upgrades.includes("ngmm2") && player.dilation.upgrades.includes(5) && player.replicanti.amount.gt(1)) ret = ret.times(tmp.rm.pow(0.1))
-	if (player.dilation.upgrades.includes("ngmm8")) ret = ret.pow(getDil71Mult())
 
 	return ret
 }
@@ -189,11 +185,11 @@ var timeDimCostMults = [[null, 3, 9, 27, 81, 243, 729, 2187, 6561], [null, 1.5, 
 var timeDimStartCosts = [[null, 1, 5, 100, 1000, "1e2350", "1e2650", "1e3000", "1e3350"], [null, 10, 20, 40, 80, 160, 1e8, 1e12, 1e18]]
 
 function timeDimCost(tier, bought) {
-	var cost = E_pow(timeDimCostMults[0][tier], bought).times(timeDimStartCosts[0][tier])
+	var cost = E_pow(timeDimCostMults[0][tier], bought).mul(timeDimStartCosts[0][tier])
 	if (inNGM(2)) return cost
-	if (cost.gte(Number.MAX_VALUE)) cost = E_pow(timeDimCostMults[0][tier]*1.5, bought).times(timeDimStartCosts[0][tier])
-	if (cost.gte("1e1300")) cost = E_pow(timeDimCostMults[0][tier]*2.2, bought).times(timeDimStartCosts[0][tier])
-	if (tier > 4) cost = E_pow(timeDimCostMults[0][tier]*100, bought).times(timeDimStartCosts[0][tier])
+	if (cost.gte(Number.MAX_VALUE)) cost = E_pow(timeDimCostMults[0][tier]*1.5, bought).mul(timeDimStartCosts[0][tier])
+	if (cost.gte("1e1300")) cost = E_pow(timeDimCostMults[0][tier]*2.2, bought).mul(timeDimStartCosts[0][tier])
+	if (tier > 4) cost = E_pow(timeDimCostMults[0][tier]*100, bought).mul(timeDimStartCosts[0][tier])
 	if (cost.gte(tier > 4 ? "1e300000" : "1e20000")) {
 		// rather than fixed cost scaling as before, quadratic cost scaling
 		// to avoid exponential growth
@@ -255,9 +251,9 @@ function buyMaxTimeDimension(tier, bulk) {
 	if (!isTDUnlocked(tier)) return
 	if (res.lt(dim.cost)) return
 	if (inNGM(4)) {
-		var toBuy = Math.floor(res.div(dim.cost).times(timeDimCostMults[1][tier] - 1).add(1).log(timeDimCostMults[1][tier]))
+		var toBuy = Math.floor(res.div(dim.cost).mul(timeDimCostMults[1][tier] - 1).add(1).log(timeDimCostMults[1][tier]))
 		if (bulk) toBuy = Math.min(toBuy,bulk)
-		getOrSubResourceTD(tier, E_pow(timeDimCostMults[1][tier], toBuy).sub(1).div(timeDimCostMults[1][tier] - 1).times(dim.cost))
+		getOrSubResourceTD(tier, E_pow(timeDimCostMults[1][tier], toBuy).sub(1).div(timeDimCostMults[1][tier] - 1).mul(dim.cost))
 		if (inNC(2) || player.currentChallenge == "postc1") player.chall2Pow = 0
 	} else {
 		var toBuy = 0
@@ -285,7 +281,7 @@ function buyMaxTimeDimension(tier, bulk) {
 	dim.amount = dim.amount.plus(toBuy);
 	dim.bought += toBuy
 	if (inNGM(4)) {
-		dim.power = Decimal.sqrt(getDimensionPowerMultiplier()).times(dim.power)
+		dim.power = Decimal.sqrt(getDimensionPowerMultiplier()).mul(dim.power)
 		dim.cost = dim.cost.times(E_pow(timeDimCostMults[1][tier], toBuy))
 	} else {
 		dim.cost = timeDimCost(tier, dim.bought)

@@ -619,7 +619,7 @@ function bin_log (n) {
 function bin_inv (n) {
 	let x = Decimal_BI.pow(2, Math.ceil(n.log(2)));
 	let diff = x.sub(n);
-	return Decimal_BI.div(1, x).plus(diff.div(x.pow(2)).times(2));
+	return Decimal_BI.div(1, x).plus(diff.div(x.pow(2)).mul(2));
 }
 
 let iroha_zero = '日';
@@ -963,9 +963,8 @@ function onNotationChange() {
 		updateBreakEternity()
 		onNotationChangeNeutrinos()
 		updateBosonicStuffCosts()
-		if (!ghSave.ghostlyPhotons.unl) el("gphUnl").textContent="To unlock Photons, you need to get "+shortenCosts(pow10(4.7e9))+" antimatter while your universe is Big Ripped first."
-		else if (!ghSave.wzb.unl) updateBLUnlockDisplay()
-		else if (!tmp.hb.unl) updateHiggsUnlockDisplay()
+		if (!ghSave.wzb.unl) updateBLUnlockDisplay()
+		else if (!ghSave.hb.unl) updateHiggsUnlockDisplay()
 	}
 	el("epmult").innerHTML = "You gain 5 times more EP<p>Currently: "+shortenDimensions(player.epmult)+"x<p>Cost: "+shortenDimensions(player.epmultCost)+" EP"
 	el("achmultlabel").textContent = "Current achievement multiplier on each Dimension: " + shortenMoney(player.achPow) + "x"

@@ -23,10 +23,7 @@ function updateElectrons(retroactive) {
 }
 
 function updateElectronsEffect() {
-	if (!quSave.autoOptions.sacrifice) {
-		tmp.mpte = getElectronBoost()
-		el("electronsAmount2").textContent = "You have " + getFullExpansion(Math.round(quSave.electrons.amount)) + " electrons."
-	}
+	if (!quSave.autoOptions.sacrifice) tmp.mpte = getElectronBoost()
 	el("sacrificedGals").textContent = getFullExpansion(quSave.electrons.sacGals)
 	el("electronsAmount").textContent = getFullExpansion(Math.round(quSave.electrons.amount))
 	el("electronsTranslation").textContent = getFullExpansion(Math.round(tmp.mpte))
@@ -49,8 +46,6 @@ function getElectronBoost(mod) {
 	var amount = quSave.electrons.amount
 
 	var s = 149840
-	if (ghSave.ghostlyPhotons.unl) s += tmp.le[2]
-	
 	if (amount > 37460 + s) amount = Math.sqrt((amount-s) * 37460) + s
 	if (tmp.rg4 && mod != "no-rg4") amount *= 0.7
 	if (player.masterystudies !== undefined && hasMasteryStudy("d13") && mod != "noTree") amount *= getTreeUpgradeEffect(4)

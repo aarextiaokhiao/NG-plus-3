@@ -95,56 +95,17 @@ dev.implode = function() {
 	setTimeout(function(){ el("body").style.animation = ""; }, 2000)
 }
 
-dev.ghostify = function(gain, amount, seconds=4) {
-	el("ghostifyani").style.display = ""
-	el("ghostifyani").style.width = "100%"
-	el("ghostifyani").style.height = "100%"
-	el("ghostifyani").style.left = "0%"
-	el("ghostifyani").style.top = "0%"
-	el("ghostifyani").style.transform = "rotateZ(0deg)"
-	el("ghostifyani").style["transition-duration"] = (seconds / 4) + "s"
-	el("ghostifyanitext").style["transition-duration"] = (seconds / 8) + "s"
-	setTimeout(function() {
-		el("ghostifyanigained").innerHTML = ghostified ? "You now have <b>" + shortenDimensions(amount) + "</b> Elementary Particles. (+" + shortenDimensions(gain) + ")" : "We became small. You have enlarged enough to see first particles!<br>Congratulations for beating a PC with QCs 6 & 8 combination!"
-		el("ghostifyanitext").style.left = "0%"
-		el("ghostifyanitext").style.opacity = 1
-	}, seconds * 250)
-	setTimeout(function() {
-		el("ghostifyanitext").style.left = "100%"
-		el("ghostifyanitext").style.opacity = 0
-	}, seconds * 625)
-	setTimeout(function() {
-		el("ghostifyani").style.width = "0%"
-		el("ghostifyani").style.height = "0%"
-		el("ghostifyani").style.left = "50%"
-		el("ghostifyani").style.top = "50%"
-		el("ghostifyani").style.transform = "rotateZ(45deg)"
-	}, seconds * 750)
-	setTimeout(dev.resetGhostify, seconds * 1000)
-}
-
-dev.resetGhostify = function() {
-	el("ghostifyani").style.width = "0%"
-	el("ghostifyani").style.height = "0%"
-	el("ghostifyani").style.left = "50%"
-	el("ghostifyani").style.top = "50%"
-	el("ghostifyani").style.transform = "rotateZ(-45deg)"
-	el("ghostifyani").style["transition-duration"] = "0s"
-	el("ghostifyanitext").style.left = "-100%"
-	el("ghostifyanitext").style["transition-duration"] = "0s"
-}
-
 dev.updateCosts = function() {
 	for (var i = 1; i < 9; i++) {
 		var dim = player["timeDimension"+i]
 		if (dim.cost.gte(Number.MAX_VALUE)) {
-			dim.cost = E_pow(timeDimCostMults[i]*1.5, dim.bought).times(timeDimStartCosts[i])
+			dim.cost = E_pow(timeDimCostMults[i]*1.5, dim.bought).mul(timeDimStartCosts[i])
 		}
 		if (dim.cost.gte("1e1300")) {
-			dim.cost = E_pow(timeDimCostMults[i]*2.2, dim.bought).times(timeDimStartCosts[i])
+			dim.cost = E_pow(timeDimCostMults[i]*2.2, dim.bought).mul(timeDimStartCosts[i])
 		}
 		if (i > 4) {
-			dim.cost = E_pow(timeDimCostMults[i]*100, dim.bought).times(timeDimStartCosts[i])
+			dim.cost = E_pow(timeDimCostMults[i]*100, dim.bought).mul(timeDimStartCosts[i])
 		}
 	}
 }
@@ -154,13 +115,13 @@ dev.testTDCosts = function() {
 		var timeDimStartCosts = [null, 1, 5, 100, 1000, "1e2350", "1e2650", "1e2900", "1e3300"]
 		var dim = player["timeDimension"+i]
 		if (dim.cost.gte(Number.MAX_VALUE)) {
-			dim.cost = E_pow(timeDimCostMults[i]*1.5, dim.bought).times(timeDimStartCosts[i])
+			dim.cost = E_pow(timeDimCostMults[i]*1.5, dim.bought).mul(timeDimStartCosts[i])
 		}
 		if (dim.cost.gte("1e1300")) {
-			dim.cost = E_pow(timeDimCostMults[i]*2.2, dim.bought).times(timeDimStartCosts[i])
+			dim.cost = E_pow(timeDimCostMults[i]*2.2, dim.bought).mul(timeDimStartCosts[i])
 		}
 		if (i > 4) {
-			dim.cost = E_pow(timeDimCostMults[i]*100, dim.bought).times(timeDimStartCosts[i])
+			dim.cost = E_pow(timeDimCostMults[i]*100, dim.bought).mul(timeDimStartCosts[i])
 		}
 	}
 }
@@ -213,17 +174,4 @@ dev.giveNeutrinos = function(n){
 
 dev.addNeutrinos = function(n){
 	dev.addNeut(n)
-}
-
-dev.giveAllEmpowerments = function(){
-	var uv = ghSave.ghostlyPhotons.lights[7]
-	var le = ghSave.ghostlyPhotons.enpowerments
-	var x = 1
-	var y = 0
-	while (uv >= getLightEmpowermentReq(le + x * 2 - 1)) x *= 2
-	while (x >= 1) {
-		if (uv >= getLightEmpowermentReq(le + x + y - 1)) y += x
-		x /= 2
-	}
-	ghSave.ghostlyPhotons.enpowerments += y
 }

@@ -14,54 +14,56 @@ function getAutobuyerReduction() {
 	return 0.6
 }
 
+function getAutobuyerData(i) {
+	if (i > 13) return player.autobuyers[i-2]
+	if (i == 13) return player.autoSacrifice
+	if (i < 13) return player.autobuyers[i-1]
+}
+
+function autobuyerUpgRes() {
+	if (inNGM(4) && id != 11) return "GP"
+	return "IP"
+}
+
 function buyAutobuyer(id, quick) {
-	if ((inNGM(4) && id != 11 ? player.galacticSacrifice.galaxyPoints : player.infinityPoints).lt(player.autobuyers[id].cost)) return false
-
-	if (inNGM(4) && id != 11) player.galacticSacrifice.galaxyPoints = player.galacticSacrifice.galaxyPoints.minus(player.autobuyers[id].cost)
-	else player.infinityPoints = player.infinityPoints.minus(player.autobuyers[id].cost)
-
-	if (player.autobuyers[id].interval == 100) {
-		if (id > 8) {
-			if (player.autobuyers[id].bulkBought || player.infinityPoints.lt(1e4) || id > 10) return
-			player.infinityPoints = player.infinityPoints.sub(1e4)
-			player.autobuyers[id].bulkBought = true
-		} else {
-			if (player.autobuyers[id].bulk >= 1e100) return false
-	
-			player.autobuyers[id].bulk = Math.min(player.autobuyers[id].bulk * 2, 1e100);
-			player.autobuyers[id].cost = Math.ceil(2.4 * player.autobuyers[id].cost);
-		}
+	let data = getAutobuyerData(id)
+	if (autobuyerUpgRes() == "GP") {
+		if (player.galacticSacrifice.galaxyPoints.lt(data.cost)) return false
+		player.galacticSacrifice.galaxyPoints = player.galacticSacrifice.galaxyPoints.minus(data.cost)
 	} else {
-		player.autobuyers[id].interval = Math.max(player.autobuyers[id].interval * getAutobuyerReduction(), 100);
-		if (player.autobuyers[id].interval > 120) player.autobuyers[id].cost *= 2; //if your last purchase wont be very strong, dont double the cost
+		if (player.infinityPoints.lt(data.cost)) return false
+		player.infinityPoints = player.infinityPoints.minus(data.cost)
+	}
+
+	if (data.interval == 100) {
+		if (id > 8) return
+		if (data.bulk >= 1e100) return false
+		data.bulk = Math.min(data.bulk * 2, 1e100)
+		data.cost = Math.ceil(2.4 * data.cost)
+	} else {
+		data.interval = Math.max(data.interval * getAutobuyerReduction(), 100);
+		if (data.interval > 120) data.cost *= 2; //if your last purchase wont be very strong, dont double the cost
 	}
 
 	if (!quick) updateAutobuyers()
-
 	return true
 }
 
 function toggleAutobuyerTarget(id) {
-	if (player.autobuyers[id-1].target == id) {
-		player.autobuyers[id-1].target = 10 + id
-		el("toggleBtn" + id).textContent = "Buys until 10"
-	} else {
-		player.autobuyers[id-1].target = id
-		el("toggleBtn" + id).textContent = "Buys singles"
-	}
+	let data = getAutobuyerData(id)
+	data.target = data.target == id ? 10 + id : id
+	el("ab_" + autoBuyerKeys[id-1] + "_toggle").textContent = "Buys " + (data.target == id ? "singles" : id == 9 ? "max" : "until 10")
 }
 
 function maxAutobuyerUpgrades() {
-	let order = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
-	for (var i = order.length; i > 0; i--) {
-		var id = order[i - 1]
-		if (player.autobuyers[id - 1] % 1 !== 0) while (buyAutobuyer(id - 1, true)) {}
+	for (var i = getTotalNormalChallenges() + 1; i > 0; i--) {
+		if (getAutobuyerData(i) % 1 !== 0) while (buyAutobuyer(i, true)) {}
 	}
 	updateAutobuyers()
 }
 
 function isABBuyUntil10(id) {
-	return player.autobuyers[id - 1].target >= 10
+	return player.autobuyers[id - 1].target != id
 }
 
 function toggleAllABBulks() {

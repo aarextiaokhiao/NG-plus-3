@@ -12,7 +12,7 @@ function getGSAmount(offset=0) {
 	if (hasAch("r102")) div2 = 10
 	if (player.totalmoney.log10() > 2e6) div2 /= Math.log(player.totalmoney.log10()) 
 	
-	let ret = E_pow(galaxies, y).times(E_pow(Math.max(0, resetMult), z)).max(0)
+	let ret = E_pow(galaxies, y).mul(E_pow(Math.max(0, resetMult), z)).max(0)
 	ret = ret.times(E_pow(1 + getAmount(8) / div2, exp))
 	
 	if (player.galacticSacrifice.chall) ret = ret.times(getGPMultipliers())
@@ -240,7 +240,7 @@ function buyGalaxyUpgrade(i) {
 	}
 	if (i == 42 && !inNGM(4)) for (var tier = 1; tier < 9; tier++) {
 		let dim = player["infinityDimension" + tier]
-		dim.cost = E_pow(getIDCostMult(tier), dim.baseAmount / 10).times(infBaseCost[tier])
+		dim.cost = E_pow(getIDCostMult(tier), dim.baseAmount / 10).mul(infBaseCost[tier])
 	}
 	if (i == 53) {
 		player.infMult = E(1)
@@ -256,7 +256,7 @@ function reduceDimCosts(upg) {
 		for (var d = 1; d < 9; d++) {
 			var name = TIER_NAMES[d]
 			if (inNGM(4) && !upg) {
-				player[name + "Cost"] = player[name + "Cost"].pow(1.25).times(10)
+				player[name + "Cost"] = player[name + "Cost"].pow(1.25).mul(10)
 				player.costMultipliers[d - 1] = player.costMultipliers[d - 1].pow(1.25)
 			}
 			player[name + "Cost"] = player[name + "Cost"].div(div)
@@ -349,7 +349,7 @@ function productAllTotalBought() {
 	var ret = 1;
 	var mult = getProductBoughtMult()
 	for (var i = 1; i <= 8; i++) {
-		if (inNC(13) && inNGM(3)) ret = Decimal.times(player[TIER_NAMES[i] + "Amount"].max(1).log10(), mult).add(1).times(ret);
+		if (inNC(13) && inNGM(3)) ret = Decimal.times(player[TIER_NAMES[i] + "Amount"].max(1).log10(), mult).add(1).mul(ret);
 		else if (player.totalBoughtDims[TIER_NAMES[i]]) ret = Decimal.times(ret, player.totalBoughtDims[TIER_NAMES[i]] ? Decimal.times(player.totalBoughtDims[TIER_NAMES[i]], mult).max(1) : 1);
 	}
 	return ret;
@@ -422,7 +422,7 @@ el("postinfi03").onclick = function() {
 el("postinfi04").onclick = function() {
 	if (player.infinityPoints.gte(player.dimPowerIncreaseCost) && player.extraDimPowerIncrease < 40) {
 		player.infinityPoints = player.infinityPoints.minus(player.dimPowerIncreaseCost)
-		player.dimPowerIncreaseCost = E(!inNGM(3) ? 1e3 : 3e5).times(E_pow(4, Math.min(player.extraDimPowerIncrease, 15) + 1));
+		player.dimPowerIncreaseCost = E(!inNGM(3) ? 1e3 : 3e5).mul(E_pow(4, Math.min(player.extraDimPowerIncrease, 15) + 1));
 		player.extraDimPowerIncrease += 1;
 		if (player.extraDimPowerIncrease > 15) player.dimPowerIncreaseCost = player.dimPowerIncreaseCost.times(E_pow(E_pow(4, 5), player.extraDimPowerIncrease - 15))
 		el("postinfi04").innerHTML = "Further increase all Dimension multipliers<br>x^" + galMults.u31().toFixed(2) + (player.extraDimPowerIncrease < 40 ? " -> x^" + ((galMults.u31() + 0.02).toFixed(2)) + "<br>Cost: " + shorten(player.dimPowerIncreaseCost) + " IP" : "")
@@ -494,7 +494,7 @@ function getNewB60Mult(){
 
 function getB60Mult() {
 	let gal = player.galaxies
-	if (gal >= 295 && getEternitied() > 0) return E_pow(3,200).times(E_pow(2.5,gal-295))
+	if (gal >= 295 && getEternitied() > 0) return E_pow(3,200).mul(E_pow(2.5,gal-295))
 	return E_pow(3, gal - 95).max(1)
 }
 
@@ -538,7 +538,6 @@ let galMults = {
 	},
 	u31: function() {
 		let x = 1.1 + player.extraDimPowerIncrease * 0.02
-		if (player.dilation.upgrades.includes("ngmm4")) x += 0.1
 		return x
 	},
 	u51: function() {
@@ -554,9 +553,9 @@ let galMults = {
 			if (hasGalUpg(46)) r = E_pow(r, Math.log10(10 + r)).plus(1e20)
 		}
 		r = Decimal.add(r, 0)
-		if (r.gt(1e25)) r = r.div(1e25).pow(.5).times(1e25)
-		if (r.gt(1e30)) r = r.div(1e30).pow(.4).times(1e30)
-		if (r.gt(1e35)) r = r.div(1e35).pow(.3).times(1e35)
+		if (r.gt(1e25)) r = r.div(1e25).pow(.5).mul(1e25)
+		if (r.gt(1e30)) r = r.div(1e30).pow(.4).mul(1e30)
+		if (r.gt(1e35)) r = r.div(1e35).pow(.3).mul(1e35)
 		return r
 	},
 	u32: function() {
@@ -620,7 +619,7 @@ let galMults = {
 		let r = E(1)
 		let p = getProductBoughtMult()
 		for (var d = 1; d < 9; d++) {
-			r = Decimal.times(player["timeDimension" + d].bought / 6, p).max(1).times(r)
+			r = Decimal.times(player["timeDimension" + d].bought / 6, p).max(1).mul(r)
 		}
 		r = r.pow(hasGalUpg(36) ? 2 : 1)
 		if (r.gt(1e100)) r = E_pow(r.log10(), 50)
@@ -683,22 +682,6 @@ function getG11Divider(){
 }
 
 //v3
-function getDil44Mult() {
-	return player.dilation.freeGalaxies * 0
-}
-
-function getDil45Mult() {
-	return player.replicanti.amount.max(1).log10() * 0+1
-}
-
-function getDil71Mult() {
-	return player.meta.bestAntimatter.max(1).log10() * 0+1
-}
-
-function getDil72Mult() {
-	return player.meta.bestAntimatter.max(1).log10() * 0+1
-}
-
 function getNewB60Mult(){
 	let gal = player.galaxies - 95
 	if (gal < 0) gal = 0
@@ -726,7 +709,7 @@ function calcG13Exp(){
 
 //Unknown
 function gSacrificed() {
-	return inNGM(2) ? player.galacticSacrifice.times > 0 : false
+	return player?.galacticSacrifice?.times 
 }
 
 function hasGalUpg(x) {
@@ -787,7 +770,7 @@ function passiveGPGen(diff){
 		}
 		if (mult > 100) mult = 100
 	}
-	if (passiveGPGen) player.galacticSacrifice.galaxyPoints = player.galacticSacrifice.galaxyPoints.add(getGSAmount().times(diff / 100 * mult))
+	if (passiveGPGen) player.galacticSacrifice.galaxyPoints = player.galacticSacrifice.galaxyPoints.add(getGSAmount().mul(diff / 100 * mult))
 }
 
 function doGPUpgCrunchUpdating(g11MultShown){

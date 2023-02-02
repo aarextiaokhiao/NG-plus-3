@@ -27,6 +27,25 @@ button b, button span {
 	pointer-events: none;
 }
 
+.small {
+    margin: 1px;
+    width: 120px;
+    font-size: 0.6rem;
+    padding: 3px;
+}
+
+.longbtn {
+	width: 180px
+}
+
+.scrollablemenu {
+	display: block !important;
+	min-height: 250px;
+	height: 250px;
+	max-height: 250px;
+	overflow-y: auto
+}
+
 #game {
     border: 2px solid black;
     border-radius: 4px;
@@ -535,9 +554,9 @@ button b, button span {
 }
 
 @keyframes gsac {
-	0% { transform: scale(1); filter:blur(0px) }
-	50% { transform: scale(3,1); filter:blur(5px); opacity: 0 }
-	100% { transform: scale(1); filter:blur(0px) }
+	0% { transform: scale(1) }
+	50% { transform: scale(2,1); opacity: 0 }
+	100% { transform: scale(1) }
 }
 
 .galaxyupgbtn {
@@ -616,26 +635,6 @@ button b, button span {
 }
 
 .aarexmodsghostifybtn {
-	cursor: pointer
-}
-
-.bltabbtn {
-	background: repeating-linear-gradient(black, transparent), linear-gradient(#710, #307);
-	background-size: 25% 25%, 100% 100%;
-	box-shadow: inset 0 0 6px 0 #b50;
-	text-shadow: 0 0 6px #f50;
-	color: #db7;
-	border: 2px solid #b50;
-	font-weight: bold;
-	border-radius: 4px;
-	transition-duration: 0.2s;
-	animation: bltab 4s linear infinite
-}
-
-.bltabbtn:hover {
-	box-shadow: inset 0 0 24px 0 #b50;
-	color: #f50;
-	text-shadow: 0 0 6px #f50;
 	cursor: pointer
 }
 
@@ -729,25 +728,9 @@ button b, button span {
 }
 
 .crunchbtn {
-    background: #E0E0E0;
-    font-weight: bold;
-    border: 2px solid #4980CC;
-    border-radius: 4px;
-    transition-duration: 0.2s;
-    cursor: pointer;
     position: relative;
     top: 50%;
     left: 40%;
-
-}
-
-.crunchbtn:hover {
-    color: #FFFFFF;
-    background: #4980CC;
-    font-weight: bold;
-    border: 2px solid #4980CC;
-    border-radius: 4px;
-
 }
 
 .popup {
@@ -774,12 +757,6 @@ button b, button span {
 	align-items: center;
 	height: 300px;
 }
-
-.loadmenu {
-	height: 320px;
-	width: 610px;
-}
-
 .optionmenu div {
 	display: flex;
 	flex-direction: column;
@@ -787,6 +764,10 @@ button b, button span {
 	margin: 10px;
 }
 
+.loadmenu {
+	height: 320px;
+	width: 610px;
+}
 .loadmenu div { margin: 0px; }
 
 .loadmenu .closebtn, .optionmenu .closebtn {
@@ -798,7 +779,6 @@ button b, button span {
 	top: 5px;
 	right: 5px;
 }
-
 .loadmenu .storebtn, .optionmenu .storebtn {
 	margin: 5px;
 }
@@ -819,18 +799,6 @@ button b, button span {
 	width: 25px
 }
 
-.longbtn {
-	width: 257.5px
-}
-
-.scrollablemenu {
-	display: block !important;
-	min-height: 250px;
-	height: 250px;
-	max-height: 250px;
-	overflow-y: auto
-}
-
 #saves { width: 100%; }
 
 .notationOptions {
@@ -844,7 +812,11 @@ button b, button span {
 	overflow-y: scroll
 }
 
-#welcomeMessage { font-size:12px; }
+#welcomeMessage { font-size: 12px; }
+
+#bugExport b, .warning {
+	color: #ff0000
+}
 
 #footer {
     position: fixed;
@@ -892,34 +864,7 @@ button b, button span {
 .ghostifyProgress #progresspercent { animation: ghostifytext 4s linear infinite }
 .ghostifyProgress #progresspercent::before { text-shadow: none }
 
-.greedbtn {
-    height: 40px;
-    width: 100px;
-    background-color: #f2d729;
-    border: 1px solid red;
-    border-radius: 5px;
-    font-family: TypeWriter;
-    transition-duration: 0.2s;
-}
-
-.greedbtn:hover {
-    cursor: pointer;
-    background-color: #9E913A;
-
-}
-
-#replauto1 {
-    margin-top: 3px;
-}
-
-#replauto2 {
-    margin-top: 3px;
-}
-
-#replauto3 {
-    margin-top: 3px;
-}
-
+#replauto1, #replauto2, #replauto3,
 #replicantiresettoggle, #replicantibulkmodetoggle {
     margin-top: 3px;
     margin-right: 0px;
@@ -955,17 +900,6 @@ button b, button span {
     vertical-align: top;
     margin:7px;
     animation: studyGlowIn 7s infinite;
-}
-
-.small {
-    margin: 1px;
-    width: 120px;
-    font-size: 0.6rem;
-    padding: 3px;
-}
-
-.wideRow td {
-    padding: 5px 2px;
 }
 
 .timestudy.normaldimstudy {
@@ -1554,11 +1488,9 @@ h3 {
 h1 {
     font-size: 28px;
 }
-
 h2 {
     color: #393939;
 }
-
 h3,
 h4,
 h5,
@@ -1570,18 +1502,15 @@ a {
     color: #39c;
     text-decoration: none;
 }
-
 a:hover {
     color: #069;
 }
-
 a small {
     font-size: 11px;
     color: #777;
     margin-top: -0.3em;
     display: block;
 }
-
 a:hover small {
     color: #777;
 }
@@ -1622,14 +1551,17 @@ td {
     text-align: left;
     padding: 5px 8px;
 }
+.wideRow td {
+    padding: 5px 2px;
+}
 
 .table_fix {
 	margin: auto
 }
-
 .table_fix td {
 	text-align: center
 }
+
 
 dt {
     color: #444;
@@ -1727,19 +1659,19 @@ hr {
     margin: 0 0 20px;
 }
 
-footer {
-    width: 270px;
-    float: left;
-    position: fixed;
-    bottom: 50px;
-    -webkit-font-smoothing: subpixel-antialiased;
-}
-
 br {
     margin: 0;
     pointer-events:none;
 }
 
+.rel {
+    position: relative;
+}
+
+#timestudies span {
+    display:block;
+    pointer-events:none;
+}
 #timestudies br {
     content: " ";
     display: block;
@@ -1756,14 +1688,6 @@ br {
     pointer-events:none;
 }
 
-
-
-#timestudies span {
-    display:block;
-    pointer-events:none;
-}
-
-
 .floatingText {
     position: absolute;
     bottom: 20px;
@@ -1774,14 +1698,40 @@ br {
     opacity: 0;
 }
 
-.rel {
-    position: relative;
+/* QUANTUM ANIMATION BY: AAREX + MRREDSHARK77 */
+#quani {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #0a640a;
+    background-image: url('../images/quantum_bg.png');
+    z-index: 3;
+    animation: qu_bg_animation 5s linear infinite;
+    pointer-events: none;
+    transition: opacity 0.5s linear;
+    opacity: 0;
+}
+@keyframes qu {
+    0% {transform: scale(1); opacity: 1}
+    25% {transform: scale(2, 0); opacity: 0}
+    50% {transform: scale(2, 0); opacity: 1}
+    75% {transform:scale(1); opacity: 0.5}
+    100% {transform:scale(1); opacity: 1}
+}
+@keyframes qu_bg_animation {
+    0% {
+        background-position: 0px 0px;
+    }
+    100% {
+        background-position: 200px 200px;
+    }
 }
 
 .qtable, .qtable_4col, #gluonupgrades {
 	width:100%
 }
-
 .qtable td {
 	min-width: 33%;
 	width: 33%;
@@ -1789,7 +1739,6 @@ br {
 	text-align: center;
 	vertical-align: 0
 }
-
 .qtable_4col td {
 	min-width: 25%;
 	width: 25%;
@@ -1799,8 +1748,71 @@ br {
 }
 
 .red { color: #bf0000 }
+td.red {
+	background: rgba(191, 0, 0, 0.25)
+}
+
+.orange {
+	color: #bf5f00
+}
+td.orange {
+	background: rgba(191, 95, 0, 0.25)
+}
+
+.yellow {
+	color: #bfbf00
+}
+td.yellow {
+	background: rgba(191, 191, 0, 0.25)
+}
+
 .green { color: #00bf00 }
+.l_green {
+	color: #007f00
+}
+td.green {
+	background: rgba(0, 191, 0, 0.25)
+}
+
 .blue { color: #0000bf }
+td.blue {
+	background: rgba(0, 0, 191, 0.25)
+}
+
+.indigo {
+	color: #2f00bf
+}
+td.indigo {
+	background: rgba(47, 0, 191, 0.25)
+}
+
+.violet {
+	color: #5f00bf
+}
+td.violet {
+	background: rgba(95, 0, 191, 0.25)
+}
+
+.uv {
+	color: #8f00bf
+}
+td.uv {
+	background: rgba(143, 0, 191, 0.25)
+}
+
+.grey {
+	color: #9f9f9f
+}
+td.grey {
+	background: rgba(159, 159, 159, 0.25)
+}
+
+.lEp {
+	color: #bfaf5f
+}
+td.lEp {
+	background: rgba(191, 175, 95, 0.25)
+}
 
 #rg { animation: rg 5s infinite }
 #gb { animation: gb 5s infinite }
@@ -1854,29 +1866,109 @@ br {
 .gluonupgradebought.gb { animation: gbupgbought 5s infinite }
 .gluonupgradebought.br { animation: brupgbought 5s infinite }
 
+@keyframes rg {
+	0% {color: #bf0000}
+	25% {color: #bfbf00}
+	50% {color: #00bf00}
+	75% {color: #bfbf00}
+	100% {color: #bf0000}
+}
+@keyframes gb {
+	0% {color: #00bf00}
+	25% {color: #00bfbf}
+	50% {color: #0000bf}
+	75% {color: #00bfbf}
+	100% {color: #00bf00}
+}
+@keyframes br {
+	0% {color: #0000bf}
+	25% {color: #bf00bf}
+	50% {color: #bf0000}
+	75% {color: #bf00bf}
+	100% {color: #0000bf}
+}
+
+@keyframes rgupg {
+	0% {background-color: #1f0000; border: 1px solid #3f0000; box-shadow: inset 0px 0px 5px 0px #7f0000; color: #bf0000}
+	25% {background-color: #1f1f00; border: 1px solid #3f3f00; box-shadow: inset 0px 0px 10px 0px #7f7f00; color: #7f7f00}
+	50% {background-color: #001f00; border: 1px solid #003f00; box-shadow: inset 0px 0px 20px 0px #007f00; color: #007f00}
+	75% {background-color: #1f1f00; border: 1px solid #3f3f00; box-shadow: inset 0px 0px 10px 0px #7f7f00; color: #7f7f00}
+	100% {background-color: #1f0000; border: 1px solid #3f0000; box-shadow: inset 0px 0px 5px 0px #7f0000; color: #bf0000}
+}
+@keyframes gbupg {
+	0% {background-color: #001f00; border: 1px solid #003f00; box-shadow: inset 0px 0px 5px 0px #007f00; color: #007f00}
+	25% {background-color: #001f1f; border: 1px solid #003f3f; box-shadow: inset 0px 0px 5px 0px #007f7f; color: #007f7f}
+	50% {background-color: #00001f; border: 1px solid #00003f; box-shadow: inset 0px 0px 5px 0px #00007f; color: #0000df}
+	75% {background-color: #001f1f; border: 1px solid #003f3f; box-shadow: inset 0px 0px 5px 0px #007f7f; color: #007f7f}
+	100% {background-color: #001f00; border: 1px solid #003f00; box-shadow: inset 0px 0px 5px 0px #007f00; color: #007f00}
+}
+@keyframes brupg {
+	0% {background-color: #00001f; border: 1px solid #00003f; box-shadow: inset 0px 0px 5px 0px #00007f; color: #0000df}
+	25% {background-color: #1f001f; border: 1px solid #3f003f; box-shadow: inset 0px 0px 5px 0px #7f007f; color: #7f007f}
+	50% {background-color: #1f0000; border: 1px solid #3f0000; box-shadow: inset 0px 0px 5px 0px #7f0000; color: #bf0000}
+	75% {background-color: #1f001f; border: 1px solid #3f003f; box-shadow: inset 0px 0px 5px 0px #7f007f; color: #7f007f}
+	100% {background-color: #00001f; border: 1px solid #00003f; box-shadow: inset 0px 0px 5px 0px #00007f; color: #0000df}
+}
+
+@keyframes rgupghover {
+	0% {background-color: #7f0000; border: 1px solid #3f0000; box-shadow: inset 0px 0px 5px 0px #bf0000; color: #1f0000}
+	25% {background-color: #7f7f00; border: 1px solid #3f3f00; box-shadow: inset 0px 0px 10px 0px #bfbf00; color: #1f1f00}
+	50% {background-color: #007f00; border: 1px solid #003f00; box-shadow: inset 0px 0px 20px 0px #00bf00; color: #001f00}
+	75% {background-color: #7f7f00; border: 1px solid #3f3f00; box-shadow: inset 0px 0px 10px 0px #bfbf00; color: #1f1f00}
+	100% {background-color: #7f0000; border: 1px solid #3f0000; box-shadow: inset 0px 0px 5px 0px #bf0000; color: #1f0000}
+}
+@keyframes gbupghover {
+	0% {background-color: #007f00; border: 1px solid #003f00; box-shadow: inset 0px 0px 5px 0px #00bf00; color: #001f00}
+	25% {background-color: #007f7f; border: 1px solid #003f3f; box-shadow: inset 0px 0px 5px 0px #00bfbf; color: #001f1f}
+	50% {background-color: #00007f; border: 1px solid #00003f; box-shadow: inset 0px 0px 5px 0px #0000bf; color: #00001f}
+	75% {background-color: #007f7f; border: 1px solid #003f3f; box-shadow: inset 0px 0px 5px 0px #00bfbf; color: #001f1f}
+	100% {background-color: #007f00; border: 1px solid #003f00; box-shadow: inset 0px 0px 5px 0px #00bf00; color: #001f00}
+}
+@keyframes brupghover {
+	0% {background-color: #00007f; border: 1px solid #00003f; box-shadow: inset 0px 0px 5px 0px #0000bf; color: #00001f}
+	25% {background-color: #7f007f; border: 1px solid #3f003f; box-shadow: inset 0px 0px 5px 0px #bf00bf; color: #1f001f}
+	50% {background-color: #7f0000; border: 1px solid #3f0000; box-shadow: inset 0px 0px 5px 0px #bf0000; color: #1f0000}
+	75% {background-color: #7f007f; border: 1px solid #3f003f; box-shadow: inset 0px 0px 5px 0px #bf00bf; color: #1f001f}
+	100% {background-color: #00007f; border: 1px solid #00003f; box-shadow: inset 0px 0px 5px 0px #0000bf; color: #00001f}
+}
+
+@keyframes rgupgbought {
+	0% {background-color: #bf0000; border: 1px solid #7f0000; color: #1f0000}
+	25% {background-color: #bfbf00; border: 1px solid #7f7f00; color: #1f1f00}
+	50% {background-color: #00bf00; border: 1px solid #007f00; color: #001f00}
+	75% {background-color: #bfbf00; border: 1px solid #7f7f00; color: #1f1f00}
+	100% {background-color: #bf0000; border: 1px solid #7f0000; color: #1f0000}
+}
+@keyframes gbupgbought {
+	0% {background-color: #00bf00; border: 1px solid #007f00; color: #001f00}
+	25% {background-color: #00bfbf; border: 1px solid #007f7f; color: #001f1f}
+	50% {background-color: #0000bf; border: 1px solid #00007f; color: #00001f}
+	75% {background-color: #00bfbf; border: 1px solid #007f7f; color: #001f1f}
+	100% {background-color: #00bf00; border: 1px solid #007f00; color: #001f00}
+}
+@keyframes brupgbought {
+	0% {background-color: #0000bf; border: 1px solid #00007f; color: #00001f}
+	25% {background-color: #bf00bf; border: 1px solid #7f007f; color: #1f001f}
+	50% {background-color: #bf0000; border: 1px solid #7f0000; color: #1f0000}
+	75% {background-color: #bf00bf; border: 1px solid #7f007f; color: #1f001f}
+	100% {background-color: #0000bf; border: 1px solid #00007f; color: #00001f}
+}
+
 #electrons .gluonupgrade.storebtn {
 	background-color: black !important;
 	border-color: #8e991e;
 	color: #8e991e;
 	animation: electronupg 5s infinite
 }
-
 #electrons .gluonupgrade.storebtn:hover {
 	background-color: #8e991e !important;
 	color: #ffffff;
 	animation: electronupg 5s infinite
 }
-
-#replicants .qtable td { vertical-align:0 }
-
-.upgbought {
-	color: black;
-	background: #5AC467;
-	border: 1px solid #ED85DF;
-	transition-duration: 0.2s;
-	border-radius: 4px;
-	font-weight: bold;
-	font-size: 13px
+@keyframes electronupg {
+    0%  {box-shadow: inset 0px 0px 20px 0px #8e991e;}
+    50% {box-shadow: inset 0px 0px 40px 0px #8e991e;}
+    100% {box-shadow: inset 0px 0px 20px 0px #8e991e;}
 }
 
 #pccompletionstable td {
@@ -1889,7 +1981,6 @@ br {
 	text-align: center;
 	vertical-align: 50%
 }
-
 .pc1completed {
     color: #32c832;
     background: #0a640a;
@@ -1897,28 +1988,24 @@ br {
 	border-radius: 10px;
     font-weight: bold;
 }
-
 .pc2completed {
     color: #b341e0;
     background: black;
     border: 2px solid #b341e0;
 	border-radius: 10px;
 }
-
 .pc3completed {
 	color: #FFF;
 	background: #1F1F1F;
 	border: 2px solid #B67F33;
 	border-radius: 10px;
 }
-
 .pc4completed {
 	color: #FFF;
 	background: #5AC467;
 	border: 2px solid #127A20;
 	border-radius: 10px;
 }
-
 .ndcompleted {
     color: #64DD17;
     background: black;
@@ -1941,6 +2028,7 @@ br {
 	background: #333;
 	cursor: pointer
 }
+#replicants .qtable td { vertical-align:0 }
 #produceQuarkCharge {
 	background: black !important;
 	border: 2px solid #4c4c4c;
@@ -1977,6 +2065,11 @@ br {
 	font-size: 12px;
     font-weight: bold;
 	transition-duration: 0.2s
+}
+@keyframes nanofieldanimation {
+    0%  {box-shadow: inset 0px 0px 90px 0px #4c4c4c;}
+    50% {box-shadow: inset 0px 0px 120px 0px #4c4c4c;}
+    100% {box-shadow: inset 0px 0px 90px 0px #4c4c4c;}
 }
 
 #upgradesBranch .gluonupgrade {
@@ -2025,48 +2118,31 @@ br {
 	cursor: pointer
 }
 
-.bigripbtn {
-	width:150px;
-	height: 30px;
-	color: black;
-	background: #373 !important;
-	font-weight: bold;
+.bigrip {
+	background: #373;
+	box-shadow: inset 0px 0px 15px 0px #bfb;
 	border: 2px solid #bfb;
-	cursor: pointer;
-	border-radius: 10px;
 	color: #7f7;
-	font-size: 140%;
 	transition-duration: 0.2s;
-	margin: auto;
-	box-shadow: inset 0px 0px 15px 0px #bfb
+	font-weight: bold;
 }
-.bigripbtn:hover {
-	background: white !important;
-	color: #030
-}
-#pres_header .bigripbtn {
-	border-radius: 4px
-}
-.gluonupgrade.bigrip {
-	background: #2d7233 !important;
-	border: 3px solid #5be567;
-	color: #5be567;
-	box-shadow: inset 0px 0px 10px 0px #5be567, inset 0px 0px 20px 0px #5be567, inset 0px 0px 30px 0px #5be567
-}
-.gluonupgrade.bigrip:hover {
-	background: #a0e5a6 !important;
-	color: #6b996e;
+.bigrip:hover {
+	background: white;
+	color: #030;
 	cursor: pointer
 }
+#pres_header .bigrip {
+	border-radius: 4px
+}
 .gluonupgradebought.bigrip {
-	background: #a0e5a6 !important;
-	border: 3px solid #6b996e;
+	background: #a0e5a6;
+	border-color: #6b996e;
 	color: #1f1f1f;
 	box-shadow: inset 0px 0px 10px 0px #6b996e, inset 0px 0px 20px 0px #6b996e, inset 0px 0px 30px 0px #6b996e
 }
 .gluonupgradebought.bigripoff {
-	background: #999999 !important;
-	border: 3px solid #727272;
+	background: #999999;
+	border-color: #727272;
 	color: #bf0000;
 	box-shadow: inset 0px 0px 10px 0px #727272, inset 0px 0px 20px 0px #727272, inset 0px 0px 30px 0px #727272
 }
@@ -2114,10 +2190,6 @@ br {
 
 .brCompleted[ach-tooltip]:before, .bRune[ach-tooltip]:before {
 	text-shadow: none !important
-}
-
-#bugExport b, .warning {
-	color: #ff0000
 }
 
 #ghostlyNewsTicker {
@@ -2174,10 +2246,6 @@ br {
 	height: 60px
 }
 
-.neutrinoBoosts2 td {
-	background: rgba(0, 0, 0, 0.25)
-}
-
 #automaticghosts .autoBuyerDiv {
 	width: 175px;
 	height: 120px
@@ -2194,85 +2262,42 @@ br {
 	border: 1px solid #bfaf5f;
 	box-shadow: inset 0px 0px 20px 0px #bfaf5f;
 	color: black;
-	text-shadow: 0px 0px 3px black, 0px 0px 6px #bfaf5f
+	text-shadow: 0px 0px 6px #bfaf5f
 }
-
 .gluonupgrade.gph:hover {
 	color: white;
-	text-shadow: 0px 0px 3px white, 0px 0px 6px black;
 	cursor: pointer
 }
 
-td.red {
-	background: rgba(191, 0, 0, 0.25)
+#light_table td {
+	width: 180px;
+	height: 120px;
+	padding: 6px;
+
+	border: 3px solid #fff7;
+	border-radius: 4px;
+
+	text-align: center;
 }
 
-.orange {
-	color: #bf5f00
+.bltabbtn {
+	background: repeating-linear-gradient(black, transparent), linear-gradient(#710, #307);
+	background-size: 25% 25%, 100% 100%;
+	box-shadow: inset 0 0 6px 0 #b50;
+	text-shadow: 0 0 6px #f50;
+	color: #db7;
+	border: 2px solid #b50;
+	font-weight: bold;
+	border-radius: 4px;
+	transition-duration: 0.2s;
+	animation: bltab 4s linear infinite
 }
 
-td.orange {
-	background: rgba(191, 95, 0, 0.25)
-}
-
-.yellow {
-	color: #bfbf00
-}
-
-td.yellow {
-	background: rgba(191, 191, 0, 0.25)
-}
-
-.l_green {
-	color: #007f00
-}
-
-td.green {
-	background: rgba(0, 191, 0, 0.25)
-}
-
-td.blue {
-	background: rgba(0, 0, 191, 0.25)
-}
-
-.indigo {
-	color: #2f00bf
-}
-
-td.indigo {
-	background: rgba(47, 0, 191, 0.25)
-}
-
-.violet {
-	color: #5f00bf
-}
-
-td.violet {
-	background: rgba(95, 0, 191, 0.25)
-}
-
-.uv {
-	color: #8f00bf
-}
-
-td.uv {
-	background: rgba(143, 0, 191, 0.25)
-}
-
-.grey {
-	color: #9f9f9f
-}
-
-td.grey {
-	background: rgba(159, 159, 159, 0.25)
-}
-
-.lEp {
-	color: #bfaf5f
-}
-
-td.lEp {
-	background: rgba(191, 175, 95, 0.25)
+.bltabbtn:hover {
+	box-shadow: inset 0 0 24px 0 #b50;
+	color: #f50;
+	text-shadow: 0 0 6px #f50;
+	cursor: pointer
 }
 
 #bRunes {
@@ -2474,6 +2499,24 @@ td.lEp {
 	transform: translate(-50%, 0%)
 }
 
+@keyframes bltab { 
+	0%{
+		background-position: 0 0, 0 0
+	}
+	100%{
+		background-position: 0 100%, 0 0
+	}
+}
+
+@keyframes bl { 
+	0%{
+		background-position: 0% 0%
+	}
+	100%{
+		background-position: 200% 200%
+	}
+}
+
 .gluonupgrade.hb {
 	background: radial-gradient(#bb0, transparent 75%, transparent 100%), linear-gradient(transparent, #550 50%, transparent 100%), #330;
 	background-position: center;
@@ -2488,46 +2531,16 @@ td.lEp {
 	cursor: pointer
 }
 
-.subFactorA {
-	color: #c73415
-}
-
-td.subFactorA {
-	background-color: rgba(199, 52, 21, 0.25)
-}
-
-.subFactorE {
-	color: #38cbea
-}
-
-td.subFactorE {
-	background-color: rgba(56, 203, 234, 0.25)
-}
-
-.subFactorZ {
-	color: #7f7f7f
-}
-
-td.subFactorZ {
-	background-color: rgba(127, 127, 127, 0.25)
-}
-
-.subFactorH {
-	color: #bfbf00
-}
-
-td.subFactorH {
-	background-color: rgba(191, 191, 0, 0.25)
-}
-
-.h1 {
-    font-size: 35px;
-    color: black;
-}
-
-.h2 {
-    font-size: 25px;
-    color: black;
+@keyframes hb { 
+	0%{
+		background-size: 100% 100%, 100% 100%, 100% 100%, 100% 100%
+	}
+	50%{
+		background-size: 120% 120%, 110% 110%, 120% 120%, 80% 80%
+	}
+	100%{
+		background-size: 100% 100%, 100% 100%, 100% 100%, 100% 100%
+	}
 }
 
 .gv {
@@ -2829,121 +2842,6 @@ screen and (max-width: 480px) {
     100% {transform:scale(1); filter:blur(0px)}
 }
 
-@keyframes quantum {
-    0% {transform:scale(1); opacity: 1; background: transparent}
-    25% {transform:scale(2, 0); opacity: 0; background: #00bf00}
-    50% {transform:scale(2, 0); opacity: 1; background: transparent}
-    75% {transform:scale(1); opacity: 0.5}
-    100% {transform:scale(1); opacity: 1}
-}
-
-@keyframes rg {
-	0% {color: #bf0000}
-	25% {color: #bfbf00}
-	50% {color: #00bf00}
-	75% {color: #bfbf00}
-	100% {color: #bf0000}
-}
-
-@keyframes gb {
-	0% {color: #00bf00}
-	25% {color: #00bfbf}
-	50% {color: #0000bf}
-	75% {color: #00bfbf}
-	100% {color: #00bf00}
-}
-
-@keyframes br {
-	0% {color: #0000bf}
-	25% {color: #bf00bf}
-	50% {color: #bf0000}
-	75% {color: #bf00bf}
-	100% {color: #0000bf}
-}
-
-@keyframes rgupg {
-	0% {background-color: #1f0000; border: 1px solid #3f0000; box-shadow: inset 0px 0px 5px 0px #7f0000; color: #bf0000}
-	25% {background-color: #1f1f00; border: 1px solid #3f3f00; box-shadow: inset 0px 0px 10px 0px #7f7f00; color: #7f7f00}
-	50% {background-color: #001f00; border: 1px solid #003f00; box-shadow: inset 0px 0px 20px 0px #007f00; color: #007f00}
-	75% {background-color: #1f1f00; border: 1px solid #3f3f00; box-shadow: inset 0px 0px 10px 0px #7f7f00; color: #7f7f00}
-	100% {background-color: #1f0000; border: 1px solid #3f0000; box-shadow: inset 0px 0px 5px 0px #7f0000; color: #bf0000}
-}
-
-@keyframes gbupg {
-	0% {background-color: #001f00; border: 1px solid #003f00; box-shadow: inset 0px 0px 5px 0px #007f00; color: #007f00}
-	25% {background-color: #001f1f; border: 1px solid #003f3f; box-shadow: inset 0px 0px 5px 0px #007f7f; color: #007f7f}
-	50% {background-color: #00001f; border: 1px solid #00003f; box-shadow: inset 0px 0px 5px 0px #00007f; color: #0000df}
-	75% {background-color: #001f1f; border: 1px solid #003f3f; box-shadow: inset 0px 0px 5px 0px #007f7f; color: #007f7f}
-	100% {background-color: #001f00; border: 1px solid #003f00; box-shadow: inset 0px 0px 5px 0px #007f00; color: #007f00}
-}
-
-@keyframes brupg {
-	0% {background-color: #00001f; border: 1px solid #00003f; box-shadow: inset 0px 0px 5px 0px #00007f; color: #0000df}
-	25% {background-color: #1f001f; border: 1px solid #3f003f; box-shadow: inset 0px 0px 5px 0px #7f007f; color: #7f007f}
-	50% {background-color: #1f0000; border: 1px solid #3f0000; box-shadow: inset 0px 0px 5px 0px #7f0000; color: #bf0000}
-	75% {background-color: #1f001f; border: 1px solid #3f003f; box-shadow: inset 0px 0px 5px 0px #7f007f; color: #7f007f}
-	100% {background-color: #00001f; border: 1px solid #00003f; box-shadow: inset 0px 0px 5px 0px #00007f; color: #0000df}
-}
-
-@keyframes rgupghover {
-	0% {background-color: #7f0000; border: 1px solid #3f0000; box-shadow: inset 0px 0px 5px 0px #bf0000; color: #1f0000}
-	25% {background-color: #7f7f00; border: 1px solid #3f3f00; box-shadow: inset 0px 0px 10px 0px #bfbf00; color: #1f1f00}
-	50% {background-color: #007f00; border: 1px solid #003f00; box-shadow: inset 0px 0px 20px 0px #00bf00; color: #001f00}
-	75% {background-color: #7f7f00; border: 1px solid #3f3f00; box-shadow: inset 0px 0px 10px 0px #bfbf00; color: #1f1f00}
-	100% {background-color: #7f0000; border: 1px solid #3f0000; box-shadow: inset 0px 0px 5px 0px #bf0000; color: #1f0000}
-}
-
-@keyframes gbupghover {
-	0% {background-color: #007f00; border: 1px solid #003f00; box-shadow: inset 0px 0px 5px 0px #00bf00; color: #001f00}
-	25% {background-color: #007f7f; border: 1px solid #003f3f; box-shadow: inset 0px 0px 5px 0px #00bfbf; color: #001f1f}
-	50% {background-color: #00007f; border: 1px solid #00003f; box-shadow: inset 0px 0px 5px 0px #0000bf; color: #00001f}
-	75% {background-color: #007f7f; border: 1px solid #003f3f; box-shadow: inset 0px 0px 5px 0px #00bfbf; color: #001f1f}
-	100% {background-color: #007f00; border: 1px solid #003f00; box-shadow: inset 0px 0px 5px 0px #00bf00; color: #001f00}
-}
-
-@keyframes brupghover {
-	0% {background-color: #00007f; border: 1px solid #00003f; box-shadow: inset 0px 0px 5px 0px #0000bf; color: #00001f}
-	25% {background-color: #7f007f; border: 1px solid #3f003f; box-shadow: inset 0px 0px 5px 0px #bf00bf; color: #1f001f}
-	50% {background-color: #7f0000; border: 1px solid #3f0000; box-shadow: inset 0px 0px 5px 0px #bf0000; color: #1f0000}
-	75% {background-color: #7f007f; border: 1px solid #3f003f; box-shadow: inset 0px 0px 5px 0px #bf00bf; color: #1f001f}
-	100% {background-color: #00007f; border: 1px solid #00003f; box-shadow: inset 0px 0px 5px 0px #0000bf; color: #00001f}
-}
-
-@keyframes rgupgbought {
-	0% {background-color: #bf0000; border: 1px solid #7f0000; color: #1f0000}
-	25% {background-color: #bfbf00; border: 1px solid #7f7f00; color: #1f1f00}
-	50% {background-color: #00bf00; border: 1px solid #007f00; color: #001f00}
-	75% {background-color: #bfbf00; border: 1px solid #7f7f00; color: #1f1f00}
-	100% {background-color: #bf0000; border: 1px solid #7f0000; color: #1f0000}
-}
-
-@keyframes gbupgbought {
-	0% {background-color: #00bf00; border: 1px solid #007f00; color: #001f00}
-	25% {background-color: #00bfbf; border: 1px solid #007f7f; color: #001f1f}
-	50% {background-color: #0000bf; border: 1px solid #00007f; color: #00001f}
-	75% {background-color: #00bfbf; border: 1px solid #007f7f; color: #001f1f}
-	100% {background-color: #00bf00; border: 1px solid #007f00; color: #001f00}
-}
-
-@keyframes brupgbought {
-	0% {background-color: #0000bf; border: 1px solid #00007f; color: #00001f}
-	25% {background-color: #bf00bf; border: 1px solid #7f007f; color: #1f001f}
-	50% {background-color: #bf0000; border: 1px solid #7f0000; color: #1f0000}
-	75% {background-color: #bf00bf; border: 1px solid #7f007f; color: #1f001f}
-	100% {background-color: #0000bf; border: 1px solid #00007f; color: #00001f}
-}
-
-@keyframes electronupg {
-    0%  {box-shadow: inset 0px 0px 20px 0px #8e991e;}
-    50% {box-shadow: inset 0px 0px 40px 0px #8e991e;}
-    100% {box-shadow: inset 0px 0px 20px 0px #8e991e;}
-}
-@keyframes nanofieldanimation {
-    0%  {box-shadow: inset 0px 0px 90px 0px #4c4c4c;}
-    50% {box-shadow: inset 0px 0px 120px 0px #4c4c4c;}
-    100% {box-shadow: inset 0px 0px 90px 0px #4c4c4c;}
-}
-
 @keyframes ghostifytext { 
 	0%{
 		border-color: #3f007f;
@@ -2959,51 +2857,6 @@ screen and (max-width: 480px) {
 		border-color: #3f007f;
 		color: #bfbfdf;
 		text-shadow: 0px 0px 5px white, 0px 0px 6px #1f00ff;
-	}
-}
-
-@keyframes bltab { 
-	0%{
-		background-position: 0 0, 0 0
-	}
-	100%{
-		background-position: 0 100%, 0 0
-	}
-}
-
-@keyframes bl { 
-	0%{
-		background-position: 0% 0%
-	}
-	100%{
-		background-position: 200% 200%
-	}
-}
-
-@keyframes hb { 
-	0%{
-		background-size: 100% 100%, 100% 100%, 100% 100%, 100% 100%
-	}
-	50%{
-		background-size: 120% 120%, 110% 110%, 120% 120%, 80% 80%
-	}
-	100%{
-		background-size: 100% 100%, 100% 100%, 100% 100%, 100% 100%
-	}
-}
-
-@keyframes gv { 
-	0%{
-		text-shadow: 0px 0px 12px #00bfff, 0px -12px 12px transparent;
-		color: #7fdfff;
-	}
-	50%{
-		text-shadow: 0px 0px 24px #3f7fbf, 0px 0px 12px #3f7fbf;
-		color: #7f9fff;
-	}
-	100%{
-		text-shadow: 0px 0px 12px #00bfff, 0px 24px 12px transparent;
-		color: #7fdfff;
 	}
 }
 

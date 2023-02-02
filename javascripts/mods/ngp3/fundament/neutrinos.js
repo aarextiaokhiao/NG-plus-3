@@ -41,14 +41,14 @@ function updateNeutrinoUpgradeDisplay(){
 		"Replicated galaxy effect: " + shorten(tmp.nu[12].replicated) + "x to EC14 reward, "+
 		"Tachyonic galaxy effect: " + shorten(tmp.nu[12].free) + "x to IC3 base"
 	)
-	if (ghSave.ghostlyPhotons.unl) {
+	if (PHOTON.unlocked()) {
 		el("neutrinoUpg14Pow").textContent=shorten(tmp.nu[14])
 		el("neutrinoUpg15Pow").textContent=shorten(tmp.nu[15])
 	}
 	var sum = ghSave.neutrinos.electron.add(ghSave.neutrinos.mu).add(ghSave.neutrinos.tau).round()
 	for (var u = 1; u < 15; u++) {
 		var e = false
-		if (u > 12) e = ghSave.ghostlyPhotons.unl
+		if (u > 12) e = PHOTON.unlocked()
 		else e = ghSave.times + 3 > u || u < 5
 		if (e) {
 			if (hasNU(u)) el("neutrinoUpg" + u).className = "gluonupgradebought neutrinoupg"
@@ -71,7 +71,7 @@ function updateNeutrinosTab(){
 	
 	if (ghSave.ghostParticles.gte(tmp.nbc[ghSave.neutrinos.boosts])) el("neutrinoUnlock").className = "gluonupgrade neutrinoupg"
 	else el("neutrinoUnlock").className = "gluonupgrade unavailablebtn"
-	if (ghSave.ghostParticles.gte(E_pow(4,ghSave.neutrinos.multPower-1).times(2))) el("neutrinoMultUpg").className = "gluonupgrade neutrinoupg"
+	if (ghSave.ghostParticles.gte(E_pow(4,ghSave.neutrinos.multPower-1).mul(2))) el("neutrinoMultUpg").className = "gluonupgrade neutrinoupg"
 	else el("neutrinoMultUpg").className = "gluonupgrade unavailablebtn"
 	if (sum.gte(getGHPMultCost())) el("ghpMultUpg").className = "gluonupgrade neutrinoupg"
 	else el("ghpMultUpg").className = "gluonupgrade unavailablebtn"
@@ -81,7 +81,7 @@ function onNotationChangeNeutrinos() {
 	if (!mod.ngp3) return
 	el("neutrinoUnlockCost").textContent=shortenDimensions(E(tmp.nbc[ghSave.neutrinos.boosts]))
 	el("neutrinoMult").textContent=shortenDimensions(E_pow(5, ghSave.neutrinos.multPower - 1))
-	el("neutrinoMultUpgCost").textContent=shortenDimensions(E_pow(4, ghSave.neutrinos.multPower-1).times(2))
+	el("neutrinoMultUpgCost").textContent=shortenDimensions(E_pow(4, ghSave.neutrinos.multPower-1).mul(2))
 	el("ghpMult").textContent=shortenDimensions(getGHPBaseMult())
 	el("ghpMultUpgCost").textContent=shortenDimensions(getGHPMultCost())
 	for (var u = 1; u < 15; u++) el("neutrinoUpg" + u + "Cost").textContent=shortenDimensions(E(tmp.nuc[u]))
@@ -89,7 +89,6 @@ function onNotationChangeNeutrinos() {
 
 function getNeutrinoGain() {
 	let ret = E_pow(5, ghSave.neutrinos.multPower - 1)
-	if (ghSave.ghostlyPhotons.unl) ret = ret.times(tmp.le[5])
 	if (isNanoEffectUsed("neutrinos")) ret = ret.times(tmp.nf.effects.neutrinos)
 	return ret
 }
@@ -134,23 +133,23 @@ function hasNU(id) {
 }
 
 function buyNeutrinoMult() {
-	let cost = E_pow(4, ghSave.neutrinos.multPower - 1).times(2)
+	let cost = E_pow(4, ghSave.neutrinos.multPower - 1).mul(2)
 	if (!ghSave.ghostParticles.gte(cost)) return
 	ghSave.ghostParticles=ghSave.ghostParticles.sub(cost).round()
 	ghSave.neutrinos.multPower++
 	el("neutrinoMult").textContent=shortenDimensions(E_pow(5, ghSave.neutrinos.multPower - 1))
-	el("neutrinoMultUpgCost").textContent=shortenDimensions(E_pow(4, ghSave.neutrinos.multPower - 1).times(2))
+	el("neutrinoMultUpgCost").textContent=shortenDimensions(E_pow(4, ghSave.neutrinos.multPower - 1).mul(2))
 }
 
 function maxNeutrinoMult() {
-	let cost = E_pow(4, ghSave.neutrinos.multPower - 1).times(2)
+	let cost = E_pow(4, ghSave.neutrinos.multPower - 1).mul(2)
 	if (!ghSave.ghostParticles.gte(cost)) return
-	let toBuy = Math.floor(ghSave.ghostParticles.div(cost).times(3).add(1).log(4))
-	let toSpend = E_pow(4, toBuy).sub(1).div(3).times(cost)
+	let toBuy = Math.floor(ghSave.ghostParticles.div(cost).mul(3).add(1).log(4))
+	let toSpend = E_pow(4, toBuy).sub(1).div(3).mul(cost)
 	ghSave.ghostParticles = ghSave.ghostParticles.sub(toSpend.min(ghSave.ghostParticles)).round()
 	ghSave.neutrinos.multPower += toBuy
 	el("neutrinoMult").textContent = shortenDimensions(E_pow(5, ghSave.neutrinos.multPower - 1))
-	el("neutrinoMultUpgCost").textContent = shortenDimensions(E_pow(4, ghSave.neutrinos.multPower - 1).times(2))
+	el("neutrinoMultUpgCost").textContent = shortenDimensions(E_pow(4, ghSave.neutrinos.multPower - 1).mul(2))
 }
 
 function getGHPBaseMult() {
@@ -159,8 +158,7 @@ function getGHPBaseMult() {
 
 function getGHPMultCost(offset=0) {
 	let lvl=ghSave.multPower+offset
-	return E_pow(5, lvl * 2 - 1).times(25e8)
-
+	return E_pow(25, lvl).mul(2e8)
 }
 
 function buyGHPMult() {
@@ -169,8 +167,7 @@ function buyGHPMult() {
 	if (sum.lt(cost)) return
 	subNeutrinos(cost)
 	ghSave.multPower++
-	ghSave.automatorGhosts[15].a = ghSave.automatorGhosts[15].a.times(5)
-	el("autoGhost15a").value = formatValue("Scientific", ghSave.automatorGhosts[15].a, 2, 1)
+
 	el("ghpMult").textContent = shortenDimensions(getGHPBaseMult())
 	el("ghpMultUpgCost").textContent = shortenDimensions(getGHPMultCost())
 }
@@ -180,12 +177,10 @@ function maxGHPMult() {
 	let cost = getGHPMultCost()
 	if (sum.lt(cost)) return
 
-	let toBuy=Math.floor(sum.div(cost).times(24).add(1).log(25))
-	subNeutrinos(E_pow(25,toBuy).sub(1).div(24).times(cost))
+	let toBuy=Math.floor(sum.div(cost).log(25)+1)
+	subNeutrinos(E_pow(25,toBuy-1).mul(cost))
 	ghSave.multPower+=toBuy
-	ghSave.automatorGhosts[15].a=ghSave.automatorGhosts[15].a.times(E_pow(5,toBuy))
 
-	el("autoGhost15a").value = formatValue("Scientific", ghSave.automatorGhosts[15].a, 2, 1)
 	el("ghpMult").textContent = shortenDimensions(getGHPBaseMult())
 	el("ghpMultUpgCost").textContent = shortenDimensions(getGHPMultCost())
 }
@@ -195,7 +190,6 @@ var neutrinoBoosts = {
 		1: function(nt) {
 			let nb1mult = .75
 			if (mod.p3ep) nb1mult = .8
-			if (isLEBoostUnlocked(7)) nb1mult *= tmp.leBonus[7]
 			let nb1neutrinos = nt[0].add(1).log10()+nt[1].add(1).log10()+nt[2].add(1).log10()
 			return Math.log10(1+nb1neutrinos)*nb1mult
 		},
@@ -227,7 +221,6 @@ var neutrinoBoosts = {
 			var nb6exp1 = .25
 			if (mod.p3ep) nb6exp1 = .26
 			let nb6 = Math.pow(Math.pow(nb6neutrinos, nb6exp1) * 0.525 + 1, bigRipped() ? 0.5 : 1)
-			if (isLEBoostUnlocked(9)) nb6 *= tmp.leBonus[7]
 			return nb6
 		},
 		7: function(nt) {
@@ -248,7 +241,6 @@ var neutrinoBoosts = {
 		},
 		9: function(nt) {
 			var nb9 = nt[0].add(1).log10()+nt[1].add(1).log10()+nt[2].add(1).log10()
-			if (isLEBoostUnlocked(9)) nb9 *= tmp.leBonus[7]
 			return nb9
 		},
 		10: function(nt) {
@@ -274,7 +266,7 @@ var neutrinoBoosts = {
 
 //GAIN
 function gainNeutrinos(bulk,type) {
-	let gain = getNeutrinoGain().times(bulk)
+	let gain = getNeutrinoGain().mul(bulk)
 	let gens = ["electron", "mu", "tau"]
 	if (type == "all") {
 		for (var g = 0; g < 3; g++) {
@@ -291,7 +283,7 @@ function givePerSecondNeuts(){
 	if (!hasAch("ng3p75")) return
 
 	var mult = 1 //in case you want to buff in the future
-	var n = getNeutrinoGain().times(mult)
+	var n = getNeutrinoGain().mul(mult)
 	ghSave.neutrinos.electron = ghSave.neutrinos.electron.plus(n)
 	ghSave.neutrinos.mu       = ghSave.neutrinos.mu.plus(n)
 	ghSave.neutrinos.tau      = ghSave.neutrinos.tau.plus(n)
@@ -301,5 +293,5 @@ function subNeutrinos(sub) {
 	let neu = ghSave.neutrinos
 	let sum = neu.electron.add(neu.mu).add(neu.tau).round()
 	let gen = ["electron", "mu", "tau"]
-	for (g = 0; g < 3; g++) neu[gen[g]] = neu[gen[g]].sub(neu[gen[g]].div(sum).times(sub).min(neu[gen[g]])).round()
+	for (g = 0; g < 3; g++) neu[gen[g]] = neu[gen[g]].sub(neu[gen[g]].div(sum).mul(sub).min(neu[gen[g]])).round()
 }

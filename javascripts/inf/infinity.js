@@ -105,7 +105,7 @@ function gainedInfinityPoints(next) {
 	else if (hasAch("r103")) div = 307.8;
 	if (inOnlyNGM(2)) div -= galIP()
 
-	var ret = pow10(player.money.e / div - 0.75).times(getIPMult())
+	var ret = pow10(player.money.e / div - 0.75).mul(getIPMult())
 	if (player.timestudy.studies.includes(41)) ret = ret.times(E_pow(tsMults[41](), player.galaxies + player.replicanti.galaxies))
 	if (player.timestudy.studies.includes(51)) ret = ret.times(mod.ngep?1e30:1e15)
 	if (player.timestudy.studies.includes(141)) ret = ret.times(E(1e45).dividedBy(E_pow(15, Math.log(player.thisInfinityTime+1)*Math.pow(player.thisInfinityTime+1, 0.125))).max(1))
@@ -142,7 +142,7 @@ function getIPMult() {
 }
 
 function IPonCrunchPassiveGain(diff){
-	if (player.timestudy.studies.includes(181)) player.infinityPoints = player.infinityPoints.plus(gainedInfinityPoints().times(diff / 100))
+	if (player.timestudy.studies.includes(181)) player.infinityPoints = player.infinityPoints.plus(gainedInfinityPoints().mul(diff / 100))
 }
 
 function doCrunchInfinitiesGain(){
@@ -356,11 +356,8 @@ function startNormalChallenge(x) {
 }
 
 function inNC(x, n) {
-	if (inNGM(4)) {
-		return x==0 ? !player.galacticSacrifice.chall : player.galacticSacrifice.chall == x
-	} else {
-		return player.currentChallenge == x==0 ? "" : "challenge"+x
-	}
+	if (inNGM(4)) return x==0 ? !player.galacticSacrifice.chall : player.galacticSacrifice.chall == x
+	else return player.currentChallenge == x==0 ? "" : "challenge"+x
 }
 
 function getTotalNormalChallenges() {

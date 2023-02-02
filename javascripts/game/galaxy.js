@@ -54,7 +54,6 @@ function getGalaxyRequirement(offset = 0, display) {
 		let div = 1e4
 		let over = tmp.grd.galaxies / (302500 / ghostlySpeed)
 		if (over >= 1) {
-			if (isLEBoostUnlocked(2) && tmp.be) div *= tmp.leBonus[2]
 			tmp.grd.speed = Math.pow(2, (tmp.grd.galaxies + 1 - 302500 / ghostlySpeed) * ghostlySpeed / div)
 			scaling = Math.max(scaling, 4)
 		}
@@ -101,7 +100,6 @@ function getGalaxyReqMultiplier() {
 	if (inNC(4)) ret = 90
 	if (player.infinityUpgrades.includes("galCost")) ret -= 5
 	if (player.infinityUpgrades.includes("postinfi52") && !inNGM(3)) ret -= 3
-	if (player.dilation.upgrades.includes("ngmm12")) ret -= 10
 	if (player.timestudy.studies.includes(42)) ret *= tsMults[42]()
 	return ret
 }
@@ -112,7 +110,6 @@ function getDistantScalingStart() {
 	if (player.timestudy.studies.includes(223)) n += 7
 	if (player.timestudy.studies.includes(224)) n += Math.floor(player.resets/2000)
 	if (bigRipped() && hasRipUpg(15)) n += tmp.bru[15]
-	if (player.dilation.upgrades.includes("ngmm11")) n += 25
 
 	if (tmp.grd.speed == 1) return Math.max(n, 0)
 	return n

@@ -388,22 +388,28 @@ let HOW_TO = [
 
 		title: "Neutrinos",
 		layer: "fundament",
-		desc: `There are three types of Neutrinos: Tau, Muon, and Electron. You gain one type of Neutrino at a time, gaining 1 of that type every time you gain a galaxy. Once you go quantum or fundament, the type of Neutrino you are gaining cycles between the three. Neutrino Boosts are more powerful based on total Neutrinos you have, and you can unlock more Neutrino Boosts by spending Elementary Particles. You can also spend Elementary Particles on Neutrino Multiplier upgrades, which multiply Neutrino gains. You can spend Neutrinos on Elementary Particle gain multipliers and Neutrino upgrades, more of which unlock as you Fundament more and more.`
+		desc: `There are 3 kinds of Neutrinos: Electrons, Mu, Tau. Getting a galaxy produces a Neutrino of a kind.<br>
+		Going Quantum switches which kind to produce. Fundamenting resets Neutrinos.
+		<br><br>
+		They boost things by spending Elementary Particles.<br>
+		You can also spend Neutrinos for upgrades.`
 	}, {
 		mod: _ => ngp3,
-		req: _ => ghSave?.ghostlyPhotons?.unl,
+		req: _ => ghSave?.photons?.unl,
 
 		title: "Photons",
 		layer: "fundament",
-		desc: `Your best tachyon particles produce Photons. Photons give Red Light at first.
+		desc: `Best Tachyon Particles produce Photons. Spend Elementary Particles, Neutrinos, or Photons for Spectral Ions.<br>
+		On clicking "Transfer", Spectral Ions go to Lights which boost things. Caps can be increased, only by +1.
 		<br><br>
-		Spend Elementary Particles, Neutrinos, or Photons to get Spectral Ions.
-		<br>
-		At a specific amount, next color is transferrable from excessive Lights with Spectral Ions.
-		<br><br>
-		There is also a capacity on each Light.
-		<br>
-		On maximizing, you'll gain a Light Empowerment. This locks prior Lights and increases Light capacity.`
+		On getting all Lights with all +1 on, you'll get a Light Empowerment. This also increases the cap by +1.`
+	/*}, {
+		mod: _ => ngp3,
+		req: _ => ghSave?.photons?.unl,
+
+		title: "Darkness",
+		layer: "fundament",
+		desc: `You can consume Spectral Ions for Darkness, which decreases Light cap. You'll unlock a Light (Vantablack), which boosts Neutrinos.`*/
 	}, {
 		mod: _ => ngp3,
 		req: _ => ghSave?.wzb?.unl,
@@ -411,17 +417,18 @@ let HOW_TO = [
 		title: "Bosonic Lab",
 		layer: "bl",
 		desc: `<b>Hypotheses</b><br>
-		There's a 4x4 grid where pairs of Hypotheses give something dependent on kinds. It is respeccable freely, which doesn't reset anything.
-		<br><br>
-		<b>W & Z Bosons</b><br>
-		Some bonds of Hypotheses give W & Z Bosons. Hypercharge must be 0 to activate.<br>
-		- W+ Boson = +1 Hypercharge, boosts something on activation<br>
-		- W- Boson = -1 Hypercharge<br>
-		- Z0 Boson = -1 Hypercharge<br>
-		- Some W Bosons = 1 W Boson in next generation.
+		There's a 4x4 grid where pairs of Hypotheses give something dependent on kinds.
 		<br><br>
 		<b>Bosonic Milestones</b><br>
-		At a specific amount of Best Bosons, you'll unlock Bosonic Milestones. This is boosted by Best Bosons too.`
+		At a specific amount of Bosons, you'll unlock Bosonic Milestones. This is boosted by Best Bosons.
+		<br><br>
+		<b>W & Z Bosons</b><br>
+		There are 3 bars, fillable with W Bosons.<br>
+		Only W+ Bosons boost something dependent on a bar.
+		<br><br>
+		Hypercharge must be 0 or less.<br>
+		- W+ = +1 Hypercharge<br>
+		- W- or Z0 = -1 Hypercharge`
 	}, {
 		mod: _ => ngp3,
 		req: _ => ghSave?.hb?.unl,
@@ -430,11 +437,9 @@ let HOW_TO = [
 		layer: "bl",
 		desc: `At ??? Bosons, you can prestige Bosonic Lab for Higgs. This doesn't reset Bosonic Milestones.
 		<br><br>
-		Higgs can be spent on new type of Dimensions: Higgs Dimensions, which produce Higgs Mass.
-		<br>
-		Higgs Mass provides various boosts depending on which you choosed.
-		<br>
-		Latter selections are less effective as you had less Higgs Mass.`
+		Higgs gives Higgs Dimensions (dependent on amount), which produce Higgs Mass in return.<br>
+		Higgs Mass provides various boosts depending on which you choosed.<br>
+		Latter selections are less effective as you had less.`
 	}/*, {
 		mod: _ => true,
 		req: _ => true,

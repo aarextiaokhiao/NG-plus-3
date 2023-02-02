@@ -12,34 +12,29 @@ function updateTemp() {
 	if (mod.ngp3) {
 		updateGhostifyTempStuff()
 		if (beSave && beSave.unlocked) updateBreakEternityUpgradesTemp()
+
 		if (hasMasteryStudy("d14")) updateBigRipUpgradesTemp()
 		if (tmp.nrm !== 1 && bigRipped()) {
 			if (!player.dilation.active && hasRipUpg(14)) tmp.nrm = tmp.nrm.pow(tmp.bru[14])
 			if (tmp.nrm.log10() > 1e9) tmp.nrm = pow10(1e9 * Math.pow(tmp.nrm.log10() / 1e9, 2/3))
 		}
-		if (hasMasteryStudy("d13")) updateTS431ExtraGalTemp()
-		if (hasMasteryStudy("d9")) {
+		tmp.be = brokeEternity()
+
+		if (hasMasteryStudy("d13")) {
+			tmp.branchSpeed = getBranchSpeed()
+			tmp.tue = getTreeUpgradeEfficiency()
+		}
+
+		if (hasMasteryStudy("d12")) updateNanofieldTemp()
+		if (hasMasteryStudy("d11")) tmp.edgm = getEmperorDimensionGlobalMultiplier() //Update global multiplier of all Emperor Dimensions
+		if (hasMasteryStudy("d10")) {
 			tmp.twr = getTotalWorkers()
 			tmp.tra = getTotalReplicants()
 		}
-		updateMasteryStudyTemp()
-		if (hasMasteryStudy("d13")) tmp.branchSpeed = getBranchSpeed()
-		if (NF.unl() && tmp.nf !== undefined && tmp.nf.rewardsUsed !== undefined) {
-			var x = getNanoRewardPowerEff()
-			var y = nfSave.rewards+tmp.nanofield_free_rewards
-			tmp.ns = getNanofieldSpeed()
-			if (tmp.nf.powerEff !== x || tmp.nf.rewards !== y) {
-				tmp.nf.powerEff = x
-				tmp.nf.rewards = y
-
-				updateNanoRewardPowers()
-				updateNanoRewardEffects()
-			}
-		}
-		if (hasMasteryStudy("d10")) tmp.edgm = getEmperorDimensionGlobalMultiplier() //Update global multiplier of all Emperor Dimensions
-		tmp.be = brokeEternity()
 		tmp.rg4 = quSave.upgrades.includes("rg4")
-		tmp.tue = getTreeUpgradeEfficiency()
+
+		updateMasteryStudyTemp()
+		updateIntergalacticTemp() // starts with if (mod.ngp3)
 	} else tmp.be = false
 	tmp.sacPow = calcTotalSacrificeBoost()
 	updateQCRewardsTemp()
@@ -49,8 +44,6 @@ function updateTemp() {
 	tmp.mpte = getMPTExp()
 	updatePostInfiTemp()
 	updateInfiniteTimeTemp()
-	updateAntiElectronGalaxiesTemp()
-	updateIntergalacticTemp() // starts with if (mod.ngp3)
 	if (hasBU(41)) {
 		tmp.blu[41] = bu.effects[41]()
 		tmp.it = tmp.it.times(tmp.blu[41].it)
@@ -66,11 +59,6 @@ function updateTemp() {
 	tmp.tsReduce = getTickSpeedMultiplier()
 	updateInfinityPowerEffects()
 	if (player.replicanti.unl) updateReplicantiTemp()
-
-	if (tmp.gameSpeed != gameSpeed) {
-		tmp.gameSpeed = gameSpeed
-		tmp.tickUpdate = true
-	}
 }
 
 let tmp = {
@@ -88,22 +76,7 @@ let tmp = {
 	nbc: [1,2,4,6,15,50,1e3,1e14,1e35,"1e500","1e2500","1e20000"],
 	nu: {},
 	nuc: [null,1e6,1e7,1e8,2e8,5e8,2e9,5e9,75e8,1e10,7e12,1e18,1e45,1e100,1e80,1e280,"e10000","e13000"],
-	lt: [100,3e3,2e4,1e5,1e6,1e7,1e8,1e9],
-	lti: [2,3,1.3,10,4,1e3,2.5,3],
-	effL: [0,0,0,0,0,0,0],
-	ls: [0,0,0,0,0,0,0],
-	le: [0,0,0,0,0,0,0],
-	leBonus: {},
-	nanofield_free_rewards: 0,
-	free_lights: 0,
-
-	gravitons: {
-		upg_eff: [],
-	},
-	bd: {
-		unls: 0,
-		upg_eff: [],
-	},
+	nanofield_free_rewards: 0
 }
 
 function updateInfiniteTimeTemp() {
@@ -112,16 +85,15 @@ function updateInfiniteTimeTemp() {
 		if (hasAch("ng3p56")) x *= 1.03
 		if (ghostified && ghSave.neutrinos.boosts>3) x *= tmp.nb[4]
 		if (tmp.be && !player.dilation.active && beSave.upgrades.includes(8)) x *= getBreakUpgMult(8)
-		if (isLEBoostUnlocked(8)) x *= tmp.leBonus[8]
 		x = softcap(x, "inf_time_log_1")
 	}
 	tmp.it = pow10(x)
 }
 
 function updateIntergalacticTemp() {
-	if (!mod.ngp3) return
+	if (!hasAch("ng3p27")) return
+
 	x = player.galaxies
-	if (isLEBoostUnlocked(3) && !bigRipped()) x *= tmp.leBonus[3]
 	if (tmp.be && player.dilation.active && beSave.upgrades.includes(10)) x *= getBreakUpgMult(10)
 	tmp.igg = x
 	tmp.igs = 0 //Intergalactic Scaling ; used in the display text
@@ -135,24 +107,10 @@ function updateIntergalacticTemp() {
 	tmp.ig = pow10(igLog)
 }
 
-function updateAntiElectronGalaxiesTemp(){
-	tmp.aeg = 0
-	if (hasBU(14) && !bigRipped()) tmp.aeg = Math.max(tmp.blu[14] - quSave.electrons.sacGals, 0)
-	tmp.effAeg = tmp.aeg
-}
-
 function updateTS232Temp() {
 	var exp = 0.2
 	if (mod.ngp3 && player.galaxies >= 1e4 && !tmp.be) exp *= Math.max(6 - player.galaxies / 2e3,0)
 	tmp.ts232 = Math.pow(1 + initialGalaxies() / 1000, exp)
-}
-
-function updateTS431ExtraGalTemp() {
-	tmp.eg431 = tmp.effAeg * 5
-	if (isLEBoostUnlocked(1)) {
-		tmp.leBonus[1].total = (colorBoosts.g + tmp.pe - 1) * tmp.leBonus[1].effect
-		tmp.eg431 += tmp.leBonus[1].total
-	}
 }
 
 function updateMatterSpeed() {
@@ -186,39 +144,15 @@ function updatePostInfiTemp() {
 		exp11 += player.totalmoney.plus(10).div(10).log10() / 1e4
 		exp21 += player.money.plus(10).div(10).log10() / 1e4
 	}
-	tmp.postinfi11 = Math.pow(player.totalmoney.plus(10).log10(), exp11)
-	tmp.postinfi21 = Math.pow(player.money.plus(10).log10(), exp21)
-}
-
-function updatePPTITemp(){
-	if (!ghSave.ghostlyPhotons.unl) {
-		tmp.ppti = 1
-		return
-	}
-	let x = 1
-	x /= tmp.le[1] || 1
-	if (hasAch("ng3p113")) x /= 2
-	tmp.ppti = x
+	tmp.postinfi11 = E_pow(player.totalmoney.plus(10).log10(), exp11)
+	tmp.postinfi21 = E_pow(player.money.plus(10).log10(), exp21)
 }
 
 function updateGhostifyTempStuff(){
 	updateBosonicLabTemp()
-	updatePPTITemp() //pilon power threshold increase
-	if (ghSave.ghostlyPhotons.unl) {
-		var x = getLightEmpowermentBoost()
-		var y = hasBU(32)
-		tmp.free_lights = 0
-		if (tmp.leBoost !== x || tmp.hasBU32 !== y || tmp.updateLights) {
-			tmp.leBoost = x
-			tmp.hasBU32 = y
-			tmp.updateLights = false
-			updateFixedLightTemp()
-		}
-		updateIndigoLightBoostTemp()
-		updateVioletLightBoostTemp()
+	if (PHOTON.unlocked()) {
+		PHOTON.updateTemp()
 		updatePhotonsUnlockedBRUpgrades()
-		updateNU14Temp()
-		updateNU15Temp()
 	}
 	if (ghostified) {
 		updateNeutrinoUpgradesTemp()
@@ -287,6 +221,8 @@ function updateNeutrinoUpgradesTemp(){
 	updateNU4Temp()
 	updateNU7Temp()
 	updateNU12Temp()
+	updateNU14Temp()
+	updateNU15Temp()
 }
 
 function updateBreakEternityUpgrade1Temp(){
@@ -378,7 +314,7 @@ function updateBreakEternityUpgradesTemp() {
 	//Upgrade 7: EP Mult
 	tmp.beu[7] = E_pow(1e9, beSave.epMultPower)
 
-	if (ghSave.ghostlyPhotons.unl) {
+	if (PHOTON.unlocked()) {
 		updateBreakEternityUpgrade8Temp()
 		updateBreakEternityUpgrade9Temp()
 		updateBreakEternityUpgrade10Temp()

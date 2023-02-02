@@ -159,9 +159,9 @@ let RESETS = {
 			if (!hasAch("ng3p67") || player.dilation.active) {
 				let keepPartial = mod.ngp3 && player.dilation.upgrades.includes("ngpp3") && getEternitied() >= 2e10
 				player.replicanti.chance = keepPartial ? Math.min(player.replicanti.chance, 1) : 0.01
-				player.replicanti.chanceCost = E_pow(1e15, player.replicanti.chance * 100).times(inNGM(2) ? 1e75 : 1e135)
+				player.replicanti.chanceCost = E_pow(1e15, player.replicanti.chance * 100).mul(inNGM(2) ? 1e75 : 1e135)
 				player.replicanti.interval = keepPartial ? Math.max(player.replicanti.interval, player.timestudy.studies.includes(22) ? 1 : 50) : 1000
-				player.replicanti.intervalCost = E_pow(1e10, Math.round(Math.log10(1000 / player.replicanti.interval) / -Math.log10(0.9))).times(inNGM(2) ? 1e80 : 1e140)
+				player.replicanti.intervalCost = E_pow(1e10, Math.round(Math.log10(1000 / player.replicanti.interval) / -Math.log10(0.9))).mul(inNGM(2) ? 1e80 : 1e140)
 				player.replicanti.gal = 0
 				player.replicanti.galCost = E(inNGM(2) ? 1e110 : 1e170)
 				player.replicanti.galaxies = 0
@@ -398,7 +398,7 @@ function completelyResetTimeDimensions(){
 		bought: 0
 	}
 	player.timeDimension8 = {
-		cost: timeDimCost(8,0),
+		cost: E("1e3350"),
 		amount: E(0),
 		power: E(1),
 		bought: 0
@@ -415,10 +415,7 @@ function doGhostifyGhostifyResetStuff(bm, force){
 		ghSave.neutrinos.tau = E(0)
 	}
 
-	ghSave.ghostlyPhotons.amount = E(0)
-	ghSave.ghostlyPhotons.darkMatter = E(0)
-	ghSave.ghostlyPhotons.ghostlyRays = E(0)
-	tmp.bl.watt = 0
+	blSave.watt = 0
 
 	updateLastTenGhostifies()
 

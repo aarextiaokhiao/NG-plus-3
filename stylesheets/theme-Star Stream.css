@@ -897,15 +897,14 @@ strong { color: #0072e5 }
     color: #fff !important
 }
 
-.bigripbtn {
+.bigrip {
     background: linear-gradient(#9ff, #9f9) !important;
     border: 3px solid white !important;
     color: #000 !important;
     box-shadow: inset 0px 0px 15px 0px whitesmoke !important
 }
 
-.bigripbtn:hover,
-.gluonupgrade.bigrip:hover,
+.bigrip:hover,
 .gluonupgradebought.bigrip {
     background-color: #5be567 !important;
     color: #191919 !important;

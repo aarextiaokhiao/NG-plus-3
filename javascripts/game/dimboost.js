@@ -11,13 +11,13 @@ function getDimensionBoostPower(next, focusOn) {
 	if (hasGalUpg(23) && ((!inNC(14) && player.currentChallenge != "postcngm3_3") || !inNGM(3) || inNGM(4)) && player.currentChallenge != "postcngm3_4") ret *= galMults.u23()
 	if (player.infinityUpgrades.includes("resetMult") && inNGM(2)) ret *= 1.2 + 0.05 * player.infinityPoints.max(1).log(10)
 	if (!player.boughtDims && hasAch("r101")) ret = ret * 1.01
-	if (player.timestudy.studies.includes(83)) ret = E_pow(1.0004, player.totalTickGained).min(mod.ngpp ? 1/0 : 1e30).times(ret);
-	if (player.timestudy.studies.includes(231)) ret = E_pow(Math.max(player.resets, 1), 0.3).times(ret)
+	if (player.timestudy.studies.includes(83)) ret = E_pow(1.0004, player.totalTickGained).min(mod.ngpp ? 1/0 : 1e30).mul(ret);
+	if (player.timestudy.studies.includes(231)) ret = E_pow(Math.max(player.resets, 1), 0.3).mul(ret)
 	if (inNGM(2)) {
-		if (player.currentChallenge == "postc7" || inQC(6) || player.timestudy.studies.includes(81)) ret = Math.pow(ret , 3)
-		else if (player.challenges.includes("postc7")) ret = Math.pow(ret,2)
+		if (player.currentChallenge == "postc7" || inQC(6) || player.timestudy.studies.includes(81)) ret = E_pow(ret, 3)
+		else if (player.challenges.includes("postc7")) ret = E_pow(ret, 2)
 	}
-	if (hasDilStudy(6) && player.currentEternityChall != "eterc14" && !inQC(3) && !inQC(7)) ret = getExtraDimensionBoostPower().times(ret)
+	if (hasDilStudy(6) && player.currentEternityChall != "eterc14" && !inQC(3) && !inQC(7)) ret = getExtraDimensionBoostPower().mul(ret)
 	return E(ret)
 }
 
@@ -27,7 +27,7 @@ function dimBoost(bulk, tier=1) {
 	player.resets += bulk;
 	if (mod.ngp3 && player.resets > 4) player.old = false
 	if (inNC(14) && !inNGM(3)) player.tickBoughtThisInf.pastResets.push({resets: player.resets, bought: player.tickBoughtThisInf.current})
-	if (mod.ngp3 && getEternitied() >= 1e9 && player.dilation.upgrades.includes("ngpp6") && tier < 2) {
+	if (mod.ngp3 && getEternitied() >= 1e9 && tier < 2) {
 		skipResets()
 		player.matter = E(0)
 		player.postC8Mult = E(1)
@@ -53,10 +53,10 @@ function setInitialMoney() {
 
 function setInitialDimensionPower() {
 	var dimensionBoostPower = getDimensionBoostPower()
-	if (mod.ngp3 && getEternitied() >= 1e9 && player.dilation.upgrades.includes("ngpp6")) player.dbPower = dimensionBoostPower
+	if (mod.ngp3 && getEternitied() >= 1e9) player.dbPower = dimensionBoostPower
 
 	var tickspeedPower = player.totalTickGained
-	player.tickspeed = E_pow(getTickSpeedMultiplier(), tickspeedPower).times(mod.ngep ? 500 : 1e3)
+	player.tickspeed = E_pow(getTickSpeedMultiplier(), tickspeedPower).mul(mod.ngep ? 500 : 1e3)
 	
 	var ic3Power = player.totalTickGained * getECReward(14)
 	if (inNGM(3) && player.currentChallenge != "postc5") {

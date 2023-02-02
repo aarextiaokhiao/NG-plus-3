@@ -1,6 +1,6 @@
 //Bosonic Lab
 function canUnlockBosonicLab() {
-	return ghSave.ghostlyPhotons.enpowerments >= 4
+	return false
 }
 
 function updateBLUnlocks() {
@@ -10,7 +10,7 @@ function updateBLUnlocks() {
 }
 
 function updateBLUnlockDisplay() {
-	el("blUnl").textContent = "To unlock Bosonic Lab, you need to get " + getFullExpansion(4) + " Spectral Ions first."
+	el("blUnl").textContent = "Get ??? Spectral Ions to unlock Bosonic Lab."
 }
 
 function getBosonicWattGain() {
@@ -42,7 +42,7 @@ function bosonicTick(diff) {
 	if (data.odSpeed > 1 && data.battery.gt(0)) {
 		var bBtL = getBosonicBatteryLoss()
 		var odDiff = diff.times(bBtL).min(data.battery)
-		var fasterDiff = odDiff.div(bBtL).times(getBosonicOverdrive())
+		var fasterDiff = odDiff.div(bBtL).mul(getBosonicOverdrive())
 		data.battery = data.battery.sub(diff.times(bBtL).min(data.battery))
 		diff = fasterDiff.add(diff.sub(odDiff.min(diff)))
 	}
@@ -67,7 +67,7 @@ function bosonicTick(diff) {
 				if (toSub.mod(2).gt(0)) lData.wQkUp = !lData.wQkUp
 				lData.wQkProgress = lData.wQkProgress.sub(toSub.min(lData.wQkProgress))
 
-				let toAdd = getBatteryGainPerSecond(toSub.div(diff)).times(diff)
+				let toAdd = getBatteryGainPerSecond(toSub.div(diff)).mul(diff)
 				data.battery = data.battery.add(toAdd.times(diff))
 				tmp.batteryGainLast = toAdd
 			}
@@ -76,19 +76,19 @@ function bosonicTick(diff) {
 			lData.zNeProgress = lData.zNeProgress.add(apDiff.times(getOscillateGainSpeed()))
 			if (lData.zNeProgress.gte(1)) {
 				let oscillated = Math.floor(lData.zNeProgress.add(1).log(2))
-				lData.zb = lData.zb.add(E_pow(Math.pow(2, 0.75), oscillated).sub(1).div(Math.pow(2, 0.75)-1).times(lData.zNeReq.pow(0.75)))
+				lData.zb = lData.zb.add(E_pow(Math.pow(2, 0.75), oscillated).sub(1).div(Math.pow(2, 0.75)-1).mul(lData.zNeReq.pow(0.75)))
 				lData.zNeProgress = lData.zNeProgress.sub(pow2(oscillated).sub(1).min(lData.zNeProgress)).div(pow2(oscillated))
 				lData.zNeReq = lData.zNeReq.times(pow2(oscillated))
 				lData.zNeGen = (lData.zNeGen+oscillated-1)%3+1
 			}
 		}
 		if (lData.dPUse == 3) {
-			lData.wpb = lData.wpb.add(lData.wnb.min(apDiff).times(tmp.wzb.zbs))
-			lData.wnb = lData.wnb.sub(lData.wnb.min(apDiff).times(tmp.wzb.zbs))
+			lData.wpb = lData.wpb.add(lData.wnb.min(apDiff).mul(tmp.wzb.zbs))
+			lData.wnb = lData.wnb.sub(lData.wnb.min(apDiff).mul(tmp.wzb.zbs))
 		}
 		lData.dP = lData.dP.sub(diff.times(getAntiPreonLoss()).min(lData.dP))
 		if (lData.dP.eq(0)) lData.dPUse = 0
-	} else lData.dP = lData.dP.add(getAntiPreonProduction().times(diff))
+	} else lData.dP = lData.dP.add(getAntiPreonProduction().mul(diff))
 	lData.zNeReq=pow10(Math.sqrt(Math.max(Math.pow(lData.zNeReq.log10(),2) - diff / 100, 0)))
 	
 	//Bosonic Extractor
@@ -126,7 +126,7 @@ function bosonicTick(diff) {
 
 	//Bosons production
 	var newBA = data.am
-	var baAdded = getBosonProduction().times(diff)
+	var baAdded = getBosonProduction().mul(diff)
 	data.am = newBA.add(baAdded)
 }
 
@@ -141,7 +141,7 @@ function getAchBWMult(){
 
 function getBosonProduction() {
 	var exp = Math.pow(player.money.max(1).log10() / 15e15 + 1, 0.8) - 4
-	var ret = pow10(exp).times(tmp.wzb.wbp)
+	var ret = pow10(exp).mul(tmp.wzb.wbp)
 	if (ghSave.bl.usedEnchants.includes(34)) ret = ret.times(tmp.bEn[34] || 1)
 	if (ghSave.neutrinos.boosts >= 12) ret = ret.times(tmp.nb[12])
 	//maybe softcap at e40 or e50?
@@ -198,9 +198,9 @@ function showBLTab(tabName) {
 }
 
 function getEstimatedNetBatteryGain(){
-	let pos = (tmp.batteryGainLast || E(0)).times(1000)
+	let pos = (tmp.batteryGainLast || E(0)).mul(1000)
 	if (ghSave.wzb.dPUse != 1) pos = E(0)
-	let neg = getBosonicBatteryLoss().times(ghSave.bl.speed)
+	let neg = getBosonicBatteryLoss().mul(ghSave.bl.speed)
 	if (pos.gte(neg)) return [true, pos.minus(neg)]
 	return [false, neg.minus(pos)]
 }
@@ -216,7 +216,7 @@ function updateBosonicLabTab(){
 	el("bSpeed").textContent = shorten(data.speed)
 	el("bTotalSpeed").textContent = shorten(speed)
 	el("bAM").textContent = shorten(data.am)
-	el("bAMProduction").textContent = "+" + shorten(getBosonProduction().times(speed)) + "/s"
+	el("bAMProduction").textContent = "+" + shorten(getBosonProduction().mul(speed)) + "/s"
 	el("bBt").textContent = shorten(data.battery)
 	let x = getEstimatedNetBatteryGain()
 	s = shorten(x[1]) + "/s"
@@ -318,7 +318,7 @@ function canBuyEnchant(id) {
 }
 
 function isEnchantUsed(x) {
-	return tmp.bEn !== undefined && tmp.bEn[x] !== undefined && tmp.bl.usedEnchants.includes(x)
+	return tmp.bEn !== undefined && tmp.bEn[x] !== undefined && blSave.usedEnchants.includes(x)
 }
 
 function getMaxEnchantLevelGain(id) {
@@ -665,8 +665,6 @@ function buyBosonicUpgrade(id, quick) {
 
 	if (!quick) updateTemp()
 	if (id == 21 || id == 22) updateNanoRewardTemp()
-	if (id == 32) tmp.updateLights = true
-	delete ghSave.hb.bosonicSemipowerment
 
 	return true
 }
@@ -685,7 +683,7 @@ function buyMaxBosonicUpgrades() {
 }
 
 function hasBU(x) {
-	return ghostified && ghSave.wzb.unl && (tmp.bl||ghSave.bl).upgrades.includes(x)
+	return ghostified && ghSave.wzb.unl && (blSave||ghSave.bl).upgrades.includes(x)
 }
 
 function updateBosonicUpgradeDescs() {
@@ -894,7 +892,7 @@ var bu = {
 			return (Math.sqrt(ghSave.hb.higgs + 1) - 1) / div + 1
 		},
 		34: function() {
-			var galPart = Math.log10(player.galaxies / 1e4 + 1) + Math.log10(getTotalRG() / 1e4 + 1) + Math.log10(player.dilation.freeGalaxies / 1e4 + 10) * Math.log10(tmp.aeg / 1e4 + 1)
+			var galPart = Math.log10(player.galaxies / 1e4 + 1) + Math.log10(getTotalRG() / 1e4 + 1) + Math.log10(player.dilation.freeGalaxies / 1e4 + 10)
 			var exp = mod.p3ep ? 1/3 : 1/4
 			return Math.pow(galPart / 5 + 1, exp)
 		},
@@ -985,7 +983,7 @@ function getBatteryGainPerSecond(toSub) {
 	let batteryMult = new Decimal(1)
 	if (isEnchantUsed(24)) batteryMult = batteryMult.times(tmp.bEn[24])
 
-	let toAdd = toSub.div(1e6).times(batteryMult)
+	let toAdd = toSub.div(1e6).mul(batteryMult)
 	if (toAdd.gt(1e3)) toAdd = Decimal.pow(toAdd.log10() + 7, 3)
 
 	return toAdd
@@ -1045,11 +1043,11 @@ function updateWZBosonsTab() {
 	let data2 = tmp.wzb
 	let data3 = ghSave.wzb
 	let speed = getBosonicFinalSpeed()
-	let show0 = data2.dPUse == 1 && getAntiPreonLoss().times(speed).div(aplScalings[1]).times(tmp.wzb.zbs).gte(10)
+	let show0 = data2.dPUse == 1 && getAntiPreonLoss().mul(speed).div(aplScalings[1]).mul(tmp.wzb.zbs).gte(10)
 	let gainSpeed = getOscillateGainSpeed()
 	let r
-	if (!data2.dPUse) r = getAntiPreonProduction().times(speed)
-	else r = getAntiPreonLoss().times(speed)
+	if (!data2.dPUse) r = getAntiPreonProduction().mul(speed)
+	else r = getAntiPreonLoss().mul(speed)
 	el("ap").textContent = shorten(data3.dP)
 	el("apProduction").textContent = (data3.dPUse ? "-" : "+") + shorten(r) + "/s"
 	el("apUse").textContent = data3.dPUse == 0 ? "" : "You are currently consuming Anti-Preons to " + (["", "decay W Bosons", "oscillate Z Bosons", "convert W- to W+ Bosons"])[data3.dPUse] + "."

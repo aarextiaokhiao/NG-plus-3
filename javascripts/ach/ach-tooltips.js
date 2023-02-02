@@ -401,17 +401,17 @@ function setR19Tooltip(){
 	gofast.setAttribute('ach-tooltip', "Get "+shorten(pow10(1185))+" EP first, and then square your EP by disabling dilation while Big Ripped. Reward: Space shards multiply quark gain.")
 	immunity.setAttribute('ach-tooltip', "Get " + shorten(pow10(8e7)) + " antimatter with one normal galaxy while in Eternity Challenge 7 and big ripped. Reward: Infinite Time is 3% stronger.")
 	notSmart.setAttribute('ach-tooltip', "Get "+shorten(1e215)+" Time Shards without having Time Study 11 while Big Ripped. Reward: Meta Dimensions get a multiplier based on time shards.")
-	timeBreak.setAttribute('ach-tooltip', "Break Eternity. Reward: Galaxies don't reset Dimension Boosts, and Quantum Challenges now cost 0 electrons.")
-	soLife.setAttribute('ach-tooltip', "Reach " + shortenCosts(pow10(3.5e5)) + " IP in Big Rip while dilated, with no EP multiplier upgrades and time studies. Reward: Square the Elementary Particle gain, with a hardcap at " + shortenCosts(1e10) + "x, and the hardcap is further lowered if you have more than " + shortenCosts(1e60) + " Elementary Particles.")
+	timeBreak.setAttribute('ach-tooltip', "Break Eternity. Reward: Galaxies don't reset Dimension Boosts and Quantum Challenges are free.")
+	soLife.setAttribute('ach-tooltip', "Reach " + shortenCosts(pow10(3.5e5)) + " IP in Big Rip while dilated, with no EP multiplier upgrades and time studies. Reward: Start with 1 Eighth Time Dimension in Big Rips.")
 }
 
 function setR20Tooltip(){
-	// Row 20 (ng3p6) (7/8)
+	// Row 20 (ng3p6) (5/8)
 	let keeheehee = el("Kee-hee-hee!")
 	let finite = el("Finite Time")
 	//ng3p63/////
 	let really = el("Really?")
-	let grind = el("But I don't want to grind!")
+	//ng3p65/////
 	let oppose = el("I rather oppose the theory of everything")
 	let willenough = el("Will it be enough?")
 	let pls = el("Please answer me why you are dying.")
@@ -419,17 +419,16 @@ function setR20Tooltip(){
 	let willenoughReward = [] // for the achievement "Will it be enough?"
 	willenoughReward.push("Replicated Galaxies don't reset until next Eternity")
 	willenoughReward.push("keep Replicanti upgrades on normal Eternity runs")
-	if (mod.udp&&!aarMod.ngumuV) willenoughReward.push("keep Black Hole Dimensions on Quantum")
+	if (mod.udp && !aarMod.ngumuV) willenoughReward.push("keep Black Hole Dimensions on Quantum")
 	willenoughReward = wordizeList(willenoughReward, true)
 
 	//ACHIEVEMENT ROW 20
+	keeheehee.setAttribute('ach-tooltip', "Fundament. Reward: Start with " + getFullExpansion(1e5) + " banked Eternities, " + shorten(Number.MAX_VALUE) + " aQ features, and all achievements prior to Paired Challenges.")
 	finite.setAttribute('ach-tooltip', "Get " + shortenCosts(1e33) + " Space Shards without Breaking Eternity within this Fundament. Reward: Outside of Big Rips, Tree Upgrades are 10% stronger. In Big Rips, 8th Time Dimensions gain an small exponent boost based on your current Fundament time.")
 	really.setAttribute('ach-tooltip', "Reach " + shortenCosts(pow10(5000)) + " matter in Big Rip. Reward: Buying Electron upgrades doesn't consume Meta-Dimension Boosts.")
-	grind.setAttribute('ach-tooltip', "Get the 21st Nanoreward without having Tree Upgrades. Reward: Gain more Quarks based on Radioactive Decays.")
 	willenough.setAttribute('ach-tooltip', "Reach " + shortenCosts(pow10(mod.udp ? 268435456 : 36000000))+" replicanti." + (willenoughReward != "" ? " Reward: " + willenoughReward + "." : ""))
 	oppose.setAttribute('ach-tooltip', "Become a ghost with at most 1x quantumed stat. Reward: You gain more Quarks based on your quantumed stat.")
 	pls.setAttribute('ach-tooltip', "Reach " + shortenCosts(pow10(9.5e5)) + " IP in Big Rip while dilated, with no EP multiplier upgrades, time studies, and Break Eternity within this Fundament. Reward: Gain "+shortenDimensions(2e3)+" galaxies worth of Neutrinos on Fundament. (multiplied by best galaxies in Big Rip)")
-	keeheehee.setAttribute('ach-tooltip', "Become a ghost. Reward: Multiply Eternities gained by 100x (weakens as you have more), all quantum mechanic unlocks only require Time Theorems, assignation options are kept permanently, Nanofield is 3x faster until you reach 16 rewards, get all achievements prior to Paired Challenges, and start with 1 Eighth Time Dimension in Big Rips.")
 }
 
 function setBMTooltip(){
@@ -437,7 +436,7 @@ function setBMTooltip(){
 	let bm14 = el("braveMilestone14")
 
 	//BRAVE MILESTONES
-	bm14.setAttribute('ach-tooltip', "Reward: Start with " + shortenCosts(1e25) + " Quark Spins and Spins speed up Branches.")
+	bm14.setAttribute('ach-tooltip', "Reward: Start with " + shortenCosts(1e25) + " Quark Spins.")
 }
 
 function setR21Tooltip(){
@@ -459,11 +458,11 @@ function setR21Tooltip(){
 }
 
 function setR22Tooltip(){
-	// Row 22 (ng3p8) (4/8)
+	// Row 22 (ng3p8) (3/8)
 	let ghostierthanbefore = el("Even Ghostlier than before")
 	//ng3p82/////
 	//ng3p83/////
-	let isnotenough = el("Big Rip isn't enough") 
+	//ng3p84/////
 	let ee = el("Everlasting Eternities")
 	let btco = el("Back to Challenge One")
 	//ng3p87/////
@@ -471,9 +470,8 @@ function setR22Tooltip(){
 
 	//ACHIEVEMENT ROW 22
 	ghostierthanbefore.setAttribute("ach-tooltip", "Unlock Bosonic Lab. Reward: Meta-antimatter effect uses best MA in current Fundament, and obtain achievements prior to Photons.")
-	ee.setAttribute('ach-tooltip', "Get "+shorten(Number.MAX_VALUE)+" eternities. Reward: Spectral Ions boost Quarks.")
+	ee.setAttribute('ach-tooltip', "Get "+shorten(Number.MAX_VALUE)+" eternities.")
 	btco.setAttribute('ach-tooltip', "Complete Paired Challenge 1 after getting "+shortenCosts(pow10(1.65e9)) + " antimatter in Quantum Challenges 6 and 8. Reward: Fundaments lose 25% of Radioactive Decays.")
-	isnotenough.setAttribute('ach-tooltip', "Complete a Paired Challenge with Quantum Challenges 6 and 8 combinations. ")
 }
 
 function setR23Tooltip(){

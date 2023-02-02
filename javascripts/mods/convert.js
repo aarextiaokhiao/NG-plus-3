@@ -4,27 +4,31 @@ function updateConvertSave(convertMod) {
 	if (convertMod === "NG+3") {
 		convert = true;
 		conversionText = "Convert to NG+3";
-	} else
-		convert = false;
+	} else if (convertMod === "NGUdS'") {
+		convert = true;
+		conversionText = "Convert to NGUdS'";
+	} else convert = false;
 	el("convertSave").style.display = convert ? "" : "none";
 	el("convertSave").textContent = conversionText;
 }
 
 function eligibleConvert() {
-	if (aarMod.newGame3PlusVersion == undefined && !mod.ngmX && !mod.ngud && !inEasierMode() && !aarMod.ersVersion) {
-		convert = "NG+3";
+	if (!mod.ngp3 && !inEasierMode() && !aarMod.ersVersion) {
+		if (mod.ngud) convert = "NGUdS'"
+		else convert = "NG+3"
 	} else
 		convert = undefined;
 	return convert;
 }
 
 function convertSave(conversion) {
-	if (conversion === "NG+3") {
-		if (!confirm("Upon converting to NG+3, this save will no longer be able to be reverted back into its original state. It is recommended to export before converting, so that you don't lose anything upon conversion. Are you sure you want to convert this save to NG+3?"))
-			return;
+	if (conversion) {
+		if (!confirm("Upon converting to " + conversion + ", this save will no longer be able to be reverted back into its original state. It is recommended to export before converting, so that you don't lose anything upon conversion.")) return
 		clearInterval(gameLoopIntervalId);
-		doNGPlusTwoNewPlayer();
+
+		if (!player.meta) doNGPlusTwoNewPlayer();
 		doNGPlusThreeNewPlayer();
+		if (conversion === "NGUdS'") doNGUDSemiprimePlayer()
 		set_save(metaSave.current, player);
 		reload();
 		$.notify("Conversion successful", "success");

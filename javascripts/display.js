@@ -38,7 +38,7 @@ function getGalaxyScaleName(x) {
 }
 
 function intergalacticDisplay(){
-	if (hasAch("ng3p27") && getShiftRequirement(0).tier == 8) {
+	if (tmp.ig && getNormalDimensions() == 8) {
 		el("intergalacticLabel").parentElement.style.display = ""
 		let nanopart = 1
 		if (isNanoEffectUsed("dil_effect_exp")) nanopart = tmp.nf.effects["dil_effect_exp"] || 1
@@ -432,7 +432,7 @@ function initialTimeStudyDisplay(){
 	el("192desc").textContent = "You can get beyond " + shortenMoney(Number.MAX_VALUE) + " replicantis, but the interval is increased the more you have"
 	el("193desc").textContent = "Currently: " + shortenMoney(E_pow(1.03, Decimal.min(1e7, getEternitied())).min("1e13000")) + "x"
 	el("212desc").textContent = "Currently: " + ((tsMults[212]() - 1) * 100).toFixed(2) + "%"
-	el("214desc").textContent = "Currently: " + shortenMoney(((tmp.sacPow.pow(8)).min("1e46000").times(tmp.sacPow.pow(1.1)).div(tmp.sacPow)).max(1).min(E("1e125000"))) + "x"
+	el("214desc").textContent = "Currently: " + shortenMoney(((tmp.sacPow.pow(8)).min("1e46000").mul(tmp.sacPow.pow(1.1)).div(tmp.sacPow)).max(1).min(E("1e125000"))) + "x"
 	el("metaCost").textContent = shortenCosts(getMetaUnlCost());
 }
 
@@ -450,13 +450,13 @@ function eternityChallengeUnlockDisplay(){
 	else el("ec5unl").innerHTML = "Eternity Challenge 5<span>Cost: 130 Time Theorems"
 	if (player.etercreq !== 6) el("ec6unl").innerHTML = "Eternity Challenge 6<span>Requirement: "+(40+(ECComps("eterc6")*5))+" replicanti galaxies<span>Cost: 85 Time Theorems"
 	else el("ec6unl").innerHTML = "Eternity Challenge 6<span>Cost: 85 Time Theorems"
-	if (player.etercreq !== 7) el("ec7unl").innerHTML = "Eternity Challenge 7<span>Requirement: "+shortenCosts(E("1e500000").times(E("1e300000").pow(ECComps("eterc7"))))+" antimatter <span>Cost: 115 Time Theorems"
+	if (player.etercreq !== 7) el("ec7unl").innerHTML = "Eternity Challenge 7<span>Requirement: "+shortenCosts(E("1e500000").mul(E("1e300000").pow(ECComps("eterc7"))))+" antimatter <span>Cost: 115 Time Theorems"
 	else el("ec7unl").innerHTML = "Eternity Challenge 7<span>Cost: 115 Time Theorems"
-	if (player.etercreq !== 8) el("ec8unl").innerHTML = "Eternity Challenge 8<span>Requirement: "+shortenCosts(E("1e4000").times(E("1e1000").pow(ECComps("eterc8"))))+" IP <span>Cost: 115 Time Theorems"
+	if (player.etercreq !== 8) el("ec8unl").innerHTML = "Eternity Challenge 8<span>Requirement: "+shortenCosts(E("1e4000").mul(E("1e1000").pow(ECComps("eterc8"))))+" IP <span>Cost: 115 Time Theorems"
 	else el("ec8unl").innerHTML = "Eternity Challenge 8<span>Cost: 115 Time Theorems"
-	if (player.etercreq !== 9) el("ec9unl").innerHTML = "Eternity Challenge 9<span>Requirement: "+shortenCosts(E("1e17500").times(E("1e2000").pow(ECComps("eterc9"))))+" infinity power<span>Cost: 415 Time Theorems"
+	if (player.etercreq !== 9) el("ec9unl").innerHTML = "Eternity Challenge 9<span>Requirement: "+shortenCosts(E("1e17500").mul(E("1e2000").pow(ECComps("eterc9"))))+" infinity power<span>Cost: 415 Time Theorems"
 	else el("ec9unl").innerHTML = "Eternity Challenge 9<span>Cost: 415 Time Theorems"
-	if (player.etercreq !== 10) el("ec10unl").innerHTML = "Eternity Challenge 10<span>Requirement: "+shortenCosts(E("1e100").times(E("1e20").pow(ECComps("eterc10"))))+" EP<span>Cost: 550 Time Theorems"
+	if (player.etercreq !== 10) el("ec10unl").innerHTML = "Eternity Challenge 10<span>Requirement: "+shortenCosts(E("1e100").mul(E("1e20").pow(ECComps("eterc10"))))+" EP<span>Cost: 550 Time Theorems"
 	else el("ec10unl").innerHTML = "Eternity Challenge 10<span>Cost: 550 Time Theorems"
 
 	el("ec11unl").innerHTML = "Eternity Challenge 11<span>Requirement: Use only the Normal Dimension path<span>Cost: 1 Time Theorem"
@@ -575,7 +575,6 @@ function showHideConfirmations() {
 	el("quantumConfirmBtn").style.display = quantumed ? "inline-block" : "none"
 	el("bigRipConfirmBtn").style.display = brSave?.times ? "inline-block" : "none"
 	el("ghostifyConfirmBtn").style.display = ghostified ? "inline-block" : "none"
-	el("leConfirmBtn").style.display = ghostified && ghSave.ghostlyPhotons.enpowerments ? "inline-block" : "none"
 }
 
 //PRESTIGES
@@ -662,7 +661,7 @@ function updateResetTierButtons(){
 	if (!mod.ngpp) return
 
 	let bigRip = bigRipped()
-	el("quantumbtn").className = bigRip ? "bigripbtn" : "quantumbtn"
+	el("quantumbtn").className = bigRip ? "bigrip" : "quantumbtn"
 	el("quantumbtn").style.display = bigRip || isQuantumReached() ? "" : "none"
 
 	el("bigripbtn").style.display = canBigRip() ? "" : "none"

@@ -22,7 +22,7 @@ function getAssortPercentage() {
 }
 
 function getAssortAmount() {
-	return quSave.quarks.floor().min(quSave.quarks).times(getAssortPercentage() / 100).round()
+	return quSave.quarks.floor().min(quSave.quarks).mul(getAssortPercentage() / 100).round()
 }
 
 var assortDefaultPercentages = [10, 25, 50, 100]
@@ -206,7 +206,6 @@ function updateColorPowers(log) {
 	//Green
 	let m = 1
 	colorBoosts.g = Math.pow(log.g+1, 1/3) * 2 - 1
-	if (ghSave.ghostlyPhotons.unl) m *= tmp.le[3]
 	if (aarMod.ngumuV && hasMasteryStudy("t362")) {
 		m += quSave.replicants.quarks.add(1).log10()/10
 		if (m > 4) m = Math.sqrt(m * 4)
@@ -217,14 +216,12 @@ function updateColorPowers(log) {
 	//Blue
 	var bLog = log.b
 	bLog = Math.sqrt(log.b + 1.5) - 1.5
-	if (ghSave.ghostlyPhotons.unl) bLog *= tmp.le[4] || 1
 
 	let softcapStartLog = 3
 	let softcapPower = 1
-	if (ghSave.ghostlyPhotons.unl) softcapPower += tmp.le[4]
 	if (hasBU(11)) softcapPower += tmp.blu[11]
 	if (bLog > softcapStartLog) {
-		bLog = E_pow(bLog/softcapStartLog,softcapPower/2).times(softcapStartLog)
+		bLog = E_pow(bLog / softcapStartLog, softcapPower / 2).mul(softcapStartLog)
 		if (bLog.lt(100)) bLog = bLog.toNumber()
 		else bLog = Math.min(bLog.toNumber(), bLog.log10() * (40 + 10 * bLog.sub(90).log10()))
 	}
@@ -271,7 +268,7 @@ function buyGluonUpg(color, id) {
 		if (hasAch("r93")) otherMults *= 4
 		var old = getIPMultPower()
 		ipMultPower = 2.3
-		player.infMult = player.infMult.div(otherMults).pow(Math.log10(getIPMultPower()) / Math.log10(old)).times(otherMults)
+		player.infMult = player.infMult.div(otherMults).pow(Math.log10(getIPMultPower()) / Math.log10(old)).mul(otherMults)
 	}
 	if (name == "rg4" && !quSave.autoOptions.sacrifice) updateElectronsEffect()
 	if (name == "gb4") player.tickSpeedMultDecrease = 1.25
@@ -286,7 +283,7 @@ function GUBought(id) {
 function getQuarkMultReq() {
 	let lvl = quSave.multPower / 3
 	if (lvl > 467) lvl = lvl * 2 - 467
-	return E_pow(100, lvl).times(500)
+	return E_pow(100, lvl).mul(500)
 }
 
 function getQuarkMultBulk() {
