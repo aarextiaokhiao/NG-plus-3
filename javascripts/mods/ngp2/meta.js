@@ -7,10 +7,12 @@ function getMetaAntimatterStart(bigRip) {
 }
 
 function getDilationMetaDimensionMultiplier() {
-	let pow = 0.1
 	let div = 1e40
-	if (isNanoEffectUsed("dt_to_ma_exp") && tmp.nf.effects.dt_to_ma_exp) pow = tmp.nf.effects.dt_to_ma_exp //this is a quick fix, but we need to fix this bug
 	if (aarMod.nguspV !== undefined) div = 1e50
+
+	let pow = 0.1
+	if (isNanoEffectUsed("dt_to_ma_exp") && tmp.nf.effects.dt_to_ma_exp) pow = tmp.nf.effects.dt_to_ma_exp //this is a quick fix, but we need to fix this bug
+	pow *= getLightEff(3)
 
 	if (mod.udp && !aarMod.nguepV) {
 		let l = quSave.colorPowers.b.plus(10).log10()
@@ -30,19 +32,19 @@ function getDilationMetaDimensionMultiplier() {
 function getMetaDimensionMultiplier(tier) {
 	if (player.currentEternityChall === "eterc11") return E(1)
 	let ret = E_pow(getPerTenMetaPower(), Math.floor(player.meta[tier].bought / 10))
-	ret = ret.times(E_pow(getMetaBoostPower(), Math.max(player.meta.resets + 1 - tier, 0)))
-	ret = ret.times(tmp.mdgm) //Global multiplier of all Meta Dimensions
+	ret = ret.mul(E_pow(getMetaBoostPower(), Math.max(player.meta.resets + 1 - tier, 0)))
+	ret = ret.mul(tmp.mdgm) //Global multiplier of all Meta Dimensions
 
 	//Quantum upgrades
-	if (tier == 1 && GUBought("rg3")) ret = ret.times(getRG3Effect())
+	if (tier == 1 && GUBought("rg3")) ret = ret.mul(getRG3Effect())
 
 	//QC Rewards:
-	if (tier % 2 > 0) ret = ret.times(tmp.qcRewards[4])
+	if (tier % 2 > 0) ret = ret.mul(tmp.qcRewards[4])
 	
 	//Achievements:
-	if (tier == 8 && hasAch("ng3p22")) ret = ret.times(1 + Math.pow(player.meta[1].amount.plus(1).log10() / 10, 2))
-	if (tier == 1 && hasAch("ng3p31")) ret = ret.times(player.meta.antimatter.plus(1).pow(.001))
-	if (tier == 1 && hasAch("ng3p17")) ret = ret.times(Math.max(1,Math.log10(player.totalmoney.plus(10).log10())))
+	if (tier == 8 && hasAch("ng3p22")) ret = ret.mul(1 + Math.pow(player.meta[1].amount.plus(1).log10() / 10, 2))
+	if (tier == 1 && hasAch("ng3p31")) ret = ret.mul(player.meta.antimatter.plus(1).pow(.001))
+	if (tier == 1 && hasAch("ng3p17")) ret = ret.mul(Math.max(1,Math.log10(player.totalmoney.plus(10).log10())))
 	
 	ret = dilates(dilates(ret.max(1), 2), "meta")
 	return ret
@@ -50,30 +52,30 @@ function getMetaDimensionMultiplier(tier) {
 
 function getMetaDimensionGlobalMultiplier() {
 	let ret = getDilationMetaDimensionMultiplier()
-	if (player.dilation.upgrades.includes("ngpp3")) ret = ret.times(getDil14Bonus())
-	if (hasAch("ngpp12")) ret = ret.times(1.1)
+	if (player.dilation.upgrades.includes("ngpp3")) ret = ret.mul(getDil14Bonus())
+	if (hasAch("ngpp12")) ret = ret.mul(1.1)
 	if (mod.ngp3) {
 		//Mastery Study Boosts
-		if (hasMasteryStudy("t262")) ret = ret.times(getMTSMult(262))
-		if (hasMasteryStudy("t282")) ret = ret.times(getMTSMult(282))
-		if (hasMasteryStudy("t303")) ret = ret.times(getMTSMult(303))
-		if (hasMasteryStudy("t351")) ret = ret.times(getMTSMult(351))
-		if (hasMasteryStudy("t373")) ret = ret.times(getMTSMult(373))
-		if (hasMasteryStudy("t382")) ret = ret.times(getMTSMult(382))
-		if (hasMasteryStudy("t383")) ret = ret.times(getMTSMult(383))
-		if (hasMasteryStudy("t393")) ret = ret.times(getMTSMult(393))
+		if (hasMasteryStudy("t262")) ret = ret.mul(getMTSMult(262))
+		if (hasMasteryStudy("t282")) ret = ret.mul(getMTSMult(282))
+		if (hasMasteryStudy("t303")) ret = ret.mul(getMTSMult(303))
+		if (hasMasteryStudy("t351")) ret = ret.mul(getMTSMult(351))
+		if (hasMasteryStudy("t373")) ret = ret.mul(getMTSMult(373))
+		if (hasMasteryStudy("t382")) ret = ret.mul(getMTSMult(382))
+		if (hasMasteryStudy("t383")) ret = ret.mul(getMTSMult(383))
+		if (hasMasteryStudy("t393")) ret = ret.mul(getMTSMult(393))
 
 		//Quantum Upgrades
-		if (GUBought("br4")) ret = ret.times(E_pow(getDimensionPowerMultiplier(), 0.0003).max(1))
-		if (GUBought("br5")) ret = ret.times(3)
+		if (GUBought("br4")) ret = ret.mul(E_pow(getDimensionPowerMultiplier(), 0.0003).max(1))
+		if (GUBought("br5")) ret = ret.mul(3)
 
 		//QC Rewards
-		ret = ret.times(tmp.qcRewards[3])
-		ret = ret.times(tmp.qcRewards[6])
+		ret = ret.mul(tmp.qcRewards[3])
+		ret = ret.mul(tmp.qcRewards[6])
 
 		//Achievement Rewards
-		if (hasAch("ng3p13")) ret = ret.times(Math.pow(Decimal.plus(quantumWorth, 1).log10(), 2))
-		if (hasAch("ng3p57")) ret = ret.times(1 + player.timeShards.plus(1).log10())
+		if (hasAch("ng3p13")) ret = ret.mul(Math.pow(Decimal.plus(quantumWorth, 1).log10(), 2))
+		if (hasAch("ng3p57")) ret = ret.mul(1 + player.timeShards.plus(1).log10())
 	}
 	
 	return ret
@@ -94,9 +96,7 @@ function getMetaBoostPower() {
 	if (player.dilation.upgrades.includes("ngpp4")) r = getDil15Bonus()
 	if (mod.ngp3) {
 		if (isNanoEffectUsed("meta_boost_power")) r = tmp.nf.effects.meta_boost_power
-
 		if (hasMasteryStudy("t312")) exp = 1.045
-		if (hasAch("ng3p26")) exp *= Math.log10(9 + Math.max(player.meta.resets / 75 + 0.25, 1))
 	}
 	if (hasAch("ngpp14")) r *= 1.01
 
@@ -116,7 +116,7 @@ function getMetaDimensionRateOfChange(tier) {
 	if (aarMod.logRateChange) {
 		var change = current.add(toGain.div(10)).log10() - current.log10()
 		if (change < 0 || isNaN(change)) change = 0
-	} else var change = toGain.times(10).dividedBy(current);
+	} else var change = toGain.mul(10).dividedBy(current);
 
 	return change;
 }
@@ -215,18 +215,23 @@ function metaBuyOneDimension(tier) {
 }
 
 function getMetaCost(tier, boughtTen) {
-	let cost = Decimal.times(initCost[tier], costMults[tier].pow(boughtTen))
+	let cost = Decimal.mul(initCost[tier], costMults[tier].pow(boughtTen))
 	let scalingStart = Math.ceil(Decimal.div(getMetaCostScalingStart(), initCost[tier]).log(costMults[tier]))
-	if (boughtTen >= scalingStart) cost = cost.times(pow10((boughtTen-scalingStart + 1) * (boughtTen-scalingStart + 2) / 2))
+	if (boughtTen >= scalingStart) cost = cost.mul(pow10((boughtTen-scalingStart + 1) * (boughtTen-scalingStart + 2) / 2))
 	return cost
 }
 
 function getMetaCostScalingStart() {
-	return "1e900"
+	let r = E(1/0)
+	if (mod.ngp3) {
+		r = E("1e900")
+		r = r.pow(getLightEff(6))
+	}
+	return r
 }
 
 function getMetaMaxCost(tier) {
-	return player.meta[tier].cost.times(10 - dimMetaBought(tier));
+	return player.meta[tier].cost.mul(10 - dimMetaBought(tier));
 }
 
 function metaBuyManyDimension(tier) {
@@ -327,7 +332,7 @@ function getMetaDimensionProduction(tier) {
 		if (tier == 1) ret = ret.plus(player.meta[2].amount.floor().pow(1.3))
 		else if (tier == 4) ret = ret.pow(1.5)
 	}
-	return ret.times(getMetaDimensionMultiplier(tier));
+	return ret.mul(getMetaDimensionMultiplier(tier));
 }
 
 function getExtraDimensionBoostPower() {

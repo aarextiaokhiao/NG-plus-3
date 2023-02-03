@@ -87,15 +87,15 @@ var masteryStudies = {
 	timeStudies: [],
 	timeStudyEffects: {
 		251: function(){
-			if (ghSave.neutrinos.upgrades.includes(6)) return 0
+			if (hasNU(6)) return 0
 			return Math.floor(player.resets / 3e3)
 		},
 		252: function(){
-			if (ghSave.neutrinos.upgrades.includes(6)) return 0
+			if (hasNU(6)) return 0
 			return Math.floor(player.dilation.freeGalaxies / 7)
 		},
 		253: function(){
-			if (ghSave.neutrinos.upgrades.includes(6)) return 0
+			if (hasNU(6)) return 0
 			return Math.floor(getTotalRG()/4)
 		},
 		262: function(){
@@ -129,16 +129,15 @@ var masteryStudies = {
 			return pow10(Math.pow(tmp.rm.max(1).log10(), 0.25) / 15 * (mod.p3ep ? 2 : 1))
 		},
 		301: function(){
-			if (ghSave.neutrinos.upgrades.includes(6)) return 0
+			if (hasNU(6)) return 0
 			return Math.floor(extraReplGalaxies / 4.15)
 		},
 		303: function(){
 			return E_pow(4.7, Math.pow(Math.log10(Math.max(player.galaxies, 1)), 1.5))
 		},
 		322: function(){
-			let log = Math.sqrt(Math.max(3-getTickspeed().log10(),0))/2e4
+			let log = Math.sqrt(Math.max(3 - getTickspeed().log10(), 0)) / 2e4
 			if (log > 110) log = Math.sqrt(log * 27.5) + 55
-			if (mod.ngep) log += Math.pow(Math.log10(log + 10), 4) - 1
 			return pow10(log)
 		},
 		332: function(){
@@ -158,8 +157,7 @@ var masteryStudies = {
 		},
 		351: function(){ //maybe use softcap.js
 			let log = player.timeShards.max(1).log10()*14e-7
-			if (log > 1e4) log = Math.pow(log / 1e4, 0.75) * 1e4
-			if (log > 2e4) log = 2 * Math.pow(Math.log10(5 * log) + 5 ,4)
+			if (log > 1e3) log = Math.sqrt(log*1e3)
 			return E_pow(mod.p3ep ? 12 : 10, log)
 		},
 		361: function(){
@@ -218,11 +216,11 @@ var masteryStudies = {
 			var effectBase = Math.max(gals / 1e4, 1)
 			if (effectBase > 10 && mod.p3ep) effectBase *= Math.log10(effectBase)
 
-			var effectExp = Math.max(gals / 2e4 + 0.5, 1)
+			var effectExp = Math.max(gals / 1e4, 1)
 			if (effectExp > 10 && mod.p3ep) effectExp *= Math.log10(effectExp)
 
 			var eff = E_pow(effectBase, effectExp)
-			if (mod.p3ep) eff = eff.times(eff.plus(9).log10())
+			if (mod.p3ep) eff = eff.mul(eff.plus(9).log10())
 
 			var log = eff.log10()
 
@@ -230,29 +228,29 @@ var masteryStudies = {
 		}
 	},
 	timeStudyDescs: {
-		241: "The IP mult multiplies IP gain by 2.2x per upgrade.",
-		251: "Remote galaxy scaling starts 1 galaxy later per 3,000 dimension boosts.",
-		252: "Remote galaxy scaling starts 1 galaxy later per 7 Tachyonic Galaxies.",
-		253: "Remote galaxy scaling starts 1 galaxy later per 4 total replicated galaxies.",
+		241: "IP multiplier gives 2.2x per upgrade.",
+		251: "Dimension Boosts scale Remote Galaxies later.",
+		252: "Tachyonic Galaxies scale Remote Galaxies later.",
+		253: "Replicated Galaxies scale Remote Galaxies later.",
 		261: "Dimension Boost costs scale by another 1 less.",
-		262: "Dimension Boosts boost Meta Dimensions at a reduced rate.",
-		263: "Meta-dimension boosts boost dilated time production.",
-		264: "Gain more tachyon particles based on your normal galaxies.",
-		265: "Replicate chance upgrades can go over 100%.",
-		266: "Reduce the post-400 max replicated galaxy cost scaling.",
-		271: "You can buy beyond 1ms interval upgrades, but the cost begins to increase faster.",
+		262: "Dimension Boosts boost Meta Dimensions.",
+		263: "Meta-Dimension Boosts boost Dilated Time.",
+		264: "Antimatter Galaxies boost Tachyon Particles.",
+		265: "Replicate chance can go over 100%.",
+		266: "Reduce the post-400 replicated galaxy scaling.",
+		271: "Replicate interval can go below 1ms, but cost scales faster.",
 		272: "You can buy all Time Studies in all 3-way splits.",
 		273: "Replicate chance boosts itself.",
 		281: "Replicanti multiplier boosts DT production at a greatly reduced rate.",
 		282: "Replicanti multiplier boosts Meta Dimensions at a greatly reduced rate.",
 		291: "You gain 1% of your EP gained on Eternity per second.",
 		292: "You can gain tachyon particles without disabling dilation.",
-		301: "Remote galaxy scaling starts 1 galaxy later per 4.15 extra replicated galaxies.",
-		302: "You can buy all Time Studies before the mastery portal.",
-		303: "Meta Dimensions are stronger based on your galaxies.",
+		301: "Extra Replicated Galaxies scale Remote Galaxies later.",
+		302: "You can buy all Time Studies.",
+		303: "Galaxies strengthen Meta Dimensions.",
 		311: "Replicanti boost to all Infinity Dimensions is 17.3x stronger.",
 		312: "Meta-dimension boosts are 4.5% stronger and cost scale by 1 less.",
-		321: "Buff multiplier per 10 normal Dimensions to <span id='321effect'></span>x if it is 1x.",
+		321: () => `Buff multiplier per 10 normal Dimensions to ${shortenCosts(E("1e430"))} if it is 1x.`,
 		322: "Tickspeed boosts DT production at greatly reduced rate.",
 		323: "Cancel dilation penalty for the Normal Dimension boost from replicanti.",
 		331: "Dimension Supersonic scaling starts 240,000 later, and the cost increase is reduced by 3.",
@@ -261,11 +259,9 @@ var masteryStudies = {
 		342: "All replicated galaxies are stronger and use the same formula.",
 		343: "Tachyonic Galaxies are as strong as a normal replicated galaxy.",
 		344: "Replicated galaxies are more effective based on your pilons.",
-		351: "Time Shards boost all Meta Dimensions.",
+		351: "Time Shards boost Meta Dimensions.",
 		361: "Hatch speed is faster based on your tachyon particles.",
-		362: function() {
-			return "Reduce the softcap for the pilon boost"+(aarMod.ngumuV?", but pilons reduce the green power effect.":".")
-		},
+		362: () => "Reduce the softcap for the pilon boost"+(aarMod.ngumuV?", but pilons reduce the green power effect.":"."),
 		371: "Hatch speed is faster based on your extra replicated galaxies.",
 		372: "Hatch speed is faster based on your time shards.",
 		373: "You get more pilons based on your galaxies.",
@@ -601,7 +597,7 @@ function buyMasteryStudy(type, id, quick=false) {
 			var isone = ((inQC(5)||inQC(7))&&focusOn!="linear")||(((inNC(13)&&!inNGM(3))||player.currentChallenge=="postc1"||player.currentChallenge=="postcngm3_1")&&inNGM(2))
 			if (isone) {
 				for (var i = 1; i<9; i++) {
-					player[tiers[i] + "Pow"] = player[tiers[i] + "Pow"].times(pow10(430 * player[tiers[i] + "Bought"]/10))
+					player[tiers[i] + "Pow"] = player[tiers[i] + "Pow"].mul(pow10(430 * player[tiers[i] + "Bought"]/10))
 				}
 			}
 		}
@@ -709,7 +705,6 @@ function updateMasteryStudyTextDisplay() {
 	for (id = 7; id <= masteryStudies.unlocksUpTo; id++) {
 		el("ds" + id + "Req").innerHTML = ghSave.milestones >= 3 ? "" : "Requirement: " + masteryStudies.unlockReqDisplays[id]()
 	}
-	if (quantumed) el("321effect").textContent=shortenCosts(E("1e430"))
 }
 
 var occupied

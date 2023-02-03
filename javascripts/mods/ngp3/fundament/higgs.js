@@ -71,8 +71,8 @@ function higgsReset() {
 
 function getHiggsRequirementBase() {
 	var div = E(1)
-	if (ghSave.bl.usedEnchants.includes(14)) div = div.times(tmp.bEn[14].higgs || 1)
-	if (hasAch("ng3p102")) div = div.times(100)
+	if (ghSave.bl.usedEnchants.includes(14)) div = div.mul(tmp.bEn[14].higgs || 1)
+	if (hasAch("ng3p102")) div = div.mul(100)
 	return E(1e20).divide(div)
 }
 

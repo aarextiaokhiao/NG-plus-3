@@ -69,7 +69,7 @@ function checkYoDawg(){
 	if (!hasAch("r111") && player.lastTenRuns[9][1].neq(0)) {
 		var n = 0;
 		for (i = 0; i < 9; i++) {
-			if (player.lastTenRuns[i][1].gte(player.lastTenRuns[i+1][1].times(Number.MAX_VALUE))) n++
+			if (player.lastTenRuns[i][1].gte(player.lastTenRuns[i+1][1].mul(Number.MAX_VALUE))) n++
 		}
 		if (n == 9) giveAchievement("Yo dawg, I heard you liked infinities...")
 	}

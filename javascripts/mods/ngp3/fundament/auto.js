@@ -214,7 +214,7 @@ function automatorTick(diff) {
 		let times = Math.floor(ag.t)
 		if (times > 0) {
 			let max = times
-			if (isEnchantUsed(35)) max = tmp.bEn[35].times(max)
+			if (isEnchantUsed(35)) max = tmp.bEn[35].mul(max)
 			autoMaxAllEnchants(max)
 			ag.t = ag.t - times
 		}

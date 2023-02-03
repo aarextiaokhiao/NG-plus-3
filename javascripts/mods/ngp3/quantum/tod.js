@@ -54,7 +54,7 @@ function updateTreeOfDecayTab(){
 		el(color + "UnstableGain").innerHTML = "Gain " + shortenMoney(getUnstableGain(shorthand)) + " " + name + (ghSave.milestones > 3 ? "." : ", but lose all your " + color + " quarks.")
 		el(color + "QuarkSpin").innerHTML = shortenMoney(branch.spin)
 		el(color + "UnstableQuarks").innerHTML = shortenMoney(branch.quarks)
-		el(color + "QuarksDecayRate").innerHTML = branch.quarks.lt(linear) && rate.lt(1) ? "(-" + shorten(linear.times(rate)) + " " + name + "/s)" : "(Half-life: " + timeDisplayShort(Decimal.div(10,rate), true, 2) + (linear.eq(1) ? "" : " until " + shorten(linear)) + ")"
+		el(color + "QuarksDecayRate").innerHTML = branch.quarks.lt(linear) && rate.lt(1) ? "(-" + shorten(linear.mul(rate)) + " " + name + "/s)" : "(Half-life: " + timeDisplayShort(Decimal.div(10,rate), true, 2) + (linear.eq(1) ? "" : " until " + shorten(linear)) + ")"
 		el(color + "QuarksDecayTime").innerHTML = timeDisplayShort(Decimal.div(10, rate).mul(branch.quarks.gt(linear) ? branch.quarks.div(linear).log(2) + 1 : branch.quarks.div(linear)))
 		let ret = getQuarkSpinProduction(shorthand)
 		el(color + "QuarkSpinProduction").innerHTML = "(+" + shortenMoney(ret) + "/s)"
@@ -133,7 +133,7 @@ function getUnstableGain(branch) {
 	let power = getBranchUpgLevel(branch, 2) - getRDPower(branch)
 	ret = pow2(power).mul(ret)
 	if (ret.gt(1)) ret = E_pow(ret, Math.pow(2, power + 1))
-	return ret.times(pow2(getRDPower(branch) + 1)).min(pow10(Math.pow(2, 51)))
+	return ret.mul(pow2(getRDPower(branch) + 1)).min(pow10(Math.pow(2, 51)))
 }
 
 
@@ -152,7 +152,6 @@ function getBranchSpeedText(){
 	if (E(getTreeUpgradeEffect(5)).gt(1)) text += "Tree Upgrade 5: " + shorten(getTreeUpgradeEffect(5)) + "x, "
 	if (hasMasteryStudy("t431") && getMTSMult(431).gt(1)) text += "Mastery Study 431: " + shorten(getMTSMult(431)) + "x, "
 	if (getGluonBranchSpeed().gt(1)) text += "Gluon Upgrades: " + shorten(getGluonBranchSpeed()) + "x, "
-	if (bigRipped() && isBigRipUpgradeActive(19)) text += "19th Big Rip upgrade: " + shorten(tmp.bru[19]) + "x, "
 	if (hasAch("ng3p48")) if (player.meta.resets > 1) text += "'Are you currently dying?' reward: " + shorten (Math.sqrt(player.meta.resets + 1)) + "x, "
 	if (todspeed > 1) text += "ToD Speed: " + shorten(todspeed) + "x, "
 	if (text == "") return "No multipliers currently"
@@ -167,35 +166,32 @@ function getGluonBranchSpeed() {
 	return x
 }
 function getBranchSpeed() {
-	let x = Decimal.times(getTreeUpgradeEffect(3), getTreeUpgradeEffect(5))
-	if (hasMasteryStudy("t431")) x = x.times(getMTSMult(431))
-	x = x.times(getGluonBranchSpeed())
-	if (isBigRipUpgradeActive(19)) x = x.times(tmp.bru[19])
-	if (hasAch("ng3p48")) x = x.times(Math.sqrt(player.meta.resets + 1))
+	let x = Decimal.mul(getTreeUpgradeEffect(3), getTreeUpgradeEffect(5))
+	if (hasMasteryStudy("t431")) x = x.mul(getMTSMult(431))
+	x = x.mul(getGluonBranchSpeed())
+	if (isBigRipUpgradeActive(19)) x = x.mul(tmp.bru[19])
+	if (hasAch("ng3p48")) x = x.mul(Math.sqrt(player.meta.resets + 1))
 	return x
 }
 
 function getBranchFinalSpeed() {
-	return tmp.branchSpeed.times(todspeed)
+	return tmp.branchSpeed.mul(todspeed)
 }
 
 function getDecayRate(branch) {
 	let ret = pow2(getBU1Power(branch) * Math.max((getRadioactiveDecays(branch) - 8) / 10, 1)).div(getBranchUpgMult(branch, 3)).div(pow2(Math.max(0, getRDPower(branch) - 4)))
-	ret = ret.times(getBranchFinalSpeed())
+	ret = ret.mul(getBranchFinalSpeed())
 	return ret.min(Math.pow(2, 40)).mul(todspeed)
 }
 
 function getQuarkSpinProduction(branch) {
 	let ret = getBranchUpgMult(branch, 1).mul(getBranchFinalSpeed())
-	if (hasNU(3)) ret = ret.times(tmp.nu[3])
-	if (hasAch("ng3p74")) if (todSave[branch].decays) ret = ret.times(1 + todSave[branch].decays)
-	if (bigRipped()) {
-		if (isBigRipUpgradeActive(18)) ret = ret.times(tmp.bru[18])
-		if (isBigRipUpgradeActive(19)) ret = ret.times(tmp.bru[19])
-		if (hasNU(12)) ret = ret.times(tmp.nu[12].normal)
-	}
-	ret = ret.times(E_pow(1.1, nfSave.rewards - 12))
-	ret = ret.times(todspeed)
+	ret = ret.mul(E_pow(1.1, nfSave.rewards - 12))
+	if (hasNU(3)) ret = ret.mul(tmp.nu[3])
+	if (hasNU(12)) ret = ret.mul(tmp.nu[12].normal)
+	if (hasAch("ng3p74")) ret = ret.mul(1 + todSave[branch].decays)
+
+	ret = ret.mul(todspeed)
 	return ret
 }
 
@@ -486,8 +482,8 @@ function getTreeUpgradeEfficiencyText(){
 	if (!shiftDown) return "Tree upgrade efficiency: "+(tmp.tue*100).toFixed(1)+"%"
 
 	let text = ""
-	if (ghSave.neutrinos.boosts >= 7) text += "Neutrino Boost 7: +" + shorten(tmp.nb[7]) + ", "
-	if (hasAch("ng3p62") && !bigRipped()) text += "Finite Time Reward: +10%, "
+	if (ghSave.neutrinos.boosts >= 7 && bigRipped()) text += "Neutrino Boost 7: +" + shorten(tmp.nb[7]) + ", "
+	if (hasAch("ng3p62")) text += "Finite Time Reward: +10%, "
 	if (hasBU(43)) text += "Bosonic Lab Upgrade 18: " + shorten(tmp.blu[43]) + "x, "
 
 	if (text == "") return "No multipliers currently"
@@ -497,7 +493,7 @@ function getTreeUpgradeEfficiencyText(){
 function getTreeUpgradeEfficiency(mod) {
 	let r = 1
 	if (ghSave.neutrinos.boosts >= 7 && (bigRipped() || mod == "br") && mod != "noNB") r += tmp.nb[7]
-	if (hasAch("ng3p62") && !bigRipped()) r += 0.1
+	if (hasAch("ng3p62")) r += 0.1
 	if (hasBU(43)) r *= tmp.blu[43]
 	return r
 }
@@ -550,7 +546,7 @@ function treeOfDecayUpdating(diff){
 		power = power.sub(decayed).mul(decayRate)
 
 		var sProd = getQuarkSpinProduction(shorthand)
-		branch.quarks = power.gt(1) ? pow2(power-1).mul(mult) : power.times(mult)	
-		branch.spin = branch.spin.add(sProd.times(decayed))	
+		branch.quarks = power.gt(1) ? pow2(power-1).mul(mult) : power.mul(mult)	
+		branch.spin = branch.spin.add(sProd.mul(decayed))	
 	}
 }

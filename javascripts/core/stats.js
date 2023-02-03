@@ -82,14 +82,14 @@ function scienceNumberDisplay(){
 	var scale2 = [" protons."," nucleui."," Hydrogen atoms."," viruses."," red blood cells."," grains of sand."," grains of rice."," teaspoons."," wine bottles."," fridge-freezers."," Olympic-sized swimming pools."," Great Pyramids of Giza."," Great Walls of China."," large asteroids.",
 					" dwarf planets."," Earths."," Jupiters."," Suns."," red giants."," hypergiant stars."," nebulas."," Oort clouds."," Local Bubbles."," galaxies."," Local Groups."," Sculptor Voids."," observable universes."," Dimensions.", " Infinity Dimensions.", " Time Dimensions."];
 	var id = 0;
-	if (player.money.times(4.22419).gt(2.82e60)) {
-		if (player.money.times(4.22419e-105).gt(scale1[scale1.length - 1])) id = scale1.length - 1;
+	if (player.money.mul(4.22419).gt(2.82e60)) {
+		if (player.money.mul(4.22419e-105).gt(scale1[scale1.length - 1])) id = scale1.length - 1;
 		else {
-			while (player.money.times(4.22419e-105).gt(scale1[id])) id++;
+			while (player.money.mul(4.22419e-105).gt(scale1[id])) id++;
 			if (id > 0) id--;
 		}
 		if (id >= 7 && id < 11) el("infoScale").textContent = "If every antimatter were a planck volume, you would have enough to fill " + formatValue(player.options.notation, player.money * 4.22419e-105 / scale1[id], 2, 1) + scale2[id];
-		else el("infoScale").textContent = "If every antimatter were a planck volume, you would have enough to make " + formatValue(player.options.notation, player.money.times(4.22419e-105).dividedBy(scale1[id]), 2, 1) + scale2[id];
+		else el("infoScale").textContent = "If every antimatter were a planck volume, you would have enough to make " + formatValue(player.options.notation, player.money.mul(4.22419e-105).dividedBy(scale1[id]), 2, 1) + scale2[id];
 	} else { //does this part work correctly? i doubt it does
 		if (player.money.lt(2.82e9)) el("infoScale").textContent = "If every antimatter were " + formatValue(player.options.notation, 2.82e9 / player.money, 2, 1) + " attometers cubed, you would have enough to make a proton."
 		else if (player.money.lt(2.82e18)) el("infoScale").textContent = "If every antimatter were " + formatValue(player.options.notation, 2.82e18 / player.money, 2, 1) + " zeptometers cubed, you would have enough to make a proton."

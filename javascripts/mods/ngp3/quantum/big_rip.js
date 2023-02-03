@@ -68,20 +68,18 @@ function getSpaceShardsGain() {
 	let ret = bigRipped() ? brSave.bestThisRun : player.money
 	ret = E_pow(ret.add(1).log10() / 2000, 1.5).mul(player.dilation.dilatedTime.add(1).pow(0.05)).div(50)
 	if (tmp.be) {
-		if (beSave && beSave.upgrades.includes(3)) ret = ret.times(getBreakUpgMult(3))
-		if (beSave && beSave.upgrades.includes(6)) ret = ret.times(getBreakUpgMult(6))
+		if (beSave && beSave.upgrades.includes(3)) ret = ret.mul(getBreakUpgMult(3))
+		if (beSave && beSave.upgrades.includes(6)) ret = ret.mul(getBreakUpgMult(6))
 	}
-	if (hasNU(9)) ret = ret.times(Decimal.max(getEternitied(), 1).pow(0.1))
+	if (hasNU(9)) ret = ret.mul(Decimal.max(getEternitied(), 1).pow(0.1))
 
 	if (isNaN(ret.e)) return E(0)
 	return ret.floor()
 }
 
 function updateBigRipTab() {
-	var max = getMaxBigRipUpgrades()
 	el("spaceShards").textContent = shortenDimensions(brSave.spaceShards)
-	for (var u = 18; u <= 20; u++) el("bigripupg" + u).parentElement.style.display = u > max ? "none" : ""
-	for (var u = 1; u <= max; u++) {
+	for (var u = 1; u <= 18; u++) {
 		el("bigripupg" + u).className = brSave && hasRipUpg(u) ? "gluonupgradebought bigrip" + (isBigRipUpgradeActive(u, true) ? "" : "off") : brSave.spaceShards.lt(bigRipUpgCosts[u]) ? "gluonupgrade unavailablebtn" : "gluonupgrade bigrip"
 		el("bigripupg" + u + "cost").textContent = shortenDimensions(E(bigRipUpgCosts[u]))
 	}
@@ -91,7 +89,7 @@ function updateBigRipTab() {
 function bigRipUpgradeUpdating(){
 	if (ghSave.milestones>7) {
 		el("spaceShards").textContent=shortenDimensions(brSave.spaceShards)
-		for (var u=1;u<=getMaxBigRipUpgrades();u++) {
+		for (var u=1;u<=18;u++) {
 			el("bigripupg"+u).className = brSave && hasRipUpg(u) ? "gluonupgradebought bigrip" + (isBigRipUpgradeActive(u, true) ? "" : "off") : brSave.spaceShards.lt(bigRipUpgCosts[u]) ? "gluonupgrade unavailablebtn" : "gluonupgrade bigrip"
 			el("bigripupg"+u+"cost").textContent = shortenDimensions(E(bigRipUpgCosts[u]))
 		}
@@ -103,13 +101,9 @@ function bigRipUpgradeUpdating(){
 	el("bigripupg15current").textContent=bru15effect < 999.995 ? bru15effect.toFixed(2) : getFullExpansion(Math.round(bru15effect))
 	el("bigripupg16current").textContent=shorten(tmp.bru[16])
 	el("bigripupg17current").textContent=tmp.bru[17]
-	if (PHOTON.unlocked()) {
-		el("bigripupg18current").textContent=shorten(tmp.bru[18])
-		el("bigripupg19current").textContent=shorten(tmp.bru[19])
-	}
 }
 
-let bigRipUpgCosts = [0, 2, 3, 5, 20, 30, 45, 60, 150, 300, 2000, 1e9, 3e14, 1e17, 3e18, 3e20, 5e22, 1e32, 1e145, 1e150, 1e90]
+let bigRipUpgCosts = [0, 2, 3, 5, 20, 30, 45, 60, 150, 300, 2000, 1e9, 3e14, 1e17, 3e18, 3e20, 5e22, 1e32, 1e70]
 function buyBigRipUpg(id) {
 	if (brSave.spaceShards.lt(bigRipUpgCosts[id]) || hasRipUpg(id)) return
 	brSave.spaceShards = brSave && brSave.spaceShards.sub(bigRipUpgCosts[id])
@@ -121,7 +115,7 @@ function buyBigRipUpg(id) {
 		brSave.upgrades.push(9)
 		if (bigRipped()) tweakBigRip(9, true)
 	}
-	for (var u = 1; u <= getMaxBigRipUpgrades(); u++) {
+	for (var u = 1; u <= 18; u++) {
 		el("bigripupg" + u).className = brSave && hasRipUpg(u) ? "gluonupgradebought bigrip" + (isBigRipUpgradeActive(u, true) ? "" : "off") : brSave.spaceShards.lt(bigRipUpgCosts[u]) ? "gluonupgrade unavailablebtn" : "gluonupgrade bigrip"
 	}
 }
@@ -172,16 +166,11 @@ function hasRipUpg(x) {
 	return brSave.upgrades.includes(x)
 }
 
-function getMaxBigRipUpgrades() {
-	if (PHOTON.unlocked()) return 20
-	return 17
-}
-
 function isBigRipUpgradeActive(id) {
-	if (id == 1 && !hasRipUpg(17)) for (var u = 3; u < 18; u++) if (hasRipUpg(u)) return false
+	if (!bigRipped()) return
+	if (id == 1 && !hasRipUpg(17)) for (var u = 3; u < 17; u++) if (hasRipUpg(u)) return false
 	if (id > 2 && id != 4 && id < 9) if (hasRipUpg(9) && (id != 8 || !hasNU(11))) return false
 	if (id == 4 && hasRipUpg(11)) return false
-	if (id != 18 && !bigRipped()) return false
 	return hasRipUpg(id)
 }
 
@@ -251,10 +240,7 @@ function getEMGain() {
 	let log = player.timeShards.div(1e9).log10() * 0.25
 	if (log > 15) log = Math.sqrt(log * 15)
 
-	let x = pow10(log)
-	if (hasAch("ng3p104")) x = x.pow(1.1)
-	
-	return x.floor()
+	return pow10(log).floor()
 }
 
 var breakUpgCosts = [1, 1e3, 2e6, 2e11, 8e17, 1e45, null, 1e290, E("1e350"), E("1e375"), E("e1450")]

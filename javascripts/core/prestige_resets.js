@@ -38,10 +38,10 @@ let RESETS = {
 			player.tickSpeedCost = E(1e3)
 			player.tickspeedMultiplier = E(10)
 
-			if (hasAch("r36")) player.tickspeed = player.tickspeed.times(0.98);
-			if (hasAch("r45")) player.tickspeed = player.tickspeed.times(0.98);
-			if (hasAch("r66")) player.tickspeed = player.tickspeed.times(0.98);
-			if (hasAch("r83")) player.tickspeed = player.tickspeed.times(E_pow(0.95,player.galaxies));
+			if (hasAch("r36")) player.tickspeed = player.tickspeed.mul(0.98);
+			if (hasAch("r45")) player.tickspeed = player.tickspeed.mul(0.98);
+			if (hasAch("r66")) player.tickspeed = player.tickspeed.mul(0.98);
+			if (hasAch("r83")) player.tickspeed = player.tickspeed.mul(E_pow(0.95,player.galaxies));
 			divideTickspeedIC5()
 		},
 		doReset() {
@@ -123,8 +123,8 @@ let RESETS = {
 			playerInfinityUpgradesOnEternity()
 			player.infMult = E(1)
 			player.infMultCost = E(100)
-			if (hasAch("r85")) player.infMult = player.infMult.times(4)
-			if (hasAch("r93")) player.infMult = player.infMult.times(4)
+			if (hasAch("r85")) player.infMult = player.infMult.mul(4)
+			if (hasAch("r93")) player.infMult = player.infMult.mul(4)
 			el("infmultbuyer").style.display = mod.ngp3 || getEternitied() >= 1 ? "" : "none"
 
 			if (!hasAch("r133")) player.postChallUnlocked = 0
@@ -156,7 +156,7 @@ let RESETS = {
 			} else if (order != "eter" || speedrunMilestonesReached < 24) {
 				player.replicanti.amount = E(1)
 			}
-			if (!hasAch("ng3p67") || player.dilation.active) {
+			if (order != "eter" || !hasAch("ng3p67") || player.dilation.active) {
 				let keepPartial = mod.ngp3 && player.dilation.upgrades.includes("ngpp3") && getEternitied() >= 2e10
 				player.replicanti.chance = keepPartial ? Math.min(player.replicanti.chance, 1) : 0.01
 				player.replicanti.chanceCost = E_pow(1e15, player.replicanti.chance * 100).mul(inNGM(2) ? 1e75 : 1e135)

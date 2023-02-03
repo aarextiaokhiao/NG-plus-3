@@ -22,8 +22,8 @@ function maxAllID() {
 			} else var toBuy = Math.floor(player.infinityPoints.div(cost).log(costMult))
 			dim.amount = dim.amount.add(toBuy * 10)
 			dim.baseAmount += toBuy * 10
-			dim.power=dim.power.times(E_pow(getInfBuy10Mult(t),toBuy))
-			dim.cost=dim.cost.times(E_pow(costMult,toBuy))
+			dim.power=dim.power.mul(E_pow(getInfBuy10Mult(t),toBuy))
+			dim.cost=dim.cost.mul(E_pow(costMult,toBuy))
 		}
 	}
 }
@@ -55,7 +55,7 @@ function DimensionRateOfChange(tier) {
 	if (aarMod.logRateChange) {
 		var change = current.add(toGain.div(10)).log10()-current.log10()
 		if (change < 0 || isNaN(change)) change = 0
-	} else var change = toGain.times(tier > 7 ? 1 : 10).dividedBy(current);
+	} else var change = toGain.mul(tier > 7 ? 1 : 10).dividedBy(current);
 	return change
 }
 
@@ -86,25 +86,25 @@ function DimensionProduction(tier) {
 	if (player.currentEternityChall == "eterc11") return ret
 	if (player.currentEternityChall == "eterc7") ret = dilates(ret.dividedBy(player.tickspeed.dividedBy(1000)))
 	if (inNGM(4)) ret = ret.div(100)
-	ret = ret.times(DimensionPower(tier))
-	if (player.challenges.includes("postc6") && !inQC(3)) return ret.times(Decimal.div(1000, dilates(player.tickspeed)).pow(0.0005))
+	ret = ret.mul(DimensionPower(tier))
+	if (player.challenges.includes("postc6") && !inQC(3)) return ret.mul(Decimal.div(1000, dilates(player.tickspeed)).pow(0.0005))
 	return ret
 }
 
 function getTotalIDEUMult(){
 	var mult = E(1)
-	if (player.eternityUpgrades.includes(1)) mult = mult.times(player.eternityPoints.plus(1))
-	if (player.eternityUpgrades.includes(2)) mult = mult.times(getEU2Mult())
-	if (player.eternityUpgrades.includes(3)) mult = mult.times(getEU3Mult())
+	if (player.eternityUpgrades.includes(1)) mult = mult.mul(player.eternityPoints.plus(1))
+	if (player.eternityUpgrades.includes(2)) mult = mult.mul(getEU2Mult())
+	if (player.eternityUpgrades.includes(3)) mult = mult.mul(getEU3Mult())
 	return mult
 }
 
 function getInfDimPathIDMult(tier){
 	var mult = E(1)
-	if (player.timestudy.studies.includes(72) && tier == 4) mult = mult.times(tmp.sacPow.pow(0.04).max(1).min("1e30000"))
-	if (player.timestudy.studies.includes(82)) mult = mult.times(E_pow(1.0000109, Math.pow(player.resets, 2)).min(!mod.ngpp ? 1 / 0 : '1e80000'))
-	if (player.timestudy.studies.includes(92)) mult = mult.times(pow2(600 / Math.max(player.bestEternity, 20)))
-	if (player.timestudy.studies.includes(162)) mult = mult.times(pow10((inNGM(2) ? 234 : 11) * (mod.ngep ? 5 : 1)))
+	if (player.timestudy.studies.includes(72) && tier == 4) mult = mult.mul(tmp.sacPow.pow(0.04).max(1).min("1e30000"))
+	if (player.timestudy.studies.includes(82)) mult = mult.mul(E_pow(1.0000109, Math.pow(player.resets, 2)).min(!mod.ngpp ? 1 / 0 : '1e80000'))
+	if (player.timestudy.studies.includes(92)) mult = mult.mul(pow2(600 / Math.max(player.bestEternity, 20)))
+	if (player.timestudy.studies.includes(162)) mult = mult.mul(pow10((inNGM(2) ? 234 : 11) * (mod.ngep ? 5 : 1)))
 	return mult
 }
 
@@ -123,28 +123,28 @@ function DimensionPower(tier) {
 
 	var mult = getStartingIDPower(tier)
 
-	mult = mult.times(infDimPow)
+	mult = mult.mul(infDimPow)
 
-	if (hasAch("r94") && tier == 1) mult = mult.times(2);
-	if (hasAch("r75") && !player.boughtDims) mult = mult.times(player.achPow);
-	if (hasAch("r66") && inNGM(2)) mult = mult.times(Math.max(1, Math.abs(player.tickspeed.log10()) / 29))
-	if (player.replicanti.unl && player.replicanti.amount.gt(1) && inNGM(2)) mult = mult.times(getIDReplMult())
+	if (hasAch("r94") && tier == 1) mult = mult.mul(2);
+	if (hasAch("r75") && !player.boughtDims) mult = mult.mul(player.achPow);
+	if (hasAch("r66") && inNGM(2)) mult = mult.mul(Math.max(1, Math.abs(player.tickspeed.log10()) / 29))
+	if (player.replicanti.unl && player.replicanti.amount.gt(1) && inNGM(2)) mult = mult.mul(getIDReplMult())
 
-	mult = mult.times(getInfDimPathIDMult(tier))
-	mult = mult.times(getTotalIDEUMult())
+	mult = mult.mul(getInfDimPathIDMult(tier))
+	mult = mult.mul(getTotalIDEUMult())
 
-	if (ECComps("eterc2") !== 0 && tier == 1) mult = mult.times(getECReward(2))
-	if (ECComps("eterc4") !== 0) mult = mult.times(getECReward(4))
+	if (ECComps("eterc2") !== 0 && tier == 1) mult = mult.mul(getECReward(2))
+	if (ECComps("eterc4") !== 0) mult = mult.mul(getECReward(4))
 
 	var ec9 = E(1)
 	if (ECComps("eterc9") !== 0) ec9 = getECReward(9)
-	if (inNGM(2)) mult = mult.times(ec9)
+	if (inNGM(2)) mult = mult.mul(ec9)
 
-	if (inQC(6)) mult = mult.times(player.postC8Mult).dividedBy(player.matter.max(1))
+	if (inQC(6)) mult = mult.mul(player.postC8Mult).dividedBy(player.matter.max(1))
 
 	mult = dilates(mult, 2)
-	if (player.replicanti.unl && player.replicanti.amount.gt(1) && inNGM(2)) mult = mult.times(getIDReplMult())
-	if (inNGM(2)) mult = mult.times(ec9)
+	if (player.replicanti.unl && player.replicanti.amount.gt(1) && inNGM(2)) mult = mult.mul(getIDReplMult())
+	if (inNGM(2)) mult = mult.mul(ec9)
 
 	mult = dilates(mult, 1)
 	return mult
@@ -202,8 +202,8 @@ function buyManyInfinityDimension(tier, auto) {
 	if (player.eterc8ids == 0) return false
 	if (player.infinityPoints.lt(pow10(1e10))) player.infinityPoints = player.infinityPoints.minus(cost)
 	dim.amount = dim.amount.plus(10);
-	dim.cost = Decimal.round(dim.cost.times(getIDCostMult(tier)))
-	dim.power = dim.power.times(getInfBuy10Mult(tier))
+	dim.cost = Decimal.round(dim.cost.mul(getIDCostMult(tier)))
+	dim.power = dim.power.mul(getInfBuy10Mult(tier))
 	dim.baseAmount += 10
 
 	if (player.currentEternityChall == "eterc8") player.eterc8ids -= 1
@@ -220,11 +220,11 @@ function buyMaxInfDims(tier, auto) {
 
 	var costMult = getIDCostMult(tier)
 	var toBuy = Math.floor(player.infinityPoints.div(cost).log10() / Math.log10(costMult))
-	dim.cost = dim.cost.times(E_pow(costMult, toBuy-1))
+	dim.cost = dim.cost.mul(E_pow(costMult, toBuy-1))
 	if (player.infinityPoints.lt(pow10(1e10))) player.infinityPoints = player.infinityPoints.minus(getIDCost(tier).min(player.infinityPoints))
-	dim.cost = dim.cost.times(costMult)
+	dim.cost = dim.cost.mul(costMult)
 	dim.amount = dim.amount.plus(10 * toBuy);
-	dim.power = dim.power.times(E_pow(getInfBuy10Mult(tier), toBuy))
+	dim.power = dim.power.mul(E_pow(getInfBuy10Mult(tier), toBuy))
 	dim.baseAmount += 10 * toBuy
 	buyManyInfinityDimension(tier, auto)
 }
@@ -310,13 +310,13 @@ function getIDReplMult() {
 function getEU2Mult() {
 	var e = nMx(getEternitied(), 0)
 	if (typeof(e) == "number" && isNaN(e)) e = 0
-	if (player.boughtDims) return E_pow(e, Decimal.times(e,2).add(1).log(4))
+	if (player.boughtDims) return E_pow(e, Decimal.mul(e,2).add(1).log(4))
 	var cap = nMn(e, 1e5)
 	var soft = 0
 	if (e > 1e5) soft = nS(e, cap)
 	var achReward = 1
 	if (hasAch("ngpp15")) achReward = pow10(Math.pow(Decimal.log10(e), 4.75))
-	return E_pow(cap/200 + 1, Math.log(cap * 2 + 1) / Math.log(4)).mul(Decimal.div(soft, 200).add(1).mul(Decimal.times(soft, 2).add(1).log(4)).max(1)).max(achReward)
+	return E_pow(cap/200 + 1, Math.log(cap * 2 + 1) / Math.log(4)).mul(Decimal.div(soft, 200).add(1).mul(Decimal.mul(soft, 2).add(1).log(4)).max(1)).max(achReward)
 }
 
 function getEU3Mult() {

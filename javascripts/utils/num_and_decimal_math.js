@@ -26,7 +26,7 @@ function nM(a,b) {
 		let m=a*b
 		if (m<1/0) return Math.floor(m)
 	}
-	return nN(Decimal.times(a,b))
+	return nN(Decimal.mul(a,b))
 }
 
 function nD(a,b) {

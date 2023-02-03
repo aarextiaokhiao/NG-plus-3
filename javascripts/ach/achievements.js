@@ -318,12 +318,10 @@ function clearOldAchieves(){
 }
 
 function giveAchievement(name, noUpdate) {
-	if (hasAch(name)){ clearOldAchieves(); }
-
+	if (hasAch(name)) { clearOldAchieves(); }
 	if (hasAch(allAchievementNums[name])) return false
 
-	var ngudAchId = allAchievementNums[name].split("ngud")[1]
-	if (ngudAchId != undefined) if (!mod.ngud) return
+	if (allAchievementNums[name].split("ngud")[1] != undefined && !mod.ngud) return
 
 	var ngppAchId = allAchievementNums[name].split("ngpp")[1]
 	if (ngppAchId != undefined) {
@@ -342,9 +340,9 @@ function giveAchievement(name, noUpdate) {
 
 	player.achievements.push(allAchievementNums[name])
 	if (name == "All your IP are belong to us" || name == "MAXIMUM OVERDRIVE") {
-		player.infMult = player.infMult.times(4);
-		player.autoIP = player.autoIP.times(4);
-		if (player.autoCrunchMode == "amount" && player.autobuyers[11].priority != undefined) player.autobuyers[11].priority = Decimal.times(player.autobuyers[11].priority, 4);
+		player.infMult = player.infMult.mul(4);
+		player.autoIP = player.autoIP.mul(4);
+		if (player.autoCrunchMode == "amount" && player.autobuyers[11].priority != undefined) player.autobuyers[11].priority = Decimal.mul(player.autobuyers[11].priority, 4);
 	}
 	if (name == "The swarm" && player.boughtDims) el('replicantigalaxypowerdiv').style.display=""
 	if (name == "I told you already, time is relative" || name == "I'm so meta" || name == "To the new dimension!") updateHotkeys()
@@ -365,7 +363,7 @@ function giveAchievement(name, noUpdate) {
 	if (name == "Quantum doesn't take so long") {
 		updateAutobuyers()
 	}
-	if (name == "Kee-hee-hee!" && (hasAch("ng3p18") || hasAch("ng3p37"))) {
+	if (name == "Kee-hee-hee!") {
 		setAndMaybeShow('bestTPOverGhostifies', true, '"Your best-ever Tachyon particles was "+shorten(player.dilation.bestTPOverGhostifies)+"."')
 		dev.giveAllNGAchievements()
 		for (let i = 1; i <= 8; i++){

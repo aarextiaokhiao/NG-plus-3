@@ -31,7 +31,8 @@ function updateNanoverseTab() {
 	for (var reward = 1; reward < 9; reward++) {
 		el("nfReward" + reward).className = reward > total ? "nfRewardlocked" : "nfReward"
 		el("nfReward" + reward).textContent = wordizeList(nanoRewards.effectsUsed[reward].map(x => nanoRewards.effectDisplays[x](tmp.nf.effects[x])), true) + "."
-		el("nfRewardHeader" + reward).textContent = (total % 8 + 1 == reward ? "Next" : DISPLAY_NAMES[reward]) + " Effect"
+		el("nfRewardHeader" + reward).textContent = (total % 8 + 1 == reward ? "Next" : DISPLAY_NAMES[reward]) + " Nanobenefit"
+		el("nfRewardHeader" + reward).className = (total % 8 + 1 == reward ? "grey" : "") + " milestoneTextSmall"
 		el("nfRewardTier" + reward).textContent = "Tier " + getFullExpansion(Math.ceil((total + 1 - reward) / 8)) + " / Power: " + tmp.nf.powers[reward].toFixed(1)
 	}
 	el("nfReward5").textContent = (tmp.nf.powers[5] > 15 ? nanoRewards.effectDisplays.light_threshold_speed(tmp.nf.effects.light_threshold_speed) : nanoRewards.effectDisplays.dil_effect_exp(tmp.nf.effects.dil_effect_exp)) + "."
@@ -41,11 +42,11 @@ function updateNanoverseTab() {
 
 function getQuarkChargeProduction(noSpeed) {
 	let ret = E(1)
-	if (isNanoEffectUsed("preon_charge")) ret = ret.times(tmp.nf.effects.preon_charge)
-	if (hasMasteryStudy("t421")) ret = ret.times(getMTSMult(421))
-	if (hasNU(3)) ret = ret.times(tmp.nu[3])
-	if (hasNU(7)) ret = ret.times(tmp.nu[7])
-	if (!noSpeed) ret = ret.times(getNanofieldFinalSpeed())
+	if (isNanoEffectUsed("preon_charge")) ret = ret.mul(tmp.nf.effects.preon_charge)
+	if (hasMasteryStudy("t421")) ret = ret.mul(getMTSMult(421))
+	if (hasNU(3)) ret = ret.mul(tmp.nu[3])
+	if (hasNU(7)) ret = ret.mul(tmp.nu[7])
+	if (!noSpeed) ret = ret.mul(getNanofieldFinalSpeed())
 	return ret
 }
 
@@ -58,27 +59,27 @@ function getQuarkLossProduction() {
 	let ret = getQuarkChargeProduction(true)
 	ret = ret.pow(2).mul(4e25)
 	if (hasNU(3)) ret = ret.div(10)
-	ret = ret.times(getNanofieldFinalSpeed())
+	ret = ret.mul(getNanofieldFinalSpeed())
 	return ret
 }
 
 function getQuarkEnergyProduction() {
 	let ret = nfSave.charge.mul(5).sqrt()
-	if (isNanoEffectUsed("preon_energy")) ret = ret.times(tmp.nf.effects.preon_energy)
-	if (hasMasteryStudy("t411")) ret = ret.times(getMTSMult(411))
-	ret = ret.times(getNanofieldFinalSpeed())
+	if (isNanoEffectUsed("preon_energy")) ret = ret.mul(tmp.nf.effects.preon_energy)
+	if (hasMasteryStudy("t411")) ret = ret.mul(getMTSMult(411))
+	ret = ret.mul(getNanofieldFinalSpeed())
 	return ret
 }
 
 function getQuarkAntienergyProduction() {
 	let ret = nfSave.charge.sqrt()
 	if (hasMasteryStudy("t401")) ret = ret.div(getMTSMult(401))
-	ret = ret.times(getNanofieldFinalSpeed())
+	ret = ret.mul(getNanofieldFinalSpeed())
 	return ret
 }
 
 function getQuarkChargeProductionCap() {
-	return nfSave.charge.times(2500).sqrt()
+	return nfSave.charge.mul(2500).sqrt()
 }
 
 var nanoRewards = {
@@ -90,9 +91,7 @@ var nanoRewards = {
 			return x * 6.8
 		},
 		dil_gal_gain: function(x) {
-			x = Math.pow(x, 0.83) * 0.039
-			if (x > 1/3) x = (Math.log10(x * 3) + 1) / 3
-			return x + 1
+			return x / 1e3 + 1
 		},
 		dt_to_ma_exp: function(x) {
 			return Math.sqrt(x) * 0.021 + 1
@@ -110,19 +109,19 @@ var nanoRewards = {
 			return x * 2150
 		},
 		preon_charge: function(x) {
-			return E_pow(2.6, x)
+			return pow2(x * 2)
 		},
 		per_10_power: function(x) {
 			return x * 0.76
 		},
 		preon_energy: function(x) {
-			return E_pow(2.5, Math.sqrt(x))
+			return pow2(x)
 		},
 		supersonic_start: function(x) {
 			return Math.floor(Math.max(x - 3.5, 0) * 75e5)
 		},
-		neutrinos: function(x) {
-			return pow10(x * 10)
+		photons: function(x) {
+			return pow2(x)
 		},
 		light_threshold_speed: function(x) {
 			return Math.max(Math.sqrt(x + 1) / 4, 1)
@@ -136,7 +135,7 @@ var nanoRewards = {
 			return "meta-antimatter effect is ^" + x.toFixed(2)
 		},
 		dil_gal_gain: function(x) {
-			return "gain " + (x * 100 - 100).toFixed(2) + "% more Tachyonic Galaxies"
+			return "each replicated galaxy gives " + x.toFixed(3) + "x more dilated time"
 		},
 		dt_to_ma_exp: function(x) {
 			return "dilated time gives ^" + x.toFixed(3) + " boost to Meta Dimensions"
@@ -162,8 +161,8 @@ var nanoRewards = {
 		supersonic_start: function(x) {
 			return "Dimension Supersonic scales " + getFullExpansion(Math.floor(x)) + " later"
 		},
-		neutrinos: function(x) {
-			return "gain " + shorten(x) + "x more Neutrinos"
+		photons: function(x) {
+			return "gain " + shorten(x) + "x more Photons"
 		},
 		light_threshold_speed: function(x) {
 			return "Light threshold scales " + x.toFixed(2) + "x slower"
@@ -188,27 +187,26 @@ function isNanoEffectUsed(x) {
 
 function getNanofieldSpeedText(){
 	text = ""
-	if (ghostified) text += "Ghostify Bonus: " + shorten(nfSave.rewards >= 16 ? 1 : (ghSave.milestone >= 1 ? 6 : 3)) + "x, "
 	if (hasAch("ng3p78")) text += "'Aren't you already dead' reward: " +shorten(Math.sqrt(getTreeUpgradeLevel(8) * tmp.tue + 1)) + "x, "
-	if (hasNU(15)) text += "Neutrino upgrade 15: " + shorten(tmp.nu[15]) + "x, "
+	if (getLightEff(1) > 1) text += "Green Light: " + shorten(E(getLightEff(1)).pow(nfSave.rewards)) + "x, "
 	if (text == "") return "No multipliers currently"
 	return text.slice(0, text.length-2)
 }
 
 function getNanofieldSpeed() {
 	let x = 1
-	if (ghostified) x *= nfSave.rewards >= 16 ? 1 : (ghSave.milestone >= 1 ? 6 : 3)
 	if (hasAch("ng3p78")) x *= Math.sqrt(getTreeUpgradeLevel(8) * tmp.tue + 1)
-	if (hasNU(15)) x = tmp.nu[15].times(x)
+	x = E(getLightEff(1)).pow(nfSave.rewards).mul(x)
 	return x
 }
 
 function getNanofieldFinalSpeed() {
-	return Decimal.times(tmp.ns, nanospeed)
+	return Decimal.mul(tmp.ns, nanospeed)
 }
 
 function getNanoRewardPower(reward, rewards) {
 	let x = Math.ceil((rewards - reward + 1) / 8)
+	if (reward == 8) x *= getLightEff(2)
 	return x * tmp.nf.powerEff
 }
 
@@ -225,7 +223,6 @@ function getNanoRewardReq(additional){
 function getActiveNanoScalings(){
 	ret = [true, true]
 	//there are two total scalings and they all start active
-	if (hasAch("ng3p82")) ret[2] = false 
 	return ret
 }
 
@@ -238,8 +235,8 @@ function getNanoRewardReqFixed(n){
 	let x = E(50)
 	let a = getActiveNanoScalings()
 	let s = getNanoScalingsStart()
-	if (n >= s[0] && a[0]) x = x.times(E_pow(4.0, (n - s[0])))
-	if (n >= s[1] && a[1]) x = x.times(E_pow(2.0, (n - s[1]) * (n - s[1] + 3)))
+	if (n >= s[0] && a[0]) x = x.mul(E_pow(4.0, (n - s[0])))
+	if (n >= s[1] && a[1]) x = x.mul(E_pow(2.0, (n - s[1]) * (n - s[1] + 3)))
 	return x.pow(tmp.ppti || 1)
 }
 
@@ -248,9 +245,7 @@ function updateNextPreonEnergyThreshold(){
 	let increment = 0.5
 	let toSkip = 0
 	var check = 0
-	while (en.gte(getNanoRewardReq(increment * 2))) {
-		increment *= 2
-	}
+	while (en.gte(getNanoRewardReq(increment * 2))) increment *= 2
 	while (increment >= 1) {
 		check = toSkip + increment
 		if (en.gte(getNanoRewardReq(check))) toSkip += increment
@@ -316,7 +311,7 @@ function setupNanofieldHTML() {
 
 function nanofieldUpdating(diff){
 	var AErate = getQuarkAntienergyProduction()
-	var toAddAE = AErate.times(diff).min(getQuarkChargeProductionCap().sub(nfSave.antienergy))
+	var toAddAE = AErate.mul(diff).min(getQuarkChargeProductionCap().sub(nfSave.antienergy))
 	if (nfSave.producingCharge) nanofieldProducingChargeUpdating(diff)
 	if (toAddAE.gt(0)) {
 		nfSave.antienergy = nfSave.antienergy.add(toAddAE).min(getQuarkChargeProductionCap())
@@ -330,7 +325,7 @@ function nanofieldUpdating(diff){
 function nanofieldProducingChargeUpdating(diff){
 	var rate = getQuarkChargeProduction()
 	var loss = getQuarkLossProduction()
-	var toSub = loss.times(diff).min(quSave.replicants.quarks)
+	var toSub = loss.mul(diff).min(quSave.replicants.quarks)
 	if (toSub.eq(0)) {
 		nfSave.producingCharge = false
 		el("produceQuarkCharge").innerHTML="Start production of nanocharge.<br>(You will not get pilons when you do this.)"

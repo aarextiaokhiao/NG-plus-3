@@ -1,19 +1,19 @@
 function getDTMultNGP3(){
 	let gain = E(1)
 	if (!bigRipped() || hasRipUpg(11)) {
-		if (hasAch("ng3p11")) gain = gain.times(Math.max(player.galaxies / 600 + 0.5, 1))
-		if (hasAch("ng3p41")) gain = gain.times(E_pow(4, Math.sqrt(nfSave.rewards)))
-		if (hasMasteryStudy("t263")) gain = gain.times(getMTSMult(263))
-		if (hasMasteryStudy("t281")) gain = gain.times(getMTSMult(281))
-		gain = gain.times(tmp.qcRewards[1])
-		if (hasMasteryStudy("t322")) gain = gain.times(getMTSMult(322))
-		if (hasMasteryStudy("t341")) gain = gain.times(getMTSMult(341))
-		gain = gain.times(getTreeUpgradeEffect(7))
-		gain = gain.times(colorBoosts.b)
-		if (GUBought("br2")) gain = gain.times(E_pow(2.2, Math.pow(tmp.sacPow.max(1).log10()/1e6, 0.25)))
-		if (hasAch("r137")) gain = gain.times(Math.max((player.replicanti.amount.log10()-2e4)/8e3+1,1))
+		if (hasAch("ng3p11")) gain = gain.mul(Math.max(player.galaxies / 600 + 0.5, 1))
+		if (hasAch("ng3p41")) gain = gain.mul(E_pow(4, Math.sqrt(nfSave.rewards)))
+		if (hasMasteryStudy("t263")) gain = gain.mul(getMTSMult(263))
+		if (hasMasteryStudy("t281")) gain = gain.mul(getMTSMult(281))
+		gain = gain.mul(tmp.qcRewards[1])
+		if (hasMasteryStudy("t322")) gain = gain.mul(getMTSMult(322))
+		if (hasMasteryStudy("t341")) gain = gain.mul(getMTSMult(341))
+		gain = gain.mul(getTreeUpgradeEffect(7))
+		gain = gain.mul(colorBoosts.b)
+		if (GUBought("br2")) gain = gain.mul(E_pow(2.2, Math.pow(tmp.sacPow.max(1).log10()/1e6, 0.25)))
+		if (hasAch("r137")) gain = gain.mul(Math.max((player.replicanti.amount.log10()-2e4)/8e3+1,1))
 	}
-	if (hasBU(15)) gain = gain.times(tmp.blu[15].dt)
+	if (hasBU(15)) gain = gain.mul(tmp.blu[15].dt)
 	return gain
 }
 
@@ -22,25 +22,26 @@ function getBaseDTProduction() {
 	let exp = getDTGainExp()
 	let gain = tp.pow(exp)
 	if (NGP3andVanillaCheck()) {
-		if (hasAch("r132")) gain = gain.times(Math.max(Math.pow(player.galaxies, 0.04), 1))
-		if (hasAch("r137") && player.dilation.active) gain = gain.times(2)
+		if (hasAch("r132")) gain = gain.mul(Math.max(Math.pow(player.galaxies, 0.04), 1))
+		if (hasAch("r137") && player.dilation.active) gain = gain.mul(2)
 	}
 	
-	if (mod.ngud) gain = gain.times(getNGUDTGain())
-	gain = gain.times(getEternityBoostToDT())
+	if (mod.ngud) gain = gain.mul(getNGUDTGain())
+	gain = gain.mul(getEternityBoostToDT())
 
-	if (player.dilation.upgrades.includes('ngpp6')) gain = gain.times(getDil17Bonus())
-	if (player.dilation.upgrades.includes('ngusp3')) gain = gain.times(getD22Bonus())
-	if (mod.ngp3) gain = gain.times(getDTMultNGP3())
-	if (mod.p3ep && hasAch("r138") && gain.lt(1e100)) gain = gain.times(3).min(1e100)
-	if ((mod.ngp3 || mod.p3ep) && hasAch("ngpp13")) gain = gain.times(2)
+	if (player.dilation.upgrades.includes('ngpp6')) gain = gain.mul(getDil17Bonus())
+	if (player.dilation.upgrades.includes('ngusp3')) gain = gain.mul(getD22Bonus())
+	if (mod.ngp3) gain = gain.mul(getDTMultNGP3())
+	if (isNanoEffectUsed("dil_gal_gain")) gain = E(tmp.nf.effects.dil_gal_gain).pow(player.replicanti.galaxies).mul(gain)
+	if (mod.p3ep && hasAch("r138") && gain.lt(1e100)) gain = gain.mul(3).min(1e100)
+	if (mod.ngp3 && hasAch("ngpp13")) gain = gain.mul(2)
 
 	return gain
 }
 
 function getDilTimeGainPerSecond() {
 	let gain = getBaseDTProduction()
-	return gain.times(pow2(getDilUpgPower(1)))	
+	return gain.mul(pow2(getDilUpgPower(1)))	
 }
 
 function getDTGainExp(){
@@ -59,14 +60,14 @@ function getEternitiesAndDTBoostExp() {
 function getDilPower() {
 	var ret = E_pow(getDil3Power(), getDilUpgPower(3))
 	if (NGP3andVanillaCheck()) {
-		if (hasAch("r132")) ret = ret.times(Math.max(Math.pow(player.galaxies, 0.04), 1))
+		if (hasAch("r132")) ret = ret.mul(Math.max(Math.pow(player.galaxies, 0.04), 1))
 	}
 
 	if (player.dilation.upgrades.includes("ngud1")) ret = getD18Bonus().mul(ret)
 	if (mod.ngp3) {
-		if (hasAch("ng3p11")) ret = ret.times(Math.max(getTotalRG() / 125, 1))
-		if (hasMasteryStudy("t264")) ret = ret.times(getMTSMult(264))
-		if (GUBought("br1")) ret = ret.times(getBR1Effect())
+		if (hasAch("ng3p11")) ret = ret.mul(Math.max(getTotalRG() / 125, 1))
+		if (hasMasteryStudy("t264")) ret = ret.mul(getMTSMult(264))
+		if (GUBought("br1")) ret = ret.mul(getBR1Effect())
 	}
 	return ret
 }
@@ -125,10 +126,10 @@ function getReqForTPGain() {
 
 function getNGUDTGain(){
 	var gain = E(1)
-	gain = gain.times(getBlackholePowerEffect())
-	if (player.eternityUpgrades.includes(7)) gain = gain.times(1 + Math.log10(Math.max(1, player.money.log(10))) / 40)
-	if (player.eternityUpgrades.includes(8)) gain = gain.times(1 + Math.log10(Math.max(1, player.infinityPoints.log(10))) / 20)
-	if (player.eternityUpgrades.includes(9)) gain = gain.times(1 + Math.log10(Math.max(1, player.eternityPoints.log(10))) / 10)
+	gain = gain.mul(getBlackholePowerEffect())
+	if (player.eternityUpgrades.includes(7)) gain = gain.mul(1 + Math.log10(Math.max(1, player.money.log(10))) / 40)
+	if (player.eternityUpgrades.includes(8)) gain = gain.mul(1 + Math.log10(Math.max(1, player.infinityPoints.log(10))) / 20)
+	if (player.eternityUpgrades.includes(9)) gain = gain.mul(1 + Math.log10(Math.max(1, player.eternityPoints.log(10))) / 10)
 	return gain
 }
 
@@ -139,11 +140,11 @@ function getDilatedTimeGainPerSecond(){
 function getEternityBoostToDT(){
 	var gain = E(1)
 	let eterExp = getEternitiesAndDTBoostExp()
-	if (eterExp > 0) gain = gain.times(Decimal.max(getEternitied(), 1).pow(eterExp))
+	if (eterExp > 0) gain = gain.mul(Decimal.max(getEternitied(), 1).pow(eterExp))
 	if (player.dilation.upgrades.includes('ngpp2') && mod.ngep) {
 		let e = E(getEternitied())
-		gain = gain.times(e.max(10).log10()).mul(Math.pow(e.max(1e7).log10()-6,3))
-		if (e.gt(5e14)) gain = gain.times(Math.sqrt(e.log10())) // this comes into play at the grind right before quantum
+		gain = gain.mul(e.max(10).log10()).mul(Math.pow(e.max(1e7).log10()-6,3))
+		if (e.gt(5e14)) gain = gain.mul(Math.sqrt(e.log10())) // this comes into play at the grind right before quantum
 	}
 	return gain
 }
@@ -166,7 +167,7 @@ function dilates(x, m) {
 	}
 	if (a) {
 		if (m != "tick") x = x.max(1)
-		else if (!inNGM(2)) x = x.times(1e3)
+		else if (!inNGM(2)) x = x.mul(1e3)
 		if (x.gt(10) || !inNGM(3)) x = pow10(Math.pow(x.log10(), e))
 		if (m == "tick" && inNGM(2)) x = x.div(1e3)
 		if (m == "tick" && x.lt(1)) x = Decimal.div(1, x)
@@ -321,10 +322,10 @@ function getRebuyableDilUpgCost(id) {
 	var amount = player.dilation.rebuyables[id] || 0
 	let cost = E(costGroup[0]).mul(E_pow(costGroup[1],amount))
 	if (aarMod.nguspV) {
-		if (id > 3) cost = cost.times(1e7)
+		if (id > 3) cost = cost.mul(1e7)
 		if (id > 2 && cost.gte(1e25)) cost = pow10(Math.pow(cost.log10() / 2.5 - 5, 2))
 	} else if (id > 2) {
-		if (mod.ngpp && amount >= costGroup[2]) return cost.times(E_pow(costGroup[1], (amount - costGroup[2] + 1) * (amount - costGroup[2] + 2)/4))
+		if (mod.ngpp && amount >= costGroup[2]) return cost.mul(E_pow(costGroup[1], (amount - costGroup[2] + 1) * (amount - costGroup[2] + 2)/4))
 		if (mod.ngud && !mod.udp && cost.gt(1e30)) cost = cost.div(1e30).pow(cost.log(1e30)).mul(1e30)
 	}
 	return cost
@@ -391,7 +392,7 @@ function getPassiveTTGen() {
 function getTTGenPart(x) {
 	if (!x) return E(0)
 	if (NGP3andVanillaCheck()) {
-		if (hasAch("r137") && player.dilation.active) x = x.times(2)
+		if (hasAch("r137") && player.dilation.active) x = x.mul(2)
 	}
 	if (mod.ngp3) {
 		x = x.max(1).log10()
@@ -478,7 +479,6 @@ function getFreeGalaxyGainMult() {
 	let galaxyMult = player.dilation.upgrades.includes(4) ? 2 : 1
 	if (mod.udp && !aarMod.nguepV) galaxyMult /= 1.5
 	galaxyMult *= tmp.qcRewards[2]
-	if (isNanoEffectUsed("dil_gal_gain")) galaxyMult *= tmp.nf.effects.dil_gal_gain
 	return galaxyMult
 }
 
@@ -525,7 +525,7 @@ function resetDilation(order = "qu") {
 		player.dilation.dilatedTime = !bigRip && speedrunMilestonesReached >= 22 ? E(1e100) : E(0)
 		if (order == "qu") {
 			let keepTPHalf = bigRip ? hasRipUpg(11) : hasAch("ng3p37")
-			let keepTP = bigRip ? ghSave.milestones >= 16 : ghSave.milestones >= 4
+			let keepTP = bigRip ? hasRipUpg(18) : inQC(0) && ghSave.milestones >= 4
 			if (keepTP) player.dilation.tachyonParticles = player.dilation.bestTP
 			else if (keepTPHalf) player.dilation.tachyonParticles = player.dilation.bestTP.pow(0.5)
 		}

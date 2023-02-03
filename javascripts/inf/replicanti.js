@@ -20,7 +20,7 @@ function getReplMult(next) {
 	}
 	let replmult = Decimal.max(player.replicanti.amount.log(2), 1).pow(exp)
 	if (player.timestudy.studies.includes(21)) replmult = replmult.plus(E_pow(player.replicanti.amount, 0.032))
-	if (player.timestudy.studies.includes(102)) replmult = replmult.times(E_pow(5, player.replicanti.galaxies))
+	if (player.timestudy.studies.includes(102)) replmult = replmult.mul(E_pow(5, player.replicanti.galaxies))
 	return replmult;
 }
 
@@ -31,7 +31,7 @@ function upgradeReplicantiChance() {
 		player.replicanti.chance = Math.round(player.replicanti.chance * 100 + 1) / 100
 		if (player.currentEternityChall == "eterc8") player.eterc8repl -= 1
 		el("eterc8repl").textContent = "You have " + player.eterc8repl + " purchases left."
-		player.replicanti.chanceCost = player.replicanti.chanceCost.times(1e15)
+		player.replicanti.chanceCost = player.replicanti.chanceCost.mul(1e15)
 	}
 }
 
@@ -48,7 +48,7 @@ function upgradeReplicantiInterval() {
 		if (x > 1e10) x = Math.pow(x / 1e5, 2)
 		player.replicanti.intervalCost = E_pow("1e800", x)
 	}
-	else player.replicanti.intervalCost = player.replicanti.intervalCost.times(1e10)
+	else player.replicanti.intervalCost = player.replicanti.intervalCost.mul(1e10)
 	if (!isIntervalAffordable()) player.replicanti.interval = (player.timestudy.studies.includes(22) || player.boughtDims ? 1 : 50)
 	if (player.currentEternityChall == "eterc8") player.eterc8repl -= 1
 	el("eterc8repl").textContent = "You have " + player.eterc8repl + " purchases left."
@@ -77,22 +77,15 @@ function getRGCost(offset = 0, costChange) {
 				if (mod.ngud) for (var g = Math.max(player.replicanti.gal, 399); g < player.replicanti.gal + offset; g++) increase += Math.pow(g - 389, 2)
 				if (mod.ngpp) {
 					var isReduced = false
-					if (player.masterystudies != undefined) if (hasMasteryStudy("t266")) isReduced = true
+					if (hasMasteryStudy("t266")) isReduced = true
 					if (isReduced) {
 						increase += (offset - Math.max(399 - player.replicanti.gal, 0)) * (1500 * (offset - Math.max(399 - player.replicanti.gal, 0) + Math.max(player.replicanti.gal, 399) * 2) - 1183500)
 						if (player.replicanti.gal + offset > 2998) increase += (offset - Math.max(2998 - player.replicanti.gal, 0)) * (5e3 * (offset - Math.max(2998 - player.replicanti.gal, 0) + Math.max(player.replicanti.gal, 2998) * 2) - 29935e3)
-						if (player.replicanti.gal + offset > 58198) increase += (offset - Math.max(58199 - player.replicanti.gal, 0)) * (1e6 * (offset - Math.max(58199 - player.replicanti.gal, 0) + Math.max(player.replicanti.gal, 58199) * 2) - 58199e6)
-						if (player.replicanti.gal + offset >= 200000) {
-							increase += 1e12 * (offset - Math.max(199999 - player.replicanti.gal, 0))
-							increase += (offset - Math.max(199999 - player.replicanti.gal, 0)) * (1e9 * (offset - Math.max(199999 - player.replicanti.gal, 0) + Math.max(player.replicanti.gal, 199999) * 2) - 199999e9)
-						}
-						if (player.replicanti.gal + offset >= 250000) increase += 1e12 * (offset - Math.max(249999 - player.replicanti.gal, 0))
-						if (player.replicanti.gal + offset >= 300000) increase += 1e13 * (offset - Math.max(299999 - player.replicanti.gal, 0))
-						if (player.replicanti.gal + offset >= 350000) increase += 1e14 * (offset - Math.max(349999 - player.replicanti.gal, 0))
+						if (player.replicanti.gal + offset > 5e4) increase += (Math.pow(Math.max(offset + player.replicanti.gal - 5e4, 0), 4) - Math.pow(Math.max(player.replicanti.gal - 5e4, 0), 4))
 					} else for (var g = Math.max(player.replicanti.gal, 399); g < player.replicanti.gal + offset; g++) increase += 5 * Math.floor(Math.pow(1.2, g - 394))
 				}
 			}
-			ret = ret.times(pow10(increase))
+			ret = ret.mul(pow10(increase))
 		}
 	}
 	if (player.timestudy.studies.includes(233) && !costChange) ret = ret.dividedBy(player.replicanti.amount.pow(0.3))
@@ -242,7 +235,7 @@ function getReplicantiFinalInterval() {
 
 function runRandomReplicanti(chance){
 	if (Decimal.gte(chance, 1)) {
-		player.replicanti.amount = player.replicanti.amount.times(2)
+		player.replicanti.amount = player.replicanti.amount.mul(2)
 		return
 	}
 	var temp = player.replicanti.amount
@@ -265,9 +258,9 @@ function notContinuousReplicantiUpdating() {
 			if (chance < 1) {
 				let counter = 0
 				for (var i=0; i<100; i++) if (chance > Math.random()) counter++;
-				player.replicanti.amount = temp.times(counter).plus(player.replicanti.amount)
+				player.replicanti.amount = temp.mul(counter).plus(player.replicanti.amount)
 				counter = 0
-			} else player.replicanti.amount = player.replicanti.amount.times(2)
+			} else player.replicanti.amount = player.replicanti.amount.mul(2)
 			if (!player.timestudy.studies.includes(192)) player.replicanti.amount = player.replicanti.amount.min(getReplicantiLimit())
 		}
 		replicantiTicks -= interval
@@ -276,7 +269,7 @@ function notContinuousReplicantiUpdating() {
 
 function continuousReplicantiUpdating(diff){
 	if (player.timestudy.studies.includes(192) && tmp.rep.est.toNumber() > 0 && tmp.rep.est.toNumber() < 1/0) player.replicanti.amount = E_pow(Math.E, tmp.rep.ln +Math.log((diff*tmp.rep.est/10) * (Math.log10(tmp.rep.speeds.inc)/tmp.rep.speeds.exp)+1) / (Math.log10(tmp.rep.speeds.inc)/tmp.rep.speeds.exp))
-	else if (player.timestudy.studies.includes(192)) player.replicanti.amount = E_pow(Math.E, tmp.rep.ln + tmp.rep.est.times(diff * Math.log10(tmp.rep.speeds.inc) / tmp.rep.speeds.exp / 10).add(1).log(Math.E) / (Math.log10(tmp.rep.speeds.inc)/tmp.rep.speeds.exp))
+	else if (player.timestudy.studies.includes(192)) player.replicanti.amount = E_pow(Math.E, tmp.rep.ln + tmp.rep.est.mul(diff * Math.log10(tmp.rep.speeds.inc) / tmp.rep.speeds.exp / 10).add(1).log(Math.E) / (Math.log10(tmp.rep.speeds.inc)/tmp.rep.speeds.exp))
 	else player.replicanti.amount = E_pow(Math.E, tmp.rep.ln +(diff*tmp.rep.est/10)).min(getReplicantiLimit())
 	replicantiTicks = 0
 }

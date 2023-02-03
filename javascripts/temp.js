@@ -46,8 +46,8 @@ function updateTemp() {
 	updateInfiniteTimeTemp()
 	if (hasBU(41)) {
 		tmp.blu[41] = bu.effects[41]()
-		tmp.it = tmp.it.times(tmp.blu[41].it)
-		tmp.ig = tmp.ig.times(tmp.blu[41].ig)
+		tmp.it = tmp.it.mul(tmp.blu[41].it)
+		tmp.ig = tmp.ig.mul(tmp.blu[41].ig)
 	}
 
 	tmp.rm = getReplMult()
@@ -73,9 +73,9 @@ let tmp = {
 	be: false,
 	beu: {},
 	bm: [200,175,150,100,50,40,30,25,20,15,10,5,4,3,2,1],
-	nbc: [1,2,4,6,15,50,1e3,1e14,1e35,"1e500","1e2500","1e20000"],
+	nbc: [1,2,4,6,15,50,1e3,1e14,1e35,1/0,1/0,1/0],
 	nu: {},
-	nuc: [null,1e6,1e7,1e8,2e8,5e8,2e9,5e9,75e8,1e10,7e12,1e18,1e45,1e100,1e80,1e280,"e10000","e13000"],
+	nuc: [null,1e6,1e7,1e8,2e8,5e8,2e9,5e9,75e8,1e10,7e12,1e18,1e45,1/0,1/0,1/0],
 	nanofield_free_rewards: 0
 }
 
@@ -130,11 +130,11 @@ function updateReplicantiTemp() {
 	if (hasMasteryStudy("t273")) {
 		data.chance = E_pow(data.chance, tmp.mts[273])
 		data.freq = 0
-		if (data.chance.gte("1e9999998")) data.freq = tmp.mts[273].times(Math.log10(player.replicanti.chance + 1) / Math.log10(2))
+		if (data.chance.gte("1e9999998")) data.freq = tmp.mts[273].mul(Math.log10(player.replicanti.chance + 1) / Math.log10(2))
 	}
 
-	data.est = Decimal.div((data.freq ? data.freq.times(Math.log10(2) / Math.log10(Math.E) * 1e3) : Decimal.add(data.chance, 1).log(Math.E) * 1e3), data.interval)
-	data.estLog = data.est.times(Math.log10(Math.E))
+	data.est = Decimal.div((data.freq ? data.freq.mul(Math.log10(2) / Math.log10(Math.E) * 1e3) : Decimal.add(data.chance, 1).log(Math.E) * 1e3), data.interval)
+	data.estLog = data.est.mul(Math.log10(Math.E))
 }
 
 function updatePostInfiTemp() {
@@ -160,76 +160,11 @@ function updateGhostifyTempStuff(){
 	}
 }
 
-function updateNeutrinoBoostsTemp() {
-	tmp.nb = {}
-
-	if (!mod.ngp3) return
-	if (!ghostified) return
-
-	var nt = []
-	for (var g = 0; g < 3; g++) nt[g] = ghSave.neutrinos[(["electron","mu","tau"])[g]]
-	for (var nb = 1; nb <= ghSave.neutrinos.boosts; nb++) tmp.nb[nb] = neutrinoBoosts.boosts[nb](nt)
-}
-
-function updateNU1Temp(){
-	let x = 110
-	if (!bigRipped()) x = Math.max(x - player.meta.resets, 0)
-	tmp.nu[1] = x
-}
-
-function updateNU3Temp(){
-	let log = quSave.colorPowers.b.log10()
-	let exp = Math.max(log / 1e4 + 1, 2)
-	let x
-	if (exp > 2) x = E_pow(Math.max(log / 500 + 1, 1), exp)
-	else x = Math.pow(Math.max(log / 500 + 1, 1), exp)
-	tmp.nu[3] = x
-}
-
-function updateNU4Temp(){
-	let nu4base = 30
-	tmp.nu[4] = E_pow(nu4base, Math.pow(Math.max(-getTickspeed().div(1e3).log10() / 4e13 - 4, 0), 1/4))
-}
-
-function updateNU7Temp(){
-	var nu7 = quSave.colorPowers.g.add(1).log10()/400
-	if (nu7 > 40) nu7 = Math.sqrt(nu7*10)+20
-	tmp.nu[7] = pow10(nu7) 
-}
-
-function updateNU12Temp(){
-	tmp.nu[12] = { 
-		normal: Math.sqrt(player.galaxies * .0035 + 1),
-		free: player.dilation.freeGalaxies * .035 + 1,
-		replicated: Math.sqrt(getTotalRG()) * .0175 + 1 //NU12 
-	}
-}
-
-function updateNU14Temp(){
-	var base = ghSave.ghostParticles.add(1).log10()
-	tmp.nu[14] = Decimal.pow(2, base / 60 - 0.5).max(1).min(1e4)
-}
-
-function updateNU15Temp(){
-	tmp.nu[15] = pow2(Math.sqrt(nfSave.rewards + 4) - 1) 
-	//NU15
-}
-
-function updateNeutrinoUpgradesTemp(){
-	updateNU1Temp()
-	updateNU3Temp()
-	updateNU4Temp()
-	updateNU7Temp()
-	updateNU12Temp()
-	updateNU14Temp()
-	updateNU15Temp()
-}
-
 function updateBreakEternityUpgrade1Temp(){
 	var ep = player.eternityPoints
 	var em = beSave.eternalMatter
 	var log1 = ep.div("1e1280").add(1).log10()
-	var log2 = em.times(10).max(1).log10()
+	var log2 = em.mul(10).max(1).log10()
 	tmp.beu[1] = pow10(Math.pow(log1, 1/3) * 0.5 + Math.pow(log2, 1/3)).max(1)
 }
 
@@ -388,7 +323,7 @@ function updateNanoEffectUsages() {
 	nanoRewards.effectToReward = {}
 
 	//First reward
-	var data2 = [hasBU(21) ? "supersonic_start" : "hatch_speed"]
+	var data2 = [hasNU(15) ? "photons" : "hatch_speed"]
 	nanoRewards.effectsUsed[1] = data2
 
 	//Fifth reward
@@ -396,7 +331,8 @@ function updateNanoEffectUsages() {
 	nanoRewards.effectsUsed[5] = data2
 
 	//Seventh reward
-	var data2 = [hasBU(22) ? "neutrinos" : "remote_start", "preon_charge"]
+	var data2 = ["remote_start", "preon_charge"]
+	if (hasNU(6)) data2 = ["preon_charge"]
 	nanoRewards.effectsUsed[7] = data2
 
 	//Used Nanorewards

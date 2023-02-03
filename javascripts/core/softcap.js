@@ -40,7 +40,11 @@ var softcap_data = {
 		},
 		2: {
 			func: "pow",
-			start: 12e6,
+			start() {
+				let r = 12e6
+				r *= getLightEff(0)
+				return r
+			},
 			pow: 2/3,
 			derv: false
 		}
@@ -97,7 +101,7 @@ var softcap_funcs = {
 		if (Decimal.gt(x, start)) {
 			x = Decimal.div(x, start).pow(pow)
 			if (derv) x = x.sub(1).div(pow).add(1)
-			x = x.times(start)
+			x = x.mul(start)
 			return x
 		}
 		return x
@@ -155,7 +159,7 @@ function doWeakerPowerReductionSoftcapNumber(num,start,exp){
 
 function doWeakerPowerReductionSoftcapDecimal(num,start,exp){
 	if (num.lt(start) || num.lt(1)) return num
-	return start.times( num.div(start).pow(exp).minus(1).div(exp).plus(1) )
+	return start.mul( num.div(start).pow(exp).minus(1).div(exp).plus(1) )
 }
 
 function doStrongerPowerReductionSoftcapNumber(num,start,exp){
@@ -165,5 +169,5 @@ function doStrongerPowerReductionSoftcapNumber(num,start,exp){
 
 function doStrongerPowerReductionSoftcapDecimal(num,start,exp){
 	if (num.lt(start) || num.lt(1)) return num
-	return start.times(num.div(start).pow(exp))
+	return start.mul(num.div(start).pow(exp))
 }

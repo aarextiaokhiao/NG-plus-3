@@ -13,52 +13,52 @@ function getR84or73Mult(){
 function getNormalDimensionVanillaAchievementBonus(tier){
 	var mult = E(1)
 	if (tier == 1) {
-		if (hasAch("r28")) mult = mult.times(1.1);
-		if (hasAch("r31")) mult = mult.times(1.05);
-		if (hasAch("r71")) mult = mult.times(inNGM(2) ? 909 : 3);
-		if (hasAch("r68")) mult = mult.times(inNGM(2) ? 5 : 1.5);
-		if (inNGM(2)) if (hasAch("r64")) mult = mult.times(1e6);
+		if (hasAch("r28")) mult = mult.mul(1.1);
+		if (hasAch("r31")) mult = mult.mul(1.05);
+		if (hasAch("r71")) mult = mult.mul(inNGM(2) ? 909 : 3);
+		if (hasAch("r68")) mult = mult.mul(inNGM(2) ? 5 : 1.5);
+		if (inNGM(2)) if (hasAch("r64")) mult = mult.mul(1e6);
 	}
-	if (tier == 8 && hasAch("r23")) mult = mult.times(1.1);
-	else if (hasAch("r34")) mult = mult.times(inNGM(2) ? 2 : 1.02);
-	if (tier <= 4 && hasAch("r43")) mult = mult.times(1.25);
-	if (inNGM(2) && hasAch("r31")) mult = mult.times(productAllTotalBought1());
-	if (hasAch("r48")) mult = mult.times(1.1);
-	if (hasAch("r72")) mult = mult.times(inNGM(2) ? 10 : 1.1); // tbd
-	if (inOnlyNGM(2) && hasAch("r46")) mult = mult.times(productAllDims1());
-	if (hasAch("r74") && player.currentChallenge != "") mult = mult.times(inNGM(2) ? 40 : 1.4);
-	if (hasAch("r77")) mult = mult.times(1 + tier / (inNGM(2) ? 10 : 100));
-	if (player.boughtDims && hasAch("r98")) mult = mult.times(player.infinityDimension8.amount.max(1))
-	mult = mult.times(getR84or73Mult())
+	if (tier == 8 && hasAch("r23")) mult = mult.mul(1.1);
+	else if (hasAch("r34")) mult = mult.mul(inNGM(2) ? 2 : 1.02);
+	if (tier <= 4 && hasAch("r43")) mult = mult.mul(1.25);
+	if (inNGM(2) && hasAch("r31")) mult = mult.mul(productAllTotalBought1());
+	if (hasAch("r48")) mult = mult.mul(1.1);
+	if (hasAch("r72")) mult = mult.mul(inNGM(2) ? 10 : 1.1); // tbd
+	if (inOnlyNGM(2) && hasAch("r46")) mult = mult.mul(productAllDims1());
+	if (hasAch("r74") && player.currentChallenge != "") mult = mult.mul(inNGM(2) ? 40 : 1.4);
+	if (hasAch("r77")) mult = mult.mul(1 + tier / (inNGM(2) ? 10 : 100));
+	if (player.boughtDims && hasAch("r98")) mult = mult.mul(player.infinityDimension8.amount.max(1))
+	mult = mult.mul(getR84or73Mult())
 	if (inNGM(2)) return mult
-	if (hasAch("r56") && player.thisInfinityTime < 1800) mult = mult.times(3600 / (player.thisInfinityTime + 1800));
-	if (hasAch("r78") && player.thisInfinityTime < 3) mult = mult.times(3.3 / (player.thisInfinityTime + 0.3));
-	if (hasAch("r65") && player.currentChallenge != "" && player.thisInfinityTime < 1800) mult = mult.times(Math.max(2400 / (player.thisInfinityTime + 600), 1))
-	if (hasAch("r91") && player.thisInfinityTime < 50) mult = mult.times(Math.max(301 - player.thisInfinityTime * 6, 1))
-	if (hasAch("r92") && player.thisInfinityTime < 600) mult = mult.times(Math.max(101 - player.thisInfinityTime / 6, 1));
+	if (hasAch("r56") && player.thisInfinityTime < 1800) mult = mult.mul(3600 / (player.thisInfinityTime + 1800));
+	if (hasAch("r78") && player.thisInfinityTime < 3) mult = mult.mul(3.3 / (player.thisInfinityTime + 0.3));
+	if (hasAch("r65") && player.currentChallenge != "" && player.thisInfinityTime < 1800) mult = mult.mul(Math.max(2400 / (player.thisInfinityTime + 600), 1))
+	if (hasAch("r91") && player.thisInfinityTime < 50) mult = mult.mul(Math.max(301 - player.thisInfinityTime * 6, 1))
+	if (hasAch("r92") && player.thisInfinityTime < 600) mult = mult.mul(Math.max(101 - player.thisInfinityTime / 6, 1));
 	return mult
 }
 
 function getNormalDimensionVanillaTimeStudyBonus(tier){
 	var mult = E(1)
-	if (player.timestudy.studies.includes(71) && tier !== 8) mult = mult.times(tmp.sacPow.pow(0.25).min("1e210000"));
-	if (player.timestudy.studies.includes(91)) mult = mult.times(pow10(Math.min(player.thisEternity, 18000) / 60));
+	if (player.timestudy.studies.includes(71) && tier !== 8) mult = mult.mul(tmp.sacPow.pow(0.25).min("1e210000"));
+	if (player.timestudy.studies.includes(91)) mult = mult.mul(pow10(Math.min(player.thisEternity, 18000) / 60));
 	let useHigherNDReplMult = !player.dilation.active ? false : !player.masterystudies ? false : hasMasteryStudy("t323")
-	if (!useHigherNDReplMult) mult = mult.times(tmp.nrm)
-	if (player.timestudy.studies.includes(161)) mult = mult.times(pow10((inNGM(2) ? 6660 : 616) * (mod.ngep ? 5 : 1)))
-	if (player.timestudy.studies.includes(234) && tier == 1) mult = mult.times(tmp.sacPow)
-	if (player.timestudy.studies.includes(193)) mult = mult.times(E_pow(1.03, getEternitied()).min("1e13000"))
-	if (tier == 8 && player.timestudy.studies.includes(214)) mult = mult.times((tmp.sacPow.pow(8)).min("1e46000").mul(tmp.sacPow.pow(1.1).min(E("1e125000"))))
+	if (!useHigherNDReplMult) mult = mult.mul(tmp.nrm)
+	if (player.timestudy.studies.includes(161)) mult = mult.mul(pow10((inNGM(2) ? 6660 : 616) * (mod.ngep ? 5 : 1)))
+	if (player.timestudy.studies.includes(234) && tier == 1) mult = mult.mul(tmp.sacPow)
+	if (player.timestudy.studies.includes(193)) mult = mult.mul(E_pow(1.03, getEternitied()).min("1e13000"))
+	if (tier == 8 && player.timestudy.studies.includes(214)) mult = mult.mul((tmp.sacPow.pow(8)).min("1e46000").mul(tmp.sacPow.pow(1.1).min(E("1e125000"))))
 	return mult
 }
 
 function getNormalDimensionGalaxyUpgradesBonus(tier,mult){
 	if (inNGM(2)) return mult
 	
-	if (hasGalUpg(12) && (hasGalUpg(42) || !inNGM(4))) mult = mult.times(galMults.u12())
-	if (hasGalUpg(13) && ((!inNC(14) && player.currentChallenge != "postcngm3_3") || !inNGM(3) || inNGM(4)) && player.currentChallenge != "postcngm3_4") mult = mult.times(galMults.u13())
-	if (hasGalUpg(15)) mult = mult.times(galMults.u15())
-	if (hasGalUpg(35)) mult = mult.times(galMults.u35())
+	if (hasGalUpg(12) && (hasGalUpg(42) || !inNGM(4))) mult = mult.mul(galMults.u12())
+	if (hasGalUpg(13) && ((!inNC(14) && player.currentChallenge != "postcngm3_3") || !inNGM(3) || inNGM(4)) && player.currentChallenge != "postcngm3_4") mult = mult.mul(galMults.u13())
+	if (hasGalUpg(15)) mult = mult.mul(galMults.u15())
+	if (hasGalUpg(35)) mult = mult.mul(galMults.u35())
 	if (player.challenges.includes("postc4")) mult = mult.pow(1.05);
 	if (hasGalUpg(31)) mult = mult.pow(galMults.u31());
 	return mult
@@ -68,30 +68,30 @@ function getAfterDefaultDilationLayerAchBonus(tier){
 	mult = E(1)
 	let timeAndDimMult = timeMult()
 	if (hasInfinityMult(tier) && !inNGM(3)) timeAndDimMult = dimMults().mul(timeAndDimMult)
-	if (player.challenges.includes("postcngmm_1")||player.currentChallenge=="postcngmm_1") mult = mult.times(timeAndDimMult)
+	if (player.challenges.includes("postcngmm_1")||player.currentChallenge=="postcngmm_1") mult = mult.mul(timeAndDimMult)
 	if (inNGM(2)) return mult
-	if (hasAch("r56") && player.thisInfinityTime < 1800) mult = mult.times(3600 / (player.thisInfinityTime + 1800));
-	if (hasAch("r78") && player.thisInfinityTime < 3) mult = mult.times(3.3 / (player.thisInfinityTime + 0.3));
-	if (hasAch("r65") && player.currentChallenge != "" && player.thisInfinityTime < 1800) mult = mult.times(Math.max(2400 / (player.thisInfinityTime + 600), 1))
-	if (hasAch("r91") && player.thisInfinityTime < 50) mult = mult.times(Math.max(301 - player.thisInfinityTime * 6, 1))
-	if (hasAch("r92") && player.thisInfinityTime < 600) mult = mult.times(Math.max(101 - player.thisInfinityTime / 6, 1));
+	if (hasAch("r56") && player.thisInfinityTime < 1800) mult = mult.mul(3600 / (player.thisInfinityTime + 1800));
+	if (hasAch("r78") && player.thisInfinityTime < 3) mult = mult.mul(3.3 / (player.thisInfinityTime + 0.3));
+	if (hasAch("r65") && player.currentChallenge != "" && player.thisInfinityTime < 1800) mult = mult.mul(Math.max(2400 / (player.thisInfinityTime + 600), 1))
+	if (hasAch("r91") && player.thisInfinityTime < 50) mult = mult.mul(Math.max(301 - player.thisInfinityTime * 6, 1))
+	if (hasAch("r92") && player.thisInfinityTime < 600) mult = mult.mul(Math.max(101 - player.thisInfinityTime / 6, 1));
 	if (player.currentChallenge == "postc6" || inQC(6)) mult = mult.dividedBy(player.matter.max(1))
-	if (player.currentChallenge == "postc8" || inQC(6)) mult = mult.times(player.postC8Mult)
-	if (hasGalUpg(12) && hasGalUpg(42) && inNGM(4)) mult = mult.times(galMults.u12())
+	if (player.currentChallenge == "postc8" || inQC(6)) mult = mult.mul(player.postC8Mult)
+	if (hasGalUpg(12) && hasGalUpg(42) && inNGM(4)) mult = mult.mul(galMults.u12())
 	if (hasGalUpg(45) && inNGM(4)) {
 		var e = hasGalUpg(46) ? galMults["u46"]() : 1
-		mult = mult.times(Math.pow(player["timeDimension" + tier].amount.plus(10).log10(), e))
+		mult = mult.mul(Math.pow(player["timeDimension" + tier].amount.plus(10).log10(), e))
 	}
 	return mult
 }
 
 function getPostBreakInfNDMult(){
 	mult = E(1)
-	if (player.infinityUpgrades.includes("totalMult")) mult = mult.times(totalMult)
-	if (player.infinityUpgrades.includes("currentMult")) mult = mult.times(currentMult)
-	if (player.infinityUpgrades.includes("infinitiedMult")) mult = mult.times(infinitiedMult)
-	if (player.infinityUpgrades.includes("achievementMult")) mult = mult.times(achievementMult)
-	if (player.infinityUpgrades.includes("challengeMult")) mult = mult.times(worstChallengeBonus)
+	if (player.infinityUpgrades.includes("totalMult")) mult = mult.mul(totalMult)
+	if (player.infinityUpgrades.includes("currentMult")) mult = mult.mul(currentMult)
+	if (player.infinityUpgrades.includes("infinitiedMult")) mult = mult.mul(infinitiedMult)
+	if (player.infinityUpgrades.includes("achievementMult")) mult = mult.mul(achievementMult)
+	if (player.infinityUpgrades.includes("challengeMult")) mult = mult.mul(worstChallengeBonus)
 	return mult
 }
 
@@ -100,64 +100,64 @@ function getStartingNDMult(tier){
 	let mPerDB = getDimensionBoostPower()
 	let dbMult = player.resets < tier ? E(1) : E_pow(mPerDB, player.resets - tier + 1)
 	let mptMult = E_pow(mPerTen, Math.floor(player[TIER_NAMES[tier]+"Bought"] / 10))
-	return mptMult.times(dbMult)
+	return mptMult.mul(dbMult)
 }
 
 function getDimensionFinalMultiplier(tier) {
 	let mult = getStartingNDMult(tier)
-	if (tier == 8) mult = mult.times(getTotalSacrificeBoost())
+	if (tier == 8) mult = mult.mul(getTotalSacrificeBoost())
 	
-	if (aarMod.newGameMinusVersion !== undefined) mult = mult.times(.1)
+	if (aarMod.newGameMinusVersion !== undefined) mult = mult.mul(.1)
 	if (!tmp.infPow) updateInfinityPowerEffects()
 	if (player.currentChallenge == "postcngm3_2") return tmp.infPow.max(1e100)
-	if (player.currentEternityChall == "eterc11") return tmp.infPow.times(E_pow(getDimensionBoostPower(), player.resets - tier + 1).max(1))
+	if (player.currentEternityChall == "eterc11") return tmp.infPow.mul(E_pow(getDimensionBoostPower(), player.resets - tier + 1).max(1))
 	if ((inNC(7) || player.currentChallenge == "postcngm3_3") && inNGM(2)) {
 		if (tier == 4) mult = mult.pow(1.4)
 		if (tier == 2) mult = mult.pow(1.7)
 	}
 
-	if (player.currentEternityChall != "eterc9" && (!inNGM(3) || player.currentChallenge != "postc2")) mult = mult.times(tmp.infPow)
+	if (player.currentEternityChall != "eterc9" && (!inNGM(3) || player.currentChallenge != "postc2")) mult = mult.mul(tmp.infPow)
 
-	mult = mult.times(getPostBreakInfNDMult())
+	mult = mult.mul(getPostBreakInfNDMult())
 
 	let timeAndDimMult = timeMult()
 	if (hasInfinityMult(tier) && !inNGM(3)) timeAndDimMult = dimMults().mul(timeAndDimMult)
-	if (!inNGM(3)) mult = mult.times(dimMults())
-	if (!player.challenges.includes("postcngmm_1") && player.currentChallenge!="postcngmm_1") mult = mult.times(timeAndDimMult)
+	if (!inNGM(3)) mult = mult.mul(dimMults())
+	if (!player.challenges.includes("postcngmm_1") && player.currentChallenge!="postcngmm_1") mult = mult.mul(timeAndDimMult)
 	
-	if (tier == 1 && player.infinityUpgrades.includes("unspentBonus")) mult = mult.times(unspentBonus);
-	mult = mult.times(getNormalDimensionVanillaAchievementBonus(tier))
-	mult = mult.times(player.achPow)
-	mult = mult.times(getNormalDimensionVanillaTimeStudyBonus(tier))
+	if (tier == 1 && player.infinityUpgrades.includes("unspentBonus")) mult = mult.mul(unspentBonus);
+	mult = mult.mul(getNormalDimensionVanillaAchievementBonus(tier))
+	mult = mult.mul(player.achPow)
+	mult = mult.mul(getNormalDimensionVanillaTimeStudyBonus(tier))
 	mult = getNormalDimensionGalaxyUpgradesBonus(tier,mult)
 
-	mult = mult.times(player.postC3Reward)
+	mult = mult.mul(player.postC3Reward)
 	if (player.challenges.includes("postc4") && inNGM(2)) mult = mult.pow(1.05);
-	if (player.challenges.includes("postc8") && tier < 8 && tier > 1) mult = mult.times(mult18);
+	if (player.challenges.includes("postc8") && tier < 8 && tier > 1) mult = mult.mul(mult18);
 
-	if (isADSCRunning() || (inNGM(2) && player.currentChallenge === "postc1")) mult = mult.times(productAllTotalBought());
+	if (isADSCRunning() || (inNGM(2) && player.currentChallenge === "postc1")) mult = mult.mul(productAllTotalBought());
 	else {
 		if (player.currentChallenge == "postc6" || inQC(6)) mult = mult.dividedBy(player.matter.max(1))
-		if (player.currentChallenge == "postc8" || inQC(6)) mult = mult.times(player.postC8Mult)
+		if (player.currentChallenge == "postc8" || inQC(6)) mult = mult.mul(player.postC8Mult)
 	}
 
 	if (player.currentChallenge == "postc4" && player.postC4Tier != tier && !inNGM(3)) mult = mult.pow(0.25)
 	
-	if (player.currentEternityChall == "eterc10") mult = mult.times(ec10bonus)
+	if (player.currentEternityChall == "eterc10") mult = mult.mul(ec10bonus)
 	
-	if (tier == 8 && hasAch("ng3p27")) mult = mult.times(tmp.ig)
+	if (tier == 8 && hasAch("ng3p27")) mult = mult.mul(tmp.ig)
 	
 	if (mult.gt(10)) mult = dilates(mult.max(1), 2)
-	mult = mult.times(getAfterDefaultDilationLayerAchBonus(tier))
+	mult = mult.mul(getAfterDefaultDilationLayerAchBonus(tier))
 	if (player.currentChallenge == "postc4" && inNGM(3)) mult = mult.sqrt()
 
 	if (mult.gt(10)) mult = dilates(mult.max(1), 1)
-	if (player.dilation.upgrades.includes(6)) mult = mult.times(player.dilation.dilatedTime.max(1).pow(308))
-	if (tier == 1 && !inNGM(3) && player.infinityUpgrades.includes("postinfi60")) mult = mult.times(getNewB60Mult())
+	if (player.dilation.upgrades.includes(6)) mult = mult.mul(player.dilation.dilatedTime.max(1).pow(308))
+	if (tier == 1 && !inNGM(3) && player.infinityUpgrades.includes("postinfi60")) mult = mult.mul(getNewB60Mult())
 	let useHigherNDReplMult = !player.dilation.active ? false : !player.masterystudies ? false : hasMasteryStudy("t323")
-	if (useHigherNDReplMult) mult = mult.times(tmp.nrm)
+	if (useHigherNDReplMult) mult = mult.mul(tmp.nrm)
 	if (player.dilation.active && isNanoEffectUsed("dil_effect_exp")) mult = mult.pow(tmp.nf.effects.dil_effect_exp)
-	if (isBigRipUpgradeActive(1)) mult = mult.times(tmp.bru[1])
+	if (isBigRipUpgradeActive(1)) mult = mult.mul(tmp.bru[1])
 
 	return mult
 }
@@ -193,7 +193,7 @@ function getDimensionRateOfChange(tier) {
 	if (aarMod.logRateChange) {
 		var change = current.add(toGain.div(10)).log10()-current.log10()
 		if (change < 0 || isNaN(change)) change = 0
-	} else var change = toGain.times(10).dividedBy(current);
+	} else var change = toGain.mul(10).dividedBy(current);
 
 	return change;
 }
@@ -208,9 +208,9 @@ function multiplySameCosts(cost) {
 	var tierCosts = [ null, E(1e3), E(1e4), E(1e5), E(1e6), E(1e8), E(1e10), E(1e12), E(1e15) ];
 
 	for (let i = 1; i <= 8; i++) {
-		if (player[tiers[i] + "Cost"].e == cost.e) player[tiers[i] + "Cost"] = player[tiers[i] + "Cost"].times(tierCosts[i])
+		if (player[tiers[i] + "Cost"].e == cost.e) player[tiers[i] + "Cost"] = player[tiers[i] + "Cost"].mul(tierCosts[i])
 	}
-	if (player.tickSpeedCost.e == cost.e) player.tickSpeedCost = player.tickSpeedCost.times(player.tickspeedMultiplier)
+	if (player.tickSpeedCost.e == cost.e) player.tickSpeedCost = player.tickSpeedCost.mul(player.tickspeedMultiplier)
 }
 
 function multiplyPC5Costs(cost, tier) {
@@ -218,15 +218,15 @@ function multiplyPC5Costs(cost, tier) {
 	if (tier < 5) {
 		for (var i = 1; i <= 8; i++) {
 			if (player[tiers[i] + "Cost"].e <= cost.e) {
-				player[tiers[i] + "Cost"] = player[tiers[i] + "Cost"].times(player.costMultipliers[i-1])
-				if (player[tiers[i] + "Cost"].gte(Number.MAX_VALUE)) player.costMultipliers[i-1] = player.costMultipliers[i-1].times(10)
+				player[tiers[i] + "Cost"] = player[tiers[i] + "Cost"].mul(player.costMultipliers[i-1])
+				if (player[tiers[i] + "Cost"].gte(Number.MAX_VALUE)) player.costMultipliers[i-1] = player.costMultipliers[i-1].mul(10)
 			}
 		}
 	} else {
 		for (var i = 1; i <= 8; i++) {
 			if (player[tiers[i] + "Cost"].e >= cost.e) {
-				player[tiers[i] + "Cost"] = player[tiers[i] + "Cost"].times(player.costMultipliers[i-1])
-				 if (player[tiers[i] + "Cost"].gte(Number.MAX_VALUE)) player.costMultipliers[i-1] = player.costMultipliers[i-1].times(10)
+				player[tiers[i] + "Cost"] = player[tiers[i] + "Cost"].mul(player.costMultipliers[i-1])
+				 if (player[tiers[i] + "Cost"].gte(Number.MAX_VALUE)) player.costMultipliers[i-1] = player.costMultipliers[i-1].mul(10)
 			}
 		}
 	}
@@ -246,8 +246,8 @@ function getDimensionPowerMultiplier(focusOn, debug) {
 	if (mod.ngp3 && focusOn != "linear") exp = focusOn == "no-rg4" ? getMPTExp(focusOn) : tmp.mpte
 	if (exp > 1) ret = E_pow(ret, exp)
 	if (mod.ngmu) {
-		ret = Decimal.times(ret, Math.log10(player.resets + 1) + 1)
-		ret = Decimal.times(ret, Math.log10(Math.max(player.galaxies, 0) + 1) * 5 + 1)
+		ret = Decimal.mul(ret, Math.log10(player.resets + 1) + 1)
+		ret = Decimal.mul(ret, Math.log10(Math.max(player.galaxies, 0) + 1) * 5 + 1)
 	}
 	return ret
 }
@@ -276,6 +276,7 @@ function getMPTBase(focusOn) {
 	if (mod.ngp3) {
 		ret += tmp.qcRewards[5]
 		if (isNanoEffectUsed("per_10_power")) ret += tmp.nf.effects.per_10_power
+		ret += getLightEff(5, 0)
 	}
 	return ret
 }
@@ -366,8 +367,8 @@ function buyOneDimension(tier) {
 	if (dimBought(tier) == 0) {
 		if (player.currentChallenge == "postc5" && !inNGM(3)) multiplyPC5Costs(player[name + 'Cost'], tier)
 		else if (inNC(5) && !inNGM(3)) multiplySameCosts(player[name + 'Cost'])
-		else player[name + "Cost"] = player[name + "Cost"].times(getDimensionCostMultiplier(tier))
-		if (costIncreaseActive(player[name + "Cost"])) player.costMultipliers[tier - 1] = player.costMultipliers[tier - 1].times(getDimensionCostMultiplierIncrease())
+		else player[name + "Cost"] = player[name + "Cost"].mul(getDimensionCostMultiplier(tier))
+		if (costIncreaseActive(player[name + "Cost"])) player.costMultipliers[tier - 1] = player.costMultipliers[tier - 1].mul(getDimensionCostMultiplierIncrease())
 		floatText("D" + tier, "x" + shortenMoney(getDimensionPowerMultiplier()))
 	}
 	if (tier == 1 && getAmount(1) >= 1e150) giveAchievement("There's no point in doing that")
@@ -380,7 +381,7 @@ function buyManyDimension(tier, quick) {
 	if (!canBuyDimension(tier)) return false
 	let name = TIER_NAMES[tier]
 	let toBuy = 10 - dimBought(tier)
-	let cost = player[name + 'Cost'].times(toBuy)
+	let cost = player[name + 'Cost'].mul(toBuy)
 	let resource = getOrSubResource(tier)
 	if (!cost.lte(resource)) return false
 	getOrSubResource(tier, cost)
@@ -388,8 +389,8 @@ function buyManyDimension(tier, quick) {
 	recordBought(name, toBuy)
 	if (player.currentChallenge == "postc5" && !inNGM(3)) multiplyPC5Costs(player[name + 'Cost'], tier)
 	else if (inNC(5) && !inNGM(3)) multiplySameCosts(player[name + 'Cost'])
-	else player[name + "Cost"] = player[name + "Cost"].times(getDimensionCostMultiplier(tier))
-	if (costIncreaseActive(player[name + "Cost"])) player.costMultipliers[tier - 1] = player.costMultipliers[tier - 1].times(getDimensionCostMultiplierIncrease())
+	else player[name + "Cost"] = player[name + "Cost"].mul(getDimensionCostMultiplier(tier))
+	if (costIncreaseActive(player[name + "Cost"])) player.costMultipliers[tier - 1] = player.costMultipliers[tier - 1].mul(getDimensionCostMultiplierIncrease())
 	if (!quick) {
 		floatText("D" + tier, "x" + shortenMoney(getDimensionPowerMultiplier()))
 		onBuyDimension(tier)
@@ -407,7 +408,7 @@ function buyBulkDimension(tier, bulk, auto) {
 		bought++
 	}
 	let name = TIER_NAMES[tier]
-	let cost = player[name + 'Cost'].times(10)
+	let cost = player[name + 'Cost'].mul(10)
 	let resource = getOrSubResource(tier)
 	if (!cost.lte(resource)) return
 	if (((!inNC(5) && player.currentChallenge != "postc5") || inNGM(3)) && !inNC(9) && !costIncreaseActive(player[name + "Cost"])) {
@@ -418,8 +419,8 @@ function buyBulkDimension(tier, bulk, auto) {
 		getOrSubResource(tier, E_pow(mult, toBuy).sub(1).div(mult-1).mul(cost))
 		player[name + "Amount"] = player[name + "Amount"].add(toBuy * 10)
 		recordBought(name, toBuy*10)
-		player[name + "Cost"] = player[name + "Cost"].times(E_pow(mult, toBuy))
-		if (costIncreaseActive(player[name + "Cost"])) player.costMultipliers[tier - 1] = player.costMultipliers[tier - 1].times(getDimensionCostMultiplierIncrease())
+		player[name + "Cost"] = player[name + "Cost"].mul(E_pow(mult, toBuy))
+		if (costIncreaseActive(player[name + "Cost"])) player.costMultipliers[tier - 1] = player.costMultipliers[tier - 1].mul(getDimensionCostMultiplierIncrease())
 		bought += toBuy
 	}
 	let stopped = !costIncreaseActive(player[name + "Cost"])
@@ -438,21 +439,21 @@ function buyBulkDimension(tier, bulk, auto) {
 		let mi = getDimensionCostMultiplierIncrease()
 		let a = Math.log10(mi)/2
 		let b = player.costMultipliers[tier-1].log10() - a
-		let c = player[name + "Cost"].times(10).log10() - player.money.log10()
+		let c = player[name + "Cost"].mul(10).log10() - player.money.log10()
 		let d = b * b - 4 * a * c
 		if (d < 0) break
 		let toBuy = Math.min(Math.floor(( -b + Math.sqrt(d)) / (2 * a)) + 1, bulk - bought)
 		if (toBuy < 1) break
-		let newCost = player[name + "Cost"].times(E_pow(player.costMultipliers[tier - 1], toBuy - 1).mul(E_pow(mi, (toBuy - 1) * (toBuy - 2) / 2)))
-		let newMult = player.costMultipliers[tier - 1].times(E_pow(mi, toBuy - 1))
+		let newCost = player[name + "Cost"].mul(E_pow(player.costMultipliers[tier - 1], toBuy - 1).mul(E_pow(mi, (toBuy - 1) * (toBuy - 2) / 2)))
+		let newMult = player.costMultipliers[tier - 1].mul(E_pow(mi, toBuy - 1))
 		if (!inQC(1)) {
 			if (player.money.gte(newCost)) player.money = player.money.sub(newCost)
 			else if (player.dimensionMultDecrease > 3) player.money = E(0)
 		}
 		player[name + "Amount"] = player[name + "Amount"].add(toBuy * 10)
 		recordBought(name, toBuy * 10)
-		player[name + "Cost"] = newCost.times(newMult)
-		player.costMultipliers[tier - 1] = newMult.times(mi)
+		player[name + "Cost"] = newCost.mul(newMult)
+		player.costMultipliers[tier - 1] = newMult.mul(mi)
 		bought += toBuy
 	}
 	if (!auto) floatText("D" + tier, "x" + shortenMoney(E_pow(getDimensionPowerMultiplier(), bought)))
@@ -480,9 +481,9 @@ function getOrSubResource(tier, sub) {
 
 function timeMult() {
 	var mult = E(1)
-	if (player.infinityUpgrades.includes("timeMult")) mult = mult.times(infUpg11Pow());
-	if (player.infinityUpgrades.includes("timeMult2")) mult = mult.times(infUpg13Pow());
-	if (hasAch("r76")) mult = mult.times(Math.pow(player.totalTimePlayed / (600 * 60 * 48), inNGM(2) ? 0.1 : 0.05));
+	if (player.infinityUpgrades.includes("timeMult")) mult = mult.mul(infUpg11Pow());
+	if (player.infinityUpgrades.includes("timeMult2")) mult = mult.mul(infUpg13Pow());
+	if (hasAch("r76")) mult = mult.mul(Math.pow(player.totalTimePlayed / (600 * 60 * 48), inNGM(2) ? 0.1 : 0.05));
 	return mult;
 }
 
@@ -497,7 +498,7 @@ function infUpg13Pow() {
 }
 
 function dimMults() {
-	return E_pow(Decimal.times(getInfinitied(), 0.2).add(1),(inNGM(2) ? 2 : 1) * (player.timestudy.studies.includes(31) ? 4 : 1))
+	return E_pow(Decimal.mul(getInfinitied(), 0.2).add(1),(inNGM(2) ? 2 : 1) * (player.timestudy.studies.includes(31) ? 4 : 1))
 }
 
 function getInfinitiedMult() {
@@ -517,14 +518,14 @@ function getDimensionProductionPerSecond(tier) {
 		if (tier == 4) ret = ret.pow(1.3)
 		else if (tier == 2) ret = ret.pow(1.5)
 	}
-	ret = ret.times(getDimensionFinalMultiplier(tier))
-	if (inNC(2) || player.currentChallenge == "postc1") ret = ret.times(player.chall2Pow)
-	if (tier == 1 && (inNC(3) || player.currentChallenge == "postc1")) ret = ret.times(player.chall3Pow)
+	ret = ret.mul(getDimensionFinalMultiplier(tier))
+	if (inNC(2) || player.currentChallenge == "postc1") ret = ret.mul(player.chall2Pow)
+	if (tier == 1 && (inNC(3) || player.currentChallenge == "postc1")) ret = ret.mul(player.chall3Pow)
 	if (inNGM(3)) ret = ret.div(10)
 	if (inNGM(4)) ret = ret.div(100)
 	if (tier == 1 && (inNC(7) || player.currentChallenge == "postcngm3_3" || inQC(4))) ret = ret.plus(getDimensionProductionPerSecond(2))
 	let tick = dilates(Decimal.div(1e3,getTickspeed()),"tick")
 	if (player.dilation.active && isNanoEffectUsed("dil_effect_exp")) tick = tick.pow(tmp.nf.effects.dil_effect_exp)
-	ret = ret.times(tick)
+	ret = ret.mul(tick)
 	return ret
 }

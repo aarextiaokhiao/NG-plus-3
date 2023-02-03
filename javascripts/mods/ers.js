@@ -50,3 +50,10 @@ function setReplicantiNewLimit() {
 	if (!isNaN(break_infinity_js ? value : value.logarithm)) player.replicanti.newLimit = value
 	el("galStrength").value = Math.log10(E(player.replicanti.newLimit).log(2)) / Math.log10(2) / 10
 }
+
+function ERFreeTickUpdating(){
+	var oldT = player.totalTickGained
+	player.totalTickGained = getTotalTickGained()
+	player.tickThreshold = tickCost(player.totalTickGained+1)
+	player.tickspeed = player.tickspeed.mul(E_pow(tmp.tsReduce, player.totalTickGained - oldT))
+}

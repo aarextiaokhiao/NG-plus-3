@@ -20,7 +20,7 @@ function doBigCrunch(auto) {
 	//Infinity
 	var add = getIPMult()
 	if (player.break && player.currentChallenge == "") add = gainedInfinityPoints()
-	else if (player.timestudy.studies.includes(51)) add = add.times(1e15)
+	else if (player.timestudy.studies.includes(51)) add = add.mul(1e15)
 	player.infinityPoints = player.infinityPoints.plus(add)
 
 	if (auto && autoS) {
@@ -106,36 +106,36 @@ function gainedInfinityPoints(next) {
 	if (inOnlyNGM(2)) div -= galIP()
 
 	var ret = pow10(player.money.e / div - 0.75).mul(getIPMult())
-	if (player.timestudy.studies.includes(41)) ret = ret.times(E_pow(tsMults[41](), player.galaxies + player.replicanti.galaxies))
-	if (player.timestudy.studies.includes(51)) ret = ret.times(mod.ngep?1e30:1e15)
-	if (player.timestudy.studies.includes(141)) ret = ret.times(E(1e45).dividedBy(E_pow(15, Math.log(player.thisInfinityTime+1)*Math.pow(player.thisInfinityTime+1, 0.125))).max(1))
-	if (player.timestudy.studies.includes(142)) ret = ret.times(1e25)
-	if (player.timestudy.studies.includes(143)) ret = ret.times(E_pow(15, Math.log(player.thisInfinityTime+1)*Math.pow(player.thisInfinityTime+1, 0.125)))
-	if (hasAch("r116")) ret = ret.times(Decimal.add(getInfinitied(), 1).pow(Math.log10(2)))
-	if (hasAch("r125")) ret = ret.times(pow2(Math.log(player.thisInfinityTime+1)*Math.pow(player.thisInfinityTime+1, 0.11)))
-	if (player.dilation.upgrades.includes(7)) ret = ret.times(player.dilation.dilatedTime.max(1).pow(1000))
+	if (player.timestudy.studies.includes(41)) ret = ret.mul(E_pow(tsMults[41](), player.galaxies + player.replicanti.galaxies))
+	if (player.timestudy.studies.includes(51)) ret = ret.mul(mod.ngep?1e30:1e15)
+	if (player.timestudy.studies.includes(141)) ret = ret.mul(E(1e45).dividedBy(E_pow(15, Math.log(player.thisInfinityTime+1)*Math.pow(player.thisInfinityTime+1, 0.125))).max(1))
+	if (player.timestudy.studies.includes(142)) ret = ret.mul(1e25)
+	if (player.timestudy.studies.includes(143)) ret = ret.mul(E_pow(15, Math.log(player.thisInfinityTime+1)*Math.pow(player.thisInfinityTime+1, 0.125)))
+	if (hasAch("r116")) ret = ret.mul(Decimal.add(getInfinitied(), 1).pow(Math.log10(2)))
+	if (hasAch("r125")) ret = ret.mul(pow2(Math.log(player.thisInfinityTime+1)*Math.pow(player.thisInfinityTime+1, 0.11)))
+	if (player.dilation.upgrades.includes(7)) ret = ret.mul(player.dilation.dilatedTime.max(1).pow(1000))
 	if (player.boughtDims) {
-		ret = ret.times(E_pow(Math.max(1e4/player.thisInfinityTime),player.timestudy.ers_studies[5]+(next==5?1:0)))
-		ret = ret.times(E_pow(player.thisInfinityTime/10,player.timestudy.ers_studies[6]+(next==6?1:0)))
+		ret = ret.mul(E_pow(Math.max(1e4/player.thisInfinityTime),player.timestudy.ers_studies[5]+(next==5?1:0)))
+		ret = ret.mul(E_pow(player.thisInfinityTime/10,player.timestudy.ers_studies[6]+(next==6?1:0)))
 	}
-	if (isBigRipUpgradeActive(4)) ret = ret.times(player.replicanti.amount.pow(0.34).max(1))
-	if (inNGM(3) && hasAch("r95") && player.eightAmount > 5000) ret = ret.times(E_pow(player.eightAmount, 2))
+	if (isBigRipUpgradeActive(4)) ret = ret.mul(player.replicanti.amount.pow(0.34).max(1))
+	if (inNGM(3) && hasAch("r95") && player.eightAmount > 5000) ret = ret.mul(E_pow(player.eightAmount, 2))
 	return ret.floor()
 }
 
 function getIPMult() {
 	let mult = player.infMult
 	if (inOnlyNGM(2)) {
-		if (hasAch("r85")) mult = mult.times(4)
-		if (hasAch("r93")) mult = mult.times(4)
-		if (hasAch("r43")) mult = mult.times(1.25)
-		if (hasAch("r55")) mult = mult.times(Math.min(Math.log10(Math.max(6000 / player.bestInfinityTime, 10)), 10))
-		if (hasAch("r41")) mult = mult.times(Math.pow(Math.log10(Math.max(player.spreadingCancer, 10)), .05))
+		if (hasAch("r85")) mult = mult.mul(4)
+		if (hasAch("r93")) mult = mult.mul(4)
+		if (hasAch("r43")) mult = mult.mul(1.25)
+		if (hasAch("r55")) mult = mult.mul(Math.min(Math.log10(Math.max(6000 / player.bestInfinityTime, 10)), 10))
+		if (hasAch("r41")) mult = mult.mul(Math.pow(Math.log10(Math.max(player.spreadingCancer, 10)), .05))
 		if (hasAch("r51")) {
 			let galaxies = Math.max((player.galaxies + player.replicanti.galaxies + player.dilation.freeGalaxies), 0) // just in case
-			if (galaxies < 5) mult = mult.times(Math.max(galaxies, 1))
-			else if (galaxies < 50) mult = mult.times(E_pow(galaxies + 5, 0.5).plus(2))
-			else mult = mult.times(E_pow(galaxies, 0.3).plus(7))
+			if (galaxies < 5) mult = mult.mul(Math.max(galaxies, 1))
+			else if (galaxies < 50) mult = mult.mul(E_pow(galaxies + 5, 0.5).plus(2))
+			else mult = mult.mul(E_pow(galaxies, 0.3).plus(7))
 		}
 	}
 	return mult;
@@ -427,7 +427,7 @@ function updateWorstChallengeBonus() {
 	var timeeff = Math.max(33e-6, worstChallengeTime * 0.1)
 	var base = inNGM(4) ? 3e4 : 3e3
 	var eff = Decimal.max(Math.pow(base / timeeff, exp), 1)
-	if (inNGM(4)) eff = eff.times(E_pow(eff.plus(10).log10(), 5)) 
+	if (inNGM(4)) eff = eff.mul(E_pow(eff.plus(10).log10(), 5)) 
 	worstChallengeBonus = eff
 }
 

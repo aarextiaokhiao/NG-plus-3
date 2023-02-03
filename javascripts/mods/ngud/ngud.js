@@ -10,7 +10,7 @@ function getBlackholeDimensionPower(tier) {
 function getBlackholeDimensionProduction(tier) {
 	var dim = player["blackholeDimension" + tier]
 	if (player.currentEternityChall == "eterc11") return dim.amount
-	var ret = dim.amount.times(getBlackholeDimensionPower(tier))
+	var ret = dim.amount.mul(getBlackholeDimensionPower(tier))
 	return ret
 }
 
@@ -21,7 +21,7 @@ function getBlackholeDimensionRateOfChange(tier) {
 	if (aarMod.logRateChange) {
 		var change = current.add(toGain.div(10)).log10() - current.log10()
 		if (change < 0 || isNaN(change)) change = 0
-	} else var change = toGain.times(10).dividedBy(current);
+	} else var change = toGain.mul(10).dividedBy(current);
 	return change;
 }
 
@@ -183,7 +183,7 @@ function buyBlackholeDimension(tier) {
 	dim.amount = dim.amount.plus(1);
 	dim.bought += 1
 	dim.cost = E_pow(blackholeDimCostMults[tier], dim.bought).mul(blackholeDimStartCosts[tier]);
-	dim.power = dim.power.times(blackholeDimPowers[tier])
+	dim.power = dim.power.mul(blackholeDimPowers[tier])
 	updateBlackhole();
 	if (tier > 3) giveAchievement("We couldn't afford 5")
 	return true
@@ -234,7 +234,7 @@ function buyMaxBlackholeDimensions(){
 			dim.amount = dim.amount.plus(buying)
 			dim.bought += buying	
 			dim.cost = E_pow(blackholeDimCostMults[i], dim.bought).mul(blackholeDimStartCosts[i])
-			dim.power = dim.power.times(E_pow(blackholeDimPowers[i], buying))
+			dim.power = dim.power.mul(E_pow(blackholeDimPowers[i], buying))
 			if (i > 3) giveAchievement("We couldn't afford 5")
 		}
 	}

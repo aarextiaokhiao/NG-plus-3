@@ -74,7 +74,7 @@ function ghostifyReset(force, gain) {
 	}
 
 	var bm = ghSave.milestones
-	if (!force && bm > 6 && hasAch("ng3p68")) gainNeutrinos(Decimal.times(2e3 * brSave.bestGals, bulk), "all")
+	if (!force && bm > 6 && hasAch("ng3p68")) gainNeutrinos(Decimal.mul(2e3 * brSave.bestGals, bulk), "all")
 
 	doReset("funda")
 }
@@ -272,13 +272,13 @@ function getGHPGain() {
 	boost = Math.min(boost, 600 / softcap)
 	log += boost
 
-	return x.times(getGHPMult()).floor()
+	return x.mul(getGHPMult()).floor()
 }
 
 function getGHPMult() {
 	let x = getGHPBaseMult()
-	if (hasAch("ng3p93")) x = x.times(500)
-	if (hasAch("ng3p97")) x = x.times(E_pow(ghSave.times + 1, 1/3))
+	if (hasAch("ng3p93")) x = x.mul(500)
+	if (hasAch("ng3p97")) x = x.mul(E_pow(ghSave.times + 1, 1/3))
 	return x
 }
 

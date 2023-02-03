@@ -9,19 +9,19 @@ function updateNeutrinoBoostDisplay(){
 		el("preNeutrinoBoost2Exp").textContent = getMTSMult(273, ["pn", "intensity"]).toFixed(2)
 		el("neutrinoBoost2Exp").textContent = getMTSMult(273, "intensity").toFixed(2)
 	}
-	if (ghSave.neutrinos.boosts >= 3) el("neutrinoBoost3").textContent = tmp.nb[3].toFixed(2)
+	if (ghSave.neutrinos.boosts >= 3) el("neutrinoBoost3").textContent = tmp.nb[3].toFixed(2)+"x"
 	if (ghSave.neutrinos.boosts >= 4) el("neutrinoBoost4").textContent = "^"+tmp.nb[4].toFixed(3)
-	if (ghSave.neutrinos.boosts >= 5) el("neutrinoBoost5").textContent = (tmp.nb[5] * 100).toFixed(1)
-	if (ghSave.neutrinos.boosts >= 6) el("neutrinoBoost6").textContent = tmp.nb[6] < 10.995 ? (tmp.nb[6] * 100 - 100).toFixed(1) : getFullExpansion(Math.floor(tmp.nb[6] * 100 - 100))
+	if (ghSave.neutrinos.boosts >= 5) el("neutrinoBoost5").textContent = (tmp.nb[5] * 100).toFixed(1)+"%"
+	if (ghSave.neutrinos.boosts >= 6) el("neutrinoBoost6").textContent = (tmp.nb[6] < 10.995 ? (tmp.nb[6] * 100 - 100).toFixed(1) : getFullExpansion(Math.floor(tmp.nb[6] * 100 - 100)))+"%"
 	if (ghSave.neutrinos.boosts >= 7) {
-		el("neutrinoBoost7").textContent = (tmp.nb[7] * 100).toFixed(1)
+		el("neutrinoBoost7").textContent = (tmp.nb[7] * 100).toFixed(1)+"%"
 		el("preNeutrinoBoost7Eff").textContent = (getTreeUpgradeEfficiency("noNB") * 100).toFixed(1)
 		el("neutrinoBoost7Eff").textContent = (getTreeUpgradeEfficiency("br") * 100).toFixed(1)
 	}
-	if (ghSave.neutrinos.boosts >= 8) el("neutrinoBoost8").textContent = (tmp.nb[8] * 100 - 100).toFixed(1)
-	if (ghSave.neutrinos.boosts >= 9) el("neutrinoBoost9").textContent = shorten(tmp.nb[9])
-	if (ghSave.neutrinos.boosts >= 10) el("neutrinoBoost10").textContent = "-"+tmp.nb[10].toFixed(4)+"x"
-	if (ghSave.neutrinos.boosts >= 11) el("neutrinoBoost11").textContent = shorten(tmp.nb[11])
+	if (ghSave.neutrinos.boosts >= 8) el("neutrinoBoost8").textContent = (tmp.nb[8] * 100 - 100).toFixed(1)+"x"
+	if (ghSave.neutrinos.boosts >= 9) el("neutrinoBoost9").textContent = shorten(tmp.nb[9])+"x"
+	if (ghSave.neutrinos.boosts >= 10) el("neutrinoBoost10").textContent = shorten(tmp.nb[10])+"x"
+	if (ghSave.neutrinos.boosts >= 11) el("neutrinoBoost11").textContent = "^"+shorten(tmp.nb[11])
 	if (ghSave.neutrinos.boosts >= 12) el("neutrinoBoost12").textContent = shorten(tmp.nb[12])+"x"
 }
 
@@ -37,13 +37,13 @@ function updateNeutrinoUpgradeDisplay(){
 	el("neutrinoUpg4Pow").textContent = shorten(tmp.nu[4])
 	if (ghSave.times > 4) el("neutrinoUpg7Pow").textContent = shorten(tmp.nu[7])
 	if (ghSave.times > 9) el("neutrinoUpg12").setAttribute('ach-tooltip',
-		"Normal galaxy effect: " + shorten(tmp.nu[12].normal) + "x to quark spin production, "+
-		"Replicated galaxy effect: " + shorten(tmp.nu[12].replicated) + "x to EC14 reward, "+
-		"Tachyonic galaxy effect: " + shorten(tmp.nu[12].free) + "x to IC3 base"
+		`Normal galaxy effect: ${shorten(tmp.nu[12].normal)}x to quark spin production,
+		Replicated galaxy effect: ${shorten(tmp.nu[12].replicated)}x to EC14 reward,
+		Tachyonic galaxy effect: ${shorten(tmp.nu[12].free)}x to IC3 base`
 	)
 	if (PHOTON.unlocked()) {
-		el("neutrinoUpg14Pow").textContent=shorten(tmp.nu[14])
-		el("neutrinoUpg15Pow").textContent=shorten(tmp.nu[15])
+		el("neutrinoUpg13Pow").textContent=shorten(tmp.nu[13])+"x"
+		el("neutrinoUpg14Pow").textContent="^"+shorten(tmp.nu[14])
 	}
 	var sum = ghSave.neutrinos.electron.add(ghSave.neutrinos.mu).add(ghSave.neutrinos.tau).round()
 	for (var u = 1; u < 15; u++) {
@@ -63,7 +63,7 @@ function updateNeutrinosTab(){
 	var neutrinoGain = getNeutrinoGain()
 	var sum = ghSave.neutrinos.electron.add(ghSave.neutrinos.mu).add(ghSave.neutrinos.tau).round()
 	el("neutrinosGain").textContent="Gain " + shortenDimensions(neutrinoGain) + " " + generations[ghSave.neutrinos.generationGain - 1] + " Neutrino" + (neutrinoGain.eq(1) ? "" : "s") + " per 1 antimatter galaxy."
-	setAndMaybeShow("neutrinosGainGhostify",hasAch("ng3p68"),'"Gain "+shortenDimensions(Decimal.times(\''+neutrinoGain.toString()+'\',brSave.bestGals*2e3))+" Neutrinos of every type on Fundamenting."')
+	setAndMaybeShow("neutrinosGainGhostify",hasAch("ng3p68"),'"Gain "+shortenDimensions(Decimal.mul(\''+neutrinoGain.toString()+'\',brSave.bestGals*2e3))+" Neutrinos of every type on Fundamenting."')
 	
 	updateNeutrinoAmountDisplay()
 	updateNeutrinoBoostDisplay()
@@ -84,12 +84,11 @@ function onNotationChangeNeutrinos() {
 	el("neutrinoMultUpgCost").textContent=shortenDimensions(E_pow(4, ghSave.neutrinos.multPower-1).mul(2))
 	el("ghpMult").textContent=shortenDimensions(getGHPBaseMult())
 	el("ghpMultUpgCost").textContent=shortenDimensions(getGHPMultCost())
-	for (var u = 1; u < 15; u++) el("neutrinoUpg" + u + "Cost").textContent=shortenDimensions(E(tmp.nuc[u]))
+	for (var u = 1; u <= 15; u++) el("neutrinoUpg" + u + "Cost").textContent=shortenDimensions(E(tmp.nuc[u]))
 }
 
 function getNeutrinoGain() {
 	let ret = E_pow(5, ghSave.neutrinos.multPower - 1)
-	if (isNanoEffectUsed("neutrinos")) ret = ret.times(tmp.nf.effects.neutrinos)
 	return ret
 }
 
@@ -106,30 +105,60 @@ function buyNeutrinoUpg(id) {
 	if (id == 5) updateElectrons(true)
 }
 
-function updateNeutrinoBoosts() {
-	for (var b = 1; b <= 12; b++) el("neutrinoBoost" + (b % 3 == 1 ? "Row" + (b + 2) / 3 : "Cell" + b)).style.display = ghSave.neutrinos.boosts >= b ? "" : "none"
-	el("neutrinoUnlock").style.display = ghSave.neutrinos.boosts >= getMaxUnlockedNeutrinoBoosts() ? "none" : ""
-	el("neutrinoUnlockCost").textContent = shortenDimensions(E(tmp.nbc[ghSave.neutrinos.boosts]))
-}
-
-function unlockNeutrinoBoost() {
-	var cost = tmp.nbc[ghSave.neutrinos.boosts]
-	if (!ghSave.ghostParticles.gte(cost) || ghSave.neutrinos.boosts>=getMaxUnlockedNeutrinoBoosts()) return
-	ghSave.ghostParticles=ghSave.ghostParticles.sub(cost).round()
-	ghSave.neutrinos.boosts++
-	updateNeutrinoBoosts()
-	updateTemp()
-}
-
-function getMaxUnlockedNeutrinoBoosts() {
-	let x = 9
-	if (ghSave.wzb.unl) x++
-	if (ghSave.hb.higgs > 0) x++
-	return x
-}
-
 function hasNU(id) {
 	return ghostified && ghSave.neutrinos.upgrades.includes(id)
+}
+
+function updateNU1Temp(){
+	let x = 110
+	if (!bigRipped()) x = Math.max(x - player.meta.resets, 0)
+	tmp.nu[1] = x
+}
+
+function updateNU3Temp(){
+	let log = quSave.colorPowers.b.log10()
+	let exp = Math.max(log / 1e4 + 1, 2)
+	let x
+	if (exp > 2) x = E_pow(Math.max(log / 500 + 1, 1), exp)
+	else x = Math.pow(Math.max(log / 500 + 1, 1), exp)
+	tmp.nu[3] = x
+}
+
+function updateNU4Temp(){
+	let nu4base = 30
+	tmp.nu[4] = E_pow(nu4base, Math.pow(Math.max(-getTickspeed().div(1e3).log10() / 4e13 - 4, 0), 1/4))
+}
+
+function updateNU7Temp(){
+	var nu7 = quSave.colorPowers.g.add(1).log10()/400
+	if (nu7 > 40) nu7 = Math.sqrt(nu7*10)+20
+	tmp.nu[7] = pow10(nu7) 
+}
+
+function updateNU12Temp(){
+	tmp.nu[12] = { 
+		normal: Math.sqrt(player.galaxies * .0035 + 1),
+		free: player.dilation.freeGalaxies * .035 + 1,
+		replicated: Math.sqrt(getTotalRG()) * .0175 + 1 //NU12 
+	}
+}
+
+function updateNU13Temp(){
+	tmp.nu[13] = pow10(Math.pow(player.eternityPoints.max(1).log10(), 3/4) / 1e6)
+}
+
+function updateNU14Temp(){
+	tmp.nu[14] = Math.sqrt(quSave.replicants.quarks.max(1).log10() / 20 + 1)
+}
+
+function updateNeutrinoUpgradesTemp(){
+	updateNU1Temp()
+	updateNU3Temp()
+	updateNU4Temp()
+	updateNU7Temp()
+	updateNU12Temp()
+	updateNU13Temp()
+	updateNU14Temp()
 }
 
 function buyNeutrinoMult() {
@@ -185,6 +214,7 @@ function maxGHPMult() {
 	el("ghpMultUpgCost").textContent = shortenDimensions(getGHPMultCost())
 }
 
+//Boosts
 var neutrinoBoosts = {
 	boosts: {
 		1: function(nt) {
@@ -209,7 +239,9 @@ var neutrinoBoosts = {
 		},
 		4: function(nt) {
 			var nb4neutrinos = Math.pow(nt[0].add(1).log10(),2)+Math.pow(nt[1].add(1).log10(),2)+Math.pow(nt[2].add(1).log10(),2)
-			var nb4 = Math.pow(Math.log10(nb4neutrinos*(bigRipped()?1:0.07)+1)/4+1,bigRipped()?1:0.5)
+			var nb4 = Math.log10(nb4neutrinos*(bigRipped()?1:0.07)+1)/4+1
+			nb4 = Math.min(nb4, 2.5)
+			if (!bigRipped()) nb4 = nb4 ** 0.5
 			return nb4
 		},
 		5: function(nt) {
@@ -244,24 +276,45 @@ var neutrinoBoosts = {
 			return nb9
 		},
 		10: function(nt) {
-			let nb10neutrinos = nt[0].add(1).log10()+nt[1].add(1).log10()+nt[2].add(1).log10()
-			let nb10 = Math.max(nb10neutrinos - 3e3, 0) / 75e4
-			if (nb10 > 0.1) nb10 = Math.log10(nb10 * 100) / 10
+			var nb10 = nt[0].add(1).log10()*nt[1].add(1).log10()*nt[2].add(1).log10()
 			return nb10
 		},
 		11: function(nt) {
-			let nb11neutrinos = nt[0].add(1).log10()+nt[1].add(1).log10()+nt[2].add(1).log10()
-			let nb11exp = Math.sqrt(nb11neutrinos)
-			let nb11 = E_pow(1.15, nb11exp)
+			var nb11 = nt[0].add(1).log10()+nt[1].add(1).log10()+nt[2].add(1).log10()
+			nb11 = Math.log10(nb11 + 10)
 			return nb11
 		},
 		12: function(nt) {
-			let hb = ghSave.hb.higgs
-			let nb12neutrinos = nt[0].add(1).log10()+nt[1].add(1).log10()+nt[2].add(1).log10()
-			let nb12exp = hb / (Math.log2(hb * 1e5 / nb12neutrinos + 1) + 1)
-			return E(3).pow(nb12exp)
+			var nb12 = nt[0].add(1).log10()+nt[1].add(1).log10()+nt[2].add(1).log10()
+			return nb12
 		},
 	}
+}
+
+function updateNeutrinoBoostsTemp() {
+	tmp.nb = {}
+
+	if (!mod.ngp3) return
+	if (!ghostified) return
+
+	var nt = []
+	for (var g = 0; g < 3; g++) nt[g] = ghSave.neutrinos[(["electron","mu","tau"])[g]]
+	for (var nb = 1; nb <= ghSave.neutrinos.boosts; nb++) tmp.nb[nb] = neutrinoBoosts.boosts[nb](nt)
+}
+
+function updateNeutrinoBoosts() {
+	for (var b = 1; b <= 12; b++) el("neutrinoBoost" + (b % 3 == 1 ? "Row" + (b + 2) / 3 : "Cell" + b)).style.display = ghSave.neutrinos.boosts >= b ? "" : "none"
+	el("neutrinoUnlock").style.display = ghSave.neutrinos.boosts >= 12 ? "none" : ""
+	el("neutrinoUnlockCost").textContent = shortenDimensions(E(tmp.nbc[ghSave.neutrinos.boosts]))
+}
+
+function unlockNeutrinoBoost() {
+	var cost = tmp.nbc[ghSave.neutrinos.boosts]
+	if (!ghSave.ghostParticles.gte(cost) || ghSave.neutrinos.boosts >= 12) return
+	ghSave.ghostParticles=ghSave.ghostParticles.sub(cost).round()
+	ghSave.neutrinos.boosts++
+	updateNeutrinoBoosts()
+	updateTemp()
 }
 
 //GAIN

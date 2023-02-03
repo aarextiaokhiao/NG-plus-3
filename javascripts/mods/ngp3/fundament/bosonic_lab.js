@@ -31,7 +31,7 @@ function WZBosonsUpdating(diff) {
 		data.watt = wattGain
 	}
 
-	if (E(data.speed).gt(0)) bosonicTick(data.speed.times(diff))
+	if (E(data.speed).gt(0)) bosonicTick(data.speed.mul(diff))
 }
 
 function bosonicTick(diff) {
@@ -41,9 +41,9 @@ function bosonicTick(diff) {
 	if (isNaN(diff.e)) return
 	if (data.odSpeed > 1 && data.battery.gt(0)) {
 		var bBtL = getBosonicBatteryLoss()
-		var odDiff = diff.times(bBtL).min(data.battery)
+		var odDiff = diff.mul(bBtL).min(data.battery)
 		var fasterDiff = odDiff.div(bBtL).mul(getBosonicOverdrive())
-		data.battery = data.battery.sub(diff.times(bBtL).min(data.battery))
+		data.battery = data.battery.sub(diff.mul(bBtL).min(data.battery))
 		diff = fasterDiff.add(diff.sub(odDiff.min(diff)))
 	}
 	data.ticks = data.ticks.add(diff)
@@ -52,14 +52,14 @@ function bosonicTick(diff) {
 	let apDiff
 	lData = player.ghostify.wzb
 	if (lData.dPUse) {
-		apDiff = diff.times(getAntiPreonLoss()).min(lData.dP).div(aplScalings[ghSave.wzb.dPUse])
+		apDiff = diff.mul(getAntiPreonLoss()).min(lData.dP).div(aplScalings[ghSave.wzb.dPUse])
 		if (isNaN(apDiff.e)) apDiff=E(0)
 
-		lData.dP = lData.dP.sub(diff.times(getAntiPreonLoss()).min(lData.dP))
+		lData.dP = lData.dP.sub(diff.mul(getAntiPreonLoss()).min(lData.dP))
 		if (lData.dP.eq(0)) lData.dPUse = 0
 
 		if (lData.dPUse == 1) {
-			lData.wQkProgress = lData.wQkProgress.add(apDiff.times(tmp.wzb.zbs).mul(2))
+			lData.wQkProgress = lData.wQkProgress.add(apDiff.mul(tmp.wzb.zbs).mul(2))
 			if (lData.wQkProgress.gt(1)) {
 				let toSub = lData.wQkProgress.floor()
 				lData.wpb = lData.wpb.add(toSub.add(lData.wQkUp ? 1 : 0).div(2).floor())
@@ -68,17 +68,17 @@ function bosonicTick(diff) {
 				lData.wQkProgress = lData.wQkProgress.sub(toSub.min(lData.wQkProgress))
 
 				let toAdd = getBatteryGainPerSecond(toSub.div(diff)).mul(diff)
-				data.battery = data.battery.add(toAdd.times(diff))
+				data.battery = data.battery.add(toAdd.mul(diff))
 				tmp.batteryGainLast = toAdd
 			}
 		}
 		if (lData.dPUse == 2) {
-			lData.zNeProgress = lData.zNeProgress.add(apDiff.times(getOscillateGainSpeed()))
+			lData.zNeProgress = lData.zNeProgress.add(apDiff.mul(getOscillateGainSpeed()))
 			if (lData.zNeProgress.gte(1)) {
 				let oscillated = Math.floor(lData.zNeProgress.add(1).log(2))
 				lData.zb = lData.zb.add(E_pow(Math.pow(2, 0.75), oscillated).sub(1).div(Math.pow(2, 0.75)-1).mul(lData.zNeReq.pow(0.75)))
 				lData.zNeProgress = lData.zNeProgress.sub(pow2(oscillated).sub(1).min(lData.zNeProgress)).div(pow2(oscillated))
-				lData.zNeReq = lData.zNeReq.times(pow2(oscillated))
+				lData.zNeReq = lData.zNeReq.mul(pow2(oscillated))
 				lData.zNeGen = (lData.zNeGen+oscillated-1)%3+1
 			}
 		}
@@ -86,14 +86,14 @@ function bosonicTick(diff) {
 			lData.wpb = lData.wpb.add(lData.wnb.min(apDiff).mul(tmp.wzb.zbs))
 			lData.wnb = lData.wnb.sub(lData.wnb.min(apDiff).mul(tmp.wzb.zbs))
 		}
-		lData.dP = lData.dP.sub(diff.times(getAntiPreonLoss()).min(lData.dP))
+		lData.dP = lData.dP.sub(diff.mul(getAntiPreonLoss()).min(lData.dP))
 		if (lData.dP.eq(0)) lData.dPUse = 0
 	} else lData.dP = lData.dP.add(getAntiPreonProduction().mul(diff))
 	lData.zNeReq=pow10(Math.sqrt(Math.max(Math.pow(lData.zNeReq.log10(),2) - diff / 100, 0)))
 	
 	//Bosonic Extractor
 	if (data.usedEnchants.includes(12)) {
-		data.autoExtract = data.autoExtract.add(diff.times(tmp.bEn[12]))
+		data.autoExtract = data.autoExtract.add(diff.mul(tmp.bEn[12]))
 		if (!data.extracting && data.autoExtract.gte(1)) {
 			data.extracting = true
 			data.autoExtract = data.autoExtract.sub(1)
@@ -142,8 +142,7 @@ function getAchBWMult(){
 function getBosonProduction() {
 	var exp = Math.pow(player.money.max(1).log10() / 15e15 + 1, 0.8) - 4
 	var ret = pow10(exp).mul(tmp.wzb.wbp)
-	if (ghSave.bl.usedEnchants.includes(34)) ret = ret.times(tmp.bEn[34] || 1)
-	if (ghSave.neutrinos.boosts >= 12) ret = ret.times(tmp.nb[12])
+	if (ghSave.bl.usedEnchants.includes(34)) ret = ret.mul(tmp.bEn[34] || 1)
 	//maybe softcap at e40 or e50?
 	ret = softcap(ret, "bam")
 	return ret
@@ -359,8 +358,8 @@ function takeEnchantAction(id) {
 		let g1 = Math.floor(id / 10)
 		let g2 = id % 10
 		if (!canBuyEnchant(id)) return
-		data.glyphs[g1 - 1] = data.glyphs[g1 - 1].sub(lvl.times(getBosonicFinalCost(costData[0])).min(data.glyphs[g1 - 1])).round()
-		data.glyphs[g2 - 1] = data.glyphs[g2 - 1].sub(lvl.times(getBosonicFinalCost(costData[1])).min(data.glyphs[g2 - 1])).round()
+		data.glyphs[g1 - 1] = data.glyphs[g1 - 1].sub(lvl.mul(getBosonicFinalCost(costData[0])).min(data.glyphs[g1 - 1])).round()
+		data.glyphs[g2 - 1] = data.glyphs[g2 - 1].sub(lvl.mul(getBosonicFinalCost(costData[1])).min(data.glyphs[g2 - 1])).round()
 		if (data.enchants[id] == undefined) data.enchants[id] = E(lvl)
 		else data.enchants[id] = data.enchants[id].add(lvl).round()
 	} else if (bEn.action == "use") {
@@ -413,10 +412,10 @@ function updateBosonExtractorTab(){
 	let data = ghSave.bl
 	let speed = data.speed * (data.battery.gt(0) ? data.odSpeed : 1)
 	let time = getExtractTime().div(speed)
-	if (data.extracting) el("extract").textContent = (time.lt(0.1)?"Progressing":" ("+data.extractProgress.times(100).toFixed(1)+"%)")
+	if (data.extracting) el("extract").textContent = (time.lt(0.1)?"Progressing":" ("+data.extractProgress.mul(100).toFixed(1)+"%)")
 	else el("extract").textContent="Experiment"
 	if (time.lt(0.1)) el("extractTime").textContent="This would automatically take "+shorten(Decimal.div(1,time))+" per second."
-	else if (data.extracting) el("extractTime").textContent=shorten(time.times(Decimal.sub(1,data.extractProgress)))+" seconds left..."
+	else if (data.extracting) el("extractTime").textContent=shorten(time.mul(Decimal.sub(1,data.extractProgress)))+" seconds left..."
 	else el("extractTime").textContent="This will take "+shorten(time)+" seconds."
 	updateEnchantDescs()
 }
@@ -554,7 +553,7 @@ var bEn = {
 		12(x) {
 			var blData = ghSave.bl
 
-			x = x.times(blData.speed * (blData.battery.gt(0) ? blData.odSpeed : 1))
+			x = x.mul(blData.speed * (blData.battery.gt(0) ? blData.odSpeed : 1))
 			if (x.lt(1) && x.gt(0)) return x.m.toFixed(2) + "/" + shortenCosts(pow10(-x.e)) + " seconds"
 			return shorten(x) + "/second"
 		},
@@ -628,7 +627,7 @@ function setupBosonicUpgReqData() {
 function getRemainingExtractTime() {
 	let data = ghSave.bl
 	let x = getExtractTime().div(data.speed)
-	if (data.extracting) x = x.times(Decimal.sub(1, data.extractProgress))
+	if (data.extracting) x = x.mul(Decimal.sub(1, data.extractProgress))
 	return x
 }
 
@@ -981,7 +980,7 @@ function updateBosonicUpgradesTemp(){
 //Bosonic Overdrive
 function getBatteryGainPerSecond(toSub) {
 	let batteryMult = new Decimal(1)
-	if (isEnchantUsed(24)) batteryMult = batteryMult.times(tmp.bEn[24])
+	if (isEnchantUsed(24)) batteryMult = batteryMult.mul(tmp.bEn[24])
 
 	let toAdd = toSub.div(1e6).mul(batteryMult)
 	if (toAdd.gt(1e3)) toAdd = Decimal.pow(toAdd.log10() + 7, 3)
@@ -1011,7 +1010,7 @@ function getBosonicFinalSpeed() {
 //W & Z Bosons
 function getAntiPreonProduction() {
 	let r = E(0.2)
-	if (ghSave.bl.usedEnchants.includes(13)) r = r.times(tmp.bEn[13])
+	if (ghSave.bl.usedEnchants.includes(13)) r = r.mul(tmp.bEn[13])
 	return r
 }
 
@@ -1024,7 +1023,7 @@ var aplScalings = {
 
 function getAntiPreonLoss() {
 	let r = E(0.05)
-	if (ghSave.bl.usedEnchants.includes(13)) r = r.times(tmp.bEn[13])
+	if (ghSave.bl.usedEnchants.includes(13)) r = r.mul(tmp.bEn[13])
 	return r
 }
 
@@ -1034,7 +1033,7 @@ function useAntiPreon(id) {
 
 function getOscillateGainSpeed() {
 	let r = tmp.wzb.wbo
-	if (ghSave.bl.usedEnchants.includes(23)) r = r.times(tmp.bEn[23])
+	if (ghSave.bl.usedEnchants.includes(23)) r = r.mul(tmp.bEn[23])
 	return Decimal.div(r, ghSave.wzb.zNeReq)
 }
 
@@ -1052,7 +1051,7 @@ function updateWZBosonsTab() {
 	el("apProduction").textContent = (data3.dPUse ? "-" : "+") + shorten(r) + "/s"
 	el("apUse").textContent = data3.dPUse == 0 ? "" : "You are currently consuming Anti-Preons to " + (["", "decay W Bosons", "oscillate Z Bosons", "convert W- to W+ Bosons"])[data3.dPUse] + "."
 	el("wQkType").textContent = data3.wQkUp ? "positive" : "negative"
-	el("wQkProgress").textContent = data3.wQkProgress.times(100).toFixed(1) + "% to turn W Boson to a" + (data3.wQkUp ? " negative" : " positive")+" Boson."
+	el("wQkProgress").textContent = data3.wQkProgress.mul(100).toFixed(1) + "% to turn W Boson to a" + (data3.wQkUp ? " negative" : " positive")+" Boson."
 	el("wQk").className = show0 ? "zero" : data3.wQkUp ? "up" : "down"
 	el("wQkSymbol").textContent = show0 ? "0" : data3.wQkUp ? "+" : "−"
 	el("wpb").textContent = shortenDimensions(data3.wpb)
@@ -1061,7 +1060,7 @@ function updateWZBosonsTab() {
 	el("wbOscillate").textContent = shorten(data2.wbo)
 	el("wbProduction").textContent = shorten(data2.wbp)
 	el("zNeGen").textContent = (["electron", "Mu", "Tau"])[data3.zNeGen - 1]
-	el("zNeProgress").textContent = data3.zNeProgress.times(100).toFixed(1) + "% to oscillate Z Boson to " + (["Mu", "Tau", "electron"])[data3.zNeGen-1] + "."
+	el("zNeProgress").textContent = data3.zNeProgress.mul(100).toFixed(1) + "% to oscillate Z Boson to " + (["Mu", "Tau", "electron"])[data3.zNeGen-1] + "."
 	el("zNeReq").textContent = "Oscillate progress gain speed is currently " + (gainSpeed.gt(1) ? shorten(gainSpeed) : "1 / " + shorten(Decimal.div(1, gainSpeed))) + "x."
 	el("zNe").className = (["electron","mu","tau"])[data3.zNeGen - 1]
 	el("zNeSymbol").textContent = (["e", "μ", "τ"])[data3.zNeGen - 1]

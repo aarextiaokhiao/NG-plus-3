@@ -185,10 +185,10 @@ function formatValue(notation, value, places, placesUnder1000, noInf) {
 			var sin = Math.sin(log)
 			var cos = Math.cos(log)
 			var result
-			if (sin < 0) result = "|-" + formatValue(player.options.spazzy.subNotation, value.times(-sin), 2, 2)
-			else result = "|" + formatValue(player.options.spazzy.subNotation, value.times(sin), 2, 2)
-			if (cos < 0) result += "-" + formatValue(player.options.spazzy.subNotation, value.times(-cos), 2, 2)+"i|"
-			else result += "+" + formatValue(player.options.spazzy.subNotation, value.times(cos), 2, 2)+"i|"
+			if (sin < 0) result = "|-" + formatValue(player.options.spazzy.subNotation, value.mul(-sin), 2, 2)
+			else result = "|" + formatValue(player.options.spazzy.subNotation, value.mul(sin), 2, 2)
+			if (cos < 0) result += "-" + formatValue(player.options.spazzy.subNotation, value.mul(-cos), 2, 2)+"i|"
+			else result += "+" + formatValue(player.options.spazzy.subNotation, value.mul(cos), 2, 2)+"i|"
 			return result
 		}
 		if (notation === "AF5LN") {
@@ -877,14 +877,14 @@ function rateFormat(apm, unit) {
 	if (player.options.notation === "Blind") return ""
 	let time = "min"
 	if (apm.lt(1)) {
-		apm = apm.times(60)
+		apm = apm.mul(60)
 		time = "hour"
 	} else if (apm.gt(60)) {
 		apm = apm.div(60)
 		time = "sec"
 	}
 	if (apm.lt(1)) {
-		apm = apm.times(24)
+		apm = apm.mul(24)
 		time = "day"
 	}
 	return shorten(apm) + (unit ? " " + unit : "") + "/" + time
@@ -892,7 +892,7 @@ function rateFormat(apm, unit) {
 
 function formatPercentage(x, digits = 1, reduction) {
 	if (player.options.notation === "Blind") return ""
-	x = Decimal.times(x, 100)
+	x = Decimal.mul(x, 100)
 	if (x.lt(100) && reduction) digits += Math.ceil(-x.log10() + 2)
 	if (x.gt(1e9)) return shorten(x)
 

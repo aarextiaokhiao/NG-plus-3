@@ -13,20 +13,20 @@ function getGSAmount(offset=0) {
 	if (player.totalmoney.log10() > 2e6) div2 /= Math.log(player.totalmoney.log10()) 
 	
 	let ret = E_pow(galaxies, y).mul(E_pow(Math.max(0, resetMult), z)).max(0)
-	ret = ret.times(E_pow(1 + getAmount(8) / div2, exp))
+	ret = ret.mul(E_pow(1 + getAmount(8) / div2, exp))
 	
-	if (player.galacticSacrifice.chall) ret = ret.times(getGPMultipliers())
-	if (hasGalUpg(16) && player.tdBoosts) ret = ret.times(Math.max(player.tdBoosts, 1))
+	if (player.galacticSacrifice.chall) ret = ret.mul(getGPMultipliers())
+	if (hasGalUpg(16) && player.tdBoosts) ret = ret.mul(Math.max(player.tdBoosts, 1))
 	if (inNGM(4)) {
 		var e = hasGalUpg(46) ? galMults["u46"]() : 1
-		if (hasGalUpg(41) && inNGM(4)) ret = ret.times(Decimal.max(player.tickspeedBoosts, 1).pow(e))
-		if (hasGalUpg(43) && inNGM(4)) ret = ret.times(Decimal.max(player.resets, 1).pow(e))
-		if (hasGalUpg(45) && inNGM(4)) ret = ret.times(player.eightAmount.max(1).pow(e))
-		if (player.challenges.includes("postcngm3_1") && inNGM(4)) ret = ret.times(E_pow(3, tmp.cp))
+		if (hasGalUpg(41) && inNGM(4)) ret = ret.mul(Decimal.max(player.tickspeedBoosts, 1).pow(e))
+		if (hasGalUpg(43) && inNGM(4)) ret = ret.mul(Decimal.max(player.resets, 1).pow(e))
+		if (hasGalUpg(45) && inNGM(4)) ret = ret.mul(player.eightAmount.max(1).pow(e))
+		if (player.challenges.includes("postcngm3_1") && inNGM(4)) ret = ret.mul(E_pow(3, tmp.cp))
 	}
 	var rgs = player.replicanti.galaxies
 	if (hasAch("r98")) rgs *= 2
-	if (inNGM(3) && hasAch("r95")) ret = ret.times(E_pow(Math.max(1, player.eightAmount), rgs))
+	if (inNGM(3) && hasAch("r95")) ret = ret.mul(E_pow(Math.max(1, player.eightAmount), rgs))
 
 	return ret.floor()
 }
@@ -40,15 +40,15 @@ function getGPMultipliers(){
 	if (hasAch("r23") && inNGM(3)) {
 		let tbDiv = 10
 		if (inNGM(4)) tbDiv = 5
-		ret=ret.times(E_pow(Math.max(player.tickspeedBoosts / tbDiv, 1),Math.max(getAmount(8) / 75, 1)))
+		ret=ret.mul(E_pow(Math.max(player.tickspeedBoosts / tbDiv, 1),Math.max(getAmount(8) / 75, 1)))
 	}
-	if (hasGalUpg(32)) ret = ret.times(galMults.u32())
-	if (player.infinityUpgrades.includes("galPointMult")) ret = ret.times(getPost01Mult())
+	if (hasGalUpg(32)) ret = ret.mul(galMults.u32())
+	if (player.infinityUpgrades.includes("galPointMult")) ret = ret.mul(getPost01Mult())
 	if (hasAch('r37')) {
-		if (player.bestInfinityTime >= 18000) ret = ret.times(Math.max(180000 / player.bestInfinityTime, 1))
-		else ret = ret.times(10 * (1 + Math.pow(Math.log10(18000 / player.bestInfinityTime), 2)))
+		if (player.bestInfinityTime >= 18000) ret = ret.mul(Math.max(180000 / player.bestInfinityTime, 1))
+		else ret = ret.mul(10 * (1 + Math.pow(Math.log10(18000 / player.bestInfinityTime), 2)))
 	}
-	if (hasAch("r62") && !inNGM(3)) ret = ret.times(player.infinityPoints.max(10).log10())
+	if (hasAch("r62") && !inNGM(3)) ret = ret.mul(player.infinityPoints.max(10).log10())
 	return ret
 }
 
@@ -228,8 +228,8 @@ function buyGalaxyUpgrade(i) {
 		if (hasAch("r21")) {
 			for (var d = 1; d < 9; d++) {
 				var name = TIER_NAMES[d]
-				player[name + "Cost"] = player[name + "Cost"].times(10)
-				if (inNGM(4)) player["timeDimension" + d].cost = player["timeDimension" + d].cost.times(10)
+				player[name + "Cost"] = player[name + "Cost"].mul(10)
+				if (inNGM(4)) player["timeDimension" + d].cost = player["timeDimension" + d].cost.mul(10)
 			}
 		}
 		reduceDimCosts(true)
@@ -349,8 +349,8 @@ function productAllTotalBought() {
 	var ret = 1;
 	var mult = getProductBoughtMult()
 	for (var i = 1; i <= 8; i++) {
-		if (inNC(13) && inNGM(3)) ret = Decimal.times(player[TIER_NAMES[i] + "Amount"].max(1).log10(), mult).add(1).mul(ret);
-		else if (player.totalBoughtDims[TIER_NAMES[i]]) ret = Decimal.times(ret, player.totalBoughtDims[TIER_NAMES[i]] ? Decimal.times(player.totalBoughtDims[TIER_NAMES[i]], mult).max(1) : 1);
+		if (inNC(13) && inNGM(3)) ret = Decimal.mul(player[TIER_NAMES[i] + "Amount"].max(1).log10(), mult).add(1).mul(ret);
+		else if (player.totalBoughtDims[TIER_NAMES[i]]) ret = Decimal.mul(ret, player.totalBoughtDims[TIER_NAMES[i]] ? Decimal.mul(player.totalBoughtDims[TIER_NAMES[i]], mult).max(1) : 1);
 	}
 	return ret;
 }
@@ -424,7 +424,7 @@ el("postinfi04").onclick = function() {
 		player.infinityPoints = player.infinityPoints.minus(player.dimPowerIncreaseCost)
 		player.dimPowerIncreaseCost = E(!inNGM(3) ? 1e3 : 3e5).mul(E_pow(4, Math.min(player.extraDimPowerIncrease, 15) + 1));
 		player.extraDimPowerIncrease += 1;
-		if (player.extraDimPowerIncrease > 15) player.dimPowerIncreaseCost = player.dimPowerIncreaseCost.times(E_pow(E_pow(4, 5), player.extraDimPowerIncrease - 15))
+		if (player.extraDimPowerIncrease > 15) player.dimPowerIncreaseCost = player.dimPowerIncreaseCost.mul(E_pow(E_pow(4, 5), player.extraDimPowerIncrease - 15))
 		el("postinfi04").innerHTML = "Further increase all Dimension multipliers<br>x^" + galMults.u31().toFixed(2) + (player.extraDimPowerIncrease < 40 ? " -> x^" + ((galMults.u31() + 0.02).toFixed(2)) + "<br>Cost: " + shorten(player.dimPowerIncreaseCost) + " IP" : "")
 	}
 }
@@ -619,7 +619,7 @@ let galMults = {
 		let r = E(1)
 		let p = getProductBoughtMult()
 		for (var d = 1; d < 9; d++) {
-			r = Decimal.times(player["timeDimension" + d].bought / 6, p).max(1).mul(r)
+			r = Decimal.mul(player["timeDimension" + d].bought / 6, p).max(1).mul(r)
 		}
 		r = r.pow(hasGalUpg(36) ? 2 : 1)
 		if (r.gt(1e100)) r = E_pow(r.log10(), 50)

@@ -546,7 +546,7 @@ function doNGM1Versions(){
 	if (aarMod.newGameMinusVersion < 2) {
 		if (player.eternities == -20) {
 			player.infinitied += 991
-			player.offlineProdCost = Decimal.times(player.offlineProdCost, 5e4)
+			player.offlineProdCost = Decimal.mul(player.offlineProdCost, 5e4)
 		}
 		player.infinitiedBank -= 996
 		player.spreadingCancer -= 9000
@@ -1001,7 +1001,7 @@ function doQuantumUpdates(){
 		}
 		player.masterystudies=newMS
 		if (oldLength > newMS.length) forceToQuantumAndRemove = true
-		quSave.replicants.quantumFoodCost = Decimal.times(quSave.replicants.quantumFoodCost, 2)
+		quSave.replicants.quantumFoodCost = Decimal.mul(quSave.replicants.quantumFoodCost, 2)
 		quSave.replicants.limitDim=1
 		quSave.emperorDimensions = {}
 		quSave.emperorDimensions[1] = {workers: quSave.replicants.workers, progress: quSave.replicants.workerProgress, perm: Math.round(parseFloat(quSave.replicants.workers))}
@@ -1150,8 +1150,8 @@ function doPostNGP3Versions() {
 			player.infinitiedBank=nMx(player.infinitiedBank,1e6)
 			var filter=["timeMult","dimMult","timeMult2","unspentBonus","27Mult","18Mult","36Mult","resetMult","passiveGen","45Mult","resetBoost","galaxyBoost"]
 			for (var u=0;u<filter.length;u++) if (!player.infinityUpgrades.includes(filter[u])) player.infinityUpgrades.push(filter[u])
-			if (!hasAch("r85")) player.infMult=Decimal.times(player.infMult,4)
-			if (!hasAch("r93")) player.infMult=Decimal.times(player.infMult,4)
+			if (!hasAch("r85")) player.infMult=Decimal.mul(player.infMult,4)
+			if (!hasAch("r93")) player.infMult=Decimal.mul(player.infMult,4)
 			player.dimensionMultDecrease=2
 			player.tickSpeedMultDecrease=1.65
 			player.eternities=nMx(player.eternities,100)
@@ -1256,7 +1256,7 @@ function doNGm2v11tov3(){
 	if (aarMod.newGameMinusMinusVersion < 1.26) {
 		if (hasGalUpg(11)) for (d=1;d<8;d++) {
 			var name = TIER_NAMES[d]
-			player[name+"Cost"] = Decimal.times(player[name+"Cost"], 100)
+			player[name+"Cost"] = Decimal.mul(player[name+"Cost"], 100)
 		}
 		reduceDimCosts()
 	}
@@ -1404,8 +1404,8 @@ function doERSv0tov102(){
 		delete player.eternityChallenges
 	}
 	if (aarMod.ersVersion<1.02) {
-		if (hasAch("r85")) player.infMult=player.infMult.times(4)
-		if (hasAch("r93")) player.infMult=player.infMult.times(4)
+		if (hasAch("r85")) player.infMult=player.infMult.mul(4)
+		if (hasAch("r93")) player.infMult=player.infMult.mul(4)
 		aarMod.ersVersion=1.02
 	}
 }
@@ -1509,8 +1509,8 @@ function dov12tov122(){
 	}
 	if (player.version < 12.2) {
 		player.version = 12.2
-		player.sixthCost = Decimal.times(player.sixthCost, 10)
-		if (mod.ngpp) player.meta[6].cost = Decimal.times(player.meta[6].cost, 10)
+		player.sixthCost = Decimal.mul(player.sixthCost, 10)
+		if (mod.ngpp) player.meta[6].cost = Decimal.mul(player.meta[6].cost, 10)
 	}
 }
 
@@ -1561,8 +1561,8 @@ function doNGp3Init2(){
 		if (player.meta.bestOverQuantums === undefined) player.meta.bestOverQuantums = player.meta.bestAntimatter
 		updateColorPowers()
 		tmp.be=bigRipped()&&beSave.break
-		el("eggonsCell").style.display = ghSave.neutrinos.upgrades.includes(2) ? "none" : ""
-		el("workerReplWhat").textContent = ghSave.neutrinos.upgrades.includes(2) ? "babies" : "eggons"
+		el("eggonsCell").style.display = hasNU(2) ? "none" : ""
+		el("workerReplWhat").textContent = hasNU(2) ? "babies" : "eggons"
 		updateQuantumWorth()
 		if (quSave.autoOptions === undefined) quSave.autoOptions = {}
 		if (quSave.nonMAGoalReached === undefined || !quSave.nonMAGoalReached.length) quSave.nonMAGoalReached = []
@@ -1965,8 +1965,10 @@ function onLoad(noOffline) {
 			else break
 		}
 	}
-	notifyId=speedrunMilestonesReached
-	notifyId2=ghSave?.milestones||0
+	if (mod.ngp3) {
+		notifyId=speedrunMilestonesReached
+		notifyId2=ghSave.milestones||0
+	}
 	el("newsbtn").textContent=(player.options.newsHidden?"Show":"Hide")+" news ticker"
 	el("game").style.display=player.options.newsHidden?"none":"block"
 	var tabsSave = aarMod.tabsSave
@@ -2383,11 +2385,13 @@ function transformSaveToDecimal() {
 
 function loadAutoBuyerSettings() {
 	for (var i = 0; i < 9; i++) {
-		el("priority" + (i+1)).selectedIndex = player.autobuyers[i].priority-1
+		let data = player.autobuyers[i]
+		if (data % 1 === 0) continue
 
 		let key = autoBuyerKeys[i]
 		let elm = el("ab_" + key + "_toggle")
 		el("ab_" + key + "_toggle").textContent = "Buys " + (data.target < 10 ? "singles" : key == "ts" ? "max" : "until 10")
+		el("priority" + (i + 1)).selectedIndex = data.priority - 1
 	}
 
 	priorityOrder()

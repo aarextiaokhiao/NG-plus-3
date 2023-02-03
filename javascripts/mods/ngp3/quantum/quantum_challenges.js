@@ -109,7 +109,7 @@ let qcRewards = {
 		},
 		4: function(comps) {
 			if (comps == 0) return 1
-			let mult = player.meta[2].amount.times(player.meta[4].amount).mul(player.meta[6].amount).mul(player.meta[8].amount).max(1)
+			let mult = player.meta[2].amount.mul(player.meta[4].amount).mul(player.meta[6].amount).mul(player.meta[8].amount).max(1)
 			if (comps <= 1) return E_pow(10 * comps, Math.sqrt(mult.log10()) / 10)
 			return mult.pow(comps / 150)
 			

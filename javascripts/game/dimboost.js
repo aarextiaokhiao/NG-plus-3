@@ -61,7 +61,7 @@ function setInitialDimensionPower() {
 	var ic3Power = player.totalTickGained * getECReward(14)
 	if (inNGM(3) && player.currentChallenge != "postc5") {
 		let mult = 30
-		if ((inNC(14) && mod.ngmX==3) || player.currentChallenge == "postcngm3_3") mult = 20
+		if ((inNC(14) && inOnlyNGM(3)) || player.currentChallenge == "postcngm3_3") mult = 20
 		else if (hasGalUpg(14)) mult = 32
 		if (inNC(6, 1)) mult *= Math.min(player.galaxies / 30, 1)
 		let ic3PowerTB = player.tickspeedBoosts * mult

@@ -329,7 +329,7 @@ function setR16Tooltip(){
 	special.setAttribute('ach-tooltip', "Quantum in under 5 seconds. Reward: Start with all Infinity Dimensions unlocked if you have at least 25 eternities.")
 	memories.setAttribute('ach-tooltip', "Reach " + shortenCosts(E("1e1700")) + " MA without ever buying 5th-8th Normal Dimensions or having more than 4 Dimension Boosts in this quantum. Reward: The 4 RG upgrade is stronger based on your Meta-Dimension Boosts.")
 	squared.setAttribute('ach-tooltip', "Reach "+shortenCosts(E("1e1500"))+" MA with exactly 8 Meta-Dimension Boosts. Reward: Get a multiplier to the 8th Meta Dimension based on your 1st Meta Dimension.")
-	morals.setAttribute('ach-tooltip', "Quantum without any Meta-Dimension Boosts. Reward: Meta-Dimension Boosts boost itself at a reduced rate.")
+	morals.setAttribute('ach-tooltip', "Quantum without any Meta-Dimension Boosts.")
 	seriously.setAttribute('ach-tooltip', "Reach " + shortenCosts(E("1e354000")) + " IP without having time studies, while dilated and running QC2. Reward: The Eternity Points boost to Quark gain is 1% stronger.")
 }
 

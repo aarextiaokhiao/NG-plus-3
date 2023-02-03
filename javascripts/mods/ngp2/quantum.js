@@ -115,6 +115,8 @@ function getNGP3p1totalQKMult(){
 	if (hasAch("ng3p33")) log += Math.log10(getQCtoQKEffect())
 	if (hasAch("ng3p53")) log += brSave && brSave.spaceShards.plus(1).log10()
 	if (hasAch("ng3p65")) log += getRadioactiveDecays('r') * 3
+	if (hasAch("ng3p93")) log += Math.log10(500)
+	if (hasNU(13)) log += tmp.nu[13].log10()
 	return log
 }
 
@@ -131,16 +133,14 @@ function quarkGain() {
 	if (log > logBoost) log = Math.pow(log / logBoost, logBoostExp) * logBoost
 	if (log > 738 && !hasNU(8)) log = Math.sqrt(log * 738)
 
-	log += quSave.multPower * Math.log10(2)
+	log += getQuarkMult().log10()
 	log += getNGP3p1totalQKMult()
-	if (hasAch("ng3p93")) log += Math.log10(500)
 
 	return pow10(log).floor()
 }
 
 function getQuarkMult() {
-	x = E_pow(2, quSave.multPower)
-	return x
+	return pow2(quSave.multPower)
 }
 
 function toggleQuantumConf() {

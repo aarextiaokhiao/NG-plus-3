@@ -49,7 +49,7 @@ function assignQuark(color) {
 	}
 	if (color != "r" && quSave.times < 2 && !ghostified && !confirm("It is strongly recommended to assign your first quarks to red. Are you sure you want to do that?")) return
 	var mult = getQuarkAssignMult()
-	quSave.usedQuarks[color] = quSave.usedQuarks[color].add(usedQuarks.times(mult)).round()
+	quSave.usedQuarks[color] = quSave.usedQuarks[color].add(usedQuarks.mul(mult)).round()
 	quSave.quarks = quSave.quarks.sub(usedQuarks)
 	updateQuarkDisplay()
 	if (!mult.eq(1)) updateQuantumWorth()
@@ -68,9 +68,9 @@ function assignAll(auto) {
 		return
 	}
 	for (c = 0; c < 3; c++) {
-		var toAssign = oldQuarks.times(ratios[colors[c]]/sum).round()
+		var toAssign = oldQuarks.mul(ratios[colors[c]]/sum).round()
 		if (toAssign.gt(0)) {
-			quSave.usedQuarks[colors[c]] = quSave.usedQuarks[colors[c]].add(toAssign.times(mult)).round()
+			quSave.usedQuarks[colors[c]] = quSave.usedQuarks[colors[c]].add(toAssign.mul(mult)).round()
 			if (ghSave.another > 0) ghSave.another--
 		}
 	}
@@ -96,7 +96,7 @@ function assignAll(auto) {
 
 function getQuarkAssignMult() {
 	let r = E(1)
-	if (hasBU(23)) r = r.times(tmp.blu[23])
+	if (hasBU(23)) r = r.mul(tmp.blu[23])
 	return r
 }
 
@@ -219,6 +219,7 @@ function updateColorPowers(log) {
 
 	let softcapStartLog = 3
 	let softcapPower = 1
+	if (hasNU(14)) softcapPower = tmp.nu[14]
 	if (hasBU(11)) softcapPower += tmp.blu[11]
 	if (bLog > softcapStartLog) {
 		bLog = E_pow(bLog / softcapStartLog, softcapPower / 2).mul(softcapStartLog)
@@ -294,7 +295,7 @@ function getQuarkMultBulk() {
 	return Math.floor(bulk + 1)
 }
 
-function getQuarkMult() {
+function buyQuarkMult() {
 	if (E(quantumWorth).lt(getQuarkMultReq())) return
 	increaseQuarkMult(1)
 }
@@ -308,7 +309,7 @@ function maxQuarkMult() {
 function increaseQuarkMult(toAdd) {
 	quSave.multPower += toAdd
 	if (quSave.autobuyer.mode === 'amount') {
-		quSave.autobuyer.limit = Decimal.times(quSave.autobuyer.limit, pow2(toAdd))
+		quSave.autobuyer.limit = Decimal.mul(quSave.autobuyer.limit, pow2(toAdd))
 		el("priorityquantum").value = formatValue("Scientific", quSave.autobuyer.limit, 2, 0)
 	}
 	updateGluonsTab("spend")
@@ -348,7 +349,7 @@ function updateQuarksTab(tab) {
 	if (ghSave.milestones>7) {
 		var assortAmount=getAssortAmount()
 		var colors=['r','g','b']
-		el("assort_amount").textContent = shortenDimensions(assortAmount.times(getQuarkAssignMult()))
+		el("assort_amount").textContent = shortenDimensions(assortAmount.mul(getQuarkAssignMult()))
 		for (c = 0; c < 3; c++) if (colorCharge[colors[c]].div(colorCharge.qwBonus).lte(1e16)) el(colors[c]+"PowerRate").textContent="+"+shorten(getColorPowerProduction(colors[c]))+"/s"
 
 		el("assignAllButton").className=(assortAmount.lt(1)?"unavailabl":"stor")+"ebtn"
@@ -358,7 +359,7 @@ function updateQuarksTab(tab) {
 	el("qk_mult_upg").className = "gluonupgrade " + (E(quantumWorth).gte(getQuarkMultReq()) ? "storebtn" : "unavailablebtn")
 	el("qk_mult_upg").innerHTML = `
 		<b>Double anti-quarks.</b><br>
-		Currently: ${shortenDimensions(E(2).pow(quSave.multPower))}x<br>
+		Currently: ${shortenDimensions(getQuarkMult())}x<br>
 		(req: ${shortenDimensions(getQuarkMultReq())} quantum worth)
 	`
 }
@@ -400,7 +401,7 @@ function updateQuarksTabOnUpdate(mode) {
 
 	var assortAmount = getAssortAmount()
 	var canAssign = assortAmount.gt(0)
-	el("assort_amount").textContent = shortenDimensions(assortAmount.times(getQuarkAssignMult()))
+	el("assort_amount").textContent = shortenDimensions(assortAmount.mul(getQuarkAssignMult()))
 	el("redAssort").className = canAssign ? "storebtn" : "unavailablebtn"
 	el("greenAssort").className = canAssign ? "storebtn" : "unavailablebtn"
 	el("blueAssort").className = canAssign ? "storebtn" : "unavailablebtn"
