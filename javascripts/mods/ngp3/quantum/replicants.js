@@ -175,7 +175,7 @@ function getEmperorDimensionMultiplier(dim) {
 	if (hasNU(7) && dim % 2 == 1) ret = ret.mul(tmp.nu[7])
 	//quSave.emperorDimensions[8].perm-10
 	if (dim == 8) ret = ret.mul(E_pow(1.05, Math.sqrt(Math.max(0, quSave.emperorDimensions[8].perm - 8))))
-	if (tmp.nb[11]) ret = ret.pow(tmp.nb[11])
+	if (ghostified && ghSave.neutrinos.boosts >= 11) ret = ret.pow(tmp.nb[11])
 	return dilates(ret, 1)
 }
 
