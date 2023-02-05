@@ -16,7 +16,7 @@ function updateElectrons(retroactive) {
 	if (!quSave.autoOptions.sacrifice) updateElectronsEffect()
 	for (var u = 1; u < 5; u++) {
 		var cost = getElectronUpgCost(u)
-		el("electronupg" + u).innerHTML = "Increase the multiplier by " + (getElectronGainMult() * getElectronUpgIncrease(u)).toFixed(2) + "x.<br>" +
+		el("electronupg" + u).innerHTML = "+" + (getElectronGainMult() * getElectronUpgIncrease(u)).toFixed(2) + "x Electrons<br>" +
 			"Level: " + getFullExpansion(quSave.electrons.rebuyables[u-1]) + "<br>" +
 			"Cost: " + ((u == 4 ? getFullExpansion : shortenCosts)(cost)) + " " + [null, "Time Theorems", "dilated time", "meta-antimatter", "Meta-Dimension Boosts"][u]
 	}
@@ -26,15 +26,15 @@ function updateElectronsEffect() {
 	if (!quSave.autoOptions.sacrifice) tmp.mpte = getElectronBoost()
 	el("sacrificedGals").textContent = getFullExpansion(quSave.electrons.sacGals)
 	el("electronsAmount").textContent = getFullExpansion(Math.round(quSave.electrons.amount))
-	el("electronsTranslation").textContent = getFullExpansion(Math.round(tmp.mpte))
-	el("electronsEffect").textContent = shorten(getDimensionPowerMultiplier("non-random"))
-	el("linearPerTenMult").textContent = shorten(getDimensionPowerMultiplier("linear"))
+	el("electronsTranslation").textContent = "^"+getFullExpansion(Math.round(tmp.mpte))
+	el("electronsEffect").textContent = shorten(getDimensionPowerMultiplier("non-random"))+"x"
+	el("linearPerTenMult").textContent = shorten(getDimensionPowerMultiplier("linear"))+"x"
 }
 
 function sacrificeGalaxy(auto = false) {
 	var amount = player.galaxies - quSave.electrons.sacGals
 	if (amount < 1) return
-	if (player.options.sacrificeConfirmation && !auto) if (!confirm("You will perform a Galaxy reset, but you will exchange all your galaxies to electrons, which will give a boost to your Multiplier per Ten Dimensions.")) return
+
 	quSave.electrons.sacGals = player.galaxies
 	quSave.electrons.amount += getElectronGainFinalMult() * amount
 	if (!quSave.autoOptions.sacrifice) updateElectronsEffect()
@@ -47,7 +47,7 @@ function getElectronBoost(mod) {
 
 	var s = 149840
 	if (amount > 37460 + s) amount = Math.sqrt((amount-s) * 37460) + s
-	if (tmp.rg4 && mod != "no-rg4") amount *= 0.7
+	if (hasGluonUpg("rg4") && mod != "no-rg4") amount *= 0.7
 	if (player.masterystudies !== undefined && hasMasteryStudy("d13") && mod != "noTree") amount *= getTreeUpgradeEffect(4)
 	amount += 1
 	return amount
@@ -65,7 +65,7 @@ function getElectronGainFinalMult() {
 
 function getElectronUpgCost(u) {
 	var amount = quSave.electrons.rebuyables[u-1]
-	if (GUBought("gb5")) amount -= 0.3
+	if (hasGluonUpg("gb5")) amount -= 0.3
 	if (hasBU(33)) amount -= tmp.blu[33]
 
 	var base = amount * Math.max(amount - 1, 1) + 1

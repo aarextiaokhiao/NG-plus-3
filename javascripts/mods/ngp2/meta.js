@@ -12,7 +12,7 @@ function getDilationMetaDimensionMultiplier() {
 
 	let pow = 0.1
 	if (isNanoEffectUsed("dt_to_ma_exp") && tmp.nf.effects.dt_to_ma_exp) pow = tmp.nf.effects.dt_to_ma_exp //this is a quick fix, but we need to fix this bug
-	pow *= getLightEff(3)
+	pow *= PHOTON.eff(3)
 
 	if (mod.udp && !aarMod.nguepV) {
 		let l = quSave.colorPowers.b.plus(10).log10()
@@ -36,7 +36,7 @@ function getMetaDimensionMultiplier(tier) {
 	ret = ret.mul(tmp.mdgm) //Global multiplier of all Meta Dimensions
 
 	//Quantum upgrades
-	if (tier == 1 && GUBought("rg3")) ret = ret.mul(getRG3Effect())
+	if (tier == 1 && hasGluonUpg("rg3")) ret = ret.mul(getRG3Effect())
 
 	//QC Rewards:
 	if (tier % 2 > 0) ret = ret.mul(tmp.qcRewards[4])
@@ -66,8 +66,8 @@ function getMetaDimensionGlobalMultiplier() {
 		if (hasMasteryStudy("t393")) ret = ret.mul(getMTSMult(393))
 
 		//Quantum Upgrades
-		if (GUBought("br4")) ret = ret.mul(E_pow(getDimensionPowerMultiplier(), 0.0003).max(1))
-		if (GUBought("br5")) ret = ret.mul(3)
+		if (hasGluonUpg("br4")) ret = ret.mul(E_pow(getDimensionPowerMultiplier(), 0.0003).max(1))
+		if (hasGluonUpg("br5")) ret = ret.mul(3)
 
 		//QC Rewards
 		ret = ret.mul(tmp.qcRewards[3])
@@ -188,7 +188,6 @@ function metaBoost() {
 	if (hasAch("ng3p52")) return
 	player.meta.antimatter = getMetaAntimatterStart()
 	clearMetaDimensions()
-	if (!mod.ngp3 || !bigRipped()) el("quantumbtn").style.display="none"
 }
 
 
@@ -225,7 +224,7 @@ function getMetaCostScalingStart() {
 	let r = E(1/0)
 	if (mod.ngp3) {
 		r = E("1e900")
-		r = r.pow(getLightEff(6))
+		r = r.pow(PHOTON.eff(6))
 	}
 	return r
 }
@@ -398,7 +397,7 @@ function updateMetaDimensions () {
 		showDim = showDim || canBuyMetaDimension(tier)
 		el(tier + "MetaRow").style.display = showDim ? "" : "none"
 		if (showDim) {
-			el(tier + "MetaD").textContent = DISPLAY_NAMES[tier] + " Meta Dimension x" + formatValue(player.options.notation, getMetaDimensionMultiplier(tier), 2, 1)
+			el(tier + "MetaD").textContent = dimNames[tier] + " Meta Dimension x" + formatValue(player.options.notation, getMetaDimensionMultiplier(tier), 2, 1)
 			el("meta" + tier + "Amount").textContent = getMetaDimensionDescription(tier)
 			el("meta" + tier).textContent = speedrunMilestonesReached > tier + 5 ? "Auto: " + (player.autoEterOptions["md" + tier] ? "ON" : "OFF") : "Cost: " + formatValue(player.options.notation, player.meta[tier].cost, useTwo, 0) + " MA"
 			el('meta' + tier).className = speedrunMilestonesReached > tier + 5 ? "storebtn" : canAffordMetaDimension(player.meta[tier].cost) ? 'storebtn' : 'unavailablebtn'
@@ -408,7 +407,7 @@ function updateMetaDimensions () {
 	}
 	var isMetaShift = player.meta.resets < 4
 	var metaShiftRequirement = getMetaShiftRequirement()
-		el("metaResetLabel").textContent = 'Meta-Dimension ' + (isMetaShift ? "Shift" : "Boost") + ' ('+ getFullExpansion(player.meta.resets) +'): requires ' + getFullExpansion(Math.floor(metaShiftRequirement.amount)) + " " + DISPLAY_NAMES[metaShiftRequirement.tier] + " Meta Dimensions"
+		el("metaResetLabel").textContent = 'Meta-Dimension ' + (isMetaShift ? "Shift" : "Boost") + ' ('+ getFullExpansion(player.meta.resets) +'): requires ' + getFullExpansion(Math.floor(metaShiftRequirement.amount)) + " " + dimNames[metaShiftRequirement.tier] + " Meta Dimensions"
 		el("metaSoftReset").textContent = "Reset meta-dimensions for a " + (isMetaShift ? "new dimension" : "boost")
 	if (player.meta[metaShiftRequirement.tier].bought >= metaShiftRequirement.amount) {
 		el("metaSoftReset").className = 'storebtn'
@@ -425,7 +424,7 @@ function updateMetaDimensions () {
 	if (reqGotten && bigRip && ghostified) {
 		var GS = getGHPGain()
 		message += ", +" + shortenDimensions(GS) + " Elementary Particle" + (GS.lt(2) ? "" : "s")
-	} else if (reqGotten && !bigRip && (quSave.times || ghSave.milestones)) {
+	} else if (reqGotten && !bigRip && quantumed) {
 		var QS = quarkGain()
 		message += ", +" + shortenDimensions(QS) + " quark" + (QS.lt(2) ? "" : "s")
 	} else message += " for a new layer"
@@ -436,7 +435,7 @@ function updateMetaDimensions () {
 function getDil15Bonus() {
 	let x = 1
 	let max = 3
-	if (ghostified && ghSave.neutrinos.boosts >= 3) {
+	if (hasNB(3)) {
 		x = tmp.nb[3]
 		max = 1/0
 	}

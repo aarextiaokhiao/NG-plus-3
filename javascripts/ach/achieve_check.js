@@ -210,82 +210,6 @@ function getTwoDecaysBool(){
 	return true
 }
 
-function ngP3AchieveCheck(){
-	let checkEmpty = player.timestudy.studies.length < 1
-	if (mod.ngp3) for (id = 0; id < player.masterystudies.length; id++) {
-		if (player.masterystudies[id].split("t")[1]) checkEmpty = false
-	}
-	let ableToGetRid2 = checkEmpty && player.dilation.active
-	let ableToGetRid3 = ableToGetRid2 && quSave.electrons.amount == 0	
-	let ableToGetRid4 = ableToGetRid2 && inQC(2)
-	let ableToGetRid5 = ableToGetRid4 && player.dontWant
-	let ableToGetRid6 = ableToGetRid2 && inQC(6) && inQC(8)
-	let noTree = false
-	let minUQ = getMinimumUnstableQuarks()
-	for (var u = 1; u < 9; u++) {
-		if (todSave.upgrades[u]) break
-		else noTree = true
-	}
-	if (player.meta.antimatter.gte(Number.MAX_VALUE)) giveAchievement("I don't have enough fuel!")
-	if (player.galaxies >= 900 && !hasDilStudy(1)) giveAchievement("No more tax fraud!")
-	if (player.money.gte(getOldAgeRequirement())) giveAchievement("Old age")
-	if (player.infinityPoints.log10() >= 4e5 && ableToGetRid3) giveAchievement("I already got rid of you...")
-	if (player.meta.resets == 8 && player.meta.antimatter.log10() >= 1500) giveAchievement("We are not going squared.")
-	if (player.eightBought >= 4e6 && (getTotalRG() + player.dilation.freeGalaxies) < 1) giveAchievement("Intergalactic")
-	if (player.old && player.meta.antimatter.log10() >= 1700) giveAchievement("Old memories come true")
-	if (player.infinityPoints.log10() >= 3.54e5 && ableToGetRid4) giveAchievement("Seriously, I already got rid of you.")
-	if (player.meta.antimatter.log10() >= 333 && player.meta[2].amount.eq(0) && player.meta.resets == 0) giveAchievement("ERROR 500: INTERNAL DIMENSION ERROR")
-	if (player.money.log10() >= 7.88e13 && quSave.pairedChallenges.completed == 0) giveAchievement("The truth of anti-challenged")
-	if (player.money.log10() >= 6.2e11 && player.currentEternityChall == "eterc11") giveAchievement("I can’t get my multipliers higher!")
-	if (player.replicanti.amount.log10() >= 2e6 && player.dilation.tachyonParticles.eq(0)) giveAchievement("No dilation means no production.")
-	if (player.infinityPoints.gte(E_pow(Number.MAX_VALUE, 1000)) && ableToGetRid5) giveAchievement("I don't want you to live anymore.")
-	if (player.dilation.dilatedTime.log10() >= 411 && quSave.notrelative) giveAchievement("Time is not relative")
-	if (!hasAch("ng3p42")) {
-		for (d = 2; d < 9; d++) {
-			if (player[TIER_NAMES[d]+"Amount"].gt(0) || player["infinityDimension"+d].amount.gt(0) || player["timeDimension"+d].amount.gt(0) || player.meta[d].amount.gt(0)) break
-			else if (player.money.log10() >= 1.6e12 && d == 8) giveAchievement("ERROR 404: DIMENSIONS NOT FOUND")
-		}
-	}
-	if (player.money.log10() >= 8e6 && inQC(6) && inQC(8)) giveAchievement("Impossible expectations")
-	if (player.timestudy.theorem >= 1.1e7 && quSave.wasted) giveAchievement("Studies are wasted")
-	if (quSave.replicants.requirement.gte("1e12500000")) giveAchievement("Stop blocking me!")
-	if (player.infinityPoints.gte(pow10(2.75e5)) && ableToGetRid6) giveAchievement("Are you currently dying?")
-	if (nfSave.rewards >= 21 && noTree) giveAchievement("But I don't want to grind!")
-	if (player.replicanti.amount.log10() >= (mod.udp ? 268435456 : 36e6)) giveAchievement("Will it be enough?")
-	if (bigRipped()) {
-		let ableToGetRid7 = ableToGetRid2 && player.epmult.eq(1)
-		let ableToGetRid8 = ableToGetRid7 && !beSave.did
-		if (player.currentEternityChall == "eterc7" && player.galaxies == 1 && player.money.log10() >= 8e7) giveAchievement("Time Immunity")
-		if (!player.timestudy.studies.includes(11) && player.timeShards.log10() >= 215) giveAchievement("You're not really smart.")
-		if (ableToGetRid7 && player.infinityPoints.log10() >= 3.5e5) giveAchievement("And so your life?")
-		if (beSave && beSave.eternalMatter.gte(9.999999e99)) giveAchievement("This achievement doesn't exist 4")
-		if (ableToGetRid8 && player.infinityPoints.log10() >= 9.5e5) giveAchievement("Please answer me why you are dying.")
-		if (player.matter.log10() >= 5000) giveAchievement("Really?")
-	}
-	if (brSave.spaceShards.log10() >= 33 && !beSave.did) giveAchievement("Finite Time")
-	if (minUQ.quarks.log10() >= 1e12 && minUQ.decays >=2 && !brSave.times) giveAchievement("Weak Decay")		
-	if (nG(getInfinitied(), Number.MAX_VALUE)) giveAchievement("Meta-Infinity confirmed?")
-	if (nG(getEternitied(), Number.MAX_VALUE)) giveAchievement("Everlasting Eternities")
-	if (player.options.secrets && player.options.secrets.ghostlyNews && !player.options.newsHidden) giveAchievement("Two tickers")
-	if (beSave && beSave.did) giveAchievement("Time Breaker")
-	if (masteryStudies.bought >= 48) giveAchievement("The Theory of Ultimate Studies")
-	if (tmp.pcc.normal >= 24) giveAchievement("The Challenging Day")
-	if (speedrunMilestonesReached >= 24) giveAchievement("And the winner is...")
-	if (speedrunMilestonesReached >= 28) giveAchievement("Special Relativity")
-	if (quSave.best <= 10) giveAchievement("Quantum doesn't take so long")
-	if (hasMasteryStudy("d13")) giveAchievement("Do protons decay?")
-	if (getRadioactiveDecays('r') >= 4) giveAchievement("Radioactive Decaying to the max!")
-	if (quantumed) giveAchievement("Sub-atomic")
-
-	if (ghSave.hb.higgs >= 1) giveAchievement("The Holy Particle")
-	//if (ghSave.ghostlyPhotons.enpowerments >= 25) giveAchievement("Bright as the Anti-Sun") -- will be back
-	if (quSave.quarks.log10() >= 40000) giveAchievement("Are these another...")
-	if (ghSave.reference && minUQ.decays >= 2) giveAchievement("... references to EC8?")
-	if (ghSave.times >= Math.pow(Number.MAX_VALUE, 1/4)) giveAchievement("The Ghostliest Side")
-	if (player.money.log10() >= 1e18) giveAchievement("Meta-Quintillion")
-	if (player.unstableThisGhostify <= 10 && getTwoDecaysBool()) giveAchievement("... references to EC8?")
-}
-
 function ALLACHIEVECHECK(){
 	//PRE NG+3 ACHIEVEMENTS ONLY!!!
 	checkIPReqAchieve() //IP Req
@@ -297,5 +221,5 @@ function ALLACHIEVECHECK(){
 	checkTickspeedReqAchieve() //Tickspeed/tick upgs based
 	checkOtherPreNGp3Achieve() //Other
 	
-	if (mod.ngp3) ngP3AchieveCheck()
+	//if (mod.ngp3) ngP3AchieveCheck()
 }

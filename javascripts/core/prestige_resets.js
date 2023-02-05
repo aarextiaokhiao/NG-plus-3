@@ -18,7 +18,7 @@ let RESETS = {
 			if (inNC(10)) costMults = [1e3, 5e3, 1e4, 12e3, 18e3, 26e3, 32e3, 42e3]
 
 			for (var d = 1; d <= 8; d++) {
-				var name = TIER_NAMES[d]
+				var name = dimTiers[d]
 				player[name + "Amount"] = E(0)
 				player[name + "Bought"] = 0
 				player[name + "Cost"] = E(costs[d - 1])
@@ -58,6 +58,7 @@ let RESETS = {
 			player.postC4Tier = 1
 			player.postC8Mult = E(1)
 			skipResets()
+			updateTemp()
 			Marathon = 0
 
 			//UPDATE DISPLAYS
@@ -187,8 +188,6 @@ let RESETS = {
 				player.dontWant = true
 			}
 
-			resetUP()
-
 			if (!auto) {
 				updateChallenges()
 				updateAutobuyers()
@@ -213,7 +212,7 @@ function doReset(order, auto) {
 
 //OLD CODE
 function replicantsResetOnQuantum(qc) {
-	let keepAnt = ghSave.milestones >= 6 && !qc
+	let keepAnt = gotBraveMilestone(6) && !qc
 	if (!keepAnt) {
 		quSave.replicants.requirement = E("1e3000000")
 		quSave.replicants.amount = E(0)
@@ -245,7 +244,7 @@ function nanofieldResetOnQuantum(){
 }
 		
 function doMetaDimensionsReset(order, qc) {
-	let keepMDB = ghSave.milestones >= 5 && order == "qu" && !qc
+	let keepMDB = gotBraveMilestone(5) && order == "qu" && !qc
 	player.meta = {
 		antimatter: getMetaAntimatterStart(),
 		bestAntimatter: getMetaAntimatterStart(),

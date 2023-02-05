@@ -13,8 +13,8 @@ function setupAutomaticGhostsData() {
 }
 
 var automators = {
-	max: 19,
-	order: [1,5,6,7,18,8,9,10,11,12,13,14,15,16,17,19,20,21,22],
+	max: 18,
+	order: [1,5,6,7,18,8,9,10,11,12,13,14,15,16,17,19,20,21],
 
 	1: {
 		req: 0,
@@ -88,10 +88,6 @@ var automators = {
 		req: 40,
 		pow: 3,
 	},
-	22: {
-		req: 45,
-		pow: 3,
-	},
 }
 
 var powerConsumed = undefined
@@ -143,7 +139,7 @@ function changeAutoGhost(o) {
 		if (!isNaN(num) && num > 0) ghSave.automatorGhosts[13].u = num
 	} else if (o == "13o") {
 		var num = parseInt(getEl("autoGhost13o").value)
-		if (!isNaN(num) && num >= 0) player.ghostify.automatorGhosts[13].o = num
+		if (!isNaN(num) && num >= 0) ghSave.automatorGhosts[13].o = num
 	} else if (o == "15a") {
 		var num = parseFloat(el("autoGhost15a").value)
 		if (!isNaN(num) && num > 0) ghSave.automatorGhosts[13].u = num
@@ -159,7 +155,10 @@ function isAutoGhostActive(id) {
 }
 
 function getAutoCharge() {
-	return Math.max(Math.log10(quantumWorth.add(1).log10() / 150) / Math.log10(2), 0) + Math.max(brSave.spaceShards.add(1).log10() / 15 - 0.5, 0)
+	let r = Math.max(Math.log10(quantumWorth.add(1).log10() / 150) / Math.log10(2), 0)
+	r += Math.max(brSave.spaceShards.add(1).log10() / 15 - 0.5, 0)
+	if (hasAch("ng3p78")) r += ghSave.ghostParticles.add(1).log10() / 100
+	return r
 }
 
 function getAutomatorReq(x) {
@@ -173,8 +172,8 @@ function updateAutomatorStuff(mode) {
 
 	if (mode != "quick") updateAutomatorUnlocks()
 	while (data.ghosts<automators.max&&data.power>=getAutomatorReq()) {
-		data.ghosts++
 		el("autoGhost"+automators.order[data.ghosts]).style.display=""
+		data.ghosts++
 		updateAutomatorUnlocks()
 	}
 
@@ -219,10 +218,7 @@ function automatorTick(diff) {
 			ag.t = ag.t - times
 		}
 	}
-	if (isAutoGhostActive(22)) {
-		lightEmpowerment(true)
-	}
-	if (isAutoGhostActive(15) && ghSave.time >= ghSave.automatorGhosts[15].a * 1e3) ghostify(true)
+	if (isAutoGhostActive(15) && ghSave.time >= ghSave.automatorGhosts[15].a * 10) ghostify(true)
 
 	//Quantum Layer
 	let limit = ghSave.automatorGhosts[13].o || 1 / 0
@@ -232,7 +228,7 @@ function automatorTick(diff) {
 		} else if (quSave.time >= ghSave.automatorGhosts[13].t * 10 && brSave.times < limit) bigRip(true)
 	}
 	if (NF.unl()) {
-		if (isAutoGhostActive(1) && quSave.usedQuarks.r.gt(0) && todSave.r.quarks.eq(0)) unstableQuarks("r")
+		if (isAutoGhostActive(1) && quSave.usedQuarks.r.gt(0)) unstableQuarks("r")
 		if (isAutoGhostActive(12) && getUnstableGain("r").max(todSave.r.quarks).gte(Decimal.pow(10, Math.pow(2, 50)))) {
 			unstableQuarks("r")
 			radioactiveDecay("r")
@@ -253,6 +249,10 @@ function automatorTick(diff) {
 }
 
 function automatorPerSec() {
+	if (isAutoGhostActive(16)) {
+		maxNeutrinoMult()
+		maxGHPMult()
+	}
 	if (isAutoGhostActive(14)) maxBuyBEEPMult()
 	if (isAutoGhostActive(10)) maxBuyLimit()
 	if (isAutoGhostActive(9) && quSave.replicants.quantumFood > 0) {

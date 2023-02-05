@@ -1,3 +1,16 @@
+let tmp = {
+	nrm: E(1),
+	rm: E(1),
+	it: E(1),
+	inQCs: [0],
+	bru: {},
+	be: false,
+	beu: {},
+	nbc: [1,2,4,6,15,50,1e3,1e14,1e35,1/0,1/0,1/0],
+	nu: {},
+	nuc: [null,1e6,1e7,1e8,2e8,5e8,2e9,5e9,75e8,1e10,7e12,1e18,1e45,1/0,1/0,1/0],
+}
+
 function updateTemp() {
 	if (typeof player != "undefined") {
 		if (player.money) tmp.ri = player.money.gte(Number.MAX_VALUE) && ((player.currentChallenge != "" && player.money.gte(player.challengeTarget)) || !onPostBreak())
@@ -6,43 +19,17 @@ function updateTemp() {
 		tmp.ri = false
 		return
 	}
+
 	tmp.nrm = 1
 	if (player.timestudy.studies.includes(101)) tmp.nrm = player.replicanti.amount.max(1)
-	tmp.rg4 = false
-	if (mod.ngp3) {
-		updateGhostifyTempStuff()
-		if (beSave && beSave.unlocked) updateBreakEternityUpgradesTemp()
-
-		if (hasMasteryStudy("d14")) updateBigRipUpgradesTemp()
-		if (tmp.nrm !== 1 && bigRipped()) {
-			if (!player.dilation.active && hasRipUpg(14)) tmp.nrm = tmp.nrm.pow(tmp.bru[14])
-			if (tmp.nrm.log10() > 1e9) tmp.nrm = pow10(1e9 * Math.pow(tmp.nrm.log10() / 1e9, 2/3))
-		}
-		tmp.be = brokeEternity()
-
-		if (hasMasteryStudy("d13")) {
-			tmp.branchSpeed = getBranchSpeed()
-			tmp.tue = getTreeUpgradeEfficiency()
-		}
-
-		if (hasMasteryStudy("d12")) updateNanofieldTemp()
-		if (hasMasteryStudy("d11")) tmp.edgm = getEmperorDimensionGlobalMultiplier() //Update global multiplier of all Emperor Dimensions
-		if (hasMasteryStudy("d10")) {
-			tmp.twr = getTotalWorkers()
-			tmp.tra = getTotalReplicants()
-		}
-		tmp.rg4 = quSave.upgrades.includes("rg4")
-
-		updateMasteryStudyTemp()
-		updateIntergalacticTemp() // starts with if (mod.ngp3)
-	} else tmp.be = false
 	tmp.sacPow = calcTotalSacrificeBoost()
-	updateQCRewardsTemp()
+
+	updateNGP3Temp()
 
 	if (mod.ngpp) tmp.mdgm = getMetaDimensionGlobalMultiplier() //Update global multiplier of all Meta Dimensions
 	tmp.mptb = getMPTBase()
 	tmp.mpte = getMPTExp()
-	updatePostInfiTemp()
+
 	updateInfiniteTimeTemp()
 	if (hasBU(41)) {
 		tmp.blu[41] = bu.effects[41]()
@@ -59,31 +46,15 @@ function updateTemp() {
 	tmp.tsReduce = getTickSpeedMultiplier()
 	updateInfinityPowerEffects()
 	if (player.replicanti.unl) updateReplicantiTemp()
-}
 
-let tmp = {
-	nrm: E(1),
-	rm: E(1),
-	it: 1,
-	rg4: false,
-	inQCs: [0],
-	pct: "",
-	ns: 1,
-	bru: {},
-	be: false,
-	beu: {},
-	bm: [200,175,150,100,50,40,30,25,20,15,10,5,4,3,2,1],
-	nbc: [1,2,4,6,15,50,1e3,1e14,1e35,1/0,1/0,1/0],
-	nu: {},
-	nuc: [null,1e6,1e7,1e8,2e8,5e8,2e9,5e9,75e8,1e10,7e12,1e18,1e45,1/0,1/0,1/0],
-	nanofield_free_rewards: 0
+	updatePowers()
 }
 
 function updateInfiniteTimeTemp() {
 	var x = (3 - getTickspeed().log10()) * 0.000005
 	if (mod.ngp3) {
 		if (hasAch("ng3p56")) x *= 1.03
-		if (ghostified && ghSave.neutrinos.boosts>3) x *= tmp.nb[4]
+		if (hasNB(4)) x *= tmp.nb[4]
 		if (tmp.be && !player.dilation.active && beSave.upgrades.includes(8)) x *= getBreakUpgMult(8)
 		x = softcap(x, "inf_time_log_1")
 	}
@@ -137,131 +108,12 @@ function updateReplicantiTemp() {
 	data.estLog = data.est.mul(Math.log10(Math.E))
 }
 
-function updatePostInfiTemp() {
-	var exp11 = inNGM(2) ? 2 : 0.5
-	var exp21 = inNGM(2) ? 2 : 0.5
-	if (inNGM(4)){
-		exp11 += player.totalmoney.plus(10).div(10).log10() / 1e4
-		exp21 += player.money.plus(10).div(10).log10() / 1e4
-	}
-	tmp.postinfi11 = E_pow(player.totalmoney.plus(10).log10(), exp11)
-	tmp.postinfi21 = E_pow(player.money.plus(10).log10(), exp21)
-}
-
-function updateGhostifyTempStuff(){
-	updateBosonicLabTemp()
-	if (PHOTON.unlocked()) {
-		PHOTON.updateTemp()
-		updatePhotonsUnlockedBRUpgrades()
-	}
-	if (ghostified) {
-		updateNeutrinoUpgradesTemp()
-		updateNeutrinoBoostsTemp()
-	}
-}
-
-function updateBreakEternityUpgrade1Temp(){
-	var ep = player.eternityPoints
-	var em = beSave.eternalMatter
-	var log1 = ep.div("1e1280").add(1).log10()
-	var log2 = em.mul(10).max(1).log10()
-	tmp.beu[1] = pow10(Math.pow(log1, 1/3) * 0.5 + Math.pow(log2, 1/3)).max(1)
-}
-
-function updateBreakEternityUpgrade2Temp(){
-	var ep = player.eternityPoints
-	var log = ep.div("1e1290").add(1).log10()
-	tmp.beu[2] = Math.pow(Math.log10(log + 1) * 1.6 + 1, player.currentEternityChall == "eterc10" ? 1 : 2)
-}
-
-function updateBreakEternityUpgrade3Temp(){
-	var ep = player.eternityPoints
-	var nerfUpgs = !tmp.be && hasBU(24)
-	var log = ep.div("1e1370").add(1).log10()
-	if (nerfUpgs) log /= 2e6
-	var exp = Math.pow(log, 1/3) * 0.5
-	tmp.beu[3] = pow10(exp)
-}
-
-function updateBreakEternityUpgrade4Temp(){
-	var ep = player.eternityPoints
-	var ss = brSave && brSave.spaceShards
-	var log1 = ep.div("1e1860").add(1).log10()
-	var log2 = ss.div("7e19").add(1).log10()
-	var exp = Math.pow(log1, 1/3) + Math.pow(log2, 1/3) * 8
-	tmp.beu[4] = pow10(exp)
-}
-
-function updateBreakEternityUpgrade5Temp(){
-	var ep = player.eternityPoints
-	var ts = player.timeShards
-	var log1 = ep.div("1e2230").add(1).log10()
-	var log2 = ts.div(1e90).add(1).log10()
-	var exp = Math.pow(log1, 1/3) + Math.pow(log2, 1/3)
-	if (mod.udp && exp > 100) exp = Math.log10(exp) * 50
-	exp *= 4
-	tmp.beu[5] = pow10(exp)
-}
-
-function updateBreakEternityUpgrade6Temp(){
-	var ep = player.eternityPoints
-	var em = beSave.eternalMatter
-	var nerfUpgs = !tmp.be && hasBU(24)
-	var log1 = ep.div("1e4900").add(1).log10()
-	var log2 = em.div(1e45).add(1).log10()
-	if (nerfUpgs) log1 /= 2e6
-	var exp = Math.pow(log1, 1/3) / 1.7 + Math.pow(log2, 1/3) * 2
-	tmp.beu[6] = pow10(exp)
-}
-
-function updateBreakEternityUpgrade8Temp(){
-	var x = Math.log10(player.dilation.tachyonParticles.div(1e200).add(1).log10() / 100 + 1) * 3 + 1
-	if (mod.udp && x > 2.2) x = 1.2 + Math.log10(x + 7.8)
-	tmp.beu[8] = x
-}
-
-function updateBreakEternityUpgrade9Temp(){
-	var em = beSave.eternalMatter
-	var x = em.div("1e335").add(1).pow(0.05 * Math.log10(4))
-	tmp.beu[9] = x.toNumber()
-}
-
-function updateBreakEternityUpgrade10Temp(){
-	var ep = player.eternityPoints
-	tmp.beu[10] = Math.max(Math.log10(ep.add(1).log10() + 1) - 1, 1)
-}
-
-function updateBreakEternityUpgradesTemp() {
-	//Setup
-	var ep = player.eternityPoints
-	var ts = player.timeShards
-	var ss = brSave && brSave.spaceShards
-	var em = beSave.eternalMatter
-	var nerfUpgs = !tmp.be && hasBU(24)
-
-	updateBreakEternityUpgrade1Temp()
-	updateBreakEternityUpgrade2Temp()
-	updateBreakEternityUpgrade3Temp()
-	updateBreakEternityUpgrade4Temp()
-	updateBreakEternityUpgrade5Temp()
-	updateBreakEternityUpgrade6Temp()
-
-	//Upgrade 7: EP Mult
-	tmp.beu[7] = E_pow(1e9, beSave.epMultPower)
-
-	if (PHOTON.unlocked()) {
-		updateBreakEternityUpgrade8Temp()
-		updateBreakEternityUpgrade9Temp()
-		updateBreakEternityUpgrade10Temp()
-	}
-}
-
 function updateBRU1Temp() {
 	tmp.bru[1] = 1
 	if (!bigRipped()) return
 	let exp = 1
 	if (hasRipUpg(17)) exp = tmp.bru[17]
-	if (ghostified && ghSave.neutrinos.boosts > 7) exp *= tmp.nb[8]
+	if (hasNB(7)) exp *= tmp.nb[8]
 	exp *= player.infinityPoints.max(1).log10()
 	tmp.bru[1] = pow10(exp) // BRU1
 }
@@ -305,16 +157,6 @@ function updateBigRipUpgradesTemp(){
 	updateBRU14Temp()
 	updateBRU15Temp()
 	updateBRU16Temp()
-}
-
-function updatePhotonsUnlockedBRUpgrades(){
-	var bigRipUpg18base = 1 + brSave.spaceShards.div(1e140).add(1).log10()
-	var bigRipUpg18exp = Math.max(brSave.spaceShards.div(1e140).add(1).log10() / 10, 1)
-	if (bigRipUpg18base > 10 && mod.p3ep) bigRipUpg18base *= Math.log10(bigRipUpg18base)
-	tmp.bru[18] = E_pow(bigRipUpg18base, bigRipUpg18exp) // BRU18
-	
-	var bigRipUpg19exp = Math.sqrt(player.timeShards.add(1).log10()) / (mod.p3ep ? 60 : 80)
-	tmp.bru[19] = pow10(bigRipUpg19exp) // BRU19
 }
 
 function updateNanoEffectUsages() {
@@ -372,3 +214,54 @@ function updateNanoRewardTemp() {
 	//The rest is calculated by updateTemp().
 }
 
+//Vanilla
+var totalMult = 1
+var currentMult = 1
+var infinitiedMult = 1
+var achievementMult = 1
+var unspentBonus = 1
+var mult18 = 1
+var ec10bonus = E(1)
+
+function getAchievementMult(){
+	var ach = player.achievements.length
+	var gups = inNGM(2) ? player.galacticSacrifice.upgrades.length : 0
+	var minus = inNGM(2) ? 10 : 30
+	var exp = inNGM(2) ? 5 : 3
+	var div = 40
+	if (inNGM(4)) {
+		minus = 0
+		exp = 10
+		div = 20 - Math.sqrt(gups)
+		if (gups > 15) exp += gups
+	}
+	return Math.max(Math.pow(ach - minus - getSecretAchAmount(), exp) / div, 1)
+}
+
+function getUnspentBonus() {
+	x = player.infinityPoints
+	if (!x) return E(1)
+	if (inNGM(2)) return x.pow(Math.max(Math.min(Math.pow(x.max(1).log(10), 1 / 3) * 3, 8), 1)).plus(1);
+	else return x.dividedBy(2).pow(1.5).plus(1)
+}
+
+function updatePowers() {
+	var expMult = inNGM(2) ? 2 : 0.5
+	if (inNGM(4)) expMult += player.money.plus(10).div(10).log10() / 1e4
+
+	totalMult = E_pow(player.totalmoney.plus(10).log10(), expMult)
+	currentMult = E_pow(player.money.plus(10).log10(), expMult)
+	infinitiedMult = getInfinitiedMult()
+	achievementMult = getAchievementMult()
+	unspentBonus = getUnspentBonus()
+
+	if (player.boughtDims) mult18 = getDimensionFinalMultiplier(1).max(1).mul(getDimensionFinalMultiplier(8).max(1)).pow(0.02)
+	else mult18 = getDimensionFinalMultiplier(1).mul(getDimensionFinalMultiplier(8)).pow(0.02)
+
+	if (player.currentEternityChall == "eterc10" || inQC(6)) {
+		ec10bonus = E_pow(getInfinitied(), 1e3).max(1)
+		if (player.timestudy.studies.includes(31)) ec10bonus = ec10bonus.pow(4)
+	} else {
+		ec10bonus = E(1)
+	}
+}

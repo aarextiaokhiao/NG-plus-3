@@ -69,7 +69,7 @@ function updateReplicantsSubtab(){
 	growupRateUpdating()
 	
 	el("reduceHatchSpeed").innerHTML = "Hatch speed: " + hatchSpeedDisplay() + " -> " + hatchSpeedDisplay(true) + "<br>Cost: " + shortenDimensions(quSave.replicants.hatchSpeedCost) + " for all 3 gluons"
-	if (ghSave.milestones > 7) updateReplicants("display")
+	if (gotBraveMilestone(8)) updateReplicants("display")
 }
 
 var antTabs = {
@@ -169,13 +169,14 @@ function getTotalReplicants(data) {
 }
 
 function getEmperorDimensionMultiplier(dim) {
+	if (!hasMasteryStudy("d10")) return E(0)
+
 	let ret = E(1)
 	if (player.currentEternityChall == "eterc11") return ret
 	ret = tmp.edgm //Global multiplier of all Emperor Dimensions
 	if (hasNU(7) && dim % 2 == 1) ret = ret.mul(tmp.nu[7])
-	//quSave.emperorDimensions[8].perm-10
 	if (dim == 8) ret = ret.mul(E_pow(1.05, Math.sqrt(Math.max(0, quSave.emperorDimensions[8].perm - 8))))
-	if (ghostified && ghSave.neutrinos.boosts >= 11) ret = ret.pow(tmp.nb[11])
+	if (hasNB(11)) ret = ret.pow(tmp.nb[11])
 	return dilates(ret, 1)
 }
 
@@ -324,7 +325,7 @@ function updateEmperorDimensions() {
 		if (d > limitDim) el("empRow" + d).style.display = "none"
 		else {
 			el("empRow" + d).style.display = ""
-			el("empD" + d).textContent = DISPLAY_NAMES[d] + " Emperor Dimension x" + formatValue(player.options.notation, mults[d], 2, 1)
+			el("empD" + d).textContent = dimNames[d] + " Emperor Dimension x" + formatValue(player.options.notation, mults[d], 2, 1)
 			el("empAmount" + d).textContent = d < limitDim ? shortenDimensions(EDsave[d].workers) + " (+" + shorten(getEmperorDimensionRateOfChange(d)) + dimDescEnd : getFullExpansion(EDsave[limitDim].perm)
 			el("empQuarks" + d).textContent = shorten(production.workers[d])
 			el("empFeed" + d).className = (canFeedReplicant(d) ? "stor" : "unavailabl") + "ebtn"
@@ -416,12 +417,8 @@ function maxBuyLimit() {
 }
 
 function getSpinToReplicantiSpeed(){
-	// log10(green spins) * log10(blue spins) *log10(red spins) 
 	if (!hasAch("ng3p54")) return 1
-	var r = todSave.r.spin.plus(10).log10()
-	var g = todSave.g.spin.plus(10).log10()
-	var b = todSave.b.spin.plus(10).log10()
-	return r * g * b
+	return todSave.r.spin.plus(10).log10() ** 3
 }
 
 //UPDATES
@@ -497,4 +494,12 @@ function emperorDimUpdating(diff){
 		}
 		if (!canFeedReplicant(dim-1,true)) EDsave[dim-1].progress = E(0)
 	}
+}
+
+function getPilonEffect() {
+	let exp=1/3
+	if (hasMasteryStudy("t362")) exp=.4
+	if (hasMasteryStudy("t412")) exp=.5
+
+	return Math.pow(quSave.replicants.quarks.add(1).log10(),exp)*0.8
 }

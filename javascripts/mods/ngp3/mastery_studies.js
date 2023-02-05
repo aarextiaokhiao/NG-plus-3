@@ -118,7 +118,7 @@ var masteryStudies = {
 		},
 		273: function(uses){
 			var intensity = 5
-			if (ghostified && ghSave.neutrinos.boosts > 1 && !uses.includes("pn")) intensity += tmp.nb[2]
+			if (hasNB(2) && !uses.includes("pn")) intensity += tmp.nb[2]
 			if (uses.includes("intensity")) return intensity
 			return Decimal.max(Math.log10(player.replicanti.chance + 1), 1).pow(intensity)
 		},
@@ -574,7 +574,7 @@ function buyMasteryStudy(type, id, quick=false) {
 			masteryStudies.costMult *= getMasteryStudyCostMult(id)
 			masteryStudies.latestBoughtRow = Math.max(masteryStudies.latestBoughtRow, Math.floor(id / 10))
 		}
-		if (id == 241 && !GUBought("gb3")) {
+		if (id == 241 && !hasGluonUpg("gb3")) {
 			var otherMults = 1
 			if (hasAch("r85")) otherMults *= 4
 			if (hasAch("r93")) otherMults *= 4
@@ -593,11 +593,10 @@ function buyMasteryStudy(type, id, quick=false) {
 			player.meta.resets = 4
 		}
 		if (id == 321){
-			var tiers = [ null, "first", "second", "third", "fourth", "fifth", "sixth", "seventh", "eight" ]
 			var isone = ((inQC(5)||inQC(7))&&focusOn!="linear")||(((inNC(13)&&!inNGM(3))||player.currentChallenge=="postc1"||player.currentChallenge=="postcngm3_1")&&inNGM(2))
 			if (isone) {
 				for (var i = 1; i<9; i++) {
-					player[tiers[i] + "Pow"] = player[tiers[i] + "Pow"].mul(pow10(430 * player[tiers[i] + "Bought"]/10))
+					player[dimTiers[i] + "Pow"] = player[dimTiers[i] + "Pow"].mul(pow10(430 * player[dimTiers[i] + "Bought"]/10))
 				}
 			}
 		}
@@ -637,7 +636,7 @@ function canBuyMasteryStudy(type, id) {
 		if (!masteryStudies.spentable.includes(id)) return false
 	} else if (type == 'd') {
 		if (player.timestudy.theorem < masteryStudies.costs.dil[id] || hasMasteryStudy('d' + id)) return false
-		if (ghSave.milestones < 3 && masteryStudies.unlockReqConditions[id]()) return false
+		if (!gotBraveMilestone(3) && masteryStudies.unlockReqConditions[id]()) return false
 		if (!masteryStudies.spentable.includes("d" + id)) return false
 	} else {
 		if (player.timestudy.theorem < masteryStudies.costs.ec[id] || player.eternityChallUnlocked) return false
@@ -703,7 +702,7 @@ function updateMasteryStudyTextDisplay() {
 		el("ec" + id + "Req").textContent = "Requirement: " + masteryStudies.ecReqDisplays[id]()
 	}
 	for (id = 7; id <= masteryStudies.unlocksUpTo; id++) {
-		el("ds" + id + "Req").innerHTML = ghSave.milestones >= 3 ? "" : "Requirement: " + masteryStudies.unlockReqDisplays[id]()
+		el("ds" + id + "Req").innerHTML = gotBraveMilestone(3) ? "" : "Requirement: " + masteryStudies.unlockReqDisplays[id]()
 	}
 }
 
@@ -774,7 +773,7 @@ function getMasteryStudyMultiplier(id, uses = ""){
 }
 
 function getMTSMult(id, uses = "") {
-	return (uses == "" && masteryStudies.unlocked.includes(id) && tmp?.mts?.[id]) || masteryStudies.timeStudyEffects[id](uses)
+	return (uses == "" && masteryStudies.unlocked.includes(id) && tmp.mts?.[id]) || masteryStudies.timeStudyEffects[id](uses)
 }
 
 function updateMasteryStudyTemp() {

@@ -4,17 +4,8 @@ let NF = {
 	},
 }
 
-var nanospeed = 1
-function getNanospeedText() {
-	s = getNanofieldSpeedText()
-	if (!shiftDown) s = ghostified || nanospeed != 1 ? "Nanospeed: " + (nanospeed == 1 ? "" : shorten(tmp.ns) + " * " + shorten(nanospeed) + " = ") + shorten(getNanofieldFinalSpeed()) + "x (hold shift for details)" : ""
-	return s
-}
-
 function updateNanoverseTab() {
-	var rewards = nfSave.rewards
-	var free = tmp.nanofield_free_rewards
-	var total = rewards + free
+	var amt = nfSave.rewards
 	el("quarksNanofield").textContent = shortenDimensions(quSave.replicants.quarks)		
 	el("quarkCharge").textContent = shortenMoney(nfSave.charge)
 	el("quarkChargeRate").textContent = shortenDimensions(getQuarkChargeProduction())
@@ -26,27 +17,25 @@ function updateNanoverseTab() {
 	el("quarkAntienergy").textContent = shortenMoney(nfSave.antienergy)
 	el("quarkAntienergyRate").textContent = shortenMoney(getQuarkAntienergyProduction())
 	el("quarkChargeProductionCap").textContent = shortenMoney(getQuarkChargeProductionCap())
-	el("rewards").textContent = getFullExpansion(rewards)+(free>=1?" + "+getFullExpansion(free):"")
+	el("rewards").textContent = getFullExpansion(amt)
 
 	for (var reward = 1; reward < 9; reward++) {
-		el("nfReward" + reward).className = reward > total ? "nfRewardlocked" : "nfReward"
+		el("nfReward" + reward).className = reward > amt ? "nfRewardlocked" : "nfReward"
 		el("nfReward" + reward).textContent = wordizeList(nanoRewards.effectsUsed[reward].map(x => nanoRewards.effectDisplays[x](tmp.nf.effects[x])), true) + "."
-		el("nfRewardHeader" + reward).textContent = (total % 8 + 1 == reward ? "Next" : DISPLAY_NAMES[reward]) + " Nanobenefit"
-		el("nfRewardHeader" + reward).className = (total % 8 + 1 == reward ? "grey" : "") + " milestoneTextSmall"
-		el("nfRewardTier" + reward).textContent = "Tier " + getFullExpansion(Math.ceil((total + 1 - reward) / 8)) + " / Power: " + tmp.nf.powers[reward].toFixed(1)
+		el("nfRewardHeader" + reward).textContent = (amt % 8 + 1 == reward ? "Next" : dimNames[reward]) + " Nanobenefit"
+		el("nfRewardHeader" + reward).className = (amt % 8 + 1 == reward ? "grey" : "") + " milestoneTextSmall"
+		el("nfRewardTier" + reward).textContent = "Tier " + getFullExpansion(Math.ceil((amt + 1 - reward) / 8)) + " / Power: " + tmp.nf.powers[reward].toFixed(1)
 	}
 	el("nfReward5").textContent = (tmp.nf.powers[5] > 15 ? nanoRewards.effectDisplays.light_threshold_speed(tmp.nf.effects.light_threshold_speed) : nanoRewards.effectDisplays.dil_effect_exp(tmp.nf.effects.dil_effect_exp)) + "."
-	el("ns").textContent = getNanospeedText()
 }
 
 
-function getQuarkChargeProduction(noSpeed) {
+function getQuarkChargeProduction() {
 	let ret = E(1)
 	if (isNanoEffectUsed("preon_charge")) ret = ret.mul(tmp.nf.effects.preon_charge)
 	if (hasMasteryStudy("t421")) ret = ret.mul(getMTSMult(421))
 	if (hasNU(3)) ret = ret.mul(tmp.nu[3])
 	if (hasNU(7)) ret = ret.mul(tmp.nu[7])
-	if (!noSpeed) ret = ret.mul(getNanofieldFinalSpeed())
 	return ret
 }
 
@@ -59,7 +48,6 @@ function getQuarkLossProduction() {
 	let ret = getQuarkChargeProduction(true)
 	ret = ret.pow(2).mul(4e25)
 	if (hasNU(3)) ret = ret.div(10)
-	ret = ret.mul(getNanofieldFinalSpeed())
 	return ret
 }
 
@@ -67,14 +55,12 @@ function getQuarkEnergyProduction() {
 	let ret = nfSave.charge.mul(5).sqrt()
 	if (isNanoEffectUsed("preon_energy")) ret = ret.mul(tmp.nf.effects.preon_energy)
 	if (hasMasteryStudy("t411")) ret = ret.mul(getMTSMult(411))
-	ret = ret.mul(getNanofieldFinalSpeed())
 	return ret
 }
 
 function getQuarkAntienergyProduction() {
 	let ret = nfSave.charge.sqrt()
 	if (hasMasteryStudy("t401")) ret = ret.div(getMTSMult(401))
-	ret = ret.mul(getNanofieldFinalSpeed())
 	return ret
 }
 
@@ -185,28 +171,9 @@ function isNanoEffectUsed(x) {
 	return tmp.nf !== undefined && tmp.nf.rewardsUsed !== undefined && tmp.nf.rewardsUsed.includes(x) && tmp.nf.effects !== undefined
 }
 
-function getNanofieldSpeedText(){
-	text = ""
-	if (hasAch("ng3p78")) text += "'Aren't you already dead' reward: " +shorten(Math.sqrt(getTreeUpgradeLevel(8) * tmp.tue + 1)) + "x, "
-	if (getLightEff(1) > 1) text += "Green Light: " + shorten(E(getLightEff(1)).pow(nfSave.rewards)) + "x, "
-	if (text == "") return "No multipliers currently"
-	return text.slice(0, text.length-2)
-}
-
-function getNanofieldSpeed() {
-	let x = 1
-	if (hasAch("ng3p78")) x *= Math.sqrt(getTreeUpgradeLevel(8) * tmp.tue + 1)
-	x = E(getLightEff(1)).pow(nfSave.rewards).mul(x)
-	return x
-}
-
-function getNanofieldFinalSpeed() {
-	return Decimal.mul(tmp.ns, nanospeed)
-}
-
 function getNanoRewardPower(reward, rewards) {
 	let x = Math.ceil((rewards - reward + 1) / 8)
-	if (reward == 8) x *= getLightEff(2)
+	if (reward == 8) x *= PHOTON.eff(2)
 	return x * tmp.nf.powerEff
 }
 
@@ -263,8 +230,7 @@ function updateNanofieldTemp() {
 function updateNanorewardTemp() {
 	if (NF.unl() && tmp.nf !== undefined && tmp.nf.rewardsUsed !== undefined) {
 		var x = getNanoRewardPowerEff()
-		var y = nfSave.rewards+tmp.nanofield_free_rewards
-		tmp.ns = getNanofieldSpeed()
+		var y = nfSave.rewards
 		if (tmp.nf.powerEff !== x || tmp.nf.rewards !== y) {
 			tmp.nf.powerEff = x
 			tmp.nf.rewards = y
@@ -316,7 +282,7 @@ function nanofieldUpdating(diff){
 	if (toAddAE.gt(0)) {
 		nfSave.antienergy = nfSave.antienergy.add(toAddAE).min(getQuarkChargeProductionCap())
 		nfSave.energy = nfSave.energy.add(toAddAE.div(AErate).mul(getQuarkEnergyProduction()))
-		tmp.nanofield_free_rewards = 0
+
 		updateNextPreonEnergyThreshold()
 		if (nfSave.power > nfSave.rewards) nfSave.rewards = nfSave.power
 	}

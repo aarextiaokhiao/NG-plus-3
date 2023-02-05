@@ -956,7 +956,6 @@ function onNotationChange() {
 		updateElectrons()
 		updateBankedEter()
 		updateQuantumChallenges()
-		el("bpc68").textContent = shortenMoney(quSave.pairedChallenges.pc68best)
 		updateMasteryStudyTextDisplay()
 		updateReplicants("notation")
 		updateTODStuff()

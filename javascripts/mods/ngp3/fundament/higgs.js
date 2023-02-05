@@ -17,7 +17,6 @@ function canUnlockHiggs() {
 
 function updateBLParticleUnlocks() {
 	el("bosonicResets").style.display = ghSave.hb.unl ? "" : "none"
-	el("hftabbtn").style.display = ghSave.hb.higgs >= 60 ? "" : "none"
 	updateBLParticleDisplay()
 }
 

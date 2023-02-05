@@ -6,12 +6,12 @@ function getTickSpeedMultiplier() {
 
 function initialGalaxies() {
 	let g = player.galaxies
-	if (mod.ngp3 && !tmp.be) {
+	if (hasMasteryStudy("d7") && !tmp.be) {
 		g = Math.max(g-quSave.electrons.sacGals, 0)
 		g *= Math.max(Math.min(10 - (quSave.electrons.amount + g * getElectronGainFinalMult()) / 16857, 1), 0)
 		if (hasBU(14)) g = Math.max(Math.min(player.galaxies, tmp.blu[14]), g)
 	}
-	if (tmp.rg4) g *= 0.4
+	if (hasGluonUpg("rg4")) g *= 0.4
 	if ((inNC(15) || player.currentChallenge == "postc1") && inOnlyNGM(3)) g = 0
 	return g
 }
@@ -66,8 +66,8 @@ function getGalaxyEff(bi) {
 
 	if (aarMod.nguspV !== undefined && player.dilation.active) eff *= exDilationBenefit() + 1
 	if (mod.ngp3) eff *= colorBoosts.r
-	if (GUBought("rg2")) eff *= Math.pow(player.dilation.freeGalaxies / 5e3 + 1, 0.25)
-	if (tmp.rg4) eff *= 1.5
+	if (hasGluonUpg("rg2")) eff *= Math.pow(player.dilation.freeGalaxies / 5e3 + 1, 0.25)
+	if (hasGluonUpg("rg4")) eff *= 1.5
 	if (hasBU(34)) eff *= tmp.blu[34]
 	return eff
 }
@@ -128,7 +128,7 @@ function getPostC3Base() {
 	if (inNGM(3)) perGalaxy = 0.002
 	if (inQC(2)) perGalaxy = 0
 
-	if (ghostified && ghSave.neutrinos.boosts>8) perGalaxy *= tmp.nb[9]
+	if (hasNB(9)) perGalaxy *= tmp.nb[9]
 	if (hasNU(12)) perGalaxy *= tmp.nu[12].free
 	if (inNGM(2)) return player.galaxies * perGalaxy + 1.05
 

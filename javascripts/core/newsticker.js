@@ -305,7 +305,7 @@ newsArray = [//always true
 ["Aarexify is coming in an update after the next one.", true, "am94"],
 ["Wait, there's a co-developer?", 'mod.ngp3', "am95"],
 ["Having fun waiting?", '(mod.ngp3 ? NF.unl() && nfSave.rewards < 16 : false)', "am96"],
-["Having fun destabilizing?", '(mod.ngp3 ? hasMasteryStudy("d13") && !(GUBought("rg7") && GUBought("gb7") && GUBought("br7")) : false)', "am97"],
+["Having fun destabilizing?", '(mod.ngp3 ? hasMasteryStudy("d13") && !(hasGluonUpg("rg7") && hasGluonUpg("gb7") && hasGluonUpg("br7")) : false)', "am97"],
 ["In the next update, dilation will delete all of your EP.", 'mod.ngp3', "am98"],
 ["If you start a new game of NG+3, does that make it NGNG+3?", 'mod.ngp3', "am99"],
 ["Why are we getting electrons when electrons are matter?", '(mod.ngp3 ? hasMasteryStudy("d7") : false)', "am100"],

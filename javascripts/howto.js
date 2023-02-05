@@ -395,7 +395,7 @@ let HOW_TO = [
 		You can also spend Neutrinos for upgrades.`
 	}, {
 		mod: _ => ngp3,
-		req: _ => ghSave?.photons?.unl,
+		req: _ => ghSave?.photons.unl,
 
 		title: "Photons",
 		layer: "fundament",
@@ -405,14 +405,14 @@ let HOW_TO = [
 		On getting all Lights with all +1 on, you'll get a Light Empowerment. This also increases the cap by +1.`
 	/*}, {
 		mod: _ => ngp3,
-		req: _ => ghSave?.photons?.unl,
+		req: _ => ghSave?.photons.unl,
 
 		title: "Darkness",
 		layer: "fundament",
 		desc: `You can consume Spectral Ions for Darkness, which decreases Light cap. You'll unlock a Light (Vantablack), which boosts Neutrinos.`*/
 	}, {
 		mod: _ => ngp3,
-		req: _ => ghSave?.wzb?.unl,
+		req: _ => ghSave?.wzb.unl,
 
 		title: "Bosonic Lab",
 		layer: "bl",
@@ -431,7 +431,7 @@ let HOW_TO = [
 		- W- or Z0 = -1 Hypercharge`
 	}, {
 		mod: _ => ngp3,
-		req: _ => ghSave?.hb?.unl,
+		req: _ => ghSave?.hb.unl,
 
 		title: "Higgs",
 		layer: "bl",

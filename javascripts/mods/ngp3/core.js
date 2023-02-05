@@ -1,13 +1,23 @@
 //VERSION: 2.31
 let ngp3_ver = 2.31
-let ngp3_build = 20230202
+let ngp3_build = 20230204
 function doNGP3Updates() {
 	if (!aarMod.ngp3_build) aarMod.ngp3_build = 0
 	if (aarMod.ngp3_build < 20221230) quSave.multPower = 0
 	if (aarMod.ngp3_build < 20220201) {
 		if (!quSave.qcsNoDil) quSave.qcsNoDil = {}
-		delete ghSave.ghostlyPhotons
+		delete ghSave?.ghostlyPhotons
 		delete aarMod.leNoConf
+	}
+	if (aarMod.ngp3_build < 20220204) {
+		delete quSave.tod.g
+		delete quSave.tod.b
+		if (!ghSave?.reached) {
+			delete player.ghostify
+			loadFundament()
+		}
+		delete ghSave?.disabledRewards
+		delete ghSave?.reached
 	}
 	aarMod.newGame3PlusVersion = ngp3_ver
 	aarMod.ngp3_build = ngp3_build
@@ -55,7 +65,7 @@ function updateQuantumTabs() {
 		var id = quantumTabs.tabIds[i]
 		if (el(id).style.display == "block") quantumTabs.update[id]()
 	}
-	if (ghSave.milestones > 7) updateQuantumWorth("display")
+	if (gotBraveMilestone(8)) updateQuantumWorth("display")
 }
 
 function toggleAutoTT() {
@@ -582,7 +592,7 @@ function ngp3_feature_notify(k) {
 function doPerSecondNGP3Stuff(){
 	updateQuantumTabDisplays()
 	updateQuarkDisplay()
-	el('toggleautoquantummode').style.display = mod.ngp3 && quSave.reachedInfQK ? "" : "none"
+	el('toggleautoquantummode').style.display = quSave?.reachedInfQK ? "" : "none"
 
 	if (!mod.ngp3) return
 
@@ -594,31 +604,16 @@ function doPerSecondNGP3Stuff(){
 		else el("ec" + quSave.autoECN + "unl").onclick()
 		justImported = false
 	}
-	if (quSave.autoOptions.assignQK && ghSave.milestones > 7) assignAll(true) 
+	if (quSave.autoOptions.assignQK) assignAll(true) 
 
 	//NG+3: Others
 	doNGP3UnlockStuff()
 	notifyGhostifyMilestones()
-	givePerSecondNeuts()
 
 	notifyQuantumMilestones()
 	updateQuantumWorth()
 	updateQCDisplaysSpecifics()
 	updateQuantumTabDisplays()
-}
-
-function doGhostifyUnlockStuff(){
-	ghSave.reached = true
-	if (el("welcome").style.display != "flex") el("welcome").style.display = "flex"
-	else aarMod.popUpId = ""
-	el("welcomeMessage").innerHTML = "You are finally able to complete PC6+8 in Big Rip! However, because of the unstability of this universe, the only way to go further is to fundament. This allows to unlock new stuff in exchange for everything that you have."
-}
-
-function doReachAMGoalStuff(chall){
-	if (el("welcome").style.display != "flex") el("welcome").style.display = "flex"
-	else aarMod.popUpId = ""
-	el("welcomeMessage").innerHTML = "You reached the antimatter goal (" + shorten(pow10(getQCGoal())) + "), but you didn't reach the meta-antimatter goal yet! Get " + shorten(getQuantumReq()) + " meta-antimatter" + (bigRipped() ? " and then you can fundament!" : " and then go Quantum to complete your challenge!")
-	quSave.nonMAGoalReached.push(chall)
 }
 
 function doQuantumUnlockStuff(){
@@ -628,6 +623,91 @@ function doQuantumUnlockStuff(){
 	el("welcomeMessage").innerHTML = "Congratulations! You reached " + shorten(getQuantumReq()) + " MA and completed EC14 for the first time! This allows you to go Quantum (the 5th layer), giving you a quark in exchange for everything up to this point, which can be used to get more powerful upgrades. This allows you to get gigantic numbers!"
 }
 
+function ngP3AchieveCheck(){
+	let checkEmpty = player.timestudy.studies.length < 1
+	if (mod.ngp3) for (id = 0; id < player.masterystudies.length; id++) if (player.masterystudies[id].split("t")[1]) checkEmpty = false
+
+	let ableToGetRid2 = checkEmpty && player.dilation.active
+	let ableToGetRid3 = ableToGetRid2 && quSave.electrons.amount == 0	
+	let ableToGetRid4 = ableToGetRid2 && inQC(2)
+	let ableToGetRid5 = ableToGetRid4 && player.dontWant
+	let ableToGetRid6 = ableToGetRid2 && inQC(6) && inQC(8)
+	let noTree = false
+	let minUQ = getMinimumUnstableQuarks()
+	for (var u = 1; u < 9; u++) {
+		if (todSave.upgrades[u]) break
+		else noTree = true
+	}
+	if (player.meta.antimatter.gte(Number.MAX_VALUE)) giveAchievement("I don't have enough fuel!")
+	if (player.galaxies >= 900 && !hasDilStudy(1)) giveAchievement("No more tax fraud!")
+	if (player.money.gte(getOldAgeRequirement())) giveAchievement("Old age")
+	if (player.infinityPoints.log10() >= 4e5 && ableToGetRid3) giveAchievement("I already got rid of you...")
+	if (player.meta.resets == 8 && player.meta.antimatter.log10() >= 1500) giveAchievement("We are not going squared.")
+	if (player.eightBought >= 4e6 && (getTotalRG() + player.dilation.freeGalaxies) < 1) giveAchievement("Intergalactic")
+	if (player.old && player.meta.antimatter.log10() >= 1700) giveAchievement("Old memories come true")
+	if (player.infinityPoints.log10() >= 3.54e5 && ableToGetRid4) giveAchievement("Seriously, I already got rid of you.")
+	if (player.meta.antimatter.log10() >= 333 && player.meta[2].amount.eq(0) && player.meta.resets == 0) giveAchievement("ERROR 500: INTERNAL DIMENSION ERROR")
+	if (player.money.log10() >= 7.88e13 && quSave.pairedChallenges.completed == 0) giveAchievement("The truth of anti-challenged")
+	if (player.money.log10() >= 6.2e11 && player.currentEternityChall == "eterc11") giveAchievement("I can’t get my multipliers higher!")
+	if (player.replicanti.amount.log10() >= 2e6 && player.dilation.tachyonParticles.eq(0)) giveAchievement("No dilation means no production.")
+	if (player.infinityPoints.gte(E_pow(Number.MAX_VALUE, 1000)) && ableToGetRid5) giveAchievement("I don't want you to live anymore.")
+	if (player.dilation.dilatedTime.log10() >= 411 && quSave.notrelative) giveAchievement("Time is not relative")
+	if (!hasAch("ng3p42")) {
+		for (d = 2; d < 9; d++) {
+			if (player[dimTiers[d]+"Amount"].gt(0) || player["infinityDimension"+d].amount.gt(0) || player["timeDimension"+d].amount.gt(0) || player.meta[d].amount.gt(0)) break
+			else if (player.money.log10() >= 1.6e12 && d == 8) giveAchievement("ERROR 404: DIMENSIONS NOT FOUND")
+		}
+	}
+	if (player.money.log10() >= 8e6 && inQC(6) && inQC(8)) giveAchievement("Impossible expectations")
+	if (player.timestudy.theorem >= 1.1e7 && quSave.wasted) giveAchievement("Studies are wasted")
+	if (quSave.replicants.requirement.gte("1e12500000")) giveAchievement("Stop blocking me!")
+	if (player.infinityPoints.gte(pow10(2.75e5)) && ableToGetRid6) giveAchievement("Are you currently dying?")
+	if (nfSave.rewards >= 21 && noTree) giveAchievement("But I don't want to grind!")
+	if (player.replicanti.amount.log10() >= (mod.udp ? 268435456 : 36e6)) giveAchievement("Will it be enough?")
+	if (player.options.secrets && player.options.secrets.ghostlyNews && !player.options.newsHidden) giveAchievement("Two tickers")
+	if (tmp.pcc.normal >= 24) giveAchievement("The Challenging Day")
+	if (speedrunMilestonesReached >= 24) giveAchievement("And the winner is...")
+	if (speedrunMilestonesReached >= 28) giveAchievement("Special Relativity")
+	if (hasMasteryStudy("d13")) giveAchievement("Do protons decay?")
+	if (quantumed) giveAchievement("Sub-atomic")
+
+	//New format
+	let ableToGetRid7 = ableToGetRid2 && bigRipped() && player.epmult.eq(1)
+	if (bigRipped()) giveAchievement("To the new dimension!")
+	if (quSave.best <= 10) giveAchievement("Quantum doesn't take so long")
+	if (tmp.be) giveAchievement("Time Breaker")
+	if (bigRipped() && player.currentEternityChall == "eterc7" && player.galaxies == 1 && player.money.log10() >= 8e7) giveAchievement("Time Immunity")
+	if (tmp.be && !player.timestudy.studies.includes(11) && player.timeShards.log10() >= 215) giveAchievement("You're not really smart.")
+	if (ableToGetRid7 && player.infinityPoints.log10() >= 3.5e5) giveAchievement("And so your life?")
+
+	if (!ghostified) return
+	let ableToGetRid8 = ableToGetRid7 && !beSave.did
+	if (brSave.spaceShards.log10() >= 33 && !beSave.did) giveAchievement("Finite Time")
+	if (beSave.eternalMatter.gte(9.999999e99)) giveAchievement("This achievement doesn't exist 4")
+	if (bigRipped() && player.matter.log10() >= 5000) giveAchievement("Really?")
+	if (ableToGetRid8 && player.infinityPoints.log10() >= 9.5e5) giveAchievement("Please answer me why you are dying.")
+
+	if (PHOTON.unlocked()) giveAchievement("Progressing as a Ghost")
+	//ng3p72: in another source
+	if (nG(getInfinitied(), Number.MAX_VALUE)) giveAchievement("Meta-Infinity confirmed?")
+	if (minUQ.quarks.log10() >= 1e12 && minUQ.decays >=2 && !brSave.times) giveAchievement("Weak Decay")	
+	if (getRadioactiveDecays('r') >= 2) giveAchievement("Radioactive Decaying to the max!")
+	if (ghSave.best <= 7) giveAchievement("Running through Big Rips")
+	if (masteryStudies.bought >= 48) giveAchievement("The Theory of Ultimate Studies")
+	if (ghSave.photons.lighten) giveAchievement("Here comes the light")
+
+	if (ghSave.wzb.unl) giveAchievement("Even Ghostlier than before")
+	if (nG(getEternitied(), Number.MAX_VALUE)) giveAchievement("Everlasting Eternities")
+
+	if (ghSave.hb.higgs >= 1) giveAchievement("The Holy Particle")
+	//if (ghSave.ghostlyPhotons.enpowerments >= 25) giveAchievement("Bright as the Anti-Sun") -- will be back
+	if (quSave.quarks.log10() >= 40000) giveAchievement("Are these another...")
+	if (ghSave.reference && minUQ.decays >= 2) giveAchievement("... references to EC8?")
+	if (ghSave.times >= Math.pow(Number.MAX_VALUE, 1/4)) giveAchievement("The Ghostliest Side")
+	if (player.money.log10() >= 1e18) giveAchievement("Meta-Quintillion")
+	if (player.unstableThisGhostify <= 10 && getTwoDecaysBool()) giveAchievement("... references to EC8?")
+}
+
 function doNGP3UnlockStuff(){
 	var chall = tmp.inQCs
 	if (chall.length < 2) chall = chall[0]
@@ -635,7 +715,7 @@ function doNGP3UnlockStuff(){
 	else chall = chall[0] * 10 + chall[1]
 
 	if (ghostified) {
-		if (!PHOTON.unlocked() && PHOTON.req()) unlockPhotons()
+		if (!PHOTON.unlocked() && PHOTON.req()) PHOTON.unlock()
 		if (!ghSave.wzb.unl && canUnlockBosonicLab()) doBosonsUnlockStuff()
 		if (!ghSave.hb.unl && canUnlockHiggs()) unlockHiggs()
 	}
@@ -645,8 +725,8 @@ function doNGP3UnlockStuff(){
 		let TIMEbool = quSave.time > 10
 
 		if (!inQC(0) && player.money.gt(pow10(getQCGoal())) && MAbool && DONEbool && TIMEbool) doReachAMGoalStuff(chall)
-		if (!beSave.unlocked && player.eternityPoints.gte("1e1200") && bigRipped()) doBreakEternityUnlockStuff()
-		if (!ghSave.reached && isQuantumReached() && bigRipped()) doGhostifyUnlockStuff()
+		if (!beSave.unlocked && player.eternityPoints.gte("1e1200") && bigRipped()) unlockBreaEternity()
+		if (!ghSave && isQuantumReached() && bigRipped()) unlockFundament()
 
 		if (quSave.quarks.gte(Number.MAX_VALUE) && !quSave.reachedInfQK) {
 			quSave.reachedInfQK = true
@@ -657,6 +737,38 @@ function doNGP3UnlockStuff(){
 			el('autoAssignRotate').style.display = ""
 		}
 	} else if (!quSave.reached && isQuantumReached()) doQuantumUnlockStuff()
+}
+
+function updateNGP3Temp() {
+	tmp.be = brokeEternity()
+	if (quantumed) {
+		if (ghostified) updateGhostifyTempStuff()
+		if (beSave && beSave.unlocked) updateBreakEternityUpgradesTemp()
+
+		if (hasMasteryStudy("d14")) updateBigRipUpgradesTemp()
+		if (bigRipped()) {
+			if (!player.dilation.active && hasRipUpg(14)) tmp.nrm = tmp.nrm.pow(tmp.bru[14])
+			if (tmp.nrm.log10() > 1e9) tmp.nrm = pow10(1e9 * Math.pow(tmp.nrm.log10() / 1e9, 2/3))
+		}
+
+		if (hasMasteryStudy("d13")) {
+			tmp.branchSpeed = getBranchSpeed()
+			tmp.tue = getTreeUpgradeEfficiency()
+		}
+
+		if (hasMasteryStudy("d12")) updateNanofieldTemp()
+		if (hasMasteryStudy("d11")) tmp.edgm = getEmperorDimensionGlobalMultiplier() //Update global multiplier of all Emperor Dimensions
+		if (hasMasteryStudy("d10")) {
+			tmp.pe = getPilonEffect()
+			tmp.twr = getTotalWorkers()
+			tmp.tra = getTotalReplicants()
+		}
+	}
+	updateQCRewardsTemp()
+	if (mod.ngp3) {
+		updateMasteryStudyTemp()
+		updateIntergalacticTemp()
+	}
 }
 
 function quantumOverallUpdating(diff){
@@ -719,7 +831,7 @@ function setupNGP3HTMLAndData() {
 	setupNanofieldHTML()
 	setupToDHTML()
 	setupBraveMilestones()
-	setupPhotonTab()
+	PHOTON.setupTab()
 	setupBosonicExtraction()
 	setupBosonicUpgrades()
 	setupBosonicRunes()

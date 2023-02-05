@@ -26,8 +26,7 @@ function getReplMult(next) {
 
 function upgradeReplicantiChance() {
 	if (player.infinityPoints.gte(player.replicanti.chanceCost) && isChanceAffordable() && player.eterc8repl > 0) {
-		if (ghostified) if (ghSave.milestones < 11) player.infinityPoints = player.infinityPoints.minus(player.replicanti.chanceCost)
-		else player.infinityPoints = player.infinityPoints.minus(player.replicanti.chanceCost)
+		if (player.infinityPoints.lt(pow10(1e9))) player.infinityPoints = player.infinityPoints.minus(player.replicanti.chanceCost)
 		player.replicanti.chance = Math.round(player.replicanti.chance * 100 + 1) / 100
 		if (player.currentEternityChall == "eterc8") player.eterc8repl -= 1
 		el("eterc8repl").textContent = "You have " + player.eterc8repl + " purchases left."
@@ -169,20 +168,15 @@ function updateExtraReplGalaxies() {
 	}
 	extraReplGalaxies = ts225Eff + ts226Eff
 	if (extraReplGalaxies > 325) extraReplGalaxies = (Math.sqrt(0.9216+0.16*(extraReplGalaxies-324))-0.96)/0.08+324
-	if (mod.ngp3) {
-		let expData={
-			normal: 1/3,
-			ts362: 0.4
-		}
-		let expVarName=(hasMasteryStudy("t362")?"ts362":"")
-		if (expVarName=="") expVarName="normal"
-		let exp=expData[expVarName]
-		if (hasMasteryStudy("t412")) exp=.5
 
-		tmp.pe=Math.pow(quSave.replicants.quarks.add(1).log10(),exp)*0.8
-		extraReplGalaxies*=colorBoosts.g+tmp.pe
-	}
-	extraReplGalaxies = Math.floor(extraReplGalaxies)
+	return Math.floor(extraReplGalaxies) * getExtraReplGalaxyMult()
+}
+
+function getExtraReplGalaxyMult() {
+	let mult = 1
+	if (quantumed) mult = colorBoosts.g
+	if (hasMasteryStudy("d10")) mult += tmp.pe
+	return mult
 }
 
 function getTotalRG() {
@@ -205,7 +199,7 @@ function getReplSpeed() {
 		if (x > 200) exp += x / 10 - 20
 	}
 	inc = inc + 1
-	if (GUBought("gb2")) exp *= 2
+	if (hasGluonUpg("gb2")) exp *= 2
 	if (hasBU(35)) exp += tmp.blu[35].rep
 	if (hasBU(44)) exp += tmp.blu[44]
 	return {inc: inc, exp: exp}
@@ -216,7 +210,7 @@ function getReplicantiInterval() {
 	if (player.timestudy.studies.includes(62)) interval /= tsMults[62]()
 	if (player.replicanti.amount.gt(Number.MAX_VALUE)||player.timestudy.studies.includes(133)) interval *= 10
 	if (player.timestudy.studies.includes(213)) interval /= tsMults[213]()
-	if (GUBought("gb1")) interval /= getGB1Effect()
+	if (hasGluonUpg("gb1")) interval /= getGB1Effect()
 	if (player.replicanti.amount.lt(Number.MAX_VALUE) && hasAch("r134")) interval /= 2
 	if (isBigRipUpgradeActive(4)) interval /= 10
 

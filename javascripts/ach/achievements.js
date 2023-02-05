@@ -179,11 +179,11 @@ const allAchievements = {
 	ng3p75 : "Radioactive Decaying to the max!",
 	ng3p76 : "Running through Big Rips",
 	ng3p77 : "The Theory of Ultimate Studies",
-	ng3p78 : "ng3p78",
+	ng3p78 : "Here comes the light",
 
 	ng3p81 : "Even Ghostlier than before",
 	ng3p82 : "ng3p82",
-	ng3p83 : "Pulling an All-Nighter",
+	ng3p83 : "ng3p83",
 	ng3p84 : "Big Rip isn't enough",
 	ng3p85 : "Everlasting Eternities",
 	ng3p86 : "Back to Challenge One",
@@ -380,7 +380,7 @@ function giveAchievement(name, noUpdate) {
 			if (!hasAch("ng3p6" + i)) player.achievements.push("ng3p6" + i)
 		}
 	}
-	if (name == "Bright as the Anti-Sun" && !hasBU(32)) blSave.upgrades.push(32)
+	if (name == "Bright as the Anti-Sun" && blSave && !hasBU(32)) blSave.upgrades.push(32)
 	if (name == "... references to EC8?") updateTODStuff()
 	if (name == "Not-so-very-challenging") updateQuantumChallenges()
 	if (name == "Meta-Quintillion") beatNGP3()
@@ -561,22 +561,18 @@ function toggleSecretAchs() {
 }
 
 function achMultLabelUpdate() {
-				var label = "Normal"
-				if (hasAch("r75")) label += "/Infinity"
-				if (player.eternityUpgrades.includes(4)) label += "/Time"
-				return label
+	var label = "Normal"
+	if (hasAch("r75")) label += "/Infinity"
+	if (player.eternityUpgrades.includes(4)) label += "/Time"
+	return label
 }
 
 function metaAchMultLabelUpdate() {
-		if (!mod.ngp3) {
-				el("metaAchMultLabel").style.display = "none"
-				return
-		}
-		var metaMult = (tmp.qcRewards ? tmp.qcRewards[6] : 1)
-		if (quSave.challenges[6] > 0) {
-				el("metaAchMultLabel").style.display = "inline-block"
-				el("metaAchMultLabel").textContent = "Achievement multiplier to Meta Dimensions: " + shorten(metaMult) + "x"
-		} else el("metaAchMultLabel").style.display = "none"
+	el("metaAchMultLabel").style.display = "none"
+	if (!QCIntensity(6)) return
+
+	el("metaAchMultLabel").style.display = "inline-block"
+	el("metaAchMultLabel").textContent = "Achievement multiplier to Meta Dimensions: " + shorten(tmp.qcRewards[6]) + "x"
 }
 
 function achTabButtonsDisplay() {

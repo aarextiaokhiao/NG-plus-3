@@ -11,7 +11,7 @@ function updateQuantumChallenges() {
 		el(property + "div").style.display = (qc < 2 || QCIntensity(qc - 1)) ? "inline-block" : "none"
 		el(property).textContent = pcFocus ? "Choose" : QCIntensity(qc) ? "Completed" : inQC(qc) ? "Running" : "Start"
 		el(property).className = pcFocus ? "challengesbtn" : QCIntensity(qc) ? "completedchallengesbtn" : inQC(qc) ? "onchallengebtn" : "challengesbtn"
-		el(property + "cost").textContent = isQCFree() ? "" : "Cost: " + getFullExpansion(quantumChallenges.costs[qc]) + " electrons"
+		el(property + "cost").textContent = isQCFree() ? "" : "Cost: " + getFullExpansion(quantumChallenges.costs[qc]) + " Positrons"
 		el(property + "goal").textContent = "Goal: " + shortenCosts(pow10(getQCGoal(qc))) + " antimatter"
 	}
 
@@ -68,8 +68,7 @@ function getQCGoal(num, bigRip) {
 }
 
 function QCIntensity(num) {
-	if (mod.ngp3 && quSave !== undefined && quSave.challenges !== undefined) return quSave.challenges[num] || 0
-	return 0
+	return quSave?.challenges[num] || 0
 }
 
 function updateQCTimes() {
@@ -167,6 +166,13 @@ function selectQC(x) {
 	} else quantum(false, true, { qc: [x] })
 }
 
+function doReachAMGoalStuff(chall){
+	if (el("welcome").style.display != "flex") el("welcome").style.display = "flex"
+	else aarMod.popUpId = ""
+	el("welcomeMessage").innerHTML = "You reached the antimatter goal (" + shorten(pow10(getQCGoal())) + "), but you didn't reach the meta-antimatter goal yet! Get " + shorten(getQuantumReq()) + " meta-antimatter" + (bigRipped() ? " and then you can fundament!" : " and then go Quantum to complete your challenge!")
+	quSave.nonMAGoalReached.push(chall)
+}
+
 //Paired Challenges
 function updatePairedChallenges() {
 	if (!hasMasteryStudy("d9")) return
@@ -180,7 +186,7 @@ function updatePairedChallenges() {
 		var sc1 = quSave.pairedChallenges.order[pc] ? quSave.pairedChallenges.order[pc][0] : 0
 		var sc2 = (sc1 ? quSave.pairedChallenges.order[pc].length > 1 : false) ? quSave.pairedChallenges.order[pc][1] : 0
 		el(property+"desc").textContent = "Paired Challenge "+pc+": Both Quantum Challenge " + (sc1 ? sc1 : "?") + " and " + (sc2 ? sc2 : "?") + " are applied."
-		el(property+"cost").textContent = isQCFree() ? "" : "Cost: " + (sc2 ? getFullExpansion(getQCCost(pc + 8)) : "???") + " electrons"
+		el(property+"cost").textContent = isQCFree() ? "" : "Cost: " + (sc2 ? getFullExpansion(getQCCost(pc + 8)) : "???") + " Positrons"
 		el(property+"goal").textContent = "Goal: " + (sc2 ? shortenCosts(pow10(getQCGoal(pc + 8))) : "???") + " antimatter"
 		el(property).textContent = pcFocus == pc ? "Cancel" : (quSave.pairedChallenges.order[pc] ? quSave.pairedChallenges.order[pc].length < 2 : true) ? "Assign" : quSave.pairedChallenges.completed >= pc ? "Completed" : quSave.pairedChallenges.completed + 1 < pc ? "Locked" : quSave.pairedChallenges.current == pc ? "Running" : "Start"
 		el(property).className = pcFocus == pc || (quSave.pairedChallenges.order[pc] ? quSave.pairedChallenges.order[pc].length < 2 : true) ? "challengesbtn" : quSave.pairedChallenges.completed >= pc ? "completedchallengesbtn" : quSave.pairedChallenges.completed + 1 <pc ? "lockedchallengesbtn" : quSave.pairedChallenges.current == pc ? "onchallengebtn" : "challengesbtn"
@@ -285,6 +291,7 @@ function updatePCCompletions() {
 	if (r) el("pccompletionsbtn").style.display = "inline-block"
 	el("pccranking").textContent = r.toFixed(1)
 	el("pccrankingMax").textContent = Math.sqrt(2e4).toFixed(1)
+	el("bpc68").textContent = shortenMoney(quSave.pairedChallenges.pc68best)
 	updatePCTable()
 	
 	ranking = r // its global
@@ -337,7 +344,7 @@ function updatePCTable() {
 		} else { // r == c
 			var divid = "qcC" + r
 			el(divid).textContent = "QC"+r
-			if (quSave.qcsNoDil["qc" + r] && tmp.pct == "") {
+			if (quSave.qcsNoDil["qc" + r]) {
 				el(divid).className = "ndcompleted"
 				el(divid).setAttribute('ach-tooltip', "No dilation achieved!")
 			} else {

@@ -10,7 +10,7 @@ function getDTMultNGP3(){
 		if (hasMasteryStudy("t341")) gain = gain.mul(getMTSMult(341))
 		gain = gain.mul(getTreeUpgradeEffect(7))
 		gain = gain.mul(colorBoosts.b)
-		if (GUBought("br2")) gain = gain.mul(E_pow(2.2, Math.pow(tmp.sacPow.max(1).log10()/1e6, 0.25)))
+		if (hasGluonUpg("br2")) gain = gain.mul(E_pow(2.2, Math.pow(tmp.sacPow.max(1).log10()/1e6, 0.25)))
 		if (hasAch("r137")) gain = gain.mul(Math.max((player.replicanti.amount.log10()-2e4)/8e3+1,1))
 	}
 	if (hasBU(15)) gain = gain.mul(tmp.blu[15].dt)
@@ -45,7 +45,7 @@ function getDilTimeGainPerSecond() {
 }
 
 function getDTGainExp(){
-	let exp = GUBought("br3") ? 1.1 : 1
+	let exp = hasGluonUpg("br3") ? 1.1 : 1
 	return exp
 }
 
@@ -67,7 +67,7 @@ function getDilPower() {
 	if (mod.ngp3) {
 		if (hasAch("ng3p11")) ret = ret.mul(Math.max(getTotalRG() / 125, 1))
 		if (hasMasteryStudy("t264")) ret = ret.mul(getMTSMult(264))
-		if (GUBought("br1")) ret = ret.mul(getBR1Effect())
+		if (hasGluonUpg("br1")) ret = ret.mul(getBR1Effect())
 	}
 	return ret
 }
@@ -95,7 +95,7 @@ function getDilExp(disable) {
 	if (mod.ngpp && !aarMod.nguspV) ret += getDilUpgPower(4) / 4
 	if (mod.ngp3) {
 		if ((!bigRipped() || hasRipUpg(11)) && hasMasteryStudy("d13") && disable != "TU3") ret += getTreeUpgradeEffect(2)
-		if (ghostified && ghSave.neutrinos.boosts && disable != "neutrinos") ret += tmp.nb[1]
+		if (hasNB(1) && disable != "neutrinos") ret += tmp.nb[1]
 	}
 	return ret
 }
@@ -515,6 +515,7 @@ function resetDilation(order = "qu") {
 	let bigRip = bigRipped()
 
 	player.dilation.times = 0
+	player.dilation.active = false
 
 	let unl = hasDilStudy(1)
 	let keepUpg = unl && (bigRip ? hasRipUpg(12) : speedrunMilestonesReached >= 6)
@@ -525,7 +526,7 @@ function resetDilation(order = "qu") {
 		player.dilation.dilatedTime = !bigRip && speedrunMilestonesReached >= 22 ? E(1e100) : E(0)
 		if (order == "qu") {
 			let keepTPHalf = bigRip ? hasRipUpg(11) : hasAch("ng3p37")
-			let keepTP = bigRip ? hasRipUpg(18) : inQC(0) && ghSave.milestones >= 4
+			let keepTP = bigRip ? hasRipUpg(18) : inQC(0) && gotBraveMilestone(4)
 			if (keepTP) player.dilation.tachyonParticles = player.dilation.bestTP
 			else if (keepTPHalf) player.dilation.tachyonParticles = player.dilation.bestTP.pow(0.5)
 		}

@@ -12,6 +12,10 @@ function bigRip(auto) {
 	}
 }
 
+function canBigRip() {
+	return inQC(0) && canDirectlyBigRip()
+}
+
 function canDirectlyBigRip() {
 	if (!hasMasteryStudy("d14")) return
 	for (let pc of Object.values(quSave.pairedChallenges.order)) {
@@ -23,45 +27,8 @@ function canDirectlyBigRip() {
 	}
 }
 
-function canBigRip() {
-	return inQC(0) && canDirectlyBigRip()
-}
-
 function bigRipped() {
 	return brSave?.active
-}
-
-function toggleBigRipConf() {
-	brSave.conf = !brSave.conf
-	el("bigRipConfirmBtn").textContent = "Big Rip confirmation: O" + (brSave.conf ? "N" : "FF")
-}
-
-function unstoreTT() {
-	if (brSave.storedTS===undefined) return
-	player.timestudy.theorem = brSave && brSave.storedTS.tt
-	player.timestudy.amcost = pow10(2e4 * (brSave.storedTS.boughtA + 1))
-	player.timestudy.ipcost = pow10(100 * brSave.storedTS.boughtI)
-	player.timestudy.epcost = pow2(brSave.storedTS.boughtE)
-	var newTS = []
-	var newMS = []
-	var studies=brSave.storedTS.studies
-	for (var s = 0; s < studies.length; s++) {
-		var num=studies[s]
-		if (typeof(num)=="string") num=parseInt(num)
-		if (num<240) newTS.push(num)
-		else newMS.push("t"+num)
-	}
-	for (var s = 7; s < 15; s++) if (hasMasteryStudy("d" + s)) newMS.push("d" + s)
-	player.timestudy.studies = newTS
-	player.masterystudies = newMS
-	updateBoughtTimeStudies()
-	performedTS = false
-	updateTheoremButtons()
-	drawStudyTree()
-	maybeShowFillAll()
-	drawMasteryTree()
-	updateMasteryStudyButtons()
-	delete brSave.storedTS
 }
 
 function getSpaceShardsGain() {
@@ -77,37 +44,12 @@ function getSpaceShardsGain() {
 	return ret.floor()
 }
 
-function updateBigRipTab() {
-	el("spaceShards").textContent = shortenDimensions(brSave.spaceShards)
-	for (var u = 1; u <= 18; u++) {
-		el("bigripupg" + u).className = brSave && hasRipUpg(u) ? "gluonupgradebought bigrip" + (isBigRipUpgradeActive(u, true) ? "" : "off") : brSave.spaceShards.lt(bigRipUpgCosts[u]) ? "gluonupgrade unavailablebtn" : "gluonupgrade bigrip"
-		el("bigripupg" + u + "cost").textContent = shortenDimensions(E(bigRipUpgCosts[u]))
-	}
-	bigRipUpgradeUpdating()
-}
-
-function bigRipUpgradeUpdating(){
-	if (ghSave.milestones>7) {
-		el("spaceShards").textContent=shortenDimensions(brSave.spaceShards)
-		for (var u=1;u<=18;u++) {
-			el("bigripupg"+u).className = brSave && hasRipUpg(u) ? "gluonupgradebought bigrip" + (isBigRipUpgradeActive(u, true) ? "" : "off") : brSave.spaceShards.lt(bigRipUpgCosts[u]) ? "gluonupgrade unavailablebtn" : "gluonupgrade bigrip"
-			el("bigripupg"+u+"cost").textContent = shortenDimensions(E(bigRipUpgCosts[u]))
-		}
-	}
-	el("bigripupg1current").textContent=shortenDimensions(tmp.bru[1])
-	el("bigripupg8current").textContent=shortenDimensions(tmp.bru[8])+(Decimal.gte(tmp.bru[8],Number.MAX_VALUE)&&!hasNU(11)?"x (cap)":"x")
-	el("bigripupg14current").textContent=tmp.bru[14].toFixed(2)
-	var bru15effect = tmp.bru[15]
-	el("bigripupg15current").textContent=bru15effect < 999.995 ? bru15effect.toFixed(2) : getFullExpansion(Math.round(bru15effect))
-	el("bigripupg16current").textContent=shorten(tmp.bru[16])
-	el("bigripupg17current").textContent=tmp.bru[17]
-}
-
 let bigRipUpgCosts = [0, 2, 3, 5, 20, 30, 45, 60, 150, 300, 2000, 1e9, 3e14, 1e17, 3e18, 3e20, 5e22, 1e32, 1e70]
 function buyBigRipUpg(id) {
 	if (brSave.spaceShards.lt(bigRipUpgCosts[id]) || hasRipUpg(id)) return
 	brSave.spaceShards = brSave && brSave.spaceShards.sub(bigRipUpgCosts[id])
-	if (ghSave.milestones < 8) brSave.spaceShards=brSave.spaceShards.round()
+	if (!gotBraveMilestone(8)) brSave.spaceShards=brSave.spaceShards.round()
+
 	brSave.upgrades.push(id)
 	el("spaceShards").textContent = shortenDimensions(brSave.spaceShards)
 	if (bigRipped()) tweakBigRip(id, true)
@@ -118,6 +60,19 @@ function buyBigRipUpg(id) {
 	for (var u = 1; u <= 18; u++) {
 		el("bigripupg" + u).className = brSave && hasRipUpg(u) ? "gluonupgradebought bigrip" + (isBigRipUpgradeActive(u, true) ? "" : "off") : brSave.spaceShards.lt(bigRipUpgCosts[u]) ? "gluonupgrade unavailablebtn" : "gluonupgrade bigrip"
 	}
+}
+
+function hasRipUpg(x) {
+	if (!mod.ngp3) return
+	return brSave.upgrades.includes(x)
+}
+
+function isBigRipUpgradeActive(id) {
+	if (!bigRipped()) return
+	if (id == 1 && !hasRipUpg(17)) for (var u = 3; u < 17; u++) if (hasRipUpg(u)) return false
+	if (id > 2 && id != 4 && id < 9) if (hasRipUpg(9) && (id != 8 || !hasNU(11))) return false
+	if (id == 4 && hasRipUpg(11)) return false
+	return hasRipUpg(id)
 }
 
 function tweakBigRip(id, reset) {
@@ -161,56 +116,77 @@ function tweakBigRip(id, reset) {
 	}
 }
 
-function hasRipUpg(x) {
-	if (!mod.ngp3) return
-	return brSave.upgrades.includes(x)
+function unstoreTT() {
+	if (brSave.storedTS===undefined) return
+	player.timestudy.theorem = brSave && brSave.storedTS.tt
+	player.timestudy.amcost = pow10(2e4 * (brSave.storedTS.boughtA + 1))
+	player.timestudy.ipcost = pow10(100 * brSave.storedTS.boughtI)
+	player.timestudy.epcost = pow2(brSave.storedTS.boughtE)
+	var newTS = []
+	var newMS = []
+	var studies=brSave.storedTS.studies
+	for (var s = 0; s < studies.length; s++) {
+		var num=studies[s]
+		if (typeof(num)=="string") num=parseInt(num)
+		if (num<240) newTS.push(num)
+		else newMS.push("t"+num)
+	}
+	for (var s = 7; s < 15; s++) if (hasMasteryStudy("d" + s)) newMS.push("d" + s)
+	player.timestudy.studies = newTS
+	player.masterystudies = newMS
+	updateBoughtTimeStudies()
+	performedTS = false
+	updateTheoremButtons()
+	drawStudyTree()
+	maybeShowFillAll()
+	drawMasteryTree()
+	updateMasteryStudyButtons()
+	delete brSave.storedTS
 }
 
-function isBigRipUpgradeActive(id) {
-	if (!bigRipped()) return
-	if (id == 1 && !hasRipUpg(17)) for (var u = 3; u < 17; u++) if (hasRipUpg(u)) return false
-	if (id > 2 && id != 4 && id < 9) if (hasRipUpg(9) && (id != 8 || !hasNU(11))) return false
-	if (id == 4 && hasRipUpg(11)) return false
-	return hasRipUpg(id)
+function updateBigRipTab() {
+	el("spaceShards").textContent = shortenDimensions(brSave.spaceShards)
+	for (var u = 1; u <= 18; u++) {
+		el("bigripupg" + u).className = brSave && hasRipUpg(u) ? "gluonupgradebought bigrip" + (isBigRipUpgradeActive(u, true) ? "" : "off") : brSave.spaceShards.lt(bigRipUpgCosts[u]) ? "gluonupgrade unavailablebtn" : "gluonupgrade bigrip"
+		el("bigripupg" + u + "cost").textContent = shortenDimensions(E(bigRipUpgCosts[u]))
+	}
+	bigRipUpgradeUpdating()
+}
+
+function bigRipUpgradeUpdating() {
+	if (gotBraveMilestone(8)) {
+		el("spaceShards").textContent=shortenDimensions(brSave.spaceShards)
+		for (var u=1;u<=18;u++) {
+			el("bigripupg"+u).className = brSave && hasRipUpg(u) ? "gluonupgradebought bigrip" + (isBigRipUpgradeActive(u, true) ? "" : "off") : brSave.spaceShards.lt(bigRipUpgCosts[u]) ? "gluonupgrade unavailablebtn" : "gluonupgrade bigrip"
+			el("bigripupg"+u+"cost").textContent = shortenDimensions(E(bigRipUpgCosts[u]))
+		}
+	}
+	el("bigripupg1current").textContent=shortenDimensions(tmp.bru[1])
+	el("bigripupg8current").textContent=shortenDimensions(tmp.bru[8])+(Decimal.gte(tmp.bru[8],Number.MAX_VALUE)&&!hasNU(11)?"x (cap)":"x")
+	el("bigripupg14current").textContent=tmp.bru[14].toFixed(2)
+	var bru15effect = tmp.bru[15]
+	el("bigripupg15current").textContent=bru15effect < 999.995 ? bru15effect.toFixed(2) : getFullExpansion(Math.round(bru15effect))
+	el("bigripupg16current").textContent=shorten(tmp.bru[16])
+	el("bigripupg17current").textContent=tmp.bru[17]
+}
+
+function toggleBigRipConf() {
+	brSave.conf = !brSave.conf
+	el("bigRipConfirmBtn").textContent = "Big Rip confirmation: O" + (brSave.conf ? "N" : "FF")
 }
 
 //BREAK ETERNITY
-function updateBreakEternity() {
-	if (!mod.ngp3) return
-
-	let unl = beSave && beSave.unlocked
-	el("breakEternityReq").style.display = unl ? "none" : ""
-
-	if (unl) {
-		el("breakEternityNoBigRip").style.display = bigRipped() ? "none" : ""
-		el("breakEternityBtn").style.display = bigRipped() ? "" : "none"
-		el("breakEternityBtn").textContent = (beSave.break ? "FIX" : "BREAK") + " ETERNITY"
-		for (var u = 1; u < getBEUnls(); u++) el("breakUpg" + u + "Cost").textContent = shortenDimensions(getBreakUpgCost(u))
-		el("breakUpg7MultIncrease").textContent = shortenDimensions(1e9)
-		el("breakUpg7Mult").textContent = shortenDimensions(getBreakUpgMult(7))
-		el("breakUpgRS").style.display = bigRipped() ? "" : "none"
-	} else {
-		el("breakEternityReq").textContent = "You need to get " + shorten(E("1e1200")) + " EP before you can Break Eternity."
-		el("breakEternityNoBigRip").style.display = "none"
+function setupBreakEternity() {
+	return {
+		unlocked: false,
+		break: false,
+		eternalMatter: 0,
+		upgrades: [],
+		epMultPower: 0
 	}
 }
 
-
-function breakEternityDisplay(){
-	el("eternalMatter").textContent = shortenDimensions(beSave.eternalMatter)
-	for (var u = 1; u < getBEUnls(); u++) {
-		el("breakUpg" + u).className = (beSave.upgrades.includes(u) && u != 7) ? "eternityupbtnbought" : beSave.eternalMatter.gte(getBreakUpgCost(u)) ? "eternityupbtn" : "eternityupbtnlocked"
-		if (u == 8) el("breakUpg8Mult").textContent = (getBreakUpgMult(8) * 100 - 100).toFixed(1)
-		else if (u != 7 && el("breakUpg" + u + "Mult")) el("breakUpg" + u + "Mult").textContent = shortenMoney(getBreakUpgMult(u))
-	}
-	if (bigRipped()) {
-		el("eterShortcutEM").textContent=shortenDimensions(beSave.eternalMatter)
-		el("eterShortcutEP").textContent=shortenDimensions(player.eternityPoints)
-		el("eterShortcutTP").textContent=shortenMoney(player.dilation.tachyonParticles)
-	}
-}
-
-function doBreakEternityUnlockStuff(){
+function unlockBreaEternity() {
 	beSave.unlocked = true
 	$.notify("Congratulations! You have unlocked Break Eternity!", "success")
 	updateBreakEternity()
@@ -220,11 +196,7 @@ function breakEternity() {
 	beSave.break = !beSave.break
 	beSave.did = true
 	el("breakEternityBtn").textContent = (beSave.break ? "FIX" : "BREAK") + " ETERNITY"
-	if (bigRipped()) {
-		tmp.be = beSave.break
-		updateTemp()
-		if (!tmp.be && el("timedimensions").style.display == "block") showDimTab("antimatterdimensions")
-	}
+	if (beSave.break && el("timedimensions").style.display == "block") showDimTab("antimatterdimensions")
 	if (!player.dilation.active && isSmartPeakActivated) {
 		EPminpeakType = 'normal'
 		EPminpeak = E(0)
@@ -243,6 +215,109 @@ function getEMGain() {
 	return pow10(log).floor()
 }
 
+function updateBreakEternityUpgrade1Temp(){
+	var ep = player.eternityPoints
+	var em = beSave.eternalMatter
+	var log1 = ep.div("1e1280").add(1).log10()
+	var log2 = em.mul(10).max(1).log10()
+	tmp.beu[1] = pow10(Math.pow(log1, 1/3) * 0.5 + Math.pow(log2, 1/3)).max(1)
+}
+
+function updateBreakEternityUpgrade2Temp(){
+	var ep = player.eternityPoints
+	var log = ep.div("1e1290").add(1).log10()
+	tmp.beu[2] = Math.pow(Math.log10(log + 1) * 1.6 + 1, player.currentEternityChall == "eterc10" ? 1 : 2)
+}
+
+function updateBreakEternityUpgrade3Temp(){
+	var ep = player.eternityPoints
+	var nerfUpgs = !tmp.be && hasBU(24)
+	var log = ep.div("1e1370").add(1).log10()
+	if (nerfUpgs) log /= 2e6
+	var exp = Math.pow(log, 1/3) * 0.5
+	tmp.beu[3] = pow10(exp)
+}
+
+function updateBreakEternityUpgrade4Temp(){
+	var ep = player.eternityPoints
+	var ss = brSave && brSave.spaceShards
+	var log1 = ep.div("1e1860").add(1).log10()
+	var log2 = ss.div("7e19").add(1).log10()
+	var exp = Math.pow(log1, 1/3) + Math.pow(log2, 1/3) * 8
+	tmp.beu[4] = pow10(exp)
+}
+
+function updateBreakEternityUpgrade5Temp(){
+	var ep = player.eternityPoints
+	var ts = player.timeShards
+	var log1 = ep.div("1e2230").add(1).log10()
+	var log2 = ts.div(1e90).add(1).log10()
+	var exp = Math.pow(log1, 1/3) + Math.pow(log2, 1/3)
+	if (mod.udp && exp > 100) exp = Math.log10(exp) * 50
+	exp *= 4
+	tmp.beu[5] = pow10(exp)
+}
+
+function updateBreakEternityUpgrade6Temp(){
+	var ep = player.eternityPoints
+	var em = beSave.eternalMatter
+	var nerfUpgs = !tmp.be && hasBU(24)
+	var log1 = ep.div("1e4900").add(1).log10()
+	var log2 = em.div(1e45).add(1).log10()
+	if (nerfUpgs) log1 /= 2e6
+	var exp = Math.pow(log1, 1/3) / 1.7 + Math.pow(log2, 1/3) * 2
+	tmp.beu[6] = pow10(exp)
+}
+
+function updateBreakEternityUpgrade8Temp(){
+	var x = Math.log10(player.dilation.tachyonParticles.div(1e200).add(1).log10() / 100 + 1) * 3 + 1
+	if (mod.udp && x > 2.2) x = 1.2 + Math.log10(x + 7.8)
+	tmp.beu[8] = x
+}
+
+function updateBreakEternityUpgrade9Temp(){
+	var em = beSave.eternalMatter
+	var x = em.div("1e335").add(1).pow(0.05 * Math.log10(4))
+	tmp.beu[9] = x.toNumber()
+}
+
+function updateBreakEternityUpgrade10Temp(){
+	var ep = player.eternityPoints
+	tmp.beu[10] = Math.max(Math.log10(ep.add(1).log10() + 1) - 1, 1)
+}
+
+function updateBreakEternityUpgradesTemp() {
+	//Setup
+	var ep = player.eternityPoints
+	var ts = player.timeShards
+	var ss = brSave && brSave.spaceShards
+	var em = beSave.eternalMatter
+	var nerfUpgs = !tmp.be && hasBU(24)
+
+	updateBreakEternityUpgrade1Temp()
+	updateBreakEternityUpgrade2Temp()
+	updateBreakEternityUpgrade3Temp()
+	updateBreakEternityUpgrade4Temp()
+	updateBreakEternityUpgrade5Temp()
+	updateBreakEternityUpgrade6Temp()
+
+	//Upgrade 7: EP Mult
+	tmp.beu[7] = E_pow(1e9, beSave.epMultPower)
+
+	if (PHOTON.unlocked()) {
+		updateBreakEternityUpgrade8Temp()
+		updateBreakEternityUpgrade9Temp()
+		updateBreakEternityUpgrade10Temp()
+	}
+}
+
+function getBEUnls() {
+	//Upgrades
+	let x = 8
+	if (PHOTON.unlocked()) x += 3
+	return x
+}
+
 var breakUpgCosts = [1, 1e3, 2e6, 2e11, 8e17, 1e45, null, 1e290, E("1e350"), E("1e375"), E("e1450")]
 function getBreakUpgCost(id) {
 	if (id == 7) return pow2(beSave.epMultPower).mul(1e5)
@@ -252,7 +327,8 @@ function getBreakUpgCost(id) {
 function buyBreakUpg(id) {
 	if (!beSave.eternalMatter.gte(getBreakUpgCost(id)) || beSave.upgrades.includes(id)) return
 	beSave.eternalMatter = beSave.eternalMatter.sub(getBreakUpgCost(id))
-	if (ghSave.milestones < 15) beSave.eternalMatter = beSave.eternalMatter.round()
+	if (!gotBraveMilestone(15)) beSave.eternalMatter = beSave.eternalMatter.round()
+
 	if (id == 7) {
 		beSave.epMultPower++
 		el("breakUpg7Mult").textContent = shortenDimensions(getBreakUpgMult(7))
@@ -272,15 +348,43 @@ function maxBuyBEEPMult() {
 	let toSpend = pow2(toBuy).sub(1).mul(cost).min(beSave.eternalMatter)
 	beSave.epMultPower += toBuy
 	beSave.eternalMatter = beSave.eternalMatter.sub(toSpend)
-	if (ghSave.milestones < 15) beSave.eternalMatter = beSave.eternalMatter.round()
+	if (!gotBraveMilestone(15)) beSave.eternalMatter = beSave.eternalMatter.round()
+
 	el("eternalMatter").textContent = shortenDimensions(beSave.eternalMatter)
 	el("breakUpg7Mult").textContent = shortenDimensions(getBreakUpgMult(7))
 	el("breakUpg7Cost").textContent = shortenDimensions(getBreakUpgCost(7))
 }
 
-function getBEUnls() {
-	//Upgrades
-	let x = 8
-	if (PHOTON.unlocked()) x += 3
-	return x
+function updateBreakEternity() {
+	if (!mod.ngp3) return
+
+	let unl = beSave && beSave.unlocked
+	el("breakEternityReq").style.display = unl ? "none" : ""
+
+	if (unl) {
+		el("breakEternityNoBigRip").style.display = bigRipped() ? "none" : ""
+		el("breakEternityBtn").style.display = bigRipped() ? "" : "none"
+		el("breakEternityBtn").textContent = (beSave.break ? "FIX" : "BREAK") + " ETERNITY"
+		for (var u = 1; u < getBEUnls(); u++) el("breakUpg" + u + "Cost").textContent = shortenDimensions(getBreakUpgCost(u))
+		el("breakUpg7MultIncrease").textContent = shortenDimensions(1e9)
+		el("breakUpg7Mult").textContent = shortenDimensions(getBreakUpgMult(7))
+	} else {
+		el("breakEternityReq").textContent = "You need to get " + shorten(E("1e1200")) + " EP before you can Break Eternity."
+		el("breakEternityNoBigRip").style.display = "none"
+	}
+}
+
+function breakEternityDisplay(){
+	el("eternalMatter").textContent = shortenDimensions(beSave.eternalMatter)
+	for (var u = 1; u < getBEUnls(); u++) {
+		el("breakUpg" + u).className = (beSave.upgrades.includes(u) && u != 7) ? "eternityupbtnbought" : beSave.eternalMatter.gte(getBreakUpgCost(u)) ? "eternityupbtn" : "eternityupbtnlocked"
+		if (u == 8) el("breakUpg8Mult").textContent = (getBreakUpgMult(8) * 100 - 100).toFixed(1)
+		else if (u != 7 && el("breakUpg" + u + "Mult")) el("breakUpg" + u + "Mult").textContent = shortenMoney(getBreakUpgMult(u))
+	}
+	el("beShortcut").style.display = bigRipped() ? "" : "none"
+	if (bigRipped()) {
+		el("eterShortcutEM").textContent=shortenDimensions(beSave.eternalMatter)
+		el("eterShortcutEP").textContent=shortenDimensions(player.eternityPoints)
+		el("eterShortcutTP").textContent=shortenMoney(player.dilation.tachyonParticles)
+	}
 }

@@ -528,6 +528,7 @@ function updateNewPlayer(mode, preset) {
 	if (mode == "quick") mod = modPresets[preset]
 	else if (mode == "new") mod = modChosen
 	else if (mode == "meta_started") mod = modPresets.ngp3
+	else if (mode != "reset") mod = {}
 
 	player = {
 		money: E(mod.ngmm>2?200:mod.ngp>1?20:10),
@@ -845,7 +846,6 @@ function updateNewPlayer(mode, preset) {
 	if (mod.aau) {
 		aarMod.aau = 1
 		dev.giveAllAchievements(true)
-		console.log(player.achievements.length)
 	}
 }
 
@@ -1008,8 +1008,7 @@ function getBrandNewPCData(){
 		current: 0,
 		completed: 0,
 		fastest: {},
-		pc68best: 0,
-		respec: false
+		pc68best: 0
 	}
 }
 
@@ -1020,18 +1019,7 @@ function getBrandNewNanofieldData(){
 		antienergy: 0,
 		power: 0,
 		powerThreshold: 50,
-		rewards: 0,
-		producingCharge: false
-	}
-}
-
-function getBrandNewBreakEternityData(){
-	return {
-		unlocked: false,
-		break: false,
-		eternalMatter: 0,
-		upgrades: [],
-		epMultPower: 0
+		rewards: 0
 	}
 }
 
@@ -1084,51 +1072,49 @@ function getBrandNewWZBosonsData() {
 	}
 }
 
-function getBrandNewGhostifyData(){
-	return {
-		reached: false,
-		times: 0,
-		time: player.totalTimePlayed,
-		best: 9999999999,
-		last10: [[600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)]],
-		milestones: 0,
-		disabledRewards: {},
-		ghostParticles: E(0),
-		multPower: 1,
-		neutrinos: getBrandNewNeutrinoData(),
-		automatorGhosts: setupAutomaticGhostsData(),
-		photons: setupPhotons(),
-		bl: getBrandNewBosonicLabData(),
-		wzb: getBrandNewWZBosonsData(),
-		hb: setupHiggsSave()
-	}
-}
-
-function doNGPlusThreeNewPlayer(){
+function doNGPlusThreeNewPlayer() {
 	aarMod.newGame3PlusVersion = ngp3_ver
 	aarMod.ngp3_build = ngp3_build
 
-	el("quantumison").checked = false
-	player.respecMastery = false
 	player.dbPower = 1
 	player.dilation.times = 0
 	player.peakSpent = 0
 	player.masterystudies = []
 	quSave.reached = false
-	player.meta.bestOverQuantums = 0
-	quSave.usedQuarks = {r: 0, g: 0, b: 0}
-	quSave.colorPowers = {r: 0, g: 0, b: 0}
-	quSave.assignAllRatios = {r: 1, g: 1, b: 1}
-	quSave.gluons = {rg: 0, gb: 0, br: 0}
+	player.meta.bestOverQuantums = player.meta.bestAntimatter
+	quSave.usedQuarks = {
+		r: 0,
+		g: 0,
+		b: 0
+	}
+	quSave.colorPowers = {
+		r: 0,
+		g: 0,
+		b: 0
+	}
+	quSave.gluons = {
+		rg: 0,
+		gb: 0,
+		br: 0
+	}
 	player.eternityBuyer.dilationMode = false
 	player.eternityBuyer.statBeforeDilation = 0
 	player.eternityBuyer.dilationPerAmount = 10
-	quSave.autobuyer = {enabled: false, limit: 1, mode: "amount", peakTime: 0}
-	quSave.electrons = getBrandNewElectronData()
+	quSave.autobuyer = {
+		enabled: false,
+		limit: 1,
+		mode: "amount",
+		peakTime: 0
+	}
+	quSave.electrons = {
+		amount: 0,
+		sacGals: 0,
+		mult: 2,
+		rebuyables: [0,0,0,0]
+	}
 	quSave.disabledRewards = {}
 	quSave.metaAutobuyerWait = 0
 	quSave.multPower = 0
-	player.eternitiesBank = 0
 	quSave.challenge = []
 	quSave.challenges = {}
 	quSave.nonMAGoalReached = []
@@ -1136,25 +1122,71 @@ function doNGPlusThreeNewPlayer(){
 	quSave.pairedChallenges = getBrandNewPCData()
 	quSave.qcsNoDil = {}
 	player.dilation.bestTP = 0
-	player.old = true
+	player.old = false
 	quSave.autoOptions = {}
-	quSave.replicants = getBrandNewReplicantsData()
+	quSave.replicants = {
+		amount: 0,
+		requirement: "1e3000000",
+		quarks: 0,
+		quantumFood: 0,
+		quantumFoodCost: 2e46,
+		limit: 1,
+		limitDim: 1,
+		limitCost: 1e49,
+		eggonProgress: 0,
+		eggons: 0,
+		hatchSpeed: 20,
+		hatchSpeedCost: 1e49,
+		babyProgress: 0,
+		babies: 0,
+		ageProgress: 0
+	}
 	quSave.emperorDimensions = {}
-	for (d = 1; d < 9; d++) quSave.emperorDimensions[d] = {workers: 0, progress: 0, perm: 0}
-	player.dontWant = false
-	quSave.nanofield = getBrandNewNanofieldData()
-	quSave.autoAssign = false
-	quSave.reachedInfQK = false
+	for (d=1;d<9;d++) quSave.emperorDimensions[d] = {workers: 0, progress: 0, perm: 0}
+	quSave.nanofield = {
+		charge: 0,
+		energy: 0,
+		antienergy: 0,
+		power: 0,
+		powerThreshold: 50,
+		rewards: 0,
+		producingCharge: false
+	}
+	quSave.assignAllRatios = {
+		r: 1,
+		g: 1,
+		b: 1
+	}
 	quSave.notrelative = false
 	quSave.wasted = false
-	quSave.tod = getBrandNewTodData()
-	quSave.bigRip = getBrandNewBigRipData() 
-	quSave.breakEternity = getBrandNewBreakEternityData()
-	player.dilation.bestTPOverGhostifies = 0
-	player.meta.bestOverGhostifies = 0
-	player.ghostify = getBrandNewGhostifyData()
+	quSave.tod = {
+		r: {
+			quarks: 0,
+			spin: 0,
+			upgrades: {}
+		},
+		upgrades: {}
+	}
+	quSave.bigRip = {
+		active: false,
+		conf: true,
+		times: 0,
+		bestThisRun: 0,
+		totalAntimatter: 0,
+		bestGals: 0,
+		savedAutobuyersNoBR: {},
+		savedAutobuyersBR: {},
+		spaceShards: 0,
+		upgrades: []
+	}
+	quSave.breakEternity = {
+		unlocked: false,
+		break: false,
+		eternalMatter: 0,
+		upgrades: [],
+		epMultPower: 0
+	}
 	ghSave = player.ghostify
-	blSave = ghSave.bl
 	aarMod.ghostifyConf = true
 }
 

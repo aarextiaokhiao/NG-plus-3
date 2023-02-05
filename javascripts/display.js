@@ -1,7 +1,7 @@
 function dimShiftDisplay(){
 	var shiftRequirement = getShiftRequirement(0);
 	var isShift = getNormalDimensions() < getMaxNormalDimensions()
-	el("resetLabel").textContent = 'Dimension ' + (isShift ? "Shift" : player.resets < getSupersonicStart() ? "Boost" : "Supersonic") + ' ('+ getFullExpansion(Math.ceil(player.resets)) +'): requires ' + getFullExpansion(Math.ceil(shiftRequirement.amount)) + " " + DISPLAY_NAMES[shiftRequirement.tier] + " Dimensions"
+	el("resetLabel").textContent = 'Dimension ' + (isShift ? "Shift" : player.resets < getSupersonicStart() ? "Boost" : "Supersonic") + ' ('+ getFullExpansion(Math.ceil(player.resets)) +'): requires ' + getFullExpansion(Math.ceil(shiftRequirement.amount)) + " " + dimNames[shiftRequirement.tier] + " Dimensions"
 	el("softReset").textContent = "Reset prior features for a " + (isShift ? "new Dimension" : "Boost")
 }
 
@@ -9,7 +9,7 @@ function tickspeedBoostDisplay(){
 	if (isTickspeedBoostPossible()) {
 		var tickReq = getTickspeedBoostRequirement()
 		el("tickReset").style.display = ""
-		el("tickResetLabel").textContent = "Tickspeed Boost (" + getFullExpansion(player.tickspeedBoosts) + "): requires " + getFullExpansion(tickReq.amount) + " " + DISPLAY_NAMES[tickReq.tier] + " Dimensions"
+		el("tickResetLabel").textContent = "Tickspeed Boost (" + getFullExpansion(player.tickspeedBoosts) + "): requires " + getFullExpansion(tickReq.amount) + " " + dimNames[tickReq.tier] + " Dimensions"
 		el("tickResetBtn").className = getAmount(tickReq.tier) < tickReq.amount ? "unavailablebtn" : "storebtn"
 	} else el("tickReset").style.display = "none"
 }
@@ -28,7 +28,7 @@ function galaxyReqDisplay(){
 
 	msg += "): "
 	if (totalTypes >= 3) msg += "<br>"
-	msg += 'requires ' + getFullExpansion(nextGal.amount) + ' ' + DISPLAY_NAMES[inNC(4) ? 6 : 8] + ' Dimensions'
+	msg += 'requires ' + getFullExpansion(nextGal.amount) + ' ' + dimNames[inNC(4) ? 6 : 8] + ' Dimensions'
 	el("secondResetLabel").innerHTML = msg
 }
 
@@ -56,10 +56,10 @@ function dimensionTabDisplay(){
 	var shown
 	for (let tier = 8; tier > 0; tier--) {
 		shown = shown || canBuyDimension(tier)
-		var name = TIER_NAMES[tier];
+		var name = dimTiers[tier];
 		if (shown) {
 			el(tier + "Row").style.display = ""
-			el("D" + tier).childNodes[0].nodeValue = DISPLAY_NAMES[tier] + " Dimension x" + formatValue(player.options.notation, getDimensionFinalMultiplier(tier), 2, 1)
+			el("D" + tier).childNodes[0].nodeValue = dimNames[tier] + " Dimension x" + formatValue(player.options.notation, getDimensionFinalMultiplier(tier), 2, 1)
 			el("A" + tier).textContent = getDimensionDescription(tier)
 		}
 	}
@@ -670,7 +670,8 @@ function updateResetTierButtons(){
 	el("ghostparticles").style.display = ghostified ? "" : "none"
 	if (ghostified) {
 		el("GHPAmount").textContent = shortenDimensions(ghSave.ghostParticles)
-		var showQuantumed = ghSave.times > 0 && ghSave.milestones < 16
+
+		var showQuantumed = !gotBraveMilestone(16)
 		el("quantumedBM").style.display = showQuantumed ? "" : "none"
 		if (showQuantumed) el("quantumedBMAmount").textContent = getFullExpansion(quSave.times)
 	}

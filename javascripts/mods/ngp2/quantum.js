@@ -58,7 +58,7 @@ function getQuantumReq() {
 function isQuantumReached() {
 	if (!mod.ngpp) return
 
-	let ma = player.meta.antimatter.max(hasAch("ng3p76") ? player.meta.bestOverQuantums : 0)
+	let ma = player.meta.bestAntimatter
 	let got = ma.gte(getQuantumReq())
 	if (mod.ngp3) {
 		got = got && quarkGain().gt(0)
@@ -110,7 +110,7 @@ function getEPtoQKMult(){
 
 function getNGP3p1totalQKMult(){
 	let log = 0
-	if (quSave.upgrades.includes("rg5")) log += 1
+	if (hasGluonUpg("rg5")) log += 1
 	if (hasAch("ng3p16")) log += getEPtoQKMult()
 	if (hasAch("ng3p33")) log += Math.log10(getQCtoQKEffect())
 	if (hasAch("ng3p53")) log += brSave && brSave.spaceShards.plus(1).log10()
@@ -194,7 +194,7 @@ function doQuantumProgress() {
 			if (player.meta.antimatter.lt(quantumReq)) id = 1
 			else if (!beSave.unlocked) id = 4
 			else if (!ghostified || player.money.lt(getQCGoal(undefined, true)) || Decimal.lt(gg, 2)) id = 5
-			else if (ghSave.neutrinos.boosts > 8 && hasNU(12) && !PHOTON.unlocked()) id = 7
+			else if (!PHOTON.unlocked()) id = 7
 			else id = 6
 		} else if (inQC(0)) {
 			var gqk = quarkGain()
@@ -333,7 +333,6 @@ function doQuantum(force, auto, qc = {}) {
 		if (bigRip) {
 			brSave.times++
 			brSave.bestThisRun = E(0)
-			giveAchievement("To the new dimension!")
 			if (brokeEternity()) beSave.did = true
 		} else {
 			if (!hasRipUpg(1)) {
@@ -384,10 +383,7 @@ function doQuantum(force, auto, qc = {}) {
 			if (dilTimes == 0) quSave.qcsNoDil["qc" + qc1] = 1
 		}
 	}
-	if (inQC(6) && inQC(8) && player.money.gt(quSave.pairedChallenges.pc68best) && !bigRipped()) {
-		quSave.pairedChallenges.pc68best = player.money
-		el("bpc68").textContent = shortenMoney(player.money)
-	}
+	if (inQC(6) && inQC(8) && player.money.gt(quSave.pairedChallenges.pc68best) && !bigRipped()) quSave.pairedChallenges.pc68best = player.money
 	quSave.challenge = qc.qc || []
 	quSave.pairedChallenges.current = qc.pc || 0
 	updateInQCs()
@@ -421,7 +417,7 @@ RESETS.qu = {
 		let qc = !inQC(0)
 
 		player.infinitiedBank = 0
-		player.eternities = speedrunMilestonesReached >= 1 ? 2e4 : mod.ngp3 ? 0 : 100
+		player.eternities = speedrunMilestonesReached ? 2e4 : 1
 		player.lastTenEternities = [[600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)]]
 		updateLastTenEternities()
 
@@ -495,7 +491,7 @@ RESETS.qu = {
 		player.masterystudies = bigRip && !hasRipUpg(12) ? ["d7", "d8", "d9", "d10", "d11", "d12", "d13", "d14"] : speedrunMilestonesReached >= 16 && isRewardEnabled(11) ? player.masterystudies : []
 		player.respecMastery = false
 
-		ipMultPower = GUBought("gb3") ? 2.3 : hasMasteryStudy("t241") ? 2.2 : 2
+		ipMultPower = hasGluonUpg("gb3") ? 2.3 : hasMasteryStudy("t241") ? 2.2 : 2
 		if (!qc) {
 			quSave.electrons.amount = 0
 			quSave.electrons.sacGals = 0

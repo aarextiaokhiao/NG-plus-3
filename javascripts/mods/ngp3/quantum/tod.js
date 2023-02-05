@@ -1,5 +1,5 @@
 function getLogTotalSpin() {
-	return todSave.r.spin.plus(todSave.b.spin).plus(todSave.g.spin).add(1).log10()
+	return todSave.r.spin.add(1).log10()
 }
 
 function updateToDSpeedDisplay(){
@@ -51,7 +51,7 @@ function updateTreeOfDecayTab(){
 		var rate = getDecayRate(shorthand)
 		var linear = pow2(getRDPower(shorthand))
 		el(color + "UnstableGain").className = quSave.usedQuarks[shorthand].gt(0) && getUnstableGain(shorthand).gt(branch.quarks) ? "storebtn" : "unavailablebtn"
-		el(color + "UnstableGain").innerHTML = "Gain " + shortenMoney(getUnstableGain(shorthand)) + " " + name + (ghSave.milestones > 3 ? "." : ", but lose all your " + color + " quarks.")
+		el(color + "UnstableGain").innerHTML = "Gain " + shortenMoney(getUnstableGain(shorthand)) + " " + name + (gotBraveMilestone(4) ? "." : ", but lose all your " + color + " quarks.")
 		el(color + "QuarkSpin").innerHTML = shortenMoney(branch.spin)
 		el(color + "UnstableQuarks").innerHTML = shortenMoney(branch.quarks)
 		el(color + "QuarksDecayRate").innerHTML = branch.quarks.lt(linear) && rate.lt(1) ? "(-" + shorten(linear.mul(rate)) + " " + name + "/s)" : "(Half-life: " + timeDisplayShort(Decimal.div(10,rate), true, 2) + (linear.eq(1) ? "" : " until " + shorten(linear)) + ")"
@@ -136,11 +136,10 @@ function getUnstableGain(branch) {
 	return ret.mul(pow2(getRDPower(branch) + 1)).min(pow10(Math.pow(2, 51)))
 }
 
-
 function unstableQuarks(branch) {
 	if (quSave.usedQuarks[branch].eq(0) || getUnstableGain(branch).lte(todSave[branch].quarks)) return
 	todSave[branch].quarks = todSave[branch].quarks.max(getUnstableGain(branch))
-	if (ghSave.milestones < 4) quSave.usedQuarks[branch] = E(0)
+	if (!gotBraveMilestone(4)) quSave.usedQuarks[branch] = E(0)
 	if (ghSave.reference > 0) ghSave.reference--
 	if (player.unstableThisGhostify) player.unstableThisGhostify ++
 	else player.unstableThisGhostify = 10
@@ -148,11 +147,12 @@ function unstableQuarks(branch) {
 
 function getBranchSpeedText(){
 	let text = ""
-	if (E(getTreeUpgradeEffect(3)).gt(1)) text += "Tree Upgrade 3: " + shorten(getTreeUpgradeEffect(3)) + "x, "
-	if (E(getTreeUpgradeEffect(5)).gt(1)) text += "Tree Upgrade 5: " + shorten(getTreeUpgradeEffect(5)) + "x, "
 	if (hasMasteryStudy("t431") && getMTSMult(431).gt(1)) text += "Mastery Study 431: " + shorten(getMTSMult(431)) + "x, "
 	if (getGluonBranchSpeed().gt(1)) text += "Gluon Upgrades: " + shorten(getGluonBranchSpeed()) + "x, "
-	if (hasAch("ng3p48")) if (player.meta.resets > 1) text += "'Are you currently dying?' reward: " + shorten (Math.sqrt(player.meta.resets + 1)) + "x, "
+	if (E(getTreeUpgradeEffect(3)).gt(1)) text += "Tree Upgrade 3: " + shorten(getTreeUpgradeEffect(3)) + "x, "
+	if (E(getTreeUpgradeEffect(5)).gt(1)) text += "Tree Upgrade 5: " + shorten(getTreeUpgradeEffect(5)) + "x, "
+	if (PHOTON.eff(1) > 1) text += "Green Light: " + shorten(E(PHOTON.eff(1)).pow(nfSave.rewards)) + "x, "
+	if (hasAch("ng3p48") && player.meta.resets) text += "'Are you currently dying?' reward: " + shorten(Math.sqrt(player.meta.resets + 1)) + "x, "
 	if (todspeed > 1) text += "ToD Speed: " + shorten(todspeed) + "x, "
 	if (text == "") return "No multipliers currently"
 	return text.slice(0, text.length-2)
@@ -160,16 +160,18 @@ function getBranchSpeedText(){
 
 function getGluonBranchSpeed() {
 	let x = E(1)
-	if (GUBought("rg8")) x = x.mul(getGU8Effect("rg"))
-	if (GUBought("gb8")) x = x.mul(getGU8Effect("gb"))
-	if (GUBought("br8")) x = x.mul(getGU8Effect("br"))
+	if (hasGluonUpg("rg8")) x = x.mul(getGU8Effect("rg"))
+	if (hasGluonUpg("gb8")) x = x.mul(getGU8Effect("gb"))
+	if (hasGluonUpg("br8")) x = x.mul(getGU8Effect("br"))
 	return x
 }
+
 function getBranchSpeed() {
-	let x = Decimal.mul(getTreeUpgradeEffect(3), getTreeUpgradeEffect(5))
+	let x = E(1)
 	if (hasMasteryStudy("t431")) x = x.mul(getMTSMult(431))
 	x = x.mul(getGluonBranchSpeed())
-	if (isBigRipUpgradeActive(19)) x = x.mul(tmp.bru[19])
+	x = x.mul(getTreeUpgradeEffect(3), getTreeUpgradeEffect(5))
+	x = E(PHOTON.eff(1)).pow(nfSave.rewards).mul(x)
 	if (hasAch("ng3p48")) x = x.mul(Math.sqrt(player.meta.resets + 1))
 	return x
 }
@@ -186,7 +188,6 @@ function getDecayRate(branch) {
 
 function getQuarkSpinProduction(branch) {
 	let ret = getBranchUpgMult(branch, 1).mul(getBranchFinalSpeed())
-	ret = ret.mul(E_pow(1.1, nfSave.rewards - 12))
 	if (hasNU(3)) ret = ret.mul(tmp.nu[3])
 	if (hasNU(12)) ret = ret.mul(tmp.nu[12].normal)
 	if (hasAch("ng3p74")) ret = ret.mul(1 + todSave[branch].decays)
@@ -292,7 +293,7 @@ var todspeed = 1
 
 function rotateAutoAssign() {
 	quSave.autoOptions.assignQKRotate = quSave.autoOptions.assignQKRotate ? (quSave.autoOptions.assignQKRotate + 1) % 3 : 1
-	el('autoAssignRotate').innerHTML = "Rotation: " + (quSave.autoOptions.assignQKRotate > 1 ? "Left" : quSave.autoOptions.assignQKRotate ? "Right" : "None")
+	el('autoAssignRotate').innerHTML = "Rotation: " + (quSave.autoOptions.assignQKRotate > 1 ? "Left" : quSave.autoOptions.assignQKRotate ? "" : "None")
 }
 
 var uq_names = {
@@ -444,7 +445,7 @@ function radioactiveDecay(shorthand) {
 	data.quarks = E(0)
 	data.spin = E(0)
 	data.upgrades = {}
-	if (ghSave.milestones > 3) data.upgrades[1] = 5
+	if (gotBraveMilestone(4)) data.upgrades[1] = 5
 	data.decays = data.decays === undefined ? 1 : data.decays + 1
 	let sum = 0
 	for (var c = 0; c < 1; c++) sum += getRadioactiveDecays((['r', 'g', 'b'])[c])
@@ -482,7 +483,7 @@ function getTreeUpgradeEfficiencyText(){
 	if (!shiftDown) return "Tree upgrade efficiency: "+(tmp.tue*100).toFixed(1)+"%"
 
 	let text = ""
-	if (ghSave.neutrinos.boosts >= 7 && bigRipped()) text += "Neutrino Boost 7: +" + shorten(tmp.nb[7]) + ", "
+	if (hasNB(7) && bigRipped()) text += "Neutrino Boost 7: +" + shorten(tmp.nb[7]) + ", "
 	if (hasAch("ng3p62")) text += "Finite Time Reward: +10%, "
 	if (hasBU(43)) text += "Bosonic Lab Upgrade 18: " + shorten(tmp.blu[43]) + "x, "
 
@@ -492,7 +493,7 @@ function getTreeUpgradeEfficiencyText(){
 
 function getTreeUpgradeEfficiency(mod) {
 	let r = 1
-	if (ghSave.neutrinos.boosts >= 7 && (bigRipped() || mod == "br") && mod != "noNB") r += tmp.nb[7]
+	if (hasNB(7) && (bigRipped() || mod == "br") && mod != "noNB") r += tmp.nb[7]
 	if (hasAch("ng3p62")) r += 0.1
 	if (hasBU(43)) r *= tmp.blu[43]
 	return r

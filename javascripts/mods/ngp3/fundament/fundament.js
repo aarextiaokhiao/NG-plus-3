@@ -1,3 +1,74 @@
+//Saving
+function setupFundament() {
+	return {
+		times: 0,
+		time: player.totalTimePlayed,
+		best: 9999999999,
+		last10: [[600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)]],
+		milestones: 0,
+		ghostParticles: E(0),
+		multPower: 1,
+		neutrinos: getBrandNewNeutrinoData(),
+		automatorGhosts: setupAutomaticGhostsData(),
+		photons: PHOTON.setup(),
+		bl: getBrandNewBosonicLabData(),
+		wzb: getBrandNewWZBosonsData(),
+		hb: setupHiggsSave()
+	}
+}
+
+function loadFundament(reset) {
+	let newSave = setupFundament()
+	if (reset) player.ghostify = newSave
+
+	ghSave = player.ghostify
+	ghostified = ghSave?.times > 0 
+	blSave = ghSave?.bl
+
+	if (!mod.ngp3) return
+	player.meta.bestOverGhostifies = Decimal.max(player.meta.bestOverGhostifies, player.meta.bestOverQuantums)
+	player.dilation.bestTPOverGhostifies = Decimal.max(player.dilation.bestTPOverGhostifies, player.dilation.bestTP)
+
+	if (!ghSave) return
+	ghSave = deepUndefinedAndDecimal(ghSave, newSave)
+
+	ghSave.times = nP(ghSave.times)
+	updateBraveMilestones()
+	updateAutoGhosts(true)
+	for (var u=5;u<13;u++) {
+		if (u%3==1) el("neutrinoUpg"+u).parentElement.parentElement.style.display=u>ghSave.times+2?"none":""
+		else el("neutrinoUpg"+u).style.display=u>ghSave.times+2?"none":""
+	}
+	updateNeutrinoBoosts()
+	updatePhotonUnlocks()
+
+
+	if (!blSave.usedEnchants.length) blSave.usedEnchants=[]
+	for (var g2 = 2; g2 <= br.maxLimit; g2++) for (var g1 = 1; g1 < g2; g1++) if (blSave.enchants[g1*10+g2]) blSave.enchants[g1*10+g2] = E(blSave.enchants[g1*10+g2])
+	el("odSlider").value=Math.round((blSave.odSpeed-1)/4*50)
+	blSave.odSpeed = Math.max(blSave.odSpeed, 1)
+	for (var g=1;g<=br.limit;g++) el("typeToExtract"+g).className=blSave.typeToExtract==g?"chosenbtn":"storebtn"
+	updateBLUnlocks()
+	updateBosonicLimits()
+	updateBosonicStuffCosts()
+	updateBLParticleUnlocks()
+	updateBLUnlockDisplay()
+
+	if (ghSave.wzb.dPUse === undefined) {
+		ghSave.wzb.dPUse = 0
+		ghSave.wzb.wQkUp = true
+		ghSave.wzb.zNeGen = 1
+	}
+}
+
+function unlockFundament() {
+	loadFundament(true)
+	if (el("welcome").style.display != "flex") el("welcome").style.display = "flex"
+	else aarMod.popUpId = ""
+	el("welcomeMessage").innerHTML = "You are finally able to complete PC6+8 in Big Rip! However, because of the unstability of this universe, the only way to go further is to fundament. This allows to unlock new stuff in exchange for everything that you have."
+}
+
+//Reset
 let ghostified = false
 function ghostify(auto, force) {
 	if (implosionCheck) return
@@ -63,14 +134,13 @@ function ghostifyReset(force, gain) {
 
 	//Brave Milestones & Achievements
 	if (!force) {
-		while (quSave.times <= tmp.bm[ghSave.milestones]) ghSave.milestones++
+		while (quSave.times <= BM_REQ[ghSave.milestones]) ghSave.milestones++
 		updateBraveMilestones()
 
 		giveAchievement("Kee-hee-hee!")
 		if (bm == 16) giveAchievement("I rather oppose the theory of everything")
 		if (player.eternityPoints.e >= 22e4 && ghSave.under) giveAchievement("Underchallenged")
-		if (ghSave.best <= 6) giveAchievement("Running through Big Rips")
-		if (quSave.times >= 1e3 && ghSave.milestones >= 16) giveAchievement("Scared of ghosts?")
+		if (quSave.times >= 1e3 && gotBraveMilestone(16)) giveAchievement("Scared of ghosts?")
 	}
 
 	var bm = ghSave.milestones
@@ -181,7 +251,7 @@ RESETS.funda = {
 		GHPminpeakValue = E(0)
 
 		player.infinitiedBank = 0
-		player.eternitiesBank = ghostified ? 1e5 : 0
+		player.eternitiesBank = ghostified ? 200 : 0
 		updateBankedEter()
 		player.dilation.bestTP = E(0)
 		player.meta.bestOverQuantums = E(0)
@@ -214,11 +284,15 @@ function denyGhostify() {
 	if (ghostifyDenied >= 15) giveAchievement("You are supposed to become a ghost!")
 }
 
-function toggleGhostifyConf() {
-	aarMod.ghostifyConf = !aarMod.ghostifyConf
-	el("ghostifyConfirmBtn").textContent = "Fundament confirmation: O" + (aarMod.ghostifyConf ? "N" : "FF")
+function updateGhostifyTempStuff(){
+	updateBosonicLabTemp()
+	PHOTON.temp()
+
+	updateNeutrinoUpgradesTemp()
+	updateNeutrinoBoostsTemp()
 }
 
+//Animations
 ghostifyAni = function(gain, amount, seconds=4) {
 	el("ghostifyani").style.display = ""
 	el("ghostifyani").style.width = "100%"
@@ -297,8 +371,24 @@ function getGhostifiedGain() {
 	return r
 }
 
+//Brave Milestones
+const BM_REQ = [200,175,150,100,50,40,30,25,20,15,10,5,4,3,2,1]
+function setupBraveMilestones(){
+	for (var m = 1; m <= 16; m++) el("braveMilestone" + m).textContent=getFullExpansion(BM_REQ[m - 1])+"x quantumed"+(m==1?" or lower":"")
+}
+
+function gotBraveMilestone(x) {
+	return ghSave?.milestones >= x
+}
+
+//HTML
+function toggleGhostifyConf() {
+	aarMod.ghostifyConf = !aarMod.ghostifyConf
+	el("ghostifyConfirmBtn").textContent = "Fundament confirmation: O" + (aarMod.ghostifyConf ? "N" : "FF")
+}
+
 function updateLastTenGhostifies() {
-	if (!mod.ngp3) return
+	if (!ghostified) return
 	var listed = 0
 	var tempTime = E(0)
 	var tempGHP = E(0)
@@ -326,19 +416,12 @@ function updateLastTenGhostifies() {
 	} else el("averageGhostifyRun").textContent = ""
 }
 
-//Brave Milestones
-function setupBraveMilestones(){
-	for (var m = 1; m <= 16; m++) el("braveMilestone" + m).textContent=getFullExpansion(tmp.bm[m - 1])+"x quantumed"+(m==1?" or lower":"")
-}
-
 function updateBraveMilestones() {
-	if (ghostified) {
-		for (var m = 1; m < 17;m++) el("braveMilestone" + m).className = "achievement achievement" + (ghSave.milestones < m ? "" : "un") + "locked"
-		for (var r = 1; r < 3; r++) el("braveRow" + r).className = ghSave.milestones < r * 8 ? "" : "completedrow"
-	}
+	if (!ghSave) return
+	for (var m = 1; m <= 16; m++) el("braveMilestone" + m).className = "achievement achievement" + (ghSave.milestones < m ? "" : "un") + "locked"
+	for (var r = 1; r < 3; r++) el("braveRow" + r).className = ghSave.milestones < r * 8 ? "" : "completedrow"
 }
 
-//Tabs
 function showGhostifyTab(tabName) {
 	//iterate over all elements in div_tab class. Hide everything that's not tabName and show tabName
 	var tabs = document.getElementsByClassName('ghostifytab');
@@ -360,8 +443,8 @@ function showGhostifyTab(tabName) {
 function updateGhostifyTabs() {
 	if (el("neutrinos").style.display == "block") updateNeutrinosTab()
 	if (el("automaticghosts").style.display == "block") {
-		if (ghSave.milestones > 7) updateQuantumWorth("display")
+		if (gotBraveMilestone(8)) updateQuantumWorth("display")
 		updateAutomatorHTML()
 	}
-	if (el("gphtab").style.display == "block") updatePhotonTab()
+	if (el("gphtab").style.display == "block") PHOTON.update()
 }

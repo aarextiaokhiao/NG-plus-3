@@ -99,7 +99,7 @@ function getStartingNDMult(tier){
 	let mPerTen = getDimensionPowerMultiplier()
 	let mPerDB = getDimensionBoostPower()
 	let dbMult = player.resets < tier ? E(1) : E_pow(mPerDB, player.resets - tier + 1)
-	let mptMult = E_pow(mPerTen, Math.floor(player[TIER_NAMES[tier]+"Bought"] / 10))
+	let mptMult = E_pow(mPerTen, Math.floor(player[dimTiers[tier]+"Bought"] / 10))
 	return mptMult.mul(dbMult)
 }
 
@@ -171,7 +171,7 @@ function getMaxNormalDimensions() {
 }
 
 function getDimensionDescription(tier) {
-	var name = TIER_NAMES[tier];
+	var name = dimTiers[tier];
 	if (tier == getNormalDimensions()) return getFullExpansion(inNC(11) ? getAmount(tier) : player[name + 'Bought']) + ' (' + dimBought(tier) + ')';
 	else if (player.money.l > 1e9) return shortenND(player[name + 'Amount'])
 	else if (player.money.l > 1e6) return shortenND(player[name + 'Amount']) + ' (+' + formatValue(player.options.notation, getDimensionRateOfChange(tier), 2, 2) + dimDescEnd;
@@ -184,7 +184,7 @@ function getDimensionRateOfChange(tier) {
 	let toGain = getDimensionProductionPerSecond(tier + 1)
 	if (tier == 7 && player.currentEternityChall == "eterc7") toGain = DimensionProduction(1).mul(10)
 
-	var name = TIER_NAMES[tier];
+	var name = dimTiers[tier];
 	if (inNC(7) || player.currentChallenge == "postcngm3_3" || inQC(4)) {
 		if (tier == 7) return 0
 		else toGain = getDimensionProductionPerSecond(tier + 2);
@@ -203,30 +203,30 @@ function hasInfinityMult(tier) {
 	return player.infinityUpgrades.includes(infToDimMultUpgs[tier])
 }
 
+let dimTiers = [null, "first", "second", "third", "fourth", "fifth", "sixth", "seventh", "eight" ];
+let dimNames = [ null, "First", "Second", "Third", "Fourth", "Fifth", "Sixth", "Seventh", "Eighth" ];
 function multiplySameCosts(cost) {
-	var tiers = [ null, "first", "second", "third", "fourth", "fifth", "sixth", "seventh", "eight" ];
 	var tierCosts = [ null, E(1e3), E(1e4), E(1e5), E(1e6), E(1e8), E(1e10), E(1e12), E(1e15) ];
 
 	for (let i = 1; i <= 8; i++) {
-		if (player[tiers[i] + "Cost"].e == cost.e) player[tiers[i] + "Cost"] = player[tiers[i] + "Cost"].mul(tierCosts[i])
+		if (player[dimTiers[i] + "Cost"].e == cost.e) player[dimTiers[i] + "Cost"] = player[dimTiers[i] + "Cost"].mul(tierCosts[i])
 	}
 	if (player.tickSpeedCost.e == cost.e) player.tickSpeedCost = player.tickSpeedCost.mul(player.tickspeedMultiplier)
 }
 
 function multiplyPC5Costs(cost, tier) {
-	var tiers = [ null, "first", "second", "third", "fourth", "fifth", "sixth", "seventh", "eight" ];
 	if (tier < 5) {
 		for (var i = 1; i <= 8; i++) {
-			if (player[tiers[i] + "Cost"].e <= cost.e) {
-				player[tiers[i] + "Cost"] = player[tiers[i] + "Cost"].mul(player.costMultipliers[i-1])
-				if (player[tiers[i] + "Cost"].gte(Number.MAX_VALUE)) player.costMultipliers[i-1] = player.costMultipliers[i-1].mul(10)
+			if (player[dimTiers[i] + "Cost"].e <= cost.e) {
+				player[dimTiers[i] + "Cost"] = player[dimTiers[i] + "Cost"].mul(player.costMultipliers[i-1])
+				if (player[dimTiers[i] + "Cost"].gte(Number.MAX_VALUE)) player.costMultipliers[i-1] = player.costMultipliers[i-1].mul(10)
 			}
 		}
 	} else {
 		for (var i = 1; i <= 8; i++) {
-			if (player[tiers[i] + "Cost"].e >= cost.e) {
-				player[tiers[i] + "Cost"] = player[tiers[i] + "Cost"].mul(player.costMultipliers[i-1])
-				 if (player[tiers[i] + "Cost"].gte(Number.MAX_VALUE)) player.costMultipliers[i-1] = player.costMultipliers[i-1].mul(10)
+			if (player[dimTiers[i] + "Cost"].e >= cost.e) {
+				player[dimTiers[i] + "Cost"] = player[dimTiers[i] + "Cost"].mul(player.costMultipliers[i-1])
+				 if (player[dimTiers[i] + "Cost"].gte(Number.MAX_VALUE)) player.costMultipliers[i-1] = player.costMultipliers[i-1].mul(10)
 			}
 		}
 	}
@@ -276,7 +276,7 @@ function getMPTBase(focusOn) {
 	if (mod.ngp3) {
 		ret += tmp.qcRewards[5]
 		if (isNanoEffectUsed("per_10_power")) ret += tmp.nf.effects.per_10_power
-		ret += getLightEff(5, 0)
+		ret *= PHOTON.eff(5)
 	}
 	return ret
 }
@@ -322,13 +322,13 @@ function onBuyDimension(tier) {
 }
 	
 function getAmount(tier) {
-	let ret = player[TIER_NAMES[tier] + "Amount"].toNumber()
+	let ret = player[dimTiers[tier] + "Amount"].toNumber()
 	if (!break_infinity_js) ret = Math.round(ret)
 	return ret
 }
 
 function dimBought(tier) {
-	return player[TIER_NAMES[tier] + "Bought"] % 10;
+	return player[dimTiers[tier] + "Bought"] % 10;
 }
 
 function recordBought (name, num) {
@@ -357,7 +357,7 @@ function getDimensionCostMultiplierIncrease() {
 
 function buyOneDimension(tier) {
 	if (!canBuyDimension(tier)) return false
-	let name = TIER_NAMES[tier]
+	let name = dimTiers[tier]
 	let cost = player[name + 'Cost']
 	let resource = getOrSubResource(tier)
 	if (!cost.lte(resource)) return false
@@ -379,7 +379,7 @@ function buyOneDimension(tier) {
 
 function buyManyDimension(tier, quick) {
 	if (!canBuyDimension(tier)) return false
-	let name = TIER_NAMES[tier]
+	let name = dimTiers[tier]
 	let toBuy = 10 - dimBought(tier)
 	let cost = player[name + 'Cost'].mul(toBuy)
 	let resource = getOrSubResource(tier)
@@ -407,7 +407,7 @@ function buyBulkDimension(tier, bulk, auto) {
 		if (!buyManyDimension(tier, true)) return
 		bought++
 	}
-	let name = TIER_NAMES[tier]
+	let name = dimTiers[tier]
 	let cost = player[name + 'Cost'].mul(10)
 	let resource = getOrSubResource(tier)
 	if (!cost.lte(resource)) return
@@ -467,12 +467,12 @@ function canQuickBuyDim(tier) {
 
 function getOrSubResource(tier, sub) {
 	if (sub == undefined || inQC(1)) {
-		if (tier > 2 && (inNC(10) || player.currentChallenge == "postc1")) return player[TIER_NAMES[tier-2] + "Amount"]
+		if (tier > 2 && (inNC(10) || player.currentChallenge == "postc1")) return player[dimTiers[tier-2] + "Amount"]
 		return player.money
 	} else {
 		if (tier > 2 && (inNC(10) || player.currentChallenge == "postc1")) {
-			if (sub.gt(player[TIER_NAMES[tier - 2] + "Amount"])) player[TIER_NAMES[tier - 2] + "Amount"] = E(0)
-			else player[TIER_NAMES[tier - 2] + "Amount"] = player[TIER_NAMES[tier - 2] + "Amount"].sub(sub)
+			if (sub.gt(player[dimTiers[tier - 2] + "Amount"])) player[dimTiers[tier - 2] + "Amount"] = E(0)
+			else player[dimTiers[tier - 2] + "Amount"] = player[dimTiers[tier - 2] + "Amount"].sub(sub)
 		} else if (sub.gt(player.money)) player.money = E(0)
 		else player.money = player.money.sub(sub)
 	}
@@ -513,7 +513,7 @@ function getInfinitiedMult() {
 }
 
 function getDimensionProductionPerSecond(tier) {
-	let ret = player[TIER_NAMES[tier] + 'Amount'].floor()
+	let ret = player[dimTiers[tier] + 'Amount'].floor()
 	if ((inNC(7) || player.currentChallenge == "postcngm3_3" || inQC(4)) && !inNGM(2)) {
 		if (tier == 4) ret = ret.pow(1.3)
 		else if (tier == 2) ret = ret.pow(1.5)

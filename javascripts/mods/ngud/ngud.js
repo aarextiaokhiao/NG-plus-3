@@ -94,7 +94,7 @@ function updateBlackhole() {
 		for (let tier = 1; tier < 9; ++tier) {
 			if (isBHDimUnlocked(tier)) {
 				el("blackholeRow" + tier).style.display = ""
-				el("blackholeD" + tier).textContent = DISPLAY_NAMES[tier] + " Black Hole Dimension x" + shortenMoney(getBlackholeDimensionPower(tier));
+				el("blackholeD" + tier).textContent = dimNames[tier] + " Black Hole Dimension x" + shortenMoney(getBlackholeDimensionPower(tier));
 				el("blackholeAmount" + tier).textContent = getBlackholeDimensionDescription(tier);
 				el("blackholeMax" + tier).textContent = "Cost: " + shortenCosts(player["blackholeDimension"+tier].cost) + " EP";
 				if (player.eternityPoints.gte(player["blackholeDimension" + tier].cost)) el("blackholeMax"+tier).className = "storebtn"

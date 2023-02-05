@@ -66,7 +66,7 @@ function updateInfinityDimensions() {
 			var unl = player.infDimensionsUnlocked[tier-1]
 			el("infRow" + tier).style.display = unl ? "" : "none"
 			if (unl) {
-				el("infD" + tier).textContent = DISPLAY_NAMES[tier] + " Infinity Dimension x" + shortenMoney(DimensionPower(tier));
+				el("infD" + tier).textContent = dimNames[tier] + " Infinity Dimension x" + shortenMoney(DimensionPower(tier));
 				el("infAmount" + tier).textContent = DimensionDescription(tier);
 				el("infMax" + tier).textContent = (quantumed ? '' : "Cost: ") + shortenInfDimCosts(getIDCost(tier)) + " IP"
 				el("infMax"+tier).className = player.infinityPoints.gte(getIDCost(tier)) ? "storebtn" : "unavailablebtn"

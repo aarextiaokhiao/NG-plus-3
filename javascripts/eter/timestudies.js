@@ -427,7 +427,7 @@ function respecTimeStudies(force, presetLoad) {
 	drawStudyTree()
 
 	if (!presetLoad) updateTimeStudyButtons(true)
-	if (!GUBought("gb3")) ipMultPower = 2
+	if (!hasGluonUpg("gb3")) ipMultPower = 2
 	if (gotAch) giveAchievement("You do know how these work, right?")
 }
 

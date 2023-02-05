@@ -577,146 +577,6 @@ function doNGM1Versions(){
 	}
 }
 
-
-
-function doNGP3NewPlayerStuff(){
-	aarMod.newGame3PlusVersion = ngp3_ver
-	aarMod.ngp3_build = ngp3_build
-
-	player.respecMastery=false
-	player.dbPower = 1
-	player.dilation.times = 0
-	player.peakSpent = 0
-	player.masterystudies = []
-	quSave.reached = false
-	player.meta.bestOverQuantums = player.meta.bestAntimatter
-	quSave.usedQuarks = {
-		r: 0,
-		g: 0,
-		b: 0
-	}
-	quSave.colorPowers = {
-		r: 0,
-		g: 0,
-		b: 0
-	}
-	quSave.gluons = {
-		rg: 0,
-		gb: 0,
-		br: 0
-	}
-	player.eternityBuyer.dilationMode = false
-	player.eternityBuyer.statBeforeDilation = 0
-	player.eternityBuyer.dilationPerAmount = 10
-	quSave.autobuyer = {
-		enabled: false,
-		limit: 1,
-		mode: "amount",
-		peakTime: 0
-	}
-	quSave.electrons = {
-		amount: 0,
-		sacGals: 0,
-		mult: 2,
-		rebuyables: [0,0,0,0]
-	}
-	quSave.disabledRewards = {}
-	quSave.metaAutobuyerWait = 0
-	quSave.multPower = 0
-	quSave.challenge = []
-	quSave.challenges = {}
-	quSave.nonMAGoalReached = []
-	quSave.challengeRecords = {}
-	quSave.pairedChallenges = {
-		order: {},
-		current: 0,
-		completed: 0,
-		completions: {},
-		fastest: {},
-		pc68best: 0,
-		respec: false
-	}
-	quSave.qcsNoDil = {}
-	player.dilation.bestTP = 0
-	player.old = false
-	quSave.autoOptions = {}
-	quSave.replicants = {
-		amount: 0,
-		requirement: "1e3000000",
-		quarks: 0,
-		quantumFood: 0,
-		quantumFoodCost: 2e46,
-		limit: 1,
-		limitDim: 1,
-		limitCost: 1e49,
-		eggonProgress: 0,
-		eggons: 0,
-		hatchSpeed: 20,
-		hatchSpeedCost: 1e49,
-		babyProgress: 0,
-		babies: 0,
-		ageProgress: 0
-	}
-	quSave.emperorDimensions = {}
-	for (d=1;d<9;d++) quSave.emperorDimensions[d] = {workers: 0, progress: 0, perm: 0}
-	quSave.nanofield = {
-		charge: 0,
-		energy: 0,
-		antienergy: 0,
-		power: 0,
-		powerThreshold: 50,
-		rewards: 0,
-		producingCharge: false
-	}
-	quSave.assignAllRatios = {
-		r: 1,
-		g: 1,
-		b: 1
-	}
-	quSave.notrelative = false
-	quSave.wasted = false
-	quSave.tod = {
-		r: {
-			quarks: 0,
-			spin: 0,
-			upgrades: {}
-		},
-		g: {
-			quarks: 0,
-			spin: 0,
-			upgrades: {}
-		},
-		b: {
-			quarks: 0,
-			spin: 0,
-			upgrades: {}
-		},
-		upgrades: {}
-	}
-	quSave.bigRip = {
-		active: false,
-		conf: true,
-		times: 0,
-		bestThisRun: 0,
-		totalAntimatter: 0,
-		bestGals: 0,
-		savedAutobuyersNoBR: {},
-		savedAutobuyersBR: {},
-		spaceShards: 0,
-		upgrades: []
-	}
-	quSave.breakEternity = {
-		unlocked: false,
-		break: false,
-		eternalMatter: 0,
-		upgrades: [],
-		epMultPower: 0
-	}
-	player.ghostify = getBrandNewGhostifyData()
-	ghSave = player.ghostify
-	aarMod.ghostifyConf = true
-}
-
 function doInitNGp2NOT3Stuff(){
 	if (aarMod.newGamePlusPlusVersion === undefined && !player.masterystudies) { 
 		if (player.dilation.rebuyables[4] !== undefined) {
@@ -760,9 +620,7 @@ function doInitNGp2NOT3Stuff(){
 				aarMod.quantumConf = true
 			}
 			aarMod.newGamePlusVersion = 1
-			if (confirm("Do you want to migrate your NG++ save into new NG+++ mode?")) {
-				doNGP3NewPlayerStuff()
-			}
+			if (confirm("Do you want to migrate your NG++ save into new NG+++ mode?")) doNGPlusThreePlayerStuff()
 			player.dilation.upgrades=migratedUpgrades
 			resetDilationGalaxies()
 		}
@@ -808,7 +666,7 @@ function doNGP2v2tov2302(){
 	}
 	if (aarMod.newGamePlusPlusVersion < 2.302){
 		for (let i = 1; i <= 8; i++){
-			delete player[TIER_NAMES[i]+"Pow"]
+			delete player[dimTiers[i]+"Pow"]
 		}
 		aarMod.newGamePlusPlusVersion = 2.302
 	}
@@ -881,7 +739,7 @@ function doQuantumRestore(){
 
 function doQuantumUpdates(){
 	if (aarMod.newGame3PlusVersion < 1.511) if (player.autoEterMode !== undefined) player.autoEterMode = "amount"
-	if ((quSave ? !quSave.electrons : false) && player.masterystudies) {
+	if (mod.ngp3 && !quSave.electrons) {
 		quSave.electrons = {
 			amount: 0,
 			sacGals: 0,
@@ -918,12 +776,7 @@ function doQuantumUpdates(){
 		quSave.metaAutobuyerWait=0
 	}
 	if (aarMod.newGame3PlusVersion < 1.997) {
-		quSave.pairedChallenges = {
-			order: {},
-			current: 0,
-			completed: 0,
-			respec: false
-		}
+		quSave.pairedChallenges = getBrandNewPCData()
 	}
 	if (aarMod.newGame3PlusVersion < 1.9975&&!quSave.challenge) quSave.challenge=[]
 	if (aarMod.newGame3PlusVersion < 1.9979) {
@@ -1044,19 +897,9 @@ function doQuantumUpdates(){
 				spin: 0,
 				upgrades: {}
 			},
-			g: {
-				quarks: 0,
-				spin: 0,
-				upgrades: {}
-			},
-			b: {
-				quarks: 0,
-				spin: 0,
-				upgrades: {}
-			},
 			upgrades: {}
 		}
-		TODsave = quSave.tod
+		todSave = quSave.tod
 		if (nfSave.rewards>16) {
 			var newMS=[]
 			for (var m=0;m<player.masterystudies.length;m++) {
@@ -1101,7 +944,6 @@ function doFundamentUpdates(){
 			upgrades: [],
 			epMultPower: 0
 		}
-		player.ghostify = getBrandNewGhostifyData()
 		ghSave = player.ghostify
 		brSave = quSave.bigRip
 		beSave = quSave.breakEternity
@@ -1119,10 +961,7 @@ function doFundamentUpdates(){
 	}
 
 	//v2.2: Bosonic Lab
-	if (aarMod.newGame3PlusVersion < 2.2) {
-		blSave = ghSave.bl
-		skip++
-	}
+	if (aarMod.newGame3PlusVersion < 2.2) skip++
 	if (aarMod.newGame3PlusVersion < 2.21) {
 		var oldBRUpg20Bought = brSave && brSave.upgrades.pop()
 		if (oldBRUpg20Bought != 20) brSave.upgrades.push(oldBRUpg20Bought)
@@ -1131,11 +970,13 @@ function doFundamentUpdates(){
 
 	//v2.3: Higgs
 	if (aarMod.newGame3PlusVersion < 2.3) skip++
-	if (ghSave.hb.amount !== undefined) ghSave.hb = setupHiggsSave()
-	else {
-		delete ghSave.hb.higgsUnspent
-		delete ghSave.hb.particlesUnlocked
-		delete ghSave.hb.field
+	if (ghSave) {
+		if (ghSave.hb.amount !== undefined) ghSave.hb = setupHiggsSave()
+		else {
+			delete ghSave.hb.higgsUnspent
+			delete ghSave.hb.particlesUnlocked
+			delete ghSave.hb.field
+		}
 	}
 
 	//v2.31: Ghostify Respecced
@@ -1180,7 +1021,7 @@ function doPostNGP3Versions() {
 		if (player.firstTotalBought != undefined) {
 			player.totalBoughtDims = {}
 			for (d=1;d<9;d++) {
-				var name = TIER_NAMES[d]
+				var name = dimTiers[d]
 				player.totalBoughtDims[name] = player[name + "TotalBought"]
 				delete player[name + "TotalBought"]
 			}
@@ -1234,13 +1075,13 @@ function doNGm2v11tov3(){
 	}
 	if (aarMod.newGameMinusMinusVersion < 1.21) {
 		if (hasGalUpg(11)) for (d=1;d<8;d++) {
-			var name = TIER_NAMES[d]
+			var name = dimTiers[d]
 			player[name+"Cost"] = Decimal.div(player[name+"Cost"], 10)
 		}
 	}
 	if (aarMod.newGameMinusMinusVersion < 1.22) {
 		if (hasGalUpg(11)) for (d=1;d<8;d++) {
-			var name = TIER_NAMES[d]
+			var name = dimTiers[d]
 			player[name+"Cost"] = Decimal.div(player[name+"Cost"], 10)
 		}
 	}
@@ -1255,7 +1096,7 @@ function doNGm2v11tov3(){
 	}
 	if (aarMod.newGameMinusMinusVersion < 1.26) {
 		if (hasGalUpg(11)) for (d=1;d<8;d++) {
-			var name = TIER_NAMES[d]
+			var name = dimTiers[d]
 			player[name+"Cost"] = Decimal.mul(player[name+"Cost"], 100)
 		}
 		reduceDimCosts()
@@ -1375,7 +1216,7 @@ function doERSv0tov102(){
 		player.dimlife=true
 		player.dead=true
 		for (d=1;d<9;d++) {
-			var name = TIER_NAMES[d]
+			var name = dimTiers[d]
 			if (costMults[d].lt(player.costMultipliers[d-1])) player[name+"Bought"] += (Math.round(Decimal.div(player.costMultipliers[d-1],costMults[d]).log(player.dimensionMultDecrease))+Math.ceil(Decimal.div(Number.MAX_VALUE,initCost[d]).log(costMults[d]))-1)*10
 			else player[name+"Bought"] += Decimal.div(player[name+"Cost"],initCost[d]).log(costMults[d])*10
 			if (player[name+"Bought"]>0) {
@@ -1464,7 +1305,7 @@ function doNGM4v0tov2111(){
 		resetNGM4TDs()
 	}
 	if (aarMod.newGame4MinusVersion<2.1) {
-		if ((player.galacticSacrifice.times > 0 || player.infinitied > 0 || player.eternities != 0 || (quSave !== undefined && quSave.times > 0) || (ghSave !== undefined && ghSave.times > 0)) && !player.challenges.includes("challenge1")) player.challenges.push("challenge1")
+		if ((player.galacticSacrifice.times > 0 || player.infinitied > 0 || player.eternities != 0) && !player.challenges.includes("challenge1")) player.challenges.push("challenge1")
 		player.autobuyers.push(15)
 		player.challengeTimes.push(600*60*24*31)
 	}
@@ -1486,7 +1327,7 @@ function doNGSPUpdatingVersion(){
 function doInitInfMultStuff(){
 	ipMultPower=2
 	if (hasMasteryStudy("t241")) ipMultPower=2.2
-	if (GUBought("gb3")) ipMultPower=2.3
+	if (hasGluonUpg("gb3")) ipMultPower=2.3
 	if (mod.ngep) ipMultCostIncrease=4
 	else ipMultCostIncrease=10
 	el("infiMult").innerHTML = "You gain " + ipMultPower + "x more IP.<br>Currently: "+shortenDimensions(getIPMult()) +"x<br>Cost: "+shortenCosts(player.infMultCost)+" IP"
@@ -1544,23 +1385,18 @@ function updateVersionsONLOAD(){
 }
 
 function doNGp3Init2(){
-	ghostified = mod.ngp3 && ghSave.times > 0 
 	quantumed = mod.ngpp && (ghostified || quSave.times > 0)
 
-	updateBosonicLimits()
+	updateTemp() //compromised due to "tmp.sacPow" achievement check being bugged
 	if (mod.ngp3) {
 		setupMasteryStudies()
 		updateUnlockedMasteryStudies()
 		updateSpentableMasteryStudies()
-	}
-	updateTemp()
-	
-	if (mod.ngp3) {
+
 		delete player.eternityBuyer.presets
 		el('prioritydil').value=player.eternityBuyer.dilationPerAmount
 		if (player.meta.bestOverQuantums === undefined) player.meta.bestOverQuantums = player.meta.bestAntimatter
 		updateColorPowers()
-		tmp.be=bigRipped()&&beSave.break
 		el("eggonsCell").style.display = hasNU(2) ? "none" : ""
 		el("workerReplWhat").textContent = hasNU(2) ? "babies" : "eggons"
 		updateQuantumWorth()
@@ -1577,7 +1413,7 @@ function doNGp3Init2(){
 			nfSave.producingCharge = false
 		}
 		if (quSave.autobuyer.peakTime === undefined) quSave.autobuyer.peakTime = 0
-		if (nfSave.rewards>17&&todSave.upgrades[1]==undefined&&!ghSave.reached&&!aarMod.ngp4V) {
+		if (nfSave.rewards>17&&todSave.upgrades[1]==undefined&&!ghSave?.reached&&!aarMod.ngp4V) {
 			var newMS=[]
 			for (var m=0;m<player.masterystudies.length;m++) {
 				var d=player.masterystudies[m].split("d")
@@ -1589,18 +1425,7 @@ function doNGp3Init2(){
 			setTTAfterQuantum = 2e94
 		}
 		if (brSave.bestGals == undefined) brSave.bestGals = 0
-		if (ghSave.neutrinos.boosts == undefined || !ghSave.times) ghSave.neutrinos.boosts = 0
-		if (ghSave.wzb.unl) giveAchievement("Even Ghostlier than before")
-		for (var g = blSave.glyphs.length + 1; g <= br.maxLimit; g++) blSave.glyphs.push(0)
-		if (!blSave.usedEnchants.length) blSave.usedEnchants=[]
-		if (ghSave.wzb.dPUse === undefined) {
-			ghSave.wzb.dPUse = 0
-			ghSave.wzb.wQkUp = true
-			ghSave.wzb.zNeGen = 1
-		}
-		blSave.odSpeed = Math.max(blSave.odSpeed, 1)
-		if (Decimal.eq(ghSave.wzb.zNeReq, 0)) ghSave.wzb.zNeReq = E(1)
-		updateAutoGhosts(true)
+		if (!ghostified) return
 	}
 }
 
@@ -1796,26 +1621,12 @@ function updateNGp3DisplayStuff(){
 	el('autoAssign').textContent="Auto: O"+(quSave.autoOptions.assignQK?"N":"FF")
 	el('autoAssignRotate').textContent="Rotation: "+(quSave.autoOptions.assignQKRotate>1?"Left":quSave.autoOptions.assignQKRotate?"Right":"None")
 	el('autoReset').textContent="Auto: O"+(quSave.autoOptions.replicantiReset?"N":"FF")
-	for (var u=5;u<13;u++) {
-			if (u%3==1) el("neutrinoUpg"+u).parentElement.parentElement.style.display=u>ghSave.times+2?"none":""
-			else el("neutrinoUpg"+u).style.display=u>ghSave.times+2?"none":""
-	}
-	updateBLUnlockDisplay()
-	el("bpc68").textContent=shortenMoney(quSave.pairedChallenges.pc68best)
-	el("odSlider").value=Math.round((blSave.odSpeed-1)/4*50)
-	for (var g=1;g<=br.limit;g++) el("typeToExtract"+g).className=blSave.typeToExtract==g?"chosenbtn":"storebtn"
+
 	updateAssortPercentage()
 	updateElectrons()
 	updateAutoQuantumMode()
 	updateColorCharge()
 	updateGluonsTabOnUpdate()
-	updateTODStuff()
-	updateBraveMilestones()
-	updateNeutrinoBoosts()
-	updatePhotonUnlocks()
-	updateBLUnlocks()
-	updateBosonicStuffCosts()
-	updateBLParticleUnlocks()
 }
 
 function setSomeQuantumAutomationDisplay(){
@@ -1835,7 +1646,7 @@ function setSomeQuantumAutomationDisplay(){
 	el('versionMod').textContent = modAbbs()
 	el('versionDesc').style.display = mod.ngp3 ? "" : "none"
 
-	var autoAssignUnl = mod.ngp3 && quSave.reachedInfQK
+	var autoAssignUnl = quSave?.reachedInfQK
 	el('autoAssign').style.display = autoAssignUnl ? "" : "none"
 	el('autoAssignRotate').style.display = autoAssignUnl ? "" : "none"
 	el('autoReset').style.display = hasAch("ng3p47") ? "" : "none"
@@ -1966,8 +1777,8 @@ function onLoad(noOffline) {
 		}
 	}
 	if (mod.ngp3) {
-		notifyId=speedrunMilestonesReached
-		notifyId2=ghSave.milestones||0
+		notifyId = speedrunMilestonesReached
+		notifyId2 = ghSave?.milestones || 0
 	}
 	el("newsbtn").textContent=(player.options.newsHidden?"Show":"Hide")+" news ticker"
 	el("game").style.display=player.options.newsHidden?"none":"block"
@@ -1985,7 +1796,6 @@ function onLoad(noOffline) {
 	if (!player.options.newsHidden) scrollNextMessage()
 	el("secretoptionsbtn").style.display=player.options.secrets?"":"none"
 	el("ghostlynewsbtn").textContent=((player.options.secrets!==undefined?player.options.secrets.ghostlyNews:false)?"Hide":"Show")+" ghostly news ticker"
-	resetUP()
 	if (aarMod.offlineProgress && !noOffline) {
 			let diff = new Date().getTime() - player.lastUpdate
 			if (diff > 1000*1000) simulateTime(diff/1000)
@@ -1999,8 +1809,6 @@ function onLoad(noOffline) {
 	}	else showNextModeMessage()
 	el("ghostlyNewsTicker").style.height=((player.options.secrets!==undefined?player.options.secrets.ghostlyNews:false)?24:0)+"px"
 	el("ghostlyNewsTickerBlock").style.height=((player.options.secrets!==undefined?player.options.secrets.ghostlyNews:false)?16:0)+"px"
-	updateTemp()
-	updateTemp()
 }
 
 
@@ -2106,53 +1914,24 @@ function setupBugfixData() {
 
 function conToDeciPreInf(){
 	player.money = E(player.money)
+	player.totalmoney = E(player.totalmoney)
 	player.tickSpeedCost = E(player.tickSpeedCost)
 	player.tickspeed = E(player.tickspeed)
-	player.firstAmount = E(player.firstAmount)
-	player.secondAmount = E(player.secondAmount)
-	player.thirdAmount = E(player.thirdAmount)
-	player.fourthAmount = E(player.fourthAmount)
-	player.fifthAmount = E(player.fifthAmount)
-	player.sixthAmount = E(player.sixthAmount)
-	player.seventhAmount = E(player.seventhAmount)
-	player.eightAmount = E(player.eightAmount)
-	player.firstCost = E(player.firstCost)
-	player.secondCost = E(player.secondCost)
-	player.thirdCost = E(player.thirdCost)
-	player.fourthCost = E(player.fourthCost)
-	player.fifthCost = E(player.fifthCost)
-	player.sixthCost = E(player.sixthCost)
-	player.seventhCost = E(player.seventhCost)
-	player.eightCost = E(player.eightCost)
+	for (let dim = 1; dim <= 8; dim++) {
+		player[dimTiers[dim]+"Amount"] = E(player[dimTiers[dim]+"Amount"])
+		player[dimTiers[dim]+"Cost"] = E(player[dimTiers[dim]+"Cost"])
+	}
 	player.sacrificed = E(player.sacrificed)
-	player.totalmoney = E(player.totalmoney)
+	player.costMultipliers = [E(player.costMultipliers[0]), E(player.costMultipliers[1]), E(player.costMultipliers[2]), E(player.costMultipliers[3]), E(player.costMultipliers[4]), E(player.costMultipliers[5]), E(player.costMultipliers[6]), E(player.costMultipliers[7])]
 }
 
 function conToDeciTD(){
-	player.timeDimension1.amount = E(player.timeDimension1.amount)
-	player.timeDimension2.amount = E(player.timeDimension2.amount)
-	player.timeDimension3.amount = E(player.timeDimension3.amount)
-	player.timeDimension4.amount = E(player.timeDimension4.amount)
-	player.timeDimension5.amount = E(player.timeDimension5.amount)
-	player.timeDimension6.amount = E(player.timeDimension6.amount)
-	player.timeDimension7.amount = E(player.timeDimension7.amount)
-	player.timeDimension8.amount = E(player.timeDimension8.amount)
-	player.timeDimension1.cost = E(player.timeDimension1.cost)
-	player.timeDimension2.cost = E(player.timeDimension2.cost)
-	player.timeDimension3.cost = E(player.timeDimension3.cost)
-	player.timeDimension4.cost = E(player.timeDimension4.cost)
-	player.timeDimension5.cost = E(player.timeDimension5.cost)
-	player.timeDimension6.cost = E(player.timeDimension6.cost)
-	player.timeDimension7.cost = E(player.timeDimension7.cost)
-	player.timeDimension8.cost = E(player.timeDimension8.cost)
-	player.timeDimension1.power = E(player.timeDimension1.power)
-	player.timeDimension2.power = E(player.timeDimension2.power)
-	player.timeDimension3.power = E(player.timeDimension3.power)
-	player.timeDimension4.power = E(player.timeDimension4.power)
-	player.timeDimension5.power = E(player.timeDimension5.power)
-	player.timeDimension6.power = E(player.timeDimension6.power)
-	player.timeDimension7.power = E(player.timeDimension7.power)
-	player.timeDimension8.power = E(player.timeDimension8.power)
+	for (let dim = 1; dim <= 8; dim++) {
+		const data = player["timeDimension"+dim]
+		data.amount = E(data.amount)
+		data.cost = E(data.cost)
+		data.power = E(data.power)
+	}
 }
 
 function conToDeciPreEter(){
@@ -2167,56 +1946,49 @@ function conToDeciPreEter(){
 		player.galacticSacrifice.galaxyPoints = Decimal.round(player.galacticSacrifice.galaxyPoints)
 		if (player.dimPowerIncreaseCost !== undefined) player.dimPowerIncreaseCost = E(player.dimPowerIncreaseCost)
 	}
-	player.costMultipliers = [E(player.costMultipliers[0]), E(player.costMultipliers[1]), E(player.costMultipliers[2]), E(player.costMultipliers[3]), E(player.costMultipliers[4]), E(player.costMultipliers[5]), E(player.costMultipliers[6]), E(player.costMultipliers[7])]
 	player.tickspeedMultiplier = E(player.tickspeedMultiplier)
 	player.matter = E(player.matter)
 
 	player.infinityPower = E(player.infinityPower)
-	player.infinityDimension1.amount = E(player.infinityDimension1.amount)
-	player.infinityDimension2.amount = E(player.infinityDimension2.amount)
-	player.infinityDimension3.amount = E(player.infinityDimension3.amount)
-	player.infinityDimension4.amount = E(player.infinityDimension4.amount)
-	player.infinityDimension5.amount = E(player.infinityDimension5.amount)
-	player.infinityDimension6.amount = E(player.infinityDimension6.amount)
-	player.infinityDimension7.amount = E(player.infinityDimension7.amount)
-	player.infinityDimension8.amount = E(player.infinityDimension8.amount)
+	for (let dim = 1; dim <= 8; dim++) {
+		const data = player["infinityDimension"+dim]
+		data.amount = E(data.amount)
+	}
 }
 
 function conToDeciLateEter(){
 	if (mod.ngud) {
-	player.blackhole.power = E(player.blackhole.power)
-
-	for (var d=1;d<9;d++) {
-		var dim=player["blackholeDimension"+d]
-		if (dim!==undefined) {
+		player.blackhole.power = E(player.blackhole.power)
+		for (var d = 1; d <= 8; d++) {
+			var dim = player["blackholeDimension"+d]
+			if (!dim) continue
 			dim.amount = E(dim.amount)
 			dim.cost = E(dim.cost)
 			dim.power = E(dim.power)
 		}
-	}
 
-	player.exdilation.unspent = E(player.exdilation.unspent)
-	player.exdilation.spent[1] = E(player.exdilation.spent[1])
-	player.exdilation.spent[2] = E(player.exdilation.spent[2])
-	player.exdilation.spent[3] = E(player.exdilation.spent[3])
-	if (player.exdilation.spent[4] !== undefined) player.exdilation.spent[4] = E(player.exdilation.spent[4])
+		player.exdilation.unspent = E(player.exdilation.unspent)
+		player.exdilation.spent[1] = E(player.exdilation.spent[1])
+		player.exdilation.spent[2] = E(player.exdilation.spent[2])
+		player.exdilation.spent[3] = E(player.exdilation.spent[3])
+		if (player.exdilation.spent[4] !== undefined) player.exdilation.spent[4] = E(player.exdilation.spent[4])
 	}
 
 	if (mod.ngpp) {
-	player.meta.antimatter = E(player.meta.antimatter);
-	player.meta.bestAntimatter = E(player.meta.bestAntimatter);
-	for (let i = 1; i <= 8; i++) {
-		player.meta[i].amount = E(player.meta[i].amount);
-		player.meta[i].cost = E(player.meta[i].cost);
-	}
-	if (quSave) {
-		if (quSave.last10) for (i=0;i<10;i++) quSave.last10[i][1] = E(quSave.last10[i][1])
-		quSave.quarks = E(quSave.quarks);
-		if (!player.masterystudies) quSave.gluons = (quSave.gluons ? quSave.gluons.rg !== null : true) ? E(0) : E(quSave.gluons);
-		quSave.neutronstar.quarks = E(quSave.neutronstar.quarks);
-		quSave.neutronstar.metaAntimatter = E(quSave.neutronstar.metaAntimatter);
-		quSave.neutronstar.dilatedTime = E(quSave.neutronstar.dilatedTime);
-	}
+		player.meta.antimatter = E(player.meta.antimatter);
+		player.meta.bestAntimatter = E(player.meta.bestAntimatter);
+		for (let i = 1; i <= 8; i++) {
+			player.meta[i].amount = E(player.meta[i].amount);
+			player.meta[i].cost = E(player.meta[i].cost);
+		}
+		if (quSave) {
+			if (quSave.last10) for (i=0;i<10;i++) quSave.last10[i][1] = E(quSave.last10[i][1])
+			quSave.quarks = E(quSave.quarks);
+			if (!player.masterystudies) quSave.gluons = (quSave.gluons ? quSave.gluons.rg !== null : true) ? E(0) : E(quSave.gluons);
+			quSave.neutronstar.quarks = E(quSave.neutronstar.quarks);
+			quSave.neutronstar.metaAntimatter = E(quSave.neutronstar.metaAntimatter);
+			quSave.neutronstar.dilatedTime = E(quSave.neutronstar.dilatedTime);
+		}
 	}
 	player.timeShards = E(player.timeShards)
 	player.eternityPoints = E(player.eternityPoints)
@@ -2269,7 +2041,7 @@ function conToDeciMS(){
 	if (mod.ngp3) {
 		player.dbPower = E(player.dbPower)
 		player.meta.bestOverQuantums = Decimal.max(player.meta.bestOverQuantums, player.meta.bestAntimatter)
-		if (quSave ? quSave.usedQuarks : false) {
+		if (quSave.usedQuarks) {
 			quSave.usedQuarks.r = E(quSave.usedQuarks.r)
 			quSave.usedQuarks.g = E(quSave.usedQuarks.g)
 			quSave.usedQuarks.b = E(quSave.usedQuarks.b)
@@ -2277,16 +2049,17 @@ function conToDeciMS(){
 			quSave.colorPowers.g = E(quSave.colorPowers.g)
 			quSave.colorPowers.b = E(quSave.colorPowers.b)
 		}
-		if (quSave ? aarMod.newGame3PlusVersion > 1.5 : false) {
+		if (aarMod.newGame3PlusVersion > 1.5) {
 			quSave.gluons.rg = E(quSave.gluons.rg)
 			quSave.gluons.gb = E(quSave.gluons.gb)
 			quSave.gluons.br = E(quSave.gluons.br)
 		}
-		if (quSave ? quSave.autobuyer : false) quSave.autobuyer.limit = E(quSave.autobuyer.limit)
-		if (quSave ? quSave.electrons : false) if (typeof(quSave.electrons.amount)=="string") quSave.electrons.amount = Math.round(parseFloat(quSave.electrons.amount)*4)/4
+		if (quSave.autobuyer) quSave.autobuyer.limit = E(quSave.autobuyer.limit)
+		if (typeof(quSave?.electrons.amount)=="string") quSave.electrons.amount = Math.round(parseFloat(quSave.electrons.amount)*4)/4
 		if (player.dilation.bestTP == undefined) player.dilation.bestTP = hasAch("ng3p18") || hasAch("ng3p37") ? player.dilation.tachyonParticles : 0
 		player.dilation.bestTP = E(player.dilation.bestTP)
-		if (quSave ? quSave.replicants : false) {
+		if (quSave.pairedChallenges) quSave.pairedChallenges.pc68best = E(quSave.pairedChallenges.pc68best)
+		if (quSave.replicants) {
 			quSave.replicants.amount = E(quSave.replicants.amount)
 			quSave.replicants.requirement = E(quSave.replicants.requirement)
 			quSave.replicants.quarks = E(quSave.replicants.quarks)
@@ -2299,24 +2072,28 @@ function conToDeciMS(){
 			quSave.replicants.babies = E(quSave.replicants.babies)
 			quSave.replicants.ageProgress = E(quSave.replicants.ageProgress)
 		}
-		if (quSave ? (quSave.emperorDimensions ? quSave.emperorDimensions[1] : false) : false) for (d=1;d<9;d++) {
-			quSave.emperorDimensions[d].workers = Decimal.round(quSave.emperorDimensions[d].workers)
-			quSave.emperorDimensions[d].progress = Decimal.round(quSave.emperorDimensions[d].progress)
+		if (quSave?.emperorDimensions?.[1]) {
+			for (d=1;d<9;d++) {
+				quSave.emperorDimensions[d].workers = Decimal.round(quSave.emperorDimensions[d].workers)
+				quSave.emperorDimensions[d].progress = Decimal.round(quSave.emperorDimensions[d].progress)
+			}
 		}
-		if (quSave ? nfSave : false) {
+		if (nfSave) {
 			nfSave.charge = E(nfSave.charge)
 			nfSave.energy = E(nfSave.energy)
 			nfSave.antienergy = E(nfSave.antienergy)
 			nfSave.powerThreshold = E(nfSave.powerThreshold)
 		}
-		if (quSave ? todSave : false) {
+		if (todSave) {
 			todSave.r.quarks = E(todSave.r.quarks)
 			todSave.r.spin = E(todSave.r.spin)
-			todSave.g.quarks = E(todSave.g.quarks)
-			todSave.g.spin = E(todSave.g.spin)
-			todSave.b.quarks = E(todSave.b.quarks)
-			todSave.b.spin = E(todSave.b.spin)
 		}
+		if (brSave) {
+			brSave.bestThisRun = E(brSave.bestThisRun)
+			brSave.totalAntimatter = E(brSave.totalAntimatter)
+			brSave.spaceShards = E(brSave.spaceShards)
+		}
+		if (beSave) beSave.eternalMatter = E(beSave.eternalMatter)
 	}
 }
 
@@ -2335,27 +2112,6 @@ function deepUndefinedAndDecimal(obj, data) {
 		}
 	}
 	return obj
-}
-
-function conToDeciGhostify(){
-	if (player.ghostify) {
-		player.ghostify = deepUndefinedAndDecimal(player.ghostify, getBrandNewGhostifyData())
-		ghSave = player.ghostify
-		blSave = ghSave.bl
-
-		player.dilation.bestTPOverGhostifies = Decimal.max(player.dilation.bestTPOverGhostifies, player.dilation.bestTP)
-		player.meta.bestOverGhostifies = Decimal.max(player.meta.bestOverGhostifies, player.meta.bestOverQuantums)
-		quSave.pairedChallenges.pc68best = E(quSave.pairedChallenges.pc68best)
-		if (brSave) {
-			brSave.bestThisRun = E(brSave.bestThisRun)
-			brSave.totalAntimatter = E(brSave.totalAntimatter)
-			brSave.spaceShards = E(brSave.spaceShards)
-		}
-		if (beSave) beSave.eternalMatter = E(beSave.eternalMatter)
-
-		ghSave.times = nP(ghSave.times)
-		for (var g2 = 2; g2 <= br.maxLimit; g2++) for (var g1 = 1; g1 < g2; g1++) if (blSave.enchants[g1*10+g2]) blSave.enchants[g1*10+g2] = E(blSave.enchants[g1*10+g2])
-	}
 }
 
 function deepUndefinedAndDecimal(obj, data) {
@@ -2379,7 +2135,7 @@ function transformSaveToDecimal() {
 	conToDeciTD()
 	conToDeciLateEter()
 	conToDeciMS()
-	conToDeciGhostify()
+	loadFundament()
 }
 
 

@@ -227,7 +227,7 @@ function buyGalaxyUpgrade(i) {
 	if (i == 11) {
 		if (hasAch("r21")) {
 			for (var d = 1; d < 9; d++) {
-				var name = TIER_NAMES[d]
+				var name = dimTiers[d]
 				player[name + "Cost"] = player[name + "Cost"].mul(10)
 				if (inNGM(4)) player["timeDimension" + d].cost = player["timeDimension" + d].cost.mul(10)
 			}
@@ -254,7 +254,7 @@ function reduceDimCosts(upg) {
 		if (hasAch("r21")) div = 10
 		if (hasGalUpg(11)) div = galMults.u11()
 		for (var d = 1; d < 9; d++) {
-			var name = TIER_NAMES[d]
+			var name = dimTiers[d]
 			if (inNGM(4) && !upg) {
 				player[name + "Cost"] = player[name + "Cost"].pow(1.25).mul(10)
 				player.costMultipliers[d - 1] = player.costMultipliers[d - 1].pow(1.25)
@@ -349,8 +349,8 @@ function productAllTotalBought() {
 	var ret = 1;
 	var mult = getProductBoughtMult()
 	for (var i = 1; i <= 8; i++) {
-		if (inNC(13) && inNGM(3)) ret = Decimal.mul(player[TIER_NAMES[i] + "Amount"].max(1).log10(), mult).add(1).mul(ret);
-		else if (player.totalBoughtDims[TIER_NAMES[i]]) ret = Decimal.mul(ret, player.totalBoughtDims[TIER_NAMES[i]] ? Decimal.mul(player.totalBoughtDims[TIER_NAMES[i]], mult).max(1) : 1);
+		if (inNC(13) && inNGM(3)) ret = Decimal.mul(player[dimTiers[i] + "Amount"].max(1).log10(), mult).add(1).mul(ret);
+		else if (player.totalBoughtDims[dimTiers[i]]) ret = Decimal.mul(ret, player.totalBoughtDims[dimTiers[i]] ? Decimal.mul(player.totalBoughtDims[dimTiers[i]], mult).max(1) : 1);
 	}
 	return ret;
 }
@@ -362,7 +362,7 @@ function productAllTotalBought1() {
 function productAllDims1(){
 	var ret = E(0)
 	for (var i = 1; i <= 8; i++) {
-		ret = ret.add(Math.max(player[TIER_NAMES[i] + "Amount"].max(1).log10(),0));
+		ret = ret.add(Math.max(player[dimTiers[i] + "Amount"].max(1).log10(),0));
 	}
 	return ret.max(1)
 }

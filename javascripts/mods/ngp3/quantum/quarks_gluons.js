@@ -2,7 +2,7 @@
 var quantumWorth
 function updateQuantumWorth(mode) {
 	if (!mod.ngp3) return
-	if (ghSave.milestones<8) {
+	if (!gotBraveMilestone(8)) {
 		if (mode != "notation") mode = undefined
 	} else if (mode == "notation") return
 
@@ -14,6 +14,40 @@ function updateQuantumWorth(mode) {
 		if (ghostified) updateAutomatorStuff(mode)
 	}
 	if (mode != "quick") for (var e=1;e<=2;e++) el("quantumWorth"+e).textContent = shortenDimensions(quantumWorth)
+}
+
+function getQuarkMultReq() {
+	let lvl = quSave.multPower / 3
+	if (lvl > 467) lvl = lvl * 2 - 467
+	return E_pow(100, lvl).mul(500)
+}
+
+function getQuarkMultBulk() {
+	let bulk = E(quantumWorth).max(1).div(500).log(100)
+	if (bulk > 467) bulk = (bulk + 467) / 2
+	bulk *= 3
+	if (bulk < 0) return 0
+	return Math.floor(bulk + 1)
+}
+
+function buyQuarkMult() {
+	if (E(quantumWorth).lt(getQuarkMultReq())) return
+	increaseQuarkMult(1)
+}
+
+function maxQuarkMult() {
+	let bulk = getQuarkMultBulk()
+	if (bulk <= quSave.multPower) return
+	increaseQuarkMult(bulk - quSave.multPower)
+}
+
+function increaseQuarkMult(toAdd) {
+	quSave.multPower += toAdd
+	if (quSave.autobuyer.mode === 'amount') {
+		quSave.autobuyer.limit = Decimal.mul(quSave.autobuyer.limit, pow2(toAdd))
+		el("priorityquantum").value = formatValue("Scientific", quSave.autobuyer.limit, 2, 0)
+	}
+	updateGluonsTab("spend")
 }
 
 //Quark Assertment Machine (Quark Assignation: NG+3L)
@@ -140,7 +174,7 @@ function updateColorCharge() {
 	var colors = ['r','g','b']
 	for (var i = 0; i < 3; i++) {
 		var ret = E(0)
-		if (ghSave.milestones >= 2) ret = quSave.usedQuarks[colors[i]]
+		if (gotBraveMilestone(2)) ret = quSave.usedQuarks[colors[i]]
 		colorCharge[colors[i]] = ret
 	}
 
@@ -152,7 +186,7 @@ function updateColorCharge() {
 	}
 
 	colorCharge.normal={color:sorted[0],charge:Decimal.sub(quSave.usedQuarks[sorted[0]]).sub(quSave.usedQuarks[sorted[1]])}
-	if (ghSave.milestones<2) colorCharge[sorted[0]]=colorCharge[sorted[0]].add(colorCharge.normal.charge)
+	if (!gotBraveMilestone(2)) colorCharge[sorted[0]]=colorCharge[sorted[0]].add(colorCharge.normal.charge)
 	if (quSave.usedQuarks[sorted[0]].gt(0)&&colorCharge.normal.charge.eq(0)) giveAchievement("Hadronization")
 
 	updateQuarksTabOnUpdate()
@@ -199,7 +233,7 @@ function updateColorPowers(log) {
 	if (colorBoosts.r>1.3) colorBoosts.r = Math.sqrt(colorBoosts.r * 1.3)
 	if (colorBoosts.r>2.3 && (!player.dilation.active || getTreeUpgradeLevel(2) > 7 || ghostified)) {
 		let sc_exp = 0.5
-		if (ghostified && ghSave.neutrinos.boosts >= 5) sc_exp += tmp.nb[5] / 2
+		if (hasNB(5)) sc_exp += tmp.nb[5] / 2
 		if (sc_exp < 1) colorBoosts.r = Math.pow(colorBoosts.r / 2.3, sc_exp) * 2.3
 	}
 
@@ -248,8 +282,8 @@ function convertAQToGluons() {
 }
 
 function checkGluonRounding(){
-	if (!mod.ngp3) return
-	if (ghSave.milestones > 7 || !quantumed) return
+	if (!quantumed) return
+	if (gotBraveMilestone(8)) return
 	if (quSave.gluons.rg.lt(101)) quSave.gluons.rg = quSave.gluons.rg.round()
 	if (quSave.gluons.gb.lt(101)) quSave.gluons.gb = quSave.gluons.gb.round()
 	if (quSave.gluons.br.lt(101)) quSave.gluons.br = quSave.gluons.br.round()
@@ -259,7 +293,7 @@ function checkGluonRounding(){
 const GUCosts = [null, 1, 2, 4, 100, 7e15, 4e19, 3e28, "1e570"]
 function buyGluonUpg(color, id) {
 	var name = color + id
-	if (quSave.upgrades.includes(name) || quSave.gluons[color].plus(0.001).lt(GUCosts[id])) return
+	if (hasGluonUpg(name) || quSave.gluons[color].plus(0.001).lt(GUCosts[id])) return
 	quSave.upgrades.push(name)
 	quSave.gluons[color] = quSave.gluons[color].sub(GUCosts[id])
 	updateGluonsTab("spend")
@@ -277,42 +311,8 @@ function buyGluonUpg(color, id) {
 	updateGluonsTabOnUpdate()
 }
 
-function GUBought(id) {
-	return mod.ngp3 && quSave.upgrades.includes(id)
-}
-
-function getQuarkMultReq() {
-	let lvl = quSave.multPower / 3
-	if (lvl > 467) lvl = lvl * 2 - 467
-	return E_pow(100, lvl).mul(500)
-}
-
-function getQuarkMultBulk() {
-	let bulk = E(quantumWorth).max(1).div(500).log(100)
-	if (bulk > 467) bulk = (bulk + 467) / 2
-	bulk *= 3
-	if (bulk < 0) return 0
-	return Math.floor(bulk + 1)
-}
-
-function buyQuarkMult() {
-	if (E(quantumWorth).lt(getQuarkMultReq())) return
-	increaseQuarkMult(1)
-}
-
-function maxQuarkMult() {
-	let bulk = getQuarkMultBulk()
-	if (bulk <= quSave.multPower) return
-	increaseQuarkMult(bulk - quSave.multPower)
-}
-
-function increaseQuarkMult(toAdd) {
-	quSave.multPower += toAdd
-	if (quSave.autobuyer.mode === 'amount') {
-		quSave.autobuyer.limit = Decimal.mul(quSave.autobuyer.limit, pow2(toAdd))
-		el("priorityquantum").value = formatValue("Scientific", quSave.autobuyer.limit, 2, 0)
-	}
-	updateGluonsTab("spend")
+function hasGluonUpg(id) {
+	return quSave?.upgrades.includes(id)
 }
 
 function getGB1Effect() {
@@ -346,7 +346,7 @@ function updateQuarksTab(tab) {
 	el("blueTranslation").textContent=shortenMoney(colorBoosts.b)
 
 	if (hasMasteryStudy("t383")) el("blueTranslationMD").textContent=shorten(getMTSMult(383))
-	if (ghSave.milestones>7) {
+	if (gotBraveMilestone(8)) {
 		var assortAmount=getAssortAmount()
 		var colors=['r','g','b']
 		el("assort_amount").textContent = shortenDimensions(assortAmount.mul(getQuarkAssignMult()))
@@ -382,7 +382,7 @@ function updateGluonsTab() {
 		el("gbupg8current").textContent = "Currently: " + shorten(getGU8Effect("gb")) + "x"
 		el("brupg8current").textContent = "Currently: " + shorten(getGU8Effect("br")) + "x"
 	}
-	if (ghSave.milestones > 7) updateGluonsTabOnUpdate("display")
+	if (gotBraveMilestone(8)) updateGluonsTabOnUpdate("display")
 }
 
 //Display: On load
@@ -428,7 +428,7 @@ function updateGluonsTabOnUpdate(mode) {
 			br: E(0)
 		}
 	}
-	if (ghSave.milestones<8) mode = undefined
+	if (!gotBraveMilestone(8)) mode = undefined
 	var names = ["rg","gb","br"]
 	var sevenUpgrades = hasMasteryStudy("d9")
 	var eightUpgrades = hasMasteryStudy("d13")
@@ -444,7 +444,7 @@ function updateGluonsTabOnUpdate(mode) {
 			for (u = 1; u <= (eightUpgrades ? 8 : sevenUpgrades ? 7 : 4); u++) {
 				var upg = name + "upg" + u
 				if (u > 4) el(upg + "cost").textContent = shortenMoney(E(GUCosts[u]))
-				if (quSave.upgrades.includes(name + u)) el(upg).className="gluonupgradebought small "+name
+				if (hasGluonUpg(name + u)) el(upg).className="gluonupgradebought small "+name
 				else if (quSave.gluons[name].lt(GUCosts[u])) el(upg).className="gluonupgrade small unavailablebtn"
 				else el(upg).className="gluonupgrade small "+name
 			}

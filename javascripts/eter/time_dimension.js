@@ -28,7 +28,7 @@ function doNGMatLeast4TDChanges(tier, ret){
 	if (hasGalUpg(15)) ret = ret.mul(galMults.u15())
 	if (hasGalUpg(44) && inNGM(4)) {
 		var e = hasGalUpg(46) ? galMults["u46"]() : 1
-		ret = ret.mul(E_pow(player[TIER_NAMES[tier]+"Amount"].plus(10).log10(), e * Math.pow(11 - tier, 2)))
+		ret = ret.mul(E_pow(player[dimTiers[tier]+"Amount"].plus(10).log10(), e * Math.pow(11 - tier, 2)))
 	}
 	if (hasGalUpg(31)) ret = ret.pow(galMults.u31())
 	return ret
@@ -154,7 +154,7 @@ function updateTimeDimensions() {
 		for (let tier = 1; tier <= 8; ++tier) {
 			if (isTDUnlocked(tier)) {
 				el("timeRow" + tier).style.display = "table-row"
-				el("timeD" + tier).textContent = DISPLAY_NAMES[tier] + " Time Dimension x" + shortenMoney(getTimeDimensionPower(tier));
+				el("timeD" + tier).textContent = dimNames[tier] + " Time Dimension x" + shortenMoney(getTimeDimensionPower(tier));
 				el("timeAmount" + tier).textContent = getTimeDimensionDescription(tier);
 				el("timeMax" + tier).textContent = (quantumed ? '':"Cost: ") + shortenDimensions(player["timeDimension" + tier].cost) + (inNGM(4) ? "" : " EP")
 				if (getOrSubResourceTD(tier).gte(player["timeDimension" + tier].cost)) el("timeMax"+tier).className = "storebtn"
@@ -165,7 +165,7 @@ function updateTimeDimensions() {
 			var isShift = player.tdBoosts < (inNC(4) ? 5 : 7)
 			var req = getTDBoostReq()
 			el("tdReset").style.display = ""
-			el("tdResetLabel").textContent = "Time Dimension "+(isShift ? "Shift" : "Boost") + " (" + getFullExpansion(player.tdBoosts) + "): requires " + getFullExpansion(req.amount) + " " + DISPLAY_NAMES[req.tier] + " Time Dimensions"
+			el("tdResetLabel").textContent = "Time Dimension "+(isShift ? "Shift" : "Boost") + " (" + getFullExpansion(player.tdBoosts) + "): requires " + getFullExpansion(req.amount) + " " + dimNames[req.tier] + " Time Dimensions"
 			el("tdResetBtn").textContent = "Reset prior features for a " + (isShift ? "new dimension" : "boost")
 			el("tdResetBtn").className = (player["timeDimension" + req.tier].bought < req.amount) ? "unavailablebtn" : "storebtn"
 		} else el("tdReset").style.display = "none"
@@ -325,7 +325,7 @@ function nonERFreeTickUpdating(){
 	if (threshold < 1.01 && inNGM(2)) threshold = 1.005 + 0.005 / (2.01 - threshold)
 
 	let mult = 1
-	if (mod.ngp3) mult *= getLightEff(4)
+	if (mod.ngp3) mult *= PHOTON.eff(4)
 
 	const gain = Math.ceil(E(player.timeShards).dividedBy(player.tickThreshold).log10()/Math.log10(threshold)*mult)
 	player.totalTickGained += gain

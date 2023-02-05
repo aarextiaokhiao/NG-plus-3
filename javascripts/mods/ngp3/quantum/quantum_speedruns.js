@@ -5,7 +5,7 @@ function updateSpeedruns() {
 	speedrunMilestonesReached = 0
 	if (!mod.ngp3) return
 
-	if (ghSave.milestones >= 1) speedrunMilestonesReached = 28
+	if (gotBraveMilestone(1)) speedrunMilestonesReached = 28
 	else {
 		for (var i = 1; i <= 28; i++) {
 			if (quSave.best > speedrunMilestones[i] * 10) break

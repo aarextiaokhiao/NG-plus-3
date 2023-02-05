@@ -50,7 +50,7 @@ function bosonicTick(diff) {
 	
 	//W & Z Bosons
 	let apDiff
-	lData = player.ghostify.wzb
+	lData = ghSave.wzb
 	if (lData.dPUse) {
 		apDiff = diff.mul(getAntiPreonLoss()).min(lData.dP).div(aplScalings[ghSave.wzb.dPUse])
 		if (isNaN(apDiff.e)) apDiff=E(0)
@@ -149,8 +149,6 @@ function getBosonProduction() {
 }
 
 function updateBosonicLimits() {
-	if (!mod.ngp3) return
-
 	//Hypotheses / Theories
 	br.limit = br.maxLimit
 	if (ghSave.hb.higgs == 0) br.limit = 3
@@ -264,8 +262,7 @@ function updateBosonicLabTemp() {
 	tmp.wzb = {}
 	tmp.hbTmp = {}
 
-	if (!mod.ngp3) return 
-	if (!ghSave.wzb.unl) return 
+	if (!ghSave?.wzb.unl) return 
 
 	updateBosonicEnchantsTemp()
 	updateBosonicUpgradesTemp()
@@ -280,7 +277,7 @@ let dynuta={
 function extract() {
 	let data = ghSave.bl
 	if (data.extracting) return
-	player.ghostify.automatorGhosts[17].oc = false
+	ghSave.automatorGhosts[17].oc = false
 	dynuta.check = true
 	data.extracting = true
 }
@@ -682,7 +679,7 @@ function buyMaxBosonicUpgrades() {
 }
 
 function hasBU(x) {
-	return ghostified && ghSave.wzb.unl && (blSave||ghSave.bl).upgrades.includes(x)
+	return blSave?.upgrades.includes(x)
 }
 
 function updateBosonicUpgradeDescs() {
@@ -840,7 +837,7 @@ var bu = {
 			return r
 		},
 		13: function() {
-			var decays = getRadioactiveDecays('r') + getRadioactiveDecays('g') + getRadioactiveDecays('b')
+			var decays = getRadioactiveDecays('r')
 			var div = 3
 			if (mod.p3ep){
 				decays += Math.sqrt(decays) + decays / 3
@@ -1072,20 +1069,20 @@ function updateWZBosonsTab() {
 
 function updateWZBosonsTemp(){
 	let data = tmp.wzb
-	let wpl = player.ghostify.wzb.wpb.add(1).log10()
-	let wnl = player.ghostify.wzb.wnb.add(1).log10()
+	let wpl = ghSave.wzb.wpb.add(1).log10()
+	let wnl = ghSave.wzb.wnb.add(1).log10()
 
-	let bosonsExp = Math.max(wpl * (player.ghostify.wzb.wpb.sub(player.ghostify.wzb.wnb.min(player.ghostify.wzb.wpb))).div(player.ghostify.wzb.wpb.max(1)).toNumber(), 0)
+	let bosonsExp = Math.max(wpl * (ghSave.wzb.wpb.sub(ghSave.wzb.wnb.min(ghSave.wzb.wpb))).div(ghSave.wzb.wpb.max(1)).toNumber(), 0)
 	data.wbt = Decimal.pow(4, bosonsExp)
 	//W Bosons boost to extract time
 	data.wbo = Decimal.pow(10, bosonsExp)
 	//W Bosons boost to Z Neutrino oscillation requirement
 
 	let div1 = mod.p3ep ? 2 : 30
-	data.wbp = player.ghostify.wzb.wpb.add(player.ghostify.wzb.wnb).div(div1).max(1).pow(1 / 3).sub(1)
+	data.wbp = ghSave.wzb.wpb.add(ghSave.wzb.wnb).div(div1).max(1).pow(1 / 3).sub(1)
 	//W Bosons boost to Bosons production
 
-	let zLog = player.ghostify.wzb.zb.add(1).log10()
+	let zLog = ghSave.wzb.zb.add(1).log10()
 	let zLogMult = 0.5
 	if (isEnchantUsed(15)) zLogMult = tmp.bEn[15]
 	data.zbs = Decimal.pow(10, zLog * zLogMult) //Z Bosons boost to W Quark

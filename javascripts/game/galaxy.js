@@ -13,7 +13,7 @@ function galaxyReset(bulk) {
 
 	if (mod.ngp3 && bulk) {
 		if (quSave.autoOptions.sacrifice) sacrificeGalaxy(6, true)
-		if (ghostified && ghSave.neutrinos.boosts) gainNeutrinos(bulk, "gen")
+		if (hasNB(1)) gainNeutrinos(bulk, "gen")
 	}
 	hideDimensions()
 	tmp.tickUpdate = true;
@@ -61,10 +61,10 @@ function getGalaxyRequirement(offset = 0, display) {
 		let distantStart = getDistantScalingStart()
 		if (tmp.grd.galaxies >= distantStart) {
 			let speed = tmp.grd.speed
-			if (GUBought("rg6")) speed *= 0.867
-			if (GUBought("gb6")) speed /= 1 + Math.pow(player.infinityPower.plus(1).log10(), 0.25) / 2810
-			if (GUBought("br6")) speed /= 1 + player.meta.resets / 340
-			if (ghostified && ghSave.neutrinos.boosts > 5) speed /= tmp.nb[6]
+			if (hasGluonUpg("rg6")) speed *= 0.867
+			if (hasGluonUpg("gb6")) speed /= 1 + Math.pow(player.infinityPower.plus(1).log10(), 0.25) / 2810
+			if (hasGluonUpg("br6")) speed /= 1 + player.meta.resets / 340
+			if (hasNB(6)) speed /= tmp.nb[6]
 			if (hasBU(45)) speed /= tmp.blu[45]
 			if (hasAch("ng3p98")) speed *= 0.9
 			amount += getDistantAdd(tmp.grd.galaxies-distantStart+1)*speed
@@ -78,10 +78,10 @@ function getGalaxyRequirement(offset = 0, display) {
 		let remoteStart = getRemoteScalingStart()
 		if (tmp.grd.galaxies >= remoteStart && !tmp.be && !hasNU(6)) {
 			let speed2 = tmp.grd.speed
-			if (GUBought("rg7")) speed2 *= 0.9
-			if (GUBought("gb7")) speed2 /= 1+Math.log10(1+player.infinityPoints.max(1).log10())/100
-			if (GUBought("br7")) speed2 /= 1+Math.log10(1+player.eternityPoints.max(1).log10())/80
-			amount *= Math.pow(1 + (GUBought("rg1") ? 1 : 2) / (inNGM(4) ? 10 : 1e3), (tmp.grd.galaxies - remoteStart + 1) * speed2)
+			if (hasGluonUpg("rg7")) speed2 *= 0.9
+			if (hasGluonUpg("gb7")) speed2 /= 1+Math.log10(1+player.infinityPoints.max(1).log10())/100
+			if (hasGluonUpg("br7")) speed2 /= 1+Math.log10(1+player.eternityPoints.max(1).log10())/80
+			amount *= Math.pow(1 + (hasGluonUpg("rg1") ? 1 : 2) / (inNGM(4) ? 10 : 1e3), (tmp.grd.galaxies - remoteStart + 1) * speed2)
 			scaling = Math.max(scaling, 3)
 		}
 	}
