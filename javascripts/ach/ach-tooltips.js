@@ -125,7 +125,7 @@ function setR7Tooltip(){
 	not.setAttribute('ach-tooltip',"Big Crunch with only a single First Dimension without Dimension Boosts, Shifts or Galaxies while in the Automatic Galaxies Challenge. Reward: First Dimensions are " + (inNGM(2) ? 909 : 3) + " times stronger" + (inNGM(4) ? ", and buff the more expensive Break Infinity upgrade based on Infinities to be more effective" : "") + ".")
 	blink.setAttribute('ach-tooltip', "Big Crunch in under 200 milliseconds. Reward: Start with " + formatValue(player.options.notation, 2e25, 0, 0) + " antimatter, and all Normal Dimensions are stronger in the first 300 milliseconds of this Infinity.");
 	cant.setAttribute('ach-tooltip', "Get all Dimension multipliers over "+shortenCosts(1e308)+". Reward: All Normal Dimensions are 10"+(inNGM(2)?"x":"%")+" stronger.")
-	newDim.setAttribute('ach-tooltip', "Unlock the 4th Infinity Dimension."+(player.boughtDims?"":" Reward: Your achievement bonus affects Infinity Dimensions."))
+	newDim.setAttribute('ach-tooltip', "Unlock the 4th Infinity Dimension."+(mod.rs?"":" Reward: Your achievement bonus affects Infinity Dimensions."))
 	tables.setAttribute('ach-tooltip', "Get 8th Dimension multiplier to be highest, 7th Dimension multiplier second highest, etc. Reward: Each dimension gains a boost proportional to their tier (8th dimension gets 8"+(inNGM(2)?"0":"")+"%, 7th gets 7"+(inNGM(2)?"0":"")+"%, etc.)")
 }
 
@@ -164,8 +164,8 @@ function setR9Tooltip(){
 	speed2.setAttribute('ach-tooltip', "Big Crunch for "+shortenCosts(1e250)+" IP in 20 seconds or less. Reward: All Normal Dimensions are significantly stronger in the first 60 seconds of an Infinity.")
 	overdrive.setAttribute('ach-tooltip', "Big Crunch with " + shortenCosts(1e300) + " IP/min. Reward: Gain an additonal 4x multiplier to IP.")
 	minute.setAttribute('ach-tooltip', "Reach " + shortenCosts(1e260) + " infinity power. Reward: Double infinity power gain.")
-	hell.setAttribute('ach-tooltip', "Get the sum of Infinity Challenge times under 6.66 seconds." + (player.boughtDims ? " Reward: Sacrifice is again slightly stronger." : ""))
-	zerodeg.setAttribute('ach-tooltip', "Unlock the 8th Infinity Dimension."+(player.boughtDims?" Reward: Normal Dimensions are multiplied by the amount of 8th Infinity Dimensions you have.":"") + (inNGM(3) ? " Reward: Each replicanti galaxy counts twice in the reward of 'Is this safe?'." : ""))
+	hell.setAttribute('ach-tooltip', "Get the sum of Infinity Challenge times under 6.66 seconds." + (mod.rs ? " Reward: Sacrifice is again slightly stronger." : ""))
+	zerodeg.setAttribute('ach-tooltip', "Unlock the 8th Infinity Dimension."+(mod.rs?" Reward: Normal Dimensions are multiplied by the amount of 8th Infinity Dimensions you have.":"") + (inNGM(3) ? " Reward: Each replicanti galaxy counts twice in the reward of 'Is this safe?'." : ""))
 	isthissafe.setAttribute('ach-tooltip', "Gain Infinite replicanti in 30 minutes. Reward: Infinity doesn't reset your replicanti amount" + (inNGM(3) ? ", each replicanti galaxy multiplies GP gain by your Eighth Dimensions, and multiply IP by the squared amount of Eighth Dimensions if you have more than 5,000" : "") + ".")
 }
 
@@ -181,12 +181,12 @@ function setR10Tooltip(){
 	let nine = el("We could afford 9")
 
 	//ACHIEVEMENT ROW 10
-	costco.setAttribute('ach-tooltip', "Bulk buy 750 Dimension Boosts at once. Reward: Dimension Boosts are " + (player.boughtDims?"cheaper based on EP":"1% more powerful (to Normal Dimensions)") + (inNGM(3) ? " and g13 is boosted by the cube root of Galaxies" : "") + ".")
+	costco.setAttribute('ach-tooltip', "Bulk buy 750 Dimension Boosts at once. Reward: Dimension Boosts are " + (mod.rs?"cheaper based on EP":"1% more powerful (to Normal Dimensions)") + (inNGM(3) ? " and g13 is boosted by the cube root of Galaxies" : "") + ".")
 	mile.setAttribute('ach-tooltip', "Get "+(mod.ngp3 ? "the 100 Eternities milestone." : "all Eternity milestones."))
-	swarm.setAttribute('ach-tooltip', "Get 10 replicanti galaxies within the first 15 seconds of this Infinity." + (player.boughtDims ? " Reward: Unlock replicanti galaxy power control, and uncap replicanti chance and interval." : ""))
-	inftime.setAttribute('ach-tooltip', player.boughtDims ? "Eternity without buying dimensions 1-7. Reward: Time Dimensions gain a multiplier based on the eighth root of eighth dimensions." : "Get 308 tickspeed upgrades (in one eternity) from Time Dimensions. Reward: Time Dimensions are affected slightly more by tickspeed.")
-	guide.setAttribute('ach-tooltip', player.boughtDims ? "Reach " + shortenCosts(E("1e1000000")) + " replicanti. Reward: Replicanti increases faster the more you have." : "Eternity with less than 10 infinities.")
-	nine.setAttribute('ach-tooltip', "Eternity with exactly 9 replicanti." + (player.boughtDims ? " Reward: The replicanti multiplier to ID is 9% stronger (after time studies)." : ""))
+	swarm.setAttribute('ach-tooltip', "Get 10 replicanti galaxies within the first 15 seconds of this Infinity." + (mod.rs ? " Reward: Unlock replicanti galaxy power control, and uncap replicanti chance and interval." : ""))
+	inftime.setAttribute('ach-tooltip', mod.rs ? "Eternity without buying dimensions 1-7. Reward: Time Dimensions gain a multiplier based on the eighth root of eighth dimensions." : "Get 308 tickspeed upgrades (in one eternity) from Time Dimensions. Reward: Time Dimensions are affected slightly more by tickspeed.")
+	guide.setAttribute('ach-tooltip', mod.rs ? "Reach " + shortenCosts(E("1e1000000")) + " replicanti. Reward: Replicanti increases faster the more you have." : "Eternity with less than 10 infinities.")
+	nine.setAttribute('ach-tooltip', "Eternity with exactly 9 replicanti." + (mod.rs ? " Reward: The replicanti multiplier to ID is 9% stronger (after time studies)." : ""))
 }
 
 function setR11Tooltip(){
@@ -268,7 +268,7 @@ function setR13p5Tooltip(){
 
 	//NGUD ACHIEVEMENT ROW (13.5)
 	stillamil.setAttribute('ach-tooltip', "Reach "+shortenCosts(1e6)+" black hole power.")
-	out.setAttribute('ach-tooltip',"Get more than "+shortenCosts(1e5)+" ex-dilation." + (aarMod.nguspV !== undefined ? " Reward: You can equally distribute ex-dilation to all repeatable dilation upgrades." : ""))
+	out.setAttribute('ach-tooltip',"Get more than "+shortenCosts(1e5)+" ex-dilation." + (mod.udsp ? " Reward: You can equally distribute ex-dilation to all repeatable dilation upgrades." : ""))
 	ridNGud.setAttribute('ach-tooltip', "Reach "+shortenCosts(E("1e20000"))+" IP without any time studies or dilation upgrades while dilated.")
 }
 
@@ -285,7 +285,7 @@ function setR14Tooltip(){
 
 	let onlywarReward = [] // for the achievement "In the grim darkness of the far endgame"
 	if (mod.ngp3 || mod.p3ep) onlywarReward.push("You get 2x more DT")
-	if (aarMod.nguspV !== undefined) onlywarReward.push("you can auto-buy Dilation upgrades every second if you have at least " + shortenMoney(E('1e40000')) + " EP")
+	if (mod.udsp) onlywarReward.push("you can auto-buy Dilation upgrades every second if you have at least " + shortenMoney(E('1e40000')) + " EP")
 	onlywarReward = wordizeList(onlywarReward, true)
 
 	//ACHIEVEMENT ROW 14 (NG++)

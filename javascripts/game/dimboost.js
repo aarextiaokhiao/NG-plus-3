@@ -7,10 +7,10 @@ function getDimensionBoostPower(next, focusOn) {
 		if (player.challenges.includes("postc7")) ret = 4
 		if (player.currentChallenge == "postc7" || inQC(6) || player.timestudy.studies.includes(81)) ret = 10
 	}
-	if (player.boughtDims) ret += player.timestudy.ers_studies[4] + (next ? 1 : 0)
-	if (hasGalUpg(23) && ((!inNC(14) && player.currentChallenge != "postcngm3_3") || !inNGM(3) || inNGM(4)) && player.currentChallenge != "postcngm3_4") ret *= galMults.u23()
+	if (mod.rs) ret += player.timestudy.ers_studies[4] + (next ? 1 : 0)
+	if (hasGSacUpg(23) && ((!inNC(14) && player.currentChallenge != "postcngm3_3") || !inNGM(3) || inNGM(4)) && player.currentChallenge != "postcngm3_4") ret *= galMults.u23()
 	if (player.infinityUpgrades.includes("resetMult") && inNGM(2)) ret *= 1.2 + 0.05 * player.infinityPoints.max(1).log(10)
-	if (!player.boughtDims && hasAch("r101")) ret = ret * 1.01
+	if (!mod.rs && hasAch("r101")) ret = ret * 1.01
 	if (player.timestudy.studies.includes(83)) ret = E_pow(1.0004, player.totalTickGained).min(mod.ngpp ? 1/0 : 1e30).mul(ret);
 	if (player.timestudy.studies.includes(231)) ret = E_pow(Math.max(player.resets, 1), 0.3).mul(ret)
 	if (inNGM(2)) {
@@ -62,7 +62,7 @@ function setInitialDimensionPower() {
 	if (inNGM(3) && player.currentChallenge != "postc5") {
 		let mult = 30
 		if ((inNC(14) && inOnlyNGM(3)) || player.currentChallenge == "postcngm3_3") mult = 20
-		else if (hasGalUpg(14)) mult = 32
+		else if (hasGSacUpg(14)) mult = 32
 		if (inNC(6, 1)) mult *= Math.min(player.galaxies / 30, 1)
 		let ic3PowerTB = player.tickspeedBoosts * mult
 		let softCapStart = 1024
@@ -94,7 +94,7 @@ function maxBuyDimBoosts(manual) {
 			while (bought >= getShiftRequirement(r).amount) r++
 		} else {
 			var scaling = 4
-			if (inOnlyNGM(2) && hasGalUpg(21)) scaling = 6
+			if (inOnlyNGM(2) && hasGSacUpg(21)) scaling = 6
 			var firstReq = getShiftRequirement(scaling - player.resets)
 			var supersonicStart = getSupersonicStart()
 			r = (bought - firstReq.amount) / firstReq.mult + scaling + 1
@@ -121,7 +121,7 @@ function getShiftRequirement(bulk) {
 	var maxTier = inNC(4) ? 6 : 8
 	tier = Math.min(resetNum + 4, maxTier)
 	if (inNGM(4)) amount = 10
-	if (tier == maxTier) amount += Math.max(resetNum + (inOnlyNGM(2) && hasGalUpg(21) ? 2 : 4) - maxTier, 0) * mult
+	if (tier == maxTier) amount += Math.max(resetNum + (inOnlyNGM(2) && hasGSacUpg(21) ? 2 : 4) - maxTier, 0) * mult
 	var costStart = getSupersonicStart()
 	if (player.currentEternityChall == "eterc5") {
 		amount += Math.pow(resetNum, 3) + resetNum
@@ -144,9 +144,9 @@ function getDimboostCostIncrease () {
 	if (inNGM(4)) ret += 5
 	if (player.currentChallenge=="postcngmm_1") return ret
 	if (inNGM(2)) {
-		if (hasGalUpg(21)) ret -= 10
-		if (hasGalUpg(43) && inNGM(4)) {
-			e = hasGalUpg(46) ? galMults["u46"]() : 1
+		if (hasGSacUpg(21)) ret -= 10
+		if (hasGSacUpg(43) && inNGM(4)) {
+			e = hasGSacUpg(46) ? galMults["u46"]() : 1
 			ret -= e
 		}
 		if (player.infinityUpgrades.includes('dimboostCost')) ret -= 1
@@ -154,7 +154,7 @@ function getDimboostCostIncrease () {
 	} else {
 		if (hasMasteryStudy("t261")) ret -= 1
 		if (inNC(4)) ret += 5
-		if (player.boughtDims && hasAch('r101')) ret -= Math.min(8, Math.pow(player.eternityPoints.max(1).log(10), .25))
+		if (mod.rs && hasAch('r101')) ret -= Math.min(8, Math.pow(player.eternityPoints.max(1).log(10), .25))
 	}
 	if (player.timestudy.studies.includes(211)) ret -= tsMults[211]()
 	if (player.timestudy.studies.includes(222)) ret -= tsMults[222]()
@@ -165,7 +165,7 @@ function getSupersonicStart() {
 	if (inQC(5)) return 0
 	if (inNGM(2)) return 1/0
 	let r = 56e4
-	if (aarMod.nguspV && !aarMod.nguepV) r = 1e5
+	if (mod.udsp && !aarMod.nguepV) r = 1e5
 	if (mod.ngp3) {
 		if (hasMasteryStudy("t331")) r += 24e4
 		if (isNanoEffectUsed("supersonic_start")) if (tmp.nf.effects.supersonic_start) r += tmp.nf.effects.supersonic_start 

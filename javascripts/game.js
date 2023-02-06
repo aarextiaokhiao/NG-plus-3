@@ -115,7 +115,7 @@ function setupDimensionHTML() {
 		html += `<tr id='timeRow${d}' style='font-size:17px'>
 			<td id="timeD${d}" width="41%"></td>
 			<td id="timeAmount${d}"></td>
-			<td><button id="td${d}auto" style="width:70px; font-size: 10px; float: right; visibility: hidden" onclick="switchAutoEter('td${d}')" class="storebtn"></button></td>
+			<td><button id="td${d}Auto" style="width:70px; font-size: 10px; float: right; visibility: hidden" onclick="switchAutoEter('td${d}')" class="storebtn"></button></td>
 			<td width="10%"><button id="timeMax${d}" style="color:black; width:195px; height:30px" class="storebtn" align="right" onclick="buyTimeDimension(${d})">Cost: 10</button></td>
 		</tr>`
 	}
@@ -174,7 +174,7 @@ el("theme").onclick = function () {
 }
 
 function showTab(tabName, init) {
-	if (tabName == 'quantumtab' && !player.masterystudies) {
+	if (tabName == 'quantumtab' && !mod.ngp3) {
 		alert("Because Quantum was never fully developed due to the abandonment of development, you cannot access the Quantum tab in NG++. This is the definitive endgame.")
 		return
 	}
@@ -242,22 +242,6 @@ var clickedAntimatter
 function onAntimatterClick() {
 	clickedAntimatter++
 	if (clickedAntimatter >= 10) giveAchievement("This is NOT a clicker game!")
-}
-
-function getInfinitiedStat(){
-	return getInfinitied()
-}
-
-function getInfinitied() {
-	return nMx(nA(player.infinitied,player.infinitiedBank),0)
-}
-
-function getInfinitiedGain() {
-	let infGain=1
-	if (player.thisInfinityTime > 50 && hasAch("r87")) infGain = 250
-	if (player.timestudy.studies.includes(32)) infGain *= tsMults[32]()
-	if (hasAch("r133") && mod.ngpp) infGain = nM(player.dilation.dilatedTime.pow(.25).max(1), infGain)
-	return nA(infGain, hasAch("r87") && inNGM(2) ? 249 : 0)
 }
 
 function getEternitied() {
@@ -444,7 +428,7 @@ var ipMultPower = 2
 var ipMultCostIncrease = 10
 function getIPMultPower() {
 	let ret = ipMultPower
-	if (hasGalUpg(53)) ret += Math.pow(1.25, -15e4 / player.galacticSacrifice.galaxyPoints.log10())
+	if (hasGSacUpg(53)) ret += Math.pow(1.25, -15e4 / player.galacticSacrifice.galaxyPoints.log10())
 	return ret
 }
 function canBuyIPMult() {
@@ -467,7 +451,7 @@ function updateEternityUpgrades() {
 	el("eter1").className = (player.eternityUpgrades.includes(1)) ? "eternityupbtnbought" : (player.eternityPoints.gte(5)) ? "eternityupbtn" : "eternityupbtnlocked"
 	el("eter2").className = (player.eternityUpgrades.includes(2)) ? "eternityupbtnbought" : (player.eternityPoints.gte(10)) ? "eternityupbtn" : "eternityupbtnlocked"
 	el("eter3").className = (player.eternityUpgrades.includes(3)) ? "eternityupbtnbought" : (player.eternityPoints.gte(50e3)) ? "eternityupbtn" : "eternityupbtnlocked"
-	if (player.boughtDims) {
+	if (mod.rs) {
 		el("eterrow2").style.display = "none"
 		return
 	} else el("eterrow2").style.display = ""
@@ -683,7 +667,7 @@ function gainedEternityPoints() {
 	if (player.timestudy.studies.includes(121)) ret = ret.mul(((253 - averageEp.dividedBy(player.epmult).dividedBy(10).min(248).max(3))/5)) //x300 if tryhard, ~x60 if not
 	else if (player.timestudy.studies.includes(122)) ret = ret.mul(35)
 	else if (player.timestudy.studies.includes(123)) ret = ret.mul(Math.sqrt(1.39*player.thisEternity/10))
-	if (hasGalUpg(51)) ret = ret.mul(galMults.u51())
+	if (hasGSacUpg(51)) ret = ret.mul(galMults.u51())
 	if (mod.ngp3) {
 		if (bigRipped()) {
 			if (isBigRipUpgradeActive(5)) ret = ret.mul(brSave.spaceShards.max(1))
@@ -788,16 +772,16 @@ function calcSacrificeBoost() {
 	if (player.challenges.includes("postc2") || (inNGM(3) && player.currentChallenge == "postc2")) {
 		pow = 0.01
 		if (player.timestudy.studies.includes(228)) pow = 0.013
-		else if (hasAch("r97") && player.boughtDims) pow = 0.012
+		else if (hasAch("r97") && mod.rs) pow = 0.012
 		else if (hasAch("r88")) pow = 0.011
 		ret = player.firstAmount.div(player.sacrificed.max(1)).pow(pow).max(1)
 	} else if (!inNC(11)) {
 		pow = 2
 		if (hasAch("r32")) pow += inNGM(3) ? 2 : 0.2
-		if (hasAch("r57")) pow += player.boughtDims ? 0.3 : 0.2 //this upgrade was too OP lol
+		if (hasAch("r57")) pow += mod.rs ? 0.3 : 0.2 //this upgrade was too OP lol
 		ret = E_pow(Math.max(player.firstAmount.e/10.0, 1) / Math.max(player.sacrificed.e/10.0, 1), pow).max(1)
 	} else ret = player.firstAmount.pow(0.05).dividedBy(player.sacrificed.pow(inNGM(4)?0.05:0.04).max(1)).max(1)
-	if (player.boughtDims) ret = ret.pow(1 + Math.log(1 + Math.log(1 + player.timestudy.ers_studies[1] / 5)))
+	if (mod.rs) ret = ret.pow(1 + Math.log(1 + Math.log(1 + player.timestudy.ers_studies[1] / 5)))
 	return ret
 }
 
@@ -812,16 +796,16 @@ function calcTotalSacrificeBoost(next) {
 	if (player.challenges.includes("postc2") || (inNGM(3) && player.currentChallenge == "postc2")) {
 		pow = 0.01
 		if (player.timestudy.studies.includes(228)) pow = 0.013
-		else if (hasAch("r97") && player.boughtDims) pow = 0.012
+		else if (hasAch("r97") && mod.rs) pow = 0.012
 		else if (hasAch("r88")) pow = 0.011
 		ret = player.sacrificed.pow(pow).max(1)
 	} else if (!inNC(11)) {
 		pow = 2
 		if (hasAch("r32")) pow += inNGM(3) ? 2 : 0.2
-		if (hasAch("r57")) pow += player.boughtDims ? 0.3 : 0.2 //this upgrade was too OP lol
+		if (hasAch("r57")) pow += mod.rs ? 0.3 : 0.2 //this upgrade was too OP lol
 		ret = E_pow(Math.max(player.sacrificed.e/10.0, 1), pow)
 	} else ret = player.chall11Pow 
-	if (player.boughtDims) ret = ret.pow(1 + Math.log(1 + Math.log(1 + (player.timestudy.ers_studies[1] + (next ? 1 : 0))/ 5)))
+	if (mod.rs) ret = ret.pow(1 + Math.log(1 + Math.log(1 + (player.timestudy.ers_studies[1] + (next ? 1 : 0))/ 5)))
 	return ret
 }
 
@@ -1225,7 +1209,7 @@ function updateHotkeys() {
 	if (hasAch("ng3p45")) html += ", U for unstabilize all quarks"
 	if (hasAch("ng3p51")) html += ", B for Big Rip, F to fundament"
 	html += "."
-	if (player.boughtDims) html += "<br>You can hold shift while buying time studies to buy all up until that point, see each study's number, and save study trees."
+	if (mod.rs) html += "<br>You can hold shift while buying time studies to buy all up until that point, see each study's number, and save study trees."
 	html += "<br>Hotkeys do not work while holding control."
 	el("hotkeysDesc").innerHTML = html
 }
@@ -1423,7 +1407,7 @@ function eternity(force, auto, dil, presetLoad) {
 	//Achievements
 	giveAchievement("Time is relative")
 	if (player.thisEternity < 2) giveAchievement("Eternities are the new infinity")
-	if (player.infinitied < 10 && !force && !player.boughtDims) giveAchievement("Do you really need a guide for this?");
+	if (player.infinitied < 10 && !force && !mod.rs) giveAchievement("Do you really need a guide for this?");
 	if (Decimal.round(player.replicanti.amount) == 9) giveAchievement("We could afford 9");
 	if (player.dimlife && !force) giveAchievement("8 nobody got time for that")
 	if (player.dead && !force) giveAchievement("You're already dead.")
@@ -1566,14 +1550,7 @@ function canQuickBigRip() {
 }
 
 function idAutoTick() {
-	if (getEternitied() > 10 && player.currentEternityChall !== "eterc8") {
-		for (var i=1;i<getEternitied()-9 && i < 9; i++) {
-			if (player.infDimBuyers[i-1]) {
-				buyMaxInfDims(i, true)
-				buyManyInfinityDimension(i, true)
-			}
-		}
-	}
+	maxAllID(true)
 }
 
 function replicantiAutoTick() {
@@ -1601,8 +1578,8 @@ function failedEC12Check(){
 }
 
 function updateNGpp17Reward(){
-	el('epmultauto').style.display=hasAch("ngpp17")?"":"none"
-	for (i=1;i<9;i++) el("td"+i+'auto').style.visibility=hasAch("ngpp17")?"visible":"hidden"
+	el('epmultAuto').style.display=hasAch("ngpp17")?"":"none"
+	for (i=1;i<9;i++) el("td"+i+'Auto').style.visibility=hasAch("ngpp17")?"visible":"hidden"
 	el('togglealltimedims').style.visibility=hasAch("ngpp17")?"visible":"hidden"
 }
 
@@ -1630,8 +1607,9 @@ function notifyGhostifyMilestones(){
 
 function dilationStuffABTick(){
 	var canAutoUpgs = canAutoDilUpgs()
-	el('dilUpgsauto').style.display = canAutoUpgs ? "" : "none"
-	el('distribEx').style.display = hasAch("ngud14") && aarMod.nguspV !== undefined ? "" : "none"
+	el('rebuyupgAuto').style.display=speedrunMilestonesReached>6?"":"none"
+	el('dilUpgsAuto').style.display = canAutoUpgs ? "" : "none"
+	el('distribEx').style.display = hasAch("ngud14") && mod.udsp ? "" : "none"
 	if (canAutoUpgs && player.autoEterOptions.dilUpgs) autoBuyDilUpgs()
 
 	el("dilationTabbtn").style.display = hasDilStudy(1) ? "table-cell" : "none"
@@ -1916,8 +1894,8 @@ function giveBlackHolePowerUpdating(diff){
 }
 
 function freeTickspeedUpdating(){
-	if (player.boughtDims) ERFreeTickUpdating()
-	if (player.timeShards.gt(player.tickThreshold) && !player.boughtDims) nonERFreeTickUpdating()
+	if (mod.rs) ERFreeTickUpdating()
+	if (player.timeShards.gt(player.tickThreshold) && !mod.rs) nonERFreeTickUpdating()
 }
 
 function replicantiIncrease(diff) {
@@ -1931,7 +1909,7 @@ function replicantiIncrease(diff) {
 }
 
 function IPMultBuyUpdating() {
-	if (player.infMultBuyer && (!player.boughtDims || canBuyIPMult())) {
+	if (player.infMultBuyer && (!mod.rs || canBuyIPMult())) {
 		var dif = Math.floor(player.infinityPoints.div(player.infMultCost).log(mod.ngep?4:10)) + 1
 		if (dif > 0) {
 			player.infMult = player.infMult.mul(E_pow(getIPMultPower(), dif))
@@ -2392,7 +2370,7 @@ function gameLoop(diff) {
 
 	if (player.break) el("iplimit").style.display = "inline"
 	else el("iplimit").style.display = "none"
-	el("IPPeakDiv").style.display=(player.break&&player.boughtDims)?"":"none"
+	el("IPPeakDiv").style.display=(player.break&&mod.rs)?"":"none"
 
 	dimensionButtonDisplayUpdating()
 	dimensionPageTabsUpdating()
@@ -2824,7 +2802,7 @@ function showChallengesTab(tabName) {
 }
 
 function showEternityTab(tabName, init) {
-	if (tabName == "timestudies" && player.boughtDims) tabName = "ers_" + tabName
+	if (tabName == "timestudies" && mod.rs) tabName = "ers_" + tabName
 	//iterate over all elements in div_tab class. Hide everything that's not tabName and show tabName
 	var tabs = document.getElementsByClassName('eternitytab');
 	var tab;

@@ -120,7 +120,7 @@ function checkReplicantiBasedReqAchieve(){
 	if (player.replicanti.galaxies >= 10 && player.thisInfinityTime < 150) giveAchievement("The swarm");
 	if (player.replicanti.galaxies >= 180 * player.galaxies && player.galaxies >= 1) giveAchievement("Popular music")
 	if (player.replicanti.amount.gt(E("1e20000"))) giveAchievement("When will it be enough?")
-	if (player.boughtDims && player.replicanti.amount.gt("1e1000000")) giveAchievement("Do you really need a guide for this?");
+	if (mod.rs && player.replicanti.amount.gt("1e1000000")) giveAchievement("Do you really need a guide for this?");
 	if (player.replicanti.amount.gt(E("1e100000"))) giveAchievement("It will never be enough")
 }
 

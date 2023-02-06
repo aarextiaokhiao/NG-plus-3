@@ -410,7 +410,7 @@ function setAarexModIfUndefined(){
 	if (aarMod.tabsSave === undefined) aarMod.tabsSave = {on: false}
 	if (aarMod.noFooter == undefined) aarMod.noFooter = player.options.theme == "Aarex's Modifications" || player.options.theme == "Aarex's Mods II"
 
-	if (player.masterystudies !== undefined && aarMod.newGame3PlusVersion === undefined) {
+	if (mod.ngp3 && aarMod.newGame3PlusVersion === undefined) {
 		forceHardReset = true
 		reset_game()
 		forceHardReset = false
@@ -477,7 +477,7 @@ function setSomeEterEraStuff2(){
 }
 
 function dov7tov10(){
-	var inERS=!(!player.boughtDims)
+	var inERS=mod.ers
 	if (player.version > 7 && inERS && !aarMod.ersVersion) player.version = 7
 	if (player.version < 9) {
 		player.version = 9
@@ -526,7 +526,7 @@ function dov7tov10(){
 }
 
 function doNGM1Versions(){
-	if (aarMod.newGameMinusVersion === undefined && !player.boughtDims) {
+	if (aarMod.newGameMinusVersion === undefined && !mod.rs) {
 		if (checkNGM() > 0) {
 			aarMod.newGameMinusVersion = (aarMod.newGameMinusUpdate !== undefined ? aarMod.newGameMinusUpdate : player.newGameMinusUpdate === undefined ? checkNGM() : 1.1)
 			delete aarMod.newGameMinusUpdate
@@ -716,7 +716,7 @@ function doQuantumRestore(){
 	if (aarMod.newGame3PlusVersion < 1.01) aarMod.dbPower = E(getDimensionBoostPower())
 	if ((aarMod.newGame3PlusVersion && !player.masterystudies) || aarMod.newGame3PlusVersion < 1.02) player.masterystudies = []
 	if (aarMod.newGame3PlusVersion < 1.21) player.replicanti.chanceCost = E_pow(1e15, player.replicanti.chance * 100 + 9)
-	if ((quantumRestore && player.masterystudies) || aarMod.newGame3PlusVersion < 1.5) {
+	if ((quantumRestore && mod.ngp3) || aarMod.newGame3PlusVersion < 1.5) {
 		quSave.usedQuarks = {
 			r: 0,
 			g: 0,
@@ -728,7 +728,7 @@ function doQuantumRestore(){
 			b: 0
 		}
 	}
-	if ((quantumRestore && player.masterystudies) || aarMod.newGame3PlusVersion < 1.51) {
+	if ((quantumRestore && mod.ngp3) || aarMod.newGame3PlusVersion < 1.51) {
 		quSave.gluons = {
 			rg: 0,
 			gb: 0,
@@ -1074,13 +1074,13 @@ function doNGm2v11tov3(){
 		delete player.galaxyPoints
 	}
 	if (aarMod.newGameMinusMinusVersion < 1.21) {
-		if (hasGalUpg(11)) for (d=1;d<8;d++) {
+		if (hasGSacUpg(11)) for (d=1;d<8;d++) {
 			var name = dimTiers[d]
 			player[name+"Cost"] = Decimal.div(player[name+"Cost"], 10)
 		}
 	}
 	if (aarMod.newGameMinusMinusVersion < 1.22) {
-		if (hasGalUpg(11)) for (d=1;d<8;d++) {
+		if (hasGSacUpg(11)) for (d=1;d<8;d++) {
 			var name = dimTiers[d]
 			player[name+"Cost"] = Decimal.div(player[name+"Cost"], 10)
 		}
@@ -1095,7 +1095,7 @@ function doNGm2v11tov3(){
 		}
 	}
 	if (aarMod.newGameMinusMinusVersion < 1.26) {
-		if (hasGalUpg(11)) for (d=1;d<8;d++) {
+		if (hasGSacUpg(11)) for (d=1;d<8;d++) {
 			var name = dimTiers[d]
 			player[name+"Cost"] = Decimal.mul(player[name+"Cost"], 100)
 		}
@@ -1224,7 +1224,7 @@ function doERSv0tov102(){
 				if (d<8) player.dimlife=false
 			}
 		}
-		player.boughtDims=[]
+		mod.rs=[]
 		player.timestudy.ers_studies=[null]
 		for (s=1;s<7;s++) player.timestudy.ers_studies[s]=player.timestudy.studies[s]?player.timestudy.studies[s]:0
 		player.timestudy.studies=[]
@@ -1313,7 +1313,7 @@ function doNGM4v0tov2111(){
 }
 
 function doNGSPUpdatingVersion(){
-	if (aarMod.nguspV !== undefined) {
+	if (mod.udsp) {
 		if (player.blackholeDimension5 === undefined) for (var d=5;d<9;d++) player["blackholeDimension"+d] = {
 			cost: blackholeDimStartCosts[d],
 			amount: 0,
@@ -1385,8 +1385,10 @@ function updateVersionsONLOAD(){
 }
 
 function doNGp3Init2(){
-	quantumed = mod.ngpp && (ghostified || quSave.times > 0)
+	el('versionMod').textContent = modAbbs()
+	el('versionDesc').style.display = mod.ngp3 ? "" : "none"
 
+	quantumed = mod.ngpp && (ghostified || quSave.times > 0)
 	updateTemp() //compromised due to "tmp.sacPow" achievement check being bugged
 	if (mod.ngp3) {
 		setupMasteryStudies()
@@ -1433,9 +1435,7 @@ function setConfirmationsDisplay(){
 	el("confirmations").style.display = (player.resets > 4 || player.galaxies > 0 || gSacrificed() || player.infinitied !== 0 || player.eternities !== 0 || quantumed) ? "inline-block" : "none"
 	el("confirmation").style.display = (player.resets > 4 || player.infinitied > 0 || player.eternities !== 0 || quantumed) ? "inline-block" : "none"
 	el("sacrifice").style.display = (player.resets > 4 || player.infinitied > 0 || player.eternities !== 0 || quantumed) ? "inline-block" : "none"
-	var gSacDisplay = !inNGM(2) ? "none" : player.galaxies > 0 || player.galacticSacrifice.times > 0 || player.infinitied > 0 || player.eternities !== 0 || quantumed ? "inline-block" : "none"
-	el("gConfirmation").style.display = gSacDisplay
-	el("gSacrifice").style.display = gSacDisplay
+	el("gConfirmation").style.display = gSacrificeUnl() ? "" : "none"
 	el("challengeconfirmation").style.display = (player.challenges.includes("challenge1") || player.infinitied !== 0 || player.eternities !== 0 || quantumed) ? "inline-block" : "none"
 	el("eternityconf").style.display = (player.eternities !== 0 || quantumed) ? "inline-block" : "none"
 
@@ -1609,12 +1609,11 @@ function updateNGp3DisplayStuff(){
 	el('reward4disable').textContent="4.5 hours reward: O"+(quSave.disabledRewards[4]?"FF":"N")
 	el('reward11disable').textContent="33.3 mins reward: O"+(quSave.disabledRewards[11]?"FF":"N")
 	el('reward27disable').textContent="10 seconds reward: O"+(quSave.disabledRewards[27]?"FF":"N")
-	el('rebuyupgauto').textContent="Rebuyable upgrade auto: O"+(player.autoEterOptions.rebuyupg?"N":"FF")
-	el('dilUpgsauto').textContent="Auto-buy dilation upgrades: O"+(player.autoEterOptions.dilUpgs?"N":"FF")
-	el('metaboostauto').textContent="Meta-boost auto: O"+(player.autoEterOptions.metaboost?"N":"FF")
+	el('rebuyupgAuto').textContent="Auto"+(mod.udsp?"(repeatable): ":": ")+(player.autoEterOptions.rebuyupg?"ON":"OFF")
+	el('dilUpgsAuto').textContent="Auto: "+(player.autoEterOptions.dilUpgs?"ON":"OFF")
+	el('metaboostAuto').textContent="Auto: "+(player.autoEterOptions.metaboost?"ON":"OFF")
 	el('priorityquantum').value=formatValue("Scientific", E(quSave.autobuyer.limit), 2, 0)
-	el('sacrificeAuto').textContent="Auto: O"+(quSave.autoOptions.sacrifice?"N":"FF")
-	el("produceQuarkCharge").innerHTML="S" + (nfSave.producingCharge ? "top" : "tart") + " production of nanocharge." + (nfSave.producingCharge ? "" : "<br>(You will not get pilons when you do this.)")
+	el('sacrificeAuto').textContent="Auto: "+(quSave.autoOptions.sacrifice?"ON":"OFF")
 	el("ratio_r").value = quSave.assignAllRatios.r
 	el("ratio_g").value = quSave.assignAllRatios.g
 	el("ratio_b").value = quSave.assignAllRatios.b
@@ -1633,18 +1632,16 @@ function setSomeQuantumAutomationDisplay(){
 	var suffix = "NG" + (mod.ngpp ? "pp" : "ud")
 	el("uhDiv" + suffix).appendChild(el("Universal harmony"))
 	el("feDiv" + suffix).appendChild(el("In the grim darkness of the far endgame"))
-	el("dil14desc").textContent = aarMod.nguspV ? "The TP multiplier upgrade is more powerful." : "Increase the exponent of the TP formula."
-	el("dil52").style["font-size"] = !mod.ngp3 || aarMod.nguspV !== undefined ? "10px" : "9px"
-	el("dil52formula").style.display = !mod.ngp3 || aarMod.nguspV !== undefined ? "none" : ""
-	el("exDilationDesc").innerHTML = aarMod.nguspV ? 'making galaxies <span id="exDilationBenefit" style="font-size:25px; color: black">0</span>% stronger in dilation.' : 'making dilation <span id="exDilationBenefit" style="font-size:25px; color: black">0</span>% less severe.'
+	el("dil14desc").textContent = mod.udsp ? "The TP multiplier upgrade is more powerful." : "Increase the exponent of the TP formula."
+	el("dil52").style["font-size"] = !mod.ngp3 || mod.udsp ? "10px" : "9px"
+	el("dil52formula").style.display = !mod.ngp3 || mod.udsp ? "none" : ""
+	el("exDilationDesc").innerHTML = mod.udsp ? 'making galaxies <span id="exDilationBenefit" style="font-size:25px; color: black">0</span>% stronger in dilation.' : 'making dilation <span id="exDilationBenefit" style="font-size:25px; color: black">0</span>% less severe.'
 	el("metaAntimatterEffectType").textContent=inQC(3) ? "multiplier on all Infinity Dimensions" : "extra multiplier per Dimension Boost"
 	if (mod.ngpp) {
-		el('epmultauto').textContent="Auto: O"+(player.autoEterOptions.epmult?"N":"FF")
-		for (i=1;i<9;i++) el("td"+i+'auto').textContent="Auto: O"+(player.autoEterOptions["td"+i]?"N":"FF")
+		el('epmultAuto').textContent="Auto: O"+(player.autoEterOptions.epmult?"N":"FF")
+		for (i=1;i<9;i++) el("td"+i+'Auto').textContent="Auto: O"+(player.autoEterOptions["td"+i]?"N":"FF")
 	}
 	el('replicantibulkmodetoggle').textContent="Mode: "+(player.galaxyMaxBulk?"Max":"Singles")
-	el('versionMod').textContent = modAbbs()
-	el('versionDesc').style.display = mod.ngp3 ? "" : "none"
 
 	var autoAssignUnl = quSave?.reachedInfQK
 	el('autoAssign').style.display = autoAssignUnl ? "" : "none"
@@ -1653,7 +1650,7 @@ function setSomeQuantumAutomationDisplay(){
 }
 
 function setReplAutoDisplay(){
-	el('replicantigalaxypowerdiv').style.display=hasAch("r106")&&player.boughtDims?"":"none"
+	el('replicantigalaxypowerdiv').style.display=hasAch("r106")&&mod.rs?"":"none"
 	el("dilationeterupgrow").style.display=hasDilStudy(1)&&mod.ngud?"":"none"
 }
 
@@ -1704,7 +1701,7 @@ function onLoad(noOffline) {
 	updateInQCs()
 	doNGp3Init2()
 
-	for (s = 0; s < (player.boughtDims ? 4 : 3); s++) toggleCrunchMode(true)
+	for (s = 0; s < (mod.rs ? 4 : 3); s++) toggleCrunchMode(true)
 	updateAutoEterMode()
 	setConfirmationsDisplay()
 	setOptionsDisplaysStuff1()
@@ -1748,20 +1745,16 @@ function onLoad(noOffline) {
 	updateHeaders()
 	setAchieveTooltip()
 	updateAnimationBtns(true)
-	if (player.boughtDims) {
+	if (mod.rs) {
 			if (el("timestudies").style.display=="block") showEternityTab("ers_timestudies",true)
 			updateGalaxyControl()
 	} else if (el("ers_timestudies").style.display=="block") showEternityTab("timestudies",true)
-	poData=metaSave["presetsOrder"+(player.boughtDims?"_ers":"")]
+	poData=metaSave["presetsOrder"+(mod.rs?"_ers":"")]
 	setAndMaybeShow('bestTP',hasAch("ng3p18") || hasAch("ng3p37"),'"Your best"+(ghostified ? "" : " ever")+" Tachyon particles"+(ghostified ? " in this Fundament" : "")+" was "+shorten(player.dilation.bestTP)+"."')
 	setAndMaybeShow('bestTPOverGhostifies',(hasAch("ng3p18") || hasAch("ng3p37")) && ghostified,'"Your best-ever Tachyon particles was "+shorten(player.dilation.bestTPOverGhostifies)+"."')
-	el('dilationmode').style.display=speedrunMilestonesReached>4?"":"none"
-	el('rebuyupgmax').style.display=speedrunMilestonesReached<26&&mod.ngp3?"":"none"
-	el('rebuyupgauto').style.display=speedrunMilestonesReached>6?"":"none"
-	el('toggleallmetadims').style.display=speedrunMilestonesReached>7?"":"none"
-	el('metaboostauto').style.display=speedrunMilestonesReached>14?"":"none"
+
 	el("maxTimeDimensions").style.display=removeMaxTD?"none":""
-	el("metaMaxAllDiv").style.display=removeMaxMD?"none":""
+	el("metaMaxAll").style.display=removeMaxMD?"none":""
 	var removeMaxTD=false
 	var removeMaxMD=false
 	if (hasAch("ngpp17")) {
@@ -1984,7 +1977,7 @@ function conToDeciLateEter(){
 		if (quSave) {
 			if (quSave.last10) for (i=0;i<10;i++) quSave.last10[i][1] = E(quSave.last10[i][1])
 			quSave.quarks = E(quSave.quarks);
-			if (!player.masterystudies) quSave.gluons = (quSave.gluons ? quSave.gluons.rg !== null : true) ? E(0) : E(quSave.gluons);
+			if (!mod.ngp3) quSave.gluons = (quSave.gluons ? quSave.gluons.rg !== null : true) ? E(0) : E(quSave.gluons);
 			quSave.neutronstar.quarks = E(quSave.neutronstar.quarks);
 			quSave.neutronstar.metaAntimatter = E(quSave.neutronstar.metaAntimatter);
 			quSave.neutronstar.dilatedTime = E(quSave.neutronstar.dilatedTime);
@@ -2025,7 +2018,7 @@ function conToDeciLateEter(){
 	player.eternityBuyer.limit = E(player.eternityBuyer.limit)
 	player.eternityChallGoal = E(player.eternityChallGoal)
 	player.replicanti.amount = E(player.replicanti.amount)
-	if (player.boughtDims) {
+	if (mod.rs) {
 		player.replicanti.limit = E(player.replicanti.limit)
 		player.replicanti.newLimit = E(player.replicanti.newLimit)
 		if (player.darkMatter) player.darkMatter = E(player.darkMatter)
@@ -2174,7 +2167,7 @@ function loadAutoBuyerSettings() {
 		el("overGalaxiesTDBoost").value = player.autobuyers[14].overXGals
 		el("bulkTickBoost").value = player.autobuyers[14].bulk
 	}
-	if (player.boughtDims) el("requireIPPeak").checked = player.autobuyers[11].requireIPPeak;
+	if (mod.rs) el("requireIPPeak").checked = player.autobuyers[11].requireIPPeak;
 	if (mod.ngp3) {
 		el("prioritydil").value = player.eternityBuyer.dilationPerAmount
 		if (quSave && quSave.autobuyer) {

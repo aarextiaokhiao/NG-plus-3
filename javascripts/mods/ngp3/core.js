@@ -1,6 +1,6 @@
 //VERSION: 2.31
 let ngp3_ver = 2.31
-let ngp3_build = 20230204
+let ngp3_build = 20230205
 function doNGP3Updates() {
 	if (!aarMod.ngp3_build) aarMod.ngp3_build = 0
 	if (aarMod.ngp3_build < 20221230) quSave.multPower = 0
@@ -77,7 +77,7 @@ function toggleAutoTT() {
 //v1.8
 const MAX_DIL_UPG_PRIORITIES = [4, 3, 1, 2]
 function doAutoMetaTick() {
-	if (!player.masterystudies) return
+	if (!mod.ngp3) return
 	if (player.autoEterOptions.rebuyupg && speedrunMilestonesReached > 6) {
 		if (speedrunMilestonesReached > 25) maxAllDilUpgs()
 		else for (var i = 0; i < MAX_DIL_UPG_PRIORITIES.length; i++) {
@@ -101,7 +101,7 @@ function toggleAllMetaDims() {
 		id++
 	}
 	for (id = 1; id < stop; id++) player.autoEterOptions["md" + id] = turnOn
-	el("metaMaxAllDiv").style.display = turnOn && stop > 7 && speedrunMilestonesReached > 27 ? "none" : ""
+	el("metaMaxAll").style.display = turnOn && stop > 7 && speedrunMilestonesReached > 27 ? "none" : ""
 }
 
 //v1.99799
@@ -593,6 +593,10 @@ function doPerSecondNGP3Stuff(){
 	updateQuantumTabDisplays()
 	updateQuarkDisplay()
 	el('toggleautoquantummode').style.display = quSave?.reachedInfQK ? "" : "none"
+	el('dilationmode').style.display=speedrunMilestonesReached>4?"":"none"
+	el('rebuyupgmax').style.display=speedrunMilestonesReached<26?"":"none"
+	el('toggleallmetadims').style.display=speedrunMilestonesReached>7?"":"none"
+	el('metaboostAuto').style.display=speedrunMilestonesReached>14?"":"none"
 
 	if (!mod.ngp3) return
 

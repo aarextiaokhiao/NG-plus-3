@@ -420,7 +420,7 @@ function updateQuarksTabOnUpdate(mode) {
 }
 
 function updateGluonsTabOnUpdate(mode) {
-	if (!player.masterystudies) return
+	if (!mod.ngp3) return
 	else if (!quSave.gluons.rg) {
 		quSave.gluons = {
 			rg: E(0),

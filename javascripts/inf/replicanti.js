@@ -14,7 +14,7 @@ function replicantiGalaxyBulkModeToggle() {
 function getReplMult(next) {
 	let exp = 2
 	if (inNGM(2)) exp = Math.max(2, Math.pow(player.galaxies, .4))
-	if (player.boughtDims) {
+	if (mod.rs) {
 		exp += (player.timestudy.ers_studies[3] + (next ? 1 : 0)) / 2
 		if (hasAch('r108')) exp *= 1.09;
 	}
@@ -48,19 +48,19 @@ function upgradeReplicantiInterval() {
 		player.replicanti.intervalCost = E_pow("1e800", x)
 	}
 	else player.replicanti.intervalCost = player.replicanti.intervalCost.mul(1e10)
-	if (!isIntervalAffordable()) player.replicanti.interval = (player.timestudy.studies.includes(22) || player.boughtDims ? 1 : 50)
+	if (!isIntervalAffordable()) player.replicanti.interval = (player.timestudy.studies.includes(22) || mod.rs ? 1 : 50)
 	if (player.currentEternityChall == "eterc8") player.eterc8repl -= 1
 	el("eterc8repl").textContent = "You have " + player.eterc8repl + " purchases left."
 }
 
 function getReplicantiLimit() {
-	if (player.boughtDims) return player.replicanti.limit
+	if (mod.rs) return player.replicanti.limit
 	return Number.MAX_VALUE
 }
 
 function isIntervalAffordable() {
 	if (hasMasteryStudy("t271")) return true
-	return player.replicanti.interval > (player.timestudy.studies.includes(22) || player.boughtDims ? 1 : 50)
+	return player.replicanti.interval > (player.timestudy.studies.includes(22) || mod.rs ? 1 : 50)
 }
 
 function getRGCost(offset = 0, costChange) {
@@ -191,7 +191,7 @@ function replicantiGalaxyAutoToggle() {
 function getReplSpeed() {
 	let inc = .2
 	let exp = 308
-	if (player.dilation.upgrades.includes('ngpp1') && (!aarMod.nguspV || aarMod.nguepV)) {
+	if (player.dilation.upgrades.includes('ngpp1') && (!mod.udsp || aarMod.nguepV)) {
 		let expDiv = 10
 		if (mod.ngp3) expDiv = 9
 		let x = 1 + player.dilation.dilatedTime.max(1).log10() / expDiv
@@ -216,14 +216,14 @@ function getReplicantiInterval() {
 
 	interval = E(interval)
 	if (mod.ngud) interval = interval.div(getBlackholePowerEffect().pow(1/3))
-	if (player.dilation.upgrades.includes('ngpp1') && aarMod.nguspV && !aarMod.nguepV) interval = interval.div(player.dilation.dilatedTime.max(1).pow(0.05))
+	if (player.dilation.upgrades.includes('ngpp1') && mod.udsp && !aarMod.nguepV) interval = interval.div(player.dilation.dilatedTime.max(1).pow(0.05))
 	if (hasMasteryStudy("t332")) interval = interval.div(getMTSMult(332))
 	return interval
 }
 
 function getReplicantiFinalInterval() {
 	let x = getReplicantiInterval()
-	if (player.replicanti.amount.gt(Number.MAX_VALUE)) x = player.boughtDims ? Math.pow(hasAch("r107") ? Math.max(player.replicanti.amount.log(2)/1024,1) : 1, -.25) * x.toNumber() : E_pow(tmp.rep.speeds.inc, Math.max(player.replicanti.amount.log10() - tmp.rep.speeds.exp, 0)/tmp.rep.speeds.exp).mul(x)
+	if (player.replicanti.amount.gt(Number.MAX_VALUE)) x = mod.rs ? Math.pow(hasAch("r107") ? Math.max(player.replicanti.amount.log(2)/1024,1) : 1, -.25) * x.toNumber() : E_pow(tmp.rep.speeds.inc, Math.max(player.replicanti.amount.log10() - tmp.rep.speeds.exp, 0)/tmp.rep.speeds.exp).mul(x)
 	return x
 }
 

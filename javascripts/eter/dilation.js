@@ -74,14 +74,14 @@ function getDilPower() {
 
 function getDilUpgPower(x) {
 	let r = player.dilation.rebuyables[x] || 0
-	if (aarMod.nguspV) r += exDilationUpgradeStrength(x)
+	if (mod.udsp) r += exDilationUpgradeStrength(x)
 	else if (mod.ngud && !mod.udp) r *= exDilationUpgradeStrength(x)
 	return r
 }
 
 function getDil3Power() {
 	let ret = 3
-	if (aarMod.nguspV) ret += getDilUpgPower(4) / 2
+	if (mod.udsp) ret += getDilUpgPower(4) / 2
 	return ret
 }
 
@@ -92,7 +92,7 @@ function getDilationTPFormulaExp(disable){
 function getDilExp(disable) {
 	let ret = 1.5
 	if (mod.ngep) ret += .001
-	if (mod.ngpp && !aarMod.nguspV) ret += getDilUpgPower(4) / 4
+	if (mod.ngpp && !mod.udsp) ret += getDilUpgPower(4) / 4
 	if (mod.ngp3) {
 		if ((!bigRipped() || hasRipUpg(11)) && hasMasteryStudy("d13") && disable != "TU3") ret += getTreeUpgradeEffect(2)
 		if (hasNB(1) && disable != "neutrinos") ret += tmp.nb[1]
@@ -156,7 +156,7 @@ function dilates(x, m) {
 	if (player.dilation.active && m != 2 && (m != "meta" || !hasAch("ng3p63") || !inQC(0))) {
 		e *= dilationPowerStrength()
 		if (mod.ngmu) e = 0.9 + Math.min((player.dilation.dilatedTime.add(1).log10()) / 1000, 0.05)
-		if (mod.ngud && !mod.udp && !aarMod.nguspV) e += exDilationBenefit() * (1-e)
+		if (mod.ngud && !mod.udp && !mod.udsp) e += exDilationBenefit() * (1-e)
 		if (player.dilation.upgrades.includes(9)) e *= 1.05
 		if (player.dilation.rebuyables[5]) e += 0.0025 * (1 - 1 / Math.pow(player.dilation.rebuyables[5] + 1 , 1 / 3))
 		a = true
@@ -294,11 +294,11 @@ function isDilUpgUnlocked(id) {
 	}
 	if (id.split("ngud")[1]) {
 		let r = mod.ngud
-		if (id == "ngud2") r = r && aarMod.nguspV === undefined
+		if (id == "ngud2") r = r && !mod.udsp
 		return r
 	}
 	if (id.split("ngusp")[1]) {
-		let r = aarMod.nguspV !== undefined
+		let r = mod.udsp
 		if (id != "ngusp1") r = r && hasDilStudy(6)
 		return r
 	}
@@ -312,7 +312,7 @@ function getDilUpgCost(id) {
 	let ngpp = id.split("ngpp")[1]
 	if (ngpp) {
 		ngpp = parseInt(ngpp)
-		if (ngpp >= 3 && aarMod.nguspV !== undefined) cost = DIL_UPG_COSTS[id + "_usp"]
+		if (ngpp >= 3 && mod.udsp) cost = DIL_UPG_COSTS[id + "_usp"]
 	}
 	return cost
 }
@@ -321,7 +321,7 @@ function getRebuyableDilUpgCost(id) {
 	var costGroup = DIL_UPG_COSTS["r"+id]
 	var amount = player.dilation.rebuyables[id] || 0
 	let cost = E(costGroup[0]).mul(E_pow(costGroup[1],amount))
-	if (aarMod.nguspV) {
+	if (mod.udsp) {
 		if (id > 3) cost = cost.mul(1e7)
 		if (id > 2 && cost.gte(1e25)) cost = pow10(Math.pow(cost.log10() / 2.5 - 5, 2))
 	} else if (id > 2) {
@@ -357,7 +357,7 @@ function buyDilationUpgrade(pos, max, isId) {
 
 		player.dilation.dilatedTime = player.dilation.dilatedTime.sub(cost)
 		player.dilation.upgrades.push(id)
-		if (aarMod.nguspV !== undefined && !player.dilation.autoUpgrades.includes(id)) player.dilation.autoUpgrades.push(id)
+		if (mod.udsp && !player.dilation.autoUpgrades.includes(id)) player.dilation.autoUpgrades.push(id)
 		if (id == 4 || id == "ngmm1") player.dilation.freeGalaxies *= 2 // Double the current galaxies
 		if (id == 10 && mod.ngp3) quSave.wasted = false
 		if (id == "ngpp3" && mod.ngp3) {
@@ -460,7 +460,7 @@ function getFreeGalaxyThresholdIncrease(){
 	let thresholdMult = inQC(5) ? Math.pow(10, 2.8) : !canBuyGalaxyThresholdUpg() ? 1.35 : 1.35 + 3.65 * Math.pow(0.8, getDilUpgPower(2))
 	if (hasBU(12)) thresholdMult -= tmp.blu[12]
 	if (mod.ngud) thresholdMult -= Math.min(.1 * exDilationUpgradeStrength(2), 0.2)
-	if (thresholdMult < 1.15 && aarMod.nguspV !== undefined) thresholdMult = 1.05 + 0.1 / (2.15 - thresholdMult)
+	if (thresholdMult < 1.15 && mod.udsp) thresholdMult = 1.05 + 0.1 / (2.15 - thresholdMult)
 	return thresholdMult
 }
 

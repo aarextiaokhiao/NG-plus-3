@@ -137,6 +137,7 @@ function cacheMods() {
 	mod.ngp3 = mod.ngpp == 2
 	mod.p3ep = mod.ngp3 && mod.ngep
 	mod.udp = mod.ngud >= 2
+	mod.udsp = mod.ngud == 3
 
 	setInfChallengeOrder()
 }

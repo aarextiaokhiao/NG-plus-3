@@ -255,7 +255,7 @@ function updatePowers() {
 	achievementMult = getAchievementMult()
 	unspentBonus = getUnspentBonus()
 
-	if (player.boughtDims) mult18 = getDimensionFinalMultiplier(1).max(1).mul(getDimensionFinalMultiplier(8).max(1)).pow(0.02)
+	if (mod.rs) mult18 = getDimensionFinalMultiplier(1).max(1).mul(getDimensionFinalMultiplier(8).max(1)).pow(0.02)
 	else mult18 = getDimensionFinalMultiplier(1).mul(getDimensionFinalMultiplier(8)).pow(0.02)
 
 	if (player.currentEternityChall == "eterc10" || inQC(6)) {

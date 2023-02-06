@@ -18,6 +18,7 @@ function updateNanoverseTab() {
 	el("quarkAntienergyRate").textContent = shortenMoney(getQuarkAntienergyProduction())
 	el("quarkChargeProductionCap").textContent = shortenMoney(getQuarkChargeProductionCap())
 	el("rewards").textContent = getFullExpansion(amt)
+	el("produceQuarkCharge").innerHTML = (nfSave.producingCharge ? "Stop" : "Start") + " production of nanocharge." + (nfSave.producingCharge ? "" : "<br>(You will not get pilons when you do this.)")
 
 	for (var reward = 1; reward < 9; reward++) {
 		el("nfReward" + reward).className = reward > amt ? "nfRewardlocked" : "nfReward"
@@ -41,7 +42,6 @@ function getQuarkChargeProduction() {
 
 function startProduceQuarkCharge() {
 	nfSave.producingCharge = !nfSave.producingCharge
-	el("produceQuarkCharge").innerHTML = (nfSave.producingCharge ? "Stop" : "Start") + " production of nanocharge." + (nfSave.producingCharge ? "" : "<br>(You will not get pilons when you do this.)")
 }
 
 function getQuarkLossProduction() {
@@ -292,10 +292,8 @@ function nanofieldProducingChargeUpdating(diff){
 	var rate = getQuarkChargeProduction()
 	var loss = getQuarkLossProduction()
 	var toSub = loss.mul(diff).min(quSave.replicants.quarks)
-	if (toSub.eq(0)) {
-		nfSave.producingCharge = false
-		el("produceQuarkCharge").innerHTML="Start production of nanocharge.<br>(You will not get pilons when you do this.)"
-	} else {
+	if (toSub.eq(0)) nfSave.producingCharge = false
+	else {
 		let chGain = toSub.div(loss).mul(rate)
 		if (!hasAch("ng3p71")) quSave.replicants.quarks = quSave.replicants.quarks.sub(toSub)
 		nfSave.charge = nfSave.charge.add(chGain)

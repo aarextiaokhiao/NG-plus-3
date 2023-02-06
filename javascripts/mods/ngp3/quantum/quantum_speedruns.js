@@ -24,12 +24,12 @@ function updateSpeedruns() {
 				if (d > 7) removeMaxAll = true
 			} else break
 		}
-		el("metaMaxAllDiv").style.display = removeMaxAll ? "none" : ""
+		el("metaMaxAll").style.display = removeMaxAll ? "none" : ""
 	}
 }
 
 function isRewardEnabled(id) {
-	if (!player.masterystudies) return false
+	if (!mod.ngp3) return false
 	return speedrunMilestonesReached >= id && !quSave.disabledRewards[id]
 }
 

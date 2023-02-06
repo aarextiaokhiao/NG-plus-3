@@ -2,7 +2,7 @@ function getTickspeedBoostRequirement(bulk = 1) {
 	let resets = player.tickspeedBoosts + bulk - 1
 	let mult = 5
 	if (player.currentChallenge != "postcngmm_1" && player.currentChallenge != "postc1") {
-		if (hasGalUpg(34)) mult = 4
+		if (hasGSacUpg(34)) mult = 4
 		if (player.infinityUpgrades.includes("postinfi52")) mult = 3
 	}
 	return {tier: inNC(4) ? 6 : 8, amount: resets * mult + (inNC(15) && inNGM(4) ? 10 : 30), mult: mult}
@@ -21,7 +21,7 @@ function resetTickspeedBoosts() {
 function getProductBoughtMult() {
 	let mult = 1
 	if (inNGM(3)) {
-		mult = hasGalUpg(24) && player.currentChallenge != "postcngm3_4" ? galMults.u24() : 0.2
+		mult = hasGSacUpg(24) && player.currentChallenge != "postcngm3_4" ? galMults.u24() : 0.2
 		if (inNC(13) || player.currentChallenge == "postc1") mult = Decimal.div(mult, 2)
 	}
 	return mult

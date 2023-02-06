@@ -730,7 +730,7 @@ function updateNewPlayer(mode, preset) {
 			chance: 0.01,
 			chanceCost: E(mod.ngmm?1e90:1e150),
 			interval: mod.ngm ? 5000 : 1000,
-			intervalCost: E(mod.ngmm?1e80:mod.rs==1?1e150:1e140),
+			intervalCost: E(mod.ngmm?1e80:mod.rs?1e150:1e140),
 			gal: 0,
 			galaxies: 0,
 			galCost: E(mod.ngmm?1e110:1e170),
@@ -836,11 +836,11 @@ function updateNewPlayer(mode, preset) {
 	if (mod.ngumu) aarMod.ngumuV = 1.03
 
 	if (mod.ngmm) {
-		aarMod.ngmX = mod.ngmm+1
+		mod.ngmX = aarMod.ngmX = mod.ngmm+1
 		doNGMinusTwoNewPlayer()
 	}
-	if (mod.ngmm > 1) doNGMinusThreeNewPlayer()
-	if (mod.ngmm > 2) doNGMinusFourPlayer()
+	if (mod.ngmm >= 2) doNGMinusThreeNewPlayer()
+	if (mod.ngmm >= 3) doNGMinusFourPlayer()
 
 	if (mod.rs == 1) doEternityRespeccedNewPlayer()
 	if (mod.aau) {

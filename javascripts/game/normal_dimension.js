@@ -28,7 +28,7 @@ function getNormalDimensionVanillaAchievementBonus(tier){
 	if (inOnlyNGM(2) && hasAch("r46")) mult = mult.mul(productAllDims1());
 	if (hasAch("r74") && player.currentChallenge != "") mult = mult.mul(inNGM(2) ? 40 : 1.4);
 	if (hasAch("r77")) mult = mult.mul(1 + tier / (inNGM(2) ? 10 : 100));
-	if (player.boughtDims && hasAch("r98")) mult = mult.mul(player.infinityDimension8.amount.max(1))
+	if (mod.rs && hasAch("r98")) mult = mult.mul(player.infinityDimension8.amount.max(1))
 	mult = mult.mul(getR84or73Mult())
 	if (inNGM(2)) return mult
 	if (hasAch("r56") && player.thisInfinityTime < 1800) mult = mult.mul(3600 / (player.thisInfinityTime + 1800));
@@ -43,7 +43,7 @@ function getNormalDimensionVanillaTimeStudyBonus(tier){
 	var mult = E(1)
 	if (player.timestudy.studies.includes(71) && tier !== 8) mult = mult.mul(tmp.sacPow.pow(0.25).min("1e210000"));
 	if (player.timestudy.studies.includes(91)) mult = mult.mul(pow10(Math.min(player.thisEternity, 18000) / 60));
-	let useHigherNDReplMult = !player.dilation.active ? false : !player.masterystudies ? false : hasMasteryStudy("t323")
+	let useHigherNDReplMult = hasMasteryStudy("t323")
 	if (!useHigherNDReplMult) mult = mult.mul(tmp.nrm)
 	if (player.timestudy.studies.includes(161)) mult = mult.mul(pow10((inNGM(2) ? 6660 : 616) * (mod.ngep ? 5 : 1)))
 	if (player.timestudy.studies.includes(234) && tier == 1) mult = mult.mul(tmp.sacPow)
@@ -55,12 +55,12 @@ function getNormalDimensionVanillaTimeStudyBonus(tier){
 function getNormalDimensionGalaxyUpgradesBonus(tier,mult){
 	if (inNGM(2)) return mult
 	
-	if (hasGalUpg(12) && (hasGalUpg(42) || !inNGM(4))) mult = mult.mul(galMults.u12())
-	if (hasGalUpg(13) && ((!inNC(14) && player.currentChallenge != "postcngm3_3") || !inNGM(3) || inNGM(4)) && player.currentChallenge != "postcngm3_4") mult = mult.mul(galMults.u13())
-	if (hasGalUpg(15)) mult = mult.mul(galMults.u15())
-	if (hasGalUpg(35)) mult = mult.mul(galMults.u35())
+	if (hasGSacUpg(12) && (hasGSacUpg(42) || !inNGM(4))) mult = mult.mul(galMults.u12())
+	if (hasGSacUpg(13) && ((!inNC(14) && player.currentChallenge != "postcngm3_3") || !inNGM(3) || inNGM(4)) && player.currentChallenge != "postcngm3_4") mult = mult.mul(galMults.u13())
+	if (hasGSacUpg(15)) mult = mult.mul(galMults.u15())
+	if (hasGSacUpg(35)) mult = mult.mul(galMults.u35())
 	if (player.challenges.includes("postc4")) mult = mult.pow(1.05);
-	if (hasGalUpg(31)) mult = mult.pow(galMults.u31());
+	if (hasGSacUpg(31)) mult = mult.pow(galMults.u31());
 	return mult
 }
 
@@ -77,9 +77,9 @@ function getAfterDefaultDilationLayerAchBonus(tier){
 	if (hasAch("r92") && player.thisInfinityTime < 600) mult = mult.mul(Math.max(101 - player.thisInfinityTime / 6, 1));
 	if (player.currentChallenge == "postc6" || inQC(6)) mult = mult.dividedBy(player.matter.max(1))
 	if (player.currentChallenge == "postc8" || inQC(6)) mult = mult.mul(player.postC8Mult)
-	if (hasGalUpg(12) && hasGalUpg(42) && inNGM(4)) mult = mult.mul(galMults.u12())
-	if (hasGalUpg(45) && inNGM(4)) {
-		var e = hasGalUpg(46) ? galMults["u46"]() : 1
+	if (hasGSacUpg(12) && hasGSacUpg(42) && inNGM(4)) mult = mult.mul(galMults.u12())
+	if (hasGSacUpg(45) && inNGM(4)) {
+		var e = hasGSacUpg(46) ? galMults["u46"]() : 1
 		mult = mult.mul(Math.pow(player["timeDimension" + tier].amount.plus(10).log10(), e))
 	}
 	return mult
@@ -271,7 +271,7 @@ function getMPTBase(focusOn) {
 		} else ret *= 1.01
 	}
 	ret += getECReward(3)
-	if (inNGM(2)) if (hasGalUpg(33) && ((!inNC(14) && player.currentChallenge != "postcngm3_3") || !inNGM(3) || inNGM(4)) && player.currentChallenge != "postcngm3_4") ret *= galMults.u33();
+	if (inNGM(2)) if (hasGSacUpg(33) && ((!inNC(14) && player.currentChallenge != "postcngm3_3") || !inNGM(3) || inNGM(4)) && player.currentChallenge != "postcngm3_4") ret *= galMults.u33();
 	if (focusOn == "no-QC5") return ret
 	if (mod.ngp3) {
 		ret += tmp.qcRewards[5]

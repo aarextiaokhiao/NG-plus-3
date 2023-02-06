@@ -40,7 +40,7 @@ function getGalaxyRequirement(offset = 0, display) {
 	let base = tmp.grd.galaxies * mult
 	let amount = 80 + base
 	let scaling = 0
-	if (inNGM(2)) amount -= (hasGalUpg(22) && player.galaxies > 0) ? 80 : 60
+	if (inNGM(2)) amount -= (hasGSacUpg(22) && player.galaxies > 0) ? 80 : 60
 	if (inNGM(4)) amount -= 10
 	if (inNC(4)) amount = !inNGM(3) ? 99 + base : amount + (inNGM(4) ? 20 : -30)
 	if (tmp.be) {
@@ -48,7 +48,7 @@ function getGalaxyRequirement(offset = 0, display) {
 		if (beSave && beSave.upgrades.includes(2)) amount /= getBreakUpgMult(2)
 		if (player.currentEternityChall == "eterc10" && beSave.upgrades.includes(9)) amount /= getBreakUpgMult(9)
 	}
-	if (!player.boughtDims) {
+	if (!mod.rs) {
 		tmp.grd.speed = 1
 		let ghostlySpeed = tmp.be ? 55 : 1
 		let div = 1e4
@@ -96,7 +96,7 @@ function getGalaxyRequirement(offset = 0, display) {
 function getGalaxyReqMultiplier() {
 	if (player.currentChallenge == "postcngmm_1") return 60
 	let ret = 60
-	if (inNGM(2)) if (hasGalUpg(22)) ret -= 30
+	if (inNGM(2)) if (hasGSacUpg(22)) ret -= 30
 	if (inNC(4)) ret = 90
 	if (player.infinityUpgrades.includes("galCost")) ret -= 5
 	if (player.infinityUpgrades.includes("postinfi52") && !inNGM(3)) ret -= 3

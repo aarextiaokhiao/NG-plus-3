@@ -38,7 +38,7 @@ function buyWithEP() {
 }
 
 function canBuyTTWithEP() {
-	return player.timeDimension1.bought || (player.masterystudies !== undefined && bigRipped())
+	return player.timeDimension1.bought || bigRipped()
 }
 
 function maxTheorems() {
@@ -102,7 +102,7 @@ function updateTheoremButtons() {
 
 function buyTimeStudy(name, check, quickBuy) {
 	var cost = studyCosts[all.indexOf(name)]
-	if (player.boughtDims) {
+	if (mod.rs) {
 		if (player.timestudy.theorem < player.timestudy.ers_studies[name] + 1) return
 		player.timestudy.theorem -= player.timestudy.ers_studies[name]+1
 		player.timestudy.ers_studies[name]++
@@ -250,7 +250,7 @@ var performedTS
 function updateTimeStudyButtons(changed, forceupdate = false) {
 	if (!forceupdate && (changed ? player.dilation.upgrades.includes(10) : performedTS && !player.dilation.upgrades.includes(10))) return
 	performedTS = true
-	if (player.boughtDims) {
+	if (mod.rs) {
 		var locked = getTotalTT(player) < 60
 		el("nextstudy").textContent = locked ? "Next time study set unlock at 60 total Time Theorems." : ""
 		el("tsrow3").style.display = locked ? "none" : ""
@@ -380,7 +380,7 @@ function respecTimeStudies(force, presetLoad) {
 	}
 
 	if (respecTime) {
-		if (player.boughtDims) {
+		if (mod.rs) {
 			var temp = player.timestudy.theorem
 			for (var id = 1; id < 7; id++) player.timestudy.theorem += player.timestudy.ers_studies[id] * (player.timestudy.ers_studies[id] + 1) / 2
 			if (temp > player.timestudy.theorem) gotAch = false
@@ -478,7 +478,7 @@ function importStudyTree(input) {
 	onImport = false
 	if (sha512_256(input) == "08b819f253b684773e876df530f95dcb85d2fb052046fa16ec321c65f3330608") giveAchievement("You followed the instructions")
 	if (input === "") return false
-	if (player.boughtDims) {
+	if (mod.rs) {
 		let l = input.split('/');
 		for (let i = 1; i <= l.length; i++) {
 			for (let j = 0; j < l[i - 1]; j++) {
@@ -663,7 +663,7 @@ function delete_preset(presetId) {
 			loadedPresets--
 		} else newPresetsOrder.push(poData[id])
 	}
-	metaSave["presetsOrder"+(player.boughtDims?"_ers":"")] = newPresetsOrder
+	metaSave["presetsOrder"+(mod.rs?"_ers":"")] = newPresetsOrder
 	poData = newPresetsOrder
 	localStorage.setItem(metaSaveId,btoa(JSON.stringify(metaSave)))
 	$.notify("Preset deleted", "info")
@@ -700,8 +700,8 @@ function move_preset(id, offset) {
 var loadedPresets = 0
 function openStudyPresets() {
 	closeToolTip()
-	let saveOnERS = !(!player.boughtDims)
-	let saveOnNGP3 = player.masterystudies !== undefined
+	let saveOnERS = mod.rs
+	let saveOnNGP3 = mod.ngp3
 	if (saveOnERS != onERS) {
 		delete presets.editing
 		el("presets").innerHTML = ""

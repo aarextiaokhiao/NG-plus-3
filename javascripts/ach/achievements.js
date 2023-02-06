@@ -331,7 +331,7 @@ function giveAchievement(name, noUpdate) {
 
 	if (allAchievementNums[name].split("ng3p")[1] && !mod.ngp3) return false
 
-	if (player.boughtDims) {
+	if (mod.rs) {
 		var r = allAchievementNums[name].split("r")[1]
 		if (r < 0) r = 0
 		else r = parseInt(allAchievementNums[name].split("r")[1])
@@ -344,12 +344,12 @@ function giveAchievement(name, noUpdate) {
 		player.autoIP = player.autoIP.mul(4);
 		if (player.autoCrunchMode == "amount" && player.autobuyers[11].priority != undefined) player.autobuyers[11].priority = Decimal.mul(player.autobuyers[11].priority, 4);
 	}
-	if (name == "The swarm" && player.boughtDims) el('replicantigalaxypowerdiv').style.display=""
+	if (name == "The swarm" && mod.rs) el('replicantigalaxypowerdiv').style.display=""
 	if (name == "I told you already, time is relative" || name == "I'm so meta" || name == "To the new dimension!") updateHotkeys()
 	if (name == "GAS GAS GAS") {
-		for (i = 1; i <= 8; i++) el("td" + i + 'auto').style.visibility = "visible"
+		for (i = 1; i <= 8; i++) el("td" + i + 'Auto').style.visibility = "visible"
 		el('togglealltimedims').style.display = ""
-		el('epmultauto').style.display = ""
+		el('epmultAuto').style.display = ""
 		if (mod.udp) el("blackholeAuto").style.display = ""
 	}
 	if (name == "It will never be enough") el('replicantibulkmodetoggle').style.display="inline-block"
@@ -404,7 +404,7 @@ function updateAchievements() {
 		var rowid = i
 		var rownum = i
 		if (i > 15) {
-			shown =! (!player.masterystudies)
+			shown = mod.ngp3
 			rownum = i - 15
 			rowid = "ng3p" + rownum
 		} else if (i > 14) {
@@ -413,7 +413,7 @@ function updateAchievements() {
 		} else if (i > 13) {
 			shown = player.exdilation
 			rowid = "ngud1"
-		} else if (i > 10) shown = !player.boughtDims
+		} else if (i > 10) shown = !mod.rs
 		rowid="achRow" + rowid
 		var n = 0
 		if (shown) {
@@ -422,7 +422,7 @@ function updateAchievements() {
 			for (var l = 0; l < 8; l++) {
 				achNum += 1;
 				var realAchNum = achNum
-				if (player.boughtDims) { // Eternity Respecced
+				if (mod.rs) { // Eternity Respecced
 					if (realAchNum == 35) realAchNum = 22
 					else if (realAchNum == 76) realAchNum = 35
 					else if (realAchNum == 22) realAchNum = 41

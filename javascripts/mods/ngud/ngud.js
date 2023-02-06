@@ -34,7 +34,7 @@ function getBlackholeUpgradeExponent() {
 	let ret = player.blackhole.upgrades.total / 10
 	if (player.dilation.upgrades.includes("ngusp2")) ret += getD21Bonus()
 	if (ret > 2) ret = (ret - 2) / Math.log2(ret) + 2
-	if (ret > 20 && (mod.udp || aarMod.nguspV)) ret=20+Math.pow(Math.log10(ret-19),aarMod.ngumu?2.5:2) // this should only happen if you are playing NGUd'.
+	if (ret > 20 && (mod.udp || mod.udsp)) ret=20+Math.pow(Math.log10(ret-19),aarMod.ngumu?2.5:2) // this should only happen if you are playing NGUd'.
 	return ret
 }
 
@@ -52,7 +52,7 @@ function unlockBlackhole() {
 function isBHDimUnlocked(t) {
 	if (t > 8) return false
 	if (t > 4) {
-		if (aarMod.nguspV === undefined) return false
+		if (!mod.udsp) return false
 		if (t==5) return player.eternityPoints.gt("1e120000")
 		if (t==6) return player.eternityPoints.gt("1e175000")
 		if (t==7) return player.eternityPoints.gt("1e190000")
@@ -73,7 +73,7 @@ function updateBlackhole() {
 		return
 	}
 
-	el("blackholeMax").style.display = mod.udp || aarMod.nguspV ? "" : "none"
+	el("blackholeMax").style.display = mod.udp || mod.udsp ? "" : "none"
 	el("blackholeAuto").style.display = mod.udp && hasAch("ngpp17") ? "" : "none"
 	el('blackholeAuto').textContent = "Auto: O"+(mod.udp&&player.autoEterOptions.blackhole?"N":"FF")
 
@@ -83,7 +83,7 @@ function updateBlackhole() {
 	el("DilMultAmount").innerHTML = formatValue(player.options.notation, getBlackholePowerEffect(), 2, 2)
 	el("InfAndReplMultAmount").innerHTML = formatValue(player.options.notation, getBlackholePowerEffect().pow(1/3), 2, 2)
 
-	el("blackholeDil").innerHTML = "Feed the black hole with dilated time<br>Cost: "+shortenCosts(pow10(player.blackhole.upgrades.dilatedTime+(aarMod.nguspV?18:20)))+" dilated time";
+	el("blackholeDil").innerHTML = "Feed the black hole with dilated time<br>Cost: "+shortenCosts(pow10(player.blackhole.upgrades.dilatedTime+(mod.udsp?18:20)))+" dilated time";
 	el("blackholeInf").innerHTML = "Feed the black hole with banked infinities<br>Cost: "+formatValue(player.options.notation, pow2(player.blackhole.upgrades.bankedInfinities).mul(5e9).round(), 1, 1)+" banked infinities";
 	el("blackholeRepl").innerHTML = "Feed the black hole with replicanti<br>Cost: "+shortenCosts(E("1e20000").mul(E_pow("1e1000", player.blackhole.upgrades.replicanti)))+" replicanti";
 	el("blackholeDil").className = canFeedBlackHole(1) ? 'eternityupbtn' : 'eternityupbtnlocked';
@@ -119,7 +119,7 @@ function drawBlackhole(ts) {
 
 function canFeedBlackHole(i) {
 	if (i == 1) {
-		return pow10(player.blackhole.upgrades.dilatedTime + (aarMod.nguspV ? 18 : 20)).lte(player.dilation.dilatedTime)
+		return pow10(player.blackhole.upgrades.dilatedTime + (mod.udsp ? 18 : 20)).lte(player.dilation.dilatedTime)
 	} else if (i == 2) {
 		return pow2(player.blackhole.upgrades.bankedInfinities).mul(5e9).round().lte(player.infinitiedBank)
 	} else if (i == 3) {
@@ -130,7 +130,7 @@ function canFeedBlackHole(i) {
 function feedBlackHole(i, bulk) {
 	if (!canFeedBlackHole(i)) return
 	if (i == 1) {
-		let cost = pow10(player.blackhole.upgrades.dilatedTime + (aarMod.nguspV ? 18 : 20))
+		let cost = pow10(player.blackhole.upgrades.dilatedTime + (mod.udsp ? 18 : 20))
 		if (bulk) {
 			let toBuy = Math.floor(player.dilation.dilatedTime.div(cost).mul(9).plus(1).log10())
 			let toSpend = pow10(toBuy).sub(1).div(9).mul(cost)
@@ -138,7 +138,7 @@ function feedBlackHole(i, bulk) {
 			player.blackhole.upgrades.dilatedTime += toBuy
 			player.blackhole.upgrades.total += toBuy
 		} else {
-			player.dilation.dilatedTime = player.dilation.dilatedTime.minus(pow10(player.blackhole.upgrades.dilatedTime + (aarMod.nguspV ? 18 : 20)))
+			player.dilation.dilatedTime = player.dilation.dilatedTime.minus(pow10(player.blackhole.upgrades.dilatedTime + (mod.udsp ? 18 : 20)))
 			player.blackhole.upgrades.dilatedTime++
 		}
 	} else if (i == 2) {
@@ -246,7 +246,7 @@ function hasExdilation() {
 }
 
 function getExdilationReq() {
-	if (aarMod.nguspV && !aarMod.nguepV) return {ep: "1e20000", dt: 1e40}
+	if (mod.udsp && !aarMod.nguepV) return {ep: "1e20000", dt: 1e40}
 	return {ep: "1e10000", dt: 1e30}
 }
 
@@ -285,14 +285,14 @@ function updateExdilationStats() {
 	if (!unl) return
 
 	el("exDilationAmount").textContent = shortenDimensions(player.exdilation.unspent)
-	el("exDilationBenefit").textContent = (aarMod.nguspV ? exDilationBenefit() * 100 : exDilationBenefit() / 0.0075).toFixed(1)
+	el("exDilationBenefit").textContent = (mod.udsp ? exDilationBenefit() * 100 : exDilationBenefit() / 0.0075).toFixed(1)
 	for (var i = 1; i <= 4; i++) {
 		let unl = isDilUpgUnlocked("r" + i)
 		if (unl) {
-			el("xd" + i).style.height = aarMod.nguspV ? "60px" : "50px"
+			el("xd" + i).style.height = mod.udsp ? "60px" : "50px"
 			el("xd" + i).className = player.exdilation.unspent.eq(0) ? "dilationupgrebuyablelocked" : "dilationupgrebuyable";
 
-			if (aarMod.nguspV !== undefined) el("xd" + i + "span").textContent = '+' + exDilationUpgradeStrength(i).toFixed(1) + ' free upgrades -> +' + exDilationUpgradeStrength(i,player.exdilation.unspent).toFixed(1)
+			if (mod.udsp) el("xd" + i + "span").textContent = '+' + exDilationUpgradeStrength(i).toFixed(1) + ' free upgrades -> +' + exDilationUpgradeStrength(i,player.exdilation.unspent).toFixed(1)
 			else el("xd" + i + "span").textContent = exDilationUpgradeStrength(i).toFixed(2) + 'x -> ' + exDilationUpgradeStrength(i,player.exdilation.unspent).toFixed(2) + 'x'
 		}
 		el("xd"+i).parentElement.style.display = unl ? "" : "none"
@@ -301,15 +301,15 @@ function updateExdilationStats() {
 
 function getExDilationGain() {
 	let exp = 2
-	if (aarMod.nguspV && !aarMod.nguepV) exp = 0.1
+	if (mod.udsp && !aarMod.nguepV) exp = 0.1
 	if (player.dilation.upgrades.includes("ngusp1")) exp *= 2
-	if (aarMod.nguspV && !aarMod.nguepV) return player.dilation.dilatedTime.div(1e40).pow(exp).floor()
+	if (mod.udsp && !aarMod.nguepV) return player.dilation.dilatedTime.div(1e40).pow(exp).floor()
 	return E_pow(Math.max(1, (player.eternityPoints.log10() - 9900) / 100), exp * player.dilation.dilatedTime.log(1e15) - 4).floor();
 }
 
 function exDilationBenefit() {
 	let ret = player.exdilation.unspent
-	if (aarMod.nguspV) {
+	if (mod.udsp) {
 		ret = ret.add(1).log10()
 		if (ret > 1) ret = Math.sqrt(ret)
 		return ret
@@ -323,7 +323,7 @@ function exDilationBenefit() {
 
 function exDilationUpgradeStrength(x, add = 0) {
 	let ret = Decimal.plus(player.exdilation.spent[x] || 0,add)
-	if (aarMod.nguspV) {
+	if (mod.udsp) {
 		ret = ret.add(1).log10() * 2
 		if (ret > 1) ret = Math.sqrt(ret)
 		return ret
@@ -357,13 +357,13 @@ function toggleExdilaConf() {
 function boostDilationUpgrade(x) {
 	player.exdilation.spent[x] = Decimal.plus(player.exdilation.spent[x] || 0, player.exdilation.unspent).round();
 	player.exdilation.unspent = E(0);
-	if (x == 2 && aarMod.nguspV) resetDilationGalaxies()
+	if (x == 2 && mod.udsp) resetDilationGalaxies()
 }
 
 //v1.1
 function getD18Bonus() {
 	let x = player.replicanti.amount.max(1).log10() / 1e3
-	if (aarMod.nguspV) return Decimal.max(x / 20 + 1, 1)
+	if (mod.udsp) return Decimal.max(x / 20 + 1, 1)
 	if (x > 100 && mod.udp) x = Math.log(x) * 50 //NGUd'
 	return E_pow(1.05, x)
 }

@@ -72,7 +72,7 @@ function QCIntensity(num) {
 }
 
 function updateQCTimes() {
-	if (!player.masterystudies) return
+	if (!mod.ngp3) return
 	var temp = 0
 	var tempcounter = 0
 	for (var i = 1; i < 9; i++) {
@@ -269,7 +269,7 @@ function importPC() {
 var ranking=0
 function updatePCCompletions() {
 	el("pccompletionsbtn").style.display = "none"
-	if (!player.masterystudies) return
+	if (!mod.ngp3) return
 	var r = 0
 	tmp.pcc = {} // PC Completion counters
 	for (var c1 = 2; c1 < 9; c1++) for (var c2 = 1; c2 < c1; c2++) {

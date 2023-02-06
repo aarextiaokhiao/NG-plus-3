@@ -686,7 +686,7 @@ function updateMasteryStudyButtons() {
 }
 
 function updateMasteryStudyTextDisplay() {
-	if (!player.masterystudies) return
+	if (!mod.ngp3) return
 	el("costmult").textContent = shorten(masteryStudies.costMult)
 	el("totalmsbought").textContent = masteryStudies.bought
 	el("totalttspent").textContent = shortenDimensions(masteryStudies.ttSpent)

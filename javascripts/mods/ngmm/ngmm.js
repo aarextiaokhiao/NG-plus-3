@@ -16,12 +16,12 @@ function getGSAmount(offset=0) {
 	ret = ret.mul(E_pow(1 + getAmount(8) / div2, exp))
 	
 	if (player.galacticSacrifice.chall) ret = ret.mul(getGPMultipliers())
-	if (hasGalUpg(16) && player.tdBoosts) ret = ret.mul(Math.max(player.tdBoosts, 1))
+	if (hasGSacUpg(16) && player.tdBoosts) ret = ret.mul(Math.max(player.tdBoosts, 1))
 	if (inNGM(4)) {
-		var e = hasGalUpg(46) ? galMults["u46"]() : 1
-		if (hasGalUpg(41) && inNGM(4)) ret = ret.mul(Decimal.max(player.tickspeedBoosts, 1).pow(e))
-		if (hasGalUpg(43) && inNGM(4)) ret = ret.mul(Decimal.max(player.resets, 1).pow(e))
-		if (hasGalUpg(45) && inNGM(4)) ret = ret.mul(player.eightAmount.max(1).pow(e))
+		var e = hasGSacUpg(46) ? galMults["u46"]() : 1
+		if (hasGSacUpg(41) && inNGM(4)) ret = ret.mul(Decimal.max(player.tickspeedBoosts, 1).pow(e))
+		if (hasGSacUpg(43) && inNGM(4)) ret = ret.mul(Decimal.max(player.resets, 1).pow(e))
+		if (hasGSacUpg(45) && inNGM(4)) ret = ret.mul(player.eightAmount.max(1).pow(e))
 		if (player.challenges.includes("postcngm3_1") && inNGM(4)) ret = ret.mul(E_pow(3, tmp.cp))
 	}
 	var rgs = player.replicanti.galaxies
@@ -42,7 +42,7 @@ function getGPMultipliers(){
 		if (inNGM(4)) tbDiv = 5
 		ret=ret.mul(E_pow(Math.max(player.tickspeedBoosts / tbDiv, 1),Math.max(getAmount(8) / 75, 1)))
 	}
-	if (hasGalUpg(32)) ret = ret.mul(galMults.u32())
+	if (hasGSacUpg(32)) ret = ret.mul(galMults.u32())
 	if (player.infinityUpgrades.includes("galPointMult")) ret = ret.mul(getPost01Mult())
 	if (hasAch('r37')) {
 		if (player.bestInfinityTime >= 18000) ret = ret.mul(Math.max(180000 / player.bestInfinityTime, 1))
@@ -76,7 +76,7 @@ function getGSGalaxyExp(galaxies) {
 		if (inNGM(4)) y += .25 * Math.sqrt(y + (2.5 / 9 * galaxies))
 	}
 	if (hasAch("r121")) y *= Math.log(3+galaxies)
-	if (hasGalUpg(52) && !inNGM(3)) {
+	if (hasGSacUpg(52) && !inNGM(3)) {
 		if (y > 100) y = Math.pow(1e4 * y , 1/3)
 	} else if (y > 100 && !inNGM(3)) {
 		y = Math.pow(316.22 * y, 1/3)
@@ -221,7 +221,7 @@ function getGalaxyUpgradeCost(i){
 
 function buyGalaxyUpgrade(i) {
 	var cost = getGalaxyUpgradeCost(i)
-	if (hasGalUpg(i) || !(Math.floor(i/10) < 2 || hasGalUpg(i-10)) || player.galacticSacrifice.galaxyPoints.lt(cost)) return
+	if (hasGSacUpg(i) || !(Math.floor(i/10) < 2 || hasGSacUpg(i-10)) || player.galacticSacrifice.galaxyPoints.lt(cost)) return
 	player.galacticSacrifice.upgrades.push(i)
 	player.galacticSacrifice.galaxyPoints = player.galacticSacrifice.galaxyPoints.sub(cost)
 	if (i == 11) {
@@ -252,7 +252,7 @@ function reduceDimCosts(upg) {
 	if (inNGM(2)) {
 		let div = 1
 		if (hasAch("r21")) div = 10
-		if (hasGalUpg(11)) div = galMults.u11()
+		if (hasGSacUpg(11)) div = galMults.u11()
 		for (var d = 1; d < 9; d++) {
 			var name = dimTiers[d]
 			if (inNGM(4) && !upg) {
@@ -318,9 +318,9 @@ function galacticUpgradeButtonTypeDisplay () {
 				if (!galConditions["c"+j] || galConditions["c"+j]()) {
 					c.style.display = ""
 					var e = el('galaxy' + i + j);
-					if (hasGalUpg(+(i + '' + j))) {
+					if (hasGSacUpg(+(i + '' + j))) {
 						e.className = 'infinistorebtnbought'
-					} else if (player.galacticSacrifice.galaxyPoints.gte(getGalaxyUpgradeCost(i + '' + j)) && (i === 1 || hasGalUpg(+((i - 1) + '' + j)))) {
+					} else if (player.galacticSacrifice.galaxyPoints.gte(getGalaxyUpgradeCost(i + '' + j)) && (i === 1 || hasGSacUpg(+((i - 1) + '' + j)))) {
 						e.className = 'galaxyupgbtn'
 					} else {
 						e.className = 'infinistorebtnlocked'
@@ -513,8 +513,8 @@ let R135 = Math.pow(Math.E + Math.PI + 0.56714 + 4.81047 + 0.78343 + 1.75793 + 2
 let galMults = {
 	u11: function() {
 		if (inNGM(3)) {
-			var e = hasGalUpg(46) ? galMults["u46"]() : 1
-			var exp = (inNGM(4) && hasGalUpg(41)) ? 2 * e : 1
+			var e = hasGSacUpg(46) ? galMults["u46"]() : 1
+			var exp = (inNGM(4) && hasGSacUpg(41)) ? 2 * e : 1
 			var l = 0
 			if (player.infinityUpgrades.includes("postinfi61")) l = Math.log10(getInfinitied() + 1)
 			if (l > 2) return pow10(l * Math.min(l, 6) * Math.min(l, 4))
@@ -547,10 +547,10 @@ let galMults = {
 	},
 	u12: function() {
 		var r = 2 * Math.pow(1 + player.galacticSacrifice.time / 600, 0.5)
-		if (inNGM(4) && hasGalUpg(42)) {
-			m = hasGalUpg(46) ? 10 : 4
+		if (inNGM(4) && hasGSacUpg(42)) {
+			m = hasGSacUpg(46) ? 10 : 4
 			r = E_pow(r, Math.min(m, Math.pow(r, 1/3)))
-			if (hasGalUpg(46)) r = E_pow(r, Math.log10(10 + r)).plus(1e20)
+			if (hasGSacUpg(46)) r = E_pow(r, Math.log10(10 + r)).plus(1e20)
 		}
 		r = Decimal.add(r, 0)
 		if (r.gt(1e25)) r = r.div(1e25).pow(.5).mul(1e25)
@@ -606,12 +606,12 @@ let galMults = {
 		return player.galacticSacrifice.galaxyPoints.pow(0.25).div(20).max(0.2)
 	},
 	u15: function() {
-		return pow10(getInfinitied() + 2).max(1).min(1e6).pow(hasGalUpg(16) ? 2 : 1)
+		return pow10(getInfinitied() + 2).max(1).min(1e6).pow(hasGSacUpg(16) ? 2 : 1)
 	},
 	u25: function() {
 		let r = Math.max(player.galacticSacrifice.galaxyPoints.log10() - 2, 1)
 		if (r > 2.5) r = Math.pow(r * 6.25, 1/3)
-		r = Math.pow(r, hasGalUpg(26) ? 2 : 1)
+		r = Math.pow(r, hasGSacUpg(26) ? 2 : 1)
 		if (r > 10) r = 10 * Math.log10(r)
 		return r
 	},
@@ -621,7 +621,7 @@ let galMults = {
 		for (var d = 1; d < 9; d++) {
 			r = Decimal.mul(player["timeDimension" + d].bought / 6, p).max(1).mul(r)
 		}
-		r = r.pow(hasGalUpg(36) ? 2 : 1)
+		r = r.pow(hasGSacUpg(36) ? 2 : 1)
 		if (r.gt(1e100)) r = E_pow(r.log10(), 50)
 		return r
 	},
@@ -708,11 +708,15 @@ function calcG13Exp(){
 }
 
 //Unknown
+function gSacrificeUnl() {
+	return inNGM(2) && (player.galaxies || gSacrificed() || player.infinitied || getEternitied() || quantumed)
+}
+
 function gSacrificed() {
 	return player?.galacticSacrifice?.times 
 }
 
-function hasGalUpg(x) {
+function hasGSacUpg(x) {
 	return inNGM(2) && player.galacticSacrifice.upgrades.includes(x)
 }
 
@@ -743,7 +747,8 @@ function galSacDisplay(){
 
 function galSacBtnUpdating(){
 	el("sacrificebtn").style.display = "none"
-	if (el("gSacrifice").style.display === "inline-block") {
+	el("gSacrifice").style.display = gSacrificeUnl()
+	if (gSacrificeUnl()) {
 		el("gSacrifice").innerHTML = "Galactic Sacrifice (" + formatValue(player.options.notation, getGSAmount(), 2, 0) + " GP)"
 		el("gSacrifice").setAttribute('ach-tooltip', "Gain " + formatValue(player.options.notation, getGSAmount(), 2, 0) + " GP")
 		if (getGSAmount().gt(0)) {

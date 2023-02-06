@@ -3,12 +3,12 @@
 	<title id="z">AD: NG Plus 3</title>
 	<link rel="icon" type="image/png" href="images/icon.png">
 	<meta name="AD: NG Plus 3" content="An extension to Antimatter Dimensions: Dilation Update." charset="utf-8"/>
-	<link rel="stylesheet" type="text/css" href="stylesheets/styles.css?12">
+	<link rel="stylesheet" type="text/css" href="stylesheets/styles.css">
 	<link href="https://fonts.googleapis.com/css?family=Inconsolata" rel="stylesheet">
 	<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
 	<link href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono&display=swap" rel="stylesheet">
 </head>
-<body onload="initGame()">
+<body id="body" onload="initGame()">
 	<!-- LOAD -->
 	<img id="loading" src="images/splash.png">
 	<div class="popup" id="stuck" style="height: 180px; width: 480px">
@@ -182,30 +182,29 @@
 					<p id="bestMAOverGhostifies"></p>
 				</div>
 				<div id="metaAntimatterPerSec">You are getting 0 meta-antimatter per second.</div>
-				<div id="metaMaxAllDiv">
-					<br/>
-					<button id="metaMaxAll" class="storebtn" style="font-size: 12px">Max all (M)</button>
-				</div>
+				<br>
+				<button id="metaMaxAll" class="storebtn" style="font-size: 12px">Max all (M)</button>
+				<button id="toggleallmetadims" style="width: 140px; font-size: 12px" onclick="toggleAllMetaDims()" class="storebtn">Toggle all ON/OFF</button>
+				<br>
 				<table id="metaDimTable"></table>
 				<table style="width: 100%">
 					<tr style="font-size: 15px">
-					  <td id="metaResetLabel">
-						  Meta-Dimension Shift: requires 20 Fourth Meta Dimensions
-					  </td>
-					  <td>
-						  <button id="metaSoftReset" style="color:black; width: 200px; height: 25px; font-size: 9px" class="storebtn" onclick="metaBoost()">Reset the game for a new Dimension</button>
-					  </td>
-				  </tr>
-				  <tr id="quantumbuttondiv" style="font-size: 15px">
-					  <td id="quantumResetLabel">
-					  </td>
-					  <td>
-						  <button id="quantum" style="color:black; width: 200px; height: 35px; font-size: 9px" class="storebtn" onclick="metaReset2()"></button>
-					  </td>
-				  </tr>
+						<td id="metaResetLabel"></td>
+						<td width="70px">
+							<button id="metaboostAuto" style="width: 70px; font-size: 10px" onclick="toggleAutoEter('metaboost')" class="storebtn"></button>
+						</td>
+						<td>
+							<button id="metaSoftReset" style="width: 200px; height: 25px; font-size: 9px" class="storebtn" onclick="metaBoost()">Reset the game for a new Dimension</button>
+						</td>
+					</tr>
+					<tr id="quantumbuttondiv" style="font-size: 15px">
+						<td id="quantumResetLabel"></td>
+						<td></td>
+						<td>
+							<button id="quantum" style="width: 200px; height: 35px; font-size: 9px" class="storebtn" onclick="metaReset2()"></button>
+						</td>
+					</tr>
 				</table>
-				<button id="metaboostauto" style="width:160px; height: 30px; font-size: 12px" onclick="toggleAutoEter('metaboost')" class="storebtn">Toggle all ON/OFF</button>
-				<button id="toggleallmetadims" style="width:300px; height: 30px; font-size: 12px" onclick="toggleAllMetaDims()" class="storebtn">Toggle all meta-dims autobuyer ON/OFF</button>
 			</div>
 		</div>
 		<div id="options" class="tab" align="center">
@@ -294,7 +293,7 @@
 				<br><br>
 
 				<b>(NG+3 v2.31: Ghostify Respecced)</b><br>
-				<b class="red">(Beta: 2/4/23 Build)</b><br>
+				<b class="red">(Beta: 2/5/23 Build)</b><br>
 				By <a href="https://aarextiaokhiao.github.io/">Aarex</a>, pg132, and usavictor.
 				<br><br>
 
@@ -3309,7 +3308,7 @@
 					</tr>
 				</table>
 				<div><button class="storebtn" onclick="buyMaxEPMult()" style="height: 25px; width: 190px; font-size:10px; margin-top: -3px;">Max EP mult</button></div>
-				<div><button id="epmultauto" class="storebtn" onclick="toggleAutoEter('epmult')" style="height: 25px; width: 190px; font-size:10px; margin-top: 3px;"></button></div>
+				<div><button id="epmultAuto" class="storebtn" onclick="toggleAutoEter('epmult')" style="height: 25px; width: 190px; font-size:10px; margin-top: 3px;"></button></div>
 			</div>
 			<div class="eternitytab" id="milestones">
 				<table class="table" align="center" style="margin: auto" id="milestones">
@@ -3448,8 +3447,8 @@
 				<p>You have <span id="dilatedTimeAmount" style="font-size:35px; color: black">0</span> dilated time <span id="dilatedTimePerSecond" style="font-size:25px; color: black">0</span></p>
 				<p>Next <span id="freeGalaxyMult">free galaxy</span> at <span id="galaxyThreshold" style="font-size:25px; color: black">1000</span> dilated time, gained total of <span id="dilatedGalaxies" style="font-size:25px; color: black">0</span></p>
 				<button id="rebuyupgmax" style="width:210px; height: 30px; font-size: 12px" onclick="maxAllDilUpgs()" class="storebtn">Max all dilation upgrades</button>
-				<button id="rebuyupgauto" style="width:210px; height: 30px; font-size: 12px" onclick="toggleAutoEter('rebuyupg')" class="storebtn"></button>
-				<button id="dilUpgsauto" style="width:240px; height: 30px; font-size: 12px" onclick="toggleAutoEter('dilUpgs')" class="storebtn"></button>
+				<button id="rebuyupgAuto" style="width:210px; height: 30px; font-size: 12px" onclick="toggleAutoEter('rebuyupg')" class="storebtn"></button>
+				<button id="dilUpgsAuto" style="width:240px; height: 30px; font-size: 12px" onclick="toggleAutoEter('dilUpgs')" class="storebtn"></button>
 				<button id="distribEx" style="width:180px; height: 30px; font-size: 12px" onclick="distribEx()" class="storebtn">Distribute ex-dilation</button>
 				<table><tr>
 					<td>
@@ -3532,7 +3531,7 @@
 						<p>You have <span id="blackholePowAmount" style="font-size:35px; color: black">0</span> black hole power, translated to <span id="DilMultAmount" style="font-size:35px; color: black">0</span>x multiplier on Dilated Time gain, and <span id="InfAndReplMultAmount" style="font-size:35px; color: black">0</span>x multiplier on banked Infinity gain and Replicanti speed.</p>
 					</div>
 					<div id="blackholePowPerSec">You are getting 0 black hole power per second.</div>
-					<br/>
+					<br>
 					<table class="table" style="margin: 0 auto">
 						<tr>
 							<td>
@@ -3615,7 +3614,7 @@
 							<td align="right" width="10%"><button id="blackholeMax8" style="color:black; width:195px; height:30px" class="storebtn" align="right" onclick="buyBlackholeDimension(8)"></button></td>
 						</tr>
 					  </table>
-					  <br/>
+					  <br>
 					  <canvas id="blackHoleCanvas" width="400" height="400" style="user-select: none;"></canvas>
 				</div>
 			</div>

@@ -8,7 +8,7 @@ function getMetaAntimatterStart(bigRip) {
 
 function getDilationMetaDimensionMultiplier() {
 	let div = 1e40
-	if (aarMod.nguspV !== undefined) div = 1e50
+	if (mod.udsp) div = 1e50
 
 	let pow = 0.1
 	if (isNanoEffectUsed("dt_to_ma_exp") && tmp.nf.effects.dt_to_ma_exp) pow = tmp.nf.effects.dt_to_ma_exp //this is a quick fix, but we need to fix this bug
@@ -294,8 +294,8 @@ function setupMetaDimensions() {
 		html += `<tr id="${d}MetaRow" style="display: none; font-size: 15px">
 			<td id="${d}MetaD" class="rel"></td>
 			<td id="meta${d}Amount"></td>
-			<td width="10%"><button id="meta${d}" style="color:black; height: 25px; font-size: 10px; width: 135px" class="storebtn"></button></td>
-			<td width="10%"><button id="metaMax${d}" style="color:black; width:210px; height: 25px; font-size: 10px" class="storebtn"></button></td>
+			<td width="70px"><button id="meta${d}" style="width: 70px; font-size: 10px;" class="storebtn"></button></td>
+			<td width="10%"><button id="metaMax${d}" style="width:210px; height: 25px; font-size: 10px" class="storebtn"></button></td>
 		</tr>`
 	}
 	el("metaDimTable").innerHTML = html
@@ -311,7 +311,7 @@ function setupMetaDimensions() {
 						if (d > 7) removeMaxAll = true
 					} else break
 				}
-				el("metaMaxAllDiv").style.display = removeMaxAll ? "none" : ""
+				el("metaMaxAll").style.display = removeMaxAll ? "none" : ""
 			}
 		}
 		el("metaMax" + i).onclick = function () {
@@ -339,7 +339,7 @@ function getExtraDimensionBoostPower() {
 	let r = getExtraDimensionBoostPowerUse()
 	r = E_pow(r, getExtraDimensionBoostPowerExponent(r)).max(1)
 	if (!inQC(3)) r = r.add(1)
-	if (aarMod.nguspV) {
+	if (mod.udsp) {
 		let l = r.log(2)
 		if (l > 1024) r = pow2(Math.pow(l * 32, 2/3))
 	}
@@ -383,7 +383,7 @@ function updateOverallMetaDimensionsStuff(){
 	el("metaAntimatterAmount").textContent = shortenMoney(player.meta.antimatter)
 	el("metaAntimatterBest").textContent = shortenMoney(player.meta.bestAntimatter)
 	el("bestAntimatterQuantum").textContent = quantumed ? "Your best" + (ghostified ? "" : "-ever") + " meta-antimatter" + (ghostified ? " in this Fundament" : "") + " was " + shortenMoney(player.meta.bestOverQuantums) + "." : ""
-	el("bestAntimatterTranslation").innerHTML = (mod.ngp3 && aarMod.nguspV === undefined && player.currentEternityChall != "eterc14" && (inQC(3) || nfSave.rewards >= 2) && !inQC(7)) ? 'Raised to the power of <span id="metaAntimatterPower" style="font-size:35px; color: black">'+formatValue(player.options.notation, getExtraDimensionBoostPowerExponent(getExtraDimensionBoostPowerUse()), 2, 1)+'</span>, t' : "T"
+	el("bestAntimatterTranslation").innerHTML = (mod.ngp3 && !mod.udsp && player.currentEternityChall != "eterc14" && (inQC(3) || nfSave.rewards >= 2) && !inQC(7)) ? 'Raised to the power of <span id="metaAntimatterPower" style="font-size:35px; color: black">'+formatValue(player.options.notation, getExtraDimensionBoostPowerExponent(getExtraDimensionBoostPowerUse()), 2, 1)+'</span>, t' : "T"
 	setAndMaybeShow("bestMAOverGhostifies", ghostified, '"Your best-ever meta-antimatter was " + shortenMoney(player.meta.bestOverGhostifies) + "."')
 	el("metaAntimatterEffect").textContent = shortenMoney(getExtraDimensionBoostPower())
 	el("metaAntimatterPerSec").textContent = 'You are getting ' + shortenDimensions(getMetaDimensionProduction(1)) + ' meta-antimatter per second.'
@@ -439,13 +439,13 @@ function getDil15Bonus() {
 		x = tmp.nb[3]
 		max = 1/0
 	}
-	if (aarMod.nguspV !== undefined) x *= Math.min(Math.max(player.dilation.dilatedTime.max(1).log10() / 10 - 6.25, 2), max)
+	if (mod.udsp) x *= Math.min(Math.max(player.dilation.dilatedTime.max(1).log10() / 10 - 6.25, 2), max)
 	else x *= Math.min(Math.log10(player.dilation.dilatedTime.max(1e10).log(10)) + 1, max)
 	return x
 }
 
 function getMetaUnlCost() {
-	if (aarMod.nguspV) return 1e21
+	if (mod.udsp) return 1e21
 	return 1e24
 }
 

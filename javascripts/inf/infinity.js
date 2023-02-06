@@ -114,7 +114,7 @@ function gainedInfinityPoints(next) {
 	if (hasAch("r116")) ret = ret.mul(Decimal.add(getInfinitied(), 1).pow(Math.log10(2)))
 	if (hasAch("r125")) ret = ret.mul(pow2(Math.log(player.thisInfinityTime+1)*Math.pow(player.thisInfinityTime+1, 0.11)))
 	if (player.dilation.upgrades.includes(7)) ret = ret.mul(player.dilation.dilatedTime.max(1).pow(1000))
-	if (player.boughtDims) {
+	if (mod.rs) {
 		ret = ret.mul(E_pow(Math.max(1e4/player.thisInfinityTime),player.timestudy.ers_studies[5]+(next==5?1:0)))
 		ret = ret.mul(E_pow(player.thisInfinityTime/10,player.timestudy.ers_studies[6]+(next==6?1:0)))
 	}
@@ -180,7 +180,7 @@ function toggleCrunchMode(freeze) {
 		player.autoCrunchMode = "time"
 	} else if (player.autoCrunchMode == "time"){
 		player.autoCrunchMode = "relative"
-	} else if (player.autoCrunchMode == "relative" && player.boughtDims) {
+	} else if (player.autoCrunchMode == "relative" && mod.rs) {
 		player.autoCrunchMode = "replicanti"
 	} else {
 		player.autoCrunchMode = "amount"
@@ -264,6 +264,23 @@ function checkSecondSetOnCrunchAchievements(){
 	if (player.challenges.length >= 2) giveAchievement("Daredevil")
 	if (player.challenges.length >= getTotalNormalChallenges() + 1) giveAchievement("AntiChallenged")
 	if (player.challenges.length >= getTotalNormalChallenges() + order.length + 1) giveAchievement("Anti-antichallenged")
+}
+
+//Infinities
+function getInfinitiedStat(){
+	return getInfinitied()
+}
+
+function getInfinitied() {
+	return nMx(nA(player.infinitied,player.infinitiedBank),0)
+}
+
+function getInfinitiedGain() {
+	let infGain=1
+	if (player.thisInfinityTime > 50 && hasAch("r87")) infGain = 250
+	if (player.timestudy.studies.includes(32)) infGain *= tsMults[32]()
+	if (hasAch("r133") && mod.ngpp) infGain = nM(player.dilation.dilatedTime.pow(.25).max(1), infGain)
+	return nA(infGain, hasAch("r87") && inNGM(2) ? 249 : 0)
 }
 
 //CHALLENGES

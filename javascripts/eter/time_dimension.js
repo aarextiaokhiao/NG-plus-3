@@ -18,24 +18,24 @@ function doNGMatLeast4TDChanges(tier, ret){
 	var x = player.postC3Reward
 	var exp = ([5, 3, 2, 1.5, 1, .5, 1/3, 0])[tier - 1]
 	if (x.gt(1e10)) x = pow10(Math.sqrt(x.log10() * 5 + 50))
-	if (hasGalUpg(25)) exp *= galMults.u25()
+	if (hasGSacUpg(25)) exp *= galMults.u25()
 	if (inNC(16)) exp /= 2
 	ret = ret.mul(x.pow(exp))
 
 	//NG-4 upgrades
-	if (hasGalUpg(12)) ret = ret.mul(galMults.u12())
-	if (hasGalUpg(13) && player.currentChallenge!="postngm3_4") ret = ret.mul(galMults.u13())
-	if (hasGalUpg(15)) ret = ret.mul(galMults.u15())
-	if (hasGalUpg(44) && inNGM(4)) {
-		var e = hasGalUpg(46) ? galMults["u46"]() : 1
+	if (hasGSacUpg(12)) ret = ret.mul(galMults.u12())
+	if (hasGSacUpg(13) && player.currentChallenge!="postngm3_4") ret = ret.mul(galMults.u13())
+	if (hasGSacUpg(15)) ret = ret.mul(galMults.u15())
+	if (hasGSacUpg(44) && inNGM(4)) {
+		var e = hasGSacUpg(46) ? galMults["u46"]() : 1
 		ret = ret.mul(E_pow(player[dimTiers[tier]+"Amount"].plus(10).log10(), e * Math.pow(11 - tier, 2)))
 	}
-	if (hasGalUpg(31)) ret = ret.pow(galMults.u31())
+	if (hasGSacUpg(31)) ret = ret.pow(galMults.u31())
 	return ret
 }
 
 function getERTDAchMults(){
-	if (!player.boughtDims) return 1
+	if (!mod.rs) return 1
 	if (hasAch('r117')) {
 		return 1 + Math.pow(Math.log(player.eternities), 1.5) / Math.log(100);
 	} else if (hasAch('r102')) {
@@ -70,7 +70,7 @@ function getTimeDimensionPower(tier) {
 	if (player.currentEternityChall == "eterc11") return E(1)
 	if (tmp.be) return getBreakEternityTDMult(tier)
 	var dim = player["timeDimension" + tier]
-	var ret = dim.power.pow(player.boughtDims ? 1 : 2)
+	var ret = dim.power.pow(mod.rs ? 1 : 2)
 
 	if (inNGM(4)) ret = doNGMatLeast4TDChanges(tier,ret)
 
@@ -85,7 +85,7 @@ function getTimeDimensionPower(tier) {
 
 	if (ECComps("eterc10") !== 0) ret = ret.mul(getECReward(10))
 	if (hasAch("r128")) ret = ret.mul(Math.max(player.timestudy.studies.length, 1))
-	if (hasGalUpg(43)) ret = ret.mul(galMults.u43())
+	if (hasGSacUpg(43)) ret = ret.mul(galMults.u43())
 	if (inQC(6)) ret = ret.mul(player.postC8Mult).dividedBy(player.matter.max(1))
 
 	ret = dilates(ret, 2)
@@ -216,7 +216,7 @@ function buyTimeDimension(tier) {
 		dim.cost = dim.cost.mul(timeDimCostMults[1][tier])
 		if (inNC(2) || player.currentChallenge == "postc1") player.chall2Pow = 0
 	} else {
-		dim.power = dim.power.mul(player.boughtDims ? 3 : 2)
+		dim.power = dim.power.mul(mod.rs ? 3 : 2)
 		dim.cost = timeDimCost(tier, dim.bought)
 		updateEternityUpgrades()
 	}
@@ -285,7 +285,7 @@ function buyMaxTimeDimension(tier, bulk) {
 		dim.cost = dim.cost.mul(E_pow(timeDimCostMults[1][tier], toBuy))
 	} else {
 		dim.cost = timeDimCost(tier, dim.bought)
-		dim.power = dim.power.mul(E_pow(player.boughtDims ? 3 : 2, toBuy))
+		dim.power = dim.power.mul(E_pow(mod.rs ? 3 : 2, toBuy))
 		if (inQC(6)) player.postC8Mult = E(1)
 		updateEternityUpgrades()
 	}
