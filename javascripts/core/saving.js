@@ -821,10 +821,8 @@ function updateNewPlayer(mode, preset) {
 	aarMod = player.aarexModifications
 
 	if (mod.ngm) doNGMinusNewPlayer()
-	if (mod.ngp) doNGPlusOneNewPlayer()
 	if (mod.ngpp) doNGPlusTwoNewPlayer()
 	if (mod.ngpp > 1) doNGPlusThreeNewPlayer()
-	if (mod.ngp > 1) doNGPlusFourPlayer()
 
 	if (mod.ngmu) doNGMultipliedPlayer()
 	if (mod.ngep) doNGEXPNewPlayer()
@@ -843,6 +841,9 @@ function updateNewPlayer(mode, preset) {
 	if (mod.ngmm >= 3) doNGMinusFourPlayer()
 
 	if (mod.rs == 1) doEternityRespeccedNewPlayer()
+
+	if (mod.ngp) doNGPlusOneNewPlayer()
+	if (mod.ngp > 1) doNGPlusFourPlayer()
 	if (mod.aau) {
 		aarMod.aau = 1
 		dev.giveAllAchievements(true)
@@ -871,6 +872,7 @@ function doNGPlusOneNewPlayer(){
 	player.dimensionMultDecrease = 2
 	player.tickSpeedMultDecrease = 1.65
 	player.eternities = 1012680
+	setInfChallengeOrder()
 	player.challenges = challengesCompletedOnEternity()
 	player.postChallUnlocked = order.length
 	player.replicanti.unl = true

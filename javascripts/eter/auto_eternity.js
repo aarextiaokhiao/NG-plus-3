@@ -46,7 +46,7 @@ function toggleAutoEterMode() {
 
 function toggleAutoEter(id) {
 	player.autoEterOptions[id] = !player.autoEterOptions[id]
-	el(id + 'Auto').textContent = "Auto" + (id == "rebuyupg" && mod.udsp ? "(repeatable): " : ": ") + (player.autoEterOptions[id] ? "ON" : "OFF")
+	el(id + 'Auto').textContent = "Auto" + (id == "rebuyupg" && mod.udsp ? " (repeatable): " : ": ") + (player.autoEterOptions[id] ? "ON" : "OFF")
 	if (id.slice(0,2) == "td") {
 		var removeMaxAll = false
 		for (var d = 1; d < 9; d++) {

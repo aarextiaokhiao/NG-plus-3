@@ -6,15 +6,8 @@
     font-family: Typewriter;
 }
 
-.hidden {
-	display: none;
-}
-.shown {
-	display: block;
-}
-
 /* BUTTONS */
-.storebtn {
+button {
     color: black;
     background: #F2F2F2;
     font-weight: bold;
@@ -30,78 +23,76 @@
     display: block;
 }
 
-.storebtn:hover {
+button:hover {
     color: #FFF;
     background: #5AC467;
 }
 
-.storebtn.infinity {
+.infinity {
     color: #FFF;
     background: #1F1F1F;
     border: 1px solid #B67F33;
 }
 
-.storebtn.infinity:hover {
+.infinity:hover {
     color: #000;
     background: #B67F33;
 }
 
-.storebtn.eternity {
+.eternity {
     color: #b341e0;
     background: black;
     border: 1px solid #b341e0;
 }
 
-.storebtn.eternity:hover {
+.eternity:hover {
     color: #511568;
     background: white;
 }
 
-.storebtn.quantum {
+.quantum {
     color: #32c832;
     background: #0a640a;
     border: 1px solid #32c832;
 }
 
-.storebtn.quantum:hover {
+.quantum:hover {
     background: #32c832;
     color: #0a640a;
 }
 
-.storebtn.fundament {
-	background: linear-gradient(#0c0033, #2e0033);
+.fundament {
+	background: linear-gradient(#0c0033, #2e0033) !important;
 	box-shadow: inset 0px 0px 24px 0px black;
 	border: 1px solid;
 	animation: fundamenttext 4s linear infinite
 }
 
-.storebtn.fundament:hover {
+.fundament:hover {
 	box-shadow: inset 0px 0px 12px 0px #420072
 }
 
-.storebtn.ant {
+.ant {
 	background: black;
 	border: 2px solid #4c4c4c;
 	color: #727272;
 	text-shadow: 0px 0px 1px #4c4c4c, 0px 0px 2px #4c4c4c, 0px 0px 3px #4c4c4c
 }
-.storebtn.ant:hover {
+.ant:hover {
 	background: #333;
 	cursor: pointer
 }
 
-.storebtn.bl {
-	background: repeating-linear-gradient(black, transparent), linear-gradient(#710, #307);
-	background-size: 25% 25%, 100% 100%;
+.bl {
+	background: repeating-linear-gradient(black, transparent), linear-gradient(#710, #307) !important;
 	box-shadow: inset 0 0 6px 0 #b50;
 	text-shadow: 0 0 6px #f50;
 	color: #db7;
 	border: 1px solid #b50;
-	border-radius: 4px;
-	animation: bltab 4s linear infinite
+	border-radius: 4px
 }
 
-.storebtn.bl:hover {
+.bl:hover {
 	box-shadow: inset 0 0 24px 0 #b50;
 	color: #f50;
 	text-shadow: 0 0 6px #f50;
@@ -123,14 +114,5 @@
 		border-color: #690072;
 		color: #e0ace5;
 		text-shadow: 0px 0px 3px white, 0px 0px 6px #d200e5;
-	}
-}
-
-@keyframes bltab { 
-	0%{
-		background-position: 0 0, 0 0
-	}
-	100%{
-		background-position: 0 100%, 0 0
 	}
 }

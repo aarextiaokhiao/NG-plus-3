@@ -1512,14 +1512,10 @@ function setChallengeDisplay(){
 	el("ngm4chall").style.display=inNGM(4)?"":"none"
 }
 
-function setInfChallengeOrder(){
-	if (inNGM(3)) {
-		order=['postcngmm_1','postcngmm_2','postcngm3_1','postcngm3_2','postcngmm_3','postc1','postc2','postcngm3_3','postc4','postcngm3_4','postc5','postc6','postc7','postc8']
-	} else if (inNGM(2)) {
-		order=['postcngmm_1','postcngmm_2','postcngmm_3','postc1','postc2','postc4','postc5','postc6','postc7','postc8']
-	} else {
-		order=['postc1','postc2','postc3','postc4','postc5','postc6','postc7','postc8']
-	}
+function setInfChallengeOrder() {
+	if (inNGM(3)) order = ['postcngmm_1','postcngmm_2','postcngm3_1','postcngm3_2','postcngmm_3','postc1','postc2','postcngm3_3','postc4','postcngm3_4','postc5','postc6','postc7','postc8']
+	else if (inNGM(2)) order = ['postcngmm_1','postcngmm_2','postcngmm_3','postc1','postc2','postc4','postc5','postc6','postc7','postc8']
+	else order = ['postc1','postc2','postc3','postc4','postc5','postc6','postc7','postc8']
 }
 
 function setInfChallengeDisplay(){
@@ -1609,7 +1605,7 @@ function updateNGp3DisplayStuff(){
 	el('reward4disable').textContent="4.5 hours reward: O"+(quSave.disabledRewards[4]?"FF":"N")
 	el('reward11disable').textContent="33.3 mins reward: O"+(quSave.disabledRewards[11]?"FF":"N")
 	el('reward27disable').textContent="10 seconds reward: O"+(quSave.disabledRewards[27]?"FF":"N")
-	el('rebuyupgAuto').textContent="Auto"+(mod.udsp?"(repeatable): ":": ")+(player.autoEterOptions.rebuyupg?"ON":"OFF")
+	el('rebuyupgAuto').textContent="Auto"+(mod.udsp?" (repeatable): ":": ")+(player.autoEterOptions.rebuyupg?"ON":"OFF")
 	el('dilUpgsAuto').textContent="Auto: "+(player.autoEterOptions.dilUpgs?"ON":"OFF")
 	el('metaboostAuto').textContent="Auto: "+(player.autoEterOptions.metaboost?"ON":"OFF")
 	el('priorityquantum').value=formatValue("Scientific", E(quSave.autobuyer.limit), 2, 0)

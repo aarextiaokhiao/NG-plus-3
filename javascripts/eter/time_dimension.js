@@ -305,7 +305,7 @@ function toggleAllTimeDims() {
 	}
 	for (id = 1; id <= 8; id++) {
 		player.autoEterOptions["td" + id] = turnOn
-		el("td" + id + 'auto').textContent = "Auto: " + (turnOn ? "ON" : "OFF")
+		el("td" + id + 'Auto').textContent = "Auto: " + (turnOn ? "ON" : "OFF")
 	}
 	el("maxTimeDimensions").style.display = turnOn ? "none" : ""
 }

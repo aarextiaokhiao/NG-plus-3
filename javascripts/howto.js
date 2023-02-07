@@ -287,19 +287,14 @@ let HOW_TO = [
 		layer: "eternity",
 		desc: `Mastery Studies are a new type of Time & Dilation studies, but the cost will rise each time you buy a time study. When you respec, the costs of all time studies will decrease.`
 	}, {
-		mod: _ => player.meta !== undefined,
+		mod: _ => ngp3,
 		req: _ => player.quantum?.times,
 
 		title: "Quantum",
 		layer: "quantum",
-		desc() {
-			var msg = "When you reach "
-			if (player.masterystudies) msg += "9.32e446 meta-antimatter and completed EC14 for the first time"
-			else msg += "infinity meta-antimatter"
-			msg += ", you will able to go quantum. Quantum will reset everything eternity resets, and also time studies, eternity challenges, dilation, "+(player.masterystudies?"meta dimensions, and mastery studies":"and meta dimensions (except your best meta-antimatter)")+". You will gain a quark and unlock various upgrades."
-			if (player.masterystudies) msg += "<br><br>You will also unlock speedrun milestones where you must do fast quantums to get your QoL content rewards on eternity, and even quantum autobuyer."
-			return msg
-		}
+		desc: `When you reach 9.32e446 meta-antimatter and completed EC14 for the first time, you will able to go quantum. Quantum will reset everything eternity resets, and also eternity features. You will gain a quark and unlock various upgrades.
+		<br><br>
+		You will also unlock speedrun milestones where you must do fast quantums to get your QoL content rewards on eternity, and even quantum autobuyer.`
 	}, {
 		mod: _ => ngp3,
 		req: _ => player.quantum?.times,
@@ -335,7 +330,8 @@ let HOW_TO = [
 		req: _ => player.masterystudies.includes("d10"),
 
 		title: "Duplicants",
-		layer: "ant",
+		tab: "ant",
+		layer: "quantum",
 		desc: `Upon buying the appropriate mastery study, you can make duplicants to gather preons which provide a boost to extra replicated galaxies. To get a duplicant you have to reset your replicanti amount after reaching certain requirements (starts at e3,000,000, increases e100,000 each time).
 		<br>
 		You can spend gluons to buy quantum food, which, when used, turns normal duplicants into worker duplicants. Worker duplicants gather more preons, and also produce eggons, which turn into baby duplicants. Baby duplicants will eventually become normal duplicants. You can also spend gluons to make eggons hatch faster.`
@@ -344,14 +340,16 @@ let HOW_TO = [
 		req: _ => player.masterystudies.includes("d11"),
 
 		title: "Emperor Dimensions",
-		layer: "ant",
+		tab: "ant",
+		layer: "quantum",
 		desc: `As with other types of dimensions, each emperor dimension produces the one below it, and there are 8 total emperor dimensions. First emperor dimensions are the same as worker duplicants, second emperor dimensions produce worker duplicants, etc. To get the highest emperor dimension available, you must spend quantum food, similar to promoting a normal duplicant to a worker duplicant. You increase the amount of the highest dimension you can get, as well as unlocking the ability to buy higher dimensions, by spending gluons.`
 	}, {
 		mod: _ => ngp3,
 		req: _ => player.masterystudies.includes("d12"),
 
 		title: "Nanofield",
-		layer: "ant",
+		tab: "ant",
+		layer: "quantum",
 		desc: `Nanofield allows you to gain further bonuses by getting preon energy, produced by preon charge. You can enable the production of preon charge, which produces preon energy, but also preon anti-energy. Preon anti-energy slows down preon energy production until a cap of anti-energy is reached, where preon energy production completely stops.. When this happens, the only way to get more preon energy is to get more preon charge. You can get rewards from your preon energy, with the first one requiring 50 preon energy, and each subsequent one requiring 4 times as much preon energy. Note: Preon charge, energy, and anti-energy reset on quantum, but you keep whatever rewards you have already earned on previous quantums.`
 	}, {
 		mod: _ => ngp3,
@@ -403,19 +401,13 @@ let HOW_TO = [
 		On clicking "Transfer", Spectral Ions go to Lights which boost things. Caps can be increased, only by +1.
 		<br><br>
 		On getting all Lights with all +1 on, you'll get a Light Empowerment. This also increases the cap by +1.`
-	/*}, {
-		mod: _ => ngp3,
-		req: _ => ghSave?.photons.unl,
-
-		title: "Darkness",
-		layer: "fundament",
-		desc: `You can consume Spectral Ions for Darkness, which decreases Light cap. You'll unlock a Light (Vantablack), which boosts Neutrinos.`*/
 	}, {
 		mod: _ => ngp3,
 		req: _ => ghSave?.wzb.unl,
 
 		title: "Bosonic Lab",
-		layer: "bl",
+		tab: "bl",
+		layer: "fundament",
 		desc: `<b>Hypotheses</b><br>
 		There's a 4x4 grid where pairs of Hypotheses give something dependent on kinds.
 		<br><br>
@@ -434,12 +426,65 @@ let HOW_TO = [
 		req: _ => ghSave?.hb.unl,
 
 		title: "Higgs",
-		layer: "bl",
+		tab: "bl",
+		layer: "fundament",
 		desc: `At ??? Bosons, you can prestige Bosonic Lab for Higgs. This doesn't reset Bosonic Milestones.
 		<br><br>
 		Higgs gives Higgs Dimensions (dependent on amount), which produce Higgs Mass in return.<br>
 		Higgs Mass provides various boosts depending on which you choosed.<br>
 		Latter selections are less effective as you had less.`
+	/*}, {
+		mod: _ => ngp3,
+		req: _ => ghSave?.hb.unl,
+
+		title: "Gravity Well",
+		tab: "bl",
+		layer: "fundament",
+		desc: `???`
+	}, {
+		mod: _ => ngp3,
+		req: _ => ghSave?.hb.unl,
+
+		title: "Darkness",
+		layer: "fundament",
+		desc: `You can consume Spectral Ions for Darkness, which decreases Light cap. You'll unlock a Light (Vantablack), which boosts Neutrinos.`
+	}, {
+		mod: _ => ngp3,
+		req: _ => ghSave?.hb.unl,
+
+		title: "Anti-Preonius",
+		tab: "ant",
+		layer: "fundament",
+		desc: `A nerf feature coming back from NG+3.1...`
+	}, {
+		mod: _ => ngp3,
+		req: _ => ghSave?.hb.unl,
+
+		title: "Endless Mirrors",
+		layer: "fundament",
+		desc: `???`
+	}, {
+		mod: _ => ngp3,
+		req: _ => ghSave?.hb.unl,
+
+		title: "Duplicant Expansion",
+		tab: "ant",
+		layer: "fundament",
+		desc: `If Anti-Preonius is an ant feature, as it is to Ghost Challenges... Why not make it another ant feature?`
+	}, {
+		mod: _ => ngp3,
+		req: _ => ghSave?.hb.unl,
+
+		title: "Temporality",
+		layer: "fundament",
+		desc: `Called Break Dilation in NG+5.`
+	}, {
+		mod: _ => ngp3,
+		req: _ => ghSave?.hb.unl,
+
+		title: "Annihilation",
+		layer: "fundament",
+		desc: `Nullify features for Exotic Matter.`*/
 	}/*, {
 		mod: _ => true,
 		req: _ => true,
@@ -456,10 +501,20 @@ function deleteUnneeded() {
 	HOW_TO = newData
 }
 
+let lastUnl
+function setLast() {
+	for (var [i, data] of Object.entries(HOW_TO).reverse()) {
+		if (data.req()) {
+			lastUnl = parseInt(i)
+			return
+		}
+	}
+}
+
 function setupDisplays() {
 	let r = ""
 	for (var [i, data] of Object.entries(HOW_TO)) r += `<div id='how_to_div_${i}'>
-		<button onclick='openPage(${i})' class='storebtn ${data.layer}'>${data.title}</button>
+		<button id='how_to_btn_${i}' onclick='openPage(${i})' class='${data.tab || data.layer}'>${data.title}</button>
 		<div id='how_to_${i}'></div>
 		<hr>
 	</div>`
@@ -467,20 +522,7 @@ function setupDisplays() {
 }
 
 function updateDisplays() {
-	el("showspoilersbtn").style.display = ""
-	el("ngp3guide").style.display = ngp3 ? "" : "none"
-
-	let entries = Object.entries(HOW_TO)
-	let last
-	let unl = SPOILERS
-	for (var [i, data] of entries.reverse()) {
-		if (!unl) {
-			unl = data.req()
-			last = parseInt(i)
-		}
-		el("how_to_div_" + i).style.display = unl && (SPOILERS || i >= last - 3) ? "" : "none"
-	}
-	if (last + 1 < entries.length) el("how_to_div_" + (last + 1)).style.display = ""
+	for (var i in HOW_TO) el("how_to_div_" + i).style.display = (PRIOR || i >= lastUnl - 3) && (SPOILERS || i <= lastUnl + 1) ? "" : "none"
 }
 
 let OPENED = {}
@@ -491,12 +533,34 @@ function openPage(x) {
 	el("how_to_"+x).innerHTML = !OPENED[x] ? "" : typeof r == "function" ? r() : r || "Placeholder."
 }
 
+//Options
+function showButtons() {
+	el("showfeatures").style.display = ""
+	el("showspoilers").style.display = ""
+	el("layercolors").style.display = ""
+	el("ngp3guide").style.display = ngp3 ? "" : "none"
+}
+
+let PRIOR = false
+function showPriorFeatures() {
+	PRIOR = !PRIOR
+	el("showfeatures").innerHTML = "Show " + (PRIOR ? "latest" : "prior") + " features"
+	updateDisplays()
+}
+
 let SPOILERS = false
 function showSpoilers() {
 	if (!SPOILERS && !confirm("This will reveal the content you haven't got! Are you sure?")) return
 	SPOILERS = !SPOILERS
-	el("showspoilersbtn").innerHTML = (SPOILERS ? "Avoid" : "Show") + " spoilers"
+	el("showspoilers").innerHTML = (SPOILERS ? "Avoid" : "Show") + " spoilers"
 	updateDisplays()
+}
+
+let LAYER_COLORS = false
+function showLayerColors() {
+	LAYER_COLORS = !LAYER_COLORS
+	el("layercolors").innerHTML = "Colors: " + (LAYER_COLORS ? "Layers" : "Tabs")
+	for (var [i, data] of Object.entries(HOW_TO)) el("how_to_btn_" + i).className = (!LAYER_COLORS && data.tab) || data.layer
 }
 
 //Saving
@@ -505,7 +569,7 @@ var betaId = "P"
 var prefix = betaId + "dsAM_"
 var metaSaveId = betaId + "AD_aarexModifications"
 
-function load_game() {
+function loadSave() {
 	let metaSave = localStorage.getItem(metaSaveId)
 	if (metaSave == null) {
 		let err = "No save found. Please go to main page and then reload."
@@ -528,8 +592,10 @@ function load_game() {
 
 //On Load
 function onLoad() {
-	load_game()
+	loadSave()
+	showButtons()
 	deleteUnneeded()
+	setLast()
 	setupDisplays()
 	updateDisplays()
 }
