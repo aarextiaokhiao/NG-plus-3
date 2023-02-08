@@ -1,6 +1,6 @@
 //VERSION: 2.31
 let ngp3_ver = 2.31
-let ngp3_build = 20230206
+let ngp3_build = 20230207
 function doNGP3Updates() {
 	if (!aarMod.ngp3_build) aarMod.ngp3_build = 0
 	if (aarMod.ngp3_build < 20221230) quSave.multPower = 0
@@ -745,8 +745,8 @@ function doNGP3UnlockStuff(){
 
 function updateNGP3Temp() {
 	tmp.be = brokeEternity()
+	if (ghostified) updateGhostifyTempStuff()
 	if (quantumed) {
-		if (ghostified) updateGhostifyTempStuff()
 		if (beSave && beSave.unlocked) updateBreakEternityUpgradesTemp()
 
 		if (hasMasteryStudy("d14")) updateBigRipUpgradesTemp()
@@ -825,6 +825,21 @@ function beatNGP3() {
 	This took you ${timeDisplayShort(player.totalTimePlayed)} and ${player.achievements.length} achievements.<br><br>
 	Post-game is coming soon!<br>
 	Thanks for playing!`
+}
+
+function intergalacticDisplay() {
+	if (tmp.ig && getNormalDimensions() == 8) {
+		el("intergalacticLabel").parentElement.style.display = ""
+		let nanopart = 1
+		if (isNanoEffectUsed("dil_effect_exp")) nanopart = tmp.nf.effects["dil_effect_exp"] || 1
+		el("intergalacticLabel").innerHTML = 
+			getGalaxyScaleName(tmp.igs) + 'Intergalactic Boost ' + 
+			(player.dilation.active || inNGM(2) ? " (estimated)" : "") +
+			" (" + getFullExpansion(player.galaxies) + (Math.floor(tmp.igg - player.galaxies) > 0 ? " + " + 
+			getFullExpansion(Math.floor(tmp.igg - player.galaxies)) : "") + "): " + 
+			shorten(dilates(tmp.ig).pow(player.dilation.active ? nanopart : 1)) + 
+			'x to Eighth Dimensions'
+	} else el("intergalacticLabel").parentElement.style.display = "none"
 }
 
 //Setup

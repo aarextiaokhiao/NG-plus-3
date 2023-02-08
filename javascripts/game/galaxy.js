@@ -20,7 +20,7 @@ function galaxyReset(bulk) {
 }
 
 el("secondSoftReset").onclick = function() {
-	let ngm4 = mod.ngmX ? inNGM(4) : false
+	let ngm4 = inNGM(4)
 	let bool1 = !inNC(11) || ngm4
 	let bool2 = player.currentChallenge != "postc1"
 	let bool3 = player.currentChallenge != "postc5" || !inNGM(3)

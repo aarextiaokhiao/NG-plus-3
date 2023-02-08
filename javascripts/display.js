@@ -37,22 +37,7 @@ function getGalaxyScaleName(x) {
 	return galaxyScalings[x]
 }
 
-function intergalacticDisplay(){
-	if (tmp.ig && getNormalDimensions() == 8) {
-		el("intergalacticLabel").parentElement.style.display = ""
-		let nanopart = 1
-		if (isNanoEffectUsed("dil_effect_exp")) nanopart = tmp.nf.effects["dil_effect_exp"] || 1
-		el("intergalacticLabel").innerHTML = 
-			getGalaxyScaleName(tmp.igs) + 'Intergalactic Boost ' + 
-			(player.dilation.active || inNGM(2) ? " (estimated)" : "") +
-			" (" + getFullExpansion(player.galaxies) + (Math.floor(tmp.igg - player.galaxies) > 0 ? " + " + 
-			getFullExpansion(Math.floor(tmp.igg - player.galaxies)) : "") + "): " + 
-			shorten(dilates(tmp.ig).pow(player.dilation.active ? nanopart : 1)) + 
-			'x to Eighth Dimensions'
-	} else el("intergalacticLabel").parentElement.style.display = "none"
-}
-
-function dimensionTabDisplay(){
+function dimensionTabDisplay() {
 	var shown
 	for (let tier = 8; tier > 0; tier--) {
 		shown = shown || canBuyDimension(tier)
@@ -64,10 +49,28 @@ function dimensionTabDisplay(){
 		}
 	}
 	setAndMaybeShow("mp10d", mod.ngmu, "'Multiplier per 10 Dimensions: '+shorten(getDimensionPowerMultiplier(\"non-random\"))+'x'")
+	updateCosts()
 	dimShiftDisplay()
 	tickspeedBoostDisplay()
 	galaxyReqDisplay()
 	intergalacticDisplay()
+	normalSacDisplay()
+	d8SacDisplay()
+	dimboostBtnUpdating()
+	galaxyBtnUpdating()
+}
+
+function updateCosts() {
+	var costPart = quantumed ? '' : 'Cost: '
+	var until10CostPart = quantumed ? '' : 'Until 10, Cost: '
+	for (var i=1; i<9; i++) {
+		var cost = player[dimTiers[i] + "Cost"]
+		var resource = getOrSubResource(i)
+		el('B'+i).className = cost.lte(resource) ? 'storebtn' : 'unavailablebtn'
+		el('B'+i).textContent = costPart + shortenPreInfCosts(cost)
+		el('M'+i).className = cost.mul(10 - dimBought(i)).lte(resource) ? 'storebtn' : 'unavailablebtn'
+		el('M'+i).textContent = until10CostPart + shortenPreInfCosts(cost.mul(10 - dimBought(i)));
+	}
 }
 
 function tickspeedDisplay(){
@@ -88,11 +91,17 @@ function tickspeedDisplay(){
 		el("tickSpeedMax").style.visibility = "visible";
 		el("tickLabel").style.visibility = "visible";
 		el("tickSpeedAmount").style.visibility = "visible";
+		tickspeedButtonDisplay()
 	} else {
 		el("tickSpeed").style.visibility = "hidden";
 		el("tickSpeedMax").style.visibility = "hidden";
 		el("tickLabel").style.visibility = "hidden";
 		el("tickSpeedAmount").style.visibility = "hidden";
+	}
+
+	if (tmp.tickUpdate) {
+		updateTickspeed()
+		tmp.tickUpdate = false
 	}
 }
 
@@ -211,8 +220,8 @@ function breakInfinityUpgradeDisplay(){
 	if (player.infinityUpgrades.includes("autoBuyerUpgrade")) el("postinfi33").className = "infinistorebtnbought"
 	else if (player.infinityPoints.gte(1e15)) el("postinfi33").className = "infinistorebtn1"
 	else el("postinfi33").className = "infinistorebtnlocked"
-	el("postinfi11").innerHTML = "Normal Dimensions gain a multiplier based on total antimatter produced<br>Currently: " + shorten(tmp.postinfi11) + "x<br>Cost: "+shortenCosts(1e4)+" IP"
-	el("postinfi21").innerHTML = "Normal Dimensions gain a multiplier based on current antimatter<br>Currently: " + shorten(tmp.postinfi21) + "x<br>Cost: "+shortenCosts(5e4)+" IP"
+	el("postinfi11").innerHTML = "Normal Dimensions gain a multiplier based on total antimatter produced<br>Currently: " + shorten(totalMult) + "x<br>Cost: "+shortenCosts(1e4)+" IP"
+	el("postinfi21").innerHTML = "Normal Dimensions gain a multiplier based on current antimatter<br>Currently: " + shorten(currentMult) + "x<br>Cost: "+shortenCosts(5e4)+" IP"
 	if (player.tickSpeedMultDecrease > 2) el("postinfi31").innerHTML = "Tickspeed cost multiplier increase <br>" + player.tickSpeedMultDecrease+"x -> "+(player.tickSpeedMultDecrease-1)+"x<br>Cost: "+shortenDimensions(player.tickSpeedMultDecreaseCost) +" IP"
 	else el("postinfi31").innerHTML = "Decrease the Tickspeed cost multiplier increase post-e308<br> " + player.tickSpeedMultDecrease.toFixed(player.tickSpeedMultDecrease < 2 ? 2 : 0)+"x"
 	el("postinfi22").innerHTML = "Normal Dimensions gain a multiplier based on achievements " + (inNGM(4) ? "and purchased GP upgrades " : "") + "<br>Currently: " + shorten(achievementMult) + "x<br>Cost: " + shortenCosts(1e6) + " IP"
@@ -342,12 +351,21 @@ function mainDilationDisplay(){
 
 	var fgm = getFreeGalaxyGainMult()
 	el('freeGalaxyMult').textContent = fgm == 1 ? "Tachyonic Galaxy" : Math.round(fgm * 10) / 10 + " Tachyonic Galaxies"
+
+	el("tachyonParticleAmount").textContent = shortenMoney(player.dilation.tachyonParticles)
+	el("dilatedTimeAmount").textContent = shortenMoney(player.dilation.dilatedTime)
+	el("dilatedTimePerSecond").textContent = "+" + shortenMoney(getDilTimeGainPerSecond()) + "/s"
+	el("galaxyThreshold").textContent = shortenMoney(player.dilation.nextThreshold)
+	el("dilatedGalaxies").textContent = getFullExpansion(Math.floor(player.dilation.freeGalaxies))
 }
 
 function ETERNITYSTOREDisplay(){
 	if (el("TTbuttons").style.display == "block") updateTheoremButtons()
 	if (el("timestudies").style.display == "block" || el("ers_timestudies").style.display == "block") updateTimeStudyButtons()
+	if (el("timestudies").style.display == "block") mainTimeStudyDisplay()
+	if (el("ers_timestudies").style.display == "block") updateERSTTDesc()
 	if (el("masterystudies").style.display == "block") updateMasteryStudyButtons()
+
 	if (el("eternityupgrades").style.display == "block") eternityUpgradesDisplay()
 	if (el("dilation").style.display == "block") {
 		mainDilationDisplay()
@@ -364,6 +382,9 @@ function updateDimensionsDisplay() {
 		if (el("metadimensions").style.display == "block") updateMetaDimensions()
 	}
 	tickspeedDisplay()
+}
+
+function updateTabDisplay() {
 	if (el("statistics").style.display == "block") displayStats()
 	if (el("infinity").style.display == "block") INFINITYUPGRADESDisplay()
 	if (el("eternitystore").style.display == "block") ETERNITYSTOREDisplay()
@@ -402,6 +423,7 @@ function replicantiDisplay() {
 		el("replicantimax").className = (player.infinityPoints.gte(getRGCost())) ? "storebtn" : "unavailablebtn"
 		el("replicantireset").className = (canGetReplicatedGalaxy()) ? "storebtn" : "unavailablebtn"
 		el("replicantireset").style.height = (hasAch("ngpp16") && !hasAch("ng3p67") ? 90 : 70) + "px"
+		el("replicantiresettoggle").textContent="Auto galaxy "+(player.replicanti.galaxybuyer?"ON":"OFF")+(!canAutoReplicatedGalaxy()?" (disabled)":"")
 
 		for (var i = i; i <= 3; i++) el("replauto"+i).textContent = "Auto: " + (player.replicanti.auto[i-1] ? "ON" : "OFF")
 	} else {

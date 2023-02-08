@@ -511,7 +511,7 @@ let R135 = Math.pow(Math.E + Math.PI + 0.56714 + 4.81047 + 0.78343 + 1.75793 + 2
 
 //v2.31
 let galMults = {
-	u11: function() {
+	u11() {
 		if (inNGM(3)) {
 			var e = hasGSacUpg(46) ? galMults["u46"]() : 1
 			var exp = (inNGM(4) && hasGSacUpg(41)) ? 2 * e : 1
@@ -536,16 +536,16 @@ let galMults = {
 		if (y > 1e4) y = Math.pow(1e8 * y,1/3)
 		return pow10(Math.min(y, 2e4));
 	},
-	u31: function() {
+	u31() {
 		let x = 1.1 + player.extraDimPowerIncrease * 0.02
 		return x
 	},
-	u51: function() {
-		let x = player.galacticSacrifice.galaxyPoints.log10() / 1e3
+	u51() {
+		let x = player.galacticSacrifice.galaxyPoints.max(1).log10() / 1e3
 		if (x > 200) x = Math.sqrt(x * 200)
 		return pow10(x)
 	},
-	u12: function() {
+	u12() {
 		var r = 2 * Math.pow(1 + player.galacticSacrifice.time / 600, 0.5)
 		if (inNGM(4) && hasGSacUpg(42)) {
 			m = hasGSacUpg(46) ? 10 : 4
@@ -558,7 +558,7 @@ let galMults = {
 		if (r.gt(1e35)) r = r.div(1e35).pow(.3).mul(1e35)
 		return r
 	},
-	u32: function() {
+	u32() {
 		let x = player.totalmoney
 		let exp = .003
 		if (hasAch("r123")) exp = .005
@@ -580,7 +580,7 @@ let galMults = {
 		}
 		return x.pow(exp).add(1)
 	},
-	u13: function() {
+	u13() {
 		exp = calcG13Exp()
 		x = player.galacticSacrifice.galaxyPoints.div(5)
 		if (x.gt(1)){
@@ -590,32 +590,32 @@ let galMults = {
 		}
 		return x.plus(1).pow(exp)
 	},
-	u23: function() {
+	u23() {
 		let x = player.galacticSacrifice.galaxyPoints.max(1).log10() * .75 + 1
 		if (hasAch("r138")) x *= Decimal.add(player.dilation.bestIP,10).log10()
 		return x
 	},
-	u33: function() {
+	u33() {
 		if (inNGM(3)) return player.galacticSacrifice.galaxyPoints.div(1e10).add(1).log10()/5+1
 		return player.galacticSacrifice.galaxyPoints.max(1).log10() / 4 + 1
 	},
-	u43: function() {
+	u43() {
 		return E_pow(player.galacticSacrifice.galaxyPoints.log10(), 50)
 	},
-	u24: function() {
+	u24() {
 		return player.galacticSacrifice.galaxyPoints.pow(0.25).div(20).max(0.2)
 	},
-	u15: function() {
+	u15() {
 		return pow10(getInfinitied() + 2).max(1).min(1e6).pow(hasGSacUpg(16) ? 2 : 1)
 	},
-	u25: function() {
+	u25() {
 		let r = Math.max(player.galacticSacrifice.galaxyPoints.log10() - 2, 1)
 		if (r > 2.5) r = Math.pow(r * 6.25, 1/3)
 		r = Math.pow(r, hasGSacUpg(26) ? 2 : 1)
 		if (r > 10) r = 10 * Math.log10(r)
 		return r
 	},
-	u35: function() {
+	u35() {
 		let r = E(1)
 		let p = getProductBoughtMult()
 		for (var d = 1; d < 9; d++) {
@@ -625,7 +625,7 @@ let galMults = {
 		if (r.gt(1e100)) r = E_pow(r.log10(), 50)
 		return r
 	},
-	u46: function() {
+	u46() {
 		var r = Math.pow(player.galacticSacrifice.galaxyPoints.plus(10).log10(), .2) - 1
 		if (r < 1) return 1
 		if (r > 2) return 2
@@ -727,7 +727,7 @@ function updateNGM2RewardDisplay(){
 }
 
 function displayGalSacStats(){
-	if (inNGM(2) ? player.galacticSacrifice.times < 1 : true) el("gsStatistics").style.display = "none"
+	if (!gSacrificed()) el("gsStatistics").style.display = "none"
 	else {
 		el("gsStatistics").style.display = ""
 		el("sacrificed").textContent = "You have Galactic Sacrificed "+getFullExpansion(player.galacticSacrifice.times) + " times."
@@ -736,13 +736,14 @@ function displayGalSacStats(){
 }
 
 function galSacDisplay(){
-	if ((inNGM(2) ? (player.galacticSacrifice.times > 0 || player.infinitied > 0 || player.eternities != 0 || quantumed) : false) && !isEmptiness) {
+	if (inNGM(2) && (player.galacticSacrifice.times > 0 || player.infinitied > 0 || player.eternities != 0 || quantumed) && !isEmptiness) {
 		el("galaxyPoints2").innerHTML = "You have <span class='GPAmount'>"+shortenDimensions(player.galacticSacrifice.galaxyPoints)+"</span> Galaxy point"+(player.galacticSacrifice.galaxyPoints.eq(1)?".":"s.")
 	}
 	if (el("galaxy").style.display=='block') {
 		galacticUpgradeSpanDisplay()
 		galacticUpgradeButtonTypeDisplay()
 	}
+	galSacBtnUpdating()
 }
 
 function galSacBtnUpdating(){

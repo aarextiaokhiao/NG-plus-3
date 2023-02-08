@@ -23,7 +23,7 @@ function loadFundament(reset) {
 
 	ghSave = player.ghostify
 	ghostified = ghSave?.times > 0 
-	blSave = ghSave?.bl
+	blSave = undefined
 
 	if (!mod.ngp3) return
 	player.meta.bestOverGhostifies = Decimal.max(player.meta.bestOverGhostifies, player.meta.bestOverQuantums)
@@ -31,6 +31,7 @@ function loadFundament(reset) {
 
 	if (!ghSave) return
 	ghSave = deepUndefinedAndDecimal(ghSave, newSave)
+	blSave = ghSave?.bl
 
 	ghSave.times = nP(ghSave.times)
 	updateBraveMilestones()

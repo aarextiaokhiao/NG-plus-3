@@ -166,12 +166,12 @@ function getTotalReplicants(data) {
 }
 
 function getEmperorDimensionMultiplier(dim) {
-	if (!tmp.edgm) return E(0)
+	if (!tmp.edgm) return E(1)
 
 	let ret = tmp.edgm //Global multiplier of all Emperor Dimensions
+	if (dim == 8) ret = ret.mul(E_pow(1.1, quSave.emperorDimensions[8].perm - 8).max(1))
+	if (dim == 1 && hasAch("ng3p54")) ret = ret.mul(Math.pow(todSave.r.spin.plus(10).log10(), 3))
 	if (hasNU(7) && dim % 2 == 1) ret = ret.mul(tmp.nu[7])
-	if (dim == 8) ret = ret.mul(E_pow(1.05, Math.sqrt(Math.max(0, quSave.emperorDimensions[8].perm - 8))))
-	if (dim == 1 && hasAch("ng3p54")) ret = ret.mul(todSave.r.spin.plus(10).log10() ** 3)
 	if (hasNB(11)) ret = ret.pow(tmp.nb[11])
 	return ret
 }
@@ -182,7 +182,7 @@ function getEmperorDimensionGlobalMultiplier() {
 	if (hasMasteryStudy("t402")) ret = ret.mul(30)
 	if (hasMasteryStudy("d13")) ret = ret.mul(getTreeUpgradeEffect(6))
 	if (hasBU(35)) ret = ret.mul(tmp.blu[35].eds)
-	return
+	return ret
 }
 
 function getEmperorDimensionRateOfChange(dim) {

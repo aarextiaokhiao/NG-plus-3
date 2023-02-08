@@ -472,8 +472,6 @@ function setSomeEterEraStuff2(){
 	player.lastTenRuns = updatedLTR
 	updateLastTenRuns()
 	updateLastTenEternities()
-
-	updateInfCosts()
 }
 
 function dov7tov10(){
@@ -1577,7 +1575,6 @@ function setOtherChallDisplay(){
 	el("ic5desc").textContent=!inNGM(3)?"When buying Normal Dimensions 1-4, everything with costs smaller or equal increases. When buying Normal Dimensions 5-8, everything with costs bigger or equal increases. When buying tickspeed, everything with the same cost increases.":"You can't get tickspeed upgrades and galaxies. Tickspeed Boosts boost tickspeed instead."
 	el("ic7desc").textContent="You can't get Antimatter Galaxies, but the Dimension Boost multiplier "+(inNGM(2)?"is cubed":"is increased to 10x")+"."
 	el("ic7reward").textContent="Reward: The Dimension Boost multiplier "+(inNGM(2)? "is squared":" is increased to 4x.")
-	el("replicantiresettoggle").textContent="Auto galaxy "+(player.replicanti.galaxybuyer?"ON":"OFF")+(player.timestudy.studies.includes(131)&&speedrunMilestonesReached<20?" (disabled)":"")
 }
 
 function setTSDisplay(){
@@ -1629,8 +1626,8 @@ function setSomeQuantumAutomationDisplay(){
 	el("uhDiv" + suffix).appendChild(el("Universal harmony"))
 	el("feDiv" + suffix).appendChild(el("In the grim darkness of the far endgame"))
 	el("dil14desc").textContent = mod.udsp ? "The TP multiplier upgrade is more powerful." : "Increase the exponent of the TP formula."
-	el("dil52").style["font-size"] = !mod.ngp3 || mod.udsp ? "10px" : "9px"
-	el("dil52formula").style.display = !mod.ngp3 || mod.udsp ? "none" : ""
+	el("dil52").style["font-size"] = mod.udsp ? "10px" : "9px"
+	el("dil52formula").style.display = mod.udsp ? "none" : ""
 	el("exDilationDesc").innerHTML = mod.udsp ? 'making galaxies <span id="exDilationBenefit" style="font-size:25px; color: black">0</span>% stronger in dilation.' : 'making dilation <span id="exDilationBenefit" style="font-size:25px; color: black">0</span>% less severe.'
 	el("metaAntimatterEffectType").textContent=inQC(3) ? "multiplier on all Infinity Dimensions" : "extra multiplier per Dimension Boost"
 	if (mod.ngpp) {

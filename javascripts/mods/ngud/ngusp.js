@@ -1,7 +1,3 @@
-function canAutoDilUpgs() {
-	return mod.udsp && player.eternityPoints.gte("1e40000")
-}
-
 function autoBuyDilUpgs() {
 	if (player.autoEterOptions.dilUpgs) {
 		var upgs = player.dilation.autoUpgrades

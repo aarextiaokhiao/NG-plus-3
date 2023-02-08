@@ -13,27 +13,6 @@ function getBreakEternityTDMult(tier){
 	return dilates(ret)
 }
 
-function doNGMatLeast4TDChanges(tier, ret){
-	//Tickspeed multiplier boost
-	var x = player.postC3Reward
-	var exp = ([5, 3, 2, 1.5, 1, .5, 1/3, 0])[tier - 1]
-	if (x.gt(1e10)) x = pow10(Math.sqrt(x.log10() * 5 + 50))
-	if (hasGSacUpg(25)) exp *= galMults.u25()
-	if (inNC(16)) exp /= 2
-	ret = ret.mul(x.pow(exp))
-
-	//NG-4 upgrades
-	if (hasGSacUpg(12)) ret = ret.mul(galMults.u12())
-	if (hasGSacUpg(13) && player.currentChallenge!="postngm3_4") ret = ret.mul(galMults.u13())
-	if (hasGSacUpg(15)) ret = ret.mul(galMults.u15())
-	if (hasGSacUpg(44) && inNGM(4)) {
-		var e = hasGSacUpg(46) ? galMults["u46"]() : 1
-		ret = ret.mul(E_pow(player[dimTiers[tier]+"Amount"].plus(10).log10(), e * Math.pow(11 - tier, 2)))
-	}
-	if (hasGSacUpg(31)) ret = ret.pow(galMults.u31())
-	return ret
-}
-
 function getERTDAchMults(){
 	if (!mod.rs) return 1
 	if (hasAch('r117')) {
@@ -72,7 +51,7 @@ function getTimeDimensionPower(tier) {
 	var dim = player["timeDimension" + tier]
 	var ret = dim.power.pow(mod.rs ? 1 : 2)
 
-	if (inNGM(4)) ret = doNGMatLeast4TDChanges(tier,ret)
+	//if (inNGM(4)) ret = doNGM4TDMultiplier(tier,ret)
 
 	if (player.timestudy.studies.includes(11) && tier == 1) ret = ret.mul(tsMults[11]())
 	
@@ -149,27 +128,25 @@ function getTimeDimensionDescription(tier) {
 }
 
 function updateTimeDimensions() {
-	if (el("timedimensions").style.display == "block" && el("dimensions").style.display == "block") {
-		updateTimeShards()
-		for (let tier = 1; tier <= 8; ++tier) {
-			if (isTDUnlocked(tier)) {
-				el("timeRow" + tier).style.display = "table-row"
-				el("timeD" + tier).textContent = dimNames[tier] + " Time Dimension x" + shortenMoney(getTimeDimensionPower(tier));
-				el("timeAmount" + tier).textContent = getTimeDimensionDescription(tier);
-				el("timeMax" + tier).textContent = (quantumed ? '':"Cost: ") + shortenDimensions(player["timeDimension" + tier].cost) + (inNGM(4) ? "" : " EP")
-				if (getOrSubResourceTD(tier).gte(player["timeDimension" + tier].cost)) el("timeMax"+tier).className = "storebtn"
-			else el("timeMax" + tier).className = "unavailablebtn"
-			} else el("timeRow" + tier).style.display = "none"
-		}
-		if (inNGM(4)) {
-			var isShift = player.tdBoosts < (inNC(4) ? 5 : 7)
-			var req = getTDBoostReq()
-			el("tdReset").style.display = ""
-			el("tdResetLabel").textContent = "Time Dimension "+(isShift ? "Shift" : "Boost") + " (" + getFullExpansion(player.tdBoosts) + "): requires " + getFullExpansion(req.amount) + " " + dimNames[req.tier] + " Time Dimensions"
-			el("tdResetBtn").textContent = "Reset prior features for a " + (isShift ? "new dimension" : "boost")
-			el("tdResetBtn").className = (player["timeDimension" + req.tier].bought < req.amount) ? "unavailablebtn" : "storebtn"
-		} else el("tdReset").style.display = "none"
+	updateTimeShards()
+	for (let tier = 1; tier <= 8; ++tier) {
+		if (isTDUnlocked(tier)) {
+			el("timeRow" + tier).style.display = "table-row"
+			el("timeD" + tier).textContent = dimNames[tier] + " Time Dimension x" + shortenMoney(getTimeDimensionPower(tier));
+			el("timeAmount" + tier).textContent = getTimeDimensionDescription(tier);
+			el("timeMax" + tier).textContent = (quantumed ? '':"Cost: ") + shortenDimensions(player["timeDimension" + tier].cost) + (inNGM(4) ? "" : " EP")
+			if (getOrSubResourceTD(tier).gte(player["timeDimension" + tier].cost)) el("timeMax"+tier).className = "storebtn"
+		else el("timeMax" + tier).className = "unavailablebtn"
+		} else el("timeRow" + tier).style.display = "none"
 	}
+	if (inNGM(4)) {
+		var isShift = player.tdBoosts < (inNC(4) ? 5 : 7)
+		var req = getTDBoostReq()
+		el("tdReset").style.display = ""
+		el("tdResetLabel").textContent = "Time Dimension "+(isShift ? "Shift" : "Boost") + " (" + getFullExpansion(player.tdBoosts) + "): requires " + getFullExpansion(req.amount) + " " + dimNames[req.tier] + " Time Dimensions"
+		el("tdResetBtn").textContent = "Reset prior features for a " + (isShift ? "new dimension" : "boost")
+		el("tdResetBtn").className = (player["timeDimension" + req.tier].bought < req.amount) ? "unavailablebtn" : "storebtn"
+	} else el("tdReset").style.display = "none"
 }
 
 function updateTimeShards() {
@@ -199,9 +176,9 @@ function timeDimCost(tier, bought) {
 	return cost
 }
 
-function buyTimeDimension(tier) {
+function buyTimeDimension(tier, am) {
 	var dim = player["timeDimension"+tier]
-	if (inNGM(4) && getAmount(1) < 1) {
+	if (getAmount(1) < 1) {
 		alert("You need to buy a first Normal Dimension to be able to buy Time Dimensions.")
 		return
 	}
@@ -281,7 +258,7 @@ function buyMaxTimeDimension(tier, bulk) {
 	dim.amount = dim.amount.plus(toBuy);
 	dim.bought += toBuy
 	if (inNGM(4)) {
-		dim.power = Decimal.sqrt(getDimensionPowerMultiplier()).mul(dim.power)
+		dim.power = E(getDimensionPowerMultiplier()).sqrt().mul(dim.power)
 		dim.cost = dim.cost.mul(E_pow(timeDimCostMults[1][tier], toBuy))
 	} else {
 		dim.cost = timeDimCost(tier, dim.bought)

@@ -48,10 +48,6 @@ function checkPain(){
 	}
 }
 
-function checkSupersanic(){
-	if (player.money.gt(Math.pow(10,63))) giveAchievement("Supersanic");
-}
-
 function checkForEndMe() {
 	var temp = 0
 	for (var i=0; i<getTotalNormalChallenges(); i++) {
@@ -78,7 +74,7 @@ function checkYoDawg(){
 function checkUniversalHarmony() {
 	if (hasAch("ngpp18")) return
 	if (mod.ngpp) {
-		if (player.galaxies < 700 || player.replicanti.galaxies + extraReplGalaxies < 700 || player.dilation.freeGalaxies < 700) return
+		if (player.galaxies < 700 || getTotalRG() < 700 || player.dilation.freeGalaxies < 700) return
 	} else if (mod.ngud) {
 		if (player.galaxies != player.replicanti.galaxies || player.galaxies != player.dilation.freeGalaxies || player.galaxies < 300) return
 	} else return
@@ -133,6 +129,7 @@ function checkMatterAMNDReqAchieve(){
 	if (player.money.gte("9.9999e9999")) giveAchievement("This achievement doesn't exist")
 	if (player.money.gte("1e35000")) giveAchievement("I got a few to spare")
 	if (player.money.gt(pow10(80))) giveAchievement("Antimatter Apocalypse")
+	if (player.money.gt(pow10(63))) giveAchievement("Supersanic");
 	if (player.seventhAmount.gt(pow10(12))) giveAchievement("Multidimensional");
 	if ((player.matter.gte(2.586e15) && player.currentChallenge == "postc6") || player.matter.gte(Number.MAX_VALUE)) giveAchievement("It's not called matter dimensions is it?")
 	if (getDimensionFinalMultiplier(1).gt(1e31)) giveAchievement("I forgot to nerf that")

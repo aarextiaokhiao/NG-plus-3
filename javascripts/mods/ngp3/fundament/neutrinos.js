@@ -179,9 +179,8 @@ var neutrinoBoosts = {
 		},
 		4: function(nt) {
 			var nb4neutrinos = Math.pow(nt[0].add(1).log10(),2)+Math.pow(nt[1].add(1).log10(),2)+Math.pow(nt[2].add(1).log10(),2)
-			var nb4 = Math.log10(nb4neutrinos*(bigRipped()?1:0.07)+1)/4+1
-			nb4 = Math.min(nb4, 2.5)
-			if (!bigRipped()) nb4 = nb4 ** 0.5
+			var nb4 = Math.log10(nb4neutrinos*(bigRipped()?1:0.05)+1)/4+1
+			if (!bigRipped()) nb4 = Math.min(nb4 ** 0.5, 1.3)
 			return nb4
 		},
 		5: function(nt) {
@@ -199,8 +198,7 @@ var neutrinoBoosts = {
 			let nb7exp = .5
 			if (mod.p3ep) nb7exp = .6
 			let nb7neutrinos = nt[0].add(1).log10()+nt[1].add(1).log10()+nt[2].add(1).log10()
-			let nb7 = Math.pow(Math.log10(1 + nb7neutrinos), nb7exp) * 2.35
-			if (nb7 > 4) nb7 = 2 * Math.log2(nb7)
+			let nb7 = Math.pow(Math.log10(nb7neutrinos + 1), nb7exp) * 2.35
 			return nb7
 		},
 		8: function(nt) {
@@ -276,11 +274,9 @@ function updateNeutrinoBoostDisplay(){
 function unlockNeutrinoBoost() {
 	var cost = tmp.nbc[ghSave.neutrinos.boosts]
 	if (!ghSave.ghostParticles.gte(cost)) return
-	if (!hasNB(12)) return
 	ghSave.ghostParticles=ghSave.ghostParticles.sub(cost).round()
 	ghSave.neutrinos.boosts++
 	updateNeutrinoBoosts()
-	updateTemp()
 }
 
 function hasNB(id) {

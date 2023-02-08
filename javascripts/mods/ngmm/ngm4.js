@@ -18,18 +18,40 @@ function resetTDBoosts() {
 }
 
 function resetNGM4TDs() {
-	var bp=getDimensionBoostPower()
+	var power = getDimensionBoostPower()
 	for (var d = 1; d <= 8; d++) {
 		var dim = player["timeDimension" + d]
 		dim.amount = E(0)
 		dim.bought = 0
 		dim.cost = E(timeDimStartCosts[1][d])
-		dim.power = bp.pow((player.tdBoosts - d + 1) / 2).max(1)
+		dim.power = E(power).pow((player.tdBoosts - d + 1) / 2).max(1)
 	}
 	player.timeShards = E(0)
 	player.totalTickGained = 0
 	player.tickThreshold = E(0.01)
 	el("totaltickgained").textContent = "You've gained " + getFullExpansion(player.totalTickGained) + " tickspeed upgrades."
+}
+
+function doNGM4TDMultiplier(tier, ret){
+	//Tickspeed multiplier boost
+	var ic3 = player.postC3Reward
+	var exp = ([5, 3, 2, 1.5, 1, .5, 1/3, 0])[tier - 1]
+	if (ic3.gt(1e10)) ic3 = pow10(Math.sqrt(ic3.log10() * 5 + 50))
+	if (hasGSacUpg(25)) exp *= galMults.u25()
+	if (inNC(16)) exp /= 2
+	ret = ret.mul(x.pow(exp))
+
+	//NG-4 upgrades
+	if (hasGSacUpg(12)) ret = ret.mul(galMults.u12())
+	if (hasGSacUpg(13) && player.currentChallenge!="postngm3_4") ret = ret.mul(galMults.u13())
+	if (hasGSacUpg(15)) ret = ret.mul(galMults.u15())
+	if (hasGSacUpg(44) && inNGM(4)) {
+		var e = hasGSacUpg(46) ? galMults["u46"]() : 1
+		ret = ret.mul(E_pow(player[dimTiers[tier]+"Amount"].plus(10).log10(), e * Math.pow(11 - tier, 2)))
+	}
+	if (hasGSacUpg(31)) ret = ret.pow(galMults.u31())
+	console.log(tier, ic3, ret)
+	return ret
 }
 
 //v2.1

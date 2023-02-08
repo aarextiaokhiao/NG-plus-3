@@ -960,6 +960,8 @@ function onNotationChange() {
 		updateReplicants("notation")
 		updateTODStuff()
 		updateBreakEternity()
+	}
+	if (ghostified) {
 		onNotationChangeNeutrinos()
 		updateBosonicStuffCosts()
 		if (!ghSave.wzb.unl) updateBLUnlockDisplay()

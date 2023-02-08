@@ -284,15 +284,17 @@ function setR14Tooltip(){
 	let harmony = el("Universal harmony")
 
 	let onlywarReward = [] // for the achievement "In the grim darkness of the far endgame"
-	if (mod.ngp3 || mod.p3ep) onlywarReward.push("You get 2x more DT")
-	if (mod.udsp) onlywarReward.push("you can auto-buy Dilation upgrades every second if you have at least " + shortenMoney(E('1e40000')) + " EP")
-	onlywarReward = wordizeList(onlywarReward, true)
+	if (mod.ngp3 || mod.p3ep) onlywarReward.push("double dilated time gain")
+	if (mod.udsp) onlywarReward.push("you can auto-buy Dilation Upgrades")
+
+	let neverenoughReward = ["unlock the option to max Replicanti Galaxies"]
+	if (mod.ngp3) neverenoughReward.push("TS131 doesn't disable auto-replicated galaxies")
 
 	//ACHIEVEMENT ROW 14 (NG++)
-	onlywar.setAttribute('ach-tooltip', "Reach "+shortenMoney(E('1e40000'))+" EP."+(onlywarReward!=""?" Reward: " + onlywarReward + ".":""))
+	onlywar.setAttribute('ach-tooltip', "Reach "+shortenMoney(E('1e40000'))+" EP." + (onlywarReward.length ? " Reward: " + wordizeList(onlywarReward, true) + "." : ""))
 	thecap.setAttribute('ach-tooltip', "Get "+shortenDimensions(1e12)+" eternities. Reward: Eternity Upgrade 2 uses a better formula.")
-	neverenough.setAttribute('ach-tooltip', "Reach "+shortenCosts(E("1e100000"))+" replicanti. Reward: You unlock the option to buy the maximum Replicanti Galaxies available.")
-	harmony.setAttribute('ach-tooltip', mod.ngpp?"Have at least 700 normal, replicanti, and free dilated galaxies. Reward: Galaxies are 0.1% stronger.":"Get the same amount (at least 300) of normal, replicanti, and free galaxies.")
+	neverenough.setAttribute('ach-tooltip', "Reach "+shortenCosts(E("1e100000"))+" replicanti." + (neverenoughReward.length ? " Reward: " + wordizeList(neverenoughReward, true) + "." : ""))
+	harmony.setAttribute('ach-tooltip', mod.ngpp ? "Have at least 700 normal, replicanti, and free dilated galaxies. Reward: Galaxies are 0.1% stronger." : "Get the same amount (at least 300) of normal, replicanti, and free galaxies.")
 }
 
 function setR15Tooltip(){

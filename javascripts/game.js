@@ -115,7 +115,7 @@ function setupDimensionHTML() {
 		html += `<tr id='timeRow${d}' style='font-size:17px'>
 			<td id="timeD${d}" width="41%"></td>
 			<td id="timeAmount${d}"></td>
-			<td><button id="td${d}Auto" style="width:70px; font-size: 10px; float: right; visibility: hidden" onclick="switchAutoEter('td${d}')" class="storebtn"></button></td>
+			<td><button id="td${d}Auto" style="width:70px; font-size: 10px; float: right; visibility: hidden" onclick="toggleAutoEter('td${d}')" class="storebtn"></button></td>
 			<td width="10%"><button id="timeMax${d}" style="color:black; width:195px; height:30px" class="storebtn" align="right" onclick="buyTimeDimension(${d})">Cost: 10</button></td>
 		</tr>`
 	}
@@ -254,22 +254,6 @@ function getEternitied() {
 //DISPLAY FUNCTIONS
 function hideDimensions() {
 	for (var d = 2; d < 9; d++) if (!canBuyDimension(d)) el(d + "Row").style.display = "none"
-}
-
-function updateCosts() {
-	var costPart = quantumed ? '' : 'Cost: '
-	if (el("dimensions").style.display == "block" && el("antimatterdimensions").style.display == "block") {
-		var until10CostPart = quantumed ? '' : 'Until 10, Cost: '
-		for (var i=1; i<9; i++) {
-			var cost = player[dimTiers[i] + "Cost"]
-			var resource = getOrSubResource(i)
-			el('B'+i).className = cost.lte(resource) ? 'storebtn' : 'unavailablebtn'
-			el('B'+i).textContent = costPart + shortenPreInfCosts(cost)
-			el('M'+i).className = cost.mul(10 - dimBought(i)).lte(resource) ? 'storebtn' : 'unavailablebtn'
-			el('M'+i).textContent = until10CostPart + shortenPreInfCosts(cost.mul(10 - dimBought(i)));
-		}
-	}
-	el("tickSpeed").textContent = costPart + shortenPreInfCosts(player.tickSpeedCost);
 }
 
 function floatText(id, text, leftOffset = 150) {
@@ -604,12 +588,6 @@ el("offlineProd").onclick = function() {
 }
 
 //MORE DISPLAY STUFF
-function updateInfCosts() {
-	if (el("replicantis").style.display == "block" && el("infinity").style.display == "block") replicantiDisplay()
-	if (el("timestudies").style.display == "block" && el("eternitystore").style.display == "block") mainTimeStudyDisplay()
-	if (el("ers_timestudies").style.display == "block" && el("eternitystore").style.display == "block") updateERSTTDesc()
-}
-
 function toggleRepresentation() {
 	// 0 == visible, 1 == not visible
 	aarMod.hideRepresentation=!aarMod.hideRepresentation
@@ -668,13 +646,11 @@ function gainedEternityPoints() {
 	else if (player.timestudy.studies.includes(122)) ret = ret.mul(35)
 	else if (player.timestudy.studies.includes(123)) ret = ret.mul(Math.sqrt(1.39*player.thisEternity/10))
 	if (hasGSacUpg(51)) ret = ret.mul(galMults.u51())
-	if (mod.ngp3) {
-		if (bigRipped()) {
-			if (isBigRipUpgradeActive(5)) ret = ret.mul(brSave.spaceShards.max(1))
-			if (isBigRipUpgradeActive(8)) ret = ret.mul(tmp.bru[8])
-		}
-		if (tmp.be) ret = ret.mul(getBreakUpgMult(7))
+	if (bigRipped()) {
+		if (isBigRipUpgradeActive(5)) ret = ret.mul(brSave.spaceShards.max(1))
+		if (isBigRipUpgradeActive(8)) ret = ret.mul(tmp.bru[8])
 	}
+	if (tmp.be) ret = ret.mul(getBreakUpgMult(7))
 	return ret.floor()
 }
 
@@ -1606,11 +1582,10 @@ function notifyGhostifyMilestones(){
 }
 
 function dilationStuffABTick(){
-	var canAutoUpgs = canAutoDilUpgs()
-	el('rebuyupgAuto').style.display=speedrunMilestonesReached>6?"":"none"
-	el('dilUpgsAuto').style.display = canAutoUpgs ? "" : "none"
-	el('distribEx').style.display = hasAch("ngud14") && mod.udsp ? "" : "none"
-	if (canAutoUpgs && player.autoEterOptions.dilUpgs) autoBuyDilUpgs()
+	el('rebuyupgAuto').style.display = speedrunMilestonesReached>6?"":"none"
+	el('dilUpgsAuto').style.display = hasAch("ngud14") && mod.udsp ? "" : "none"
+	el('distribEx').style.display = hasAch("ngud14") ? "" : "none"
+	if (player?.autoEterOptions?.dilUpgs) autoBuyDilUpgs()
 
 	el("dilationTabbtn").style.display = hasDilStudy(1) ? "table-cell" : "none"
 	el("blackHoleTabbtn").style.display = hasDilStudy(1) && mod.ngud ? "table-cell" : "none"
@@ -1655,6 +1630,7 @@ function updatePerSecond() {
 	dilationStuffABTick()
 	updateNGpp17Reward()
 	updateNGpp16Reward()
+	DimBoostBulkDisplay()
 
 	// Button Displays
 	infPoints2Display()
@@ -1771,7 +1747,7 @@ function incrementTimesUpdating(diffStat){
 	failsafeDilateTime = false
 }
 
-function requiredInfinityUpdating(diff){
+function preInfinityUpdating(diff){
 	if (tmp.ri) return
 
 	for (let tier = (inQC(1) ? 1 : player.currentEternityChall == "eterc3" ? 3 : (inNC(4) || player.currentChallenge == "postc1") ? 5 : 7) - (inNC(7) || player.currentChallenge == "postcngm3_3" || inQC(4) ? 1 : 0); tier >= 1; --tier) {
@@ -1785,7 +1761,6 @@ function requiredInfinityUpdating(diff){
 	player.totalmoney = player.totalmoney.plus(tempa)
 	if (bigRipped()) brSave.totalAntimatter = brSave.totalAntimatter.add(tempa)
 
-	if (isInfiniteDetected()) return
 	tmp.ri=player.money.gte(Number.MAX_VALUE) && ((player.currentChallenge != "" && player.money.gte(player.challengeTarget)) || !onPostBreak())
 }
 
@@ -2017,16 +1992,6 @@ function doGhostifyButtonDisplayUpdating(diff){
 	el("GHPPeak").textContent = ghostifyGains.length == 1 ? (showGHPPeakValue?"":"Peaked at ")+getGHPRate(GHPminpeak)+(showGHPPeakValue?" at "+shortenDimensions(GHPminpeakValue)+" ElP":"") : ""
 }
 
-function tickspeedButtonDisplay(){
-	if (player.tickSpeedCost.gt(player.money)) {
-		el("tickSpeed").className = 'unavailablebtn';
-		el("tickSpeedMax").className = 'unavailablebtn';
-	} else {
-		el("tickSpeed").className = 'storebtn';
-		el("tickSpeedMax").className = 'storebtn';
-	}
-}
-
 function normalSacDisplay(){
 	if (player.eightBought > 0 && player.resets > 4 && player.currentEternityChall !== "eterc3") el("sacrifice").className = "storebtn"
 	 	else el("sacrifice").className = "unavailablebtn"
@@ -2246,22 +2211,11 @@ function EPonEternityPassiveGain(diff){
 }
 
 function ngp3DilationUpdating(){
+	if (!player.dilation.active) return
+
 	let gain = getDilGain()
 	if (inNGM(2)) player.dilation.bestIP = player.infinityPoints.max(player.dilation.bestIP)
 	if (player.dilation.tachyonParticles.lt(gain) && hasMasteryStudy("t292")) setTachyonParticles(gain)
-}
-
-function setTachyonParticles(x) {
-	player.dilation.tachyonParticles = E(x)
-	if (!player.dilation.active) player.dilation.totalTachyonParticles = player.dilation.tachyonParticles
-	quSave.notrelative = false
-
-	if (hasAch("ng3p18") || hasAch("ng3p37")) {
-		player.dilation.bestTP = Decimal.max(player.dilation.bestTP || 0, player.dilation.tachyonParticles)
-		player.dilation.bestTPOverGhostifies = player.dilation.bestTPOverGhostifies.max(player.dilation.bestTP)
-		el('bestTP').textContent = "Your best" + (ghostified ? "" : " ever")+" Tachyon particles" + (ghostified ? " in this Fundament" : "") + " was " + shorten(player.dilation.bestTP) + "."
-		setAndMaybeShow('bestTPOverGhostifies', ghostified, '"Your best-ever Tachyon particles was "+shorten(player.dilation.bestTPOverGhostifies)+"."')
-	}
 }
 
 function passiveQuantumLevelStuff(diff){
@@ -2303,7 +2257,7 @@ function thisQuantumTimeUpdating(){
 }
 
 function fixInfinityTimes(){
-	if (player.thisInfinityTime < -10) player.thisInfinityTime = Infinity
+	if (player.thisInfinityTime < -10) player.thisInfinityTime = 0
 	if (player.bestInfinityTime < -10) player.bestInfinityTime = Infinity
 }
 
@@ -2312,8 +2266,6 @@ function infUpgPassiveIPGain(diff){
 }
 
 function gameLoop(diff) {
-	updateTemp()
-
 	var thisUpdate = new Date().getTime();
 	if (thisUpdate - player.lastUpdate >= 21600000) giveAchievement("Don't you dare sleep")
 		if (typeof diff === 'undefined') {
@@ -2327,40 +2279,28 @@ function gameLoop(diff) {
 	if (player.currentEternityChall === "eterc12") diff /= getEC12Slowdown()
 	incrementTimesUpdating(diffStat)
 
-	automatorTick(diff)
-
-	requiredInfinityUpdating(diff)
+	updateTemp()
 	if (isNaN(player.totalmoney)) player.totalmoney = E(10)
 	updateMoney()
 	updateCoinPerSec()
 	updateDimensionsDisplay()
-	if (tmp.tickUpdate) {
-		updateTickspeed()
-		tmp.tickUpdate = false
-	}
-	tickspeedButtonDisplay()
+	updateTabDisplay()
+	checkPain()
 	checkMarathon()
 	checkMarathon2()
 
-	normalSacDisplay()
-	d8SacDisplay()
-	DimBoostBulkDisplay()
-	dimboostBtnUpdating()
-	galaxyBtnUpdating()
-
-	galSacBtnUpdating()
 	galSacDisplay()
 	passiveGPGen(diff)
 
+	var s = shortenDimensions(player.infinityPoints)
+	el("infinityPoints1").innerHTML = "You have <span class=\"IPAmount1\">"+s+"</span> Infinity points."
+	el("infinityPoints2").innerHTML = "You have <span class=\"IPAmount2\">"+s+"</span> Infinity points."
 	bigCrunchButtonUpdating()
 	passiveIPperMUpdating(diff)
 	passiveIPupdating(diff)
 	passiveInfinitiesUpdating(diff)
-	updateInfCosts()
 	IPMultBuyUpdating()
-	var s = shortenDimensions(player.infinityPoints)
-	el("infinityPoints1").innerHTML = "You have <span class=\"IPAmount1\">"+s+"</span> Infinity points."
-	el("infinityPoints2").innerHTML = "You have <span class=\"IPAmount2\">"+s+"</span> Infinity points."
+	if (el("replicantis").style.display == "block" && el("infinity").style.display == "block") replicantiDisplay()
 
 	checkMatter(diff)
 	normalChallPowerUpdating(diff)
@@ -2381,6 +2321,7 @@ function gameLoop(diff) {
 
 	giveBlackHolePowerUpdating(diff)
 	if (mod.ngpp) metaDimsUpdating(diff)
+	preInfinityUpdating(diff)
 	otherDimsUpdating(diff)
 
 	doEternityButtonDisplayUpdating(diff)
@@ -2390,25 +2331,20 @@ function gameLoop(diff) {
 	EPonEternityPassiveGain(diff)
 	TTpassiveGain(diff)
 
-	if (hasDilStudy(1)) player.dilation.dilatedTime = player.dilation.dilatedTime.plus(getDilTimeGainPerSecond().mul(diff))
-	gainDilationGalaxies()
-	updateDilationDisplay()
-
-	checkPain()
-	checkSupersanic()
+	if (hasDilStudy(1)) {
+		player.dilation.dilatedTime = player.dilation.dilatedTime.plus(getDilTimeGainPerSecond().mul(diff))
+		gainDilationGalaxies()
+	}
 
 	if (mod.ngp3) {
-		if (player.dilation.active) ngp3DilationUpdating()
-		else if (isBigRipUpgradeActive(20)) {
-			let gain = getDilGain()
-			if (player.dilation.tachyonParticles.lt(gain)) setTachyonParticles(gain)
-		}
+		ngp3DilationUpdating()
 		if (gotBraveMilestone(8)) passiveQuantumLevelStuff(diff)
 		if (hasMasteryStudy('t291')) updateEternityUpgrades() // to fix the 5ep upg display
 		if (quantumed) quantumOverallUpdating(diff)
 		if (ghostified) {
 			if (ghSave.wzb.unl) WZBosonsUpdating(diff) // Bosonic Lab
 			if (PHOTON.unlocked()) PHOTON.calc(diff) // Photons
+			automatorTick(diff)
 		}
 
 		doQuantumButtonDisplayUpdating(diff)

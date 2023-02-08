@@ -74,8 +74,8 @@ function getMetaDimensionGlobalMultiplier() {
 		ret = ret.mul(tmp.qcRewards[6])
 
 		//Achievement Rewards
-		if (hasAch("ng3p13")) ret = ret.mul(Math.pow(Decimal.plus(quantumWorth, 1).log10(), 2))
-		if (hasAch("ng3p57")) ret = ret.mul(1 + player.timeShards.plus(1).log10())
+		if (hasAch("ng3p13")) ret = ret.mul(Math.pow(Decimal.plus(quantumWorth, 10).log10(), 2))
+		if (hasAch("ng3p57")) ret = ret.mul(1 + player.timeShards.plus(1).log10() / 1e3)
 	}
 	
 	return ret
@@ -399,7 +399,7 @@ function updateMetaDimensions () {
 		if (showDim) {
 			el(tier + "MetaD").textContent = dimNames[tier] + " Meta Dimension x" + formatValue(player.options.notation, getMetaDimensionMultiplier(tier), 2, 1)
 			el("meta" + tier + "Amount").textContent = getMetaDimensionDescription(tier)
-			el("meta" + tier).textContent = speedrunMilestonesReached > tier + 5 ? "Auto: " + (player.autoEterOptions["md" + tier] ? "ON" : "OFF") : "Cost: " + formatValue(player.options.notation, player.meta[tier].cost, useTwo, 0) + " MA"
+			el("meta" + tier).textContent = speedrunMilestonesReached > tier + 5 ? "Auto: " + (player.autoEterOptions["md" + tier] ? "ON" : "OFF") : shortenCosts(player.meta[tier].cost) + " MA"
 			el('meta' + tier).className = speedrunMilestonesReached > tier + 5 ? "storebtn" : canAffordMetaDimension(player.meta[tier].cost) ? 'storebtn' : 'unavailablebtn'
 			el("metaMax"+tier).textContent = (speedrunMilestonesReached > tier + 5 ? (shiftDown ? "Singles: " : ghostified ? "":"Cost: ") : "Until 10: ") + formatValue(player.options.notation, ((shiftDown && speedrunMilestonesReached > tier + 5) ? player.meta[tier].cost : getMetaMaxCost(tier)), useTwo, 0) + " MA"
 			el('metaMax' + tier).className = canAffordMetaDimension((shiftDown && speedrunMilestonesReached > tier + 5) ? player.meta[tier].cost : getMetaMaxCost(tier)) ? 'storebtn' : 'unavailablebtn'

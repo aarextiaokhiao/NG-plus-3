@@ -82,7 +82,7 @@ function getElectronUpgCost(u) {
 }
 
 function getElectronUpgCostScalingExp(u) {
-	if (u == 1) return 1
+	if (u == 1 || u == 4) return 1
 	return 2
 }
 

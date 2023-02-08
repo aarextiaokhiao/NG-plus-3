@@ -35,7 +35,7 @@ function bosonicLabReset() {
 
 	ghSave.bl = getBrandNewBosonicLabData()
 	ghSave.wzb = getBrandNewWZBosonsData()
-	blSave = ghSave
+	blSave = ghSave.bl
 
 	if (hasAch("ng3p92")) {
 		blSave.enchants[12] = E(1)

@@ -190,7 +190,7 @@ function getQuarkSpinProduction(branch) {
 	let ret = getBranchUpgMult(branch, 1).mul(getBranchFinalSpeed())
 	if (hasNU(3)) ret = ret.mul(tmp.nu[3])
 	if (hasNU(12)) ret = ret.mul(tmp.nu[12].normal)
-	if (hasAch("ng3p74")) ret = ret.mul(1 + todSave[branch].decays)
+	if (hasAch("ng3p74")) ret = ret.mul(1 + (todSave[branch].decays || 0))
 
 	ret = ret.mul(todspeed)
 	return ret

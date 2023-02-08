@@ -1,3 +1,46 @@
+function getBaseDTProduction() {
+	let tp = player.dilation.tachyonParticles
+	let exp = getDTGainExp()
+	let gain = tp.pow(exp)
+	if (NGP3andVanillaCheck()) {
+		if (hasAch("r132")) gain = gain.mul(Math.max(Math.pow(player.galaxies, 0.04), 1))
+		if (hasAch("r137") && player.dilation.active) gain = gain.mul(2)
+	}
+
+	if (mod.ngud) gain = gain.mul(getNGUDTGain())
+	gain = gain.mul(getEternityBoostToDT())
+
+	if (player.dilation.upgrades.includes('ngpp6')) gain = gain.mul(getDil17Bonus())
+	if (player.dilation.upgrades.includes('ngusp3')) gain = gain.mul(getD22Bonus())
+	if (mod.ngp3) gain = gain.mul(getDTMultNGP3())
+	if (isNanoEffectUsed("dil_gal_gain")) gain = E(tmp.nf.effects.dil_gal_gain).pow(player.replicanti.galaxies).mul(gain)
+	if (mod.p3ep && hasAch("r138") && gain.lt(1e100)) gain = gain.mul(3).min(1e100)
+
+	return gain
+}
+
+function getDilTimeGainPerSecond() {
+	let gain = getBaseDTProduction()
+	return gain.mul(pow2(getDilUpgPower(1)))	
+}
+
+function getDilatedTimeGainPerSecond(){
+	return getDilTimeGainPerSecond()
+}
+
+function getDTGainExp(){
+	let exp = hasGluonUpg("br3") ? 1.1 : 1
+	return exp
+}
+
+function getEternitiesAndDTBoostExp() {
+	let exp = 0
+	if (player.dilation.upgrades.includes('ngpp2')) exp += mod.udp ? .2 : .1
+	if (player.dilation.upgrades.includes('ngud2')) exp += .1
+	if (player.dilation.upgrades.includes('ngmm3')) exp += .1
+	return exp
+}
+
 function getDTMultNGP3(){
 	let gain = E(1)
 	if (!bigRipped() || hasRipUpg(11)) {
@@ -13,48 +56,30 @@ function getDTMultNGP3(){
 		if (hasGluonUpg("br2")) gain = gain.mul(E_pow(2.2, Math.pow(tmp.sacPow.max(1).log10()/1e6, 0.25)))
 		if (hasAch("r137")) gain = gain.mul(Math.max((player.replicanti.amount.log10()-2e4)/8e3+1,1))
 	}
+	if (hasAch("ngpp13")) gain = gain.mul(2)
 	if (hasBU(15)) gain = gain.mul(tmp.blu[15].dt)
 	return gain
 }
 
-function getBaseDTProduction() {
-	let tp = player.dilation.tachyonParticles
-	let exp = getDTGainExp()
-	let gain = tp.pow(exp)
-	if (NGP3andVanillaCheck()) {
-		if (hasAch("r132")) gain = gain.mul(Math.max(Math.pow(player.galaxies, 0.04), 1))
-		if (hasAch("r137") && player.dilation.active) gain = gain.mul(2)
+function getEternityBoostToDT(){
+	var gain = E(1)
+	let eterExp = getEternitiesAndDTBoostExp()
+	if (eterExp > 0) gain = gain.mul(Decimal.max(getEternitied(), 1).pow(eterExp))
+	if (player.dilation.upgrades.includes('ngpp2') && mod.ngep) {
+		let e = E(getEternitied())
+		gain = gain.mul(e.max(10).log10()).mul(Math.pow(e.max(1e7).log10()-6,3))
+		if (e.gt(5e14)) gain = gain.mul(Math.sqrt(e.log10())) // this comes into play at the grind right before quantum
 	}
-	
-	if (mod.ngud) gain = gain.mul(getNGUDTGain())
-	gain = gain.mul(getEternityBoostToDT())
-
-	if (player.dilation.upgrades.includes('ngpp6')) gain = gain.mul(getDil17Bonus())
-	if (player.dilation.upgrades.includes('ngusp3')) gain = gain.mul(getD22Bonus())
-	if (mod.ngp3) gain = gain.mul(getDTMultNGP3())
-	if (isNanoEffectUsed("dil_gal_gain")) gain = E(tmp.nf.effects.dil_gal_gain).pow(player.replicanti.galaxies).mul(gain)
-	if (mod.p3ep && hasAch("r138") && gain.lt(1e100)) gain = gain.mul(3).min(1e100)
-	if (mod.ngp3 && hasAch("ngpp13")) gain = gain.mul(2)
-
 	return gain
 }
 
-function getDilTimeGainPerSecond() {
-	let gain = getBaseDTProduction()
-	return gain.mul(pow2(getDilUpgPower(1)))	
-}
-
-function getDTGainExp(){
-	let exp = hasGluonUpg("br3") ? 1.1 : 1
-	return exp
-}
-
-function getEternitiesAndDTBoostExp() {
-	let exp = 0
-	if (player.dilation.upgrades.includes('ngpp2')) exp += mod.udp ? .2 : .1
-	if (player.dilation.upgrades.includes('ngud2')) exp += .1
-	if (player.dilation.upgrades.includes('ngmm3')) exp += .1
-	return exp
+function getNGUDTGain(){
+	var gain = E(1)
+	gain = gain.mul(getBlackholePowerEffect())
+	if (player.eternityUpgrades.includes(7)) gain = gain.mul(1 + Math.log10(Math.max(1, player.money.log(10))) / 40)
+	if (player.eternityUpgrades.includes(8)) gain = gain.mul(1 + Math.log10(Math.max(1, player.infinityPoints.log(10))) / 20)
+	if (player.eternityUpgrades.includes(9)) gain = gain.mul(1 + Math.log10(Math.max(1, player.eternityPoints.log(10))) / 10)
+	return gain
 }
 
 function getDilPower() {
@@ -117,36 +142,23 @@ function getDilGain() {
 	return pow10(log)
 }
 
-
 function getReqForTPGain() {
 	let tplog = player.dilation.totalTachyonParticles.log10()
 	if (tplog > 100 && !tmp.be && bigRipped()) tplog = Math.pow(tplog, 2) / 100
 	return pow10(pow10(tplog).div(getDilPower()).pow(1 / getDilExp()).toNumber() * 400)
 }
 
-function getNGUDTGain(){
-	var gain = E(1)
-	gain = gain.mul(getBlackholePowerEffect())
-	if (player.eternityUpgrades.includes(7)) gain = gain.mul(1 + Math.log10(Math.max(1, player.money.log(10))) / 40)
-	if (player.eternityUpgrades.includes(8)) gain = gain.mul(1 + Math.log10(Math.max(1, player.infinityPoints.log(10))) / 20)
-	if (player.eternityUpgrades.includes(9)) gain = gain.mul(1 + Math.log10(Math.max(1, player.eternityPoints.log(10))) / 10)
-	return gain
-}
+function setTachyonParticles(x) {
+	player.dilation.tachyonParticles = E(x)
+	if (!player.dilation.active) player.dilation.totalTachyonParticles = player.dilation.tachyonParticles
+	quSave.notrelative = false
 
-function getDilatedTimeGainPerSecond(){
-	return getDilTimeGainPerSecond()
-}
-
-function getEternityBoostToDT(){
-	var gain = E(1)
-	let eterExp = getEternitiesAndDTBoostExp()
-	if (eterExp > 0) gain = gain.mul(Decimal.max(getEternitied(), 1).pow(eterExp))
-	if (player.dilation.upgrades.includes('ngpp2') && mod.ngep) {
-		let e = E(getEternitied())
-		gain = gain.mul(e.max(10).log10()).mul(Math.pow(e.max(1e7).log10()-6,3))
-		if (e.gt(5e14)) gain = gain.mul(Math.sqrt(e.log10())) // this comes into play at the grind right before quantum
+	if (hasAch("ng3p18") || hasAch("ng3p37")) {
+		player.dilation.bestTP = Decimal.max(player.dilation.bestTP || 0, player.dilation.tachyonParticles)
+		player.dilation.bestTPOverGhostifies = player.dilation.bestTPOverGhostifies.max(player.dilation.bestTP)
+		el('bestTP').textContent = "Your best" + (ghostified ? "" : " ever")+" Tachyon particles" + (ghostified ? " in this Fundament" : "") + " was " + shorten(player.dilation.bestTP) + "."
+		setAndMaybeShow('bestTPOverGhostifies', ghostified, '"Your best-ever Tachyon particles was "+shorten(player.dilation.bestTPOverGhostifies)+"."')
 	}
-	return gain
 }
 
 function dilates(x, m) {
@@ -156,7 +168,7 @@ function dilates(x, m) {
 	if (player.dilation.active && m != 2 && (m != "meta" || !hasAch("ng3p63") || !inQC(0))) {
 		e *= dilationPowerStrength()
 		if (mod.ngmu) e = 0.9 + Math.min((player.dilation.dilatedTime.add(1).log10()) / 1000, 0.05)
-		if (mod.ngud && !mod.udp && !mod.udsp) e += exDilationBenefit() * (1-e)
+		if (mod.ngud && !mod.udp) e += exDilationBenefit() * (1-e)
 		if (player.dilation.upgrades.includes(9)) e *= 1.05
 		if (player.dilation.rebuyables[5]) e += 0.0025 * (1 - 1 / Math.pow(player.dilation.rebuyables[5] + 1 , 1 / 3))
 		a = true
@@ -285,7 +297,6 @@ function isDilUpgUnlocked(id) {
 	id = toString(id)
 	let ngpp = id.split("ngpp")[1]
 	if (id == "r4") return mod.ngpp
-	if (id == "r5") return inNGM(2)
 	if (ngpp) {
 		ngpp = parseInt(ngpp)
 		let r = mod.ngpp
@@ -297,11 +308,7 @@ function isDilUpgUnlocked(id) {
 		if (id == "ngud2") r = r && !mod.udsp
 		return r
 	}
-	if (id.split("ngusp")[1]) {
-		let r = mod.udsp
-		if (id != "ngusp1") r = r && hasDilStudy(6)
-		return r
-	}
+	if (id.split("ngusp")[1]) return mod.udsp
 	return true
 }
 
@@ -439,7 +446,7 @@ function updateDilationUpgradeButtons() {
 }
 
 function updateDilationUpgradeCost(pos, id) {
-	if (id == "r2" && !canBuyGalaxyThresholdUpg()) el("dil" + pos + "cost").textContent = "Maxed out"
+	if (id == "r2" && !canBuyGalaxyThresholdUpg()) el("dil" + pos + "cost").textContent = ""
 	else {
 		let r = getDilUpgCost(id)
 		if (id == "r3") r = formatValue(player.options.notation, getRebuyableDilUpgCost(3), 1, 1)
@@ -499,16 +506,6 @@ function startDilatedEternity(auto) {
 	if (!auto && onActive && aarMod.dilationConf && !confirm("Dilating time will start a new Eternity where all of your Normal/Infinity/Time Dimension multiplier's exponents and the Tickspeed multiplier's exponent will be reduced to ^0.75. If you can Eternity while dilated, you'll be rewarded with tachyon particles based on your antimatter and tachyon particles.")) return
 
 	eternity(onActive || !canEternity(), auto, onActive)
-}
-
-function updateDilationDisplay() {
-	if (el("dilation").style.display == "block" && el("eternitystore").style.display == "block") {
-		el("tachyonParticleAmount").textContent = shortenMoney(player.dilation.tachyonParticles)
-		el("dilatedTimeAmount").textContent = shortenMoney(player.dilation.dilatedTime)
-		el("dilatedTimePerSecond").textContent = "+" + shortenMoney(getDilTimeGainPerSecond()) + "/s"
-		el("galaxyThreshold").textContent = shortenMoney(player.dilation.nextThreshold)
-		el("dilatedGalaxies").textContent = getFullExpansion(Math.floor(player.dilation.freeGalaxies))
-	}
 }
 
 function resetDilation(order = "qu") {

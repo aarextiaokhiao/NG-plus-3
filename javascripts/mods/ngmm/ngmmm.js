@@ -9,12 +9,9 @@ function getTickspeedBoostRequirement(bulk = 1) {
 }
 
 function tickspeedBoost(bulk) {
+	if (isNaN(bulk)) return
 	player.tickspeedBoosts += bulk
 	doReset("tsb")
-}
-
-function resetTickspeedBoosts() {
-	if (inNGM(3)) return 0
 }
 
 //v2.1
@@ -30,8 +27,7 @@ function getProductBoughtMult() {
 function isTickspeedBoostPossible() {
 	if (!inNGM(3)) return
 	if (inNC(5) || player.currentChallenge == "postcngm3_3") return
-	if (tmp.ri) return
-	return player.resets > 4 || player.tickspeedBoosts > 0 || player.galaxies > 0 || player.galacticSacrifice.times > 0 || player.infinitied > 0 || player.eternities != 0 || quantumed
+	return !tmp.ri
 }
 
 el("challenge15").onclick = function () {
@@ -41,12 +37,16 @@ el("challenge15").onclick = function () {
 function autoTickspeedBoostBoolean() {
 	var req = getTickspeedBoostRequirement()
 	var amount = getAmount(req.tier)
+
 	if (!isTickspeedBoostPossible()) return false
+	if (inNGM(4) && inNC(14)) return false
+
 	if (!player.autobuyers[13].isOn) return false
 	if (player.autobuyers[13].ticks * 100 < player.autobuyers[13].interval) return false
+
 	if (amount < req.amount) return false
-	if (inNGM(4) && inNC(14)) return false
 	if (amount < getTickspeedBoostRequirement(player.autobuyers[13].bulk).amount) return false
+
 	if (player.overXGalaxiesTickspeedBoost <= player.galaxies) return true
 	if (player.autobuyers[13].priority < req.amount) return false
 	return true

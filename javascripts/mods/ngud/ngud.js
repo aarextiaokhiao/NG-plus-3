@@ -357,7 +357,6 @@ function toggleExdilaConf() {
 function boostDilationUpgrade(x) {
 	player.exdilation.spent[x] = Decimal.plus(player.exdilation.spent[x] || 0, player.exdilation.unspent).round();
 	player.exdilation.unspent = E(0);
-	if (x == 2 && mod.udsp) resetDilationGalaxies()
 }
 
 //v1.1

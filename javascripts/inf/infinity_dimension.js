@@ -205,7 +205,6 @@ function buyMaxInfDims(tier) {
 }
 
 function updateInfinityPowerEffects() {
-	tmp.infPrePowExp = getPreInfinityPowerEffectExp()
 	tmp.infPowExp = getInfinityPowerEffectExp()
 	tmp.infPow = getInfinityPowerEffect()
 }
@@ -217,26 +216,22 @@ function getInfinityPowerEffect() {
 	return pow10(log)
 }
 
-function getPreInfinityPowerEffectExp() {
+function getInfinityPowerEffectExp() {
 	let x = 7
 	let galaxies = Math.max(player.galaxies, 0)
 	if (inNGM(2)) {
 		x = Math.pow(galaxies, 0.7)
 		if (player.currentChallenge === "postcngm3_2" || (inNGM(3) && player.currentChallenge === "postc1")) {
+			x = galaxies
 			if (inNGM(4)) {
-				x = Math.pow(galaxies, 1.25)
+				x = Math.pow(x, 1.25)
 				if (x > 7) x += 1
-			} else x = galaxies
-		}
-		else if (player.challenges.includes("postcngm3_2")) x = Math.pow(galaxies + (player.resets + player.tickspeedBoosts) / 30, 0.7)
-		x = Math.max(x , 7)
+			}
+		} else if (player.challenges.includes("postcngm3_2")) x = Math.pow(galaxies + (player.resets + player.tickspeedBoosts) / 30, 0.7)
+		x = Math.max(x, 7)
 	}
 	if (x > 100) x = 50 * Math.log10(x)
 	return x
-}
-
-function getInfinityPowerEffectExp() {
-	return tmp.infPrePowExp
 }
 
 function switchAutoInf(tier) {

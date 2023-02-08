@@ -300,15 +300,12 @@ function updateBreakEternityUpgradesTemp() {
 	updateBreakEternityUpgrade4Temp()
 	updateBreakEternityUpgrade5Temp()
 	updateBreakEternityUpgrade6Temp()
+	updateBreakEternityUpgrade8Temp()
+	updateBreakEternityUpgrade9Temp()
+	updateBreakEternityUpgrade10Temp()
 
 	//Upgrade 7: EP Mult
 	tmp.beu[7] = E_pow(1e9, beSave.epMultPower)
-
-	if (PHOTON.unlocked()) {
-		updateBreakEternityUpgrade8Temp()
-		updateBreakEternityUpgrade9Temp()
-		updateBreakEternityUpgrade10Temp()
-	}
 }
 
 function getBEUnls() {

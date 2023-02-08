@@ -119,7 +119,7 @@ function canGetReplicatedGalaxy() {
 }
 
 function canAutoReplicatedGalaxy() {
-	return speedrunMilestonesReached >= 20 || !player.timestudy.studies.includes(131)
+	return !player.timestudy.studies.includes(131) || (mod.ngp3 && hasAch("ngpp16"))
 }
 
 function getMaxRG() {
@@ -168,8 +168,9 @@ function updateExtraReplGalaxies() {
 	}
 	extraReplGalaxies = ts225Eff + ts226Eff
 	if (extraReplGalaxies > 325) extraReplGalaxies = (Math.sqrt(0.9216+0.16*(extraReplGalaxies-324))-0.96)/0.08+324
+	extraReplGalaxies *= getExtraReplGalaxyMult()
 
-	return Math.floor(extraReplGalaxies) * getExtraReplGalaxyMult()
+	return Math.floor(extraReplGalaxies)
 }
 
 function getExtraReplGalaxyMult() {
@@ -184,8 +185,7 @@ function getTotalRG() {
 }
 
 function replicantiGalaxyAutoToggle() {
-	player.replicanti.galaxybuyer=!player.replicanti.galaxybuyer
-	el("replicantiresettoggle").textContent="Auto galaxy "+(player.replicanti.galaxybuyer?"ON":"OFF")+(!canAutoReplicatedGalaxy()?" (disabled)":"")
+	player.replicanti.galaxybuyer = !player.replicanti.galaxybuyer
 }
 
 function getReplSpeed() {

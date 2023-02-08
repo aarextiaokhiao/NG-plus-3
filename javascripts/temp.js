@@ -113,7 +113,7 @@ function updateBRU1Temp() {
 	if (!bigRipped()) return
 	let exp = 1
 	if (hasRipUpg(17)) exp = tmp.bru[17]
-	if (hasNB(7)) exp *= tmp.nb[8]
+	if (hasNB(7)) exp *= tmp.nb[7]
 	exp *= player.infinityPoints.max(1).log10()
 	tmp.bru[1] = pow10(exp) // BRU1
 }
@@ -220,7 +220,7 @@ var currentMult = 1
 var infinitiedMult = 1
 var achievementMult = 1
 var unspentBonus = 1
-var mult18 = 1
+var mult18 = E(1)
 var ec10bonus = E(1)
 
 function getAchievementMult(){
@@ -257,6 +257,7 @@ function updatePowers() {
 
 	if (mod.rs) mult18 = getDimensionFinalMultiplier(1).max(1).mul(getDimensionFinalMultiplier(8).max(1)).pow(0.02)
 	else mult18 = getDimensionFinalMultiplier(1).mul(getDimensionFinalMultiplier(8)).pow(0.02)
+	if (isNaN(mult18.e)) mult18 = E(1)
 
 	if (player.currentEternityChall == "eterc10" || inQC(6)) {
 		ec10bonus = E_pow(getInfinitied(), 1e3).max(1)
