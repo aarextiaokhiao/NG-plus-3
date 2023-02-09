@@ -924,17 +924,7 @@ function doFundamentUpdates(){
 		quSave.nonMAGoalReached = {}
 		quSave.pairedChallenges.fastest = {}
 		quSave.pairedChallenges.pc68best = 0
-		quSave.bigRip = {
-			active: false,
-			conf: true,
-			times: 0,
-			bestThisRun: 0,
-			totalAntimatter: 0,
-			savedAutobuyersNoBR: {},
-			savedAutobuyersBR: {},
-			spaceShards: 0,
-			upgrades: []
-		}
+		quSave.bigRip = getBrandNewBigRipData()
 		quSave.breakEternity = {
 			unlocked: false,
 			break: false,

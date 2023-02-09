@@ -43,7 +43,6 @@ function loadFundament(reset) {
 	updateNeutrinoBoosts()
 	updatePhotonUnlocks()
 
-
 	if (!blSave.usedEnchants.length) blSave.usedEnchants=[]
 	for (var g2 = 2; g2 <= br.maxLimit; g2++) for (var g1 = 1; g1 < g2; g1++) if (blSave.enchants[g1*10+g2]) blSave.enchants[g1*10+g2] = E(blSave.enchants[g1*10+g2])
 	el("odSlider").value=Math.round((blSave.odSpeed-1)/4*50)
@@ -107,9 +106,6 @@ function ghostify(auto, force) {
 }
 
 function ghostifyReset(force, gain) {
-	//Revert Big Rip
-	if (bigRipped()) switchAB()
-
 	var bulk = getGhostifiedGain()
 	if (!force) {
 		ghSave.ghostParticles = ghSave.ghostParticles.add(gain).round()
@@ -230,6 +226,7 @@ RESETS.funda = {
 		updateTODStuff()
 	},
 	resetRip(bm) {
+		if (bigRipped()) switchAB(false)
 		brSave.active = false
 		brSave.times = 0
 		brSave.bestGals = 0

@@ -1,7 +1,7 @@
 let PHOTON = {
 	/* CORE */
 	//Unlock
-	req: _ => bigRipped() && player.money.gte(pow10(8e9)),
+	req: _ => bigRipped() && player.money.gte(pow10(1e10)),
 	unlocked: _ => ghSave?.photons.unl,
 	unlock() {
 		ghSave.photons.unl = true
@@ -51,7 +51,7 @@ let PHOTON = {
 	/* FEATURES */
 	//Feature - Photons
 	photonGain() {
-		let r = E(player.dilation.bestTPOverGhostifies.max(1).log10())
+		let r = E(player.dilation.bestTPOverGhostifies.max(1).log10()).pow(2).div(1e4)
 		if (tmp.nb[10]) r = r.mul(tmp.nb[10])
 		if (isNanoEffectUsed("photons")) r = r.mul(tmp.nf.effects.photons)
 		return r
@@ -113,7 +113,7 @@ let PHOTON = {
 	lightData: [
 		{
 			name: "red",
-			eff: a => Math.log10(a + 10),
+			eff: a => a / 5 + 1,
 			desc: e => `2nd Infinite Time softcap starts ^${e.toFixed(3)} later.`
 		}, {
 			name: "orange",
@@ -160,7 +160,7 @@ let PHOTON = {
 	},
 	update() {
 		if (!PHOTON.unlocked()) {
-			el("gphUnl").textContent = "Get "+shortenCosts(pow10(8e9))+" antimatter in Big Rip to unlock Photons."
+			el("gphUnl").textContent = "Get "+shortenCosts(pow10(1e10))+" antimatter in Big Rip to unlock Photons."
 			return
 		}
 

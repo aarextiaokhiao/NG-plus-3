@@ -1,6 +1,6 @@
 //VERSION: 2.31
 let ngp3_ver = 2.31
-let ngp3_build = 20230207
+let ngp3_build = 20230208
 function doNGP3Updates() {
 	if (!aarMod.ngp3_build) aarMod.ngp3_build = 0
 	if (aarMod.ngp3_build < 20221230) quSave.multPower = 0
@@ -18,6 +18,10 @@ function doNGP3Updates() {
 		}
 		delete ghSave?.disabledRewards
 		delete ghSave?.reached
+	}
+	if (aarMod.ngp3_build < 20220208) {
+		delete brSave.savedAutobuyersBR
+		delete brSave.savedAutobuyersNoBR
 	}
 	aarMod.newGame3PlusVersion = ngp3_ver
 	aarMod.ngp3_build = ngp3_build
@@ -236,132 +240,6 @@ function toggleAutoReset() {
 function autoECToggle() {
 	quSave.autoEC = !quSave.autoEC
 	el("autoEC").className = quSave.autoEC ? "timestudybought" : "storebtn"
-}
-
-function switchAB() {
-	var bigRip = bigRipped()
-	brSave["savedAutobuyers" + (bigRip ? "" : "No") + "BR"] = {}
-	var data = brSave["savedAutobuyers" + (bigRip ? "" : "No") + "BR"]
-	for (let d = 1; d < 9; d++) if (player.autobuyers[d-1] % 1 !== 0) data["d" + d] = {
-		priority: player.autobuyers[d-1].priority,
-		perTen: player.autobuyers[d-1].target > 10,
-		on: player.autobuyers[d-1].isOn,
-	}
-	if (player.autobuyers[8] % 1 !== 0) data.tickspeed = {
-		priority: player.autobuyers[8].priority,
-		max: player.autobuyers[8].target == 10,
-		on: player.autobuyers[8].isOn
-	}
-	if (player.autobuyers[9] % 1 !== 0) data.dimBoosts = {
-		maxDims: player.autobuyers[9].priority,
-		always: player.overXGalaxies,
-		bulk: player.autobuyers[9].bulk,
-		on: player.autobuyers[9].isOn
-	}
-	if (inNGM(3)) if (player.autobuyers[13] % 1 !== 0) data.tickBoosts = {
-		maxDims: player.autobuyers[13].priority,
-		always: player.overXGalaxiesTickspeedBoost,
-		bulk: player.autobuyers[13].bulk,
-		on: player.autobuyers[13].isOn
-	}
-	if (inNGM(2)) if (player.autobuyers[12] % 1 !== 0) data.galSacrifice = {
-		amount: player.autobuyers[12].priority,
-		on: player.autobuyers[12].isOn
-	}
-	if (player.autobuyers[11] % 1 !== 0) data.crunch = {
-		mode: player.autoCrunchMode,
-		amount: E(player.autobuyers[11].priority),
-		on: player.autobuyers[11].isOn
-	}
-	data.eternity = {
-		mode: player.autoEterMode,
-		amount: player.eternityBuyer.limit,
-		dilation: player.eternityBuyer.dilationMode,
-		dilationPerStat: player.eternityBuyer.dilationPerAmount,
-		on: player.eternityBuyer.isOn
-	}
-	var data = brSave["savedAutobuyers" + (bigRip ? "No" : "") + "BR"]
-	for (var d = 1; d < 9; d++) if (data["d" + d]) player.autobuyers[d - 1] = {
-		interval: player.autobuyers[d - 1].interval,
-		cost: player.autobuyers[d - 1].cost,
-		bulk: player.autobuyers[d - 1].bulk,
-		priority: data["d"+d].priority,
-		tier: d,
-		target: d + (data["d"+d].perTen ? 10 : 0),
-		ticks: 0,
-		isOn: data["d"+d].on
-	}
-	if (data.tickspeed) player.autobuyers[8] = {
-		interval: player.autobuyers[8].interval,
-		cost: player.autobuyers[8].cost,
-		bulk: 1,
-		priority: data.tickspeed.priority,
-		tier: 1,
-		target: player.autobuyers[8].target,
-		ticks: 0,
-		isOn: data.tickspeed.on
-	}
-	if (data.dimBoosts) {
-		player.autobuyers[9] = {
-			interval: player.autobuyers[9].interval,
-			cost: player.autobuyers[9].cost,
-			bulk: data.dimBoosts.bulk,
-			priority: data.dimBoosts.maxDims,
-			tier: 1,
-			target: 11,
-			ticks: 0,
-			isOn: data.dimBoosts.on
-		}
-		player.overXGalaxies = data.dimBoosts.always
-	}
-	if (data.tickBoosts) {
-		player.autobuyers[13] = {
-			interval: player.autobuyers[13].interval,
-			cost: player.autobuyers[13].cost,
-			bulk: data.tickBoosts.bulk,
-			priority: data.tickBoosts.maxDims,
-			tier: 1,
-			target: 14,
-			ticks: 0,
-			isOn: data.tickBoosts.on
-		}
-		player.overXGalaxiesTickspeedBoost = data.tickBoosts.always
-	}
-	if (data.galacticSacrifice) player.autobuyers[12] = {
-		interval: player.autobuyers[12].interval,
-		cost: player.autobuyers[12].cost,
-		bulk: 1,
-		priority: data.galacticSacrifice.amount,
-		tier: 1,
-		target: 13,
-		ticks: 0,
-		isOn: data.galacticSacrifice.on
-	}
-	if (data.crunch) {
-		player.autobuyers[11] = {
-			interval: player.autobuyers[11].interval,
-			cost: player.autobuyers[11].cost,
-			bulk: 1,
-			priority: E(data.crunch.amount),
-			tier: 1,
-			target: 12,
-			ticks: 0,
-			isOn: data.crunch.on
-		}
-		player.autoCrunchMode = data.crunch.mode
-	}
-	if (data.eternity) {
-		player.eternityBuyer = {
-			limit: data.eternity.amount,
-			dilationMode: data.eternity.dilation,
-			dilationPerAmount: data.eternity.dilationPerStat,
-			statBeforeDilation: data.eternity.dilationPerStat,
-			isOn: data.eternity.on
-		}
-		player.autoEterMode = data.eternity.mode
-	}
-	brSave["savedAutobuyers" + (bigRip ? "No" : "") + "BR"] = {}
-	updateCheckBoxes()
 }
 
 //v2.1

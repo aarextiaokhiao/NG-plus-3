@@ -2827,6 +2827,7 @@ function initGame() {
 	window.addEventListener("resize", resizeCanvas);
 
 	//On load
+	console.log("[ 👻 Antimatter Dimensions: NG+3 v" + ngp3_ver + ": Ghostify Respecced 👻 ]")
 	setTimeout(function(){
 		el("container").style.display = "block"
 		el("loading").style.display = "none"

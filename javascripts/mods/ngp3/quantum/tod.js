@@ -229,11 +229,7 @@ function getTreeUpgradeLevel(upg) {
 function getEffectiveTreeUpgLevel(upg){
 	if (!tmp.tue) return 0
 	lvl = getTreeUpgradeLevel(upg) * tmp.tue
-	if (upg == 1 && lvl >= 500) lvl = 500 * Math.pow(lvl / 500,.9)
 	if (upg == 2 && lvl > 64) lvl = (lvl + 128) / 3
-	if (upg == 5 && lvl > 500) lvl = Math.sqrt(lvl / 500) * 500
-	if (upg == 7 && lvl > 100) lvl -= Math.sqrt(lvl) - 10
-	if (upg == 8 && lvl > 1111) lvl = 1111 + (lvl - 1111) / 2
 	return lvl
 }
 

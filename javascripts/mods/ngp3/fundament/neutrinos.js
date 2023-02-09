@@ -15,7 +15,7 @@ function updateNeutrinosTab(){
 	
 	if (ghSave.ghostParticles.gte(tmp.nbc[ghSave.neutrinos.boosts])) el("neutrinoUnlock").className = "gluonupgrade neutrinoupg"
 	else el("neutrinoUnlock").className = "gluonupgrade unavailablebtn"
-	if (ghSave.ghostParticles.gte(E_pow(4,ghSave.neutrinos.multPower-1).mul(2))) el("neutrinoMultUpg").className = "gluonupgrade neutrinoupg"
+	if (ghSave.ghostParticles.gte(getNeutrinoMultCost())) el("neutrinoMultUpg").className = "gluonupgrade neutrinoupg"
 	else el("neutrinoMultUpg").className = "gluonupgrade unavailablebtn"
 	if (sum.gte(getGHPMultCost())) el("ghpMultUpg").className = "gluonupgrade neutrinoupg"
 	else el("ghpMultUpg").className = "gluonupgrade unavailablebtn"
@@ -179,9 +179,9 @@ var neutrinoBoosts = {
 		},
 		4: function(nt) {
 			var nb4neutrinos = Math.pow(nt[0].add(1).log10(),2)+Math.pow(nt[1].add(1).log10(),2)+Math.pow(nt[2].add(1).log10(),2)
-			var nb4 = Math.log10(nb4neutrinos*(bigRipped()?1:0.05)+1)/4+1
-			if (!bigRipped()) nb4 = Math.min(nb4 ** 0.5, 1.3)
-			return nb4
+			var nb4 = Math.log10(nb4neutrinos*(bigRipped()?1:0.07)+1)/4+1
+			if (!bigRipped()) nb4 = Math.sqrt(nb4)
+			return Math.min(nb4, 3)
 		},
 		5: function(nt) {
 			var nb5neutrinos = nt[0].max(1).log10()+nt[1].max(1).log10()+nt[2].max(1).log10()
@@ -224,7 +224,7 @@ var neutrinoBoosts = {
 		},
 		12: function(nt) {
 			var nb12 = nt[0].add(1).log10()+nt[1].add(1).log10()+nt[2].add(1).log10()
-			return ghSave.time
+			return Math.log10(ghSave.time * nb12 / 1e6 + 1) / 10 + 1
 		},
 	}
 }
@@ -285,15 +285,15 @@ function hasNB(id) {
 
 //Multipliers
 function getNeutrinoMultCost() {
-	return E_pow(4, ghSave.neutrinos.multPower - 1).mul(2)
+	return E_pow(5, ghSave.neutrinos.multPower - 1).mul(2)
 }
 
 function buyNeutrinoMult(max) {
 	let cost = getNeutrinoMultCost()
 	if (!ghSave.ghostParticles.gte(cost)) return
 
-	let toBuy = max ? Math.floor(ghSave.ghostParticles.div(cost).log(4) + 1) : 1
-	ghSave.ghostParticles=ghSave.ghostParticles.sub(E_pow(4, toBuy - 1).mul(cost)).round()
+	let toBuy = max ? Math.floor(ghSave.ghostParticles.div(cost).log(5) + 1) : 1
+	ghSave.ghostParticles=ghSave.ghostParticles.sub(E_pow(5, toBuy - 1).mul(cost)).round()
 	ghSave.neutrinos.multPower += toBuy
 
 	el("neutrinoMult").textContent=shortenDimensions(E_pow(5, ghSave.neutrinos.multPower - 1))

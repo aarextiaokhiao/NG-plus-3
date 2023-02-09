@@ -117,31 +117,44 @@ function tweakBigRip(id, reset) {
 }
 
 function unstoreTT() {
-	if (brSave.storedTS===undefined) return
+	if (brSave.storedTS === undefined) return
 	player.timestudy.theorem = brSave && brSave.storedTS.tt
 	player.timestudy.amcost = pow10(2e4 * (brSave.storedTS.boughtA + 1))
 	player.timestudy.ipcost = pow10(100 * brSave.storedTS.boughtI)
 	player.timestudy.epcost = pow2(brSave.storedTS.boughtE)
 	var newTS = []
 	var newMS = []
-	var studies=brSave.storedTS.studies
+	var studies = brSave.storedTS.studies
 	for (var s = 0; s < studies.length; s++) {
-		var num=studies[s]
-		if (typeof(num)=="string") num=parseInt(num)
+		var num = studies[s]
+		if (typeof(num) == "string") num=parseInt(num)
 		if (num<240) newTS.push(num)
 		else newMS.push("t"+num)
 	}
 	for (var s = 7; s < 15; s++) if (hasMasteryStudy("d" + s)) newMS.push("d" + s)
 	player.timestudy.studies = newTS
 	player.masterystudies = newMS
-	updateBoughtTimeStudies()
-	performedTS = false
-	updateTheoremButtons()
-	drawStudyTree()
-	maybeShowFillAll()
-	drawMasteryTree()
-	updateMasteryStudyButtons()
 	delete brSave.storedTS
+}
+
+function switchAB(rip) {
+	var data = {}
+	data.crunch = { ...player.autobuyers[11], mode: player.autoCrunchMode }
+	data.eternity = { ...player.eternityBuyer, mode: player.autoEterMode }
+	brSave["autoSave" + (rip ? "Qu" : "Rip")] = data
+
+	var data = brSave["autoSave" + (rip ? "Rip" : "Qu")]
+	if (data) {
+		player.autobuyers[11] = { ...data.crunch }
+		player.autoCrunchMode = data.crunch.mode
+
+		player.eternityBuyer = { ...data.eternity }
+		player.autoEterMode = data.eternity.mode
+
+		delete player.autobuyers[11].mode
+		delete player.eternityBuyer.mode
+		delete brSave["autoSave" + (rip ? "Rip" : "Qu")]
+	}
 }
 
 function updateBigRipTab() {

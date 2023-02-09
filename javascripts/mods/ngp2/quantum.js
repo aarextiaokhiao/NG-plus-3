@@ -341,7 +341,7 @@ function doQuantum(force, auto, qc = {}) {
 			}
 			if (isRewardEnabled(11)) unstoreTT()
 		}
-		switchAB()
+		switchAB(bigRip)
 	}
 	brSave.active = bigRip
 

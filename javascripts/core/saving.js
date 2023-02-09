@@ -983,14 +983,12 @@ function getBrandNewTodData(){
 
 function getBrandNewBigRipData(){
 	return {
-		active: false,
 		conf: true,
 		times: 0,
 		bestThisRun: 0,
-		totalAntimatter: 0,
-		savedAutobuyersNoBR: {},
-		savedAutobuyersBR: {},
-		spaceShards: 0,
+		bestGals: 0,
+		totalAntimatter: E(0),
+		spaceShards: E(0),
 		upgrades: []
 	}
 }
@@ -1169,18 +1167,7 @@ function doNGPlusThreeNewPlayer() {
 		},
 		upgrades: {}
 	}
-	quSave.bigRip = {
-		active: false,
-		conf: true,
-		times: 0,
-		bestThisRun: 0,
-		totalAntimatter: 0,
-		bestGals: 0,
-		savedAutobuyersNoBR: {},
-		savedAutobuyersBR: {},
-		spaceShards: 0,
-		upgrades: []
-	}
+	quSave.bigRip = getBrandNewBigRipData()
 	quSave.breakEternity = {
 		unlocked: false,
 		break: false,
@@ -1188,7 +1175,6 @@ function doNGPlusThreeNewPlayer() {
 		upgrades: [],
 		epMultPower: 0
 	}
-	ghSave = player.ghostify
 	aarMod.ghostifyConf = true
 }
 
