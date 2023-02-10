@@ -523,7 +523,6 @@ function buyingDilStudyNanofield(){
 function buyingDilStudyToD(){
 	showTab("quantumtab")
 	showQuantumTab("tod")
-	updateColorCharge()
 	updateTODStuff()
 }
 
@@ -558,7 +557,7 @@ function buyingDilationStudyFirstTime(id){
 }
 
 function buyMasteryStudy(type, id, quick=false) {
-	if (quick) setMasteryStudyCost(id,type)
+	if (quick) setMasteryStudyCost(id, type)
 	if (!canBuyMasteryStudy(type, id)) return
 	player.timestudy.theorem -= masteryStudies.costs[masteryStudies.types[type]][id]
 	if (type == 'ec') {
@@ -584,14 +583,10 @@ function buyMasteryStudy(type, id, quick=false) {
 		}
 		if (id == 266 && player.replicanti.gal > 399) {
 			var gal = player.replicanti.gal
-			player.replicanti.gal = 0
-			player.replicanti.galCost = E(inNGM(2)?1e110:1e170)
 			player.replicanti.galCost = getRGCost(gal)
 			player.replicanti.gal = gal
 		}
-		if (id == 312){
-			player.meta.resets = 4
-		}
+		if (id == 312) player.meta.resets = 4
 		if (id == 321){
 			var isone = ((inQC(5)||inQC(7))&&focusOn!="linear")||(((inNC(13)&&!inNGM(3))||player.currentChallenge=="postc1"||player.currentChallenge=="postcngm3_1")&&inNGM(2))
 			if (isone) {
@@ -600,7 +595,6 @@ function buyMasteryStudy(type, id, quick=false) {
 				}
 			}
 		}
-		if (id == 383) updateColorCharge()
 		if (!hasNU(6) && (id == 251 || id == 252 || id == 253 || id == 301)) {
 			player.galaxies = 1
 		}
@@ -632,15 +626,16 @@ function buyMasteryStudy(type, id, quick=false) {
 function canBuyMasteryStudy(type, id) {
 	if (type == 't') {
 		if (player.timestudy.theorem < masteryStudies.costs.time[id] || hasMasteryStudy('t' + id) || player.eternityChallUnlocked > 12 || !masteryStudies.timeStudies.includes(id)) return false
+		if (player.eternityChallUnlocked > 12) return false
 		if (masteryStudies.latestBoughtRow > Math.floor(id / 10)) return false
 		if (!masteryStudies.spentable.includes(id)) return false
 	} else if (type == 'd') {
 		if (player.timestudy.theorem < masteryStudies.costs.dil[id] || hasMasteryStudy('d' + id)) return false
-		if (!gotBraveMilestone(3) && masteryStudies.unlockReqConditions[id]()) return false
+		if (!gotBraveMilestone(3) && !masteryStudies.unlockReqConditions[id]()) return false
 		if (!masteryStudies.spentable.includes("d" + id)) return false
 	} else {
-		if (player.timestudy.theorem < masteryStudies.costs.ec[id] || player.eternityChallUnlocked) return false
-		if (!masteryStudies.spentable.includes("ec" + id)) return false
+		if (player.timestudy.theorem < masteryStudies.costs.ec[id]) return false
+		if (player.eternityChallUnlocked) return false
 		if (player.etercreq == id) return true
 		if (id == 13) return player.resets >= masteryStudies.ecReqsStored[13]
 		return Math.round(player.replicanti.chance * 100) >= masteryStudies.ecReqsStored[14]

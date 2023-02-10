@@ -1583,9 +1583,9 @@ function setTSDisplay(){
 
 function updateNGp3DisplayStuff(){
 	for (var i=0;i<masteryStudies.timeStudies.length;i++) {
-			var t=masteryStudies.timeStudies[i]
-			var d=masteryStudies.timeStudyDescs[t]
-			el("ts"+t+"Desc").innerHTML=(typeof(d)=="function"?d():d)||"Unknown desc."
+		var t=masteryStudies.timeStudies[i]
+		var d=masteryStudies.timeStudyDescs[t]
+		el("ts"+t+"Desc").innerHTML=(typeof(d)=="function"?d():d)||"Unknown desc."
 	}
 	updateMasteryStudyCosts()
 	el('reward3disable').textContent="6 hours reward: O"+(quSave.disabledRewards[3]?"FF":"N")

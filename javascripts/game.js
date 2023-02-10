@@ -1392,8 +1392,7 @@ function eternity(force, auto, dil, presetLoad) {
 	if (gainedEternityPoints().gte(player.eternityPoints) && player.eternityPoints.gte("1e1185") && (mod.ngp3 ? player.dilation.active && bigRipped() : false)) giveAchievement("Gonna go fast")
 
 	//Presets
-	if (player.respec || player.respecMastery || forceRespec) respecTimeStudies(forceRespec, presetLoad)
-	if (typeof(presetLoad) == "string") importStudyTree(presetLoad)
+	if (player.respec || player.respecMastery || forceRespec || presetLoad) respecTimeStudies(forceRespec, presetLoad)
 	if (player.respec) respecToggle()
 	if (player.respecMastery) respecMasteryToggle()
 

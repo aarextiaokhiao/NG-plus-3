@@ -369,15 +369,9 @@ function studiesUntil(id) {
 	buyTimeStudy(id, studyCosts[all.indexOf(id)], 0, true);
 }
 
-function respecTimeStudies(force, presetLoad) {
-	var respecTime = player.respec || (force && (presetLoad || player.eternityChallUnlocked < 13))
-	var respecMastery = false
+function respecTimeStudies(ecComp, load) {
+	var respecTime = player.respec || (ecComp && player.eternityChallUnlocked <= 12) || load
 	var gotAch = respecTime || player.timestudy.studies.length < 1
-	if (mod.ngp3) {
-		respecMastery=player.respecMastery||force
-		gotAch=gotAch&&(respecMastery||player.masterystudies.length<1)
-		delete quSave.autoECN
-	}
 
 	if (respecTime) {
 		if (mod.rs) {
@@ -397,37 +391,36 @@ function respecTimeStudies(force, presetLoad) {
 			player.timestudy.studies = bru7activated ? [192] : []
 			var ECCosts = [null, 30, 35, 40, 70, 130, 85, 115, 115, 415, 550, 1, 1]
 			player.timestudy.theorem += ECCosts[player.eternityChallUnlocked]
-			
 		}
+		if (!load) updateTimeStudyButtons(true)
 	}
 
+	var respecMastery = false
+	if (mod.ngp3) {
+		respecMastery = player.respecMastery || (ecComp && player.eternityChallUnlocked >= 13) || load
+		gotAch = gotAch && respecMastery
+		delete quSave.autoECN
+	}
 	if (respecMastery) {
 		var respecedMS = []
 		player.timestudy.theorem += masteryStudies.ttSpent
-		if (hasMasteryStudy("t373")) updateColorCharge()
 		for (var id = 0; id < player.masterystudies.length; id++) {
 			var d = player.masterystudies[id].split("d")[1]
 			if (d) respecedMS.push(player.masterystudies[id])
 		}
-		if (player.masterystudies.length > respecedMS.length) {
-			quSave.wasted = false
-			gotAch = false
-		}
-		player.masterystudies=respecedMS
+		if (player.masterystudies.length > respecedMS.length) quSave.wasted = false
+		if (!hasGluonUpg("gb3")) ipMultPower = 2
+		player.masterystudies = respecedMS
 		respecUnbuyableTimeStudies()
 		updateMasteryStudyCosts()
-		if (!presetLoad) {
+		if (!load) {
 			maybeShowFillAll()
 			updateMasteryStudyButtons()
+			drawMasteryTree()
 		}
-		drawMasteryTree()
 	}
-	player.eternityChallUnlocked = 0
-	updateEternityChallenges()
-	drawStudyTree()
 
-	if (!presetLoad) updateTimeStudyButtons(true)
-	if (!hasGluonUpg("gb3")) ipMultPower = 2
+	player.eternityChallUnlocked = 0
 	if (gotAch) giveAchievement("You do know how these work, right?")
 }
 
@@ -582,7 +575,6 @@ var poData
 
 function new_preset(importing) {
 	var input
-
 	if (importing) {
 		onImport = true
 		input = prompt()
@@ -615,22 +607,22 @@ function save_preset(id, placement) {
 }
 
 function toggle_preset_reset(load) {
-	if (!load) {
-		aarMod.presetReset = !aarMod.presetReset
-		el("toggle_preset_reset").style.display = mod.ngp3 ? "" : "none"
-	}
-	el("toggle_preset_reset").textContent = "Force eternity: " + (aarMod.presetReset ? "ON" : "OFF")
+	if (!load) aarMod.presetReset = !aarMod.presetReset
+	if (load) el("toggle_preset_reset").style.display = mod.ngp3 ? "" : "none"
+	el("toggle_preset_reset").textContent = "Force respec: " + (aarMod.presetReset ? "ON" : "OFF")
 }
 
 function load_preset(id, placement) {
 	let pres = presets[id]
 	let edit = pres.preset
 	let dil = pres.dilation
-	console.log(dil)
 
 	if (aarMod.presetReset) {
-		if (!canEternity()) return
-		eternity(true, false, dil, true)
+		if (!canEternity()) {
+			$.notify("You need " + shorten(Number.MAX_VALUE) + " IP to do a force respec load.")
+			return
+		}
+		eternity(false, false, dil, true)
 	} else if (dil) startDilatedEternity(true)
 
 	let saved = false
@@ -702,24 +694,23 @@ function openStudyPresets() {
 	closeToolTip()
 	let saveOnERS = mod.rs
 	let saveOnNGP3 = mod.ngp3
-	if (saveOnERS != onERS) {
-		delete presets.editing
+
+	if (saveOnERS != onERS || saveOnNGP3 != onNGP3) {
 		el("presets").innerHTML = ""
 		presets = {}
-		onERS = saveOnERS
-		if (onERS) presetPrefix = prefix+"ERS_ST_"
-		else presetPrefix = prefix+"AM_ST_"
+		if (onERS) presetPrefix = prefix + "ERS_ST_"
+		else presetPrefix = prefix + "AM_ST_"
 		loadedPresets = 0
-	} else if (saveOnNGP3 != onNGP3) {
+		delete presets.editing
+
+		onERS = saveOnERS
 		onNGP3 = saveOnNGP3
-		for (var p = 0; p < loadedPresets; p++) {
-			el("presets").rows[p].innerHTML = getPresetLayout(poData[p], p + 1)
-			changePresetTitle(poData[p], p + 1)
-		}
 	}
 	el("presetsmenu").style.display = "block";
-	clearInterval(loadSavesIntervalId)
+	toggle_preset_reset(true)
+
 	occupied = false
+	clearInterval(loadSavesIntervalId)
 	loadSavesIntervalId=setInterval(function(){
 		if (occupied) return
 		else occupied = true
