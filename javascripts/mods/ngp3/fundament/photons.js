@@ -82,8 +82,8 @@ let PHOTON = {
 			resName: "Elementary Particles",
 			res: _ => ghSave.ghostParticles,
 
-			req: i => E(1e10).pow(i).mul(1e90),
-			bulk: r => Math.floor(r.div(1e90).log(1e10))+1,
+			req: i => E(1e5).pow(i).mul(1e100),
+			bulk: r => Math.floor(r.div(1e100).log(1e5))+1,
 		}, {
 			resName: "Photons",
 			res: _ => ghSave.photons.amt,
@@ -113,32 +113,32 @@ let PHOTON = {
 	lightData: [
 		{
 			name: "red",
-			eff: a => a / 5 + 1,
-			desc: e => `2nd Infinite Time softcap starts ^${e.toFixed(3)} later.`
-		}, {
-			name: "orange",
-			eff: a => Math.log10(a + 10),
-			desc: e => `Nanorewards speed up Decay by ${e.toFixed(3)}x each.`
-		}, {
-			name: "yellow",
-			eff: a => Math.log10(a + 10),
-			desc: e => `Strengthen 8th Nanoreward by ${e.toFixed(3)}x.`
-		}, {
-			name: "green",
-			eff: a => Math.log10(a + 10),
-			desc: e => `Dilated time gives ^${e.toFixed(3)} boost to Meta Dimensions.`
-		}, {
-			name: "blue",
 			eff: a => Math.log10(a + 10),
 			desc: e => `Free tickspeed upgrades scale ${e.toFixed(3)}x faster.`
 		}, {
-			name: "violet",
+			name: "orange",
+			eff: a => Math.log10(a + 1) + 1,
+			desc: e => `Dilated time gives ^${e.toFixed(3)} boost to Meta Dimensions.`
+		}, {
+			name: "yellow",
+			eff: a => Math.log10(a / 3 + 1) + 1,
+			desc: e => `Nanorewards speed up Decay by ${e.toFixed(3)}x each.`
+		}, {
+			name: "green",
+			eff: a => Math.log10(a + 10),
+			desc: e => `Strengthen Nanobenefits by ${e.toFixed(3)}x.`
+		}, {
+			name: "blue",
 			eff: a => Math.log10(a + 10),
 			desc: e => `Multiply per-10 base by ${e.toFixed(3)}x before Positrons.`
 		}, {
-			name: "ultraviolet",
+			name: "violet",
 			eff: a => Math.log10(a + 10),
 			desc: e => `Meta Dimension costs scale ^${e.toFixed(2)} later.`
+		}, {
+			name: "ultraviolet",
+			eff: a => a / 10 + 1,
+			desc: e => `2nd Infinite Time softcap starts ^${e.toFixed(3)} later.`
 		}
 	],
 	eff(x, def = 1) {

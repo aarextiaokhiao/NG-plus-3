@@ -1,6 +1,6 @@
 //VERSION: 2.31
 let ngp3_ver = 2.31
-let ngp3_build = 20230209
+let ngp3_build = 20230210
 function doNGP3Updates() {
 	if (!aarMod.ngp3_build) aarMod.ngp3_build = 0
 	if (aarMod.ngp3_build < 20221230) quSave.multPower = 0
@@ -186,10 +186,7 @@ function maxAllDilUpgs() {
 			} else while (buyDilationUpgrade(id, true, true)) update = true
 		}
 	}
-	if (update) {
-		updateDilationUpgradeCosts()
-		updateDilationUpgradeButtons()
-	}
+	if (update) updateDilationUpgradeButtons()
 }
 
 //v1.99874

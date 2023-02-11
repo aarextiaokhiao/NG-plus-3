@@ -1686,6 +1686,8 @@ function onLoad(noOffline) {
 
 	for (s = 0; s < (mod.rs ? 4 : 3); s++) toggleCrunchMode(true)
 	updateAutoEterMode()
+
+	//This should be reorganized
 	setConfirmationsDisplay()
 	setOptionsDisplaysStuff1()
 	updateHotkeys()
@@ -1696,24 +1698,23 @@ function onLoad(noOffline) {
 	setTSDisplay()
 	setReplAutoDisplay()
 	setSomeQuantumAutomationDisplay()
+
 	if (mod.ngp3) updateNGp3DisplayStuff()
 	hideDimensions()
 	updateChallenges()
 	updateNCVisuals()
 	updateChallengeTimes()
-	checkForEndMe()
 	updateAutobuyers()
 	updatePriorities()
 	updateMilestones()
 	loadInfAutoBuyers()
-	updateEternityUpgrades()
-	updateTheoremButtons()
-	updateTimeStudyButtons()
 	updateRespecButtons()
 	updateEternityChallenges()
 	updateEterChallengeTimes()
-	updateDilationUpgradeCosts()
-	updateExdilation()
+	setAchieveTooltip()
+	updateAnimationBtns(true)
+
+	//This should be moved
 	updateLastTenQuantums()
 	updateSpeedruns()
 	updateBankedEter()
@@ -1721,20 +1722,15 @@ function onLoad(noOffline) {
 	updateQCTimes()
 	updatePCCompletions()
 	maybeShowFillAll()
-	updateNanoRewardTemp()
 	updateBreakEternity()
 	updateLastTenGhostifies()
 	onNotationChangeNeutrinos()
-	updateHeaders()
-	setAchieveTooltip()
-	updateAnimationBtns(true)
+
 	if (mod.rs) {
-			if (el("timestudies").style.display=="block") showEternityTab("ers_timestudies",true)
-			updateGalaxyControl()
+		if (el("timestudies").style.display=="block") showEternityTab("ers_timestudies",true)
+		updateGalaxyControl()
 	} else if (el("ers_timestudies").style.display=="block") showEternityTab("timestudies",true)
 	poData=metaSave["presetsOrder"+(mod.rs?"_ers":"")]
-	setAndMaybeShow('bestTP',hasAch("ng3p18") || hasAch("ng3p37"),'"Your best"+(ghostified ? "" : " ever")+" Tachyon particles"+(ghostified ? " in this Fundament" : "")+" was "+shorten(player.dilation.bestTP)+"."')
-	setAndMaybeShow('bestTPOverGhostifies',(hasAch("ng3p18") || hasAch("ng3p37")) && ghostified,'"Your best-ever Tachyon particles was "+shorten(player.dilation.bestTPOverGhostifies)+"."')
 
 	el("maxTimeDimensions").style.display=removeMaxTD?"none":""
 	el("metaMaxAll").style.display=removeMaxMD?"none":""
@@ -1756,8 +1752,18 @@ function onLoad(noOffline) {
 		notifyId = speedrunMilestonesReached
 		notifyId2 = ghSave?.milestones || 0
 	}
+
+	if (aarMod.offlineProgress && !noOffline) {
+		let diff = new Date().getTime() - player.lastUpdate
+		if (diff > 1000*1000) simulateTime(diff/1000)
+	} else player.lastUpdate = new Date().getTime()
+
 	el("newsbtn").textContent=(player.options.newsHidden?"Show":"Hide")+" news ticker"
 	el("game").style.display=player.options.newsHidden?"none":"block"
+	el("secretoptionsbtn").style.display=player.options.secrets?"":"none"
+	updateGhostlyNews()
+	if (!player.options.newsHidden) scrollNextMessage()
+
 	var tabsSave = aarMod.tabsSave
 	showDimTab((tabsSave.on && tabsSave.tabDims) || 'antimatterdimensions')
 	showStatsTab((tabsSave.on && tabsSave.tabStats) || 'stats')
@@ -1769,22 +1775,14 @@ function onLoad(noOffline) {
 	showAntTab((tabsSave.on && tabsSave.tabAnt) || 'antcore')
 	showGhostifyTab((tabsSave.on && tabsSave.tabGhostify) || 'neutrinos')
 	showBLTab((tabsSave.on && tabsSave.tabBL) || 'bextab')
-	if (!player.options.newsHidden) scrollNextMessage()
-	el("secretoptionsbtn").style.display=player.options.secrets?"":"none"
-	el("ghostlynewsbtn").textContent=((player.options.secrets!==undefined?player.options.secrets.ghostlyNews:false)?"Hide":"Show")+" ghostly news ticker"
-	if (aarMod.offlineProgress && !noOffline) {
-			let diff = new Date().getTime() - player.lastUpdate
-			if (diff > 1000*1000) simulateTime(diff/1000)
-	} else player.lastUpdate = new Date().getTime()
+
 	if (player.totalTimePlayed < 1 || inflationCheck || forceToQuantumAndRemove) {
-			updateNGModeMessage()
-			inflationCheck = false
-			infiniteCheck = false
-			closeToolTip()
-			showNextModeMessage()
-	}	else showNextModeMessage()
-	el("ghostlyNewsTicker").style.height=((player.options.secrets!==undefined?player.options.secrets.ghostlyNews:false)?24:0)+"px"
-	el("ghostlyNewsTickerBlock").style.height=((player.options.secrets!==undefined?player.options.secrets.ghostlyNews:false)?16:0)+"px"
+		updateNGModeMessage()
+		inflationCheck = false
+		infiniteCheck = false
+		closeToolTip()
+		showNextModeMessage()
+	} else showNextModeMessage()
 }
 
 

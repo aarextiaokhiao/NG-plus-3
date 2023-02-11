@@ -215,7 +215,6 @@ RESETS.funda = {
 		updateEmperorDimensions()
 
 		nfSave.rewards = bm >= 13 ? 5 : 0
-		updateNanoRewardTemp()
 	},
 	resetDecay(bm) {
 		todSave.r.quarks = E(0)

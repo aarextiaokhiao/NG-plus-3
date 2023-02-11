@@ -48,6 +48,7 @@ function dimensionTabDisplay() {
 			el("A" + tier).textContent = getDimensionDescription(tier)
 		}
 	}
+
 	setAndMaybeShow("mp10d", mod.ngmu, "'Multiplier per 10 Dimensions: '+shorten(getDimensionPowerMultiplier(\"non-random\"))+'x'")
 	updateCosts()
 	dimShiftDisplay()
@@ -317,6 +318,7 @@ function INFINITYUPGRADESDisplay(){
 			breakNGm2UpgradeRow6Display()
 		} else el("postinfir6").style.display = "none"
 	}
+	if (el("replicantis").style.display == "block" && el("infinity").style.display == "block") replicantiDisplay()
 }
 
 function eternityUpgradesDisplay(){
@@ -334,6 +336,7 @@ function eternityUpgradesDisplay(){
 		el("eter8").innerHTML = "Dilated time gain is boosted by Infinity Points<br>Currently: "+(1 + Math.log10(Math.max(1, player.infinityPoints.log(10))) / 20).toFixed(3)+"x<br>Cost: "+shortenCosts(E("1e2000"))+" EP"
 		el("eter9").innerHTML = "Dilated time gain is boosted by Eternity Points<br>Currently: "+(1 + Math.log10(Math.max(1, player.eternityPoints.log(10))) / 10).toFixed(3)+"x<br>Cost: "+shortenCosts(E("1e3000"))+" EP"
 	}
+	el("epmult").className = player.eternityPoints.gte(player.epmultCost) ? "eternityupbtn" : "eternityupbtnlocked"
 }
 
 function uponDilationDisplay(){
@@ -345,16 +348,17 @@ function uponDilationDisplay(){
 	el("enabledilation").innerHTML = msg + "."
 }
 
-function mainDilationDisplay(){
+function updateDilation(){
 	if (player.dilation.active) uponDilationDisplay()
 	else el("enabledilation").textContent = "Dilate time."+((player.eternityBuyer.isOn&&player.eternityBuyer.dilationMode?!isNaN(player.eternityBuyer.statBeforeDilation):false) ? " "+player.eternityBuyer.statBeforeDilation+ " left before dilation." : "")
 
-	var fgm = getFreeGalaxyGainMult()
-	el('freeGalaxyMult').textContent = fgm == 1 ? "Tachyonic Galaxy" : Math.round(fgm * 10) / 10 + " Tachyonic Galaxies"
-
 	el("tachyonParticleAmount").textContent = shortenMoney(player.dilation.tachyonParticles)
+	updateBestTachyonParticles()
 	el("dilatedTimeAmount").textContent = shortenMoney(player.dilation.dilatedTime)
 	el("dilatedTimePerSecond").textContent = "+" + shortenMoney(getDilTimeGainPerSecond()) + "/s"
+
+	var fgm = getFreeGalaxyGainMult()
+	el('freeGalaxyMult').textContent = fgm == 1 ? "Tachyonic Galaxy" : Math.round(fgm * 10) / 10 + " Tachyonic Galaxies"
 	el("galaxyThreshold").textContent = shortenMoney(player.dilation.nextThreshold)
 	el("dilatedGalaxies").textContent = getFullExpansion(Math.floor(player.dilation.freeGalaxies))
 }
@@ -368,24 +372,24 @@ function ETERNITYSTOREDisplay(){
 
 	if (el("eternityupgrades").style.display == "block") eternityUpgradesDisplay()
 	if (el("dilation").style.display == "block") {
-		mainDilationDisplay()
+		updateDilation()
 		updateExdilation()
 	}
 	if (el("blackhole").style.display == "block") updateBlackhole()
 }
 
 function updateDimensionsDisplay() {
-	if (el("dimensions").style.display == "block") {
-		if (el("antimatterdimensions").style.display == "block") dimensionTabDisplay()
-		if (el("infinitydimensions").style.display == "block") updateInfinityDimensions()
-		if (el("timedimensions").style.display == "block") updateTimeDimensions()
-		if (el("metadimensions").style.display == "block") updateMetaDimensions()
-	}
-	tickspeedDisplay()
+	dimensionTabDisplayUpdating()
+	if (el("antimatterdimensions").style.display == "block") dimensionTabDisplay()
+	if (el("infinitydimensions").style.display == "block") updateInfinityDimensions()
+	if (el("timedimensions").style.display == "block") updateTimeDimensions()
+	if (el("metadimensions").style.display == "block") updateMetaDimensions()
 }
 
 function updateTabDisplay() {
+	if (el("dimensions").style.display == "block") updateDimensionsDisplay()
 	if (el("statistics").style.display == "block") displayStats()
+	if (el("challenges").style.display == "block") challengeOverallDisplayUpdating()
 	if (el("infinity").style.display == "block") INFINITYUPGRADESDisplay()
 	if (el("eternitystore").style.display == "block") ETERNITYSTOREDisplay()
 	if (el("quantumtab").style.display == "block") updateQuantumTabs()

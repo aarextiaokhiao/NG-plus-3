@@ -46,6 +46,7 @@ function getElectronBoost(mod) {
 	var amount = quSave.electrons.amount
 
 	var s = 149840
+	if (hasNU(13)) s += tmp.nu[13]
 	if (amount > 37460 + s) amount = Math.sqrt((amount-s) * 37460) + s
 	if (hasGluonUpg("rg4") && mod != "no-rg4") amount *= 0.7
 	if (hasMasteryStudy("d13") && mod != "noTree") amount *= getTreeUpgradeEffect(4)

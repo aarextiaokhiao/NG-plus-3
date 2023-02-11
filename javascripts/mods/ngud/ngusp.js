@@ -8,10 +8,7 @@ function autoBuyDilUpgs() {
 			buyDilationUpgrade(upg, true, true)
 		}
 		maxAllDilUpgs()
-		if (player.dilation.upgrades.length > old) {
-			updateDilationUpgradeCosts()
-			updateDilationUpgradeButtons()
-		}
+		if (player.dilation.upgrades.length > old) updateDilationUpgradeButtons()
 	}
 }
 
@@ -35,7 +32,6 @@ function distribEx() {
 	toAdd = toAdd.div(div)
 	player.exdilation.unspent = toAdd
 	for (var u = 0; u < div - 1; u++) player.exdilation.spent[unl[u]] = toAdd
-	updateExdilation()
 }
 
 

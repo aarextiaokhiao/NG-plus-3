@@ -12,7 +12,7 @@ function getDilationMetaDimensionMultiplier() {
 
 	let pow = 0.1
 	if (isNanoEffectUsed("dt_to_ma_exp") && tmp.nf.effects.dt_to_ma_exp) pow = tmp.nf.effects.dt_to_ma_exp //this is a quick fix, but we need to fix this bug
-	pow *= PHOTON.eff(3)
+	pow *= PHOTON.eff(1)
 
 	if (mod.udp && !aarMod.nguepV) {
 		let l = quSave.colorPowers.b.plus(10).log10()
@@ -222,10 +222,7 @@ function getMetaCost(tier, boughtTen) {
 
 function getMetaCostScalingStart() {
 	let r = E(1/0)
-	if (mod.ngp3) {
-		r = E("1e900")
-		r = r.pow(PHOTON.eff(6))
-	}
+	if (mod.ngp3) r = E("1e900").pow(PHOTON.eff(5))
 	return r
 }
 

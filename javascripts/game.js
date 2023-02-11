@@ -1755,6 +1755,7 @@ function preInfinityUpdating(diff){
 	}
 	if (player.dontWant && player.firstAmount.gt(0)) player.dontWant = false
 
+	if (isNaN(player.totalmoney)) player.totalmoney = E(10)
 	var tempa = getDimensionProductionPerSecond(1).mul(diff)
 	player.money = player.money.plus(tempa)	
 	player.totalmoney = player.totalmoney.plus(tempa)
@@ -1782,7 +1783,11 @@ function normalChallPowerUpdating(diff){
 	chall2PowerUpdating(diff)
 }
 
-function dimensionButtonDisplayUpdating(){
+function dimensionTabDisplayUpdating(){
+	el("dimTabButtons").style.display = "none"
+	if (player.infDimensionsUnlocked[0] || player.eternities !== 0 || quantumed || inNGM(4)) el("dimTabButtons").style.display = "inline-block"
+
+	el("idtabbtn").style.display = ((player.infDimensionsUnlocked[0] || player.eternities > 0 || quantumed) && !inQC(8)) ? "" : "none"
 	el("tdtabbtn").style.display = ((player.eternities > 0 || quantumed || inNGM(4)) && (!inQC(8) || tmp.be)) ? "" : "none"
 	el("mdtabbtn").style.display = hasDilStudy(6) ? "" : "none"
 }
@@ -1798,11 +1803,6 @@ function infinityTimeMetaBlackHoleDimUpdating(diff){
 		if (tier < 9 - stepT) player["timeDimension"+tier].amount = player["timeDimension"+tier].amount.plus(getTimeDimensionProduction(tier+stepT).mul(diff / 10))
 		if (mod.ngud) if (isBHDimUnlocked(tier+step)) player["blackholeDimension"+tier].amount = player["blackholeDimension"+tier].amount.plus(getBlackholeDimensionProduction(tier+step).mul(diff / 10))
 	}
-}
-
-function dimensionPageTabsUpdating(){
-	el("dimTabButtons").style.display = "none"
-	if (player.infDimensionsUnlocked[0] || player.eternities !== 0 || quantumed || inNGM(4)) el("dimTabButtons").style.display = "inline-block"
 }
 
 function otherDimsUpdating(diff){
@@ -2095,6 +2095,7 @@ function preQuantumNormalProgress(){
 
 function progressBarUpdating(){
 	if (!aarMod.progressBar) return
+
 	el("progressbar").className=""
 	if (el("metadimensions").style.display == "block") doQuantumProgress() 
 	else if (player.currentChallenge !== "") {
@@ -2137,20 +2138,14 @@ function ECRewardDisplayUpdating(){
 }
 
 function challengeOverallDisplayUpdating(){
-	if (el("challenges").style.display == "block") {
-		if (el("eternitychallenges").style.display == "block") ECRewardDisplayUpdating()
-		if (el("quantumchallenges").style.display == "block") {
-			el("qcDisclaimer").innerHTML = isQCFree() ? "" : "Spend Positrons to start Quantum Challenges.<br>You have " + getFullExpansion(Math.round(quSave.electrons.amount)) + " Positrons."
-			for (var c=1;c<7;c++) {
-				if (c==5) el("qc5reward").textContent = getDimensionPowerMultiplier("linear").toFixed(2)
-				else if (c!=2) el("qc"+c+"reward").textContent = shorten(tmp.qcRewards[c])
-			}
+	if (el("eternitychallenges").style.display == "block") ECRewardDisplayUpdating()
+	if (el("quantumchallenges").style.display == "block") {
+		el("qcDisclaimer").innerHTML = isQCFree() ? "" : "Spend Positrons to start Quantum Challenges.<br>You have " + getFullExpansion(Math.round(quSave.electrons.amount)) + " Positrons."
+		for (var c=1;c<7;c++) {
+			if (c==5) el("qc5reward").textContent = getDimensionPowerMultiplier("linear").toFixed(2)
+			else if (c!=2) el("qc"+c+"reward").textContent = shorten(tmp.qcRewards[c])
 		}
 	}
-}
-
-function infDimTabUpdating(){
-	 	el("idtabbtn").style.display = ((player.infDimensionsUnlocked[0] || player.eternities > 0 || quantumed) && !inQC(8)) ? "" : "none"
 }
 
 function chall23PowerUpdating(){
@@ -2265,75 +2260,22 @@ function infUpgPassiveIPGain(diff){
 }
 
 function gameLoop(diff) {
+	//Game
+	updateTemp()
+
 	var thisUpdate = new Date().getTime();
 	if (thisUpdate - player.lastUpdate >= 21600000) giveAchievement("Don't you dare sleep")
 		if (typeof diff === 'undefined') {
 		if (player.options.secrets && player.options.secrets.ghostlyNews) nextGhostlyNewsTickerMsg()
 		var diff = Math.min(thisUpdate - player.lastUpdate, 21600000);
 	}
+	player.lastUpdate = thisUpdate
 
 	diff = Math.max(diff / 1e3, 0)
 	var diffStat = diff * 10
 	if (player.version === 12.2 && typeof player.shameLevel === 'number') diff *= Math.min(Math.pow(10, player.shameLevel), 1)
 	if (player.currentEternityChall === "eterc12") diff /= getEC12Slowdown()
 	incrementTimesUpdating(diffStat)
-
-	updateTemp()
-	if (isNaN(player.totalmoney)) player.totalmoney = E(10)
-	updateMoney()
-	updateCoinPerSec()
-	updateDimensionsDisplay()
-	updateTabDisplay()
-	checkPain()
-	checkMarathon()
-	checkMarathon2()
-
-	galSacDisplay()
-	passiveGPGen(diff)
-
-	var s = shortenDimensions(player.infinityPoints)
-	el("infinityPoints1").innerHTML = "You have <span class=\"IPAmount1\">"+s+"</span> Infinity points."
-	el("infinityPoints2").innerHTML = "You have <span class=\"IPAmount2\">"+s+"</span> Infinity points."
-	bigCrunchButtonUpdating()
-	passiveIPperMUpdating(diff)
-	passiveIPupdating(diff)
-	passiveInfinitiesUpdating(diff)
-	IPMultBuyUpdating()
-	if (el("replicantis").style.display == "block" && el("infinity").style.display == "block") replicantiDisplay()
-
-	checkMatter(diff)
-	normalChallPowerUpdating(diff)
-	chall23PowerUpdating()
-	challengeOverallDisplayUpdating()
-	nextICUnlockUpdating()
-
-	if (player.break) el("iplimit").style.display = "inline"
-	else el("iplimit").style.display = "none"
-	el("IPPeakDiv").style.display=(player.break&&mod.rs)?"":"none"
-
-	dimensionButtonDisplayUpdating()
-	dimensionPageTabsUpdating()
-	infDimTabUpdating()
-	newIDDisplayUpdating()
-	infinityTimeMetaBlackHoleDimUpdating(diff) //production of those dims
-	replicantiIncrease(diff * 10)
-
-	giveBlackHolePowerUpdating(diff)
-	if (mod.ngpp) metaDimsUpdating(diff)
-	preInfinityUpdating(diff)
-	otherDimsUpdating(diff)
-
-	doEternityButtonDisplayUpdating(diff)
-	el("eternityPoints2").innerHTML = "You have <span class=\"EPAmount2\">"+shortenDimensions(player.eternityPoints)+"</span> Eternity points."
-	el("epmult").className = player.eternityPoints.gte(player.epmultCost) ? "eternityupbtn" : "eternityupbtnlocked"
-	freeTickspeedUpdating()
-	EPonEternityPassiveGain(diff)
-	TTpassiveGain(diff)
-
-	if (hasDilStudy(1)) {
-		player.dilation.dilatedTime = player.dilation.dilatedTime.plus(getDilTimeGainPerSecond().mul(diff))
-		gainDilationGalaxies()
-	}
 
 	if (mod.ngp3) {
 		ngp3DilationUpdating()
@@ -2349,12 +2291,69 @@ function gameLoop(diff) {
 		doQuantumButtonDisplayUpdating(diff)
 		doGhostifyButtonDisplayUpdating(diff)
 	}
+	if (mod.ngpp) metaDimsUpdating(diff)
 
-	updateCosts()
+	infinityTimeMetaBlackHoleDimUpdating(diff) //production of those dims
+	giveBlackHolePowerUpdating(diff)
+
+	EPonEternityPassiveGain(diff)
+	freeTickspeedUpdating()
+	TTpassiveGain(diff)
+	if (hasDilStudy(1)) {
+		player.dilation.dilatedTime = player.dilation.dilatedTime.plus(getDilTimeGainPerSecond().mul(diff))
+		gainDilationGalaxies()
+	}
+
+	replicantiIncrease(diff * 10)
+	passiveIPperMUpdating(diff)
+	passiveIPupdating(diff)
+	passiveInfinitiesUpdating(diff)
+	IPMultBuyUpdating()
+
+	passiveGPGen(diff)
+	preInfinityUpdating(diff)
+	otherDimsUpdating(diff)
+
+	checkMatter(diff)
+	normalChallPowerUpdating(diff)
+	chall23PowerUpdating()
+
+	checkPain()
+	checkMarathon()
+	checkMarathon2()
+
+	//Put here due to peak update.
+	doEternityButtonDisplayUpdating(diff)
+	if (mod.ngp3) {
+		doQuantumButtonDisplayUpdating(diff)
+		doGhostifyButtonDisplayUpdating(diff)
+	}
+}
+
+function updateDisplays() {
+	//Display
+	updateMoney()
+	updateCoinPerSec()
+	updateTabDisplay()
+	tickspeedDisplay()
+	galSacDisplay()
 	progressBarUpdating()
-	if (el("loadmenu").style.display == "block") changeSaveDesc(metaSave.current, savePlacement)
 
-	player.lastUpdate = thisUpdate;
+	var s = shortenDimensions(player.infinityPoints)
+	el("infinityPoints1").innerHTML = "You have <span class=\"IPAmount1\">"+s+"</span> Infinity points."
+	el("infinityPoints2").innerHTML = "You have <span class=\"IPAmount2\">"+s+"</span> Infinity points."
+	bigCrunchButtonUpdating()
+	challengeOverallDisplayUpdating()
+	nextICUnlockUpdating()
+	newIDDisplayUpdating()
+
+	if (player.break) el("iplimit").style.display = "inline"
+	else el("iplimit").style.display = "none"
+	el("IPPeakDiv").style.display=(player.break&&mod.rs)?"":"none"
+
+	el("eternityPoints2").innerHTML = "You have <span class=\"EPAmount2\">"+shortenDimensions(player.eternityPoints)+"</span> Eternity points."
+
+	if (el("loadmenu").style.display == "block") changeSaveDesc(metaSave.current, savePlacement)
 }
 
 function simulateTime(seconds, real, id) {
@@ -2418,6 +2417,7 @@ function startInterval() {
 	var tickStart = new Date().getTime()
 	try {
 		gameLoop()
+		updateDisplays()
 	} catch (e) {
 		console.error(e)
 	}

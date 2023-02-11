@@ -275,7 +275,7 @@ function getMPTBase(focusOn) {
 	if (mod.ngp3) {
 		ret += tmp.qcRewards[5]
 		if (isNanoEffectUsed("per_10_power")) ret += tmp.nf.effects.per_10_power
-		ret *= PHOTON.eff(5)
+		ret *= PHOTON.eff(4)
 	}
 	return ret
 }

@@ -13,7 +13,7 @@ function updateNeutrinosTab(){
 	updateNeutrinoBoostDisplay()
 	updateNeutrinoUpgradeDisplay()
 	
-	if (ghSave.ghostParticles.gte(tmp.nbc[ghSave.neutrinos.boosts])) el("neutrinoUnlock").className = "gluonupgrade neutrinoupg"
+	if (ghSave.ghostParticles.gte(neutrinoBoosts.cost[ghSave.neutrinos.boosts])) el("neutrinoUnlock").className = "gluonupgrade neutrinoupg"
 	else el("neutrinoUnlock").className = "gluonupgrade unavailablebtn"
 	if (ghSave.ghostParticles.gte(getNeutrinoMultCost())) el("neutrinoMultUpg").className = "gluonupgrade neutrinoupg"
 	else el("neutrinoMultUpg").className = "gluonupgrade unavailablebtn"
@@ -23,7 +23,7 @@ function updateNeutrinosTab(){
 
 function onNotationChangeNeutrinos() {
 	if (!ghostified) return
-	el("neutrinoUnlockCost").textContent=shortenDimensions(tmp.nbc[ghSave.neutrinos.boosts])
+	el("neutrinoUnlockCost").textContent=shortenDimensions(neutrinoBoosts.cost[ghSave.neutrinos.boosts])
 	el("neutrinoMult").textContent=shortenDimensions(E_pow(5, ghSave.neutrinos.multPower - 1))
 	el("neutrinoMultUpgCost").textContent=shortenDimensions(getNeutrinoMultCost())
 	el("ghpMult").textContent=shortenDimensions(getGHPBaseMult())
@@ -75,56 +75,24 @@ function hasNU(id) {
 	return ghostified && ghSave.neutrinos.upgrades.includes(id)
 }
 
-function updateNU1Temp(){
+function updateNeutrinoUpgradesTemp(){
 	let x = 110
 	if (!bigRipped()) x = Math.max(x - player.meta.resets, 0)
 	tmp.nu[1] = x
-}
 
-function updateNU3Temp(){
 	let log = quSave.colorPowers.b.log10()
 	let exp = Math.max(log / 1e4 + 1, 2)
-	let x
-	if (exp > 2) x = E_pow(Math.max(log / 500 + 1, 1), exp)
-	else x = Math.pow(Math.max(log / 500 + 1, 1), exp)
-	tmp.nu[3] = x
-}
+	tmp.nu[3] = E_pow(Math.max(log / 500 + 1, 1), exp)
 
-function updateNU4Temp(){
-	let nu4base = 30
-	tmp.nu[4] = E_pow(nu4base, Math.pow(Math.max(-getTickspeed().div(1e3).log10() / 4e13 - 4, 0), 1/4))
-}
-
-function updateNU7Temp(){
-	var nu7 = quSave.colorPowers.g.add(1).log10()/400
-	if (nu7 > 40) nu7 = Math.sqrt(nu7*10)+20
-	tmp.nu[7] = pow10(nu7) 
-}
-
-function updateNU12Temp(){
+	tmp.nu[4] = E_pow(3, Math.pow(Math.max(-getTickspeed().div(1e3).log10() / 4e13 - 4, 0), 1/4))
+	tmp.nu[7] = quSave.colorPowers.g.add(1).root(400)
 	tmp.nu[12] = { 
 		normal: Math.sqrt(player.galaxies * .0035 + 1),
 		free: player.dilation.freeGalaxies * .035 + 1,
 		replicated: Math.sqrt(getTotalRG()) * .0175 + 1 //NU12 
 	}
-}
-
-function updateNU13Temp(){
-	tmp.nu[13] = pow10(Math.pow(player.eternityPoints.max(1).log10(), 3/4) / 1e6)
-}
-
-function updateNU14Temp(){
+	tmp.nu[13] = player.dilation.freeGalaxies
 	tmp.nu[14] = Math.sqrt(quSave.replicants.quarks.max(1).log10() / 20 + 1)
-}
-
-function updateNeutrinoUpgradesTemp(){
-	updateNU1Temp()
-	updateNU3Temp()
-	updateNU4Temp()
-	updateNU7Temp()
-	updateNU12Temp()
-	updateNU13Temp()
-	updateNU14Temp()
 }
 
 function updateNeutrinoUpgradeDisplay(){
@@ -138,7 +106,7 @@ function updateNeutrinoUpgradeDisplay(){
 		Tachyonic galaxy effect: ${shorten(tmp.nu[12].free)}x to IC3 base`
 	)
 	if (PHOTON.unlocked()) {
-		el("neutrinoUpg13Pow").textContent=shorten(tmp.nu[13])+"x"
+		el("neutrinoUpg13Pow").textContent="+"+getFullExpansion(tmp.nu[13])
 		el("neutrinoUpg14Pow").textContent="^"+shorten(tmp.nu[14])
 	}
 	var sum = ghSave.neutrinos.electron.add(ghSave.neutrinos.mu).add(ghSave.neutrinos.tau).round()
@@ -156,7 +124,7 @@ function updateNeutrinoUpgradeDisplay(){
 
 //Boosts
 var neutrinoBoosts = {
-	boosts: {
+	eff: {
 		1: function(nt) {
 			let nb1mult = .75
 			if (mod.p3ep) nb1mult = .8
@@ -215,6 +183,7 @@ var neutrinoBoosts = {
 		},
 		10: function(nt) {
 			var nb10 = nt[0].add(1).log10()*nt[1].add(1).log10()*nt[2].add(1).log10()
+			nb10 = nb10/1e6+1
 			return nb10
 		},
 		11: function(nt) {
@@ -226,7 +195,8 @@ var neutrinoBoosts = {
 			var nb12 = nt[0].add(1).log10()+nt[1].add(1).log10()+nt[2].add(1).log10()
 			return Math.log10(ghSave.time * nb12 / 1e6 + 1) / 10 + 1
 		},
-	}
+	},
+	cost: [1,2,4,6,15,50,1e3,1e14,1e35,1/0,1/0,1/0]
 }
 
 function updateNeutrinoBoostsTemp() {
@@ -235,13 +205,13 @@ function updateNeutrinoBoostsTemp() {
 
 	var nt = []
 	for (var g = 0; g < 3; g++) nt[g] = ghSave.neutrinos[(["electron","mu","tau"])[g]]
-	for (var nb = 1; nb <= ghSave.neutrinos.boosts; nb++) tmp.nb[nb] = neutrinoBoosts.boosts[nb](nt)
+	for (var nb = 1; nb <= ghSave.neutrinos.boosts; nb++) tmp.nb[nb] = neutrinoBoosts.eff[nb](nt)
 }
 
 function updateNeutrinoBoosts() {
 	for (var b = 1; b <= 12; b++) el("neutrinoBoost" + (b % 3 == 1 ? "Row" + (b + 2) / 3 : "Cell" + b)).style.display = ghSave.neutrinos.boosts >= b ? "" : "none"
 	el("neutrinoUnlock").style.display = ghSave.neutrinos.boosts >= 12 ? "none" : ""
-	el("neutrinoUnlockCost").textContent = shortenDimensions(E(tmp.nbc[ghSave.neutrinos.boosts]))
+	el("neutrinoUnlockCost").textContent = shorten(neutrinoBoosts.cost[ghSave.neutrinos.boosts])
 }
 
 function updateNeutrinoBoostDisplay(){
@@ -272,7 +242,7 @@ function updateNeutrinoBoostDisplay(){
 }
 
 function unlockNeutrinoBoost() {
-	var cost = tmp.nbc[ghSave.neutrinos.boosts]
+	var cost = neutrinoBoosts.cost[ghSave.neutrinos.boosts]
 	if (!ghSave.ghostParticles.gte(cost)) return
 	ghSave.ghostParticles=ghSave.ghostParticles.sub(cost).round()
 	ghSave.neutrinos.boosts++

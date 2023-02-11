@@ -6,7 +6,6 @@ let tmp = {
 	bru: {},
 	be: false,
 	beu: {},
-	nbc: [1,2,4,6,15,50,1e3,1e14,1e35,1/0,1/0,1/0],
 	nu: {},
 	nuc: [null,1e6,1e7,1e8,2e8,5e8,2e9,5e9,75e8,1e10,7e12,1e18,1e45,1/0,1/0,1/0],
 }
@@ -157,61 +156,6 @@ function updateBigRipUpgradesTemp(){
 	updateBRU14Temp()
 	updateBRU15Temp()
 	updateBRU16Temp()
-}
-
-function updateNanoEffectUsages() {
-	var data = []
-	tmp.nf.rewardsUsed = data
-	nanoRewards.effectToReward = {}
-
-	//First reward
-	var data2 = [hasNU(15) ? "photons" : "hatch_speed"]
-	nanoRewards.effectsUsed[1] = data2
-
-	//Fifth reward
-	var data2 = ["dil_effect_exp", "light_threshold_speed"]
-	nanoRewards.effectsUsed[5] = data2
-
-	//Seventh reward
-	var data2 = ["remote_start", "preon_charge"]
-	if (hasNU(6)) data2 = ["preon_charge"]
-	nanoRewards.effectsUsed[7] = data2
-
-	//Used Nanorewards
-	for (var x = 1; x <= 8; x++) {
-		var rewards = nanoRewards.effectsUsed[x]
-		for (var r = 0; r < rewards.length; r++) {
-			data.push(rewards[r])
-			nanoRewards.effectToReward[rewards[r]] = x
-		}
-	}
-}
-
-function updateNanoRewardPowers() {
-	var data = {}
-	tmp.nf.powers = data
-
-	for (var x = 1; x <= 8; x++) data[x] = getNanoRewardPower(x, tmp.nf.rewards)
-}
-
-function updateNanoRewardEffects() {
-	var data = {}
-	tmp.nf.effects = data
-
-	for (var e = 0; e < tmp.nf.rewardsUsed.length; e++) {
-		var effect = tmp.nf.rewardsUsed[e]
-		tmp.nf.effects[effect] = nanoRewards.effects[effect](tmp.nf.powers[nanoRewards.effectToReward[effect]])
-	}
-}
-
-function updateNanoRewardTemp() {
-	tmp.nf = {}
-
-	if (!mod.ngp3) return
-	if (!hasMasteryStudy("d11")) return
-
-	updateNanoEffectUsages()
-	//The rest is calculated by updateTemp().
 }
 
 //Vanilla

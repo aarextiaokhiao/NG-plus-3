@@ -156,9 +156,12 @@ function setTachyonParticles(x) {
 	if (hasAch("ng3p18") || hasAch("ng3p37")) {
 		player.dilation.bestTP = Decimal.max(player.dilation.bestTP || 0, player.dilation.tachyonParticles)
 		player.dilation.bestTPOverGhostifies = player.dilation.bestTPOverGhostifies.max(player.dilation.bestTP)
-		el('bestTP').textContent = "Your best" + (ghostified ? "" : " ever")+" Tachyon particles" + (ghostified ? " in this Fundament" : "") + " was " + shorten(player.dilation.bestTP) + "."
-		setAndMaybeShow('bestTPOverGhostifies', ghostified, '"Your best-ever Tachyon particles was "+shorten(player.dilation.bestTPOverGhostifies)+"."')
 	}
+}
+
+function updateBestTachyonParticles() {
+	el('bestTP').textContent = "Your best" + (ghostified ? "" : " ever")+" Tachyon particles" + (ghostified ? " in this Fundament" : "") + " was " + shorten(player.dilation.bestTP) + "."
+	setAndMaybeShow('bestTPOverGhostifies', ghostified, '"Your best-ever Tachyon particles was "+shorten(player.dilation.bestTPOverGhostifies)+"."')
 }
 
 function dilates(x, m) {
@@ -389,11 +392,10 @@ function buyDilationUpgrade(pos, max, isId) {
 }
 
 function getPassiveTTGen() {
-	if (player.dilation.tachyonParticles.plus(player.dilation.bestTP).gt(pow10(3333))) return 1e202
 	let r = getTTGenPart(player.dilation.tachyonParticles)
 	if (hasAch("ng3p18") && !bigRipped()) r += getTTGenPart(player.dilation.bestTP) / 50
 	r /= (hasAch("ng3p51") ? 200 : 2e4)
-	return r
+	return Math.min(r, 1e202)
 }
 
 function getTTGenPart(x) {
@@ -416,13 +418,14 @@ function updateDilationUpgradeButtons() {
 		var id = getDilUpgId(pos)
 		var unl = isDilUpgUnlocked(id)
 		if (DIL_UPG_UNLOCKED[id] != unl) {
-			if (unl) {
-				DIL_UPG_UNLOCKED[id] = 1
-				updateDilationUpgradeCost(pos, id)
-			} else delete DIL_UPG_UNLOCKED[id]
+			if (unl) DIL_UPG_UNLOCKED[id] = 1
+			else delete DIL_UPG_UNLOCKED[id]
 			el("dil" + pos).parentElement.style.display = unl ? "" : "none"
 		}
-		if (unl) el("dil" + pos).className = player.dilation.upgrades.includes(id) || (id == "r2" && !canBuyGalaxyThresholdUpg()) ? "dilationupgbought" : player.dilation.dilatedTime.gte(getDilUpgCost(id)) ? "dilationupg" : "dilationupglocked"
+		if (unl) {
+			updateDilationUpgradeCost(pos, id)
+			el("dil" + pos).className = player.dilation.upgrades.includes(id) || (id == "r2" && !canBuyGalaxyThresholdUpg()) ? "dilationupgbought" : player.dilation.dilatedTime.gte(getDilUpgCost(id)) ? "dilationupg" : "dilationupglocked"
+		}
 	}
 	var genSpeed = getPassiveTTGen()
 	var power = getDil3Power()
@@ -452,14 +455,6 @@ function updateDilationUpgradeCost(pos, id) {
 		if (id == "r3") r = formatValue(player.options.notation, getRebuyableDilUpgCost(3), 1, 1)
 		else r = shortenCosts(r)
 		el("dil" + pos + "cost").textContent = "Cost: " + r + " dilated time"
-	}
-}
-
-function updateDilationUpgradeCosts() {
-	for (var i = 0; i < DIL_UPGS.length; i++) {
-		var pos = DIL_UPGS[i]
-		var id = getDilUpgId(pos)
-		if (DIL_UPG_UNLOCKED[id]) updateDilationUpgradeCost(pos, id)
 	}
 }
 

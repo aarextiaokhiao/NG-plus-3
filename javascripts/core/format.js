@@ -942,14 +942,12 @@ function onNotationChange() {
 	updateNotationOption()
 	updateLastTenRuns();
 	updateLastTenEternities();
-	updateLastTenQuantums();
-	updateLastTenGhostifies()
 	tmp.tickUpdate = true;
-	setAchieveTooltip();
-	updateDilationUpgradeCosts()
-	updateExdilation()
+	setAchieveTooltip()
 	updateMilestones()
 	if (mod.ngp3) {
+		updateLastTenQuantums();
+		updateLastTenGhostifies()
 		updateQuarksTabOnUpdate()
 		updateGluonsTabOnUpdate("notation")
 		updateQuantumWorth("notation")

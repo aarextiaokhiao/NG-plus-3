@@ -517,7 +517,6 @@ function buyingDilStudyNanofield(){
 	showQuantumTab("replicants")
 	showQuantumTab("nanofield")
 	NF.shown()
-	updateNanoRewardTemp()
 }
 
 function buyingDilStudyToD(){

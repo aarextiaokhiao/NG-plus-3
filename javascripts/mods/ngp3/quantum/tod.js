@@ -151,7 +151,7 @@ function getBranchSpeedText(){
 	if (getGluonBranchSpeed().gt(1)) text += "Gluon Upgrades: " + shorten(getGluonBranchSpeed()) + "x, "
 	if (E(getTreeUpgradeEffect(3)).gt(1)) text += "Tree Upgrade 3: " + shorten(getTreeUpgradeEffect(3)) + "x, "
 	if (E(getTreeUpgradeEffect(5)).gt(1)) text += "Tree Upgrade 5: " + shorten(getTreeUpgradeEffect(5)) + "x, "
-	if (PHOTON.eff(1) > 1) text += "Green Light: " + shorten(E(PHOTON.eff(1)).pow(nfSave.rewards)) + "x, "
+	if (PHOTON.eff(2) > 1) text += "Green Light: " + shorten(E(PHOTON.eff(2)).pow(nfSave.rewards)) + "x, "
 	if (hasAch("ng3p48") && player.meta.resets) text += "'Are you currently dying?' reward: " + shorten(Math.sqrt(player.meta.resets + 1)) + "x, "
 	if (todspeed > 1) text += "ToD Speed: " + shorten(todspeed) + "x, "
 	if (text == "") return "No multipliers currently"
@@ -171,7 +171,7 @@ function getBranchSpeed() {
 	if (hasMasteryStudy("t431")) x = x.mul(getMTSMult(431))
 	x = x.mul(getGluonBranchSpeed())
 	x = x.mul(getTreeUpgradeEffect(3), getTreeUpgradeEffect(5))
-	x = E(PHOTON.eff(1)).pow(nfSave.rewards).mul(x)
+	x = E(PHOTON.eff(2)).pow(nfSave.rewards).mul(x)
 	if (hasAch("ng3p48")) x = x.mul(Math.sqrt(player.meta.resets + 1))
 	return x
 }

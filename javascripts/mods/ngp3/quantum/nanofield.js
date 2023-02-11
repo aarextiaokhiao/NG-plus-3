@@ -149,10 +149,7 @@ var nanoRewards = {
 		},
 		photons: function(x) {
 			return "gain " + shorten(x) + "x more Photons"
-		},
-		light_threshold_speed: function(x) {
-			return "Light threshold scales " + x.toFixed(2) + "x slower"
-		}
+		}	
 	},
 	effectsUsed: {
 		1: ["hatch_speed"],
@@ -173,12 +170,11 @@ function isNanoEffectUsed(x) {
 
 function getNanoRewardPower(reward, rewards) {
 	let x = Math.ceil((rewards - reward + 1) / 8)
-	if (reward == 8) x *= PHOTON.eff(2)
 	return x * tmp.nf.powerEff
 }
 
 function getNanoRewardPowerEff() {
-	let x = 1
+	let x = PHOTON.eff(3)
 	if (hasBU(31)) x *= tmp.blu[31]
 	return x
 }
@@ -227,17 +223,69 @@ function updateNanofieldTemp() {
 	updatePPTITemp() //pilon power threshold increase
 }
 
-function updateNanorewardTemp() {
-	if (NF.unl() && tmp.nf !== undefined && tmp.nf.rewardsUsed !== undefined) {
-		var x = getNanoRewardPowerEff()
-		var y = nfSave.rewards
-		if (tmp.nf.powerEff !== x || tmp.nf.rewards !== y) {
-			tmp.nf.powerEff = x
-			tmp.nf.rewards = y
+function updateNanoEffectUsages() {
+	var data = []
+	tmp.nf.rewardsUsed = data
+	nanoRewards.effectToReward = {}
 
-			updateNanoRewardPowers()
-			updateNanoRewardEffects()
+	//First reward
+	var data2 = [hasNU(15) ? "photons" : "hatch_speed"]
+	nanoRewards.effectsUsed[1] = data2
+
+	//Fifth reward
+	var data2 = ["dil_effect_exp"]
+	nanoRewards.effectsUsed[5] = data2
+
+	//Seventh reward
+	var data2 = ["remote_start", "preon_charge"]
+	if (hasNU(6)) data2 = ["preon_charge"]
+	nanoRewards.effectsUsed[7] = data2
+
+	//Used Nanorewards
+	for (var x = 1; x <= 8; x++) {
+		var rewards = nanoRewards.effectsUsed[x]
+		for (var r = 0; r < rewards.length; r++) {
+			data.push(rewards[r])
+			nanoRewards.effectToReward[rewards[r]] = x
 		}
+	}
+}
+
+function updateNanoRewardPowers() {
+	var data = {}
+	tmp.nf.powers = data
+
+	for (var x = 1; x <= 8; x++) data[x] = getNanoRewardPower(x, tmp.nf.rewards)
+}
+
+function updateNanoRewardEffects() {
+	var data = {}
+	tmp.nf.effects = data
+
+	for (var e = 0; e < tmp.nf.rewardsUsed.length; e++) {
+		var effect = tmp.nf.rewardsUsed[e]
+		tmp.nf.effects[effect] = nanoRewards.effects[effect](tmp.nf.powers[nanoRewards.effectToReward[effect]])
+	}
+}
+
+function setupNanoRewardTemp() {
+	tmp.nf = {}
+	if (!hasMasteryStudy("d11")) return
+
+	updateNanoEffectUsages()
+}
+
+function updateNanorewardTemp() {
+	if (!NF.unl()) return
+	if (!tmp.nf) setupNanoRewardTemp()
+	var x = getNanoRewardPowerEff()
+	var y = nfSave.rewards
+	if (tmp.nf.powerEff !== x || tmp.nf.rewards !== y) {
+		tmp.nf.powerEff = x
+		tmp.nf.rewards = y
+
+		updateNanoRewardPowers()
+		updateNanoRewardEffects()
 	}
 }
 

@@ -353,11 +353,6 @@ function giveAchievement(name, noUpdate) {
 		if (mod.udp) el("blackholeAuto").style.display = ""
 	}
 	if (name == "It will never be enough") el('replicantibulkmodetoggle').style.display="inline-block"
-	if (name == "I already got rid of you..." || name == "No dilation means no production.") {
-		player.dilation.bestTP = Decimal.max(player.dilation.tachyonParticles, player.dilation.bestTP)
-		el('bestTP').style.display = ""
-		el('bestTP').textContent = "Your best ever Tachyon particles was "+shorten(player.dilation.bestTP)+"."
-	}
 	if (name == "Stop blocking me!") el('autoReset').style.display = ""
 	if (name == "To the new dimension!") brSave.bestGals = 1
 	if (name == "Quantum doesn't take so long") {
