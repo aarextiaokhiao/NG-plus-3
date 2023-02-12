@@ -80,19 +80,19 @@ function updateNeutrinoUpgradesTemp(){
 	if (!bigRipped()) x = Math.max(x - player.meta.resets, 0)
 	tmp.nu[1] = x
 
-	let log = quSave.colorPowers.b.log10()
-	let exp = Math.max(log / 1e4 + 1, 2)
-	tmp.nu[3] = E_pow(Math.max(log / 500 + 1, 1), exp)
+	let bLog = quSave.colorPowers.b.log10()
+	let exp = Math.max(bLog / 1e4 + 1, 2)
+	tmp.nu[3] = E_pow(Math.max(bLog / 500 + 1, 1), exp)
 
 	tmp.nu[4] = E_pow(3, Math.pow(Math.max(-getTickspeed().div(1e3).log10() / 4e13 - 4, 0), 1/4))
 	tmp.nu[7] = quSave.colorPowers.g.add(1).root(400)
 	tmp.nu[12] = { 
-		normal: Math.sqrt(player.galaxies * .0035 + 1),
+		normal: Math.pow(2, player.galaxies / 1e4),
 		free: player.dilation.freeGalaxies * .035 + 1,
 		replicated: Math.sqrt(getTotalRG()) * .0175 + 1 //NU12 
 	}
-	tmp.nu[13] = player.dilation.freeGalaxies
-	tmp.nu[14] = Math.sqrt(quSave.replicants.quarks.max(1).log10() / 20 + 1)
+	tmp.nu[13] = player.dilation.freeGalaxies * 2
+	tmp.nu[14] = Math.log10(quSave.replicants.quarks.max(1).log10() + 10)
 }
 
 function updateNeutrinoUpgradeDisplay(){

@@ -1,6 +1,7 @@
 let tmp = {
 	nrm: E(1),
 	rm: E(1),
+	extraRG: 0,
 	it: E(1),
 	inQCs: [0],
 	bru: {},
@@ -37,6 +38,7 @@ function updateTemp() {
 	}
 
 	tmp.rm = getReplMult()
+	updateInfinityPowerEffects()
 	updateExtraReplGalaxies()
 	
 	updateTS232Temp()
@@ -66,20 +68,14 @@ function updateIntergalacticTemp() {
 	x = player.galaxies
 	if (tmp.be && player.dilation.active && beSave.upgrades.includes(10)) x *= getBreakUpgMult(10)
 	tmp.igg = x
-	tmp.igs = 0 //Intergalactic Scaling ; used in the display text
 
-	var igLog = Math.pow(x, Math.min(Math.sqrt(Math.log10(Math.max(x,1))) * 2, 2.5)) //Log10 of reward
-	if (igLog > 1e15) { //Further
-		igLog = Math.pow(igLog * 1e9, 5 / 8)
-		tmp.igs = 1
-	}
-
+	var igLog = Math.pow(x, Math.min(Math.sqrt(Math.log10(Math.max(x, 1))) * 2, PHOTON.eff(5, 2.5))) //Log10 of reward
 	tmp.ig = pow10(igLog)
 }
 
 function updateTS232Temp() {
 	var exp = 0.2
-	if (mod.ngp3 && player.galaxies >= 1e4 && !tmp.be) exp *= Math.max(6 - player.galaxies / 2e3,0)
+	if (mod.ngp3 && player.galaxies >= 1e4 && !tmp.be) exp *= Math.max(6 - player.galaxies / 2e3, 0)
 	tmp.ts232 = Math.pow(1 + initialGalaxies() / 1000, exp)
 }
 

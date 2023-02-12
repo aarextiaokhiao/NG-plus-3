@@ -1,6 +1,6 @@
 //VERSION: 2.31
 let ngp3_ver = 2.31
-let ngp3_build = 20230210
+let ngp3_build = 20230211
 function doNGP3Updates() {
 	if (!aarMod.ngp3_build) aarMod.ngp3_build = 0
 	if (aarMod.ngp3_build < 20221230) quSave.multPower = 0
@@ -22,6 +22,11 @@ function doNGP3Updates() {
 	if (aarMod.ngp3_build < 20220208) {
 		delete brSave.savedAutobuyersBR
 		delete brSave.savedAutobuyersNoBR
+	}
+	if (aarMod.ngp3_build < 20220211) {
+		quSave.electrons.amount = 0
+		quSave.electrons.sacGals = 0
+		updateElectronsEffect()
 	}
 	aarMod.newGame3PlusVersion = ngp3_ver
 	aarMod.ngp3_build = ngp3_build
@@ -464,6 +469,79 @@ function ngp3_feature_notify(k) {
 }
 
 //v2.4: Moved from old functions...
+function intergalacticDisplay() {
+	if (tmp.ig && getNormalDimensions() == 8) {
+		el("intergalacticLabel").parentElement.style.display = ""
+		let nanopart = 1
+		if (isNanoEffectUsed("dil_effect_exp")) nanopart = tmp.nf.effects["dil_effect_exp"] || 1
+		el("intergalacticLabel").innerHTML = 
+			'Intergalactic Boost ' + 
+			(player.dilation.active || inNGM(2) ? " (estimated)" : "") +
+			" (" + getFullExpansion(player.galaxies) + (Math.floor(tmp.igg - player.galaxies) > 0 ? " + " + 
+			getFullExpansion(Math.floor(tmp.igg - player.galaxies)) : "") + "): " + 
+			shorten(dilates(tmp.ig).pow(player.dilation.active ? nanopart : 1)) + 
+			'x to Eighth Dimensions'
+	} else el("intergalacticLabel").parentElement.style.display = "none"
+}
+
+function updateQuantumTabDisplays() {
+	el("qctabbtn").style.display = hasMasteryStudy("d8") ? "" : "none"
+	el("pctabbtn").style.display = hasMasteryStudy("d9") ? "" : "none"
+	el("tab_ant").style.display = hasMasteryStudy("d10") ? "inline-block" : "none"
+
+	if (!quantumed) return
+	el("electronstabbtn").style.display = hasMasteryStudy("d7") ? "" : "none"
+	el("antTabs").style.display = hasMasteryStudy("d11") ? "" : "none"
+	el("nanofieldtabbtn").style.display = NF.unl() ? "" : "none"
+	el("todtabbtn").style.display = hasMasteryStudy("d13") ? "" : "none"
+	el("riptabbtn").style.display = hasMasteryStudy("d14") ? "" : "none"
+	el("betabbtn").style.display = beSave.unlocked ? "" : "none"
+}
+
+function beatNGP3() {
+	el("welcome").style.display = "flex"
+	el("welcomeMessage").innerHTML = `
+	You reached the inner depths of lab...<br>
+	<b class='red'>(but for now...)</b><br><br>
+	<h1>You have beaten ${modAbbs(mod, true)}!</h1>
+	This took you ${timeDisplayShort(player.totalTimePlayed)} and ${player.achievements.length} achievements.<br><br>
+	Post-game is coming soon!<br>
+	Thanks for playing!`
+}
+
+//v2.4: Code
+function updateNGP3Temp() {
+	tmp.be = brokeEternity()
+	if (ghostified) updateGhostifyTempStuff()
+	if (quantumed) {
+		if (beSave && beSave.unlocked) updateBreakEternityUpgradesTemp()
+
+		if (hasMasteryStudy("d14")) updateBigRipUpgradesTemp()
+		if (bigRipped()) {
+			if (!player.dilation.active && hasRipUpg(14)) tmp.nrm = tmp.nrm.pow(tmp.bru[14])
+			if (tmp.nrm.log10() > 1e9) tmp.nrm = pow10(1e9 * Math.pow(tmp.nrm.log10() / 1e9, 2/3))
+		}
+
+		if (hasMasteryStudy("d13")) {
+			tmp.branchSpeed = getBranchSpeed()
+			tmp.tue = getTreeUpgradeEfficiency()
+		}
+
+		if (hasMasteryStudy("d12")) updateNanofieldTemp()
+		if (hasMasteryStudy("d11")) tmp.edgm = getEmperorDimensionGlobalMultiplier() //Update global multiplier of all Emperor Dimensions
+		if (hasMasteryStudy("d10")) {
+			tmp.pe = getPilonEffect()
+			tmp.twr = getTotalWorkers()
+			tmp.tra = getTotalReplicants()
+		}
+	}
+	updateQCRewardsTemp()
+	if (mod.ngp3) {
+		updateMasteryStudyTemp()
+		updateIntergalacticTemp()
+	}
+}
+
 function doPerSecondNGP3Stuff(){
 	updateQuantumTabDisplays()
 	updateQuarkDisplay()
@@ -486,7 +564,8 @@ function doPerSecondNGP3Stuff(){
 	if (quSave.autoOptions.assignQK) assignAll(true) 
 
 	//NG+3: Others
-	doNGP3UnlockStuff()
+	ngP3AchieveCheck()
+	doNGP3UnlockStuff()	
 	notifyGhostifyMilestones()
 
 	notifyQuantumMilestones()
@@ -495,14 +574,7 @@ function doPerSecondNGP3Stuff(){
 	updateQuantumTabDisplays()
 }
 
-function doQuantumUnlockStuff(){
-	quSave.reached = true
-	if (el("welcome").style.display != "flex") el("welcome").style.display = "flex"
-	else aarMod.popUpId = ""
-	el("welcomeMessage").innerHTML = "Congratulations! You reached " + shorten(getQuantumReq()) + " MA and completed EC14 for the first time! This allows you to go Quantum (the 5th layer), giving you a quark in exchange for everything up to this point, which can be used to get more powerful upgrades. This allows you to get gigantic numbers!"
-}
-
-function ngP3AchieveCheck(){
+function ngP3AchieveCheck() {
 	let checkEmpty = player.timestudy.studies.length < 1
 	if (mod.ngp3) for (id = 0; id < player.masterystudies.length; id++) if (player.masterystudies[id].split("t")[1]) checkEmpty = false
 
@@ -587,7 +659,7 @@ function ngP3AchieveCheck(){
 	if (player.unstableThisGhostify <= 10 && getTwoDecaysBool()) giveAchievement("... references to EC8?")
 }
 
-function doNGP3UnlockStuff(){
+function doNGP3UnlockStuff() {
 	var chall = tmp.inQCs
 	if (chall.length < 2) chall = chall[0]
 	else if (chall[0] > chall[1]) chall = chall[1] * 10 + chall[0]
@@ -618,36 +690,15 @@ function doNGP3UnlockStuff(){
 	} else if (!quSave.reached && isQuantumReached()) doQuantumUnlockStuff()
 }
 
-function updateNGP3Temp() {
-	tmp.be = brokeEternity()
-	if (ghostified) updateGhostifyTempStuff()
-	if (quantumed) {
-		if (beSave && beSave.unlocked) updateBreakEternityUpgradesTemp()
+function doQuantumUnlockStuff(){
+	quSave.reached = true
+	if (el("welcome").style.display != "flex") el("welcome").style.display = "flex"
+	else aarMod.popUpId = ""
+	el("welcomeMessage").innerHTML = "Congratulations! You reached " + shorten(getQuantumReq()) + " MA and completed EC14 for the first time! This allows you to go Quantum (the 5th layer), giving you a quark in exchange for everything up to this point, which can be used to get more powerful upgrades. This allows you to get gigantic numbers!"
+}
 
-		if (hasMasteryStudy("d14")) updateBigRipUpgradesTemp()
-		if (bigRipped()) {
-			if (!player.dilation.active && hasRipUpg(14)) tmp.nrm = tmp.nrm.pow(tmp.bru[14])
-			if (tmp.nrm.log10() > 1e9) tmp.nrm = pow10(1e9 * Math.pow(tmp.nrm.log10() / 1e9, 2/3))
-		}
-
-		if (hasMasteryStudy("d13")) {
-			tmp.branchSpeed = getBranchSpeed()
-			tmp.tue = getTreeUpgradeEfficiency()
-		}
-
-		if (hasMasteryStudy("d12")) updateNanofieldTemp()
-		if (hasMasteryStudy("d11")) tmp.edgm = getEmperorDimensionGlobalMultiplier() //Update global multiplier of all Emperor Dimensions
-		if (hasMasteryStudy("d10")) {
-			tmp.pe = getPilonEffect()
-			tmp.twr = getTotalWorkers()
-			tmp.tra = getTotalReplicants()
-		}
-	}
-	updateQCRewardsTemp()
-	if (mod.ngp3) {
-		updateMasteryStudyTemp()
-		updateIntergalacticTemp()
-	}
+function postBoostMilestone() {
+	return mod.ngp3 && getEternitied() >= 1e9
 }
 
 function quantumOverallUpdating(diff){
@@ -675,46 +726,6 @@ function quantumOverallUpdating(diff){
 		}
 	}
 	thisQuantumTimeUpdating()
-}
-
-function updateQuantumTabDisplays() {
-	el("qctabbtn").style.display = hasMasteryStudy("d8") ? "" : "none"
-	el("pctabbtn").style.display = hasMasteryStudy("d9") ? "" : "none"
-	el("tab_ant").style.display = hasMasteryStudy("d10") ? "inline-block" : "none"
-
-	if (!quantumed) return
-	el("electronstabbtn").style.display = hasMasteryStudy("d7") ? "" : "none"
-	el("antTabs").style.display = hasMasteryStudy("d11") ? "" : "none"
-	el("nanofieldtabbtn").style.display = NF.unl() ? "" : "none"
-	el("todtabbtn").style.display = hasMasteryStudy("d13") ? "" : "none"
-	el("riptabbtn").style.display = hasMasteryStudy("d14") ? "" : "none"
-	el("betabbtn").style.display = beSave.unlocked ? "" : "none"
-}
-
-function beatNGP3() {
-	el("welcome").style.display = "flex"
-	el("welcomeMessage").innerHTML = `
-	You reached the inner depths of lab...<br>
-	<b class='red'>(but for now...)</b><br><br>
-	<h1>You have beaten ${modAbbs(mod, true)}!</h1>
-	This took you ${timeDisplayShort(player.totalTimePlayed)} and ${player.achievements.length} achievements.<br><br>
-	Post-game is coming soon!<br>
-	Thanks for playing!`
-}
-
-function intergalacticDisplay() {
-	if (tmp.ig && getNormalDimensions() == 8) {
-		el("intergalacticLabel").parentElement.style.display = ""
-		let nanopart = 1
-		if (isNanoEffectUsed("dil_effect_exp")) nanopart = tmp.nf.effects["dil_effect_exp"] || 1
-		el("intergalacticLabel").innerHTML = 
-			getGalaxyScaleName(tmp.igs) + 'Intergalactic Boost ' + 
-			(player.dilation.active || inNGM(2) ? " (estimated)" : "") +
-			" (" + getFullExpansion(player.galaxies) + (Math.floor(tmp.igg - player.galaxies) > 0 ? " + " + 
-			getFullExpansion(Math.floor(tmp.igg - player.galaxies)) : "") + "): " + 
-			shorten(dilates(tmp.ig).pow(player.dilation.active ? nanopart : 1)) + 
-			'x to Eighth Dimensions'
-	} else el("intergalacticLabel").parentElement.style.display = "none"
 }
 
 //Setup

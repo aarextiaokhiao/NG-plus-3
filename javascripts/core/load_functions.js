@@ -663,9 +663,7 @@ function doNGP2v2tov2302(){
 		player.galaxyMaxBulk = false
 	}
 	if (aarMod.newGamePlusPlusVersion < 2.302){
-		for (let i = 1; i <= 8; i++){
-			delete player[dimTiers[i]+"Pow"]
-		}
+		for (let i = 1; i <= 8; i++) delete player[dimTiers[i]+"Pow"]
 		aarMod.newGamePlusPlusVersion = 2.302
 	}
 }
@@ -711,7 +709,6 @@ function doQuantumRestore(){
 	}
 	if (aarMod.newGamePlusPlusVersion < 2.9013) if (aarMod.quantumConf===undefined||quSave.times<1) aarMod.quantumConf=true
 	if (aarMod.newGamePlusPlusVersion < 2.90142) aarMod.newGamePlusPlusVersion = 2.90142
-	if (aarMod.newGame3PlusVersion < 1.01) aarMod.dbPower = E(getDimensionBoostPower())
 	if ((aarMod.newGame3PlusVersion && !player.masterystudies) || aarMod.newGame3PlusVersion < 1.02) player.masterystudies = []
 	if (aarMod.newGame3PlusVersion < 1.21) player.replicanti.chanceCost = E_pow(1e15, player.replicanti.chance * 100 + 9)
 	if ((quantumRestore && mod.ngp3) || aarMod.newGame3PlusVersion < 1.5) {
@@ -1893,6 +1890,7 @@ function conToDeciPreInf(){
 	player.tickspeed = E(player.tickspeed)
 	for (let dim = 1; dim <= 8; dim++) {
 		player[dimTiers[dim]+"Amount"] = E(player[dimTiers[dim]+"Amount"])
+		delete player[dimTiers[dim]+"Pow"] //deleted in NG+3 v2.302
 		player[dimTiers[dim]+"Cost"] = E(player[dimTiers[dim]+"Cost"])
 	}
 	player.sacrificed = E(player.sacrificed)
@@ -2013,7 +2011,6 @@ function conToDeciLateEter(){
 
 function conToDeciMS(){
 	if (mod.ngp3) {
-		player.dbPower = E(player.dbPower)
 		player.meta.bestOverQuantums = Decimal.max(player.meta.bestOverQuantums, player.meta.bestAntimatter)
 		if (quSave.usedQuarks) {
 			quSave.usedQuarks.r = E(quSave.usedQuarks.r)

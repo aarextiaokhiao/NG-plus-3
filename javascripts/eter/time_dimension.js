@@ -8,7 +8,6 @@ function getBreakEternityTDMult(tier){
 	if (hasRipUpg(13)) ret = ret.mul(player.replicanti.amount.max(1).pow(1e-6))
 	if (tier == 7 && hasRipUpg(16)) ret = ret.mul(tmp.bru[16])
 	if (beSave && beSave.upgrades.includes(11) && bigRipped()) ret = ret.mul(tmp.beu[11]||1)
-	if (tier == 8 && hasAch("ng3p62")) ret = ret.pow(Math.log10(ghSave.time/10+1)/100+1)
 	if (ret.lt(0)) ret = E(0)
 	return dilates(ret)
 }
@@ -41,7 +40,7 @@ function calcVanillaTSTDMult(tier){
 	if (player.timestudy.studies.includes(103)) ret = ret.mul(Math.max(player.replicanti.galaxies, 1))
 	if (player.timestudy.studies.includes(151)) ret = ret.mul(1e4)
 	if (player.timestudy.studies.includes(221)) ret = ret.mul(E_pow(1.0025, player.resets))
-	if (player.timestudy.studies.includes(227) && tier == 4) ret = ret.mul(Math.pow(tmp.sacPow.max(10).log10(), 10))
+	if (player.timestudy.studies.includes(227) && tier == 4) ret = ret.mul(E_pow(tmp.sacPow.max(10).log10(), 10))
 	return ret
 }
 

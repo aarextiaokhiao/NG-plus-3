@@ -27,7 +27,6 @@ function updateNanoverseTab() {
 		el("nfRewardHeader" + reward).className = (amt % 8 + 1 == reward ? "grey" : "") + " milestoneTextSmall"
 		el("nfRewardTier" + reward).textContent = "Tier " + getFullExpansion(Math.ceil((amt + 1 - reward) / 8)) + " / Power: " + tmp.nf.powers[reward].toFixed(1)
 	}
-	el("nfReward5").textContent = (tmp.nf.powers[5] > 15 ? nanoRewards.effectDisplays.light_threshold_speed(tmp.nf.effects.light_threshold_speed) : nanoRewards.effectDisplays.dil_effect_exp(tmp.nf.effects.dil_effect_exp)) + "."
 }
 
 
@@ -83,7 +82,7 @@ var nanoRewards = {
 			return Math.sqrt(x) * 0.021 + 1
 		},
 		dil_effect_exp: function(x) {
-			if (x > 15) tier = Math.log10(x - 5) * 15
+			if (x > 5) tier = Math.log10(x + 5) + 4
 			return x * 0.36 + 1
 		},
 		meta_boost_power: function(x) {
@@ -174,7 +173,7 @@ function getNanoRewardPower(reward, rewards) {
 }
 
 function getNanoRewardPowerEff() {
-	let x = PHOTON.eff(3)
+	let x = PHOTON.eff(2)
 	if (hasBU(31)) x *= tmp.blu[31]
 	return x
 }

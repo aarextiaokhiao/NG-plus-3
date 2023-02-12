@@ -44,7 +44,8 @@ function getNormalDimensionVanillaTimeStudyBonus(tier){
 	var mult = E(1)
 	if (player.timestudy.studies.includes(71) && tier !== 8) mult = mult.mul(tmp.sacPow.pow(0.25).min("1e210000"));
 	if (player.timestudy.studies.includes(91)) mult = mult.mul(pow10(Math.min(player.thisEternity, 18000) / 60));
-	let useHigherNDReplMult = hasMasteryStudy("t323")
+
+	let useHigherNDReplMult = hasMasteryStudy("t323") && !player.dilation.active
 	if (!useHigherNDReplMult) mult = mult.mul(tmp.nrm)
 	if (player.timestudy.studies.includes(161)) mult = mult.mul(pow10((inNGM(2) ? 6660 : 616) * (mod.ngep ? 5 : 1)))
 	if (player.timestudy.studies.includes(234) && tier == 1) mult = mult.mul(tmp.sacPow)
@@ -94,20 +95,16 @@ function getPostBreakInfNDMult() {
 	return mult
 }
 
-function getStartingNDMult(tier){
-	let mPerTen = getDimensionPowerMultiplier()
-	let mPerDB = getDimensionBoostPower()
-	let dbMult = player.resets < tier ? E(1) : E_pow(mPerDB, player.resets - tier + 1)
-	let mptMult = E_pow(mPerTen, Math.floor(player[dimTiers[tier]+"Bought"] / 10))
+function getStartingNDMult(tier) {
+	let dbMult = player.resets < tier ? E(1) : E_pow(getDimensionBoostPower(), player.resets - tier + 1)
+	let mptMult = E_pow(getDimensionPowerMultiplier(), dimBought(tier))
 	return mptMult.mul(dbMult)
 }
 
 function getDimensionFinalMultiplier(tier) {
 	let mult = getStartingNDMult(tier)
 	if (tier == 8) mult = mult.mul(getTotalSacrificeBoost())
-	
-	if (aarMod.newGameMinusVersion !== undefined) mult = mult.mul(.1)
-	if (!tmp.infPow) updateInfinityPowerEffects()
+
 	if (player.currentChallenge == "postcngm3_2") return tmp.infPow.max(1e100)
 	if (player.currentEternityChall == "eterc11") return tmp.infPow.mul(E_pow(getDimensionBoostPower(), player.resets - tier + 1).max(1))
 	if ((inNC(7) || player.currentChallenge == "postcngm3_3") && inNGM(2)) {
@@ -143,7 +140,7 @@ function getDimensionFinalMultiplier(tier) {
 	if (player.currentChallenge == "postc4" && player.postC4Tier != tier && !inNGM(3)) mult = mult.pow(0.25)
 	
 	if (player.currentEternityChall == "eterc10") mult = mult.mul(ec10bonus)
-	
+
 	if (tier == 8 && hasAch("ng3p27")) mult = mult.mul(tmp.ig)
 	
 	if (mult.gt(10)) mult = dilates(mult.max(1), 2)
@@ -153,7 +150,8 @@ function getDimensionFinalMultiplier(tier) {
 	if (mult.gt(10)) mult = dilates(mult.max(1), 1)
 	if (player.dilation.upgrades.includes(6)) mult = mult.mul(player.dilation.dilatedTime.max(1).pow(308))
 	if (tier == 1 && !inNGM(3) && player.infinityUpgrades.includes("postinfi60")) mult = mult.mul(getNewB60Mult())
-	let useHigherNDReplMult = !player.dilation.active ? false : !player.masterystudies ? false : hasMasteryStudy("t323")
+
+	let useHigherNDReplMult = hasMasteryStudy("t323") && !player.dilation.active
 	if (useHigherNDReplMult) mult = mult.mul(tmp.nrm)
 	if (player.dilation.active && isNanoEffectUsed("dil_effect_exp")) mult = mult.pow(tmp.nf.effects.dil_effect_exp)
 	if (isBigRipUpgradeActive(1)) mult = mult.mul(tmp.bru[1])
@@ -275,7 +273,6 @@ function getMPTBase(focusOn) {
 	if (mod.ngp3) {
 		ret += tmp.qcRewards[5]
 		if (isNanoEffectUsed("per_10_power")) ret += tmp.nf.effects.per_10_power
-		ret *= PHOTON.eff(4)
 	}
 	return ret
 }
@@ -368,7 +365,6 @@ function buyOneDimension(tier) {
 		else if (inNC(5) && !inNGM(3)) multiplySameCosts(player[name + 'Cost'])
 		else player[name + "Cost"] = player[name + "Cost"].mul(getDimensionCostMultiplier(tier))
 		if (costIncreaseActive(player[name + "Cost"])) player.costMultipliers[tier - 1] = player.costMultipliers[tier - 1].mul(getDimensionCostMultiplierIncrease())
-		floatText("D" + tier, "x" + shortenMoney(getDimensionPowerMultiplier()))
 	}
 	if (tier == 1 && getAmount(1) >= 1e150) giveAchievement("There's no point in doing that")
 	if (getAmount(8) == 99) giveAchievement("The 9th Dimension is a lie");
@@ -383,13 +379,16 @@ function buyManyDimension(tier, quick) {
 	let cost = player[name + 'Cost'].mul(toBuy)
 	let resource = getOrSubResource(tier)
 	if (!cost.lte(resource)) return false
+
 	getOrSubResource(tier, cost)
 	player[name + "Amount"] = player[name + "Amount"].add(toBuy)
 	recordBought(name, toBuy)
+
 	if (player.currentChallenge == "postc5" && !inNGM(3)) multiplyPC5Costs(player[name + 'Cost'], tier)
 	else if (inNC(5) && !inNGM(3)) multiplySameCosts(player[name + 'Cost'])
 	else player[name + "Cost"] = player[name + "Cost"].mul(getDimensionCostMultiplier(tier))
 	if (costIncreaseActive(player[name + "Cost"])) player.costMultipliers[tier - 1] = player.costMultipliers[tier - 1].mul(getDimensionCostMultiplierIncrease())
+
 	if (!quick) {
 		floatText("D" + tier, "x" + shortenMoney(getDimensionPowerMultiplier()))
 		onBuyDimension(tier)
@@ -465,16 +464,11 @@ function canQuickBuyDim(tier) {
 }
 
 function getOrSubResource(tier, sub) {
-	if (sub == undefined || inQC(1)) {
-		if (tier > 2 && (inNC(10) || player.currentChallenge == "postc1")) return player[dimTiers[tier-2] + "Amount"]
-		return player.money
-	} else {
-		if (tier > 2 && (inNC(10) || player.currentChallenge == "postc1")) {
-			if (sub.gt(player[dimTiers[tier - 2] + "Amount"])) player[dimTiers[tier - 2] + "Amount"] = E(0)
-			else player[dimTiers[tier - 2] + "Amount"] = player[dimTiers[tier - 2] + "Amount"].sub(sub)
-		} else if (sub.gt(player.money)) player.money = E(0)
-		else player.money = player.money.sub(sub)
-	}
+	let index = "money"
+	if (tier > 2 && (inNC(10) || player.currentChallenge == "postc1")) index = dimTiers[tier-2] + "Amount"
+
+	if (sub !== undefined && !hasAch("ng3p55")) player[index] = player[index].sub(player[index].max(sub))
+	return player[index]
 }
 
 

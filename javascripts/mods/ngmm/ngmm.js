@@ -148,7 +148,6 @@ function galacticSacrifice(auto, force, chall) {
 		if (!chall && (force || !player.options.retryChallenge)) delete player.galacticSacrifice.chall
 		el("challengeconfirmation").style.display = "inline-block"
 		updateChallenges()
-		updateNCVisuals()
 		updateChallengeTimes()
 		updateAutobuyers()
 	}
@@ -248,22 +247,20 @@ function buyGalaxyUpgrade(i) {
 	}
 }
 
-function reduceDimCosts(upg) {
-	if (inNGM(2)) {
-		let div = 1
-		if (hasAch("r21")) div = 10
-		if (hasGSacUpg(11)) div = galMults.u11()
-		for (var d = 1; d < 9; d++) {
-			var name = dimTiers[d]
-			if (inNGM(4) && !upg) {
-				player[name + "Cost"] = player[name + "Cost"].pow(1.25).mul(10)
-				player.costMultipliers[d - 1] = player.costMultipliers[d - 1].pow(1.25)
-			}
-			player[name + "Cost"] = player[name + "Cost"].div(div)
-			if (inNGM(4)) player["timeDimension" + d].cost = player["timeDimension" + d].cost.div(div)
+function reduceDimCosts() {
+	let div = 1
+	if (hasAch("r21")) div = 10
+	if (hasGSacUpg(11)) div = galMults.u11()
+	for (var d = 1; d < 9; d++) {
+		var name = dimTiers[d]
+		if (inNGM(4) && !upg) {
+			player[name + "Cost"] = player[name + "Cost"].pow(1.25).mul(10)
+			player.costMultipliers[d - 1] = player.costMultipliers[d - 1].pow(1.25)
 		}
-		if (hasAch('r48') && !inNGM(3)) player.tickSpeedCost = player.tickSpeedCost.div(div)
+		player[name + "Cost"] = player[name + "Cost"].div(div)
+		if (inNGM(4)) player["timeDimension" + d].cost = player["timeDimension" + d].cost.div(div)
 	}
+	if (hasAch('r48') && !inNGM(3)) player.tickSpeedCost = player.tickSpeedCost.div(div)
 }
 
 function galacticUpgradeSpanDisplay () {

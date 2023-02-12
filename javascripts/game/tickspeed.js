@@ -25,7 +25,7 @@ function getGalaxyPower(ng, bi, noDil) {
 	let extraReplGalPower = 0
 	if (player.timestudy.studies.includes(133)) extraReplGalPower += player.replicanti.galaxies * 0.5
 	if (player.timestudy.studies.includes(132)) extraReplGalPower += player.replicanti.galaxies * 0.4
-	extraReplGalPower += extraReplGalaxies // extraReplGalaxies is a constant
+	extraReplGalPower += tmp.extraRG
 	
 	let otherGalPower = player.replicanti.galaxies
 	if (player.masterystudies ? hasMasteryStudy("t342") : false) otherGalPower = (otherGalPower + extraReplGalPower) * replGalEff

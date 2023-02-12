@@ -117,28 +117,28 @@ let PHOTON = {
 			desc: e => `Free tickspeed upgrades scale ${e.toFixed(3)}x faster.`
 		}, {
 			name: "orange",
-			eff: a => Math.log10(a + 1) + 1,
-			desc: e => `Dilated time gives ^${e.toFixed(3)} boost to Meta Dimensions.`
+			eff: a => Math.log10(a + 1) / 100,
+			desc: e => `Gain ${(e * 100).toFixed(1)}% of Positrons in Big Rips.`
 		}, {
 			name: "yellow",
-			eff: a => Math.log10(a / 3 + 1) + 1,
-			desc: e => `Nanorewards speed up Decay by ${e.toFixed(3)}x each.`
-		}, {
-			name: "green",
 			eff: a => Math.log10(a + 10),
 			desc: e => `Strengthen Nanobenefits by ${e.toFixed(3)}x.`
 		}, {
+			name: "green",
+			eff: a => Math.log10(a + 1) + 1,
+			desc: e => `Dilated time gives ^${e.toFixed(3)} boost to Meta Dimensions.`
+		}, {
 			name: "blue",
-			eff: a => Math.log10(a + 10),
-			desc: e => `Multiply per-10 base by ${e.toFixed(3)}x before Positrons.`
+			eff: a => Math.log10(a / 3 + 1) + 1,
+			desc: e => `Nanorewards speed up Decay by ${e.toFixed(3)}x each.`
 		}, {
 			name: "violet",
-			eff: a => Math.log10(a + 10),
-			desc: e => `Meta Dimension costs scale ^${e.toFixed(2)} later.`
+			eff: a => Math.min(Math.log10(a + 1) + 2.5, 4),
+			desc: e => `Intergalactic efficiency exponent caps at ^${e.toFixed(2)}.`
 		}, {
 			name: "ultraviolet",
 			eff: a => a / 10 + 1,
-			desc: e => `2nd Infinite Time softcap starts ^${e.toFixed(3)} later.`
+			desc: e => `2nd Infinite Time softcap scales ^${e.toFixed(3)} later.`
 		}
 	],
 	eff(x, def = 1) {

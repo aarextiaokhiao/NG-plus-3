@@ -21,19 +21,12 @@ function getDimensionBoostPower(next, focusOn) {
 	return E(ret)
 }
 
-function dimBoost(bulk, tier=1) {
+function dimBoost(bulk) {
 	if (tmp.ri) return
 
 	player.resets += bulk;
 	if (mod.ngp3 && player.resets > 4) player.old = false
 	if (inNC(14) && !inNGM(3)) player.tickBoughtThisInf.pastResets.push({resets: player.resets, bought: player.tickBoughtThisInf.current})
-	if (mod.ngp3 && getEternitied() >= 1e9 && tier < 2) {
-		skipResets()
-		player.matter = E(0)
-		player.postC8Mult = E(1)
-		player.dbPower = getDimensionBoostPower()
-		return
-	}
 
 	let am = player.money
 	doReset("db")
@@ -52,34 +45,13 @@ function setInitialMoney() {
 }
 
 function setInitialDimensionPower() {
-	var dimensionBoostPower = getDimensionBoostPower()
-	if (mod.ngp3 && getEternitied() >= 1e9) player.dbPower = dimensionBoostPower
-
 	var tickspeedPower = player.totalTickGained
 	player.tickspeed = E_pow(getTickSpeedMultiplier(), tickspeedPower).mul(mod.ngep ? 500 : 1e3)
-	
-	var ic3Power = player.totalTickGained * getECReward(14)
-	if (inNGM(3) && player.currentChallenge != "postc5") {
-		let mult = 30
-		if ((inNC(14) && inOnlyNGM(3)) || player.currentChallenge == "postcngm3_3") mult = 20
-		else if (hasGSacUpg(14)) mult = 32
-		if (inNC(6, 1)) mult *= Math.min(player.galaxies / 30, 1)
-		let ic3PowerTB = player.tickspeedBoosts * mult
-		let softCapStart = 1024
-		let frac = 8
-		if (player.currentChallenge=="postcngm3_1" || player.currentChallenge=="postc1") softCapStart = 0
-		if (player.challenges.includes("postcngm3_1")) frac = 7
-		if (ic3PowerTB > softCapStart) ic3PowerTB = Math.sqrt((ic3PowerTB - softCapStart) / frac + 1024) * 32 + softCapStart - 1024
-		if (inNC(15) || player.currentChallenge == "postc1" || player.currentChallenge == "postcngm3_3") ic3PowerTB *= inNGM(4) ? .2 : Math.max(player.galacticSacrifice.galaxyPoints.div(1e3).add(1).log(8),1)
-		else if (player.challenges.includes("postcngm3_3")) ic3PowerTB *= Math.max(Math.sqrt(player.galacticSacrifice.galaxyPoints.max(1).log10()) / 15 + .6, 1)
-		if (hasAch("r67")) {
-			let x = tmp.cp
-			if (x > 4) x = Math.sqrt(x - 1) + 2
-			ic3PowerTB *= x * .15 + 1
-		}
-		ic3Power += ic3PowerTB
-	}
+
+	var ic3Power = tickspeedPower * getECReward(14)
+	if (inNGM(3) && player.currentChallenge != "postc5") ic3Power += getTickspeedBoostPower()
 	if ((inNC(15) || player.currentChallenge == "postc1" || player.currentChallenge == "postcngm3_3") && inNGM(4)) ic3Power -= (player.resets + player.tdBoosts) * 10
+
 	player.postC3Reward = E_pow(getPostC3Mult(), ic3Power)
 }
 

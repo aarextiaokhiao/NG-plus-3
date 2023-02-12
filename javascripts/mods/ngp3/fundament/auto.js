@@ -249,7 +249,10 @@ function automatorTick(diff) {
 }
 
 function automatorPerSec() {
-	if (isAutoGhostActive(18)) for (var i = 1; i <= 4; i++) while (buyElectronUpg(i, true)) {}
+	if (isAutoGhostActive(18)) {
+		for (var i = 1; i <= 4; i++) while (buyElectronUpg(i, true)) {}
+		updateElectrons()
+	}
 	if (isAutoGhostActive(16)) {
 		maxNeutrinoMult()
 		maxGHPMult()

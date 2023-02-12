@@ -104,12 +104,10 @@ function upgradeReplicantiGalaxy() {
 	return false
 }
 
-var extraReplGalaxies = 0
 function replicantiGalaxy() {
-	var maxGal = getMaxRG()
 	if (!canGetReplicatedGalaxy()) return
-	if (player.galaxyMaxBulk) player.replicanti.galaxies=maxGal
-	else player.replicanti.galaxies++
+	player.replicanti.galaxies = player.galaxyMaxBulk ? getMaxRG() : player.replicanti.galaxies + 1
+
 	if (!hasAch("ng3p67")) player.replicanti.amount=Decimal.div(hasAch("r126")?player.replicanti.amount:1,Number.MAX_VALUE).max(1)
 	galaxyReset(0)
 }
@@ -155,22 +153,30 @@ function autoBuyRG() {
 }
 
 function updateExtraReplGalaxies() {
+	tmp.extraRGBase = getExtraReplGalaxyBase()
+	tmp.extraRGMult = getExtraReplGalaxyMult()
+	tmp.extraRG = tmp.extraRGBase * tmp.extraRGMult
+}
+
+function getExtraReplGalaxyBase() {
+	let ss_speed = tmp.qcRewards[8] * 2
 	let ts225Eff = 0
 	let ts226Eff = 0
-	let speed = tmp.qcRewards[8] * 2
 	if (player.timestudy.studies.includes(225)) {
 		ts225Eff = Math.floor(player.replicanti.amount.e / 1e3)
-		if (ts225Eff > 99) ts225Eff = Math.floor(Math.sqrt(0.25 + (ts225Eff - 99) * speed) + 98.5)
+		if (ts225Eff >= 100 && mod.ngp3) ts225Eff = Math.floor(Math.sqrt(0.25 + (ts225Eff - 99) * ss_speed) + 98.5)
 	}
 	if (player.timestudy.studies.includes(226)) {
 		ts226Eff = Math.floor(player.replicanti.gal / 15)
-		if (ts226Eff > 99) ts226Eff = Math.floor(Math.sqrt(0.25 + (ts226Eff - 99) * speed) + 98.5)
+		if (ts226Eff >= 100 && mod.ngp3) ts226Eff = Math.floor(Math.sqrt(0.25 + (ts226Eff - 99) * ss_speed) + 98.5)
 	}
-	extraReplGalaxies = ts225Eff + ts226Eff
-	if (extraReplGalaxies > 325) extraReplGalaxies = (Math.sqrt(0.9216+0.16*(extraReplGalaxies-324))-0.96)/0.08+324
-	extraReplGalaxies *= getExtraReplGalaxyMult()
 
-	return Math.floor(extraReplGalaxies)
+	let amt = ts225Eff + ts226Eff
+	if (mod.ngp3) {
+		if (amt > 325) amt = (Math.sqrt(0.9216+0.16*(amt-324))-0.96)/0.08+324
+		if (amt > 700) amt = 700
+	}
+	return amt
 }
 
 function getExtraReplGalaxyMult() {
@@ -180,8 +186,20 @@ function getExtraReplGalaxyMult() {
 	return mult
 }
 
+function getExtraReplGalaxyDisp() {
+	if (shiftDown) {
+		if (tmp.extraRGBase == 0 && tmp.extraRGMult == 1) return ""
+		let r = " + " + getFullExpansion(tmp.extraRGBase)
+		if (tmp.extraRGMult > 1) r += "*" + shorten(tmp.extraRGMult)
+		return r
+	} else {
+		if (tmp.extraRG == 0) return ""
+		return " + " + getFullExpansion(tmp.extraRG)
+	}
+}
+
 function getTotalRG() {
-	return player.replicanti.galaxies + extraReplGalaxies
+	return player.replicanti.galaxies + tmp.extraRG
 }
 
 function replicantiGalaxyAutoToggle() {

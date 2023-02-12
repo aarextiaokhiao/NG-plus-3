@@ -281,11 +281,17 @@ function getEU2Mult() {
 	var e = nMx(getEternitied(), 0)
 	if (typeof(e) == "number" && isNaN(e)) e = 0
 	if (mod.rs) return E_pow(e, Decimal.mul(e,2).add(1).log(4))
+
 	var cap = nMn(e, 1e5)
 	var soft = 0
 	if (e > 1e5) soft = nS(e, cap)
 	var achReward = 1
-	if (hasAch("ngpp15")) achReward = pow10(Math.pow(Decimal.log10(e), 4.75))
+
+	if (hasAch("ngpp15")) {
+		let exp = Math.pow(Decimal.log10(e), 4.75)
+		exp = Math.min(exp, 1e21)
+		achReward = pow10(exp)
+	}
 	return E_pow(cap/200 + 1, Math.log(cap * 2 + 1) / Math.log(4)).mul(Decimal.div(soft, 200).add(1).mul(Decimal.mul(soft, 2).add(1).log(4)).max(1)).max(achReward)
 }
 

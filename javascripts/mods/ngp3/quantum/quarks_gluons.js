@@ -249,18 +249,10 @@ function updateColorPowers(log) {
 
 	//Blue
 	var bLog = log.b
-	bLog = Math.sqrt(log.b + 1.5) - 1.5
+	bLog = Math.sqrt(log.b + 1.5) - Math.sqrt(1.5)
 
-	let softcapStartLog = 3
-	let softcapPower = 1
-	if (hasNU(14)) softcapPower = tmp.nu[14]
-	if (hasBU(11)) softcapPower += tmp.blu[11]
-	if (bLog > softcapStartLog) {
-		bLog = E_pow(bLog / softcapStartLog, softcapPower / 2).mul(softcapStartLog)
-		if (bLog.lt(100)) bLog = bLog.toNumber()
-		else bLog = Math.min(bLog.toNumber(), bLog.log10() * (40 + 10 * bLog.sub(90).log10()))
-	}
-	if (bLog < 0) bLog = 0
+	if (bLog > 3) bLog = Math.sqrt(bLog  * 3)
+	if (hasNU(14)) bLog *= tmp.nu[14]
 	colorBoosts.b = pow10(bLog)
 }
 
@@ -340,7 +332,7 @@ function updateQuarksTab(tab) {
 	el("redPower").textContent=shortenMoney(quSave.colorPowers.r)
 	el("greenPower").textContent=shortenMoney(quSave.colorPowers.g)
 	el("bluePower").textContent=shortenMoney(quSave.colorPowers.b)
-	el("redTranslation").textContent=((colorBoosts.r-1)*100).toFixed(1)
+	el("redTranslation").textContent=shorten((colorBoosts.r-1)*100)
 	var msg = getFullExpansion(Math.round((colorBoosts.g-1)*100))+(tmp.pe>0?"+"+getFullExpansion(Math.round(tmp.pe*100)):"")
 	el("greenTranslation").textContent=msg
 	el("blueTranslation").textContent=shortenMoney(colorBoosts.b)

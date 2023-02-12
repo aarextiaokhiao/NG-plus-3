@@ -44,14 +44,16 @@ let RESETS = {
 			if (hasAch("r83")) player.tickspeed = player.tickspeed.mul(E_pow(0.95,player.galaxies));
 			divideTickspeedIC5()
 		},
-		doReset() {
-			this.startingAM()
-			this.startingDims()
-			if (inNGM(4)) resetNGM4TDs()
+		doReset(order) {
+			if (!(order == "db" || order == "gal") || !postBoostMilestone()) {
+				this.startingAM()
+				this.startingDims()
+				player.sacrificed = E(0)
+				if (inNGM(2)) reduceDimCosts()
+				if (inNGM(4)) resetNGM4TDs()
+			}
 			this.startingTickspeed()
-			reduceDimCosts()
 			setInitialDimensionPower()
-			player.sacrificed = E(0)
 			player.chall3Pow = E(0.01)
 			player.matter = E(0)
 			player.chall11Pow = E(1)
@@ -67,11 +69,12 @@ let RESETS = {
 		}
 	},
 	tdb: {
-		doReset() {
+		doReset(order) {
 			player.tickBoughtThisInf = updateTBTIonGalaxy()
 
 			if (order == "tdb" && (hasAch("r26") && player.resets >= player.tdBoosts)) return
 			if (order == "tsb" && (hasAch("r27") && player.tickspeedBoosts < 5 * player.galaxies - 8)) return
+			if (order == "gal" && hasAch("ng3p55")) return
 			player.resets = 0
 		}
 	},
@@ -88,6 +91,7 @@ let RESETS = {
 	galSac: {
 		doReset() {
 			player.galaxies = 0
+			updateNCVisuals()
 			if (inNGM(2)) {
 				player.galacticSacrifice.time = 0
 				GPminpeak = E(0)

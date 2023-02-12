@@ -4,19 +4,16 @@ function galaxyReset(bulk) {
 	if (autoS) auto = false;
 	autoS = true;
 
-	if (player.sacrificed == 0 && bulk > 0) giveAchievement("I don't believe in Gods");
-
-	let am = player.money
 	player.galaxies += bulk
-	doReset("gal")
-	if (hasAch("r111")) player.money = am
-
+	if (player.sacrificed == 0 && bulk) giveAchievement("I don't believe in Gods");
 	if (mod.ngp3 && bulk) {
 		if (quSave.autoOptions.sacrifice) sacrificeGalaxy(6, true)
 		if (hasNB(1)) gainNeutrinos(bulk, "gen")
 	}
-	hideDimensions()
-	tmp.tickUpdate = true;
+
+	let am = player.money
+	doReset("gal")
+	if (hasAch("r111")) player.money = am
 }
 
 el("secondSoftReset").onclick = function() {

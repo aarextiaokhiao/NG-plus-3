@@ -86,7 +86,6 @@ function checkChallengesOnCrunch() {
 
 	if (!player.options.retryChallenge) player.currentChallenge = ""
 
-	updateNCVisuals()
 	updateChallenges()
 	updateChallengeTimes()
 }
@@ -357,7 +356,6 @@ function startChallenge(name) {
 	player.challengeTarget = target
 	doReset("inf")
 
-	updateNCVisuals()
 	updateChallenges()
 
 	if (player.currentChallenge.includes("post") && player.currentEternityChall !== "") giveAchievement("I wish I had gotten 7 eternities")

@@ -7,7 +7,6 @@ el("save").onclick = function () {
 
 var noSave=false
 function save_game(silent) {
-	isInfiniteDetected()
 	if (!game_loaded || noSave || infiniteDetected) return
 	set_save(metaSave.current, player);
 	$.notify("Game saved", "info")

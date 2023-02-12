@@ -370,10 +370,7 @@ function buyDilationUpgrade(pos, max, isId) {
 		if (mod.udsp && !player.dilation.autoUpgrades.includes(id)) player.dilation.autoUpgrades.push(id)
 		if (id == 4 || id == "ngmm1") player.dilation.freeGalaxies *= 2 // Double the current galaxies
 		if (id == 10 && mod.ngp3) quSave.wasted = false
-		if (id == "ngpp3" && mod.ngp3) {
-			updateMilestones()
-			if (getEternitied() >= 1e9) player.dbPower = E(getDimensionBoostPower())
-		}
+		if (id == "ngpp3" && mod.ngp3) updateMilestones()
 		if (id == "ngpp6" && mod.ngp3) {
 			el("masterystudyunlock").style.display=""
 			el("respecMastery").style.display = "block"

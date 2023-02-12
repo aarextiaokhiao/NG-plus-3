@@ -130,7 +130,7 @@ var masteryStudies = {
 		},
 		301: function(){
 			if (hasNU(6)) return 0
-			return Math.floor(extraReplGalaxies / 4.15)
+			return Math.floor(tmp.extraRG / 4.15)
 		},
 		303: function(){
 			return E_pow(4.7, Math.pow(Math.log10(Math.max(player.galaxies, 1)), 1.5))
@@ -164,7 +164,7 @@ var masteryStudies = {
 			return player.dilation.tachyonParticles.max(1).pow(0.01824033924212366)
 		},
 		371: function(){
-			return Math.pow(extraReplGalaxies+1,mod.p3ep?.5:.3)
+			return Math.pow(tmp.extraRG+1,mod.p3ep?.5:.3)
 		},
 		372: function(){
 			return Math.sqrt(player.timeShards.add(1).log10())/20+1
@@ -182,6 +182,7 @@ var masteryStudies = {
 			var blueExp = 2/5
 			var bluePortion = Math.pow(getCPLog("b"), blueExp)
 			var exp = bluePortion * Math.log10(2)
+			if (exp > 1e10) exp = Math.pow(exp * 100, 5/6)
 
 			return pow10(exp)
 		},
@@ -257,11 +258,11 @@ var masteryStudies = {
 		332: "You gain replicanti faster based on your normal galaxies.",
 		341: "Preons boost dilated time production at reduced rate.",
 		342: "All replicated galaxies are stronger and use the same formula.",
-		343: "Tachyonic Galaxies are as strong as a normal replicated galaxy.",
-		344: "Replicated galaxies are more effective based on your pilons.",
+		343: "Tachyonic Galaxies are as strong as a normal Replicated Galaxy.",
+		344: "Pilons strengthen Replicated Galaxies.",
 		351: "Time Shards boost Meta Dimensions.",
 		361: "Hatch speed is faster based on your tachyon particles.",
-		362: () => "Reduce the softcap for the pilon boost"+(aarMod.ngumuV?", but pilons reduce the green power effect.":"."),
+		362: () => "Reduce the softcap for the pilon boost"+(aarMod.ngumuV?", but reduce the efficiency.":"."),
 		371: "Hatch speed is faster based on your extra replicated galaxies.",
 		372: "Hatch speed is faster based on your time shards.",
 		373: "You get more pilons based on your galaxies.",
@@ -271,9 +272,9 @@ var masteryStudies = {
 		391: "Hatch speed is faster based on your meta-antimatter.",
 		392: "Pilons boost all Emperor Dimensions.",
 		393: "Workers boost Meta Dimensions.",
-		401: "Pilons reduce anti-nanoenergy.",
+		401: "Pilons reduce anti-Nanoenergy.",
 		402: "Emperor Dimensions and hatch speed are 30x faster.",
-		411: "Duplicants boost nanoenergy.",
+		411: "Duplicants boost Nanoenergy.",
 		412: "Further reduce the softcap of pilon boost.",
 		421: "Tickspeed boosts nanocharge.",
 		431: "Tachyonic Galaxies speed up Branches."
@@ -586,14 +587,6 @@ function buyMasteryStudy(type, id, quick=false) {
 			player.replicanti.gal = gal
 		}
 		if (id == 312) player.meta.resets = 4
-		if (id == 321){
-			var isone = ((inQC(5)||inQC(7))&&focusOn!="linear")||(((inNC(13)&&!inNGM(3))||player.currentChallenge=="postc1"||player.currentChallenge=="postcngm3_1")&&inNGM(2))
-			if (isone) {
-				for (var i = 1; i<9; i++) {
-					player[dimTiers[i] + "Pow"] = player[dimTiers[i] + "Pow"].mul(pow10(430 * player[dimTiers[i] + "Bought"]/10))
-				}
-			}
-		}
 		if (!hasNU(6) && (id == 251 || id == 252 || id == 253 || id == 301)) {
 			player.galaxies = 1
 		}

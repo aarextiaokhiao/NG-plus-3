@@ -15,8 +15,8 @@ function quantum(auto, force, qc, bigRip = false) {
 	if (!quantumed && !confirm("Are you sure you want to do this? You will lose everything you have!")) return
 
 	if (qc) {
-		let cost = getQCIdCost(qc.qc)
-		if (quSave.electrons.amount < cost) return
+		let req = getQCIdCost(qc.qc)
+		if (quSave.electrons.amount < req) return
 
 		let conf = player.options.challConf
 		if (auto) conf = false
@@ -32,8 +32,6 @@ function quantum(auto, force, qc, bigRip = false) {
 			if (QCIntensity(1) == 0 && !ghostified) conf = true
 			if (conf && confirm("You will do a Quantum reset, but you will not gain quarks, you keep your electrons & sacrificed galaxies, and you can't buy electron upgrades. You have to reach the set goal of antimatter while getting the meta-antimatter requirement to Quantum to complete this challenge. Electrons and banked eternities have no effect in Quantum Challenges and your electrons and sacrificed galaxies don't reset until you end the challenge.")) return
 		}
-
-		quSave.electrons.amount -= cost
 	}
 
 	var implode = !auto && !force && isAnimationOn("quantum")
@@ -491,11 +489,9 @@ RESETS.qu = {
 		player.respecMastery = false
 
 		ipMultPower = hasGluonUpg("gb3") ? 2.3 : hasMasteryStudy("t241") ? 2.2 : 2
-		if (!qc) {
-			quSave.electrons.amount = 0
-			quSave.electrons.sacGals = 0
-			if (speedrunMilestonesReached < 25 && player.quantum.autoOptions.sacrifice) toggleAutoQuantumContent('sacrifice')
-		}
+		quSave.electrons.amount = 0
+		quSave.electrons.sacGals = 0
+		if (speedrunMilestonesReached < 25 && player.quantum.autoOptions.sacrifice) toggleAutoQuantumContent('sacrifice')
 		replicantsResetOnQuantum(qc)
 		nanofieldResetOnQuantum()
 

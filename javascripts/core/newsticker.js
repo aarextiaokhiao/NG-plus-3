@@ -243,7 +243,7 @@ newsArray = [//always true
 ["Why even bother using the news ticker? Sure, there are a few funny ones, but even they get old after a while and most of them are just long strings of nonsensical text that repeat over and over until you get sick of seeing them. You've probably seen this one at least nine times already, and you're going to keep seeing it and seeing it until you finally decide to turn off the news.", true, "am31"],
 ["News ticker has declared dead! Provides no purpose.", true, "am32"],
 ['"My save broke!" ~ New player who played a challenge in late-game.', true, "am33"],
-["That's how NG+++ works!", "tmp.ngp3", "am34"],
+["That's how NG+++ works!", "mod.ngp3", "am34"],
 ["var add ad + gamebreakingcontent ngplusthree", true, "am35"],
 ["BREAKING NEWS: wAFFLE found a game-breaking bug that I have to release a new update to beat him!", 'mod.ngp3', "am36"],
 ["[hard coded]", true, "am37"],

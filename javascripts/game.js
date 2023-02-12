@@ -91,7 +91,7 @@ function setupDimensionHTML() {
 	var html = ""
 	for (let d = 1; d <= 8; d++) {
 		html += `<tr id='${d}Row' style='font-size:15px'>
-			<td id="D${d}" width="32%"> </td>
+			<td id="D${d}" width="32%" style='position: relative'> </td>
 			<td id="A${d}"></td>
 			<td width="10%"><button id="B${d}" style="color:black; height: 25px; font-size: 10px; width: 135px" class="storebtn" onclick="buyOneDimension(${d})"></button></td>
 			<td width="10%"><button id="M${d}" style="color:black; height: 25px; font-size: 10px; width: 135px" class="storebtn" onclick="buyManyDimension(${d})"></button></td>
@@ -1405,7 +1405,6 @@ function eternity(force, auto, dil, presetLoad) {
 	}
 
 	if (mod.ngp3) {
-		if (player.dilation.upgrades.includes("ngpp3") && getEternitied() >= 1e9) player.dbPower = E(1)
 		if (quantumed) updateColorCharge()
 		updateBreakEternity()
 	}
@@ -1441,7 +1440,7 @@ function gainBankedInf() {
 }
 
 function exitChallenge() {
-	if (player?.galacticSacrifice.chall) {
+	if (player.galacticSacrifice?.chall) {
 		galacticSacrifice(false, true)
 		showTab("dimensions")
 	} else if (player.currentChallenge !== "") {
@@ -1610,7 +1609,7 @@ function updatePerSecond() {
 	runAutoSave()
 	if (!player) return
 
-	//Achieve:
+	// Achieve:
 	cantHoldInfinitiesCheck()
 	antitablesHaveTurnedCheck()
 	updateBlinkOfAnEye()
@@ -1658,7 +1657,8 @@ function updatePerSecond() {
 	updateHotkeys()
 	updateConvertSave(eligibleConvert())
 
-	//Rounding errors
+	// Errors
+	isInfiniteDetected()
 	if (!mod.ngp3 || !quantumed) if (player.infinityPoints.lt(100)) player.infinityPoints = player.infinityPoints.round()
 	checkGluonRounding()
 }
@@ -2610,10 +2610,10 @@ function autoBuyerTick() {
 	}
 
 	if (player.autobuyers[9]%1 !== 0) dimBoostABTick()
+	if (inNGM(4) && player.autobuyers[14]%1 !== 0) TDBoostABTick()
+	if (inNGM(3) && player.autobuyers[13]%1 !== 0) TSBoostABTick()
 	if (player.autobuyers[10]%1 !== 0) galaxyABTick()
 	if (inNGM(2) && player.autobuyers[12]%1 !== 0) galSacABTick()
-	if (inNGM(3) && player.autobuyers[13]%1 !== 0) TSBoostABTick()
-	if (inNGM(4) && player.autobuyers[14]%1 !== 0) TDBoostABTick()
 
 	if (player.autoSacrifice%1 !== 0) {
 		if ((inNGM(2) ? player.autoSacrifice.ticks * 100 >= player.autoSacrifice.interval : true) && calcSacrificeBoost().gte(player.autoSacrifice.priority) && player.autoSacrifice.isOn) {

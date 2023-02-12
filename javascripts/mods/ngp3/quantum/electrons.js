@@ -1,6 +1,6 @@
 function updateElectronsTab() {
 	el("normalGalaxies").textContent = getFullExpansion(player.galaxies)
-	el("sacrificeGal").className = "gluonupgrade " + ((player.galaxies > quSave.electrons.sacGals && inQC(0)) ? "stor" : "unavailabl") + "ebtn"
+	el("sacrificeGal").className = "gluonupgrade " + (canSacrificeGalaxies() ? "storebtn" : "unavailablebtn")
 	el("sacrificeGals").textContent = getFullExpansion(Math.max(player.galaxies-quSave.electrons.sacGals, 0))
 	el("electronsGain").textContent = getFullExpansion(Math.floor(Math.max(player.galaxies-quSave.electrons.sacGals, 0) * getElectronGainFinalMult()))
 	for (var u = 1; u < 5; u++) el("electronupg" + u).className = "gluonupgrade " + (canBuyElectronUpg(u) ? "stor" : "unavailabl") + "ebtn"
@@ -16,7 +16,7 @@ function updateElectrons(retroactive) {
 	if (!quSave.autoOptions.sacrifice) updateElectronsEffect()
 	for (var u = 1; u < 5; u++) {
 		var cost = getElectronUpgCost(u)
-		el("electronupg" + u).innerHTML = "+" + (getElectronGainMult() * getElectronUpgIncrease(u)).toFixed(2) + "x Electrons<br>" +
+		el("electronupg" + u).innerHTML = "+" + (getElectronGainMult() / 4).toFixed(2) + "x Electrons<br>" +
 			"Level: " + getFullExpansion(quSave.electrons.rebuyables[u-1]) + "<br>" +
 			"Cost: " + ((u == 4 ? getFullExpansion : shortenCosts)(cost)) + " " + [null, "Time Theorems", "dilated time", "meta-antimatter", "Meta-Dimension Boosts"][u]
 	}
@@ -31,32 +31,36 @@ function updateElectronsEffect() {
 	el("linearPerTenMult").textContent = shorten(getDimensionPowerMultiplier("linear"))+"x"
 }
 
-function sacrificeGalaxy(auto = false) {
-	var amount = player.galaxies - quSave.electrons.sacGals
-	if (amount < 1) return
+function canSacrificeGalaxies() {
+	return getElectronGainMult() > 0 && player.galaxies > quSave.electrons.sacGals
+}
 
-	quSave.electrons.sacGals = player.galaxies
-	quSave.electrons.amount += getElectronGainFinalMult() * amount
+function sacrificeGalaxy(auto = false) {
+	if (!canSacrificeGalaxies()) return
+
+	var gain = player.galaxies - quSave.electrons.sacGals
+	quSave.electrons.sacGals += gain
+	quSave.electrons.amount += getElectronGainFinalMult() * gain
 	if (!quSave.autoOptions.sacrifice) updateElectronsEffect()
-	if (!auto) galaxyReset(0)
+	galaxyReset(0)
 }
 
 function getElectronBoost(mod) {
-	if (!inQC(0)) return 1
-	var amount = quSave.electrons.amount
+	var r = quSave.electrons.amount
+	var ss = 149840
+	if (hasNU(13)) ss += tmp.nu[13]
+	if (r > 37460 + ss) r = Math.sqrt((r - ss) * 37460) + ss
 
-	var s = 149840
-	if (hasNU(13)) s += tmp.nu[13]
-	if (amount > 37460 + s) amount = Math.sqrt((amount-s) * 37460) + s
-	if (hasGluonUpg("rg4") && mod != "no-rg4") amount *= 0.7
-	if (hasMasteryStudy("d13") && mod != "noTree") amount *= getTreeUpgradeEffect(4)
-	amount += 1
-	return amount
+	if (hasGluonUpg("rg4") && mod != "no-rg4") r *= 0.7
+	if (hasMasteryStudy("d13") && mod != "noTree") r *= getTreeUpgradeEffect(4)
+	return r + 1
 }
 
 function getElectronGainMult() {
 	let ret = 1
-	if (hasNU(5)) ret *= 3
+	if (hasNU(5)) ret = 3
+	if (bigRipped()) ret *= PHOTON.eff(1)
+	else if (!inQC(0)) return 0
 	return ret
 }
 
@@ -87,10 +91,6 @@ function getElectronUpgCostScalingExp(u) {
 	return 2
 }
 
-function getElectronUpgIncrease(u) {
-	return 0.25
-}
-
 function buyElectronUpg(u, quick) {
 	if (!canBuyElectronUpg(u)) return false
 	var cost = getElectronUpgCost(u)
@@ -105,7 +105,7 @@ function buyElectronUpg(u, quick) {
 	}
 	quSave.electrons.rebuyables[u - 1]++
 	if (quick) return true
-	quSave.electrons.mult += getElectronUpgIncrease(u)
+	quSave.electrons.mult += 0.25
 	updateElectrons(true)
 }
 

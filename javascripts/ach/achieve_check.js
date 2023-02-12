@@ -217,6 +217,4 @@ function ALLACHIEVECHECK(){
 	checkInfPowerReqAchieve() //IPo Req
 	checkTickspeedReqAchieve() //Tickspeed/tick upgs based
 	checkOtherPreNGp3Achieve() //Other
-	
-	//if (mod.ngp3) ngP3AchieveCheck()
 }
