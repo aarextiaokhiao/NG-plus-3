@@ -97,7 +97,7 @@ function getPostBreakInfNDMult() {
 
 function getStartingNDMult(tier) {
 	let dbMult = player.resets < tier ? E(1) : E_pow(getDimensionBoostPower(), player.resets - tier + 1)
-	let mptMult = E_pow(getDimensionPowerMultiplier(), dimBought(tier))
+	let mptMult = E_pow(getDimensionPowerMultiplier(), Math.floor(player[dimTiers[tier] + "Bought"] / 10))
 	return mptMult.mul(dbMult)
 }
 
