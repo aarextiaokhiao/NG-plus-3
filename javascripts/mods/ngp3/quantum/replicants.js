@@ -57,7 +57,7 @@ function updateReplicantsSubtab(){
 	preonGatherRateUpdating()
 
 	el("gatheredQuarks").textContent = shortenDimensions(quSave.replicants.quarks.floor())
-	el("quarkTranslation").textContent = getFullExpansion(Math.round(tmp.pe * 100))
+	el("quarkTranslation").textContent = "+" + shortenMoney(tmp.pe * 100) + "%"
 
 	babyRateUpdating()
 	el("feedNormal").className = (canFeedReplicant(1) ? "stor" : "unavailabl") + "ebtn"

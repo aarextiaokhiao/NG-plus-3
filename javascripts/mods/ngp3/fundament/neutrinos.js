@@ -87,9 +87,9 @@ function updateNeutrinoUpgradesTemp(){
 	tmp.nu[4] = E_pow(3, Math.pow(Math.max(-getTickspeed().div(1e3).log10() / 4e13 - 4, 0), 1/4))
 	tmp.nu[7] = quSave.colorPowers.g.add(1).root(400)
 	tmp.nu[12] = { 
-		normal: Math.pow(2, player.galaxies / 1e4),
-		free: player.dilation.freeGalaxies * .035 + 1,
-		replicated: Math.sqrt(getTotalRG()) * .0175 + 1 //NU12 
+		normal: E_pow(2, player.galaxies / 1e4),
+		replicated: Math.sqrt(getTotalRG()) * .0175 + 1,
+		free: Math.pow(2, player.dilation.freeGalaxies / 2e3), //NU12 
 	}
 	tmp.nu[13] = player.dilation.freeGalaxies * 2
 	tmp.nu[14] = Math.log10(quSave.replicants.quarks.max(1).log10() + 10)
@@ -183,8 +183,8 @@ var neutrinoBoosts = {
 		},
 		10: function(nt) {
 			var nb10 = nt[0].add(1).log10()*nt[1].add(1).log10()*nt[2].add(1).log10()
-			nb10 = nb10/1e6+1
-			return nb10
+			var div = mod.p3ep ? 1e5 : 1e6
+			return nb10 / div + 1
 		},
 		11: function(nt) {
 			var nb11 = nt[0].add(1).log10()+nt[1].add(1).log10()+nt[2].add(1).log10()
@@ -193,7 +193,8 @@ var neutrinoBoosts = {
 		},
 		12: function(nt) {
 			var nb12 = nt[0].add(1).log10()+nt[1].add(1).log10()+nt[2].add(1).log10()
-			return Math.log10(ghSave.time * nb12 / 1e6 + 1) / 10 + 1
+			var div = mod.p3ep ? 5 : 10
+			return Math.log10(ghSave.time * nb12 / 1e6 + 1) / div + 1
 		},
 	},
 	cost: [1,2,4,6,15,50,1e3,1e14,1e35,1/0,1/0,1/0]

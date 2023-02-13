@@ -839,7 +839,7 @@ var bu = {
 		13: function() {
 			var decays = getRadioactiveDecays('r')
 			var div = 3
-			if (mod.p3ep){
+			if (mod.p3ep) {
 				decays += Math.sqrt(decays) + decays / 3
 				div = 2
 			}

@@ -198,14 +198,9 @@ function getColorPowerProduction(color) {
 }
 
 colorBoosts={
-	r:1,
-	g:1,
-	b:1,
-	dim: {
-		r:1,
-		g:1,
-		b:1
-	}
+	r: 1,
+	g: 1,
+	b: 1
 }
 
 function getCPLog(c) {
@@ -229,13 +224,14 @@ function updateColorPowers(log) {
 	let div6 = 4
 	if (!player.dilation.active) div6--
 
-	colorBoosts.r = Math.pow(log.r,div6 / 6) / 10 + 1
-	if (colorBoosts.r>1.3) colorBoosts.r = Math.sqrt(colorBoosts.r * 1.3)
-	if (colorBoosts.r>2.3 && (!player.dilation.active || getTreeUpgradeLevel(2) > 7 || ghostified)) {
+	colorBoosts.r = Math.pow(log.r, div6 / 6) / 10 + 1
+	if (colorBoosts.r > 1.3) colorBoosts.r = Math.sqrt(colorBoosts.r * 1.3)
+	if (colorBoosts.r > 2.3) {
 		let sc_exp = 0.5
 		if (hasNB(5)) sc_exp += tmp.nb[5] / 2
 		if (sc_exp < 1) colorBoosts.r = Math.pow(colorBoosts.r / 2.3, sc_exp) * 2.3
 	}
+	if (colorBoosts.r > 4) colorBoosts.r = Math.pow(colorBoosts.r * 2, 2/3)
 
 	//Green
 	let m = 1
@@ -332,12 +328,11 @@ function updateQuarksTab(tab) {
 	el("redPower").textContent=shortenMoney(quSave.colorPowers.r)
 	el("greenPower").textContent=shortenMoney(quSave.colorPowers.g)
 	el("bluePower").textContent=shortenMoney(quSave.colorPowers.b)
-	el("redTranslation").textContent=shorten((colorBoosts.r-1)*100)
-	var msg = getFullExpansion(Math.round((colorBoosts.g-1)*100))+(tmp.pe>0?"+"+getFullExpansion(Math.round(tmp.pe*100)):"")
-	el("greenTranslation").textContent=msg
-	el("blueTranslation").textContent=shortenMoney(colorBoosts.b)
+	el("redTranslation").textContent=shortenMoney((colorBoosts.r-1)*100)+"%"
+	el("greenTranslation").textContent="+"+shortenMoney((colorBoosts.g-1)*100)+"%"
+	el("blueTranslation").textContent=shortenMoney(colorBoosts.b)+"x"
 
-	if (hasMasteryStudy("t383")) el("blueTranslationMD").textContent=shorten(getMTSMult(383))
+	if (hasMasteryStudy("t383")) el("blueTranslationMD").textContent=shorten(getMTSMult(383))+"x"
 	if (gotBraveMilestone(8)) {
 		var assortAmount=getAssortAmount()
 		var colors=['r','g','b']

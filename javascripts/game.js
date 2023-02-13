@@ -1755,7 +1755,7 @@ function preInfinityUpdating(diff){
 	}
 	if (player.dontWant && player.firstAmount.gt(0)) player.dontWant = false
 
-	if (isNaN(player.totalmoney)) player.totalmoney = E(10)
+	if (isNaN(player.totalmoney.e)) player.totalmoney = E(10)
 	var tempa = getDimensionProductionPerSecond(1).mul(diff)
 	player.money = player.money.plus(tempa)	
 	player.totalmoney = player.totalmoney.plus(tempa)

@@ -428,7 +428,7 @@ function maxBranchUpg(branch, weak) {
 		if (bData.spin.gte(cost) && bData.upgrades[u] >= scaleStart) {
 			var costMult = Math.pow(2, u + Math.max(3 - u, 1))
 			var toAdd = Math.floor(bData.spin.div(cost).mul(costMult-1).add(1).log(costMult))
-			bData.spin = bData.spin.sub(E_pow(costMult,toAdd).sub(1).div(costMult).mul(cost).min(bData.spin))
+			bData.spin = bData.spin.sub(E_pow(costMult, toAdd).sub(1).div(costMult).mul(cost).min(bData.spin))
 			if (bData.upgrades[u] === undefined) bData.upgrades[u] = 0
 			bData.upgrades[u] += toAdd
 		}
@@ -503,9 +503,9 @@ function getRDPower(branch) {
 
 
 function getBU1Power(branch) {
-	let x = getBranchUpgLevel(branch,1)
+	let x = getBranchUpgLevel(branch, 1)
 	let s = Math.floor(Math.sqrt(0.25 + 2 * x / 120) - 0.5)
-	return s * 120 + (x - s * (s + 1) * 60)/(s + 1)
+	return s * 120 + (x - s * (s + 1) * 60) / (s + 1)
 }
 
 function getBU2Power(branch) {

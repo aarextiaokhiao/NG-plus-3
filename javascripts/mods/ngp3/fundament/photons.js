@@ -121,7 +121,7 @@ let PHOTON = {
 			desc: e => `Gain ${(e * 100).toFixed(1)}% of Positrons in Big Rips.`
 		}, {
 			name: "yellow",
-			eff: a => Math.log10(a + 10),
+			eff: a => mod.p3ep ? a / 5 + 1 : Math.log10(a + 10),
 			desc: e => `Strengthen Nanobenefits by ${e.toFixed(3)}x.`
 		}, {
 			name: "green",
@@ -129,7 +129,7 @@ let PHOTON = {
 			desc: e => `Dilated time gives ^${e.toFixed(3)} boost to Meta Dimensions.`
 		}, {
 			name: "blue",
-			eff: a => Math.log10(a / 3 + 1) + 1,
+			eff: a => mod.p3ep ? a / 10 + 1 : Math.log10(a / 3 + 1) + 1,
 			desc: e => `Nanorewards speed up Decay by ${e.toFixed(3)}x each.`
 		}, {
 			name: "violet",
@@ -137,7 +137,7 @@ let PHOTON = {
 			desc: e => `Intergalactic efficiency exponent caps at ^${e.toFixed(2)}.`
 		}, {
 			name: "ultraviolet",
-			eff: a => a / 10 + 1,
+			eff: a => mod.p3ep ? Math.pow(2, Math.sqrt(a + 1) - 1) : a / 10 + 1,
 			desc: e => `2nd Infinite Time softcap scales ^${e.toFixed(3)} later.`
 		}
 	],

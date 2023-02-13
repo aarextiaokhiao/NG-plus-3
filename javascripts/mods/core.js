@@ -135,7 +135,7 @@ function cacheMods() {
 
 	mod.ngmX = getNGMX(player)
 	mod.ngp3 = mod.ngpp == 2
-	mod.p3ep = mod.ngp3 && mod.ngep
+	mod.p3ep = mod.ngp3 && (mod.ngmu || mod.ngep)
 	mod.udp = mod.ngud >= 2
 	mod.udsp = mod.ngud == 3
 
