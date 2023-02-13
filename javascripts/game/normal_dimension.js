@@ -467,7 +467,7 @@ function getOrSubResource(tier, sub) {
 	let index = "money"
 	if (tier > 2 && (inNC(10) || player.currentChallenge == "postc1")) index = dimTiers[tier-2] + "Amount"
 
-	if (sub !== undefined && !hasAch("ng3p55")) player[index] = player[index].sub(player[index].max(sub))
+	if (sub !== undefined && !hasAch("ng3p55")) player[index] = player[index].sub(sub.min(player[index]))
 	return player[index]
 }
 

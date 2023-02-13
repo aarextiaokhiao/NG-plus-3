@@ -176,7 +176,7 @@ function canBuyTickSpeed() {
 function buyTickSpeed() {
 	if (!canBuyTickSpeed()) return false
 	if (player.tickSpeedCost.gt(player.money)) return false
-	if (!quantumed) player.money = player.money.minus(player.tickSpeedCost)
+	getOrSubResource(1, player.tickSpeedCost)
 	if ((!inNC(5) && player.currentChallenge != "postc5") || inNGM(3)) player.tickSpeedCost = player.tickSpeedCost.mul(player.tickspeedMultiplier)
 	else multiplySameCosts(player.tickSpeedCost)
 	if (costIncreaseActive(player.tickSpeedCost)) player.tickspeedMultiplier = player.tickspeedMultiplier.mul(getTickSpeedCostMultiplierIncrease())
@@ -225,10 +225,8 @@ function buyMaxPostInfTickSpeed(mult) {
 	}
 	player.tickSpeedCost = player.tickSpeedCost.mul(player.tickspeedMultiplier.pow(buying-1)).mul(E_pow(mi, (buying-1)*(buying-2)/2))
 	player.tickspeedMultiplier = player.tickspeedMultiplier.mul(E_pow(mi, buying-1))
-	if (!quantum){
-		if (player.money.gte(player.tickSpeedCost)) player.money = player.money.minus(player.tickSpeedCost)
-		else if (player.tickSpeedMultDecrease > 2) player.money = E(0)
-	}
+	getOrSubResource(1, player.tickSpeedCost)
+
 	player.tickSpeedCost = player.tickSpeedCost.mul(player.tickspeedMultiplier)
 	player.tickspeedMultiplier = player.tickspeedMultiplier.mul(mi)
 	player.postC8Mult = E(1)
@@ -260,7 +258,7 @@ function buyMaxTickSpeed() {
 	if (inNC(2) || player.currentChallenge == "postc1") player.chall2Pow = 0
 	if (cannotUsePostInfTickSpeed()) {
 		while (player.money.gt(player.tickSpeedCost) && (player.tickSpeedCost.lt(Number.MAX_VALUE) || player.tickSpeedMultDecrease > 2 || (player.currentChallenge == "postc5" && !inNGM(3)))) {
-			player.money = player.money.minus(player.tickSpeedCost);
+			getOrSubResource(1, player.tickSpeedCost)
 			if (!inNC(5) && player.currentChallenge != "postc5") player.tickSpeedCost = player.tickSpeedCost.mul(player.tickspeedMultiplier);
 			else multiplySameCosts(player.tickSpeedCost)
 			if (costIncreaseActive(player.tickSpeedCost)) player.tickspeedMultiplier = player.tickspeedMultiplier.mul(getTickSpeedCostMultiplierIncrease())
