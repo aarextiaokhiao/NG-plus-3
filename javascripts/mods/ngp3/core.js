@@ -1,6 +1,6 @@
 //VERSION: 2.31
 let ngp3_ver = 2.31
-let ngp3_build = 20230212
+let ngp3_build = 20230213
 function doNGP3Updates() {
 	if (!aarMod.ngp3_build) aarMod.ngp3_build = 0
 	if (aarMod.ngp3_build < 20221230) quSave.multPower = 0
@@ -676,7 +676,7 @@ function doNGP3UnlockStuff() {
 		let TIMEbool = quSave.time > 10
 
 		if (!inQC(0) && player.money.gt(pow10(getQCGoal())) && MAbool && DONEbool && TIMEbool) doReachAMGoalStuff(chall)
-		if (!beSave.unlocked && player.eternityPoints.gte("1e1200") && bigRipped()) unlockBreaEternity()
+		if (!beSave.unlocked && player.eternityPoints.gte("1e1200") && bigRipped()) unlockBreakEternity()
 		if (!ghSave && isQuantumReached() && bigRipped()) unlockFundament()
 
 		if (quSave.quarks.gte(Number.MAX_VALUE) && !quSave.reachedInfQK) {
@@ -736,6 +736,7 @@ function setupNGP3HTMLAndData() {
 	setupNanofieldHTML()
 	setupToDHTML()
 	setupBraveMilestones()
+	NEUTRINO.setupTab()
 	PHOTON.setupTab()
 	setupBosonicExtraction()
 	setupBosonicUpgrades()

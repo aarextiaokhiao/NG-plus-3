@@ -61,7 +61,6 @@ function higgsReset() {
 	addHiggs(getHiggsGain())
 	if (!hasAch("future")) bosonicLabReset()
 	if (oldHiggs == 0) {
-		updateNeutrinoBoosts()
 		updateBLParticleUnlocks()
 		updateBosonicLimits()
 		updateBosonicStuffCosts()

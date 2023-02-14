@@ -960,7 +960,6 @@ function onNotationChange() {
 		updateBreakEternity()
 	}
 	if (ghostified) {
-		onNotationChangeNeutrinos()
 		updateBosonicStuffCosts()
 		if (!ghSave.wzb.unl) updateBLUnlockDisplay()
 		else if (!ghSave.hb.unl) updateHiggsUnlockDisplay()

@@ -188,8 +188,8 @@ function getDecayRate(branch) {
 
 function getQuarkSpinProduction(branch) {
 	let ret = getBranchUpgMult(branch, 1).mul(getBranchFinalSpeed())
-	if (hasNU(3)) ret = ret.mul(tmp.nu[3])
-	if (hasNU(12)) ret = ret.mul(tmp.nu[12].normal)
+	if (hasNU(3)) ret = ret.mul(ntEff("upg", 3))
+	if (hasNU(12)) ret = ret.mul(ntEff("upg", 12).normal)
 	if (hasAch("ng3p74")) ret = ret.mul(1 + (todSave[branch].decays || 0))
 
 	ret = ret.mul(todspeed)
@@ -479,8 +479,8 @@ function getTreeUpgradeEfficiencyText(){
 	if (!shiftDown) return "Tree upgrade efficiency: "+(tmp.tue*100).toFixed(1)+"%"
 
 	let text = ""
-	if (hasNB(7) && bigRipped()) text += "Neutrino Boost 7: +" + shorten(tmp.nb[7]) + ", "
-	if (hasAch("ng3p62")) text += "Finite Time Reward: +10%, "
+	if (hasNB(7)) text += "Neutrino Boost 7: +" + shorten(ntEff("boost", 7)) + "x, "
+	if (hasAch("ng3p62")) text += "Finite Time Reward: +0.1x, "
 	if (hasBU(43)) text += "Bosonic Lab Upgrade 18: " + shorten(tmp.blu[43]) + "x, "
 
 	if (text == "") return "No multipliers currently"
@@ -489,7 +489,7 @@ function getTreeUpgradeEfficiencyText(){
 
 function getTreeUpgradeEfficiency(mod) {
 	let r = 1
-	if (hasNB(7) && (bigRipped() || mod == "br") && mod != "noNB") r += tmp.nb[7]
+	if (hasNB(7) && mod != "noNB") r += ntEff("boost", 7, 0)
 	if (hasAch("ng3p62")) r += 0.1
 	if (hasBU(43)) r *= tmp.blu[43]
 	return r

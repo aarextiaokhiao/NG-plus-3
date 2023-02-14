@@ -1,7 +1,7 @@
 let PHOTON = {
 	/* CORE */
 	//Unlock
-	req: _ => bigRipped() && player.money.gte(pow10(1e10)),
+	req: _ => bigRipped() && player.money.gte(pow10(2e9)),
 	unlocked: _ => ghSave?.photons.unl,
 	unlock() {
 		ghSave.photons.unl = true
@@ -52,7 +52,6 @@ let PHOTON = {
 	//Feature - Photons
 	photonGain() {
 		let r = E(player.dilation.bestTPOverGhostifies.max(1).log10()).pow(2).div(1e4)
-		if (tmp.nb[10]) r = r.mul(tmp.nb[10])
 		if (isNanoEffectUsed("photons")) r = r.mul(tmp.nf.effects.photons)
 		return r
 	},
@@ -66,7 +65,7 @@ let PHOTON = {
 
 		ghSave.photons.emission[i] = kind.bulk(kind.res())
 	},
-	emissions() {
+	totalEmissions() {
 		let total = 0
 		for (const amt of ghSave.photons.emission) total += amt || 0
 		return total
@@ -103,7 +102,7 @@ let PHOTON = {
 	release(allPlus) {
 		ghSave.photons.light = []
 
-		let total = PHOTON.emissions()
+		let total = PHOTON.totalEmissions()
 		for (const i in PHOTON.lightData) {
 			gain = Math.min(total, PHOTON.lightCap(i, allPlus))
 			ghSave.photons.light.push(gain)
@@ -160,11 +159,11 @@ let PHOTON = {
 	},
 	update() {
 		if (!PHOTON.unlocked()) {
-			el("gphUnl").textContent = "Get "+shortenCosts(pow10(1e10))+" antimatter in Big Rip to unlock Photons."
+			el("gphUnl").textContent = "Get "+shortenCosts(pow10(2e9))+" antimatter in Big Rip to unlock Photons."
 			return
 		}
 
-		el("ph_emission").textContent = getFullExpansion(PHOTON.emissions())
+		el("ph_emission").textContent = getFullExpansion(PHOTON.totalEmissions())
 		el("ph_amt").textContent = shortenMoney(ghSave.photons.amt)
 		el("ph_prod").textContent = "(+" + shortenMoney(PHOTON.photonGain()) + "/s)"
 		el("ph_lighten").textContent = getFullExpansion(ghSave.photons.lighten)
@@ -187,5 +186,4 @@ function updatePhotonUnlocks() {
 	let unl = PHOTON.unlocked()
 	el("gphUnl").style.display = unl ? "none" : ""
 	el("gphDiv").style.display = unl ? "" : "none"
-	el("gphRow").style.display = unl ? "" : "none"
 }

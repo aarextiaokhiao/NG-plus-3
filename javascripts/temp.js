@@ -7,8 +7,6 @@ let tmp = {
 	bru: {},
 	be: false,
 	beu: {},
-	nu: {},
-	nuc: [null,1e6,1e7,1e8,2e8,5e8,2e9,5e9,75e8,1e10,7e12,1e18,1e45,1/0,1/0,1/0],
 }
 
 function updateTemp() {
@@ -55,7 +53,7 @@ function updateInfiniteTimeTemp() {
 	var x = (3 - getTickspeed().log10()) * 0.000005
 	if (mod.ngp3) {
 		if (hasAch("ng3p56")) x *= 1.03
-		if (hasNB(4)) x *= tmp.nb[4]
+		if (hasNB(4)) x *= ntEff("boost", 4)
 		if (tmp.be && !player.dilation.active && beSave.upgrades.includes(8)) x *= getBreakUpgMult(8)
 		x = softcap(x, "inf_time_log_1")
 	}
@@ -101,57 +99,6 @@ function updateReplicantiTemp() {
 
 	data.est = Decimal.div((data.freq ? data.freq.mul(Math.log10(2) / Math.log10(Math.E) * 1e3) : Decimal.add(data.chance, 1).log(Math.E) * 1e3), data.interval)
 	data.estLog = data.est.mul(Math.log10(Math.E))
-}
-
-function updateBRU1Temp() {
-	tmp.bru[1] = 1
-	if (!bigRipped()) return
-	let exp = 1
-	if (hasRipUpg(17)) exp = tmp.bru[17]
-	if (hasNB(7)) exp *= tmp.nb[7]
-	exp *= player.infinityPoints.max(1).log10()
-	tmp.bru[1] = pow10(exp) // BRU1
-}
-
-function updateBRU8Temp() {
-	tmp.bru[8] = 1
-	if (!bigRipped()) return
-	tmp.bru[8] = pow2(getTotalRG()) // BRU8
-	if (!hasNU(11)) tmp.bru[8] = tmp.bru[8].min(Number.MAX_VALUE)
-}
-
-function updateBRU14Temp() {
-	if (!bigRipped()) {
-		tmp.bru[14] = 1
-		return
-	}
-	var ret = Math.min(brSave.spaceShards.div(3e18).add(1).log10()/3,0.4)
-	var val = Math.sqrt(brSave.spaceShards.div(3e15).add(1).log10()*ret+1)
-	if (val > 12) val = 10 + Math.log10(4 + 8 * val)
-	tmp.bru[14] = val //BRU14
-}
-
-function updateBRU15Temp() {
-	let r = Math.sqrt(player.eternityPoints.add(1).log10()) * 3.55
-	if (r > 1e4) r = Math.sqrt(r * 1e4)
-	tmp.bru[15] = r
-}
-
-function updateBRU16Temp() {
-	tmp.bru[16] = player.dilation.dilatedTime.div(1e100).pow(0.155).max(1)
-}
-
-function updateBRU17Temp() {
-	tmp.bru[17] = ghostified ? 3 : 2.9
-}
-
-function updateBigRipUpgradesTemp(){
-	updateBRU17Temp()
-	updateBRU1Temp()
-	updateBRU8Temp()
-	updateBRU14Temp()
-	updateBRU15Temp()
-	updateBRU16Temp()
 }
 
 //Vanilla

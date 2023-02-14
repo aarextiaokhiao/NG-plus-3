@@ -166,6 +166,58 @@ function updateBigRipTab() {
 	bigRipUpgradeUpdating()
 }
 
+function updateBRU1Temp() {
+	tmp.bru[1] = 1
+	if (!bigRipped()) return
+
+	let exp = 1
+	if (hasRipUpg(17)) exp = tmp.bru[17]
+	if (hasNB(8)) exp *= ntEff("boost", 8)
+	exp *= player.infinityPoints.max(1).log10()
+	tmp.bru[1] = pow10(exp) // BRU1
+}
+
+function updateBRU8Temp() {
+	tmp.bru[8] = 1
+	if (!bigRipped()) return
+	tmp.bru[8] = pow2(getTotalRG()) // BRU8
+	if (!hasNU(11)) tmp.bru[8] = tmp.bru[8].min(Number.MAX_VALUE)
+}
+
+function updateBRU14Temp() {
+	if (!bigRipped()) {
+		tmp.bru[14] = 1
+		return
+	}
+	var ret = Math.min(brSave.spaceShards.div(3e18).add(1).log10()/3,0.4)
+	var val = Math.sqrt(brSave.spaceShards.div(3e15).add(1).log10()*ret+1)
+	if (val > 12) val = 10 + Math.log10(4 + 8 * val)
+	tmp.bru[14] = val //BRU14
+}
+
+function updateBRU15Temp() {
+	let r = Math.sqrt(player.eternityPoints.add(1).log10()) * 3.55
+	if (r > 1e4) r = Math.sqrt(r * 1e4)
+	tmp.bru[15] = r
+}
+
+function updateBRU16Temp() {
+	tmp.bru[16] = player.dilation.dilatedTime.div(1e100).pow(0.155).max(1)
+}
+
+function updateBRU17Temp() {
+	tmp.bru[17] = ghostified ? 3 : 2.9
+}
+
+function updateBigRipUpgradesTemp(){
+	updateBRU17Temp()
+	updateBRU1Temp()
+	updateBRU8Temp()
+	updateBRU14Temp()
+	updateBRU15Temp()
+	updateBRU16Temp()
+}
+
 function bigRipUpgradeUpdating() {
 	if (gotBraveMilestone(8)) {
 		el("spaceShards").textContent=shortenDimensions(brSave.spaceShards)
@@ -199,7 +251,7 @@ function setupBreakEternity() {
 	}
 }
 
-function unlockBreaEternity() {
+function unlockBreakEternity() {
 	beSave.unlocked = true
 	$.notify("Congratulations! You have unlocked Break Eternity!", "success")
 	updateBreakEternity()
@@ -318,7 +370,7 @@ function updateBreakEternityUpgradesTemp() {
 	updateBreakEternityUpgrade10Temp()
 
 	//Upgrade 7: EP Mult
-	tmp.beu[7] = E_pow(1e9, beSave.epMultPower)
+	tmp.beu[7] = E_pow(1e9, beSave.epMultPower * Math.max(beSave.epMultPower / 400, 1) ** 3)
 }
 
 function getBEUnls() {

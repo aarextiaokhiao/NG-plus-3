@@ -129,8 +129,8 @@ function getPostC3Base() {
 	if (inNGM(3)) perGalaxy = 0.002
 	if (inQC(2)) perGalaxy = 0
 
-	if (hasNB(9)) perGalaxy *= tmp.nb[9]
-	if (hasNU(12)) perGalaxy *= tmp.nu[12].free
+	if (hasNB(9)) perGalaxy *= ntEff("boost", 9)
+	if (hasNU(12)) perGalaxy *= ntEff("upg", 12).free
 	if (inNGM(2)) return player.galaxies * perGalaxy + 1.05
 
 	if (tmp.cp > 1) {

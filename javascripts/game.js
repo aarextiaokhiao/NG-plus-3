@@ -93,8 +93,8 @@ function setupDimensionHTML() {
 		html += `<tr id='${d}Row' style='font-size:15px'>
 			<td id="D${d}" width="32%" style='position: relative'> </td>
 			<td id="A${d}"></td>
-			<td width="10%"><button id="B${d}" style="color:black; height: 25px; font-size: 10px; width: 135px" class="storebtn" onclick="buyOneDimension(${d})"></button></td>
-			<td width="10%"><button id="M${d}" style="color:black; height: 25px; font-size: 10px; width: 135px" class="storebtn" onclick="buyManyDimension(${d})"></button></td>
+			<td width="10%"><button id="B${d}" style="color:black; height: 25px; font-size: 10px; width: 125px" class="storebtn" onclick="buyOneDimension(${d})"></button></td>
+			<td width="10%"><button id="M${d}" style="color:black; height: 25px; font-size: 10px; width: 165px" class="storebtn" onclick="buyManyDimension(${d})"></button></td>
 		</tr>`
 	}
 	el("dimTable").innerHTML = html
@@ -1595,7 +1595,6 @@ function doBosonsUnlockStuff() {
 	ngp3_feature_notify("bl")
 
 	updateTemp()
-	updateNeutrinoBoosts()
 	updateBLUnlocks()
 	updateBosonicLimits()
 }

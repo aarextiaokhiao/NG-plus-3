@@ -34,8 +34,8 @@ function getQuarkChargeProduction() {
 	let ret = E(1)
 	if (isNanoEffectUsed("preon_charge")) ret = ret.mul(tmp.nf.effects.preon_charge)
 	if (hasMasteryStudy("t421")) ret = ret.mul(getMTSMult(421))
-	if (hasNU(3)) ret = ret.mul(tmp.nu[3])
-	if (hasNU(7)) ret = ret.mul(tmp.nu[7])
+	if (hasNU(3)) ret = ret.mul(ntEff("upg", 3))
+	if (hasNU(7)) ret = ret.mul(ntEff("upg", 7))
 	return ret
 }
 

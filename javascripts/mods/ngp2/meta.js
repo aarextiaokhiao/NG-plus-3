@@ -145,7 +145,7 @@ function getMetaShiftRequirement() {
 	}
 	data.amount += data.mult * Math.max(mdb - 4, 0)
 	if (hasMasteryStudy("d13")) data.amount -= getTreeUpgradeEffect(1)
-	if (hasNU(1)) data.amount -= tmp.nu[1]
+	if (hasNU(1)) data.amount -= ntEff("upg", 1, 0)
 
 	data.scalingStart = inQC4 ? 55 : 15
 	if (player.meta.resets >= data.scalingStart) {
@@ -431,7 +431,7 @@ function getDil15Bonus() {
 	let x = 1
 	let max = 3
 	if (hasNB(3)) {
-		x = tmp.nb[3]
+		x = ntEff("boost", 3)
 		max = 1/0
 	}
 	if (mod.udsp) x *= Math.min(Math.max(player.dilation.dilatedTime.max(1).log10() / 10 - 6.25, 2), max)

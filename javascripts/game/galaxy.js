@@ -8,7 +8,7 @@ function galaxyReset(bulk) {
 	if (player.sacrificed == 0 && bulk) giveAchievement("I don't believe in Gods");
 	if (mod.ngp3 && bulk) {
 		if (quSave.autoOptions.sacrifice) sacrificeGalaxy(6, true)
-		if (hasNB(1)) gainNeutrinos(bulk, "gen")
+		if (hasNB(1)) NEUTRINO.onGalaxy(bulk)
 	}
 
 	let am = player.money
@@ -61,7 +61,7 @@ function getGalaxyRequirement(offset = 0, display) {
 			if (hasGluonUpg("rg6")) speed *= 0.867
 			if (hasGluonUpg("gb6")) speed /= 1 + Math.pow(player.infinityPower.plus(1).log10(), 0.25) / 2810
 			if (hasGluonUpg("br6")) speed /= 1 + player.meta.resets / 340
-			if (hasNB(6)) speed /= tmp.nb[6]
+			if (hasNB(6)) speed /= ntEff("boost", 6)
 			if (hasBU(45)) speed /= tmp.blu[45]
 			if (hasAch("ng3p98")) speed *= 0.9
 			amount += getDistantAdd(tmp.grd.galaxies-distantStart+1)*speed

@@ -8,7 +8,7 @@ function setupFundament() {
 		milestones: 0,
 		ghostParticles: E(0),
 		multPower: 1,
-		neutrinos: getBrandNewNeutrinoData(),
+		neutrinos: NEUTRINO.setup(),
 		automatorGhosts: setupAutomaticGhostsData(),
 		photons: PHOTON.setup(),
 		bl: getBrandNewBosonicLabData(),
@@ -36,11 +36,6 @@ function loadFundament(reset) {
 	ghSave.times = nP(ghSave.times)
 	updateBraveMilestones()
 	updateAutoGhosts(true)
-	for (var u=5;u<13;u++) {
-		if (u%3==1) el("neutrinoUpg"+u).parentElement.parentElement.style.display=u>ghSave.times+2?"none":""
-		else el("neutrinoUpg"+u).style.display=u>ghSave.times+2?"none":""
-	}
-	updateNeutrinoBoosts()
 	updatePhotonUnlocks()
 
 	if (!blSave.usedEnchants.length) blSave.usedEnchants=[]
@@ -119,9 +114,7 @@ function ghostifyReset(force, gain) {
 			el("ghostparticles").style.display = ""
 			giveAchievement("Kee-hee-hee!")
 		} else if (ghSave.times > 2 && ghSave.times < 11) {
-			$.notify("You unlocked " + (ghSave.times+2) + "th Neutrino upgrade!", "success")
-			if (ghSave.times % 3 > 1) el("neutrinoUpg" + (ghSave.times + 2)).parentElement.parentElement.style.display = ""
-			else el("neutrinoUpg" + (ghSave.times + 2)).style.display = ""
+			$.notify("You unlocked " + (ghSave.times + 2) + "th Neutrino upgrade!", "success")
 		}
 
 		for (var i=ghSave.last10.length-1; i>0; i--) ghSave.last10[i] = ghSave.last10[i-1]
@@ -141,7 +134,6 @@ function ghostifyReset(force, gain) {
 	}
 
 	var bm = ghSave.milestones
-	if (!force && bm > 6 && hasAch("ng3p68")) gainNeutrinos(Decimal.mul(2e3 * brSave.bestGals, bulk), "all")
 
 	doReset("funda")
 }
@@ -284,9 +276,7 @@ function denyGhostify() {
 function updateGhostifyTempStuff(){
 	updateBosonicLabTemp()
 	PHOTON.temp()
-
-	updateNeutrinoUpgradesTemp()
-	updateNeutrinoBoostsTemp()
+	NEUTRINO.temp()
 }
 
 //Animations
@@ -438,7 +428,7 @@ function showGhostifyTab(tabName) {
 }
 
 function updateGhostifyTabs() {
-	if (el("neutrinos").style.display == "block") updateNeutrinosTab()
+	if (el("neutrinos").style.display == "block") NEUTRINO.update()
 	if (el("automaticghosts").style.display == "block") {
 		if (gotBraveMilestone(8)) updateQuantumWorth("display")
 		updateAutomatorHTML()

@@ -228,7 +228,7 @@ function updateColorPowers(log) {
 	if (colorBoosts.r > 1.3) colorBoosts.r = Math.sqrt(colorBoosts.r * 1.3)
 	if (colorBoosts.r > 2.3) {
 		let sc_exp = 0.5
-		if (hasNB(5)) sc_exp += tmp.nb[5] / 2
+		if (hasNB(5)) sc_exp += ntEff("boost", 5, 0) / 2
 		if (sc_exp < 1) colorBoosts.r = Math.pow(colorBoosts.r / 2.3, sc_exp) * 2.3
 	}
 	if (colorBoosts.r > 4) colorBoosts.r = Math.pow(colorBoosts.r * 2, 2/3)
@@ -248,7 +248,7 @@ function updateColorPowers(log) {
 	bLog = Math.sqrt(log.b + 1.5) - Math.sqrt(1.5)
 
 	if (bLog > 3) bLog = Math.sqrt(bLog  * 3)
-	if (hasNU(14)) bLog *= tmp.nu[14]
+	if (hasNU(14)) bLog *= ntEff("upg", 14)
 	colorBoosts.b = pow10(bLog)
 }
 
@@ -419,10 +419,9 @@ function updateGluonsTabOnUpdate(mode) {
 	var names = ["rg","gb","br"]
 	var sevenUpgrades = hasMasteryStudy("d9")
 	var eightUpgrades = hasMasteryStudy("d13")
-	if (mode == undefined) for (r = 3; r < 5; r++) el("gupgrow" + r).style.display = sevenUpgrades ? "" : "none"
 	for (c = 0; c < 3; c++) {
-		if (mode==undefined) {
-			el(names[c] + "upg7col").setAttribute("colspan", eightUpgrades ? 1 : 2)
+		if (mode == undefined) {
+			el(names[c] + "upg7col").style.display = sevenUpgrades ? "" : "none"
 			el(names[c] + "upg8col").style.display = eightUpgrades ? "" : "none"
 		}
 		if (mode == undefined || mode == "display") {

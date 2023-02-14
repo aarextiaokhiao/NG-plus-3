@@ -1022,18 +1022,6 @@ function getBrandNewNanofieldData(){
 	}
 }
 
-function getBrandNewNeutrinoData(){
-	return {
-		electron: E(0),
-		mu: E(0),
-		tau: E(0),
-		generationGain: 1,
-		boosts: 0,
-		multPower: 1,
-		upgrades: []
-	}
-}
-
 function getBrandNewBosonicLabData() {
 	let r = {
 		watt: E(0),

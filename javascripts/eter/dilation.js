@@ -120,7 +120,7 @@ function getDilExp(disable) {
 	if (mod.ngpp && !mod.udsp) ret += getDilUpgPower(4) / 4
 	if (mod.ngp3) {
 		if ((!bigRipped() || hasRipUpg(11)) && hasMasteryStudy("d13") && disable != "TU3") ret += getTreeUpgradeEffect(2)
-		if (hasNB(1) && disable != "neutrinos") ret += tmp.nb[1]
+		if (hasNB(1) && disable != "neutrinos") ret += ntEff("boost", 1, 0)
 	}
 	return ret
 }

@@ -1721,7 +1721,6 @@ function onLoad(noOffline) {
 	maybeShowFillAll()
 	updateBreakEternity()
 	updateLastTenGhostifies()
-	onNotationChangeNeutrinos()
 
 	if (mod.rs) {
 		if (el("timestudies").style.display=="block") showEternityTab("ers_timestudies",true)

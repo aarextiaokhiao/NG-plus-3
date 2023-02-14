@@ -48,7 +48,7 @@ function sacrificeGalaxy(auto = false) {
 function getElectronBoost(mod) {
 	var r = quSave.electrons.amount
 	var ss = 149840
-	if (hasNU(13)) ss += tmp.nu[13]
+	if (hasNU(13)) ss += ntEff("upg", 13, 0)
 	if (r > 37460 + ss) r = Math.sqrt((r - ss) * 37460) + ss
 
 	if (hasGluonUpg("rg4") && mod != "no-rg4") r *= 0.7
@@ -59,7 +59,7 @@ function getElectronBoost(mod) {
 function getElectronGainMult() {
 	let ret = 1
 	if (hasNU(5)) ret = 3
-	if (bigRipped()) ret *= PHOTON.eff(1)
+	if (bigRipped()) ret *= PHOTON.eff(1, 0)
 	else if (!inQC(0)) return 0
 	return ret
 }

@@ -171,8 +171,8 @@ function getEmperorDimensionMultiplier(dim) {
 	let ret = tmp.edgm //Global multiplier of all Emperor Dimensions
 	if (dim == 8) ret = ret.mul(E_pow(1.1, quSave.emperorDimensions[8].perm - 8).max(1))
 	if (dim == 1 && hasAch("ng3p54")) ret = ret.mul(Math.pow(todSave.r.spin.plus(10).log10(), 3))
-	if (hasNU(7) && dim % 2 == 1) ret = ret.mul(tmp.nu[7])
-	if (hasNB(11)) ret = ret.pow(tmp.nb[11])
+	if (hasNU(7) && dim % 2 == 1) ret = ret.mul(ntEff("upg", 7))
+	if (hasNB(11)) ret = ret.pow(ntEff("boost", 11))
 	return ret
 }
 

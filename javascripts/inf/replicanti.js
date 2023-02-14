@@ -218,7 +218,7 @@ function getReplSpeed() {
 	}
 	inc = inc + 1
 	if (hasGluonUpg("gb2")) exp *= 2
-	if (hasNB(12)) exp *= tmp.nb[12]
+	if (hasNB(12)) exp *= ntEff("boost", 12)
 	if (hasBU(35)) exp += tmp.blu[35].rep
 	if (hasBU(44)) exp += tmp.blu[44]
 	return {inc: inc, exp: exp}
