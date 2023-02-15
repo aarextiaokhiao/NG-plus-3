@@ -1672,8 +1672,6 @@ function onLoad(noOffline) {
 
 	clearOldAchieves()
 
-	el("epmult").innerHTML = "You gain 5 times more EP<p>Currently: "+shortenDimensions(player.epmult)+"x<p>Cost: "+shortenDimensions(player.epmultCost)+" EP"
-
 	updateBoughtTimeStudies()
 	performedTS = false
 	updateVersionsONLOAD()
@@ -1719,7 +1717,6 @@ function onLoad(noOffline) {
 	updateQCTimes()
 	updatePCCompletions()
 	maybeShowFillAll()
-	updateBreakEternity()
 	updateLastTenGhostifies()
 
 	if (mod.rs) {

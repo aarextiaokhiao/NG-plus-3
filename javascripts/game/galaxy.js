@@ -46,18 +46,9 @@ function getGalaxyRequirement(offset = 0, display) {
 		if (player.currentEternityChall == "eterc10" && beSave.upgrades.includes(9)) amount /= getBreakUpgMult(9)
 	}
 	if (!mod.rs) {
-		tmp.grd.speed = 1
-		let ghostlySpeed = tmp.be ? 55 : 1
-		let div = 1e4
-		let over = tmp.grd.galaxies / (302500 / ghostlySpeed)
-		if (over >= 1) {
-			tmp.grd.speed = Math.pow(2, (tmp.grd.galaxies + 1 - 302500 / ghostlySpeed) * ghostlySpeed / div)
-			scaling = Math.max(scaling, 4)
-		}
-
 		let distantStart = getDistantScalingStart()
 		if (tmp.grd.galaxies >= distantStart) {
-			let speed = tmp.grd.speed
+			let speed = 1
 			if (hasGluonUpg("rg6")) speed *= 0.867
 			if (hasGluonUpg("gb6")) speed /= 1 + Math.pow(player.infinityPower.plus(1).log10(), 0.25) / 2810
 			if (hasGluonUpg("br6")) speed /= 1 + player.meta.resets / 340
@@ -74,7 +65,7 @@ function getGalaxyRequirement(offset = 0, display) {
 
 		let remoteStart = getRemoteScalingStart()
 		if (tmp.grd.galaxies >= remoteStart && !tmp.be && !hasNU(6)) {
-			let speed2 = tmp.grd.speed
+			let speed2 = 1
 			if (hasGluonUpg("rg7")) speed2 *= 0.9
 			if (hasGluonUpg("gb7")) speed2 /= 1+Math.log10(1+player.infinityPoints.max(1).log10())/100
 			if (hasGluonUpg("br7")) speed2 /= 1+Math.log10(1+player.eternityPoints.max(1).log10())/80
@@ -108,8 +99,7 @@ function getDistantScalingStart() {
 	if (player.timestudy.studies.includes(224)) n += Math.floor(player.resets/2000)
 	if (bigRipped() && hasRipUpg(15)) n += tmp.bru[15]
 
-	if (tmp.grd.speed == 1) return Math.max(n, 0)
-	return n
+	return Math.max(n, 0)
 }
 
 function getDistantAdd(x) {

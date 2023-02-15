@@ -41,7 +41,7 @@ var softcap_data = {
 		2: {
 			func: "pow",
 			start() {
-				let r = 12e6
+				let r = 1.2e7
 				r *= PHOTON.eff(6)
 				return r
 			},

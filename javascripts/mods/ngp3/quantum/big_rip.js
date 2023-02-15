@@ -197,7 +197,7 @@ function updateBRU14Temp() {
 
 function updateBRU15Temp() {
 	let r = Math.sqrt(player.eternityPoints.add(1).log10()) * 3.55
-	if (r > 1e4) r = Math.sqrt(r * 1e4)
+	if (r > 1e3) r = Math.sqrt(r * 1e3)
 	tmp.bru[15] = r
 }
 
@@ -229,8 +229,7 @@ function bigRipUpgradeUpdating() {
 	el("bigripupg1current").textContent=shortenDimensions(tmp.bru[1])
 	el("bigripupg8current").textContent=shortenDimensions(tmp.bru[8])+(Decimal.gte(tmp.bru[8],Number.MAX_VALUE)&&!hasNU(11)?"x (cap)":"x")
 	el("bigripupg14current").textContent=tmp.bru[14].toFixed(2)
-	var bru15effect = tmp.bru[15]
-	el("bigripupg15current").textContent=bru15effect < 999.995 ? bru15effect.toFixed(2) : getFullExpansion(Math.round(bru15effect))
+	el("bigripupg15current").textContent=shorten(tmp.bru[15])
 	el("bigripupg16current").textContent=shorten(tmp.bru[16])
 	el("bigripupg17current").textContent=tmp.bru[17]
 }
@@ -254,13 +253,11 @@ function setupBreakEternity() {
 function unlockBreakEternity() {
 	beSave.unlocked = true
 	$.notify("Congratulations! You have unlocked Break Eternity!", "success")
-	updateBreakEternity()
 }
 
 function breakEternity() {
 	beSave.break = !beSave.break
 	beSave.did = true
-	el("breakEternityBtn").textContent = (beSave.break ? "FIX" : "BREAK") + " ETERNITY"
 	if (beSave.break && el("timedimensions").style.display == "block") showDimTab("antimatterdimensions")
 	if (!player.dilation.active && isSmartPeakActivated) {
 		EPminpeakType = 'normal'
@@ -341,14 +338,11 @@ function updateBreakEternityUpgrade8Temp(){
 }
 
 function updateBreakEternityUpgrade9Temp(){
-	var em = beSave.eternalMatter
-	var x = em.div("1e335").add(1).pow(0.05 * Math.log10(4))
-	tmp.beu[9] = x.toNumber()
+	tmp.beu[9] = 1
 }
 
 function updateBreakEternityUpgrade10Temp(){
-	var ep = player.eternityPoints
-	tmp.beu[10] = Math.max(Math.log10(ep.add(1).log10() + 1) - 1, 1)
+	tmp.beu[10] = 1
 }
 
 function updateBreakEternityUpgradesTemp() {
@@ -396,7 +390,6 @@ function buyBreakUpg(id) {
 		el("breakUpg7Mult").textContent = shortenDimensions(getBreakUpgMult(7))
 		el("breakUpg7Cost").textContent = shortenDimensions(getBreakUpgCost(7))
 	} else beSave.upgrades.push(id)
-	el("eternalMatter").textContent = shortenDimensions(beSave.eternalMatter)
 }
 
 function getBreakUpgMult(id) {
@@ -412,38 +405,40 @@ function maxBuyBEEPMult() {
 	beSave.eternalMatter = beSave.eternalMatter.sub(toSpend)
 	if (!gotBraveMilestone(15)) beSave.eternalMatter = beSave.eternalMatter.round()
 
-	el("eternalMatter").textContent = shortenDimensions(beSave.eternalMatter)
 	el("breakUpg7Mult").textContent = shortenDimensions(getBreakUpgMult(7))
 	el("breakUpg7Cost").textContent = shortenDimensions(getBreakUpgCost(7))
 }
 
 function updateBreakEternity() {
-	if (!mod.ngp3) return
+	let unl = beSave?.unlocked
+	el("breakEternityReq").style.display = bigRipped() && !unl ? "" : "none"
+	el("breakEternityReq").textContent = "Get " + shortenCosts(E("1e1200")) + " EP to Break Eternity."
+	el("breakEternityNoBigRip").style.display = !bigRipped() && unl ? "" : "none"
+	el("breakEternityBtn").style.visibility = bigRipped() && unl ? "visible" : "hidden"
 
-	let unl = beSave && beSave.unlocked
-	el("breakEternityReq").style.display = unl ? "none" : ""
-
-	if (unl) {
-		el("breakEternityNoBigRip").style.display = bigRipped() ? "none" : ""
-		el("breakEternityBtn").style.display = bigRipped() ? "" : "none"
-		el("breakEternityBtn").textContent = (beSave.break ? "FIX" : "BREAK") + " ETERNITY"
+	let broke = brokeEternity()
+	el("eternityUpgrades").style.display = !broke ? "" : "none"
+	el("eternalMatterDiv").style.display = broke ? "" : "none"
+	el("breakEternityUpgrades").style.display = broke ? "" : "none"
+	el("breakUpg7").style.visibility = broke ? "visible" : "hidden"
+	el("breakUpg7Max").style.visibility = broke ? "visible" : "hidden"
+	el("beShortcut").style.display = broke ? "" : "none"
+	if (broke) {
 		for (var u = 1; u < getBEUnls(); u++) el("breakUpg" + u + "Cost").textContent = shortenDimensions(getBreakUpgCost(u))
 		el("breakUpg7MultIncrease").textContent = shortenDimensions(1e9)
-		el("breakUpg7Mult").textContent = shortenDimensions(getBreakUpgMult(7))
-	} else {
-		el("breakEternityReq").textContent = "You need to get " + shorten(E("1e1200")) + " EP before you can Break Eternity."
-		el("breakEternityNoBigRip").style.display = "none"
 	}
 }
 
 function breakEternityDisplay(){
-	el("eternalMatter").textContent = shortenDimensions(beSave.eternalMatter)
+	if (!beSave?.unlocked) return
+
+	el("breakEternityBtn").innerHTML = (beSave.break ? "FIX" : "BREAK") + " ETERNITY"
+	el("eternalMatter").innerHTML = shortenDimensions(beSave.eternalMatter)
 	for (var u = 1; u < getBEUnls(); u++) {
 		el("breakUpg" + u).className = (beSave.upgrades.includes(u) && u != 7) ? "eternityupbtnbought" : beSave.eternalMatter.gte(getBreakUpgCost(u)) ? "eternityupbtn" : "eternityupbtnlocked"
 		if (u == 8) el("breakUpg8Mult").textContent = (getBreakUpgMult(8) * 100 - 100).toFixed(1)
 		else if (u != 7 && el("breakUpg" + u + "Mult")) el("breakUpg" + u + "Mult").textContent = shortenMoney(getBreakUpgMult(u))
 	}
-	el("beShortcut").style.display = bigRipped() ? "" : "none"
 	if (bigRipped()) {
 		el("eterShortcutEM").textContent=shortenDimensions(beSave.eternalMatter)
 		el("eterShortcutEP").textContent=shortenDimensions(player.eternityPoints)

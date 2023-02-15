@@ -432,6 +432,8 @@ el("infiMult").onclick = function() {
 
 
 function updateEternityUpgrades() {
+	el("epmult").innerHTML = "Gain 5x more EP<p>Currently: "+shortenDimensions(player.epmult)+"x<p>Cost: "+shortenDimensions(player.epmultCost)+" EP"
+
 	el("eter1").className = (player.eternityUpgrades.includes(1)) ? "eternityupbtnbought" : (player.eternityPoints.gte(5)) ? "eternityupbtn" : "eternityupbtnlocked"
 	el("eter2").className = (player.eternityUpgrades.includes(2)) ? "eternityupbtnbought" : (player.eternityPoints.gte(10)) ? "eternityupbtn" : "eternityupbtnlocked"
 	el("eter3").className = (player.eternityUpgrades.includes(3)) ? "eternityupbtnbought" : (player.eternityPoints.gte(50e3)) ? "eternityupbtn" : "eternityupbtnlocked"
@@ -478,7 +480,6 @@ function buyEPMult() {
 		}
 		player.eternityPoints = player.eternityPoints.minus(player.epmultCost)
 		player.epmultCost = getEPCost(Math.round(player.epmult.ln()/Math.log(5)))
-		el("epmult").innerHTML = "You gain 5 times more EP<p>Currently: "+shortenDimensions(player.epmult)+"x<p>Cost: "+shortenDimensions(player.epmultCost)+" EP"
 		updateEternityUpgrades()
 	}
 }
@@ -512,7 +513,6 @@ function buyMaxEPMult() {
 	if (isNaN(newEP.e)) player.eternityPoints = E(0)
 	player.epmult = player.epmult.mul(E_pow(5, toBuy))
 	player.epmultCost = getEPCost(bought+toBuy)
-	el("epmult").innerHTML = "You gain 5 times more EP<p>Currently: "+shortenDimensions(player.epmult)+"x<p>Cost: "+shortenDimensions(player.epmultCost)+" EP"
 }
 
 function playerInfinityUpgradesOnEternity() {
@@ -1345,7 +1345,6 @@ function eternity(force, auto, dil, presetLoad) {
 			beSave.eternalMatter = beSave.eternalMatter.add(getEMGain())
 			if (!gotBraveMilestone(15)) beSave.eternalMatter = beSave.eternalMatter.round()
 			array = [player.thisEternity, getEMGain(), "b"]
-			updateBreakEternity()
 		}
 		addEternityTime(array)
 		updateLastTenEternities
@@ -1404,10 +1403,7 @@ function eternity(force, auto, dil, presetLoad) {
 		showDimTab("timedimensions")
 	}
 
-	if (mod.ngp3) {
-		if (quantumed) updateColorCharge()
-		updateBreakEternity()
-	}
+	if (quantumed) updateColorCharge()
 	doAutoEterTick()
 }
 
@@ -1978,7 +1974,7 @@ function doGhostifyButtonDisplayUpdating(diff){
 	var ghostifyGains = []
 	if (ghostified) {
 		ghostifyGains.push(shortenDimensions(getGHPGain()) + " Elementary Particles")
-		if (hasAch("ng3p75")) ghostifyGains.push(shortenDimensions(Decimal.mul(6e3 * brSave.bestGals, getGhostifiedGain()).mul(getNeutrinoGain())) + " Neutrinos")
+		//if (hasAch("ng3p75")) ghostifyGains.push(shortenDimensions(Decimal.mul(6e3 * brSave.bestGals, getGhostifiedGain()).mul(getNeutrinoGain())) + " Neutrinos")
 		if (hasBU(15)) ghostifyGains.push(getFullExpansion(getGhostifiedGain()) + " Fundaments")
 	}
 

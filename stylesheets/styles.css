@@ -1560,6 +1560,9 @@ td {
 .table_fix td {
 	text-align: center
 }
+.table_top_text td {
+	vertical-align: 0
+}
 
 
 dt {

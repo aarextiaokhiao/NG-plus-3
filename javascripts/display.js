@@ -391,7 +391,10 @@ function updateTabDisplay() {
 	if (el("statistics").style.display == "block") displayStats()
 	if (el("challenges").style.display == "block") challengeOverallDisplayUpdating()
 	if (el("infinity").style.display == "block") INFINITYUPGRADESDisplay()
-	if (el("eternitystore").style.display == "block") ETERNITYSTOREDisplay()
+	if (el("eternitystore").style.display == "block") {
+		ETERNITYSTOREDisplay()
+		breakEternityDisplay()
+	}
 	if (el("quantumtab").style.display == "block") updateQuantumTabs()
 	if (el("replicants").style.display == "block") updateReplicantsTab()
 	if (el("ghostify").style.display == "block") updateGhostifyTabs()

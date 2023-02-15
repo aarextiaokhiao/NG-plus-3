@@ -957,14 +957,12 @@ function onNotationChange() {
 		updateMasteryStudyTextDisplay()
 		updateReplicants("notation")
 		updateTODStuff()
-		updateBreakEternity()
 	}
 	if (ghostified) {
 		updateBosonicStuffCosts()
 		if (!ghSave.wzb.unl) updateBLUnlockDisplay()
 		else if (!ghSave.hb.unl) updateHiggsUnlockDisplay()
 	}
-	el("epmult").innerHTML = "You gain 5 times more EP<p>Currently: "+shortenDimensions(player.epmult)+"x<p>Cost: "+shortenDimensions(player.epmultCost)+" EP"
 	el("achmultlabel").textContent = "Current achievement multiplier on each Dimension: " + shortenMoney(player.achPow) + "x"
 	if (hasAch("ng3p18") || hasAch("ng3p37")) {
 		el('bestTP').textContent="Your best"+(ghostified ? "" : " ever")+" Tachyon particles"+(ghostified ? " in this Fundament" : "")+" was "+shorten(player.dilation.bestTP)+"."

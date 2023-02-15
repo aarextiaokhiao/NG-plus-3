@@ -293,7 +293,7 @@
 				<br><br>
 
 				<b>(NG+3 v2.31: Ghostify Respecced)</b><br>
-				<b class="red">(Beta: 2/13/23 Build)</b><br>
+				<b class="red">(Beta: 2/14/23 Build)</b><br>
 				By <a href="https://aarextiaokhiao.github.io/">Aarex</a>, pg132, and usavictor.
 				<br><br>
 
@@ -3260,8 +3260,10 @@
 				<div style="height: 60px;"></div>
 			</div>
 			<div  class="eternitytab" id="eternityupgrades">
-				<br>
-				<table class="table" style="margin: 0 auto">
+				<div id="breakEternityReq"></div>
+				<div id="breakEternityNoBigRip">Break Eternity only works if you big rip the universe again.</div>
+				<div id="eternalMatterDiv"><span id="eternalMatter" style="font-size:35px"></span> Eternal Matter</div>
+				<table class="top_text_align" id="eternityUpgrades" style="margin: 0 auto">
 					<tr>
 						<td>
 							<button id="eter1" class="eternityupbtn" onclick="buyEternityUpgrade(1, 5)">Infinity Dimensions multiplier equal to unspent EP to the power of 5.<br>Currently: x<br>Cost: 5 EP</button>
@@ -3272,8 +3274,7 @@
 						<td>
 							<button id="eter3" class="eternityupbtn" onclick="buyEternityUpgrade(3, 50e3)">Infinity Dimensions multiplier based on sum of Infinity Challenge times<br>Currently: Xx<br>Cost: 50 K EP</button>
 						</td>
-					</tr>
-					<tr id="eterrow2">
+					</tr><tr id="eterrow2">
 						<td>
 							<button id="eter4" class="eternityupbtn" onclick="buyEternityUpgrade(4, 1e16)">Your achievement bonus affects Time Dimensions<br>Cost: 1e16 EP</button>
 						</td>
@@ -3283,8 +3284,7 @@
 						<td>
 							<button id="eter6" class="eternityupbtn" onclick="buyEternityUpgrade(6, 1e50)">Time Dimensions gain a mulitplier based on days played<br>Cost: 1e50 EP</button>
 						</td>
-					</tr>
-					<tr id="dilationeterupgrow">
+					</tr><tr id="dilationeterupgrow">
 						<td>
 							<button id="eter7" class="eternityupbtn" onclick="buyEternityUpgrade(7, new Decimal('1e1500'))">Dilated time gain is boosted by antimatter<br>Currently: Xx<br>Cost: 1e1500 EP</button>
 						</td>
@@ -3295,20 +3295,70 @@
 							<button id="eter9" class="eternityupbtn" onclick="buyEternityUpgrade(9, new Decimal('1e3000'))">Dilated time gain is boosted by eternity points<br>Currently: Xx<br>Cost: 1e3000 EP</button>
 						</td>
 					</tr>
+				</table>
+				<table id="breakEternityUpgrades">
 					<tr>
 						<td>
-							<div class="eternityupbtnbought" style="opacity: 0"></div>
+							<button id="breakUpg1" class="eternityupbtnlocked" onclick="buyBreakUpg(1)">Eternity Points and Eternal Matter boost Time Dimensions 1 - 4.<br>Currently: <span id="breakUpg1Mult">1.0</span>x<br>Cost: <span id="breakUpg1Cost"></span> Eternal Matter</button>
 						</td>
 						<td>
-							<button id="epmult" class="eternityupbtn" onclick="buyEPMult()">You gain 5 times more EP<p>Cost: 500 EP</button>
+							<button id="breakUpg2" class="eternityupbtnlocked" onclick="buyBreakUpg(2)">Eternity Points cheapen Antimatter Galaxies.<br>Currently: /<span id="breakUpg2Mult">1.0</span><br>Cost: <span id="breakUpg2Cost"></span> Eternal Matter</button>
 						</td>
 						<td>
-							<div class="eternityupbtnbought" style="opacity: 0"></div>
+							<button id="breakUpg3" class="eternityupbtnlocked" onclick="buyBreakUpg(3)">Eternity Points boost Space Shards.<br>Currently: <span id="breakUpg3Mult">1.0</span>x<br>Cost: <span id="breakUpg3Cost"></span> Eternal Matter</button>
+						</td>
+					</tr><tr>
+						<td>
+							<button id="breakUpg4" class="eternityupbtnlocked" onclick="buyBreakUpg(4)">Eternity Points and Space Shards boost Time Dimensions 4 - 6.<br>Currently: <span id="breakUpg4Mult">1.0</span>x<br>Cost: <span id="breakUpg4Cost"></span> Eternal Matter</button>
+						</td>
+						<td>
+							<button id="breakUpg5" class="eternityupbtnlocked" onclick="buyBreakUpg(5)">Eternity Points and Time Shards multiply Tickspeed Reduction.<br>Currently: <span id="breakUpg5Mult">1.0</span>x<br>Cost: <span id="breakUpg5Cost"></span> Eternal Matter</button>
+						</td>
+						<td>
+							<button id="breakUpg6" class="eternityupbtnlocked" onclick="buyBreakUpg(6)">Eternity Points and Eternal Matter boost Space Shards.<br>Currently: <span id="breakUpg6Mult">1.0</span>x<br>Cost: <span id="breakUpg6Cost"></span> Eternal Matter</button>
+						</td>
+					</tr><tr>
+						<td>
+							<button id="breakUpg8" class="eternityupbtnlocked" onclick="buyBreakUpg(8)">Outside of Dilation, Tachyon Particles strengthen Infinite Time.<br>Currently: <span id="breakUpg8Mult">???</span>%<br>Cost: <span id="breakUpg8Cost"></span> Eternal Matter</button>
+						</td>
+						<td>
+							<button id="breakUpg9" class="eternityupbtnlocked" onclick="buyBreakUpg(9)">???<br>Currently: /<span id="breakUpg9Mult">???</span><br>Cost: <span id="breakUpg9Cost"></span> Eternal Matter</button>
+						</td>
+						<td>
+							<button id="breakUpg10" class="eternityupbtnlocked" onclick="buyBreakUpg(10)">???<br>Currently: <span id="breakUpg10Mult">???</span>x<br>Cost: <span id="breakUpg10Cost"></span> Eternal Matter</button>
+						</td>
+					</tr><tr id="beShortcut">
+						<td>
+							<button class="eternityupbtn" onclick="eternity()">Eternal Matter: <span id="eterShortcutEM"></span><br>Start a normal Eternity run.</button>
+						</td>
+						<td>
+							<button class="eternitychallengestudy" onclick="startEC10()" style="width: 190px; height: 90px; margin: 0">Eternity Points: <span id="eterShortcutEP"></span><br>Start Eternity Challenge 10.</button>
+						</td>
+						<td>
+							<button class="dilationupg" onclick="startDilatedEternity(false, true)" style="width: 190px; height: 90px; margin: 0">Tachyon particles: <span id="eterShortcutTP"></span><br>Dilate time.</button>
 						</td>
 					</tr>
 				</table>
-				<div><button class="storebtn" onclick="buyMaxEPMult()" style="height: 25px; width: 190px; font-size:10px; margin-top: -3px;">Max EP mult</button></div>
-				<div><button id="epmultAuto" class="storebtn" onclick="toggleAutoEter('epmult')" style="height: 25px; width: 190px; font-size:10px; margin-top: 3px;"></button></div>
+				<table>
+					<tr>
+						<td>	
+							<button id="breakUpg7" class="eternityupbtnlocked" onclick="buyBreakUpg(7)">Gain <span id="breakUpg7MultIncrease"></span>x more EP<br>(gets better at 400 levels)<br>Currently: <span id="breakUpg7Mult">1</span>x<br>Cost: <span id="breakUpg7Cost"></span> Eternal Matter</button>
+						</td>
+						<td>
+							<button id="epmult" class="eternityupbtn" onclick="buyEPMult()"></button>
+						</td>
+						<td>
+							<button id="breakEternityBtn" class="eternityupbtn" onclick="breakEternity()" ach-tooltip="Re-enable Antimatter Galaxies and Time Dimensions in Big Rips. However, most TD boosts and normal tickspeed upgrades do nothing, and galaxies scale faster. You can gain Eternal Matter (based on your Time Shards) by Eternitying.">BREAK ETERNITY</button>
+						</td>
+					</tr><tr class="table_top_text">
+						<td><button class="storebtn" id="breakUpg7Max" style="width: 190px; font-size:10px" onclick="maxBuyBEEPMult()">Max</button></td>
+						<td>
+							<button class="storebtn" onclick="buyMaxEPMult()" style="height: 25px; width: 190px; font-size:10px">Max</button><br>
+							<button id="epmultAuto" class="storebtn" onclick="toggleAutoEter('epmult')" style="height: 25px; width: 190px; font-size:10px; margin-top: 3px;"></button>
+						</td>
+						<td></td>
+					</tr>
+				</table>
 			</div>
 			<div class="eternitytab" id="milestones">
 				<table class="table" align="center" style="margin: auto" id="milestones">
@@ -3627,7 +3677,6 @@
 					<td id='electronstabbtn'><button class="secondarytabbtn" onclick="showQuantumTab('electrons')">Positrons</button></td>
 					<td id='todtabbtn'><button class="secondarytabbtn" onclick="showQuantumTab('tod')">Decay</button></td>
 					<td id='riptabbtn'><button class="secondarytabbtn" onclick="showQuantumTab('bigrip')">Big Rip</button></td>
-					<td id="betabbtn"><button class="secondarytabbtn" onclick="showQuantumTab('breakEternity')">Break Eternity</button></td>
 					<td><button class="secondarytabbtn" onclick="showQuantumTab('speedruns')">Speedrun Milestones</button></td>
 				</tr>
 			</table>
@@ -3874,68 +3923,12 @@
 						<td><button class='gluonupgrade unavailablebtn' id="bigripupg15" style='font-size: 10px' onclick='buyBigRipUpg(15)'>Eternity Points make Distant Antimatter Galaxies scaling start later.<br>Currently: +<span id="bigripupg15current">0</span><br>Cost: <span id="bigripupg15cost"></span> Space Shards</button></td>
 						<td><button class='gluonupgrade unavailablebtn' id="bigripupg16" onclick='buyBigRipUpg(16)'>Dilated time boosts Seventh Time Dimension.<br>Currently: <span id="bigripupg16current">1.00</span>x<br>Cost: <span id="bigripupg16cost"></span> Space Shards</button></td>
 					</tr>
-				</table>
-				<table class="table" align="center" style="margin: auto">
 					<tr>
+						<td></td>
 						<td><button class='gluonupgrade unavailablebtn' id="bigripupg17" onclick='buyBigRipUpg(17)'>Reactivate the first upgrade, and raise it by ^<span id="bigripupg17current">3</span>.<br>Cost: <span id="bigripupg17cost"></span> Space Shards</button></td>
 						<td><button class='gluonupgrade unavailablebtn' id="bigripupg18" onclick='buyBigRipUpg(18)'>Keep Tachyon Particles.<br>Cost: <span id="bigripupg18cost"></span> Space Shards</button></td>
 					</tr>
 				</table>
-				<div id="breakEternityReq"></div>
-			</div><div class="quantumtab" id="breakEternity" style="font-size: 11px">
-				<div id="breakEternityNoBigRip">Break Eternity only works if you big rip the universe again.</div>
-				<div id="breakEternityShop">
-					<span id="eternalMatter" style="font-size:35px"></span> Eternal Matter<br>
-					<table class="table" style="margin: 0 auto">
-						<tr>
-							<td></td>
-							<td>
-								<button id="breakEternityBtn" class="eternityupbtn" onclick="breakEternity()" ach-tooltip="Remove the disabilities of normal galaxies and Time Dimensions, but all TD boosts do not work except TS11, TS171, and 'Infinite Time' reward. You can gain Eternal Matter (based on your Time Shards) by Eternitying. Normal tickspeed upgrades do nothing if you are not in EC10. Normal galaxies don’t get cancelled, but its costs are way higher.">BREAK ETERNITY</button>
-							</td>
-						</tr><tr>
-							<td>
-								<button id="breakUpg1" class="eternityupbtnlocked" onclick="buyBreakUpg(1)">Eternity Points and Eternal Matter boost Time Dimensions 1 - 4.<br>Currently: <span id="breakUpg1Mult">1.0</span>x<br>Cost: <span id="breakUpg1Cost"></span> Eternal Matter</button>
-							</td>
-							<td>
-								<button id="breakUpg2" class="eternityupbtnlocked" onclick="buyBreakUpg(2)">Eternity Points cheapen Antimatter Galaxies.<br>Currently: /<span id="breakUpg2Mult">1.0</span><br>Cost: <span id="breakUpg2Cost"></span> Eternal Matter</button>
-							</td>
-							<td>
-								<button id="breakUpg3" class="eternityupbtnlocked" onclick="buyBreakUpg(3)">Eternity Points boost Space Shards.<br>Currently: <span id="breakUpg3Mult">1.0</span>x<br>Cost: <span id="breakUpg3Cost"></span> Eternal Matter</button>
-							</td>
-						</tr><tr>
-							<td>
-								<button id="breakUpg4" class="eternityupbtnlocked" onclick="buyBreakUpg(4)">Eternity Points and Space Shards boost Time Dimensions 4 - 6.<br>Currently: <span id="breakUpg4Mult">1.0</span>x<br>Cost: <span id="breakUpg4Cost"></span> Eternal Matter</button>
-							</td>
-							<td>
-								<button id="breakUpg5" class="eternityupbtnlocked" onclick="buyBreakUpg(5)">Eternity Points and Time Shards multiply Tickspeed Reduction.<br>Currently: <span id="breakUpg5Mult">1.0</span>x<br>Cost: <span id="breakUpg5Cost"></span> Eternal Matter</button>
-							</td>
-							<td>
-								<button id="breakUpg6" class="eternityupbtnlocked" onclick="buyBreakUpg(6)">Eternity Points and Eternal Matter boost Space Shards.<br>Currently: <span id="breakUpg6Mult">1.0</span>x<br>Cost: <span id="breakUpg6Cost"></span> Eternal Matter</button>
-							</td>
-						</tr><tr>
-							<td>
-								<button id="breakUpg8" class="eternityupbtnlocked" onclick="buyBreakUpg(8)">Outside of Dilation, Tachyon Particles strengthen Infinite Time.<br>Currently: <span id="breakUpg8Mult">???</span>%<br>Cost: <span id="breakUpg8Cost"></span> Eternal Matter</button>
-							</td>
-							<td>
-								<button id="breakUpg9" class="eternityupbtnlocked" onclick="buyBreakUpg(9)">In Eternity Challenge 10, Eternal Matter cheapens Antimatter Galaxies.<br>Currently: /<span id="breakUpg9Mult">???</span><br>Cost: <span id="breakUpg9Cost"></span> Eternal Matter</button>
-							</td>
-							<td>
-								<button id="breakUpg10" class="eternityupbtnlocked" onclick="buyBreakUpg(10)">In Dilation, Eternity Points multiply galaxy efficiency for Intergalactic.<br>Currently: <span id="breakUpg10Mult">???</span>x<br>Cost: <span id="breakUpg10Cost"></span> Eternal Matter</button>
-							</td>
-						</tr><tr id="beShortcut">
-							<td>
-								<button class="eternityupbtn" onclick="eternity()">Eternal Matter: <span id="eterShortcutEM"></span><br>Start a normal Eternity run.</button>
-							</td>
-							<td>
-								<button class="eternitychallengestudy" onclick="startEC10()" style="width: 190px; height: 90px; margin: 0">Eternity Points: <span id="eterShortcutEP"></span><br>Start Eternity Challenge 10.</button>
-							</td>
-							<td>
-								<button class="dilationupg" onclick="startDilatedEternity(false, true)" style="width: 190px; height: 90px; margin: 0">Tachyon particles: <span id="eterShortcutTP"></span><br>Dilate time.</button>
-							</td>
-						</tr>
-					</table>
-					<button id="breakUpg7" class="eternityupbtnlocked" onclick="buyBreakUpg(7)">Gain <span id="breakUpg7MultIncrease"></span>x more Eternity Points.<br>(gets better at 400 levels)<br>Currently: <span id="breakUpg7Mult">1</span>x<br>Cost: <span id="breakUpg7Cost"></span> Eternal Matter</button><br><button class="storebtn" style="width: 190px" onclick="maxBuyBEEPMult()">Max EP mult</button>
-				</div>
 			</div>
 		</div>
 		<div class='tab' id='replicants'>
@@ -4604,7 +4597,7 @@
 
 	<script type="text/javascript" src="javascripts/mods/ngp3/fundament/fundament.js"></script>
 	<script type="text/javascript" src="javascripts/mods/ngp3/fundament/auto.js"></script>
-	<script type="text/javascript" src="javascripts/mods/ngp3/fundament/neutrinos_new.js"></script>
+	<script type="text/javascript" src="javascripts/mods/ngp3/fundament/neutrinos.js"></script>
 	<script type="text/javascript" src="javascripts/mods/ngp3/fundament/photons.js"></script>
 	<script type="text/javascript" src="javascripts/mods/ngp3/fundament/bosonic_lab.js"></script>
 	<script type="text/javascript" src="javascripts/mods/ngp3/fundament/higgs.js"></script>

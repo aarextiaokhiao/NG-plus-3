@@ -1,14 +1,13 @@
 let PHOTON = {
 	/* CORE */
 	//Unlock
-	req: _ => bigRipped() && player.money.gte(pow10(2e9)),
+	req: _ => bigRipped() && player.money.gte(pow10(2.5e9)),
 	unlocked: _ => ghSave?.photons.unl,
 	unlock() {
 		ghSave.photons.unl = true
 		ngp3_feature_notify("ph")
 
 		updateTemp()
-		updateBreakEternity()
 		updatePhotonUnlocks()
 	},
 
@@ -132,12 +131,12 @@ let PHOTON = {
 			desc: e => `Nanorewards speed up Decay by ${e.toFixed(3)}x each.`
 		}, {
 			name: "violet",
-			eff: a => Math.min(Math.log10(a + 1) + 2.5, 4),
-			desc: e => `Intergalactic efficiency exponent caps at ^${e.toFixed(2)}.`
+			eff: a => 1,
+			desc: e => `Placeholder.`
 		}, {
 			name: "ultraviolet",
-			eff: a => mod.p3ep ? Math.pow(2, Math.sqrt(a + 1) - 1) : a / 10 + 1,
-			desc: e => `2nd Infinite Time softcap scales ^${e.toFixed(3)} later.`
+			eff: a => a >= 30 ? 1/0 : Math.pow(2, a / 2),
+			desc: e => e == 1/0 ? `Remove 2nd Infinite Time softcap.` : `2nd Infinite Time softcap scales ^${shorten(e)} later.`
 		}
 	],
 	eff(x, def = 1) {
@@ -159,7 +158,7 @@ let PHOTON = {
 	},
 	update() {
 		if (!PHOTON.unlocked()) {
-			el("gphUnl").textContent = "Get "+shortenCosts(pow10(2e9))+" antimatter in Big Rip to unlock Photons."
+			el("gphUnl").textContent = "Get "+shortenCosts(pow10(2.5e9))+" antimatter in Big Rip to unlock Photons."
 			return
 		}
 

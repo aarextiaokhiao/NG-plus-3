@@ -63,12 +63,9 @@ function updateInfiniteTimeTemp() {
 function updateIntergalacticTemp() {
 	if (!hasAch("ng3p27")) return
 
-	x = player.galaxies
-	if (tmp.be && player.dilation.active && beSave.upgrades.includes(10)) x *= getBreakUpgMult(10)
-	tmp.igg = x
-
-	var igLog = Math.pow(x, Math.min(Math.sqrt(Math.log10(Math.max(x, 1))) * 2, PHOTON.eff(5, 2.5))) //Log10 of reward
-	tmp.ig = pow10(igLog)
+	var gal = player.galaxies
+	var exp = Math.min(Math.sqrt(Math.log10(Math.max(gal, 1))) * 2, 2.5)
+	tmp.ig = pow10(Math.pow(gal, exp))
 }
 
 function updateTS232Temp() {

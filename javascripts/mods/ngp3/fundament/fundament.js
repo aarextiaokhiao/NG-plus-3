@@ -230,7 +230,6 @@ RESETS.funda = {
 		beSave.eternalMatter = E(0)
 		beSave.upgrades = []
 		beSave.epMultPower = 0
-		updateBreakEternity()
 	},
 
 	doReset() {

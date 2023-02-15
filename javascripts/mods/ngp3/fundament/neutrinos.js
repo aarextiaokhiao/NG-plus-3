@@ -131,10 +131,13 @@ const NEUTRINO = {
 				cost: E(50),
 				eff(nt) {
 					var nb6neutrinos = Math.pow(nt[0].add(1).log10(), 2) + Math.pow(nt[1].add(1).log10(), 2) + Math.pow(nt[2].add(1).log10(), 2)
-					var nb6exp1 = .25
-					if (mod.p3ep) nb6exp1 = .26
-					let nb6 = Math.pow(Math.pow(nb6neutrinos, nb6exp1) * 0.525 + 1, bigRipped() ? 0.5 : 1)
-					return nb6
+
+					var nb6exp = .25
+					if (mod.p3ep) nb6exp = .26
+					if (bigRipped()) nb6exp /= 2
+
+					let nb6 = Math.pow(nb6neutrinos, nb6exp) * 0.525 + 1
+					return Math.min(nb6, 10)
 				},
 				effDesc: e => `Distant Antimatter Galaxies scale <b>${shorten(e)}x</b> slower.`,
 			}, {

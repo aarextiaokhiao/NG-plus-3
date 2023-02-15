@@ -1,6 +1,6 @@
 //VERSION: 2.31
 let ngp3_ver = 2.31
-let ngp3_build = 20230213
+let ngp3_build = 20230214
 function doNGP3Updates() {
 	if (!aarMod.ngp3_build) aarMod.ngp3_build = 0
 	if (aarMod.ngp3_build < 20221230) quSave.multPower = 0
@@ -58,14 +58,13 @@ function showQuantumTab(tabName) {
 }
 
 var quantumTabs = {
-	tabIds: ["uquarks", "gluons", "electrons", "replicants", "tod", "bigrip", "breakEternity"],
+	tabIds: ["uquarks", "gluons", "electrons", "replicants", "tod", "bigrip"],
 	update: {
 		uquarks: updateQuarksTab,
 		gluons: updateGluonsTab,
 		electrons: updateElectronsTab,
 		tod: updateTreeOfDecayTab,
-		bigrip: updateBigRipTab,
-		breakEternity: () => breakEternityDisplay()
+		bigrip: updateBigRipTab
 	}
 }
 
@@ -475,10 +474,9 @@ function intergalacticDisplay() {
 		let nanopart = 1
 		if (isNanoEffectUsed("dil_effect_exp")) nanopart = tmp.nf.effects["dil_effect_exp"] || 1
 		el("intergalacticLabel").innerHTML = 
-			'Intergalactic Boost ' + 
-			(player.dilation.active || inNGM(2) ? " (estimated)" : "") +
-			" (" + getFullExpansion(player.galaxies) + (Math.floor(tmp.igg - player.galaxies) > 0 ? " + " + 
-			getFullExpansion(Math.floor(tmp.igg - player.galaxies)) : "") + "): " + 
+			'Intergalactic ' + 
+			'(' + getFullExpansion(player.galaxies) + ')' +
+			(player.dilation.active || inNGM(2) ? ": (estimated)" : ": ") +
 			shorten(dilates(tmp.ig).pow(player.dilation.active ? nanopart : 1)) + 
 			'x to Eighth Dimensions'
 	} else el("intergalacticLabel").parentElement.style.display = "none"
@@ -495,7 +493,6 @@ function updateQuantumTabDisplays() {
 	el("nanofieldtabbtn").style.display = NF.unl() ? "" : "none"
 	el("todtabbtn").style.display = hasMasteryStudy("d13") ? "" : "none"
 	el("riptabbtn").style.display = hasMasteryStudy("d14") ? "" : "none"
-	el("betabbtn").style.display = beSave.unlocked ? "" : "none"
 }
 
 function beatNGP3() {
@@ -550,6 +547,7 @@ function doPerSecondNGP3Stuff(){
 	el('rebuyupgmax').style.display=speedrunMilestonesReached<26?"":"none"
 	el('toggleallmetadims').style.display=speedrunMilestonesReached>7?"":"none"
 	el('metaboostAuto').style.display=speedrunMilestonesReached>14?"":"none"
+	updateBreakEternity()
 
 	if (!mod.ngp3) return
 
