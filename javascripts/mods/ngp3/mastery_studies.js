@@ -151,8 +151,6 @@ var masteryStudies = {
 		},
 		344: function(){
 			var ret = Math.pow(quSave.replicants.quarks.div(1e7).add(1).log10(), mod.p3ep ? 0.3 : 0.25) * 0.17 + 1
-			if (ret > 3) ret = 1 + Math.log2(ret + 1)
-			if (ret > 4) ret = 3 + Math.log10(ret + 6)
 			return ret
 		},
 		351: function(){ //maybe use softcap.js
