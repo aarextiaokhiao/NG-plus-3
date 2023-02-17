@@ -2141,6 +2141,7 @@ function challengeOverallDisplayUpdating(){
 			else if (c!=2) el("qc"+c+"reward").textContent = shorten(tmp.qcRewards[c])
 		}
 	}
+	if (el("bigrip").style.display == "block") updateBigRipTab()
 }
 
 function chall23PowerUpdating(){
@@ -2800,13 +2801,12 @@ function initGame() {
 	initiateMetaSave()
 	migrateOldSaves()
 	setupBugfixData()
-	updateNewPlayer(meta_started ? "meta_started" : "")
 	setupHTMLAndData()
+	updateNewPlayer(meta_started ? "meta_started" : "")
 	localStorage.setItem(metaSaveId, btoa(JSON.stringify(metaSave)))
 
 	//Load a save.
 	load_game(false, true)
-	game_loaded=true
 
 	//show one tab during init or they'll all start hidden
 	let tabsSaveData = aarMod.tabsSave
@@ -2815,12 +2815,11 @@ function initGame() {
 	showOptionTab((tabsSave && tabsSaveData.tabOptions) || "saving")
 	if (aarMod.progressBar && el("dimensions").style.display != "none") el("progress").style.display = "block"
 	else el("progress").style.display = "none"
-	tmp.tickUpdate = true
-	updateAutobuyers()
-	updateChallengeTimes()
+
 	window.addEventListener("resize", resizeCanvas);
 
 	//On load
+	game_loaded = true
 	console.log("[ 👻 Antimatter Dimensions: NG+3 v" + ngp3_ver + ": Ghostify Respecced 👻 ]")
 	setTimeout(function(){
 		el("container").style.display = "block"

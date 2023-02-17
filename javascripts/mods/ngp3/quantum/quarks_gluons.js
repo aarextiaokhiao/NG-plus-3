@@ -421,6 +421,7 @@ function updateGluonsTabOnUpdate(mode) {
 	var eightUpgrades = hasMasteryStudy("d13")
 	for (c = 0; c < 3; c++) {
 		if (mode == undefined) {
+			el(names[c] + "upg3row").style.display = sevenUpgrades ? "" : "none"
 			el(names[c] + "upg7col").style.display = sevenUpgrades ? "" : "none"
 			el(names[c] + "upg8col").style.display = eightUpgrades ? "" : "none"
 		}

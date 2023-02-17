@@ -247,7 +247,7 @@ function buyGalaxyUpgrade(i) {
 	}
 }
 
-function reduceDimCosts() {
+function reduceDimCosts(upg) {
 	let div = 1
 	if (hasAch("r21")) div = 10
 	if (hasGSacUpg(11)) div = galMults.u11()

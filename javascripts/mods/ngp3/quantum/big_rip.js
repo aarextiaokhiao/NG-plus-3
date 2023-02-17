@@ -1,4 +1,8 @@
 function bigRip(auto) {
+	if (bigRipped()) {
+		quantum()
+		return
+	}
 	if (!canBigRip()) return
 	for (let [id, pc] of Object.entries(quSave.pairedChallenges.order)) {
 		for (let qc of pc) {
@@ -35,8 +39,8 @@ function getSpaceShardsGain() {
 	let ret = bigRipped() ? brSave.bestThisRun : player.money
 	ret = E_pow(ret.add(1).log10() / 2000, 1.5).mul(player.dilation.dilatedTime.add(1).pow(0.05)).div(50)
 	if (tmp.be) {
-		if (beSave && beSave.upgrades.includes(3)) ret = ret.mul(getBreakUpgMult(3))
-		if (beSave && beSave.upgrades.includes(6)) ret = ret.mul(getBreakUpgMult(6))
+		if (isBreakUpgActive(3)) ret = ret.mul(getBreakUpgMult(3))
+		if (isBreakUpgActive(6)) ret = ret.mul(getBreakUpgMult(6))
 	}
 	if (hasNU(9)) ret = ret.mul(Decimal.max(getEternitied(), 1).pow(0.1))
 
@@ -158,6 +162,8 @@ function switchAB(rip) {
 }
 
 function updateBigRipTab() {
+	el("bigRipBtn").innerHTML = bigRipped() ? `Refine the rift.<br>+${shortenDimensions(getSpaceShardsGain())} Space Shards` : canDirectlyBigRip() ? "Big Rip the cosmos!" : "Unlock a Paired Challenge with QC6 and 8 combinations to Big Rip."
+	el("bigRipBtn").className = "gluonupgrade " + (bigRipped() ? "onchallengebtn" : canDirectlyBigRip() ? "bigrip" : "unavailablebtn")
 	el("spaceShards").textContent = shortenDimensions(brSave.spaceShards)
 	for (var u = 1; u <= 18; u++) {
 		el("bigripupg" + u).className = brSave && hasRipUpg(u) ? "gluonupgradebought bigrip" + (isBigRipUpgradeActive(u, true) ? "" : "off") : brSave.spaceShards.lt(bigRipUpgCosts[u]) ? "gluonupgrade unavailablebtn" : "gluonupgrade bigrip"
@@ -381,7 +387,8 @@ function getBreakUpgCost(id) {
 }
 
 function buyBreakUpg(id) {
-	if (!beSave.eternalMatter.gte(getBreakUpgCost(id)) || beSave.upgrades.includes(id)) return
+	if (!beSave.eternalMatter.gte(getBreakUpgCost(id))) return
+	if (beSave.upgrades.includes(id)) return
 	beSave.eternalMatter = beSave.eternalMatter.sub(getBreakUpgCost(id))
 	if (!gotBraveMilestone(15)) beSave.eternalMatter = beSave.eternalMatter.round()
 
@@ -394,6 +401,10 @@ function buyBreakUpg(id) {
 
 function getBreakUpgMult(id) {
 	return tmp.beu[id]
+}
+
+function isBreakUpgActive(id) {
+	return tmp.be && beSave.upgrades.includes(id)
 }
 
 function maxBuyBEEPMult() {

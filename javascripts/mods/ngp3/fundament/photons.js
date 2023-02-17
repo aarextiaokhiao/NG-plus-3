@@ -6,8 +6,6 @@ let PHOTON = {
 	unlock() {
 		ghSave.photons.unl = true
 		ngp3_feature_notify("ph")
-
-		updateTemp()
 		updatePhotonUnlocks()
 	},
 

@@ -260,7 +260,6 @@ function updateBosonicLabTemp() {
 	tmp.bEn = {}
 	tmp.blu = {}
 	tmp.wzb = {}
-	tmp.hbTmp = {}
 
 	if (!ghSave?.wzb.unl) return 
 

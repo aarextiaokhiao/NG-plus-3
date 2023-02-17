@@ -31,10 +31,9 @@ el("secondSoftReset").onclick = function() {
 }
 
 function getGalaxyRequirement(offset = 0, display) {
-	tmp.grd = {} //Galaxy requirement data
-	tmp.grd.galaxies = player.galaxies + offset
 	let mult = getGalaxyReqMultiplier()
-	let base = tmp.grd.galaxies * mult
+	let total = player.galaxies + offset
+	let base = total * mult
 	let amount = 80 + base
 	let scaling = 0
 	if (inNGM(2)) amount -= (hasGSacUpg(22) && player.galaxies > 0) ? 80 : 60
@@ -43,11 +42,10 @@ function getGalaxyRequirement(offset = 0, display) {
 	if (tmp.be) {
 		amount *= 50
 		if (beSave && beSave.upgrades.includes(2)) amount /= getBreakUpgMult(2)
-		if (player.currentEternityChall == "eterc10" && beSave.upgrades.includes(9)) amount /= getBreakUpgMult(9)
 	}
 	if (!mod.rs) {
 		let distantStart = getDistantScalingStart()
-		if (tmp.grd.galaxies >= distantStart) {
+		if (total >= distantStart) {
 			let speed = 1
 			if (hasGluonUpg("rg6")) speed *= 0.867
 			if (hasGluonUpg("gb6")) speed /= 1 + Math.pow(player.infinityPower.plus(1).log10(), 0.25) / 2810
@@ -55,21 +53,21 @@ function getGalaxyRequirement(offset = 0, display) {
 			if (hasNB(6)) speed /= ntEff("boost", 6)
 			if (hasBU(45)) speed /= tmp.blu[45]
 			if (hasAch("ng3p98")) speed *= 0.9
-			amount += getDistantAdd(tmp.grd.galaxies-distantStart+1)*speed
-			if (tmp.grd.galaxies >= distantStart * 2.5 && inNGM(2)) {
+			amount += getDistantAdd(total-distantStart+1)*speed
+			if (total >= distantStart * 2.5 && inNGM(2)) {
 				// 5 times worse scaling
-				amount += 4 * speed * getDistantAdd(tmp.grd.galaxies-distantStart * 2.5 + 1)
+				amount += 4 * speed * getDistantAdd(total-distantStart * 2.5 + 1)
 				scaling = Math.max(scaling, 2)
 			} else scaling = Math.max(scaling, 1)
 		}
 
 		let remoteStart = getRemoteScalingStart()
-		if (tmp.grd.galaxies >= remoteStart && !tmp.be && !hasNU(6)) {
+		if (total >= remoteStart && !hasNU(6)) {
 			let speed2 = 1
 			if (hasGluonUpg("rg7")) speed2 *= 0.9
 			if (hasGluonUpg("gb7")) speed2 /= 1+Math.log10(1+player.infinityPoints.max(1).log10())/100
 			if (hasGluonUpg("br7")) speed2 /= 1+Math.log10(1+player.eternityPoints.max(1).log10())/80
-			amount *= Math.pow(1 + (hasGluonUpg("rg1") ? 1 : 2) / (inNGM(4) ? 10 : 1e3), (tmp.grd.galaxies - remoteStart + 1) * speed2)
+			amount *= Math.pow(1 + (hasGluonUpg("rg1") ? 1 : 2) / (inNGM(4) ? 10 : 1e3), (total - remoteStart + 1) * speed2)
 			scaling = Math.max(scaling, 3)
 		}
 	}
@@ -112,13 +110,11 @@ function getRemoteScalingStart(galaxies) {
 	if (inNGM(4)) {
 		n = 6
 		if (player.challenges.includes("postcngm3_1")) n += tmp.cp / 2
-	}
-	else if (inNGM(2)) n += 1e7
+	} else if (inNGM(2)) n += 1e7
 	if (mod.ngp3) {
 		for (var t = 251; t < 254; t++) if (hasMasteryStudy("t" + t)) n += getMTSMult(t)
 		if (hasMasteryStudy("t301")) n += getMTSMult(301)
 		if (isNanoEffectUsed("remote_start")) n += tmp.nf.effects.remote_start
-		if (galaxies > 1/0 && !tmp.be) n -= galaxies - 1/0 
 	}
 	return n
 }

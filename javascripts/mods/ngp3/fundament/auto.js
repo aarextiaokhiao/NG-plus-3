@@ -1,8 +1,109 @@
+var automators = {
+	1: {
+		title: "Quark Decay",
+		req: 0,
+		pow: 1.5,
+	},
+	5: {
+		title: "Branch Upgrader",
+		req: 4,
+		pow: 2,
+	},
+	6: {
+		title: "Tree Upgrader",
+		req: 4,
+		pow: 1.5,
+	},
+	7: {
+		title: "Quantum Multiplier",
+		req: 4.5,
+		pow: 0.5,
+	},
+	18: {
+		title: "Positron Charger",
+		req: 4.5,
+		pow: 1,
+	},
+	8: {
+		title: "Food Giver",
+		req: 5,
+		pow: 0.5,
+	},
+	9: {
+		title: "Worker Promoter",
+		req: 5,
+		pow: 0.5,
+	},
+	10: {
+		title: "Worker Capacity",
+		req: 6,
+		pow: 1,
+	},
+	11: {
+		title: "Nanocharger",
+		html: `Wait: <input id="autoGhost11pw" onchange="changeAutoGhost('11pw')"/>s<br>
+		Produce: <input id="autoGhost11cw" type="text" onchange="changeAutoGhost('11cw')"/>s`,
+		req: 6.5,
+		pow: 0.5,
+	},
+	12: {
+		title: "Radioactive Decay",
+		req: 7,
+		pow: 0.5,
+	},
+	13: {
+		title: "Big Rip",
+		html: `Rip in: <input id="autoGhost13t" onchange="changeAutoGhost('13t')"/>s<br>
+		Undo: <input id="autoGhost13u" onchange="changeAutoGhost('13u')"/>s<br>
+		Stop: <input id="autoGhost13o" onchange="changeAutoGhost('13o')"/> times<br>(0 = always)`,
+		req: 7,
+		pow: 3,
+	},
+	14: {
+		title: "EP Multiplier",
+		req: 7.5,
+		pow: 1,
+	},
+	15: {
+		title: "Fundament",
+		html: `Seconds to wait until reset: <input id="autoGhost15a" onchange="changeAutoGhost('15a')"/>`,
+		req: 8,
+		pow: 4,
+	},
+	16: {
+		title: "Neutrino",
+		req: 12,
+		pow: 1,
+	},
+	17: {
+		title: "Experimenter",
+		req: 25,
+		pow: 4,
+	},
+	19: {
+		title: "Enchanter",
+		html: `Changes hypotheses at a complete experiment on 2s after last change<br>
+		or change immediately at X seconds remaining: <input id="autoGhost17s" onchange="changeAutoGhost('17s')"/>`,
+		req: 32,
+		pow: 3,
+	},
+	20: {
+		title: "Bosonic Upgrader",
+		html: `(doesn't consume your Hypotheses, enchant per 2 seconds)`,
+		req: 36,
+		pow: 9,
+	},
+	21: {
+		title: "W & Z Worker",
+		req: 40,
+		pow: 3,
+	},
+}
+const automatorOrder = [1,5,6,7,18,8,9,10,11,12,13,14,15,16,17,19,20,21]
+
 function setupAutomaticGhostsData() {
 	var data = {power: 0, ghosts: 3}
-	for (var ghost = 1; ghost <= automators.max; ghost++) data[ghost] = {on: false}
-	data[4].mode = "q"
-	data[4].rotate = "r"
+	for (var g of automatorOrder) data[g] = {}
 	data[11].pw = 1
 	data[11].lw = 1
 	data[11].cw = 1
@@ -12,96 +113,16 @@ function setupAutomaticGhostsData() {
 	return data
 }
 
-var automators = {
-	max: 18,
-	order: [1,5,6,7,18,8,9,10,11,12,13,14,15,16,17,19,20,21],
-
-	1: {
-		req: 0,
-		pow: 1.5,
-	},
-	5: {
-		req: 4,
-		pow: 2,
-	},
-	6: {
-		req: 4,
-		pow: 1.5,
-	},
-	7: {
-		req: 4.5,
-		pow: 0.5,
-	},
-	8: {
-		req: 5,
-		pow: 0.5,
-	},
-	9: {
-		req: 5,
-		pow: 0.5,
-	},
-	10: {
-		req: 6,
-		pow: 1,
-	},
-	11: {
-		req: 6.5,
-		pow: 0.5,
-	},
-	12: {
-		req: 7,
-		pow: 0.5,
-	},
-	13: {
-		req: 7,
-		pow: 3,
-	},
-	14: {
-		req: 7.5,
-		pow: 1,
-	},
-	15: {
-		req: 8,
-		pow: 4,
-	},
-	16: {
-		req: 12,
-		pow: 1,
-	},
-	17: {
-		req: 25,
-		pow: 4,
-	},
-	18: {
-		req: 4.5,
-		pow: 1,
-	},
-	19: {
-		req: 32,
-		pow: 3,
-	},
-	20: {
-		req: 36,
-		pow: 9,
-	},
-	21: {
-		req: 40,
-		pow: 3,
-	},
-}
-
 var powerConsumed = undefined
 function updateAutoGhosts(load) {
 	var data = ghSave.automatorGhosts
-	if (load) {
-		for (var x of automators.order) if (!data[x]) data[x] = {on: false}
-		updateAutomatorUnlocks()
-	}
+	if (load) updateAutomatorUnlocks()
+
 	powerConsumed = 0
-	for (var [g, id] of Object.entries(automators.order)) {
+	for (let [g, id] of Object.entries(automatorOrder)) {
 		if (load) {
-			el("autoGhost" + id).style.display=data.ghosts<g?"none":""
-			el("isAutoGhostOn" + id).checked=data[id].on
+			el("autoGhost" + id).style.display = data.ghosts > g ? "table-cell" : "none"
+			el("isAutoGhostOn" + id).textContent = data[id].on ? "ON" : "OFF"
 		}
 		if (data[id].on) powerConsumed += automators[id].pow
 	}
@@ -120,7 +141,9 @@ function updateAutoGhosts(load) {
 }
 
 function toggleAutoGhost(id) {
-	ghSave.automatorGhosts[id].on = el("isAutoGhostOn" + id).checked
+	let data = ghSave.automatorGhosts
+	data[id].on = !data[id].on
+	el("isAutoGhostOn" + id).textContent = data[id].on ? "ON" : "OFF"
 	updateAutoGhosts()
 }
 
@@ -161,18 +184,18 @@ function getAutoCharge() {
 	return r
 }
 
-function getAutomatorReq(x) {
-	if (!x) x = automators.order[ghSave.automatorGhosts.ghosts] //Next
-	return automators[x].req
+function getAutomatorReq(g = ghSave.automatorGhosts.ghosts) {
+	return automators[automatorOrder[g]].req
 }
 
 function updateAutomatorStuff(mode) {
 	var data = ghSave.automatorGhosts
 	data.power = Math.max(getAutoCharge(), data.power)
-
 	if (mode != "quick") updateAutomatorUnlocks()
-	while (data.ghosts<automators.max&&data.power>=getAutomatorReq()) {
-		el("autoGhost"+automators.order[data.ghosts]).style.display=""
+
+	var order = automatorOrder
+	while (data.ghosts < automatorOrder.length && data.power >= getAutomatorReq()) {
+		el("autoGhost" + automatorOrder[data.ghosts]).style.display=""
 		data.ghosts++
 		updateAutomatorUnlocks()
 	}
@@ -181,7 +204,6 @@ function updateAutomatorStuff(mode) {
 
 //AUTOMATION
 function automatorTick(diff) {
-	if (!ghostified) return
 	if (!isAutoGhostsSafe) return
 
 	//Ghostify Layer
@@ -249,6 +271,7 @@ function automatorTick(diff) {
 }
 
 function automatorPerSec() {
+	if (!isAutoGhostsSafe) return
 	if (isAutoGhostActive(18)) {
 		for (var i = 1; i <= 4; i++) while (buyElectronUpg(i, true)) {}
 		updateElectrons()
@@ -271,12 +294,23 @@ function automatorPerSec() {
 
 //HTML
 function updateAutomatorUnlocks() {
-	var amt = ghSave.automatorGhosts.ghosts
-	if (amt >= automators.max) el("nextAutomatorGhost").parentElement.style.display="none"
-	else {
-		el("nextAutomatorGhostDiv").style.display=""
-		el("nextAutomatorGhost").textContent=getAutomatorReq().toFixed(2)
+	var max = ghSave.automatorGhosts.ghosts >= automatorOrder.length
+	el("nextAutomatorGhostDiv").style.display = max ? "none" : ""
+	if (!max) el("nextAutomatorGhost").textContent=getAutomatorReq().toFixed(2)
+}
+
+function setupAutomatorHTML() {
+	let html = ``
+	for (let [i, id] of Object.entries(automatorOrder)) {
+		let g = automators[id]
+		html += `<td id="autoGhost${id}" class="autoBuyerDiv">
+			<b>${g.title}</b>: ${g.pow} Power<br>
+			<button class='storebtn' id="isAutoGhostOn${id}" onclick="toggleAutoGhost(${id})"></button>
+			${g.html ? '<br><br><hr>' + g.html : ''}
+		</td>`
+		if (i % 3 == 2) html += '</tr><tr>'
 	}
+	el('automatorTable').innerHTML = '<tr>' + html + '</tr>'
 }
 
 function updateAutomatorHTML() {

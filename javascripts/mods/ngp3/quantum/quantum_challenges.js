@@ -175,6 +175,7 @@ function doReachAMGoalStuff(chall){
 
 //Paired Challenges
 function updatePairedChallenges() {
+	el("pChalls").style.display = hasMasteryStudy("d9") ? "" : "none"
 	if (!hasMasteryStudy("d9")) return
 
 	pcAssigned = []

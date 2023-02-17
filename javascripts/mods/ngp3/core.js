@@ -1,6 +1,6 @@
 //VERSION: 2.31
 let ngp3_ver = 2.31
-let ngp3_build = 20230215
+let ngp3_build = 20230216
 function doNGP3Updates() {
 	if (!aarMod.ngp3_build) aarMod.ngp3_build = 0
 	if (aarMod.ngp3_build < 20221230) quSave.multPower = 0
@@ -58,13 +58,12 @@ function showQuantumTab(tabName) {
 }
 
 var quantumTabs = {
-	tabIds: ["uquarks", "gluons", "electrons", "replicants", "tod", "bigrip"],
+	tabIds: ["uquarks", "gluons", "electrons", "replicants", "tod"],
 	update: {
 		uquarks: updateQuarksTab,
 		gluons: updateGluonsTab,
 		electrons: updateElectronsTab,
-		tod: updateTreeOfDecayTab,
-		bigrip: updateBigRipTab
+		tod: updateTreeOfDecayTab
 	}
 }
 
@@ -484,15 +483,14 @@ function intergalacticDisplay() {
 
 function updateQuantumTabDisplays() {
 	el("qctabbtn").style.display = hasMasteryStudy("d8") ? "" : "none"
-	el("pctabbtn").style.display = hasMasteryStudy("d9") ? "" : "none"
 	el("tab_ant").style.display = hasMasteryStudy("d10") ? "inline-block" : "none"
+	el("riptabbtn").style.display = hasMasteryStudy("d14") ? "" : "none"
 
 	if (!quantumed) return
 	el("electronstabbtn").style.display = hasMasteryStudy("d7") ? "" : "none"
 	el("antTabs").style.display = hasMasteryStudy("d11") ? "" : "none"
 	el("nanofieldtabbtn").style.display = NF.unl() ? "" : "none"
 	el("todtabbtn").style.display = hasMasteryStudy("d13") ? "" : "none"
-	el("riptabbtn").style.display = hasMasteryStudy("d14") ? "" : "none"
 }
 
 function beatNGP3() {
@@ -509,7 +507,7 @@ function beatNGP3() {
 //v2.4: Code
 function updateNGP3Temp() {
 	tmp.be = brokeEternity()
-	if (ghostified) updateGhostifyTempStuff()
+	updateGhostifyTempStuff()
 	if (quantumed) {
 		if (beSave && beSave.unlocked) updateBreakEternityUpgradesTemp()
 
@@ -548,11 +546,10 @@ function doPerSecondNGP3Stuff(){
 	el('toggleallmetadims').style.display=speedrunMilestonesReached>7?"":"none"
 	el('metaboostAuto').style.display=speedrunMilestonesReached>14?"":"none"
 	updateBreakEternity()
-
 	if (!mod.ngp3) return
 
-	//NG+3: Automators
-	automatorPerSec()
+	//Automators
+	if (ghostified) automatorPerSec()
 	if (quSave.autoECN !== undefined) {
 		justImported = true
 		if (quSave.autoECN > 12) buyMasteryStudy("ec", quSave.autoECN,true)
@@ -561,7 +558,7 @@ function doPerSecondNGP3Stuff(){
 	}
 	if (quSave.autoOptions.assignQK) assignAll(true) 
 
-	//NG+3: Others
+	//Others
 	ngP3AchieveCheck()
 	doNGP3UnlockStuff()	
 	notifyGhostifyMilestones()
@@ -734,6 +731,7 @@ function setupNGP3HTMLAndData() {
 	setupNanofieldHTML()
 	setupToDHTML()
 	setupBraveMilestones()
+	setupAutomatorHTML()
 	NEUTRINO.setupTab()
 	PHOTON.setupTab()
 	setupBosonicExtraction()

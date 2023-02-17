@@ -54,7 +54,6 @@ function updateInfiniteTimeTemp() {
 	if (mod.ngp3) {
 		if (hasAch("ng3p56")) x *= 1.03
 		if (hasNB(4)) x *= ntEff("boost", 4)
-		if (tmp.be && !player.dilation.active && beSave.upgrades.includes(8)) x *= getBreakUpgMult(8)
 		x = softcap(x, "inf_time_log_1")
 	}
 	tmp.it = pow10(x)

@@ -414,7 +414,8 @@ RESETS.qu = {
 		let qc = !inQC(0)
 
 		player.infinitiedBank = 0
-		player.eternities = speedrunMilestonesReached ? 2e4 : 1
+		player.eternities = speedrunMilestonesReached ? 2e4 : quantumed ? 1 : 0
+		player.bestEternity = 999999999
 		player.lastTenEternities = [[600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)]]
 		updateLastTenEternities()
 

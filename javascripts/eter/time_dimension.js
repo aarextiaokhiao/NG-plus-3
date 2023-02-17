@@ -3,11 +3,11 @@
 function getBreakEternityTDMult(tier){
 	var ret = tmp.it
 	if (player.timestudy.studies.includes(11) && tier == 1) ret = ret.mul(tsMults[11]())
-	if (beSave && beSave.upgrades.includes(1) && tier < 5) ret = ret.mul(getBreakUpgMult(1))
-	if (beSave && beSave.upgrades.includes(4) && tier > 3 && tier < 7) ret = ret.mul(getBreakUpgMult(4))
+	if (isBreakUpgActive(1) && tier < 5) ret = ret.mul(getBreakUpgMult(1))
+	if (isBreakUpgActive(4) && tier > 3 && tier < 7) ret = ret.mul(getBreakUpgMult(4))
 	if (hasRipUpg(13)) ret = ret.mul(player.replicanti.amount.max(1).pow(1e-6))
 	if (tier == 7 && hasRipUpg(16)) ret = ret.mul(tmp.bru[16])
-	if (beSave && beSave.upgrades.includes(11) && bigRipped()) ret = ret.mul(tmp.beu[11]||1)
+	if (isBreakUpgActive(11)) ret = ret.mul(tmp.beu[11]||1)
 	if (ret.lt(0)) ret = E(0)
 	return dilates(ret)
 }

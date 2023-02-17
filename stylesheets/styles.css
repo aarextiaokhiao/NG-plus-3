@@ -2248,17 +2248,6 @@ td.lEp {
 	height: 60px
 }
 
-#automaticghosts .autoBuyerDiv {
-	width: 175px;
-	height: 120px
-}
-#automaticghosts input {
-	width: 50px
-}
-#automaticghosts input[type="checkbox"] {
-	width: 12px
-}
-
 .gluonupgrade.gph {
 	background: #ccc8b7 !important;
 	border: 1px solid #bfaf5f;

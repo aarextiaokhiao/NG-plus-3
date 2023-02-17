@@ -360,7 +360,7 @@ function getGhostifiedGain() {
 //Brave Milestones
 const BM_REQ = [200,175,150,100,50,40,30,25,20,15,10,5,4,3,2,1]
 function setupBraveMilestones(){
-	for (var m = 1; m <= 16; m++) el("braveMilestone" + m).textContent=getFullExpansion(BM_REQ[m - 1])+"x quantumed"+(m==1?" or lower":"")
+	for (var m = 1; m <= 16; m++) el("braveMilestone" + m).textContent=BM_REQ[m - 1]+"x quantumed or lower"
 }
 
 function gotBraveMilestone(x) {

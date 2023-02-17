@@ -130,15 +130,6 @@ function setPreNGp3IfUndefined(){
 	if (player.why === undefined) player.why = 0
 }
 
-function checkShowTS(){
-	if (player.secondAmount !== 0) {
-		el("tickSpeed").style.visibility = "visible";
-		el("tickSpeedMax").style.visibility = "visible";
-		el("tickLabel").style.visibility = "visible";
-		el("tickSpeedAmount").style.visibility = "visible";
-	}
-}
-
 function setIDIfUndefined(){
 	if (player.infinityPower === undefined) {
 		player.infinityPower = E(1)
@@ -364,7 +355,7 @@ function setEverythingPreNGp3onLoad(){
 	setTheme(player.options.theme);
 	sliderText.textContent = "Update rate: " + player.options.updateRate + "ms";
 	slider.value = player.options.updateRate;
-	checkShowTS()
+
 	setIDIfUndefined()
 	setTD1to4IfUndefined()
 	setABIfUndefined()
@@ -420,17 +411,6 @@ function setAarexModIfUndefined(){
 		delete player.masterystudies
 		delete aarMod.newGame3PlusVersion
 	}
-}
-
-function doNGp3Init1(){
-	transformSaveToDecimal();
-	tmp.tickUpdate = true;
-	updateAchievements();
-	updateCheckBoxes();
-	toggleChallengeRetry()
-	toggleChallengeRetry()
-	toggleBulk()
-	toggleBulk()
 }
 
 function setSomeEterEraStuff() {
@@ -1341,6 +1321,9 @@ function dov12tov122(){
 }
 
 function updateVersionsONLOAD(){
+	el('versionMod').textContent = modAbbs()
+	el('versionDesc').style.display = mod.ngp3 ? "" : "none"
+
 	dov7tov10()
 	doNGM1Versions()
 	if (aarMod.newGamePlusVersion === undefined) if (player.eternities < 20 && ECComps("eterc1") > 0) aarMod.newGamePlusVersion = 1
@@ -1348,6 +1331,7 @@ function updateVersionsONLOAD(){
 	doNGP2v2tov2302()
 
 	//NG+3
+	quantumed = mod.ngpp && (ghostified || quSave.times > 0)
 	doQuantumRestore()
 	doQuantumUpdates()
 	if (mod.ngp3) {
@@ -1369,51 +1353,43 @@ function updateVersionsONLOAD(){
 	dov12tov122()
 }
 
-function doNGp3Init2(){
-	el('versionMod').textContent = modAbbs()
-	el('versionDesc').style.display = mod.ngp3 ? "" : "none"
+function doNGp3Init() {
+	setupMasteryStudies()
+	updateUnlockedMasteryStudies()
+	updateSpentableMasteryStudies()
 
-	quantumed = mod.ngpp && (ghostified || quSave.times > 0)
-	updateTemp() //compromised due to "tmp.sacPow" achievement check being bugged
-	if (mod.ngp3) {
-		setupMasteryStudies()
-		updateUnlockedMasteryStudies()
-		updateSpentableMasteryStudies()
-
-		delete player.eternityBuyer.presets
-		el('prioritydil').value=player.eternityBuyer.dilationPerAmount
-		if (player.meta.bestOverQuantums === undefined) player.meta.bestOverQuantums = player.meta.bestAntimatter
-		updateColorPowers()
-		el("eggonsCell").style.display = hasNU(2) ? "none" : ""
-		el("workerReplWhat").textContent = hasNU(2) ? "babies" : "eggons"
-		updateQuantumWorth()
-		if (quSave.autoOptions === undefined) quSave.autoOptions = {}
-		if (quSave.nonMAGoalReached === undefined || !quSave.nonMAGoalReached.length) quSave.nonMAGoalReached = []
-		if (quSave.challengeRecords === undefined) quSave.challengeRecords = {}
-		if (quSave.pairedChallenges.completions === undefined) quSave.pairedChallenges.completions = {}
-		if (quSave["10ofield"] !== undefined) {
-			nfSave = quSave["10ofield"]
-			delete quSave["10ofield"]
-		}
-		if (nfSave.powerThreshold === undefined) {
-			nfSave.powerThreshold = 50
-			nfSave.producingCharge = false
-		}
-		if (quSave.autobuyer.peakTime === undefined) quSave.autobuyer.peakTime = 0
-		if (nfSave.rewards>17&&todSave.upgrades[1]==undefined&&!ghSave?.reached&&!aarMod.ngp4V) {
-			var newMS=[]
-			for (var m=0;m<player.masterystudies.length;m++) {
-				var d=player.masterystudies[m].split("d")
-				if (d[1]!==undefined) newMS.push(player.masterystudies[m])
-			}
-			player.masterystudies = newMS
-			nfSave.rewards = 16
-			forceToQuantumAndRemove = true
-			setTTAfterQuantum = 2e94
-		}
-		if (brSave.bestGals == undefined) brSave.bestGals = 0
-		if (!ghostified) return
+	delete player.eternityBuyer.presets
+	el('prioritydil').value=player.eternityBuyer.dilationPerAmount
+	if (player.meta.bestOverQuantums === undefined) player.meta.bestOverQuantums = player.meta.bestAntimatter
+	updateColorPowers()
+	el("eggonsCell").style.display = hasNU(2) ? "none" : ""
+	el("workerReplWhat").textContent = hasNU(2) ? "babies" : "eggons"
+	updateQuantumWorth()
+	if (quSave.autoOptions === undefined) quSave.autoOptions = {}
+	if (quSave.nonMAGoalReached === undefined || !quSave.nonMAGoalReached.length) quSave.nonMAGoalReached = []
+	if (quSave.challengeRecords === undefined) quSave.challengeRecords = {}
+	if (quSave.pairedChallenges.completions === undefined) quSave.pairedChallenges.completions = {}
+	if (quSave["10ofield"] !== undefined) {
+		nfSave = quSave["10ofield"]
+		delete quSave["10ofield"]
 	}
+	if (nfSave.powerThreshold === undefined) {
+		nfSave.powerThreshold = 50
+		nfSave.producingCharge = false
+	}
+	if (quSave.autobuyer.peakTime === undefined) quSave.autobuyer.peakTime = 0
+	if (nfSave.rewards>17&&todSave.upgrades[1]==undefined&&!ghSave?.reached&&!aarMod.ngp4V) {
+		var newMS=[]
+		for (var m=0;m<player.masterystudies.length;m++) {
+			var d=player.masterystudies[m].split("d")
+			if (d[1]!==undefined) newMS.push(player.masterystudies[m])
+		}
+		player.masterystudies = newMS
+		nfSave.rewards = 16
+		forceToQuantumAndRemove = true
+		setTTAfterQuantum = 2e94
+	}
+	if (brSave.bestGals == undefined) brSave.bestGals = 0
 }
 
 function setConfirmationsDisplay(){
@@ -1664,22 +1640,30 @@ function onLoad(noOffline) {
 	ghostifyDenied = 0
 	setEverythingPreNGp3onLoad()
 	setAarexModIfUndefined()
-	doNGp3Init1()
+	transformSaveToDecimal()
 	setSaveStuffHTML()
 
+	clearOldAchieves()
+	updateAchievements()
+
+	tmp.tickUpdate = true
+	updateCheckBoxes()
+	toggleChallengeRetry()
+	toggleChallengeRetry()
+	toggleBulk()
+	toggleBulk()
+
+	performedTS = false
 	setSomeEterEraStuff2()
 	setSomeEterEraStuff()
 
-	clearOldAchieves()
-
-	updateBoughtTimeStudies()
-	performedTS = false
 	updateVersionsONLOAD()
-	transformSaveToDecimal()
+	mult18 = E(1)
+	updateTemp()
 	updateInQCs()
-	doNGp3Init2()
+	if (mod.ngp3) doNGp3Init()
 
-	for (s = 0; s < (mod.rs ? 4 : 3); s++) toggleCrunchMode(true)
+	for (var s = 0; s < (mod.rs ? 4 : 3); s++) toggleCrunchMode(true)
 	updateAutoEterMode()
 
 	//This should be reorganized

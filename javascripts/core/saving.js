@@ -178,7 +178,6 @@ function changeSaveDesc(saveId, placement) {
 
 function reload() {
 	clearInterval(gameLoopIntervalId)
-	updateNewPlayer()
 	closeToolTip()
 	load_game(true)
 }

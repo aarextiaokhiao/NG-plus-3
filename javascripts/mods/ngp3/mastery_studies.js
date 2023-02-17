@@ -495,7 +495,7 @@ function buyingDilStudyQC(){
 
 function buyingDilStudyPC(){
 	showTab("challenges")
-	showChallengesTab("pChalls")
+	showChallengesTab("quantumchallenges")
 	updateQuantumChallenges()
 }
 
@@ -526,7 +526,7 @@ function buyingDilStudyToD(){
 
 function buyingDilStudyRip(){
 	showTab("quantumtab")
-	showQuantumTab("bigrip")
+	showChallengesTab("bigrip")
 }
 
 function buyingDilationStudy(id){

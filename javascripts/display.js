@@ -75,30 +75,22 @@ function updateCosts() {
 }
 
 function tickspeedDisplay(){
-	if (canBuyDimension(3) || player.currentEternityChall == "eterc9") {
-		var tickmult = tmp.tsReduce
-		var tickmultNum = tickmult.toNumber()
-		var ticklabel
-		var e = Math.floor(Math.log10(Math.round(1/tickmultNum)))
-		if (isNaN(tickmultNum)) ticklabel = 'Break the tick interval by Infinite';
-		else if (e >= 9) ticklabel = "Divide the tick interval by " + shortenDimensions(Decimal.recip(tickmult))
-		else if (tickmultNum > .9) ticklabel = 'Reduce the tick interval by ' + shorten((1 - tickmultNum) * 100) + '%'
-		else ticklabel = 'Reduce the tick interval by ' + ((1 - tickmultNum) * 100).toFixed(e) + '%'
-		let ic3mult=getPostC3Mult()
-		if (player.galacticSacrifice || player.currentChallenge == "postc3" || isIC3Trapped()) el("tickLabel").innerHTML = ((isIC3Trapped() || player.currentChallenge == "postc3") && player.currentChallenge != "postcngmm_3" && !player.challenges.includes("postcngmm_3") && !tmp.be ? "M" : ticklabel + '<br>and m') + 'ultiply all dimensions by ' + (ic3mult > 999.95 ? shorten(ic3mult) : E(ic3mult).toNumber().toPrecision(4)) + '.'
-		else el("tickLabel").textContent = ticklabel + '.'
+	let unl = canBuyDimension(3) || player.currentEternityChall == "eterc9"
+	el("tickSpeedRow").style.visibility = unl ? "visible" : "hidden"
+	if (!unl) return
 
-		el("tickSpeed").style.visibility = "visible";
-		el("tickSpeedMax").style.visibility = "visible";
-		el("tickLabel").style.visibility = "visible";
-		el("tickSpeedAmount").style.visibility = "visible";
-		tickspeedButtonDisplay()
-	} else {
-		el("tickSpeed").style.visibility = "hidden";
-		el("tickSpeedMax").style.visibility = "hidden";
-		el("tickLabel").style.visibility = "hidden";
-		el("tickSpeedAmount").style.visibility = "hidden";
-	}
+	var tickmult = tmp.tsReduce
+	var tickmultNum = tickmult.toNumber()
+	var ticklabel
+	var e = Math.floor(Math.log10(Math.round(1/tickmultNum)))
+	if (isNaN(tickmultNum)) ticklabel = 'Break the tick interval by Infinite';
+	else if (e >= 9) ticklabel = "Divide the tick interval by " + shortenDimensions(Decimal.recip(tickmult))
+	else if (tickmultNum > .9) ticklabel = 'Reduce the tick interval by ' + shorten((1 - tickmultNum) * 100) + '%'
+	else ticklabel = 'Reduce the tick interval by ' + ((1 - tickmultNum) * 100).toFixed(e) + '%'
+	let ic3mult=getPostC3Mult()
+	if (player.galacticSacrifice || player.currentChallenge == "postc3" || isIC3Trapped()) el("tickLabel").innerHTML = ((isIC3Trapped() || player.currentChallenge == "postc3") && player.currentChallenge != "postcngmm_3" && !player.challenges.includes("postcngmm_3") && !tmp.be ? "M" : ticklabel + '<br>and m') + 'ultiply all dimensions by ' + (ic3mult > 999.95 ? shorten(ic3mult) : E(ic3mult).toNumber().toPrecision(4)) + '.'
+	else el("tickLabel").textContent = ticklabel + '.'
+	tickspeedButtonDisplay()
 
 	if (tmp.tickUpdate) {
 		updateTickspeed()
