@@ -43,6 +43,10 @@ h1, h2 {
 	margin-bottom: 3px
 }
 
+a {
+	color: #33f
+}
+
 .hr {
 	height: 2px;
 	width: 100%;
