@@ -293,7 +293,7 @@
 				<br><br>
 
 				<b>(NG+3 v2.31: Ghostify Respecced)</b><br>
-				<b class="red">(Beta: 2/16/23 Build)</b><br>
+				<b class="red">(Beta: 2/19/23 Build)</b><br>
 				By <a href="https://aarextiaokhiao.github.io/">Aarex</a>, pg132, and usavictor.
 				<br><br>
 
@@ -3966,14 +3966,20 @@
 					<button class='storebtn' id='maxReduceHatchSpeed' onclick='maxReduceHatchSpeed()' style="width: 240px">Buy max</button>
 				</td></tr></table>
 			</div><div class="anttab" id="emperordimensions">
-				You have <span class="rqC" id="rgEDs">1</span> red-green, <span class="gqC" id="gbEDs">1</span> green-blue, and <span class="bqC" id="brEDs">1</span> blue-red gluons.<br>
-				<div>
-					<p>You have <span id="replicantAmountED" style="font-size:35px; color: black">0</span> normal duplicants.</p>
-				</div>
-				<p>You have <span id="quantumFoodAmountED">0</span> quantum food.</p>
-				<button class='gluonupgrade storebtn' id='buyQuantumFoodED' onclick='buyQuantumFood()' style="width: 210px"></button><br>
-				<button class='storebtn' id='buyMaxQuantumFoodED' onclick='buyMaxQuantumFood()' style="width: 210px">Buy max</button>
-				<table class="table" id="empDimTable">
+				<p><span id="replicantAmountED" style="font-size:35px; color: black">0</span> normal duplicants</p>
+				<table style='margin: auto'><tr class='table_top_text'>
+					<td style='text-align: center'>
+						<p><span id="quantumFoodAmountED">0</span> quantum food</p>
+						<button class='gluonupgrade storebtn' id='buyQuantumFoodED' onclick='buyQuantumFood()' style="width: 210px"></button><br>
+						<button class='storebtn' id='buyMaxQuantumFoodED' onclick='buyMaxQuantumFood()' style="width: 210px">Buy max</button>
+					</td><td style='text-align: center'>
+						<span class="rqC" id="rgEDs">1</span> red-green gluons<br>
+						<span class="gqC" id="gbEDs">1</span> green-blue gluons<br>
+						<span class="bqC" id="brEDs">1</span> blue-red gluons<br>
+						<button id='breakLimitED' class='storebtn' style='width: 280px; height: 60px' onclick='breakLimit()'></button><br>
+						<button class='storebtn' style='width: 280px' onclick='maxBuyLimit()'>Buy max</button>
+					</td>
+				</tr></table><table class="table" id="empDimTable">
 					<tr style="font-size: 15px">
 						<td>Total: </td>
 						<td id="totalWorkers"></td>
@@ -3982,8 +3988,6 @@
 						</td>
 					</tr>
 				</table>
-				<button id='breakLimitED' class='storebtn' style='width: 280px; height: 60px' onclick='breakLimit()'></button><br>
-				<button class='storebtn' style='width: 280px' onclick='maxBuyLimit()'>Buy max</button><br><br><br>
 			</div><div class='anttab' id='nanofield'>
 				You have <span id="quarksNanofield"></span> pilons.<br>
 				<table class="qtable"><tr><td>
@@ -4008,8 +4012,8 @@
 				<tr>
 					<td><button class="secondarytabbtn" onclick="showGhostifyTab('neutrinos')">Neutrinos</button></td>
 					<td id="gphtabbtn"><button class="secondarytabbtn" onclick="showGhostifyTab('gphtab')">Photons</button></td>
+					<td><button class="secondarytabbtn" onclick="showGhostifyTab('automaticghosts')">Automator Ants</button></td>
 					<td><button class="secondarytabbtn" onclick="showGhostifyTab('bravemilestones')">Brave Milestones</button></td>
-					<td><button class="secondarytabbtn" onclick="showGhostifyTab('automaticghosts')">Automators</button></td>
 				</tr>
 			</table>
 			<div id="neutrinos" class="ghostifytab">
@@ -4029,49 +4033,7 @@
 					<td><button id="ghpMultUpg" class="gluonupgrade unavailablebtn" onclick="buyGHPMult()">Gain 3x more ElP.<br>Currently: <span id="ghpMult"></span>x<br>Cost: <span id="ghpMultUpgCost"></span> neutrinos</button><br><button class="storebtn" onclick='maxGHPMult()' style='width:190px'>Max ElP mult</button></td>
 				</table>
 				<table id="nt_upg_div" style='margin: auto'></table>
-			</div>
-			<div id="automaticghosts" class="ghostifytab">
-				Quantum worth: <b class="QKAmount" id="quantumWorth2">0</b>
-				<table style="margin: auto">
-					<tr>
-						<td style="width: 200px">
-							<span id="automatorPower" style="font-size:25px">0.0</span> Automator Power<br>
-							<span id="consumedPower" style="font-size:15px">0.0</span> used
-						</td><td style="width: 200px">
-							<span id="automatorCharge" style="font-size:25px">0.0</span> Automator Charge<br>
-							<span id="nextAutomatorGhostDiv">Next Automator: <span id="nextAutomatorGhost" style="font-size:15px">?.?</span> Charge</span>
-						</td>
-					</tr>
-				</table>
-				<b id="tooMuchPowerConsumed" class="warning">WARNING: NOT ENOUGH POWER TO AUTOMATE!</b>
-				<table id="automatorTable" style="margin: auto"></table>
-			</div>
-			<div id="bravemilestones" class="ghostifytab">
-				Fundament with least Quantums as possbile for a Reward!
-				<table style="margin: auto">
-					<tr id="braveRow1">
-						<td><div id="braveMilestone1" class="achievement achievementlocked" ach-tooltip="Reward: Keep Speedrun Milestones, Quantum Challenges, and Big Rip upgrades."></div></td>
-						<td><div id="braveMilestone2" class="achievement achievementlocked" ach-tooltip="Reward: Colored quarks don't cancel and keep your gluon upgrades."></div></td>
-						<td><div id="braveMilestone3" class="achievement achievementlocked" ach-tooltip="Reward: Keep Electron upgrades and Quantum features."></div></td>
-						<td><div id="braveMilestone4" class="achievement achievementlocked" ach-tooltip="Reward: Tachyon particles don't reset on Quantum except in challenges, unstabilizing quarks don't lose colored quarks, and you start with 5 of 1st Branch Upgrades."></div></td>
-						<td><div id="braveMilestone5" class="achievement achievementlocked" ach-tooltip="Reward: Meta-Dimension Boosts don't reset on Quantum except in challenges."></div></td>
-						<td><div id="braveMilestone6" class="achievement achievementlocked" ach-tooltip="Reward: Normal duplicants don't reset on Quantum except in challenges."></div></td>
-						<td><div id="braveMilestone7" class="achievement achievementlocked" ach-tooltip="Reward: Start with 10 workers."></div></td>
-						<td><div id="braveMilestone8" class="achievement achievementlocked" ach-tooltip="Reward: Passively generate anti-Quarks (^0.5), Gluons, and Space Shards."></div></td>
-					</tr>
-					<tr id="braveRow2">
-						<td><div id="braveMilestone9" class="achievement achievementlocked" ach-tooltip="Reward: Start with 10 of each one of the first 2 Emperor Dimensions."></div></td>
-						<td><div id="braveMilestone10" class="achievement achievementlocked" ach-tooltip="Reward: Start with 10 of each one of the first 4 Emperor Dimensions."></div></td>
-						<td><div id="braveMilestone11" class="achievement achievementlocked" ach-tooltip="Reward: Start with 10 of each one of the first 6 Emperor Dimensions."></div></td>
-						<td><div id="braveMilestone12" class="achievement achievementlocked" ach-tooltip="Reward: Start with 10 of each Emperor Dimension."></div></td>
-						<td><div id="braveMilestone13" class="achievement achievementlocked" ach-tooltip="Reward: Start with 16 Nanorewards."></div></td>
-						<td><div id="braveMilestone14" class="achievement achievementlocked"></div></td>
-						<td><div id="braveMilestone15" class="achievement achievementlocked" ach-tooltip="Reward: Keep Break Eternity and passively produce 1% of Eternal Matter per second."></div></td>
-						<td><div id="braveMilestone16" class="achievement achievementlocked" ach-tooltip="Reward: Passively produce 1% of Quarks per second."></div></td>
-					</tr>
-				</table>
-			</div>
-			<div id="gphtab" class="ghostifytab">
+			</div><div id="gphtab" class="ghostifytab">
 				<div id="gphUnl"></div>
 				<div id="gphDiv">
 					<table class="table" style="margin: 0 auto">
@@ -4106,6 +4068,48 @@
 					<i style="opacity: 0.1">You were too spectral. Tributes to Ghostify!</i>
 				</div>
 				<div id="blUnl"></div>
+			</div><div id="automaticghosts" class="ghostifytab">
+				Quantum worth: <b class="QKAmount" id="quantumWorth2">0</b>
+				<table style="margin: auto">
+					<tr>
+						<td style="width: 200px">
+							<span id="automatorPower" style="font-size:25px">0.0</span> Antpower<br>
+							<span id="consumedPower" style="font-size:15px">0.0</span> used
+						</td><td style="width: 200px">
+							<span id="automatorCharge" style="font-size:25px">0.0</span> Potency<br>
+							<span id="nextAutomatorGhostDiv">Next Automator: <span id="nextAutomatorGhost" style="font-size:15px">?.?</span></span>
+						</td>
+					</tr>
+				</table>
+				<b id="machineQuote" class="warning"></b>
+				<table id="autoAntCustomTable" style="margin: auto"></table>
+				<br><hr>
+				<h3 class="red">Welcome to Automation Division! As you enlarge, your ants have sacrificed to unleash the automation...</h3>
+				<table id="autoAntTable" style="margin: auto"></table>
+			</div><div id="bravemilestones" class="ghostifytab">
+				Fundament with least Quantums as possbile for a Reward!
+				<table style="margin: auto">
+					<tr id="braveRow1">
+						<td><div id="braveMilestone1" class="achievement achievementlocked" ach-tooltip="Reward: Keep Speedrun Milestones, Quantum Challenges, and Big Rip upgrades."></div></td>
+						<td><div id="braveMilestone2" class="achievement achievementlocked" ach-tooltip="Reward: Colored quarks don't cancel and keep your gluon upgrades."></div></td>
+						<td><div id="braveMilestone3" class="achievement achievementlocked" ach-tooltip="Reward: Keep Electron upgrades and Quantum features."></div></td>
+						<td><div id="braveMilestone4" class="achievement achievementlocked" ach-tooltip="Reward: Tachyon particles don't reset on Quantum except in challenges, unstabilizing quarks don't lose colored quarks, and you start with 5 of 1st Branch Upgrades."></div></td>
+						<td><div id="braveMilestone5" class="achievement achievementlocked" ach-tooltip="Reward: Meta-Dimension Boosts don't reset on Quantum except in challenges."></div></td>
+						<td><div id="braveMilestone6" class="achievement achievementlocked" ach-tooltip="Reward: Normal duplicants don't reset on Quantum except in challenges."></div></td>
+						<td><div id="braveMilestone7" class="achievement achievementlocked" ach-tooltip="Reward: Start with 10 workers."></div></td>
+						<td><div id="braveMilestone8" class="achievement achievementlocked" ach-tooltip="Reward: Passively generate anti-Quarks (^0.5), Gluons, and Space Shards."></div></td>
+					</tr>
+					<tr id="braveRow2">
+						<td><div id="braveMilestone9" class="achievement achievementlocked" ach-tooltip="Reward: Start with 10 of each one of the first 2 Emperor Dimensions."></div></td>
+						<td><div id="braveMilestone10" class="achievement achievementlocked" ach-tooltip="Reward: Start with 10 of each one of the first 4 Emperor Dimensions."></div></td>
+						<td><div id="braveMilestone11" class="achievement achievementlocked" ach-tooltip="Reward: Start with 10 of each one of the first 6 Emperor Dimensions."></div></td>
+						<td><div id="braveMilestone12" class="achievement achievementlocked" ach-tooltip="Reward: Start with 10 of each Emperor Dimension."></div></td>
+						<td><div id="braveMilestone13" class="achievement achievementlocked" ach-tooltip="Reward: Start with 16 Nanorewards."></div></td>
+						<td><div id="braveMilestone14" class="achievement achievementlocked"></div></td>
+						<td><div id="braveMilestone15" class="achievement achievementlocked" ach-tooltip="Reward: Keep Break Eternity and passively produce 1% of Eternal Matter per second."></div></td>
+						<td><div id="braveMilestone16" class="achievement achievementlocked" ach-tooltip="Reward: Passively produce 1% of Quarks per second."></div></td>
+					</tr>
+				</table>
 			</div>
 		</div>
 		<div class="tab" id="bltab">
@@ -4475,14 +4479,15 @@
 	<script type="text/javascript" src="javascripts/mods/ngp3/quantum/quantum_speedruns.js"></script>
 	<script type="text/javascript" src="javascripts/mods/ngp3/quantum/quarks_gluons.js"></script>
 	<script type="text/javascript" src="javascripts/mods/ngp3/quantum/quantum_challenges.js"></script>
-	<script type="text/javascript" src="javascripts/mods/ngp3/quantum/replicants.js"></script>
-	<script type="text/javascript" src="javascripts/mods/ngp3/quantum/nanofield.js"></script>
 	<script type="text/javascript" src="javascripts/mods/ngp3/quantum/tod.js"></script>
 	<script type="text/javascript" src="javascripts/mods/ngp3/quantum/big_rip.js"></script>
 	<script type="text/javascript" src="javascripts/mods/ngp3/quantum/electrons.js"></script>
 
+	<script type="text/javascript" src="javascripts/mods/ngp3/ant/duplicants.js"></script>
+	<script type="text/javascript" src="javascripts/mods/ngp3/ant/nanofield.js"></script>
+	<script type="text/javascript" src="javascripts/mods/ngp3/ant/auto_ants.js"></script>
+
 	<script type="text/javascript" src="javascripts/mods/ngp3/fundament/fundament.js"></script>
-	<script type="text/javascript" src="javascripts/mods/ngp3/fundament/auto.js"></script>
 	<script type="text/javascript" src="javascripts/mods/ngp3/fundament/neutrinos.js"></script>
 	<script type="text/javascript" src="javascripts/mods/ngp3/fundament/photons.js"></script>
 	<script type="text/javascript" src="javascripts/mods/ngp3/fundament/bosonic_lab.js"></script>

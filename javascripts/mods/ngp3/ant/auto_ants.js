@@ -82,8 +82,8 @@ var automators = {
 	},
 	19: {
 		title: "Enchanter",
-		html: `Changes hypotheses at a complete experiment on 2s after last change<br>
-		or change immediately at X seconds remaining: <input id="autoGhost17s" onchange="changeAutoGhost('17s')"/>`,
+		html: `Changes hypotheses on a complete experiment after 2s<br>
+		or change at X seconds remaining: <input id="autoGhost17s" onchange="changeAutoGhost('17s')"/>`,
 		req: 32,
 		pow: 3,
 	},
@@ -115,14 +115,14 @@ function setupAutomaticGhostsData() {
 
 var powerConsumed = undefined
 function updateAutoGhosts(load) {
-	var data = ghSave.automatorGhosts
+	let data = ghSave.automatorGhosts
 	if (load) updateAutomatorUnlocks()
 
 	powerConsumed = 0
 	for (let [g, id] of Object.entries(automatorOrder)) {
 		if (load) {
 			el("autoGhost" + id).style.display = data.ghosts > g ? "table-cell" : "none"
-			el("isAutoGhostOn" + id).textContent = data[id].on ? "ON" : "OFF"
+			loadAutoGhost(id)
 		}
 		if (data[id].on) powerConsumed += automators[id].pow
 	}
@@ -135,15 +135,24 @@ function updateAutoGhosts(load) {
 		el("autoGhost15a").value = data[15].a || 300
 		el("autoGhost17s").value = data[17].s || 60
 	}
-	el("consumedPower").textContent = powerConsumed.toFixed(2)
+
 	isAutoGhostsSafe = data.power >= powerConsumed
-	el("tooMuchPowerConsumed").style.display = isAutoGhostsSafe ? "none" : ""
+	el("consumedPower").textContent = powerConsumed.toFixed(2)
+	el("machineQuote").textContent = !isAutoGhostsSafe ? "Overloaded! Vacate some or seek more power to enable!" :
+		!powerConsumed ? "The machine idles... Hire some ants to do work for you." : ""
+}
+
+function loadAutoGhost(id) {
+	let data = ghSave.automatorGhosts
+	el("autoGhost" + id).className = "autoBuyerDiv " + (data[id].on ? "on" : "")
+	el("isAutoGhostOn" + id).textContent = data[id].on ? "Vacate" : "Hire"
+	el("isAutoGhostOn" + id).className = "storebtn " + (data[id].on ? "chosenbtn" : "")
 }
 
 function toggleAutoGhost(id) {
 	let data = ghSave.automatorGhosts
 	data[id].on = !data[id].on
-	el("isAutoGhostOn" + id).textContent = data[id].on ? "ON" : "OFF"
+	loadAutoGhost(id)
 	updateAutoGhosts()
 }
 
@@ -301,19 +310,35 @@ function updateAutomatorUnlocks() {
 
 function setupAutomatorHTML() {
 	let html = ``
-	for (let [i, id] of Object.entries(automatorOrder)) {
+	let htmlCount = 0
+	let htmlCustom = ``
+	for (let id of automatorOrder) {
 		let g = automators[id]
-		html += `<td id="autoGhost${id}" class="autoBuyerDiv">
-			<b>${g.title}</b>: ${g.pow} Power<br>
-			<button class='storebtn' id="isAutoGhostOn${id}" onclick="toggleAutoGhost(${id})"></button>
-			${g.html ? '<br><br><hr>' + g.html : ''}
-		</td>`
-		if (i % 3 == 2) html += '</tr><tr>'
+		if (g.html) htmlCustom += `<td id="autoGhost${id}" class="autoBuyerDiv">
+				<div class='top'>
+					<b>${g.title}</b>: ${g.pow} Power<br>
+					<button class='storebtn' id="isAutoGhostOn${id}" onclick="toggleAutoGhost(${id})"></button>
+					<br><br><hr>
+				</div><div class='bottom'>
+					${g.html}
+				</div>
+			</td>`
+		else {
+			htmlCount++
+			html += `<td id="autoGhost${id}" class="autoBuyerDiv">
+				<b>${g.title}</b><br>
+				${g.pow} Power<br>
+				<button class='storebtn' id="isAutoGhostOn${id}" onclick="toggleAutoGhost(${id})"></button>
+			</td>`
+			if (htmlCount % 5 == 0) html += "</tr><tr>"
+		}
 	}
-	el('automatorTable').innerHTML = '<tr>' + html + '</tr>'
+	el('autoAntTable').innerHTML = '<tr>' + html + '</tr>'
+	el('autoAntCustomTable').innerHTML = '<tr>' + htmlCustom + '</tr>'
 }
 
 function updateAutomatorHTML() {
+	if (gotBraveMilestone(8)) updateQuantumWorth("display")
 	el("automatorCharge").textContent=getAutoCharge().toFixed(2)
 	el("automatorPower").textContent=ghSave.automatorGhosts.power.toFixed(2)
 }

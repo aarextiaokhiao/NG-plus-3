@@ -428,9 +428,6 @@ function showGhostifyTab(tabName) {
 
 function updateGhostifyTabs() {
 	if (el("neutrinos").style.display == "block") NEUTRINO.update()
-	if (el("automaticghosts").style.display == "block") {
-		if (gotBraveMilestone(8)) updateQuantumWorth("display")
-		updateAutomatorHTML()
-	}
 	if (el("gphtab").style.display == "block") PHOTON.update()
+	if (el("automaticghosts").style.display == "block") updateAutomatorHTML()
 }

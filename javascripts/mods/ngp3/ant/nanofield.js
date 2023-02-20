@@ -18,7 +18,7 @@ function updateNanoverseTab() {
 	el("quarkAntienergyRate").textContent = shortenMoney(getQuarkAntienergyProduction())
 	el("quarkChargeProductionCap").textContent = shortenMoney(getQuarkChargeProductionCap())
 	el("rewards").textContent = getFullExpansion(amt)
-	el("produceQuarkCharge").innerHTML = (nfSave.producingCharge ? "Stop" : "Start") + " production of nanocharge." + (nfSave.producingCharge ? "" : "<br>(You will not get pilons when you do this.)")
+	el("produceQuarkCharge").innerHTML = (nfSave.producingCharge ? "Stop" : "Start") + " production of nanocharge." + (nfSave.producingCharge ? "" : "<br>(You won't gain pilons on production)")
 
 	for (var reward = 1; reward < 9; reward++) {
 		el("nfReward" + reward).className = reward > amt ? "nfRewardlocked" : "nfReward"

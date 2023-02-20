@@ -706,6 +706,10 @@ button b, button span {
     border-radius: 4px;
 }
 
+.autoBuyerDiv.on {
+	background: #0BD251
+}
+
 .autobuyerbtn {
     color: white;
     background: #1F1F1F;
@@ -2160,7 +2164,6 @@ td.lEp {
 	z-index: 3;
 	transition-duration: 1s
 }
-
 #ghostifyanibg {
 	position: absolute;
 	left: 0;
@@ -2169,7 +2172,6 @@ td.lEp {
 	height: 100%;
 	background: linear-gradient(#0c001e, #3a003f)
 }
-
 #ghostifyanitext {
 	position: absolute;
 	left: -100%;
@@ -2189,7 +2191,6 @@ td.lEp {
 	transition-duration: 0.2s;
 	animation: ghostifytext 4s linear infinite
 }
-
 .brCompleted[ach-tooltip]:before, .bRune[ach-tooltip]:before {
 	text-shadow: none !important
 }
@@ -2205,16 +2206,45 @@ td.lEp {
 	overflow: hidden;
 	transition-duration: 1s
 }
-
 #ghostlyNewsTickerText {
 	position: absolute;
 	font-size: 16px;
     white-space: nowrap
 }
-
 #ghostlyNewsTickerBlock {
 	height: 0px;
 	transition-duration: 1s
+}
+
+#automaticghosts button {
+    width: 100px
+}
+#automaticghosts input {
+	width: 100px
+}
+#automaticghosts .autoBuyerDiv {
+	text-align: center;
+	position: relative;
+    transition-duration: 0.2s
+}
+#automaticghosts .top {
+	position: absolute;
+	width: 200px;
+	top: 10px;
+}
+#automaticghosts .bottom {
+	position: absolute;
+	width: 200px;
+	bottom: 10px;
+}
+#autoAntTable .autoBuyerDiv {
+    width: 120px;
+    height: 60px;
+    padding: 5px;
+}
+#autoAntCustomTable .autoBuyerDiv {
+	width: 200px;
+    height: 150px;
 }
 
 .neutrinos {
