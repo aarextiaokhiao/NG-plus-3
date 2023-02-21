@@ -2,7 +2,7 @@
 var quantumWorth
 function updateQuantumWorth(mode) {
 	if (!mod.ngp3) return
-	if (!gotBraveMilestone(8)) {
+	if (!hasBraveMilestone(8)) {
 		if (mode != "notation") mode = undefined
 	} else if (mode == "notation") return
 
@@ -174,7 +174,7 @@ function updateColorCharge() {
 	var colors = ['r','g','b']
 	for (var i = 0; i < 3; i++) {
 		var ret = E(0)
-		if (gotBraveMilestone(2)) ret = quSave.usedQuarks[colors[i]]
+		if (hasBraveMilestone(2)) ret = quSave.usedQuarks[colors[i]]
 		colorCharge[colors[i]] = ret
 	}
 
@@ -186,7 +186,7 @@ function updateColorCharge() {
 	}
 
 	colorCharge.normal={color:sorted[0],charge:Decimal.sub(quSave.usedQuarks[sorted[0]]).sub(quSave.usedQuarks[sorted[1]])}
-	if (!gotBraveMilestone(2)) colorCharge[sorted[0]]=colorCharge[sorted[0]].add(colorCharge.normal.charge)
+	if (!hasBraveMilestone(2)) colorCharge[sorted[0]]=colorCharge[sorted[0]].add(colorCharge.normal.charge)
 	if (quSave.usedQuarks[sorted[0]].gt(0)&&colorCharge.normal.charge.eq(0)) giveAchievement("Hadronization")
 
 	updateQuarksTabOnUpdate()
@@ -271,7 +271,7 @@ function convertAQToGluons() {
 
 function checkGluonRounding(){
 	if (!quantumed) return
-	if (gotBraveMilestone(8)) return
+	if (hasBraveMilestone(8)) return
 	if (quSave.gluons.rg.lt(101)) quSave.gluons.rg = quSave.gluons.rg.round()
 	if (quSave.gluons.gb.lt(101)) quSave.gluons.gb = quSave.gluons.gb.round()
 	if (quSave.gluons.br.lt(101)) quSave.gluons.br = quSave.gluons.br.round()
@@ -333,7 +333,7 @@ function updateQuarksTab(tab) {
 	el("blueTranslation").textContent=shortenMoney(colorBoosts.b)+"x"
 
 	if (hasMasteryStudy("t383")) el("blueTranslationMD").textContent=shorten(getMTSMult(383))+"x"
-	if (gotBraveMilestone(8)) {
+	if (hasBraveMilestone(8)) {
 		var assortAmount=getAssortAmount()
 		var colors=['r','g','b']
 		el("assort_amount").textContent = shortenDimensions(assortAmount.mul(getQuarkAssignMult()))
@@ -369,7 +369,7 @@ function updateGluonsTab() {
 		el("gbupg8current").textContent = "Currently: " + shorten(getGU8Effect("gb")) + "x"
 		el("brupg8current").textContent = "Currently: " + shorten(getGU8Effect("br")) + "x"
 	}
-	if (gotBraveMilestone(8)) updateGluonsTabOnUpdate("display")
+	if (hasBraveMilestone(8)) updateGluonsTabOnUpdate("display")
 }
 
 //Display: On load
@@ -415,7 +415,7 @@ function updateGluonsTabOnUpdate(mode) {
 			br: E(0)
 		}
 	}
-	if (!gotBraveMilestone(8)) mode = undefined
+	if (!hasBraveMilestone(8)) mode = undefined
 	var names = ["rg","gb","br"]
 	var sevenUpgrades = hasMasteryStudy("d9")
 	var eightUpgrades = hasMasteryStudy("d13")
@@ -440,52 +440,32 @@ function updateGluonsTabOnUpdate(mode) {
 }
 
 //Quarks animation
-var quarks={}
-var centerX
-var centerY
-var maxDistance
-var code
-
+let quarks = {}
 function drawQuarkAnimation(ts){
-	centerX = canvas.width/2
-	centerY = canvas.height/2
-	maxDistance=Math.sqrt(Math.pow(centerX,2)+Math.pow(centerY,2))
-	code=player.options.theme=="Aarex's Modifications"?"e5":"99"
+	let centerX = qkc.width / 2
+	let centerY = qkc.height / 2
+	let offset = Math.max(centerX, centerY)
+
 	if (el("quantumtab").style.display !== "none" && el("uquarks").style.display !== "none" && isAnimationOn("quarks")) {
-		qkctx.clearRect(0, 0, canvas.width, canvas.height);
-		quarks.sum=quSave.colorPowers.r.max(1).log10()+quSave.colorPowers.g.max(1).log10()+quSave.colorPowers.b.max(1).log10()
-		quarks.amount=Math.ceil(Math.min(quarks.sum,200))
-		for (p=0;p<quarks.amount;p++) {
-			var particle=quarks['p'+p]
-			if (particle==undefined) {
-				particle={}
-				var random=Math.random()
-				if (random<=quSave.colorPowers.r.max(1).log10()/quarks.sum) particle.type='r'
-				else if (random>=1-quSave.colorPowers.b.max(1).log10()/quarks.sum) particle.type='b'
-				else particle.type='g'
-				particle.motion=Math.random()>0.5?'in':'out'
-				particle.direction=Math.random()*Math.PI*2
-				particle.distance=Math.random()
-				quarks['p'+p]=particle
-			} else {
-				particle.distance+=0.01
-				if (particle.distance>=1) {
-					var random=Math.random()
-					if (random<=quSave.colorPowers.r.max(1).log10()/quarks.sum) particle.type='r'
-					else if (random>=1-quSave.colorPowers.b.max(1).log10()/quarks.sum) particle.type='b'
-					else particle.type='g'
-					particle.motion=Math.random()>0.5?'in':'out'
-					particle.direction=Math.random()*Math.PI*2
-					particle.distance=0
-				}
-				var actualDistance=particle.distance*maxDistance
-				if (particle.motion=="in") actualDistance=maxDistance-actualDistance
-				qkctx.fillStyle=particle.type=="r"?"#"+code+"0000":particle.type=="g"?"#00"+code+"00":"#0000"+code
-				point(centerX+Math.sin(particle.direction)*actualDistance, centerY+Math.cos(particle.direction)*actualDistance, qkctx)
+		delta = (ts - lastTs) / 1000
+		lastTs = ts
+
+		qkctx.clearRect(0, 0, qkc.width, qkc.height)
+		let amt = Math.min(Math.log10(quantumWorth.add(1).log10() + 1) * 50, 150)
+		for (let i = 0; i < amt; i++) {
+			let data = quarks[i] || {
+				deg: Math.random() * 1000,
+				speed: Math.random() * .5 + .75
 			}
+			quarks[i] = data
+			data.deg += delta * data.speed
+
+			let actualDeg = (data.deg / Math.PI) % 1
+			let dist = offset * (Math.sin(data.deg / Math.PI) / 3 + .5)
+			qkctx.fillStyle = actualDeg > 2/3 ? "#00f" : actualDeg > 1/3 ? "#0f0" : "#f00"
+			point(centerX + Math.sin(data.deg) * dist, centerY + Math.cos(data.deg) * dist, qkctx)
 		}
-		delta = (ts - lastTs) / 1000;
-		lastTs = ts;
-		requestAnimationFrame(drawQuarkAnimation);
+
+		requestAnimationFrame(drawQuarkAnimation)
 	}
 }

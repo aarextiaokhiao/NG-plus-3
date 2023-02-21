@@ -5,16 +5,16 @@ function getDimensionBoostPower(next, focusOn) {
 	if (inNGM(2)) {
 		if (player.infinityUpgrades.includes("resetMult")) ret = 2.5
 		if (player.challenges.includes("postc7")) ret = 4
-		if (player.currentChallenge == "postc7" || inQC(6) || player.timestudy.studies.includes(81)) ret = 10
+		if (player.currentChallenge == "postc7" || inQC(6) || hasTimeStudy(81)) ret = 10
 	}
 	if (mod.rs) ret += player.timestudy.ers_studies[4] + (next ? 1 : 0)
 	if (hasGSacUpg(23) && ((!inNC(14) && player.currentChallenge != "postcngm3_3") || !inNGM(3) || inNGM(4)) && player.currentChallenge != "postcngm3_4") ret *= galMults.u23()
 	if (player.infinityUpgrades.includes("resetMult") && inNGM(2)) ret *= 1.2 + 0.05 * player.infinityPoints.max(1).log(10)
 	if (!mod.rs && hasAch("r101")) ret = ret * 1.01
-	if (player.timestudy.studies.includes(83)) ret = E_pow(1.0004, player.totalTickGained).min(mod.ngpp ? 1/0 : 1e30).mul(ret);
-	if (player.timestudy.studies.includes(231)) ret = E_pow(Math.max(player.resets, 1), 0.3).mul(ret)
+	if (hasTimeStudy(83)) ret = E_pow(1.0004, player.totalTickGained).min(mod.ngpp ? 1/0 : 1e30).mul(ret);
+	if (hasTimeStudy(231)) ret = E_pow(Math.max(player.resets, 1), 0.3).mul(ret)
 	if (inNGM(2)) {
-		if (player.currentChallenge == "postc7" || inQC(6) || player.timestudy.studies.includes(81)) ret = E_pow(ret, 3)
+		if (player.currentChallenge == "postc7" || inQC(6) || hasTimeStudy(81)) ret = E_pow(ret, 3)
 		else if (player.challenges.includes("postc7")) ret = E_pow(ret, 2)
 	}
 	if (hasDilStudy(6) && player.currentEternityChall != "eterc14" && !inQC(3) && !inQC(7)) ret = getExtraDimensionBoostPower().mul(ret)
@@ -128,8 +128,8 @@ function getDimboostCostIncrease () {
 		if (inNC(4)) ret += 5
 		if (mod.rs && hasAch('r101')) ret -= Math.min(8, Math.pow(player.eternityPoints.max(1).log(10), .25))
 	}
-	if (player.timestudy.studies.includes(211)) ret -= tsMults[211]()
-	if (player.timestudy.studies.includes(222)) ret -= tsMults[222]()
+	if (hasTimeStudy(211)) ret -= tsMults[211]()
+	if (hasTimeStudy(222)) ret -= tsMults[222]()
 	return ret;
 }
 

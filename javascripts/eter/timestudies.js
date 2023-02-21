@@ -108,28 +108,11 @@ function buyTimeStudy(name, check, quickBuy) {
 		player.timestudy.ers_studies[name]++
 		updateTimeStudyButtons(true)
 	} else if (shiftDown && check === undefined) studiesUntil(name);
-	else if (player.timestudy.theorem >= cost && canBuyStudy(name) && !player.timestudy.studies.includes(name)) {
+	else if (player.timestudy.theorem >= cost && canBuyStudy(name) && !hasTimeStudy(name)) {
 		player.timestudy.studies.push(name)
 		player.timestudy.theorem -= cost
-		if (name == 71 || name == 81 || name == 91 || name == 101) {
-			el(name).className = "timestudybought normaldimstudy"
-		} else if (name == 72 || name == 82 || name == 92 || name == 102) {
-			el(name).className = "timestudybought infdimstudy"
-		} else if (name == 73 || name == 83 || name == 93 || name == 103) {
-			el(name).className = "timestudybought timedimstudy"
-		} else if (name == 121 || name == 131 || name == 141) {
-			el(name).className = "timestudybought activestudy"
-		} else if (name == 122 || name == 132 || name == 142) {
-			el(name).className = "timestudybought passivestudy"
-		} else if (name == 123 || name == 133 || name == 143) {
-			el(name).className = "timestudybought idlestudy"
-		} else if (name == 221 || name == 224 || name == 225 || name == 228 || name == 231 || name == 234) {
-			el(name).className = "timestudybought darkstudy"
-		} else if (name == 222 || name == 223 || name == 226 || name == 227 || name == 232 || name == 233) {
-			el(name).className = "timestudybought lightstudy"
-		} else {
-			el(name).className = "timestudybought"
-		}
+		updateTimeStudyClass(name, "bought")
+
 		if (name == 131 && speedrunMilestonesReached < 20) {
 			if (player.replicanti.galaxybuyer) el("replicantiresettoggle").textContent = "Auto galaxy ON (disabled)"
 			else el("replicantiresettoggle").textContent = "Auto galaxy OFF (disabled)"
@@ -175,10 +158,10 @@ function canBuyStudy(name) {
 	var row = Math.floor(name / 10)
 	var col = name % 10
 	if (name == 33) {
-		return player.timestudy.studies.includes(21) 
+		return hasTimeStudy(21) 
 	}
 	if (name == 62) {
-		return player.eternityChalls.eterc5 !== undefined && player.timestudy.studies.includes(42)
+		return player.eternityChalls.eterc5 !== undefined && hasTimeStudy(42)
 	}
 
 	if ((name == 71 || name == 72) && player.eternityChallUnlocked == 12) {
@@ -190,11 +173,11 @@ function canBuyStudy(name) {
 	}
 
 	if (name == 181) {
-		return player.eternityChalls.eterc1 !== undefined && player.eternityChalls.eterc2 !== undefined && player.eternityChalls.eterc3 !== undefined && player.timestudy.studies.includes(171)
+		return player.eternityChalls.eterc1 !== undefined && player.eternityChalls.eterc2 !== undefined && player.eternityChalls.eterc3 !== undefined && hasTimeStudy(171)
 	}
-	if (name == 201) return player.timestudy.studies.includes(192) && !player.dilation.upgrades.includes(8)
-	if (name == 211 || name == 212) return player.timestudy.studies.includes(191)
-	if (name == 213 || name == 214) return player.timestudy.studies.includes(193)
+	if (name == 201) return hasTimeStudy(192) && !player.dilation.upgrades.includes(8)
+	if (name == 211 || name == 212) return hasTimeStudy(191)
+	if (name == 213 || name == 214) return hasTimeStudy(193)
 	switch(row) {
 
 		case 1: return true
@@ -216,29 +199,29 @@ function canBuyStudy(name) {
 		case 10:
 		case 13:
 		case 14:
-			if (player.timestudy.studies.includes((row-1)*10 + col)) return true; else return false
+			if (hasTimeStudy((row-1)*10 + col)) return true; else return false
 			break;
 		case 12:
-			if (hasRow(row-1) && (!hasRow(row) || (player.masterystudies ? hasMasteryStudy("t272") : false))) return true; else return false
+			if (hasRow(row-1) && (!hasRow(row) || hasMasteryStudy("t272"))) return true; else return false
 			break;
 		case 7:
-			if (!player.timestudy.studies.includes(61)) return false;
+			if (!hasTimeStudy(61)) return false;
 			if (player.dilation.upgrades.includes(8)) return true;
 			var have = player.timestudy.studies.filter(function(x) {return Math.floor(x / 10) == 7}).length;
-			if (player.timestudy.studies.includes(201)) return have < 2;
+			if (hasTimeStudy(201)) return have < 2;
 			return have < 1;
 			break;
 
 		case 19:
-			return player.eternityChalls.eterc10 !== undefined && player.timestudy.studies.includes(181)
+			return player.eternityChalls.eterc10 !== undefined && hasTimeStudy(181)
 			break;
 
 		case 22:
-			return player.timestudy.studies.includes(210 + Math.round(col/2)) && (((name%2 == 0) ? !player.timestudy.studies.includes(name-1) : !player.timestudy.studies.includes(name+1)) || (player.masterystudies ? hasMasteryStudy("t302") : false))
+			return hasTimeStudy(210 + Math.round(col/2)) && (((name%2 == 0) ? !hasTimeStudy(name-1) : !hasTimeStudy(name+1)) || hasMasteryStudy("t302"))
 			break;
 
 		case 23:
-			return (player.timestudy.studies.includes(220 + Math.floor(col*2)) || player.timestudy.studies.includes(220 + Math.floor(col*2-1))) && (!player.timestudy.studies.includes((name%2 == 0) ? name-1 : name+1) || (player.masterystudies ? hasMasteryStudy("t302") : false))
+			return (hasTimeStudy(220 + Math.floor(col*2)) || hasTimeStudy(220 + Math.floor(col*2-1))) && (!hasTimeStudy((name%2 == 0) ? name-1 : name+1) || hasMasteryStudy("t302"))
 			break;
 	}
 }
@@ -247,7 +230,6 @@ var all = [11, 21, 22, 33, 31, 32, 41, 42, 51, 61, 62, 71, 72, 73, 81, 82 ,83, 9
 var studyCosts = [1, 3, 2, 2, 3, 2, 4, 6, 3, 3, 3, 4, 6, 5, 4, 6, 5, 4, 5, 7, 4, 6, 6, 12, 9, 9, 9, 5, 5, 5, 4, 4, 4, 8, 7, 7, 15, 200, 400, 730, 300, 900, 120, 150, 200, 120, 900, 900, 900, 900, 900, 900, 900, 900, 500, 500, 500, 500]
 var performedTS
 function updateTimeStudyButtons(changed, forceupdate = false) {
-	if (!performedTS) updateBoughtTimeStudies()
 	if (!forceupdate && (changed ? player.dilation.upgrades.includes(10) : performedTS && !player.dilation.upgrades.includes(10))) return
 	performedTS = true
 	if (mod.rs) {
@@ -263,89 +245,45 @@ function updateTimeStudyButtons(changed, forceupdate = false) {
 		}
 		return
 	}
-	for (var i = 0; i < all.length; i++) {
-		if (!player.timestudy.studies.includes(all[i])) {
-			var className
-			if (canBuyStudy(all[i]) && studyCosts[i] <= player.timestudy.theorem) {
-				if (all[i] == 71 || all[i] == 81 || all[i] == 91 || all[i] == 101) {
-					className = "timestudy normaldimstudy"
-				} else if (all[i] == 72 || all[i] == 82 || all[i] == 92 || all[i] == 102) {
-					className = "timestudy infdimstudy"
-				} else if (all[i] == 73 || all[i] == 83 || all[i] == 93 || all[i] == 103) {
-					className = "timestudy timedimstudy"
-				} else if (all[i] == 121 || all[i] == 131 || all[i] == 141) {
-					className = "timestudy activestudy"
-				} else if (all[i] == 122 || all[i] == 132 || all[i] == 142) {
-					className = "timestudy passivestudy"
-				} else if (all[i] == 123 || all[i] == 133 || all[i] == 143) {
-					className = "timestudy idlestudy"
-				} else if (all[i] == 221 || all[i] == 224 || all[i] == 225 || all[i] == 228 || all[i] == 231 || all[i] == 234) {
-					className = "timestudy darkstudy"
-				} else if (all[i] == 222 || all[i] == 223 || all[i] == 226 || all[i] == 227 || all[i] == 232 || all[i] == 233) {
-					className = "timestudy lightstudy"
-				} else {
-					className = "timestudy"
-				}
-			}
-			else {
-				if (all[i] == 71 || all[i] == 81 || all[i] == 91 || all[i] == 101) {
-					className = "timestudylocked normaldimstudylocked"
-				} else if (all[i] == 72 || all[i] == 82 || all[i] == 92 || all[i] == 102) {
-					className = "timestudylocked infdimstudylocked"
-				} else if (all[i] == 73 || all[i] == 83 || all[i] == 93 || all[i] == 103) {
-					className = "timestudylocked timedimstudylocked"
-				} else if (all[i] == 121 || all[i] == 131 || all[i] == 141) {
-					className = "timestudylocked activestudylocked"
-				} else if (all[i] == 122 || all[i] == 132 || all[i] == 142) {
-					className = "timestudylocked passivestudylocked"
-				} else if (all[i] == 123 || all[i] == 133 || all[i] == 143) {
-					className = "timestudylocked idlestudylocked"
-				} else {
-					className = "timestudylocked"
-				}
-			}
-			el(all[i]).className = className
-		}
+	for (let id of all) {
+		updateTimeStudyClass(id, hasTimeStudy(id) ? "bought" : canBuyStudy(id) && player.timestudy.theorem >= studyCosts[id] ? "" : "locked")
 	}
 
+	//Dilation
 	for (var i = 1; i < 7; i++) {
 		if (hasDilStudy(i)) el("dilstudy"+i).className = "dilationupgbought"
 		else if (player.timestudy.theorem >= ([null, 5e3, 1e6, 1e7, 1e8, 1e9, 1e24])[i] && (hasDilStudy(i - 1) || (i < 2 && ECComps("eterc11") > 4 && ECComps("eterc12") > 4 && getTotalTT(player) >= 13e3))) el("dilstudy" + i).className = "dilationupg"
 		else el("dilstudy" + i).className = "timestudylocked"
 	}
 	el("dilstudy6").style.display = mod.ngpp ? "" : "none"
-	el("masteryportal").style.display = player.masterystudies ? "" : "none"
+
+	//NG+3
+	maybeShowFillAll()
+	el("masteryportal").style.display = mod.ngp3 ? "" : "none"
 	if (mod.ngp3) {
-		el("masteryportal").innerHTML = player.dilation.upgrades.includes("ngpp6") ? "Mastery portal<span>Continue into mastery studies.</span>" : !hasDilStudy(1) ? "To be continued...." : "Mastery portal (" + (hasDilStudy(6) ? "66%: requires "+shortenCosts(1e100)+" dilated time upgrade)" : "33%: requires meta-dimensions)") 
-		el("masteryportal").className = player.dilation.upgrades.includes("ngpp6") ? "dilationupg" : "timestudylocked"
+		el("masteryportal").innerHTML = "<b style='font-size: 13px'>Mastery Portal</b>" +
+			"<span>" + (
+				player.dilation.upgrades.includes("ngpp6") ? "Find more knowledge... Advance to Mastery." :
+				hasDilStudy(6) ? "66%: Purchase the last Dilation Upgrade" :
+				hasDilStudy(1) ? "33%: Unleash the Meta" :
+				"0%: Adjust the flow of time")
+			+ "</span>"
+		el("masteryportal").className = player.dilation.upgrades.includes("ngpp6") ? "dilationupgrebuyable" : "timestudylocked"
 	}
 }
 
-function updateBoughtTimeStudies() {
-	for (var i = 0; i < player.timestudy.studies.length; i++) {
-		var num = player.timestudy.studies[i]
-		if (typeof(num) != "number") num = parseInt(num)
-		if (!all.includes(num)) continue
-		if (num == 71 || num == 81 || num == 91 || num == 101) {
-			el(num).className = "timestudybought normaldimstudy"
-		} else if (num == 72 || num == 82 || num == 92 || num == 102) {
-			el(num).className = "timestudybought infdimstudy"
-		} else if (num == 73 || num == 83 || num == 93 || num == 103) {
-			el(num).className = "timestudybought timedimstudy"
-		} else if (num == 121 || num == 131 || num == 141) {
-			el(num).className = "timestudybought activestudy"
-		} else if (num == 122 || num == 132 || num == 142) {
-			el(num).className = "timestudybought passivestudy"
-		} else if (num == 123 || num == 133 || num == 143) {
-			el(num).className = "timestudybought idlestudy"
-		} else if (num == 221 || num == 224 || num == 225 || num == 228 || num == 231 || num == 234) {
-			el(num).className = "timestudybought darkstudy"
-		} else if (num == 222 || num == 223 || num == 226 || num == 227 || num == 232 || num == 233) {
-			el(num).className = "timestudybought lightstudy"
-		} else {
-			el(num).className = "timestudybought"
-		}
-	}	
+hasTimeStudy = x => player.timestudy.studies.includes(x)
+
+function updateTimeStudyClass(id, type = "") {
+	let className = "timestudy" + type
+	if (id > 70 && id < 110) {
+		className += " " + [null, "normal", "inf", "time"][id % 10] + "dimstudy"
+	} else if (id > 120 && id < 150) {
+		className += " " + [null, "active", "passive", "idle"][id % 10] + "study"
+	} else if (id > 220) {
+		className += " " + ["light", "dark"][id % 2] + "study"
+	}
+	el(id).className = className
 }
 
 function studiesUntil(id) {
@@ -353,8 +291,8 @@ function studiesUntil(id) {
 	var row = Math.floor(id / 10);
 	var path = [0,0];
 	for (var i = 1; i < 4; i++){
-		if (player.timestudy.studies.includes(70 + i)) path[0] = i;
-		if (player.timestudy.studies.includes(120 + i)) path[1] = i;
+		if (hasTimeStudy(70 + i)) path[0] = i;
+		if (hasTimeStudy(120 + i)) path[1] = i;
 	}
 	if ((row > 10 && path[0] === 0) || (row > 14 && path[1] === 0)) {
 		return;
@@ -363,7 +301,7 @@ function studiesUntil(id) {
 		var chosenPath = path[i > 11 ? 1 : 0];
 		if (row > 6 && row < 11) var secondPath = col;
 		if ((i > 6 && i < 11) || (i > 11 && i < 15)) buyTimeStudy(i * 10 + (chosenPath === 0 ? col : chosenPath), 0, true);
-		if ((i > 6 && i < 11) && player.timestudy.studies.includes(201)) buyTimeStudy(i * 10 + secondPath, 0, true);
+		if ((i > 6 && i < 11) && hasTimeStudy(201)) buyTimeStudy(i * 10 + secondPath, 0, true);
 		else for (var j = 1; all.includes(i * 10 + j) ; j++) buyTimeStudy(i * 10 + j, 0, true);
 	}
 	buyTimeStudy(id, studyCosts[all.indexOf(id)], 0, true);
@@ -382,7 +320,7 @@ function respecTimeStudies(ecComp, load) {
 		} else {
 			var bru7activated = isBigRipUpgradeActive(7)
 			for (var i = 0; i < all.length; i++) {
-				if (player.timestudy.studies.includes(all[i]) && (!bru7activated || all[i] !== 192)) {
+				if (hasTimeStudy(all[i]) && (!bru7activated || all[i] !== 192)) {
 					player.timestudy.theorem += studyCosts[i]
 					gotAch=false
 				}
@@ -414,7 +352,6 @@ function respecTimeStudies(ecComp, load) {
 		respecUnbuyableTimeStudies()
 		updateMasteryStudyCosts()
 		if (!load) {
-			maybeShowFillAll()
 			updateMasteryStudyButtons()
 			drawMasteryTree()
 		}
@@ -430,7 +367,7 @@ function respecUnbuyableTimeStudies() {
 	var earlyDLStudies = []
 	for (var t = 0; t < all.length; t++) {
 		var id = all[t]
-		if (player.timestudy.studies.includes(id)) {
+		if (hasTimeStudy(id)) {
 			if ((id < 120 || id > 150 || !secondSplitPick || secondSplitPick == id % 10 || hasMasteryStudy("t272")) && (id < 220 || !earlyDLStudies.includes(id % 2 > 0 ? id + 1 : id - 1) || hasMasteryStudy("t302"))) {
 				respecedTS.push(id)
 				if (id > 120 && id < 130) secondSplitPick = id % 10

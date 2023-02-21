@@ -48,7 +48,7 @@ function updateReplicantsTab(){
 
 function updateReplicantsSubtab(){
 	el("replicantiAmount2").textContent = shortenDimensions(player.replicanti.amount)
-	el("replicantReset").className = player.replicanti.amount.lt(quSave.replicants.requirement) ? "unavailablebtn" : "storebtn"
+	el("replicantReset").className = player.replicanti.amount.lt(quSave.replicants.requirement) ? "unavailablebtn" : "antbtn"
 	el("replicantReset").innerHTML = "Reset replicantis for a duplicant.<br>(requires " + shortenCosts(quSave.replicants.requirement) + " replicanti)"
 	el("replicantAmount").textContent = shortenDimensions(quSave.replicants.amount)
 	el("workerReplAmount").textContent = shortenDimensions(tmp.twr)
@@ -66,7 +66,7 @@ function updateReplicantsSubtab(){
 	growupRateUpdating()
 	
 	el("reduceHatchSpeed").innerHTML = "Hatch speed: " + hatchSpeedDisplay() + " -> " + hatchSpeedDisplay(true) + "<br>Cost: " + shortenDimensions(quSave.replicants.hatchSpeedCost) + " for all 3 gluons"
-	if (gotBraveMilestone(8)) updateReplicants("display")
+	if (hasBraveMilestone(8)) updateReplicants("display")
 }
 
 var antTabs = {
@@ -82,9 +82,9 @@ function updateReplicants(mode) {
 	let showCosts = quSave.replicants.limit < 1e3
 	el("quantumFoodAmount").textContent = getFullExpansion(quSave.replicants.quantumFood)
 
-	el("buyQuantumFood").className = "gluonupgrade " + (quSave.gluons.rg.min(quSave.gluons.gb).min(quSave.gluons.br).lt(quSave.replicants.quantumFoodCost) ? "unavailabl" : "stor") + "ebtn"
-	el("breakLimit").className = (quSave.gluons.rg.min(quSave.gluons.gb).min(quSave.gluons.br).lt(quSave.replicants.limitCost) || !isLimitUpgAffordable() ? "unavailabl" : "stor") + "ebtn"
-	el("reduceHatchSpeed").className = (quSave.gluons.rg.min(quSave.gluons.gb).min(quSave.gluons.br).lt(quSave.replicants.hatchSpeedCost) ? "unavailabl" : "stor") + "ebtn"
+	el("buyQuantumFood").className = "gluonupgrade " + (quSave.gluons.rg.min(quSave.gluons.gb).min(quSave.gluons.br).lt(quSave.replicants.quantumFoodCost) ? "unavailable" : "ant") + "btn"
+	el("breakLimit").className = (quSave.gluons.rg.min(quSave.gluons.gb).min(quSave.gluons.br).lt(quSave.replicants.limitCost) || !isLimitUpgAffordable() ? "unavailable" : "ant") + "btn"
+	el("reduceHatchSpeed").className = (quSave.gluons.rg.min(quSave.gluons.gb).min(quSave.gluons.br).lt(quSave.replicants.hatchSpeedCost) ? "unavailable" : "ant") + "btn"
 
 	if (showCosts) {
 		el("rgRepl").textContent = shortenDimensions(quSave.gluons.rg)
@@ -108,8 +108,8 @@ function updateReplicants(mode) {
 
 	if (hasMasteryStudy('d11')) {
 		el("quantumFoodAmountED").textContent = getFullExpansion(quSave.replicants.quantumFood)
-		el("buyQuantumFoodED").className = "gluonupgrade " + (quSave.gluons.rg.min(quSave.gluons.gb).min(quSave.gluons.br).lt(quSave.replicants.quantumFoodCost) ? "unavailabl" : "stor") + "ebtn"
-		el("breakLimitED").className = (quSave.gluons.rg.min(quSave.gluons.gb).min(quSave.gluons.br).lt(quSave.replicants.limitCost) || !isLimitUpgAffordable() ? "unavailabl" : "stor") + "ebtn"
+		el("buyQuantumFoodED").className = "gluonupgrade " + (quSave.gluons.rg.min(quSave.gluons.gb).min(quSave.gluons.br).lt(quSave.replicants.quantumFoodCost) ? "unavailable" : "ant") + "btn"
+		el("breakLimitED").className = (quSave.gluons.rg.min(quSave.gluons.gb).min(quSave.gluons.br).lt(quSave.replicants.limitCost) || !isLimitUpgAffordable() ? "unavailable" : "ant") + "btn"
 	}
 }
 

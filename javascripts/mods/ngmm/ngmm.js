@@ -55,8 +55,8 @@ function getGPMultipliers(){
 function getGSGalaxies() {
 	let galaxies = player.galaxies + player.dilation.freeGalaxies;
 	let rg = player.replicanti.galaxies
-	if (player.timestudy.studies.includes(133)) rg *= 1.5
-	if (player.timestudy.studies.includes(132)) rg *= 1.4
+	if (hasTimeStudy(133)) rg *= 1.5
+	if (hasTimeStudy(132)) rg *= 1.4
 	if (hasAch("r121")) galaxies += 30.008
 	if (hasAch("r127")) galaxies += R127 // roughly 42 galaxies
 	if (hasAch("r132")) rg *= 1 + .540 // 54.0% boost becasue of the 540 in the achievement
@@ -430,8 +430,8 @@ el("postinfi04").onclick = function() {
 function galIP(){
 	let gal = player.galaxies
 	let rg = player.replicanti.galaxies
-	if (player.timestudy.studies.includes(132)) rg *= 1.4
-	if (player.timestudy.studies.includes(133)) rg *= 1.5
+	if (hasTimeStudy(132)) rg *= 1.4
+	if (hasTimeStudy(133)) rg *= 1.5
 	if (hasAch("r122")) gal += 100*rg 
 	if (gal < 5) return gal
 	if (gal < 50) return 2 + Math.pow(5 + gal,0.6)
@@ -765,7 +765,7 @@ function galSacBtnUpdating(){
 function passiveGPGen(diff){
 	let passiveGPGen = false
 	if (inNGM(3)) passiveGPGen = hasAch("r56")
-	else if (inNGM(2)) passiveGPGen = player.timestudy.studies.includes(181)
+	else if (inNGM(2)) passiveGPGen = hasTimeStudy(181)
 	var mult = 1
 	if (inNGM(4)){
 		if (hasAch("r43")){

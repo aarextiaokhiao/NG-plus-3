@@ -52,7 +52,7 @@ let bigRipUpgCosts = [0, 2, 3, 5, 20, 30, 45, 60, 150, 300, 2000, 1e9, 3e14, 1e1
 function buyBigRipUpg(id) {
 	if (brSave.spaceShards.lt(bigRipUpgCosts[id]) || hasRipUpg(id)) return
 	brSave.spaceShards = brSave && brSave.spaceShards.sub(bigRipUpgCosts[id])
-	if (!gotBraveMilestone(8)) brSave.spaceShards=brSave.spaceShards.round()
+	if (!hasBraveMilestone(8)) brSave.spaceShards=brSave.spaceShards.round()
 
 	brSave.upgrades.push(id)
 	el("spaceShards").textContent = shortenDimensions(brSave.spaceShards)
@@ -88,7 +88,7 @@ function tweakBigRip(id, reset) {
 	if (!hasRipUpg(9)) {
 		if (id == 3) player.timestudy.theorem += 5
 		if (id == 5) player.timestudy.theorem += 20
-		if (id == 7 && !player.timestudy.studies.includes(192)) player.timestudy.studies.push(192)
+		if (id == 7 && !hasTimeStudy(192)) player.timestudy.studies.push(192)
 	}
 	if (id == 9) {
 		if (reset) player.timestudy = {
@@ -225,7 +225,7 @@ function updateBigRipUpgradesTemp(){
 }
 
 function bigRipUpgradeUpdating() {
-	if (gotBraveMilestone(8)) {
+	if (hasBraveMilestone(8)) {
 		el("spaceShards").textContent=shortenDimensions(brSave.spaceShards)
 		for (var u=1;u<=18;u++) {
 			el("bigripupg"+u).className = brSave && hasRipUpg(u) ? "gluonupgradebought bigrip" + (isBigRipUpgradeActive(u, true) ? "" : "off") : brSave.spaceShards.lt(bigRipUpgCosts[u]) ? "gluonupgrade unavailablebtn" : "gluonupgrade bigrip"
@@ -390,7 +390,7 @@ function buyBreakUpg(id) {
 	if (!beSave.eternalMatter.gte(getBreakUpgCost(id))) return
 	if (beSave.upgrades.includes(id)) return
 	beSave.eternalMatter = beSave.eternalMatter.sub(getBreakUpgCost(id))
-	if (!gotBraveMilestone(15)) beSave.eternalMatter = beSave.eternalMatter.round()
+	if (!hasBraveMilestone(16)) beSave.eternalMatter = beSave.eternalMatter.round()
 
 	if (id == 7) {
 		beSave.epMultPower++
@@ -414,7 +414,7 @@ function maxBuyBEEPMult() {
 	let toSpend = pow2(toBuy).sub(1).mul(cost).min(beSave.eternalMatter)
 	beSave.epMultPower += toBuy
 	beSave.eternalMatter = beSave.eternalMatter.sub(toSpend)
-	if (!gotBraveMilestone(15)) beSave.eternalMatter = beSave.eternalMatter.round()
+	if (!hasBraveMilestone(16)) beSave.eternalMatter = beSave.eternalMatter.round()
 
 	el("breakUpg7Mult").textContent = shortenDimensions(getBreakUpgMult(7))
 	el("breakUpg7Cost").textContent = shortenDimensions(getBreakUpgCost(7))

@@ -112,7 +112,7 @@ let RESETS = {
 			if (!keepRep) player.replicanti.amount = E(1)
 
 			let keepRepGal = speedrunMilestonesReached >= 28 || hasAch("ng3p67")
-			if (!keepRepGal) player.replicanti.galaxies = (order == "inf" && player.timestudy.studies.includes(33)) ? Math.floor(player.replicanti.galaxies / 2) : 0
+			if (!keepRepGal) player.replicanti.galaxies = (order == "inf" && hasTimeStudy(33)) ? Math.floor(player.replicanti.galaxies / 2) : 0
 		}
 	},
 	eter: {
@@ -165,7 +165,7 @@ let RESETS = {
 				let keepPartial = mod.ngp3 && player.dilation.upgrades.includes("ngpp3") && getEternitied() >= 2e10
 				player.replicanti.chance = keepPartial ? Math.min(player.replicanti.chance, 1) : 0.01
 				player.replicanti.chanceCost = E_pow(1e15, player.replicanti.chance * 100).mul(inNGM(2) ? 1e75 : 1e135)
-				player.replicanti.interval = keepPartial ? Math.max(player.replicanti.interval, player.timestudy.studies.includes(22) ? 1 : 50) : 1000
+				player.replicanti.interval = keepPartial ? Math.max(player.replicanti.interval, hasTimeStudy(22) ? 1 : 50) : 1000
 				player.replicanti.intervalCost = E_pow(1e10, Math.round(Math.log10(1000 / player.replicanti.interval) / -Math.log10(0.9))).mul(inNGM(2) ? 1e80 : 1e140)
 				player.replicanti.gal = 0
 				player.replicanti.galCost = E(inNGM(2) ? 1e110 : 1e170)
@@ -216,7 +216,7 @@ function doReset(order, auto) {
 
 //OLD CODE
 function replicantsResetOnQuantum(qc) {
-	let keepAnt = gotBraveMilestone(6) && !qc
+	let keepAnt = hasBraveMilestone(6) && !qc
 	if (!keepAnt) {
 		quSave.replicants.requirement = E("1e3000000")
 		quSave.replicants.amount = E(0)
@@ -248,7 +248,7 @@ function nanofieldResetOnQuantum(){
 }
 		
 function doMetaDimensionsReset(order, qc) {
-	let keepMDB = gotBraveMilestone(5) && order == "qu" && !qc
+	let keepMDB = hasBraveMilestone(5) && order == "qu" && !qc
 	player.meta = {
 		antimatter: getMetaAntimatterStart(),
 		bestAntimatter: getMetaAntimatterStart(),

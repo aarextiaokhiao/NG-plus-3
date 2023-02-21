@@ -130,7 +130,7 @@ function ghostifyReset(force, gain) {
 		giveAchievement("Kee-hee-hee!")
 		if (bm == 16) giveAchievement("I rather oppose the theory of everything")
 		if (player.eternityPoints.e >= 22e4 && ghSave.under) giveAchievement("Underchallenged")
-		if (quSave.times >= 1e3 && gotBraveMilestone(16)) giveAchievement("Scared of ghosts?")
+		if (quSave.times >= 1e3 && hasBraveMilestone(16)) giveAchievement("Scared of ghosts?")
 	}
 
 	var bm = ghSave.milestones
@@ -227,8 +227,8 @@ RESETS.funda = {
 			beSave.unlocked = false
 			beSave.break = false
 		}
+		if (bm < 7) beSave.upgrades = []
 		beSave.eternalMatter = E(0)
-		beSave.upgrades = []
 		beSave.epMultPower = 0
 	},
 
@@ -363,7 +363,7 @@ function setupBraveMilestones(){
 	for (var m = 1; m <= 16; m++) el("braveMilestone" + m).textContent=BM_REQ[m - 1]+"x quantumed or lower"
 }
 
-function gotBraveMilestone(x) {
+function hasBraveMilestone(x) {
 	return ghSave?.milestones >= x
 }
 

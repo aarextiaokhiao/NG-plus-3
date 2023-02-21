@@ -23,12 +23,12 @@ function getGalaxyPower(ng, bi, noDil) {
 	if (hasMasteryStudy("t344")) replGalEff *= getMTSMult(344)
 	
 	let extraReplGalPower = 0
-	if (player.timestudy.studies.includes(133)) extraReplGalPower += player.replicanti.galaxies * 0.5
-	if (player.timestudy.studies.includes(132)) extraReplGalPower += player.replicanti.galaxies * 0.4
+	if (hasTimeStudy(133)) extraReplGalPower += player.replicanti.galaxies * 0.5
+	if (hasTimeStudy(132)) extraReplGalPower += player.replicanti.galaxies * 0.4
 	extraReplGalPower += tmp.extraRG
 	
 	let otherGalPower = player.replicanti.galaxies
-	if (player.masterystudies ? hasMasteryStudy("t342") : false) otherGalPower = (otherGalPower + extraReplGalPower) * replGalEff
+	if (hasMasteryStudy("t342")) otherGalPower = (otherGalPower + extraReplGalPower) * replGalEff
 	else otherGalPower += Math.min(player.replicanti.galaxies, player.replicanti.gal) * (replGalEff - 1) + extraReplGalPower
 	if (!noDil) {
 		let dilGals = Math.floor(player.dilation.freeGalaxies)
@@ -62,8 +62,8 @@ function getGalaxyEff(bi) {
 	}
 	if (inNGM(3) && (inNC(5) || player.currentChallenge == "postcngm3_3")) eff *= 0.75
 	if (hasAch("ngpp8") && mod.ngpp) eff *= 1.001;
-	if (player.timestudy.studies.includes(212)) eff *= tsMults[212]()
-	if (player.timestudy.studies.includes(232) && bi) eff *= tmp.ts232
+	if (hasTimeStudy(212)) eff *= tsMults[212]()
+	if (hasTimeStudy(232) && bi) eff *= tmp.ts232
 
 	if (mod.udsp && player.dilation.active) eff *= exDilationBenefit() + 1
 	if (mod.ngp3) eff *= colorBoosts.r

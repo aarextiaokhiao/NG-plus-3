@@ -86,15 +86,15 @@ function getGalaxyReqMultiplier() {
 	if (inNC(4)) ret = 90
 	if (player.infinityUpgrades.includes("galCost")) ret -= 5
 	if (player.infinityUpgrades.includes("postinfi52") && !inNGM(3)) ret -= 3
-	if (player.timestudy.studies.includes(42)) ret *= tsMults[42]()
+	if (hasTimeStudy(42)) ret *= tsMults[42]()
 	return ret
 }
 
 function getDistantScalingStart() {
 	if (player.currentEternityChall == "eterc5") return 0
 	var n = 100 + getECReward(5)
-	if (player.timestudy.studies.includes(223)) n += 7
-	if (player.timestudy.studies.includes(224)) n += Math.floor(player.resets/2000)
+	if (hasTimeStudy(223)) n += 7
+	if (hasTimeStudy(224)) n += Math.floor(player.resets/2000)
 	if (bigRipped() && hasRipUpg(15)) n += tmp.bru[15]
 
 	return Math.max(n, 0)

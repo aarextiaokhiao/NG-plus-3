@@ -19,7 +19,7 @@ function updateTemp() {
 	}
 
 	tmp.nrm = 1
-	if (player.timestudy.studies.includes(101)) tmp.nrm = player.replicanti.amount.max(1)
+	if (hasTimeStudy(101)) tmp.nrm = player.replicanti.amount.max(1)
 	tmp.sacPow = calcTotalSacrificeBoost()
 
 	updateNGP3Temp()
@@ -144,7 +144,7 @@ function updatePowers() {
 
 	if (player.currentEternityChall == "eterc10" || inQC(6)) {
 		ec10bonus = E_pow(getInfinitied(), 1e3).max(1)
-		if (player.timestudy.studies.includes(31)) ec10bonus = ec10bonus.pow(4)
+		if (hasTimeStudy(31)) ec10bonus = ec10bonus.pow(4)
 	} else {
 		ec10bonus = E(1)
 	}

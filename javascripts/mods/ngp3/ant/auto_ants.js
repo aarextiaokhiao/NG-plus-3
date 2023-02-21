@@ -20,7 +20,7 @@ var automators = {
 		pow: 0.5,
 	},
 	18: {
-		title: "Positron Charger",
+		title: "Positron Upgrader",
 		req: 4.5,
 		pow: 1,
 	},
@@ -71,7 +71,7 @@ var automators = {
 		pow: 4,
 	},
 	16: {
-		title: "Neutrino",
+		title: "Neutrino Upgrader",
 		req: 12,
 		pow: 1,
 	},
@@ -146,7 +146,7 @@ function loadAutoGhost(id) {
 	let data = ghSave.automatorGhosts
 	el("autoGhost" + id).className = "autoBuyerDiv " + (data[id].on ? "on" : "")
 	el("isAutoGhostOn" + id).textContent = data[id].on ? "Vacate" : "Hire"
-	el("isAutoGhostOn" + id).className = "storebtn " + (data[id].on ? "chosenbtn" : "")
+	el("isAutoGhostOn" + id).className = "storebtn " + (data[id].on ? "chosenbtn" : "antbtn")
 }
 
 function toggleAutoGhost(id) {
@@ -338,7 +338,7 @@ function setupAutomatorHTML() {
 }
 
 function updateAutomatorHTML() {
-	if (gotBraveMilestone(8)) updateQuantumWorth("display")
+	if (hasBraveMilestone(8)) updateQuantumWorth("display")
 	el("automatorCharge").textContent=getAutoCharge().toFixed(2)
 	el("automatorPower").textContent=ghSave.automatorGhosts.power.toFixed(2)
 }

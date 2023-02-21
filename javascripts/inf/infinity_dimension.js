@@ -84,10 +84,10 @@ function getTotalIDEUMult(){
 
 function getInfDimPathIDMult(tier){
 	var mult = E(1)
-	if (player.timestudy.studies.includes(72) && tier == 4) mult = mult.mul(tmp.sacPow.pow(0.04).max(1).min("1e30000"))
-	if (player.timestudy.studies.includes(82)) mult = mult.mul(E_pow(1.0000109, Math.pow(player.resets, 2)).min(!mod.ngpp ? 1 / 0 : '1e80000'))
-	if (player.timestudy.studies.includes(92)) mult = mult.mul(pow2(600 / Math.max(player.bestEternity, 20)))
-	if (player.timestudy.studies.includes(162)) mult = mult.mul(pow10((inNGM(2) ? 234 : 11) * (mod.ngep ? 5 : 1)))
+	if (hasTimeStudy(72) && tier == 4) mult = mult.mul(tmp.sacPow.pow(0.04).max(1).min("1e30000"))
+	if (hasTimeStudy(82)) mult = mult.mul(E_pow(1.0000109, Math.pow(player.resets, 2)).min(!mod.ngpp ? 1 / 0 : '1e80000'))
+	if (hasTimeStudy(92)) mult = mult.mul(pow2(600 / Math.max(player.bestEternity, 20)))
+	if (hasTimeStudy(162)) mult = mult.mul(pow10((inNGM(2) ? 234 : 11) * (mod.ngep ? 5 : 1)))
 	return mult
 }
 

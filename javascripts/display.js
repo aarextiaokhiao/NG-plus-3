@@ -411,7 +411,7 @@ function replicantiDisplay() {
 		var replGalCostPortion = player.infinityPoints.lt(pow10(1e10)) ? "<br>+1 Cost: " + shortenCosts(getRGCost()) + " IP" : ""
 		el("replicantimax").innerHTML = replGalName + ": " + getFullExpansion(player.replicanti.gal) + (replGalOver > 1 ? "+" + getFullExpansion(replGalOver) : "") + replGalCostPortion
 		el("replicantireset").innerHTML = (hasAch("ng3p67") ? "Get " : hasAch("ngpp16") ? "Divide replicanti by " + shorten(Number.MAX_VALUE) + " for" : "Reset replicanti amount for") + " 1 galaxy.<br>" + getFullExpansion(player.replicanti.galaxies) + getExtraReplGalaxyDisp() + " replicanti galax" + (getTotalRG() == 1 ? "y" : "ies") + " created."
-		el("replicantiapprox").innerHTML = mod.ngp3 && player.dilation.upgrades.includes("ngpp1") && player.timestudy.studies.includes(192) && player.replicanti.amount.gte(Number.MAX_VALUE) && (!mod.udsp || aarMod.nguepV) ? 
+		el("replicantiapprox").innerHTML = mod.ngp3 && player.dilation.upgrades.includes("ngpp1") && hasTimeStudy(192) && player.replicanti.amount.gte(Number.MAX_VALUE) && (!mod.udsp || aarMod.nguepV) ? 
 			"Replicanti increases by " + (tmp.rep.est < Math.log10(2) ? "x2.00 per " + timeDisplayShort(Math.log10(2) / tmp.rep.est * 10) : (tmp.rep.est.gte(1e4) ? shorten(tmp.rep.est) + " OoMs" : "x" + shorten(pow10(tmp.rep.est.toNumber()))) + " per second") + ".<br>" +
 			"Replicate interval slows down by " + tmp.rep.speeds.inc.toFixed(3) + "x per " + getFullExpansion(Math.floor(tmp.rep.speeds.exp)) + " OoMs.<br>" +
 			"(2x slower per " + getFullExpansion(Math.floor(tmp.rep.speeds.exp * Math.log10(2) / Math.log10(tmp.rep.speeds.inc))) + " OoMs)" :
@@ -692,7 +692,7 @@ function updateResetTierButtons(){
 	if (ghostified) {
 		el("GHPAmount").textContent = shortenDimensions(ghSave.ghostParticles)
 
-		var showQuantumed = !gotBraveMilestone(16)
+		var showQuantumed = !hasBraveMilestone(16)
 		el("quantumedBM").style.display = showQuantumed ? "" : "none"
 		if (showQuantumed) el("quantumedBMAmount").textContent = getFullExpansion(quSave.times)
 	}

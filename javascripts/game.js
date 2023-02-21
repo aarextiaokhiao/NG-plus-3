@@ -641,10 +641,10 @@ function toggleDilaConf() {
 function gainedEternityPoints() {
 	var ret = E_pow(5, player.infinityPoints.plus(gainedInfinityPoints()).e / (hasAch("ng3p23") ? 307.8 : 308) - 0.7).mul(player.epmult)
 	if (mod.ngep) ret = ret.mul(10)
-	if (player.timestudy.studies.includes(61)) ret = ret.mul(tsMults[61]())
-	if (player.timestudy.studies.includes(121)) ret = ret.mul(((253 - averageEp.dividedBy(player.epmult).dividedBy(10).min(248).max(3))/5)) //x300 if tryhard, ~x60 if not
-	else if (player.timestudy.studies.includes(122)) ret = ret.mul(35)
-	else if (player.timestudy.studies.includes(123)) ret = ret.mul(Math.sqrt(1.39*player.thisEternity/10))
+	if (hasTimeStudy(61)) ret = ret.mul(tsMults[61]())
+	if (hasTimeStudy(121)) ret = ret.mul(((253 - averageEp.dividedBy(player.epmult).dividedBy(10).min(248).max(3))/5)) //x300 if tryhard, ~x60 if not
+	else if (hasTimeStudy(122)) ret = ret.mul(35)
+	else if (hasTimeStudy(123)) ret = ret.mul(Math.sqrt(1.39*player.thisEternity/10))
 	if (hasGSacUpg(51)) ret = ret.mul(galMults.u51())
 	if (bigRipped()) {
 		if (isBigRipUpgradeActive(5)) ret = ret.mul(brSave.spaceShards.max(1))
@@ -747,7 +747,7 @@ function calcSacrificeBoost() {
 	if (player.firstAmount == 0) return E(1);
 	if (player.challenges.includes("postc2") || (inNGM(3) && player.currentChallenge == "postc2")) {
 		pow = 0.01
-		if (player.timestudy.studies.includes(228)) pow = 0.013
+		if (hasTimeStudy(228)) pow = 0.013
 		else if (hasAch("r97") && mod.rs) pow = 0.012
 		else if (hasAch("r88")) pow = 0.011
 		ret = player.firstAmount.div(player.sacrificed.max(1)).pow(pow).max(1)
@@ -771,7 +771,7 @@ function calcTotalSacrificeBoost(next) {
 	let pow
 	if (player.challenges.includes("postc2") || (inNGM(3) && player.currentChallenge == "postc2")) {
 		pow = 0.01
-		if (player.timestudy.studies.includes(228)) pow = 0.013
+		if (hasTimeStudy(228)) pow = 0.013
 		else if (hasAch("r97") && mod.rs) pow = 0.012
 		else if (hasAch("r88")) pow = 0.011
 		ret = player.sacrificed.pow(pow).max(1)
@@ -1300,7 +1300,7 @@ function doCheckECCompletionStuff(){
 			else player.timestudy.theorem += ([0, 30, 35, 40, 70, 130, 85, 115, 115, 415, 550, 1, 1])[player.etercreq]
 			player.eternityChallUnlocked = 0
 			quSave.autoECN = player.etercreq
-		} else if (gotBraveMilestone(2)) {
+		} else if (hasBraveMilestone(2)) {
 			if (player.etercreq > 12) player.timestudy.theorem += masteryStudies.costs.ec[player.etercreq]
 			else player.timestudy.theorem += ([0, 30, 35, 40, 70, 130, 85, 115, 115, 415, 550, 1, 1])[player.etercreq]
 			player.eternityChallUnlocked = 0
@@ -1343,7 +1343,7 @@ function eternity(force, auto, dil, presetLoad) {
 		else if (player.currentEternityChall != "") array.push(player.eternityChallUnlocked)
 		else if (tmp.be) {
 			beSave.eternalMatter = beSave.eternalMatter.add(getEMGain())
-			if (!gotBraveMilestone(15)) beSave.eternalMatter = beSave.eternalMatter.round()
+			if (!hasBraveMilestone(16)) beSave.eternalMatter = beSave.eternalMatter.round()
 			array = [player.thisEternity, getEMGain(), "b"]
 		}
 		addEternityTime(array)
@@ -1429,7 +1429,7 @@ function gainBankedInf() {
 	let numerator = player.infinitied
 	if (speedrunMilestonesReached > 27 || hasAch("ng3p73")) numerator = nA(getInfinitiedGain(), player.infinitied)
 	let frac = 0.05
-	if (player.timestudy.studies.includes(191)) ret = nM(numerator, frac)
+	if (hasTimeStudy(191)) ret = nM(numerator, frac)
 	if (hasAch("r131")) ret = nA(nM(numerator, frac), ret)
 	if (mod.ngud) ret = nM(ret, getBlackholePowerEffect().pow(1/3))
 	return ret
@@ -1869,7 +1869,7 @@ function freeTickspeedUpdating(){
 
 function replicantiIncrease(diff) {
 	if (!player.replicanti.unl) return
-	if (diff > 5 || tmp.rep.chance > 1 || tmp.rep.interval < 50 || tmp.rep.est.gt(50) || player.timestudy.studies.includes(192)) continuousReplicantiUpdating(diff)
+	if (diff > 5 || tmp.rep.chance > 1 || tmp.rep.interval < 50 || tmp.rep.est.gt(50) || hasTimeStudy(192)) continuousReplicantiUpdating(diff)
 	else notContinuousReplicantiUpdating()
 	if (player.replicanti.amount.gt(0)) replicantiTicks += diff
 
@@ -2225,9 +2225,9 @@ function passiveQuantumLevelStuff(diff){
 			var r = quSave.usedQuarks[p[i][0]].min(quSave.usedQuarks[p[i][1]]).div(100)
 			quSave.gluons[p[i]] = quSave.gluons[p[i]].add(r.mul(diff))
 		}
-		if (gotBraveMilestone(16)) quSave.quarks=quSave.quarks.add(quarkGain().mul(diff / 100))
+		if (hasBraveMilestone(15)) quSave.quarks=quSave.quarks.add(quarkGain().mul(diff / 100))
 	}
-	if (tmp.be && gotBraveMilestone(15)) beSave.eternalMatter=beSave.eternalMatter.add(getEMGain().mul(diff / 100))
+	if (tmp.be && hasBraveMilestone(16)) beSave.eternalMatter=beSave.eternalMatter.add(getEMGain().mul(diff / 100))
 	updateQuarkDisplay()
 	updateQuantumWorth("quick")
 }
@@ -2275,7 +2275,7 @@ function gameLoop(diff) {
 
 	if (mod.ngp3) {
 		ngp3DilationUpdating()
-		if (gotBraveMilestone(8)) passiveQuantumLevelStuff(diff)
+		if (hasBraveMilestone(8)) passiveQuantumLevelStuff(diff)
 		if (hasMasteryStudy('t291')) updateEternityUpgrades() // to fix the 5ep upg display
 		if (quantumed) quantumOverallUpdating(diff)
 		if (ghostified) {

@@ -371,7 +371,7 @@ function getDil14Bonus() {
 }
 
 function getDil17Bonus() {
-	return Math.sqrt(player.meta.bestAntimatter.max(1).log10()) / (player.masterystudies ? 1 : 2);
+	return Math.sqrt(player.meta.bestAntimatter.max(1).log10()) / (mod.ngp3 ? 1 : 2);
 }
 
 function updateOverallMetaDimensionsStuff(){

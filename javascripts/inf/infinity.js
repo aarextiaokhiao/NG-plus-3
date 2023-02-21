@@ -20,7 +20,7 @@ function doBigCrunch(auto) {
 	//Infinity
 	var add = getIPMult()
 	if (player.break && player.currentChallenge == "") add = gainedInfinityPoints()
-	else if (player.timestudy.studies.includes(51)) add = add.mul(1e15)
+	else if (hasTimeStudy(51)) add = add.mul(1e15)
 	player.infinityPoints = player.infinityPoints.plus(add)
 
 	if (auto && autoS) {
@@ -48,7 +48,7 @@ function doBigCrunch(auto) {
 
 	//Others
 	if (player.replicanti.unl && !hasAch("r95")) player.replicanti.amount = E(1)
-	if (speedrunMilestonesReached < 28 && !hasAch("ng3p67")) player.replicanti.galaxies = (player.timestudy.studies.includes(33)) ? Math.floor(player.replicanti.galaxies / 2) : 0
+	if (speedrunMilestonesReached < 28 && !hasAch("ng3p67")) player.replicanti.galaxies = (hasTimeStudy(33)) ? Math.floor(player.replicanti.galaxies / 2) : 0
 	doGPUpgCrunchUpdating(true)
 	doReset("inf")
 
@@ -100,16 +100,16 @@ function getIPGain(){
 
 function gainedInfinityPoints(next) {
 	let div = 308;
-	if (player.timestudy.studies.includes(111)) div = 285;
+	if (hasTimeStudy(111)) div = 285;
 	else if (hasAch("r103")) div = 307.8;
 	if (inOnlyNGM(2)) div -= galIP()
 
 	var ret = pow10(player.money.e / div - 0.75).mul(getIPMult())
-	if (player.timestudy.studies.includes(41)) ret = ret.mul(E_pow(tsMults[41](), player.galaxies + player.replicanti.galaxies))
-	if (player.timestudy.studies.includes(51)) ret = ret.mul(mod.ngep?1e30:1e15)
-	if (player.timestudy.studies.includes(141)) ret = ret.mul(E(1e45).dividedBy(E_pow(15, Math.log(player.thisInfinityTime+1)*Math.pow(player.thisInfinityTime+1, 0.125))).max(1))
-	if (player.timestudy.studies.includes(142)) ret = ret.mul(1e25)
-	if (player.timestudy.studies.includes(143)) ret = ret.mul(E_pow(15, Math.log(player.thisInfinityTime+1)*Math.pow(player.thisInfinityTime+1, 0.125)))
+	if (hasTimeStudy(41)) ret = ret.mul(E_pow(tsMults[41](), player.galaxies + player.replicanti.galaxies))
+	if (hasTimeStudy(51)) ret = ret.mul(mod.ngep?1e30:1e15)
+	if (hasTimeStudy(141)) ret = ret.mul(E(1e45).dividedBy(E_pow(15, Math.log(player.thisInfinityTime+1)*Math.pow(player.thisInfinityTime+1, 0.125))).max(1))
+	if (hasTimeStudy(142)) ret = ret.mul(1e25)
+	if (hasTimeStudy(143)) ret = ret.mul(E_pow(15, Math.log(player.thisInfinityTime+1)*Math.pow(player.thisInfinityTime+1, 0.125)))
 	if (hasAch("r116")) ret = ret.mul(Decimal.add(getInfinitied(), 1).pow(Math.log10(2)))
 	if (hasAch("r125")) ret = ret.mul(pow2(Math.log(player.thisInfinityTime+1)*Math.pow(player.thisInfinityTime+1, 0.11)))
 	if (player.dilation.upgrades.includes(7)) ret = ret.mul(player.dilation.dilatedTime.max(1).pow(1000))
@@ -141,7 +141,7 @@ function getIPMult() {
 }
 
 function IPonCrunchPassiveGain(diff){
-	if (player.timestudy.studies.includes(181)) player.infinityPoints = player.infinityPoints.plus(gainedInfinityPoints().mul(diff / 100))
+	if (hasTimeStudy(181)) player.infinityPoints = player.infinityPoints.plus(gainedInfinityPoints().mul(diff / 100))
 }
 
 function doCrunchInfinitiesGain(){
@@ -277,7 +277,7 @@ function getInfinitied() {
 function getInfinitiedGain() {
 	let infGain=1
 	if (player.thisInfinityTime > 50 && hasAch("r87")) infGain = 250
-	if (player.timestudy.studies.includes(32)) infGain *= tsMults[32]()
+	if (hasTimeStudy(32)) infGain *= tsMults[32]()
 	if (hasAch("r133") && mod.ngpp) infGain = nM(player.dilation.dilatedTime.pow(.25).max(1), infGain)
 	return nA(infGain, hasAch("r87") && inNGM(2) ? 249 : 0)
 }

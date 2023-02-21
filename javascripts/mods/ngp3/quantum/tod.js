@@ -51,7 +51,7 @@ function updateTreeOfDecayTab(){
 		var rate = getDecayRate(shorthand)
 		var linear = pow2(getRDPower(shorthand))
 		el(color + "UnstableGain").className = quSave.usedQuarks[shorthand].gt(0) && getUnstableGain(shorthand).gt(branch.quarks) ? "storebtn" : "unavailablebtn"
-		el(color + "UnstableGain").innerHTML = "Gain " + shortenMoney(getUnstableGain(shorthand)) + " " + name + (gotBraveMilestone(4) ? "." : ", but lose all your " + color + " quarks.")
+		el(color + "UnstableGain").innerHTML = "Gain " + shortenMoney(getUnstableGain(shorthand)) + " " + name + (hasBraveMilestone(4) ? "." : ", but lose all your " + color + " quarks.")
 		el(color + "QuarkSpin").innerHTML = shortenMoney(branch.spin)
 		el(color + "UnstableQuarks").innerHTML = shortenMoney(branch.quarks)
 		el(color + "QuarksDecayRate").innerHTML = branch.quarks.lt(linear) && rate.lt(1) ? "(-" + shorten(linear.mul(rate)) + " " + name + "/s)" : "(Half-life: " + timeDisplayShort(Decimal.div(10,rate), true, 2) + (linear.eq(1) ? "" : " until " + shorten(linear)) + ")"
@@ -139,7 +139,7 @@ function getUnstableGain(branch) {
 function unstableQuarks(branch) {
 	if (quSave.usedQuarks[branch].eq(0) || getUnstableGain(branch).lte(todSave[branch].quarks)) return
 	todSave[branch].quarks = todSave[branch].quarks.max(getUnstableGain(branch))
-	if (!gotBraveMilestone(4)) quSave.usedQuarks[branch] = E(0)
+	if (!hasBraveMilestone(4)) quSave.usedQuarks[branch] = E(0)
 	if (ghSave.reference > 0) ghSave.reference--
 	if (player.unstableThisGhostify) player.unstableThisGhostify ++
 	else player.unstableThisGhostify = 10
@@ -441,7 +441,7 @@ function radioactiveDecay(shorthand) {
 	data.quarks = E(0)
 	data.spin = E(0)
 	data.upgrades = {}
-	if (gotBraveMilestone(4)) data.upgrades[1] = 5
+	if (hasBraveMilestone(4)) data.upgrades[1] = 5
 	data.decays = data.decays === undefined ? 1 : data.decays + 1
 	let sum = 0
 	for (var c = 0; c < 1; c++) sum += getRadioactiveDecays((['r', 'g', 'b'])[c])

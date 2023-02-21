@@ -42,15 +42,15 @@ function getNormalDimensionVanillaAchievementBonus(tier){
 
 function getNormalDimensionVanillaTimeStudyBonus(tier){
 	var mult = E(1)
-	if (player.timestudy.studies.includes(71) && tier !== 8) mult = mult.mul(tmp.sacPow.pow(0.25).min("1e210000"));
-	if (player.timestudy.studies.includes(91)) mult = mult.mul(pow10(Math.min(player.thisEternity, 18000) / 60));
+	if (hasTimeStudy(71) && tier !== 8) mult = mult.mul(tmp.sacPow.pow(0.25).min("1e210000"));
+	if (hasTimeStudy(91)) mult = mult.mul(pow10(Math.min(player.thisEternity, 18000) / 60));
 
 	let useHigherNDReplMult = hasMasteryStudy("t323") && !player.dilation.active
 	if (!useHigherNDReplMult) mult = mult.mul(tmp.nrm)
-	if (player.timestudy.studies.includes(161)) mult = mult.mul(pow10((inNGM(2) ? 6660 : 616) * (mod.ngep ? 5 : 1)))
-	if (player.timestudy.studies.includes(234) && tier == 1) mult = mult.mul(tmp.sacPow)
-	if (player.timestudy.studies.includes(193)) mult = mult.mul(E_pow(1.03, getEternitied()).min("1e13000"))
-	if (tier == 8 && player.timestudy.studies.includes(214)) mult = mult.mul((tmp.sacPow.pow(8)).min("1e46000").mul(tmp.sacPow.pow(1.1).min(E("1e125000"))))
+	if (hasTimeStudy(161)) mult = mult.mul(pow10((inNGM(2) ? 6660 : 616) * (mod.ngep ? 5 : 1)))
+	if (hasTimeStudy(234) && tier == 1) mult = mult.mul(tmp.sacPow)
+	if (hasTimeStudy(193)) mult = mult.mul(E_pow(1.03, getEternitied()).min("1e13000"))
+	if (tier == 8 && hasTimeStudy(214)) mult = mult.mul((tmp.sacPow.pow(8)).min("1e46000").mul(tmp.sacPow.pow(1.1).min(E("1e125000"))))
 	return mult
 }
 
@@ -491,13 +491,13 @@ function infUpg13Pow() {
 }
 
 function dimMults() {
-	return E_pow(Decimal.mul(getInfinitied(), 0.2).add(1),(inNGM(2) ? 2 : 1) * (player.timestudy.studies.includes(31) ? 4 : 1))
+	return E_pow(Decimal.mul(getInfinitied(), 0.2).add(1),(inNGM(2) ? 2 : 1) * (hasTimeStudy(31) ? 4 : 1))
 }
 
 function getInfinitiedMult() {
 	var add = inNGM(2) ? 0 : 1
 	var base = (inNGM(2) ? 1 : 0) + Decimal.add(getInfinitied(), 1).log10() * (inNGM(2) ? 100 : 10)
-	var exp = (inNGM(2) ? 2 : 1) * (player.timestudy.studies.includes(31) ? 4 : 1)
+	var exp = (inNGM(2) ? 2 : 1) * (hasTimeStudy(31) ? 4 : 1)
 	if (inNGM(4)) {
 		if ((player.currentChallenge == "postcngmm_1" || player.challenges.includes("postcngmm_1")) && !hasAch("r71")) exp += .2
 		else exp *= 1 + Decimal.add(getInfinitied(), 1).log10() / 3

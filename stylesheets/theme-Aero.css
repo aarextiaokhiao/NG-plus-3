@@ -1333,13 +1333,13 @@ td .timestudybought.pos_study {
     box-shadow: inset 0 0 15px #fff3, 0 0 8px #fff7;
 }
 
-#produceQuarkCharge {
+.antbtn {
     background: linear-gradient(#445, #222) !important;
     color: #aab !important;
-    border: 1px solid aab !important;
+    border: 1px solid #aab !important;
     animation: none;
 }
-#produceQuarkCharge:hover {
+.antbtn:hover {
     box-shadow: 0 0 8px #aab7;
 }
 .chosenbtn2 {

@@ -566,7 +566,6 @@ function buyMasteryStudy(type, id, quick=false) {
 	} else player.masterystudies.push(type + id)
 	if (type == "t") {
 		addSpentableMasteryStudies(id)
-		if (id == 302) maybeShowFillAll()
 		if (quick) {
 			masteryStudies.costMult *= getMasteryStudyCostMult(id)
 			masteryStudies.latestBoughtRow = Math.max(masteryStudies.latestBoughtRow, Math.floor(id / 10))
@@ -621,7 +620,7 @@ function canBuyMasteryStudy(type, id) {
 		if (!masteryStudies.spentable.includes(id)) return false
 	} else if (type == 'd') {
 		if (player.timestudy.theorem < masteryStudies.costs.dil[id] || hasMasteryStudy('d' + id)) return false
-		if (!gotBraveMilestone(3) && !masteryStudies.unlockReqConditions[id]()) return false
+		if (!hasBraveMilestone(3) && !masteryStudies.unlockReqConditions[id]()) return false
 		if (!masteryStudies.spentable.includes("d" + id)) return false
 	} else {
 		if (player.timestudy.theorem < masteryStudies.costs.ec[id]) return false
@@ -643,9 +642,10 @@ function updateMasteryStudyButtons() {
 		var name = masteryStudies.unlocked[id]
 		if (name + 0 == name) {
 			var className
+			var type = name > 270 ? "quantum" : "mastery"
 			var div = el("timestudy" + name)
-			if (hasMasteryStudy("t" + name)) className = "timestudybought"
-			else if (canBuyMasteryStudy('t', name)) className = "timestudy"
+			if (hasMasteryStudy("t" + name)) className = "timestudybought " + type
+			else if (canBuyMasteryStudy('t', name)) className = "timestudy " + type
 			else className = "timestudylocked"
 			if (div.className !== className) div.className = className
 			if (masteryStudies.hasStudyEffect.includes(name)) {
@@ -687,7 +687,7 @@ function updateMasteryStudyTextDisplay() {
 		el("ec" + id + "Req").textContent = "Requirement: " + masteryStudies.ecReqDisplays[id]()
 	}
 	for (id = 7; id <= masteryStudies.unlocksUpTo; id++) {
-		el("ds" + id + "Req").innerHTML = gotBraveMilestone(3) ? "" : "Requirement: " + masteryStudies.unlockReqDisplays[id]()
+		el("ds" + id + "Req").innerHTML = hasBraveMilestone(3) ? "" : "Requirement: " + masteryStudies.unlockReqDisplays[id]()
 	}
 }
 

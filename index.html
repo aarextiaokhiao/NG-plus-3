@@ -98,7 +98,7 @@
 			<button id="tab_inf" style="font-size: 20px; display: none" class="infinitybtn" onclick="showTab('infinity')">Infinity</button>
 			<button id="tab_eter" style="font-size: 20px; display: none" class="eternitybtn" onclick="showTab('eternitystore')">Eternity</button>
 			<button id="tab_qu" style="font-size: 20px; display: none" class="quantumbtn" onclick='showTab("quantumtab")'>Quantum</button>
-			<button id="tab_ant" style="font-size: 20px" class="anttabbtn" onclick='showTab("replicants")'>Duplicants</button>
+			<button id="tab_ant" style="font-size: 20px" class="antbtn" onclick='showTab("replicants")'>Duplicants</button>
 			<button id="tab_fund" style="font-size: 20px" class="ghostifybtn" onclick='showTab("ghostify")'>Fundament</button>
 			<button id="tab_bl" style="font-size: 20px" class="bltabbtn" onclick='showTab("bltab")'>Bosonic Lab</button>
 		</div>
@@ -3877,7 +3877,7 @@
 					</tr>
 					<tr id="speedrunRow4">
 						<td colspan=2></td>
-						<td><div id="speedrunMilestone25" style="background-image: url(images/quantum_speedruns/25.png)" ach-tooltip="Reward: Unlock the manual mode for the Eternity autobuyer, and auto-Sacrifice Galaxies doesn't turn off on Quantum."></div></td>
+						<td><div id="speedrunMilestone25" style="background-image: url(images/quantum_speedruns/25.png)" ach-tooltip="Reward: Unlock the manual mode for the Eternity autobuyer, and Quantum doesn't disable auto-Discharge."></div></td>
 						<td><div id="speedrunMilestone26" style="background-image: url(images/quantum_speedruns/26.png)" ach-tooltip="Reward: The rebuyable dilation upgrade autobuyer can buy the maximum upgrades possible."></div></td>
 						<td><div id="speedrunMilestone27" style="background-image: url(images/quantum_speedruns/27.png)" ach-tooltip="Reward: You can buy max Meta-Dimension Boosts, and start with 4 Meta-Dimension Boosts."></div></td>
 						<td><div id="speedrunMilestone28" style="background-image: url(images/quantum_speedruns/28.png)" ach-tooltip="Reward: You gain banked infinities based on your post-crunch infinitied stat, and replicated galaxies don't reset on Big Crunch."></div></td>
@@ -3886,9 +3886,9 @@
 				</table>
 			</div>
 			<div class='quantumtab' id='electrons'>
-				You have <span id="normalGalaxies">0</span> normal galaxies.<br>
-				You sacrificed <span id='sacrificedGals'>0</span> galaxies.<br>
-				<button class='gluonupgrade storebtn' id='sacrificeGal' onclick='sacrificeGalaxy()' style='width:210px; height:90px'>Sacrifice <span id='sacrificeGals'>0</span> galaxies for <span id="electronsGain"></span> Positrons<br>(+<span id='electronsGainMult'>2</span> per galaxy)</button><br>
+				You have <span id="normalGalaxies">0</span> Antimatter Galaxies.<br>
+				You discharged <span id='sacrificedGals'>0</span> galaxies.<br>
+				<button class='gluonupgrade storebtn' id='sacrificeGal' onclick='sacrificeGalaxy()' style='width:210px; height:90px'>Discharge <span id='sacrificeGals'>0</span> for <span id="electronsGain"></span> Positrons<br>(+<span id='electronsGainMult'>2</span> per galaxy)</button><br>
 				<button class='storebtn' id='sacrificeAuto' onclick='toggleAutoQuantumContent("sacrifice")' style='width:210px'></button><br>
 				<span id="electronsAmount" style="font-size:35px">0</span> Positrons<br>
 				Multiplier per ten dimensions: <span id="linearPerTenMult" style="font-size:15px">2.00</span>, <span id="electronsTranslation" style="font-size:15px">1.00</span> -> <span id="electronsEffect" style="font-size:25px">2.00</span>
@@ -3943,19 +3943,19 @@
 					They are gathering <span id="normalReplGatherRate" style="font-size:25px">0</span> pilons per second.<br>
 					<button class="storebtn" id="replicantReset" style="width: 220px; height: 60px; font-size: 11px" onclick='replicantReset()'></button><br><button class="storebtn" id="autoReset" style="width: 220px" onclick='toggleAutoReset()'></button>
 				</td><td>
-					<span id="workerReplAmount" style="font-size:35px">0</span> workers<br>
-					They are gathering <span id="workerReplGatherRate" style="font-size:25px">0</span> pilons per second and producing <span id="eggonRate" style="font-size:25px">0</span> <span id="workerReplWhat">eggons</span> per <span id="eggonRateTimeframe">minute</span>.<br>
+					<span id="workerReplAmount" style="font-size:25px">0</span> workers<br>
+					They are gathering <span id="workerReplGatherRate" style="font-size:15px">0</span> pilons per second and producing <span id="eggonRate" style="font-size:15px">0</span> <span id="workerReplWhat">eggons</span> per <span id="eggonRateTimeframe">minute</span>.<br>
 					Feed your normal duplicant to become a worker. <span id="workerProgress" style="font-size:15px">0.0%</span><br>
 					<button class='storebtn' id='feedNormal' style='width: 280px' onclick="feedReplicant(1)">Feed one with quantum food</button><br>
 					<button id='breakLimit' class='storebtn' style='width: 280px; height: 60px' onclick='breakLimit()'></button><br>
 					<button class='storebtn' style='width: 280px' onclick='maxBuyLimit()'>Max limit upgrades</button>
 				</td><td>
-					<span id="babyReplAmount" style="font-size:35px">0</span> babies<br>
-					They are gathering <span id="babyReplGatherRate" style="font-size:25px">0</span> pilons per second.<br>
+					<span id="babyReplAmount" style="font-size:25px">0</span> babies<br>
+					They are gathering <span id="babyReplGatherRate" style="font-size:20px">0</span> pilons per second.<br>
 					They will become normal duplicants at <span id="growupRate" style="font-size:15px"></span> per <span id="growupRateUnit"></span>. <span id="growupProgress" style="font-size:15px">0.0%</span>.<br>
 				</td></tr><tr><td>
-					<span id="gatheredQuarks" style="font-size:35px">0</span> pilons <span id="gatherRate" style="font-size:25px">+0/s</span><br>
-					Translated to <span id="quarkTranslation" style="font-size:35px">0</span> extra replicated galaxies</p>
+					<span id="gatheredQuarks" style="font-size:25px">0</span> pilons <span id="gatherRate" style="font-size:20px">+0/s</span><br>
+					Translated to <span id="quarkTranslation" style="font-size:15px">0</span> extra replicated galaxies</p>
 				</td><td>
 					You have <span id="quantumFoodAmount" style="font-size:35px">0</span> quantum food.<br>
 					<button class='gluonupgrade storebtn' id='buyQuantumFood' onclick='buyQuantumFood()'></button><br>
@@ -3992,7 +3992,7 @@
 				You have <span id="quarksNanofield"></span> pilons.<br>
 				<table class="qtable"><tr><td>
 					<span id="quarkCharge" style="font-size:25px"></span> Nanocharge<br>
-					<button class="storebtn" id="produceQuarkCharge" onclick="startProduceQuarkCharge()"></button><br>
+					<button class="antbtn" id="produceQuarkCharge" onclick="startProduceQuarkCharge()"></button><br>
 					(<span id="quarkChargeRate"></span> charge/s, -<span id="quarkLoss"></span> pilons/s)
 				</td><td>
 					<span id="preonEnergy" style="font-size:25px"></span> Nanoenergy (<span id="quarkEnergyRate"></span>/s)<br>
@@ -4046,8 +4046,8 @@
 					</table>
 					<div id="ph_shop"></div>
 					<br>
-					<button class='storebtn' style='width: 120px; height: 48px' onclick="PHOTON.release()">Release!</button><br>
-					<button class='storebtn' style='width: 120px' onclick="PHOTON.release(true)">+1</button>
+					<button class='storebtn photon' style='width: 120px; height: 48px' onclick="PHOTON.release()">Release!</button><br>
+					<button class='storebtn photon' style='width: 120px' onclick="PHOTON.release(true)">+1</button>
 					<table id="light_table" class="table" style="margin: 0 auto">
 						<tr>
 							<td class="red" id="ph_light_0"></td>
@@ -4096,7 +4096,7 @@
 						<td><div id="braveMilestone4" class="achievement achievementlocked" ach-tooltip="Reward: Tachyon particles don't reset on Quantum except in challenges, unstabilizing quarks don't lose colored quarks, and you start with 5 of 1st Branch Upgrades."></div></td>
 						<td><div id="braveMilestone5" class="achievement achievementlocked" ach-tooltip="Reward: Meta-Dimension Boosts don't reset on Quantum except in challenges."></div></td>
 						<td><div id="braveMilestone6" class="achievement achievementlocked" ach-tooltip="Reward: Normal duplicants don't reset on Quantum except in challenges."></div></td>
-						<td><div id="braveMilestone7" class="achievement achievementlocked" ach-tooltip="Reward: Start with 10 workers."></div></td>
+						<td><div id="braveMilestone7" class="achievement achievementlocked" ach-tooltip="Reward: Start with 10 workers and Break Eternity upgrades."></div></td>
 						<td><div id="braveMilestone8" class="achievement achievementlocked" ach-tooltip="Reward: Passively generate anti-Quarks (^0.5), Gluons, and Space Shards."></div></td>
 					</tr>
 					<tr id="braveRow2">
@@ -4106,8 +4106,8 @@
 						<td><div id="braveMilestone12" class="achievement achievementlocked" ach-tooltip="Reward: Start with 10 of each Emperor Dimension."></div></td>
 						<td><div id="braveMilestone13" class="achievement achievementlocked" ach-tooltip="Reward: Start with 16 Nanorewards."></div></td>
 						<td><div id="braveMilestone14" class="achievement achievementlocked"></div></td>
-						<td><div id="braveMilestone15" class="achievement achievementlocked" ach-tooltip="Reward: Keep Break Eternity and passively produce 1% of Eternal Matter per second."></div></td>
-						<td><div id="braveMilestone16" class="achievement achievementlocked" ach-tooltip="Reward: Passively produce 1% of Quarks per second."></div></td>
+						<td><div id="braveMilestone15" class="achievement achievementlocked" ach-tooltip="Reward: Passively produce 1% of Quarks per second."></div></td>
+						<td><div id="braveMilestone16" class="achievement achievementlocked" ach-tooltip="Reward: Passively produce 1% of Eternal Matter per second."></div></td>
 					</tr>
 				</table>
 			</div>

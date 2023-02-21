@@ -2,7 +2,7 @@
 
 function getBreakEternityTDMult(tier){
 	var ret = tmp.it
-	if (player.timestudy.studies.includes(11) && tier == 1) ret = ret.mul(tsMults[11]())
+	if (hasTimeStudy(11) && tier == 1) ret = ret.mul(tsMults[11]())
 	if (isBreakUpgActive(1) && tier < 5) ret = ret.mul(getBreakUpgMult(1))
 	if (isBreakUpgActive(4) && tier > 3 && tier < 7) ret = ret.mul(getBreakUpgMult(4))
 	if (hasRipUpg(13)) ret = ret.mul(player.replicanti.amount.max(1).pow(1e-6))
@@ -35,12 +35,12 @@ function calcNGM2atleastTDPreVPostDilMultiplier(tier){
 
 function calcVanillaTSTDMult(tier){
 	var ret = E(1)
-	if (player.timestudy.studies.includes(73) && tier == 3) ret = ret.mul(tmp.sacPow.pow(0.005).min(E("1e1300")))
-	if (player.timestudy.studies.includes(93)) ret = ret.mul(E_pow(player.totalTickGained, 0.25).max(1))
-	if (player.timestudy.studies.includes(103)) ret = ret.mul(Math.max(player.replicanti.galaxies, 1))
-	if (player.timestudy.studies.includes(151)) ret = ret.mul(1e4)
-	if (player.timestudy.studies.includes(221)) ret = ret.mul(E_pow(1.0025, player.resets))
-	if (player.timestudy.studies.includes(227) && tier == 4) ret = ret.mul(E_pow(tmp.sacPow.max(10).log10(), 10))
+	if (hasTimeStudy(73) && tier == 3) ret = ret.mul(tmp.sacPow.pow(0.005).min(E("1e1300")))
+	if (hasTimeStudy(93)) ret = ret.mul(E_pow(player.totalTickGained, 0.25).max(1))
+	if (hasTimeStudy(103)) ret = ret.mul(Math.max(player.replicanti.galaxies, 1))
+	if (hasTimeStudy(151)) ret = ret.mul(1e4)
+	if (hasTimeStudy(221)) ret = ret.mul(E_pow(1.0025, player.resets))
+	if (hasTimeStudy(227) && tier == 4) ret = ret.mul(E_pow(tmp.sacPow.max(10).log10(), 10))
 	return ret
 }
 
@@ -52,7 +52,7 @@ function getTimeDimensionPower(tier) {
 
 	//if (inNGM(4)) ret = doNGM4TDMultiplier(tier,ret)
 
-	if (player.timestudy.studies.includes(11) && tier == 1) ret = ret.mul(tsMults[11]())
+	if (hasTimeStudy(11) && tier == 1) ret = ret.mul(tsMults[11]())
 	
 	if (hasAch("r105")) ret = ret.mul(tmp.it)
 	ret = ret.mul(getERTDAchMults())
@@ -290,9 +290,9 @@ function nonERFreeTickUpdating(){
 	let threshold = 1.33
 	let easier = inOnlyNGM(2)
 	if (easier) {
-		threshold = player.timestudy.studies.includes(171) ? 1.1 : 1.15
-		if (inNGM(3)) threshold = player.timestudy.studies.includes(171) ? 1.03 : 1.05
-	} else if (player.timestudy.studies.includes(171)) {
+		threshold = hasTimeStudy(171) ? 1.1 : 1.15
+		if (inNGM(3)) threshold = hasTimeStudy(171) ? 1.03 : 1.05
+	} else if (hasTimeStudy(171)) {
 		threshold = 1.25
 		if (mod.ngmu) threshold -= 0.08
 	}

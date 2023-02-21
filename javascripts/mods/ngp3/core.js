@@ -1,6 +1,6 @@
 //VERSION: 2.31
 let ngp3_ver = 2.31
-let ngp3_build = 20230219
+let ngp3_build = 20230220
 function doNGP3Updates() {
 	if (!aarMod.ngp3_build) aarMod.ngp3_build = 0
 	if (aarMod.ngp3_build < 20221230) quSave.multPower = 0
@@ -72,7 +72,7 @@ function updateQuantumTabs() {
 		var id = quantumTabs.tabIds[i]
 		if (el(id).style.display == "block") quantumTabs.update[id]()
 	}
-	if (gotBraveMilestone(8)) updateQuantumWorth("display")
+	if (hasBraveMilestone(8)) updateQuantumWorth("display")
 }
 
 function toggleAutoTT() {
@@ -194,8 +194,7 @@ function maxAllDilUpgs() {
 
 //v1.99874
 function maybeShowFillAll() {
-	var display = "none"
-	if (hasMasteryStudy("t302")) display = "block"
+	var display = hasMasteryStudy("t302") ? "block" : "none"
 	el("fillAll").style.display = display
 	el("fillAll2").style.display = display
 }
@@ -623,7 +622,7 @@ function ngP3AchieveCheck() {
 	if (quSave.best <= 10) giveAchievement("Quantum doesn't take so long")
 	if (tmp.be) giveAchievement("Time Breaker")
 	if (bigRipped() && player.currentEternityChall == "eterc7" && player.galaxies == 1 && player.money.log10() >= 8e7) giveAchievement("Time Immunity")
-	if (tmp.be && !player.timestudy.studies.includes(11) && player.timeShards.log10() >= 215) giveAchievement("You're not really smart.")
+	if (tmp.be && !hasTimeStudy(11) && player.timeShards.log10() >= 215) giveAchievement("You're not really smart.")
 	if (ableToGetRid7 && player.infinityPoints.log10() >= 3.5e5) giveAchievement("And so your life?")
 
 	if (!ghostified) return

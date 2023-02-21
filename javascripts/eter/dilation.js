@@ -515,7 +515,7 @@ function resetDilation(order = "qu") {
 		player.dilation.dilatedTime = !bigRip && speedrunMilestonesReached >= 22 ? E(1e100) : E(0)
 		if (order == "qu") {
 			let keepTPHalf = bigRip ? hasRipUpg(11) : hasAch("ng3p37")
-			let keepTP = bigRip ? hasRipUpg(18) : inQC(0) && gotBraveMilestone(4)
+			let keepTP = bigRip ? hasRipUpg(18) : inQC(0) && hasBraveMilestone(4)
 			if (keepTP) player.dilation.tachyonParticles = player.dilation.bestTP
 			else if (keepTPHalf) player.dilation.tachyonParticles = player.dilation.bestTP.pow(0.5)
 		}

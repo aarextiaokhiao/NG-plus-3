@@ -1704,6 +1704,26 @@ br {
     opacity: 0;
 }
 
+/* NG+3 */
+.timestudybought.mastery {
+    background: #b7d;
+    border-color: #307;
+}
+.timestudy.quantum {
+    color: #bf7;
+    border: 1px solid #0f0;
+    background: #130;
+    box-shadow: inset 0 0 6px #0f0;
+	animation: none;
+}
+.timestudy.quantum:hover {
+    background: #070
+}
+.timestudybought.quantum {
+    background: #7f0;
+    border-color: #370;
+}
+
 /* QUANTUM ANIMATION BY: AAREX + MRREDSHARK77 */
 #quani {
     position: fixed;
@@ -2021,32 +2041,24 @@ td.lEp {
     animation: dilationBtnGlow 10s infinite
 }
 
-.anttabbtn {
+.antbtn {
 	background: black;
-	border: 2px solid #4c4c4c;
+	border-style: solid;
+	border-color: #4c4c4c;
 	border-radius: 4px;
 	color: #779;
 	text-shadow: 0px 0px 1px #4c4c4c, 0px 0px 2px #4c4c4c, 0px 0px 3px #4c4c4c;
-    font-weight: bold;
+	font-weight: bold;
 	transition-duration: 0.2s
 }
-.anttabbtn:hover {
+.antbtn:hover {
 	background: #333;
 	cursor: pointer
 }
 #replicants .qtable td { vertical-align:0 }
 #produceQuarkCharge {
-	background: black !important;
-	border: 2px solid #4c4c4c;
 	width: 210px;
-	height: 90px;
-	text-shadow: 0px 0px 1px #4c4c4c, 0px 0px 2px #4c4c4c, 0px 0px 3px #4c4c4c;
-	color: #999;
-	font-size: 12px;
-	animation: nanofieldanimation 5s infinite
-}
-#produceQuarkCharge:hover {
-	color: #bbb
+	height: 90px
 }
 .nfReward {
 	background: black !important;
@@ -2054,11 +2066,10 @@ td.lEp {
 	border-radius: 4px;
     width: 250px;
     height: 60px;
-	color: #999;
+	color: #779;
 	text-shadow: 0px 0px 1px #4c4c4c, 0px 0px 2px #4c4c4c, 0px 0px 3px #4c4c4c;
 	font-size: 12px;
     font-weight: bold;
-	animation: nanofieldanimation 5s infinite;
 	transition-duration: 0.2s
 }
 .nfRewardlocked {
@@ -2072,12 +2083,6 @@ td.lEp {
     font-weight: bold;
 	transition-duration: 0.2s
 }
-@keyframes nanofieldanimation {
-    0%  {box-shadow: inset 0px 0px 90px 0px #4c4c4c;}
-    50% {box-shadow: inset 0px 0px 120px 0px #4c4c4c;}
-    100% {box-shadow: inset 0px 0px 90px 0px #4c4c4c;}
-}
-
 #upgradesBranch .gluonupgrade {
 	font-size: 10px
 }
@@ -2278,15 +2283,15 @@ td.lEp {
 	height: 60px
 }
 
-.gluonupgrade.gph {
-	background: #ccc8b7 !important;
-	border: 1px solid #bfaf5f;
-	box-shadow: inset 0px 0px 20px 0px #bfaf5f;
+.photon {
+	background: #ff7;
+	border-color: #bb3;
+	box-shadow: inset 0px 0px 20px 0px #ffb;
 	color: black;
-	text-shadow: 0px 0px 6px #bfaf5f
 }
-.gluonupgrade.gph:hover {
-	color: white;
+.photon:hover {
+	background: white;
+	color: #330;
 	cursor: pointer
 }
 

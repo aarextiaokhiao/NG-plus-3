@@ -204,7 +204,7 @@ function doQuantumProgress() {
 		var percentage = Math.min(player.meta.antimatter.max(1).log10() / quantumReq.log10() * 100, 100).toFixed(2) + "%"
 		el("progressbar").style.width = percentage
 		el("progresspercent").textContent = percentage
-		el("progresspercent").setAttribute('ach-tooltip', (player.masterystudies ? "Meta-antimatter p" : "P") + 'ercentage to quantum')
+		el("progresspercent").setAttribute('ach-tooltip', (mod.ngp3 ? "Meta-antimatter p" : "P") + 'ercentage to quantum')
 	} else if (id == 2) {
 		var percentage = Math.min(player.money.max(1).log10() / getQCGoal() * 100, 100).toFixed(2) + "%"
 		el("progressbar").style.width = percentage

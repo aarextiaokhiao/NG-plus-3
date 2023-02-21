@@ -7,33 +7,30 @@ var velocityX = 0;
 var velocityY = 0;
 
 var canvas = el("studyTreeCanvas");
-var ctx = canvas.getContext("2d");
 var canvas3 = el("dilationCanvas");
-var ctx3 = canvas3.getContext("2d");
 var bhc = el("blackHoleCanvas");
-var bhctx = bhc.getContext("2d");
 var msc = el("studyTreeCanvas2");
-var msctx = msc.getContext("2d");
 var qkc = el("quarkCanvas");
+var ctx = canvas.getContext("2d");
+var ctx3 = canvas3.getContext("2d");
+var bhctx = bhc.getContext("2d");
+var msctx = msc.getContext("2d");
 var qkctx = qkc.getContext("2d");
 
 function resizeCanvas() {
-	canvas.width = 0;
-	canvas.height = 0;
-	canvas3.width = 0;
-	canvas3.height = 0;
-	msc.width = 0;
-	msc.height = 0;
-	canvas.width = document.body.scrollWidth;
-	canvas.height = document.body.scrollHeight;
-	canvas3.width = document.body.scrollWidth;
-	canvas3.height = document.body.scrollHeight;
-	bhc.width = document.body.scrollWidth;
-	bhc.height = document.body.scrollHeight;
-	msc.width = document.body.scrollWidth;
-	msc.height = document.body.scrollHeight;
-	qkc.width = document.body.scrollWidth;
-	qkc.height = document.body.scrollHeight;
+	let scrollHeight = document.body.scrollHeight
+	let height = Math.max(window.innerHeight, scrollHeight)
+	let width = window.innerWidth
+	canvas.width = width
+	canvas.height = scrollHeight
+	canvas3.width = width
+	canvas3.height = height
+	bhc.width = width
+	bhc.height = height
+	msc.width = width
+	msc.height = scrollHeight
+	qkc.width = width
+	qkc.height = height
 	drawStudyTree();
 	drawMasteryTree();
 }
@@ -71,8 +68,12 @@ const ANIMATIONS = {
 		title: "Tachyon particles"
 	},
 	blackHole: {
-		unl: _ => player.blackhole && (player.blackhole.unl || quantumed),
+		unl: _ => mod.ngud && (player.blackhole.unl || quantumed),
 		title: "Black hole"
+	},
+	quarks: {
+		unl: _ => quantumed,
+		title: "Quarks"
 	}
 }
 
@@ -164,7 +165,7 @@ function drawTreeBranch(num1, num2) {
 	var y2 = end.top + (end.height / 2) + (document.documentElement.scrollTop || document.body.scrollTop);
 	ctx.lineWidth=15;
 	ctx.beginPath();
-	if ((player.timestudy.studies.includes(name1) && player.timestudy.studies.includes(name2) && !isECName) || (player.timestudy.studies.includes(name1) && (player.eternityChallUnlocked === name2 && isECName)) || (hasDilStudy(name2-1) && (hasDilStudy(name2) && isDilStudyName))) {
+	if ((hasTimeStudy(name1) && hasTimeStudy(name2) && !isECName) || (hasTimeStudy(name1) && (player.eternityChallUnlocked === name2 && isECName)) || (hasDilStudy(name2-1) && (hasDilStudy(name2) && isDilStudyName))) {
 		if (name2 == 6 && isDilStudyName && (player.options.theme == "Aarex's Modifications" || player.options.theme == "Aarex's Mods II")) {
 			ctx.strokeStyle="#00E5E5";
 		} else if (name2 < 20 && isECName) {
@@ -319,8 +320,8 @@ function drawStudyTree() {
 			if (el(all[i]).className.split(" ")[1] !== undefined || all[i] > 220) {
 				var tempName = el(all[i]).className.split(" ")[1];
 				var name;
-				if (all[i] == 222 || all[i] == 223 || all[i] == 226 || all[i] == 227 || all[i] == 232 || all[i] == 233) name = "dark"
-				else if (all[i] == 221 || all[i] == 224 || all[i] == 225 || all[i] == 228 || all[i] == 231 || all[i] == 234) name = "light"
+				if (all[i] == 222 || all[i] == 223 || all[i] == 226 || all[i] == 227 || all[i] == 232 || all[i] == 234) name = "dark"
+				else if (all[i] == 221 || all[i] == 224 || all[i] == 225 || all[i] == 228 || all[i] == 231 || all[i] == 233) name = "light"
 				else if (tempName.includes("normaldimstudy")) name = "normal dims"
 				else if (tempName.includes("infdimstudy")) name = "infinity dims"
 				else if (tempName.includes("timedimstudy")) name = "time dims"

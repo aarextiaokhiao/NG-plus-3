@@ -23,7 +23,7 @@ function updateNanoverseTab() {
 	for (var reward = 1; reward < 9; reward++) {
 		el("nfReward" + reward).className = reward > amt ? "nfRewardlocked" : "nfReward"
 		el("nfReward" + reward).textContent = wordizeList(nanoRewards.effectsUsed[reward].map(x => nanoRewards.effectDisplays[x](tmp.nf.effects[x])), true) + "."
-		el("nfRewardHeader" + reward).textContent = (amt % 8 + 1 == reward ? "Next" : dimNames[reward]) + " Nanobenefit"
+		el("nfRewardHeader" + reward).innerHTML = "<u>" + (amt % 8 + 1 == reward ? "Next" : dimNames[reward]) + " Nanobenefit</u>"
 		el("nfRewardHeader" + reward).className = (amt % 8 + 1 == reward ? "grey" : "") + " milestoneTextSmall"
 		el("nfRewardTier" + reward).textContent = "Tier " + getFullExpansion(Math.ceil((amt + 1 - reward) / 8)) + " / Power: " + tmp.nf.powers[reward].toFixed(1)
 	}

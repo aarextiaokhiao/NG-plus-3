@@ -27,7 +27,7 @@ function ECComps(name) {
 function canUnlockEC(idx, cost, study, study2) {
 	study2 = (study2 !== undefined) ? study2 : 0;
 	if (player.eternityChallUnlocked !== 0) return false
-	if (!player.timestudy.studies.includes(study) && (player.study2 == 0 || !player.timestudy.studies.includes(study2))) return false
+	if (!hasTimeStudy(study) && (player.study2 == 0 || !hasTimeStudy(study2))) return false
 	if (player.timestudy.theorem < cost) return false
 	if (player.etercreq == idx && idx !== 11 && idx !== 12) return true
 
@@ -74,11 +74,11 @@ function canUnlockEC(idx, cost, study, study2) {
 			break;
 
 		case 11:
-			if (player.timestudy.studies.includes(71) && !player.timestudy.studies.includes(72) && !player.timestudy.studies.includes(73)) return true
+			if (hasTimeStudy(71) && !hasTimeStudy(72) && !hasTimeStudy(73)) return true
 			break;
 
 		case 12:
-			if (player.timestudy.studies.includes(73) && !player.timestudy.studies.includes(71) && !player.timestudy.studies.includes(72)) return true
+			if (hasTimeStudy(73) && !hasTimeStudy(71) && !hasTimeStudy(72)) return true
 			break;
 	}
 	return false
@@ -231,7 +231,7 @@ function getECReward(x) {
 		let log = Math.sqrt(r.log10() * 400)
 		return pow10(Math.min(50000, log))	
 	}
-	if (x == 10) return E_pow(getInfinitied(), m2 ? 2 : .9).mul(c * (m2 ? 0.02 : 0.000002)).add(1).pow(player.timestudy.studies.includes(31) ? 4 : 1)
+	if (x == 10) return E_pow(getInfinitied(), m2 ? 2 : .9).mul(c * (m2 ? 0.02 : 0.000002)).add(1).pow(hasTimeStudy(31) ? 4 : 1)
 	if (x == 12) return 1 - c * (m2 ? .06 : 0.008)
 	if (x == 13) return [0, 0.25, 0.5, 0.7, 0.85, 1][c]
 	if (x == 14) return getIC3EffFromFreeUpgs()

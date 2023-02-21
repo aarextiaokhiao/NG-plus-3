@@ -78,14 +78,14 @@ let PHOTON = {
 			resName: "Elementary Particles",
 			res: _ => ghSave.ghostParticles,
 
-			req: i => E(1e5).pow(i).mul(1e100),
-			bulk: r => Math.floor(r.div(1e100).log(1e5))+1,
+			req: i => E(1e5).pow(i).mul(1e25),
+			bulk: r => Math.floor(r.div(1e25).log(1e5))+1,
 		}, {
 			resName: "Photons",
 			res: _ => ghSave.photons.amt,
 
-			req: i => E(5).pow(i).mul(1e5),
-			bulk: r => Math.floor(r.div(1e5).log(5))+1,
+			req: i => E(5).pow(i).mul(1e4),
+			bulk: r => Math.floor(r.div(1e4).log(5))+1,
 		}
 	],
 
@@ -172,7 +172,7 @@ let PHOTON = {
 		for (const [i, light] of Object.entries(PHOTON.lightData)) {
 			el("ph_light_amt_" + i).textContent = getFullExpansion(ghSave.photons.light[i] || 0) + " / " + getFullExpansion(PHOTON.lightCap(i))
 			el("ph_light_eff_" + i).textContent = light.desc(PHOTON.eff(i))
-			el("ph_light_cap_" + i).className = ghSave.photons.plusOne[i] ? "chosenbtn" : "storebtn"
+			el("ph_light_cap_" + i).className = "storebtn " + (ghSave.photons.plusOne[i] ? "photon" : "")
 		}
 	}
 }

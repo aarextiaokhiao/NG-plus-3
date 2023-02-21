@@ -16,7 +16,7 @@ function updateElectrons(retroactive) {
 	if (!quSave.autoOptions.sacrifice) updateElectronsEffect()
 	for (var u = 1; u < 5; u++) {
 		var cost = getElectronUpgCost(u)
-		el("electronupg" + u).innerHTML = "+" + (getElectronGainMult() / 4).toFixed(2) + "x Electrons<br>" +
+		el("electronupg" + u).innerHTML = "+" + (getElectronGainMult() / 4).toFixed(2) + "x Positrons<br>" +
 			"Level: " + getFullExpansion(quSave.electrons.rebuyables[u-1]) + "<br>" +
 			"Cost: " + ((u == 4 ? getFullExpansion : shortenCosts)(cost)) + " " + [null, "Time Theorems", "dilated time", "meta-antimatter", "Meta-Dimension Boosts"][u]
 	}

@@ -490,12 +490,12 @@ function dov7tov10(){
 
 	if (player.version < 9.5) {
 		player.version = 9.5
-		if (player.timestudy.studies.includes(191)) player.timestudy.theorem += 100
+		if (hasTimeStudy(191)) player.timestudy.theorem += 100
 	}
 
 	if (player.version < 10) {
 		player.version = 10
-		if (player.timestudy.studies.includes(72)) {
+		if (hasTimeStudy(72)) {
 			for (i = 4; i < 8; i++) {
 				player["infinityDimension" + i].amount = player["infinityDimension" + i].amount.div(calcTotalSacrificeBoost().pow(0.02))
 			}
@@ -816,7 +816,7 @@ function doQuantumUpdates(){
 		}
 	}
 
-	if (player.masterystudies ? aarMod.newGame3PlusVersion < 1.999 || (quSave.emperorDimensions ? quSave.emperorDimensions[1] == undefined : false) : false) { 
+	if (mod.ngp3 ? aarMod.newGame3PlusVersion < 1.999 || (quSave.emperorDimensions ? quSave.emperorDimensions[1] == undefined : false) : false) { 
 		var oldLength=player.masterystudies.length
 		var newMS=[]
 		for (var m=0;m<player.masterystudies.length;m++) {
@@ -1700,7 +1700,6 @@ function onLoad(noOffline) {
 	updateQuantumChallenges()
 	updateQCTimes()
 	updatePCCompletions()
-	maybeShowFillAll()
 	updateLastTenGhostifies()
 
 	if (mod.rs) {

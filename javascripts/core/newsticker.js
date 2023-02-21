@@ -187,9 +187,9 @@ newsArray = [//always true
 ["Where does Antimatter Nemo live? In a NNnNeMI-NNnNe.", "player.totalmoney.e >= 3e6", "c2"],	//might not be poss?
 ["Anti Emoji Movie MMMCMXCIX is a major hit!", "player.spreadingCancer >= 3999", "c3"],
 ["Achievement Unlocked!", "player.achievements.length == 88", "c4"],
-["Did you use an autoclicker for that?", "player.timestudy.studies.includes(131) && player.thisInfinityTime <= 600 && player.replicanti.galaxies >= 50", "c5"],
+["Did you use an autoclicker for that?", "hasTimeStudy(131) && player.thisInfinityTime <= 600 && player.replicanti.galaxies >= 50", "c5"],
 ["Timing is key.", "player.thisEternity < 1", "c6"],
-["If you want to farm infinitied, why don't you just get the time study?", "!player.timestudy.studies.includes(32) && player.infinitied > 72000 * 168", "c7"],
+["If you want to farm infinitied, why don't you just get the time study?", "!hasTimeStudy(32) && player.infinitied > 72000 * 168", "c7"],
 ["The achievement is for two million, not two billion...", "player.infinitied > 2e9", "c8"],
 ["Keep up the quick pace!", "Marathon > 1200", "c9"],
 ["One day you will stop your incessant grind.", "player.eternities > 50000", "c10"],
