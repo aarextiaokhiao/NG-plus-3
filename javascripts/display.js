@@ -1,4 +1,6 @@
 function dimShiftDisplay(){
+	el("dimReset").style.display = bigRipped() ? "none" : ""
+
 	var shiftRequirement = getShiftRequirement(0);
 	var isShift = getNormalDimensions() < getMaxNormalDimensions()
 	el("resetLabel").textContent = 'Dimension ' + (isShift ? "Shift" : player.resets < getSupersonicStart() ? "Boost" : "Supersonic") + ' ('+ getFullExpansion(Math.ceil(player.resets)) +'): requires ' + getFullExpansion(Math.ceil(shiftRequirement.amount)) + " " + dimNames[shiftRequirement.tier] + " Dimensions"
