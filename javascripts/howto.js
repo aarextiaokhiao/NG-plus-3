@@ -285,7 +285,7 @@ let HOW_TO = [
 
 		title: "Mastery Studies",
 		layer: "eternity",
-		desc: `Mastery Studies are a new type of Time & Dilation studies, but the cost will rise each time you buy a time study. When you respec, the costs of all time studies will decrease.`
+		desc: `Mastery Studies are a new type of Time & Dilation Studies, but the cost will rise for each purchase. Respeccing will reset costs of all Mastery Stuides.`
 	}, {
 		mod: _ => ngp3,
 		req: _ => player.quantum?.times,
