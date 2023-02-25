@@ -294,7 +294,7 @@ let HOW_TO = [
 		layer: "quantum",
 		desc: `When you reach 9.32e446 meta-antimatter and completed EC14 for the first time, you will able to go quantum. Quantum will reset everything eternity resets, and also eternity features. You will gain a quark and unlock various upgrades.
 		<br><br>
-		You will also unlock speedrun milestones where you must do fast quantums to get your QoL content rewards on eternity, and even quantum autobuyer.`
+		You will also unlock speedrun milestones where you must do fast quantums to get QoL rewards, and even quantum autobuyer.`
 	}, {
 		mod: _ => ngp3,
 		req: _ => player.quantum?.times,
