@@ -129,8 +129,8 @@ let PHOTON = {
 			desc: e => `Nanorewards speed up Decay by ${e.toFixed(3)}x each.`
 		}, {
 			name: "violet",
-			eff: a => 1,
-			desc: e => `Placeholder.`
+			eff: a => Math.log10(a / 3 + 1) + 1,
+			desc: e => `Raise Intergalactic by ^${shorten(e)} outside of Big Rips.`
 		}, {
 			name: "ultraviolet",
 			eff: a => a >= 30 ? 1/0 : Math.pow(2, a / 2),
