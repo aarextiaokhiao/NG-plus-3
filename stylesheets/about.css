@@ -5,6 +5,7 @@
 
 body {
 	font-family: Typewriter;
+	text-align: center;
 	color: #bfdfff;
 	text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.125);
 }
