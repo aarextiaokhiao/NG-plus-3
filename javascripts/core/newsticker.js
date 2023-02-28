@@ -509,7 +509,8 @@ newsArray = [//always true
 ["This news ticker has 'am308' id on it! Meta^-1-Infinity, or Preludity?", "true", "am308"],
 ["Pata-Infinity when? (ee1.79e308)", "true", "am309"],
 ["This might be extended by a lot, to disthrone 'The Longest Incremental.'", "true", "am310"],
-["This isn't the longest game you are looking for.", "true", "am311"],*/
+["This isn't the longest game you are looking for.", "true", "am311"],
+["AD: NG+3 Reality ending (for 2069): You turn Hevipelle into a ghost and use him to make your way to president of the country and eventually achieve world domination with antimatter bombs, and after for all by being the only country with only one leader, you get a REAL antimatter bomb delivered to your house with 5 pounds of pure antimatter!", "true", "am312"],*/
 ];}
 
 document.addEventListener("visibilitychange", function() {if (!document.hidden) {scrollNextMessage();}}, false);

@@ -288,7 +288,9 @@ function updateBreakEternityUpgrade1Temp(){
 	var em = beSave.eternalMatter
 	var log1 = ep.div("1e1280").add(1).log10()
 	var log2 = em.mul(10).max(1).log10()
-	tmp.beu[1] = pow10(Math.pow(log1, 1/3) * 0.5 + Math.pow(log2, 1/3)).max(1)
+	var exp = isBreakUpgActive(9) ? Math.pow(log1, 0.5) / 4 + Math.pow(log2, 2) / 100 :
+		Math.pow(log1, 1/3) * 0.5 + Math.pow(log2, 1/3)
+	tmp.beu[1] = pow10(exp)
 }
 
 function updateBreakEternityUpgrade2Temp(){
@@ -311,7 +313,8 @@ function updateBreakEternityUpgrade4Temp(){
 	var ss = brSave && brSave.spaceShards
 	var log1 = ep.div("1e1860").add(1).log10()
 	var log2 = ss.div("7e19").add(1).log10()
-	var exp = Math.pow(log1, 1/3) + Math.pow(log2, 1/3) * 8
+	var exp = isBreakUpgActive(10) ? Math.pow(log1, 0.5) / 2 + Math.pow(log2, 1.5) / 10 :
+		Math.pow(log1, 1/3) + Math.pow(log2, 1/3) * 8
 	tmp.beu[4] = pow10(exp)
 }
 
@@ -338,8 +341,7 @@ function updateBreakEternityUpgrade6Temp(){
 }
 
 function updateBreakEternityUpgrade8Temp(){
-	var x = Math.log10(player.dilation.tachyonParticles.div(1e200).add(1).log10() / 100 + 1) * 3 + 1
-	if (mod.udp && x > 2.2) x = 1.2 + Math.log10(x + 7.8)
+	var x = Math.min(Math.max(player.dilation.tachyonParticles.max(1).log10() / 200, 1), 2)
 	tmp.beu[8] = x
 }
 
