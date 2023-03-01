@@ -412,7 +412,7 @@ let HOW_TO = [
 		There's a 4x4 grid where pairs of Hypotheses give something dependent on kinds.
 		<br><br>
 		<b>Bosonic Milestones</b><br>
-		At a specific amount of Bosons, you'll unlock Bosonic Milestones. This is boosted by Best Bosons.
+		At a specific amount of Bosons, you'll unlock Bosonic Milestones. Best Bosons strengthen those milestones.
 		<br><br>
 		<b>W & Z Bosons</b><br>
 		There are 3 bars, fillable with W Bosons.<br>
