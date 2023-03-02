@@ -392,7 +392,7 @@ function updateNCVisuals() {
 	if (inNC(3) || chall == "postc1") el("chall3Pow").style.display = "inline-block"
 	else el("chall3Pow").style.display = "none"
 
-	if (inNC(12) || chall == "postc1" || chall == "postc6" || inQC(6)) el("matter").style.display = "block"
+	if (inNC(12) || chall == "postc1" || chall == "postc6") el("matter").style.display = "block"
 	else el("matter").style.display = "none"
 
 	if (isADSCRunning()) el("chall13Mult").style.display = "block"

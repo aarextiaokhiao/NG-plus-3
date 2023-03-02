@@ -38,7 +38,7 @@ function bankedInfinityDisplay(){
 	var bankedInfGain=gainBankedInf()
 	el("bankedInfGain").style.display = bankedInfGain>0 ? "block" : "none"
 	el("bankedInfGain").textContent = "You will gain " + getFullExpansion(bankedInfGain) + " banked infinities on next Eternity."
-	if (hasAch("ng3p73")) updateBankedEter(true)
+	if (hasAch("ng3p72")) updateBankedEter(true)
 }
 
 function displayEternityStats() {

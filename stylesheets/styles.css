@@ -2235,11 +2235,13 @@ td.lEp {
 #automaticghosts .top {
 	position: absolute;
 	width: 200px;
+	left: calc(50% - 100px);
 	top: 10px;
 }
 #automaticghosts .bottom {
 	position: absolute;
 	width: 200px;
+	left: calc(50% - 100px);
 	bottom: 10px;
 }
 #autoAntTable .autoBuyerDiv {

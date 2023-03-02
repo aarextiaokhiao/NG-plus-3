@@ -1,6 +1,6 @@
 //VERSION: 2.31
 let ngp3_ver = 2.31
-let ngp3_build = 20230227
+let ngp3_build = 20230301
 function doNGP3Updates() {
 	if (!aarMod.ngp3_build) aarMod.ngp3_build = 0
 	if (aarMod.ngp3_build < 20221230) quSave.multPower = 0
@@ -136,9 +136,9 @@ function respecMasteryToggle() {
 var bankedEterGain
 function updateBankedEter(updateHtml = true) {
 	bankedEterGain = 0
-	if (hasAch("ng3p15")) bankedEterGain = player.eternities
-	if (hasAch("ng3p73")) bankedEterGain = nA(bankedEterGain, gainEternitiedStat())
-	bankedEterGain = nD(bankedEterGain, 20)
+	if (!hasAch("ng3p15")) return
+
+	bankedEterGain = nD(player.eternities, 20)
 	if (updateHtml) {
 		setAndMaybeShow("bankedEterGain", bankedEterGain > 0, '"You will gain "+getFullExpansion(bankedEterGain)+" banked eternities on next quantum."')
 		setAndMaybeShow("eternitiedBank", player.eternitiesBank, '"You have "+getFullExpansion(player.eternitiesBank)+" banked eternities."')
@@ -633,7 +633,7 @@ function ngP3AchieveCheck() {
 	if (ableToGetRid8 && player.infinityPoints.log10() >= 9.5e5) giveAchievement("Please answer me why you are dying.")
 
 	if (PHOTON.unlocked()) giveAchievement("Progressing as a Ghost")
-	//ng3p72: in another source
+	if (bigRipped() && player.eternityPoints.e >= 1e5) giveAchievement("Underchallenged")
 	if (nG(getInfinitied(), Number.MAX_VALUE)) giveAchievement("Meta-Infinity confirmed?")
 	if (minUQ.quarks.log10() >= 1e12 && minUQ.decays >=2 && !brSave.times) giveAchievement("Weak Decay")	
 	if (getRadioactiveDecays('r') >= 2) giveAchievement("Radioactive Decaying to the max!")
@@ -692,7 +692,7 @@ function doQuantumUnlockStuff(){
 }
 
 function postBoostMilestone() {
-	return mod.ngp3 && getEternitied() >= 1e9
+	return mod.ngp3 && (getEternitied() >= 1e9 || hasAch("ng3p71"))
 }
 
 function quantumOverallUpdating(diff){

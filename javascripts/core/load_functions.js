@@ -1394,8 +1394,6 @@ function doNGp3Init() {
 
 function setConfirmationsDisplay(){
 	el("confirmations").style.display = (player.resets > 4 || player.galaxies > 0 || gSacrificed() || player.infinitied !== 0 || player.eternities !== 0 || quantumed) ? "inline-block" : "none"
-	el("confirmation").style.display = (player.resets > 4 || player.infinitied > 0 || player.eternities !== 0 || quantumed) ? "inline-block" : "none"
-	el("sacrifice").style.display = (player.resets > 4 || player.infinitied > 0 || player.eternities !== 0 || quantumed) ? "inline-block" : "none"
 	el("gConfirmation").style.display = gSacrificeUnl() ? "" : "none"
 	el("challengeconfirmation").style.display = (player.challenges.includes("challenge1") || player.infinitied !== 0 || player.eternities !== 0 || quantumed) ? "inline-block" : "none"
 	el("eternityconf").style.display = (player.eternities !== 0 || quantumed) ? "inline-block" : "none"

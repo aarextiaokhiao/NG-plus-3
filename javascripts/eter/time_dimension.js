@@ -64,7 +64,6 @@ function getTimeDimensionPower(tier) {
 	if (ECComps("eterc10") !== 0) ret = ret.mul(getECReward(10))
 	if (hasAch("r128")) ret = ret.mul(Math.max(player.timestudy.studies.length, 1))
 	if (hasGSacUpg(43)) ret = ret.mul(galMults.u43())
-	if (inQC(6)) ret = ret.mul(player.postC8Mult).dividedBy(player.matter.max(1))
 
 	ret = dilates(ret, 2)
 	if (inNGM(2)) ret = ret.mul(ret2)
@@ -187,7 +186,6 @@ function buyTimeDimension(tier, am) {
 	getOrSubResourceTD(tier, dim.cost)
 	dim.amount = dim.amount.plus(1);
 	dim.bought += 1
-	if (inQC(6)) player.postC8Mult = E(1)
 	if (inNGM(4)) {
 		dim.cost = dim.cost.mul(timeDimCostMults[1][tier])
 		if (inNC(2) || player.currentChallenge == "postc1") player.chall2Pow = 0
@@ -262,7 +260,6 @@ function buyMaxTimeDimension(tier, bulk) {
 	} else {
 		dim.cost = timeDimCost(tier, dim.bought)
 		dim.power = dim.power.mul(E_pow(mod.rs ? 3 : 2, toBuy))
-		if (inQC(6)) player.postC8Mult = E(1)
 		updateEternityUpgrades()
 	}
 }

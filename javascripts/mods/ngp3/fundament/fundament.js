@@ -129,7 +129,6 @@ function ghostifyReset(force, gain) {
 
 		giveAchievement("Kee-hee-hee!")
 		if (bm == 16) giveAchievement("I rather oppose the theory of everything")
-		if (player.eternityPoints.e >= 22e4 && ghSave.under) giveAchievement("Underchallenged")
 		if (quSave.times >= 1e3 && hasBraveMilestone(16)) giveAchievement("Scared of ghosts?")
 	}
 

@@ -123,8 +123,6 @@ function DimensionPower(tier) {
 	if (ECComps("eterc9") !== 0) ec9 = getECReward(9)
 	if (inNGM(2)) mult = mult.mul(ec9)
 
-	if (inQC(6)) mult = mult.mul(player.postC8Mult).dividedBy(player.matter.max(1))
-
 	mult = dilates(mult, 2)
 	if (player.replicanti.unl && player.replicanti.amount.gt(1) && inNGM(2)) mult = mult.mul(getIDReplMult())
 	if (inNGM(2)) mult = mult.mul(ec9)
@@ -196,7 +194,6 @@ function buyManyInfinityDimension(tier, max) {
 		player.eterc8ids = Math.max(player.eterc8ids - toBuy, 0)
 		el("eterc8ids").textContent = "You have " + player.eterc8ids + " purchases left."
 	}
-	if (inQC(6)) player.postC8Mult = E(1)
 	return true
 }
 

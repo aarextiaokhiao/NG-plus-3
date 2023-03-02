@@ -1,5 +1,5 @@
 function dimShiftDisplay(){
-	el("dimReset").style.display = bigRipped() ? "none" : ""
+	el("dimReset").style.display = inQC(6) ? "none" : ""
 
 	var shiftRequirement = getShiftRequirement(0);
 	var isShift = getNormalDimensions() < getMaxNormalDimensions()

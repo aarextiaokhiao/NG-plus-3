@@ -222,7 +222,7 @@ function updateMoney() {
 	el("coinAmount").textContent = shortenMoney(player.money)
 
 	var element2 = el("matter");
-	if (inNC(12) || player.currentChallenge == "postc1" || player.currentChallenge == "postc6" || inQC(6)) element2.textContent = "There is " + formatValue(player.options.notation, player.matter, 2, 1) + " matter."; //TODO
+	if (inNC(12) || player.currentChallenge == "postc1" || player.currentChallenge == "postc6") element2.textContent = "There is " + formatValue(player.options.notation, player.matter, 2, 1) + " matter."; //TODO
 
 	var element3 = el("chall13Mult");
 	if (isADSCRunning()) {
@@ -1417,7 +1417,7 @@ function challengesCompletedOnEternity() {
 function gainEternitiedStat() {
 	let ret = 1
 	if (quantumed && getEternitied() < 1e5) ret = 20
-	if (hasNU(9)) ret = nM(ret, brSave.spaceShards.max(1).pow(.1))
+	if (hasNU(9)) ret = nM(ret, pow10(Math.pow(brSave.spaceShards.max(1).log10(), 3/4) / 3))
 	let exp = getEternitiesAndDTBoostExp()
 	if (exp > 0) ret = nM(player.dilation.dilatedTime.max(1).pow(exp), ret)
 	if (typeof(ret) == "number") ret = Math.floor(ret)
@@ -1697,12 +1697,9 @@ function updateEPminpeak(diff, type) {
 function checkMatter(diff){
 	var newMatter = player.matter.mul(E_pow(tmp.mv,diff))
 	player.matter = newMatter
-	if (player.matter.pow(20).gt(player.money) && (player.currentChallenge == "postc7" || (inQC(6) && !hasAch("ng3p34")))) {
+	if (player.matter.pow(20).gt(player.money) && player.currentChallenge == "postc7") {
 		if (bigRipped() && tmp.ri) {}
-		else if (inQC(6)) {
-			quantum(false, true, 0)
-			onChallengeFail()
-		} else quickReset()
+		else quickReset()
 	} else if (player.matter.gt(player.money) && (inNC(12) || player.currentChallenge == "postc1") && !haveET) {
 		quickReset()
 	}
@@ -1744,9 +1741,10 @@ function incrementTimesUpdating(diffStat){
 function preInfinityUpdating(diff){
 	if (tmp.ri) return
 
-	for (let tier = (inQC(1) ? 1 : player.currentEternityChall == "eterc3" ? 3 : (inNC(4) || player.currentChallenge == "postc1") ? 5 : 7) - (inNC(7) || player.currentChallenge == "postcngm3_3" || inQC(4) ? 1 : 0); tier >= 1; --tier) {
+	let offset = inNC(7) || player.currentChallenge == "postcngm3_3" || inQC(4) ? 2 : 1
+	for (let tier = getNormalDimensions() - offset; tier > 0; --tier) {
 		var name = dimTiers[tier];
-		player[name + 'Amount'] = player[name + 'Amount'].plus(getDimensionProductionPerSecond(tier + (inNC(7) || player.currentChallenge == "postcngm3_3" || inQC(4) ? 2 : 1)).mul(diff / 10));
+		player[name + 'Amount'] = player[name + 'Amount'].plus(getDimensionProductionPerSecond(tier + offset).mul(diff / 10));
 	}
 	if (player.dontWant && player.firstAmount.gt(0)) player.dontWant = false
 
@@ -1761,7 +1759,7 @@ function preInfinityUpdating(diff){
 
 function chall2PowerUpdating(diff){
 	player.chall2Pow = Math.min(player.chall2Pow + diff / 1800, 1);
-	if (player.currentChallenge == "postc2" || inQC(6)) {
+	if (player.currentChallenge == "postc2") {
 		postC2Count++;
 		if (postC2Count >= 8 || diff > 80) {
 			sacrifice();
@@ -1771,7 +1769,7 @@ function chall2PowerUpdating(diff){
 }
 
 function normalChallPowerUpdating(diff){
-	if (player.currentChallenge == "postc8" || inQC(6)) player.postC8Mult = player.postC8Mult.mul(Math.pow(0.000000046416, diff))
+	if (player.currentChallenge == "postc8") player.postC8Mult = player.postC8Mult.mul(Math.pow(0.000000046416, diff))
 
 	if (inNC(3) || player.matter.gte(1)) player.chall3Pow = player.chall3Pow.mul(E_pow(1.00038, diff)).min(1e200);
 
@@ -1987,8 +1985,13 @@ function doGhostifyButtonDisplayUpdating(diff){
 }
 
 function normalSacDisplay(){
+	let unl = (player.resets > 4 || player.infinitied > 0 || player.eternities !== 0 || quantumed) && !inQC(6)
+	el("confirmation").style.display = unl ? "inline-block" : "none"
+	el("sacrifice").style.display = unl ? "inline-block" : "none"
+	if (!unl) return
+
 	if (player.eightBought > 0 && player.resets > 4 && player.currentEternityChall !== "eterc3") el("sacrifice").className = "storebtn"
-	 	else el("sacrifice").className = "unavailablebtn"
+	else el("sacrifice").className = "unavailablebtn"
 }
 
 function DimBoostBulkDisplay(){
@@ -2283,6 +2286,7 @@ function gameLoop(diff) {
 			if (PHOTON.unlocked()) PHOTON.calc(diff) // Photons
 			automatorTick(diff)
 		}
+		if (hasAch("ng3p72")) player.eternities = nMx(player.eternities, gainEternitiedStat())
 
 		doQuantumButtonDisplayUpdating(diff)
 		doGhostifyButtonDisplayUpdating(diff)

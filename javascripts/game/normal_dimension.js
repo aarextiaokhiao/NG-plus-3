@@ -75,8 +75,8 @@ function getAfterDefaultDilationLayerAchBonus(tier){
 	if (hasAch("r65") && player.currentChallenge != "" && player.thisInfinityTime < 1800) mult = mult.mul(Math.max(2400 / (player.thisInfinityTime + 600), 1))
 	if (hasAch("r91") && player.thisInfinityTime < 50) mult = mult.mul(Math.max(301 - player.thisInfinityTime * 6, 1))
 	if (hasAch("r92") && player.thisInfinityTime < 600) mult = mult.mul(Math.max(101 - player.thisInfinityTime / 6, 1));
-	if (player.currentChallenge == "postc6" || inQC(6)) mult = mult.dividedBy(player.matter.max(1))
-	if (player.currentChallenge == "postc8" || inQC(6)) mult = mult.mul(player.postC8Mult)
+	if (player.currentChallenge == "postc6") mult = mult.dividedBy(player.matter.max(1))
+	if (player.currentChallenge == "postc8") mult = mult.mul(player.postC8Mult)
 	if (hasGSacUpg(42) && inNGM(4)) mult = mult.mul(galMults.u12())
 	if (hasGSacUpg(45) && inNGM(4)) {
 		var e = hasGSacUpg(46) ? galMults["u46"]() : 1
@@ -133,8 +133,8 @@ function getDimensionFinalMultiplier(tier) {
 
 	if (isADSCRunning() || (inNGM(2) && player.currentChallenge === "postc1")) mult = mult.mul(productAllTotalBought());
 	else {
-		if (player.currentChallenge == "postc6" || inQC(6)) mult = mult.dividedBy(player.matter.max(1))
-		if (player.currentChallenge == "postc8" || inQC(6)) mult = mult.mul(player.postC8Mult)
+		if (player.currentChallenge == "postc6") mult = mult.dividedBy(player.matter.max(1))
+		if (player.currentChallenge == "postc8") mult = mult.mul(player.postC8Mult)
 	}
 
 	if (player.currentChallenge == "postc4" && player.postC4Tier != tier && !inNGM(3)) mult = mult.pow(0.25)
@@ -164,7 +164,7 @@ function getNormalDimensions() {
 }
 
 function getMaxNormalDimensions() {
-	return inQC(1) ? 2 : player.currentEternityChall == "eterc3" ? 4 : inNC(4) || player.currentChallenge == "postc1" ? 6 : 8
+	return player.currentEternityChall == "eterc3" ? 4 : inNC(4) || player.currentChallenge == "postc1" ? 6 : 8
 }
 
 function getDimensionDescription(tier) {
@@ -444,10 +444,7 @@ function buyBulkDimension(tier, bulk, auto) {
 		if (toBuy < 1) break
 		let newCost = player[name + "Cost"].mul(E_pow(player.costMultipliers[tier - 1], toBuy - 1).mul(E_pow(mi, (toBuy - 1) * (toBuy - 2) / 2)))
 		let newMult = player.costMultipliers[tier - 1].mul(E_pow(mi, toBuy - 1))
-		if (!inQC(1)) {
-			if (player.money.gte(newCost)) player.money = player.money.sub(newCost)
-			else if (player.dimensionMultDecrease > 3) player.money = E(0)
-		}
+		getOrSubResource(tier, newCost)
 		player[name + "Amount"] = player[name + "Amount"].add(toBuy * 10)
 		recordBought(name, toBuy * 10)
 		player[name + "Cost"] = newCost.mul(newMult)
@@ -506,6 +503,8 @@ function getInfinitiedMult() {
 }
 
 function getDimensionProductionPerSecond(tier) {
+	if (inQC(1) && tier > 2) return E(0)
+
 	let ret = player[dimTiers[tier] + 'Amount'].floor()
 	if ((inNC(7) || player.currentChallenge == "postcngm3_3" || inQC(4)) && !inNGM(2)) {
 		if (tier == 4) ret = ret.pow(1.3)

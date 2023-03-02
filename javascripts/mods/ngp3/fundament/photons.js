@@ -72,14 +72,14 @@ let PHOTON = {
 			resName: "Preonic Spin",
 			res: _ => todSave.r.spin,
 
-			req: i => E(1e3).pow(i).mul(1e30),
-			bulk: r => Math.floor(r.div(1e30).log(1e3))+1,
+			req: i => E(1e3).pow(Math.sqrt(i)).mul(1e30),
+			bulk: r => Math.floor(Math.pow(r.div(1e30).log(1e3), 2)+1),
 		}, {
 			resName: "Elementary Particles",
 			res: _ => ghSave.ghostParticles,
 
-			req: i => E(1e5).pow(i).mul(1e25),
-			bulk: r => Math.floor(r.div(1e25).log(1e5))+1,
+			req: i => E(1e3).pow(i).mul(1e25),
+			bulk: r => Math.floor(r.div(1e25).log(1e3)+1),
 		}, {
 			resName: "Photons",
 			res: _ => ghSave.photons.amt,
