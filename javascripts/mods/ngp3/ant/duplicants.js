@@ -9,7 +9,10 @@ function babyRateUpdating(){
 	}
 }
 
-function preonGatherRateUpdating(){
+function updatePilonDisplay(){
+	el("gatheredQuarks").textContent = shortenDimensions(quSave.replicants.quarks.floor())
+	el("quarkTranslation").textContent = "+" + shortenMoney(tmp.pe * 100) + "%"
+
 	var gatherRateData = getGatherRate()
 	el("normalReplGatherRate").textContent = shortenDimensions(gatherRateData.normal)
 	el("workerReplGatherRate").textContent = shortenDimensions(gatherRateData.workersTotal)
@@ -44,6 +47,7 @@ function updateReplicantsTab(){
 		if (el(id).style.display == "block") antTabs.update[id]()
 	}
 	updateReplicants()
+	updatePilonDisplay()
 }
 
 function updateReplicantsSubtab(){
@@ -54,11 +58,6 @@ function updateReplicantsSubtab(){
 	el("workerReplAmount").textContent = shortenDimensions(tmp.twr)
 	el("babyReplAmount").textContent = shortenDimensions(quSave.replicants.babies)
 
-	preonGatherRateUpdating()
-
-	el("gatheredQuarks").textContent = shortenDimensions(quSave.replicants.quarks.floor())
-	el("quarkTranslation").textContent = "+" + shortenMoney(tmp.pe * 100) + "%"
-
 	babyRateUpdating()
 	el("feedNormal").className = (canFeedReplicant(1) ? "stor" : "unavailabl") + "ebtn"
 	el("workerProgress").textContent = Math.round(EDsave[1].progress.toNumber() * 100) + "%"
@@ -66,7 +65,6 @@ function updateReplicantsSubtab(){
 	growupRateUpdating()
 	
 	el("reduceHatchSpeed").innerHTML = "Hatch speed: " + hatchSpeedDisplay() + " -> " + hatchSpeedDisplay(true) + "<br>Cost: " + shortenDimensions(quSave.replicants.hatchSpeedCost) + " for all 3 gluons"
-	if (hasBraveMilestone(8)) updateReplicants("display")
 }
 
 var antTabs = {
@@ -200,20 +198,27 @@ function getEmperorDimensionRateOfChange(dim) {
 
 function feedReplicant(tier, max) {
 	if (!canFeedReplicant(tier)) return
-	var toFeed = max ? Math.min(quSave.replicants.quantumFood, quSave.replicants.limitDim > tier ? Math.round(getWorkerAmount(tier - 1).toNumber() * 3) : Math.round((quSave.replicants.limit - EDsave[tier].perm - EDsave[tier].progress.toNumber()) * 3)) : 1
-	if (quSave.replicants.limitDim > tier) quSave.replicants.quantumFoodCost = quSave.replicants.quantumFoodCost.div(E_pow(5, toFeed))
-	EDsave[tier].progress = EDsave[tier].progress.add(toFeed / 3)
-	if (tier < 8 || getWorkerAmount(tier + 1).eq(0)) EDsave[tier].progress = EDsave[tier].progress.mul(3).round().div(3)
-	if (EDsave[tier].progress.gte(1)) {
-		var toAdd = EDsave[tier].progress.floor()
-		if (tier > 1) EDsave[tier-1].workers = EDsave[tier - 1].workers.sub(toAdd.min(EDsave[tier - 1].workers)).round()
-		else quSave.replicants.amount = quSave.replicants.amount.sub(toAdd.min(quSave.replicants.amount)).round()
-		EDsave[tier].progress = EDsave[tier].progress.sub(EDsave[tier].progress.min(toAdd))
-		EDsave[tier].workers = EDsave[tier].workers.add(toAdd).round()
-		EDsave[tier].perm = Math.min(EDsave[tier].perm + Math.round(toAdd.toNumber()), tier > 7 ? 1/0 : 10)
-		if (tier == 2) giveAchievement("An ant office?")
+	if (hasBraveMilestone(14)) {
+		let max = quSave.replicants.limitDim > tier ? 10 : quSave.replicants.limit
+		let old = EDsave[tier].perm
+		EDsave[tier].workers = EDsave[tier].workers.add(max - old)
+		EDsave[tier].perm = E(max)
+	} else {
+		var toFeed = max ? Math.min(quSave.replicants.quantumFood, quSave.replicants.limitDim > tier ? Math.round(getWorkerAmount(tier - 1).toNumber() * 3) : Math.round((quSave.replicants.limit - EDsave[tier].perm - EDsave[tier].progress.toNumber()) * 3)) : 1
+		if (quSave.replicants.limitDim > tier) quSave.replicants.quantumFoodCost = quSave.replicants.quantumFoodCost.div(E_pow(5, toFeed))
+		EDsave[tier].progress = EDsave[tier].progress.add(toFeed / 3)
+		if (tier < 8 || getWorkerAmount(tier + 1).eq(0)) EDsave[tier].progress = EDsave[tier].progress.mul(3).round().div(3)
+		if (EDsave[tier].progress.gte(1)) {
+			var toAdd = EDsave[tier].progress.floor()
+			if (tier > 1) EDsave[tier-1].workers = EDsave[tier - 1].workers.sub(toAdd.min(EDsave[tier - 1].workers)).round()
+			else quSave.replicants.amount = quSave.replicants.amount.sub(toAdd.min(quSave.replicants.amount)).round()
+			EDsave[tier].progress = EDsave[tier].progress.sub(EDsave[tier].progress.min(toAdd))
+			EDsave[tier].workers = EDsave[tier].workers.add(toAdd).round()
+			EDsave[tier].perm = Math.min(EDsave[tier].perm + Math.round(toAdd.toNumber()), tier > 7 ? 1/0 : 10)
+			if (tier == 2) giveAchievement("An ant office?")
+		}
+		quSave.replicants.quantumFood -= toFeed
 	}
-	quSave.replicants.quantumFood -= toFeed
 }
 
 function getWorkerAmount(tier) {
@@ -246,6 +251,7 @@ function buyMaxQuantumFood() {
 }
 
 function canFeedReplicant(tier, auto) {
+	if (hasBraveMilestone(14)) return (tier > quSave.replicants.limitDim ? 10 : quSave.replicants.limit) > EDsave[tier].perm
 	if (quSave.replicants.quantumFood < 1 && !auto) return false
 	if (tier > 1) {
 		if (EDsave[tier].workers.gte(EDsave[tier - 1].workers)) return auto && hasNU(2)
@@ -325,7 +331,7 @@ function updateEmperorDimensions() {
 			el("empAmount" + d).textContent = d < limitDim ? shortenDimensions(EDsave[d].workers) + " (+" + shorten(getEmperorDimensionRateOfChange(d)) + dimDescEnd : getFullExpansion(EDsave[limitDim].perm)
 			el("empQuarks" + d).textContent = shorten(production.workers[d])
 			el("empFeed" + d).className = (canFeedReplicant(d) ? "stor" : "unavailabl") + "ebtn"
-			el("empFeed" + d).textContent = "Feed (" + (d == limitDim || mults[d + 1].mul(EDsave[d + 1].workers).div(20).lt(1e3) ? Math.round(EDsave[d].progress.toNumber() * 100) + "%, " : "") + getFullExpansion(EDsave[d].perm) + " kept)"
+			el("empFeed" + d).textContent = hasBraveMilestone(14) ? "Feed" : "Feed (" + (d == limitDim || mults[d + 1].mul(EDsave[d + 1].workers).div(20).lt(1e3) ? Math.round(EDsave[d].progress.toNumber() * 100) + "%, " : "") + getFullExpansion(EDsave[d].perm) + " kept)"
 			el("empFeedMax" + d).className = (canFeedReplicant(d) ? "stor" : "unavailabl") + "ebtn"
 		}
 	}
@@ -431,7 +437,9 @@ function replicantEggonUpdating(diff){
 	if (toAdd.gt(0)) {
 		if (toAdd.gt(quSave.replicants.eggonProgress)) quSave.replicants.eggonProgress = E(0)
 		else quSave.replicants.eggonProgress = quSave.replicants.eggonProgress.sub(toAdd)
-		quSave.replicants.eggons = quSave.replicants.eggons.add(toAdd).round()
+
+		var toAddWhat = hasBraveMilestone(14) ? "amount" : "eggons"
+		quSave.replicants[toAddWhat] = quSave.replicants[toAddWhat].add(toAdd).round()
 	}
 }
 
@@ -467,33 +475,44 @@ function replicantBabiesGrowingUpUpdating(diff){
 
 function emperorDimUpdating(diff){
 	for (dim=8;dim>1;dim--) {
-		var promote = hasNU(2) ? 1/0 : getWorkerAmount(dim-2)
-		if (canFeedReplicant(dim-1,true)) {
-			if (dim>2) promote = EDsave[dim-2].workers.sub(10).round().min(promote)
-			EDsave[dim-1].progress = EDsave[dim-1].progress.add(EDsave[dim].workers.mul(getEmperorDimensionMultiplier(dim)).mul(diff/20)).min(promote)
-			var toAdd = EDsave[dim-1].progress.floor()
-			if (toAdd.gt(0)) {
-				if (!hasAch("ng3p52")) {
-					if (dim>2 && toAdd.gt(getWorkerAmount(dim-2))) EDsave[dim-2].workers = E(0)
-					else if (dim>2) EDsave[dim-2].workers = EDsave[dim-2].workers.sub(toAdd).round()
-					else if (toAdd.gt(quSave.replicants.amount)) quSave.replicants.amount = E(0)
-					else quSave.replicants.amount = quSave.replicants.amount.sub(toAdd).round()
+		if (hasBraveMilestone(14)) {
+			EDsave[dim-1].workers = EDsave[dim-1].workers.add(EDsave[dim].workers.mul(getEmperorDimensionMultiplier(dim)).mul(diff/20)).round()
+		} else {
+			var promote = hasNU(2) ? 1/0 : getWorkerAmount(dim-2)
+			if (canFeedReplicant(dim-1,true)) {
+				if (dim>2) promote = EDsave[dim-2].workers.sub(10).round().min(promote)
+				EDsave[dim-1].progress = EDsave[dim-1].progress.add(EDsave[dim].workers.mul(getEmperorDimensionMultiplier(dim)).mul(diff/20)).min(promote)
+				var toAdd = EDsave[dim-1].progress.floor()
+				if (toAdd.gt(0)) {
+					if (!hasAch("ng3p52")) {
+						if (dim>2 && toAdd.gt(getWorkerAmount(dim-2))) EDsave[dim-2].workers = E(0)
+						else if (dim>2) EDsave[dim-2].workers = EDsave[dim-2].workers.sub(toAdd).round()
+						else if (toAdd.gt(quSave.replicants.amount)) quSave.replicants.amount = E(0)
+						else quSave.replicants.amount = quSave.replicants.amount.sub(toAdd).round()
+					}
+					if (toAdd.gt(EDsave[dim-1].progress)) EDsave[dim-1].progress = E(0)
+					else EDsave[dim-1].progress = EDsave[dim-1].progress.sub(toAdd)
+					EDsave[dim-1].workers = EDsave[dim-1].workers.add(toAdd).round()
 				}
-				if (toAdd.gt(EDsave[dim-1].progress)) EDsave[dim-1].progress = E(0)
-				else EDsave[dim-1].progress = EDsave[dim-1].progress.sub(toAdd)
-				EDsave[dim-1].workers = EDsave[dim-1].workers.add(toAdd).round()
 			}
+			if (!canFeedReplicant(dim-1,true)) EDsave[dim-1].progress = E(0)
 		}
-		if (!canFeedReplicant(dim-1,true)) EDsave[dim-1].progress = E(0)
 	}
 }
 
 function getPilonEffect() {
-	let exp=1/3
-	if (hasMasteryStudy("t362")) exp=.4
-	if (hasMasteryStudy("t412")) exp=.5
+	let exp = 1/3
+	if (hasMasteryStudy("t362")) exp = .4
+	if (hasMasteryStudy("t412")) exp = .5
 
-	let r = Math.pow(quSave.replicants.quarks.add(1).log10(),exp)*0.8
+	let r = Math.pow(quSave.replicants.quarks.add(1).log10(), exp) * 0.8
 	if (r > 10000) r = Math.pow(r * 100, 2/3)
 	return r
+}
+
+function updatePostBM14Display() {
+	el("anttabbtn").style.display = hasBraveMilestone(14) ? "none" : ""
+	if (el("antcore").style.display == "block" && hasBraveMilestone(14)) showAntTab("emperordimensions")
+	el("foodCell").style.display = hasBraveMilestone(14) ? "none" : ""
+	el(hasBraveMilestone(14) ? "pilonsCellED" : "pilonsCell").appendChild(el("pilonsDiv"))
 }

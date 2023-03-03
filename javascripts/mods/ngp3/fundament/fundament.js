@@ -196,6 +196,7 @@ RESETS.funda = {
 		for (let d = 1; d <= 8; d++) {
 			let keep10 = bm >= permUnlocks[d]
 			EDsave[d].perm = keep10 ? 10 : 0
+			EDsave[d].workers = E(EDsave[d].perm)
 			if (keep10) quSave.replicants.limitDim = d
 		}
 		if (quSave.replicants.limitDim >= 1) {
@@ -209,10 +210,10 @@ RESETS.funda = {
 	},
 	resetDecay(bm) {
 		todSave.r.quarks = E(0)
-		todSave.r.spin = bm >= 14 ? E(1e25) : E(0)
-		todSave.r.upgrades = {}
+		todSave.r.spin = E(0)
+		todSave.r.upgrades = { 1: bm >= 4 ? 5 : 0 }
 		todSave.r.decays = hasAch("ng3p86") ? Math.floor(todSave.r.decays * .75) : 0
-		todSave.upgrades = { 1: bm >= 4 ? 5 : 0 }
+		todSave.upgrades = {}
 		updateTODStuff()
 	},
 	resetRip(bm) {
@@ -271,8 +272,13 @@ function denyGhostify() {
 	if (ghostifyDenied >= 15) giveAchievement("You are supposed to become a ghost!")
 }
 
-function updateGhostifyTempStuff(){
+function updateGhostifyTempStuff() {
 	updateBosonicLabTemp()
+
+	if (!ghostified) {
+		tmp.funda = {}
+		return
+	}
 	PHOTON.temp()
 	NEUTRINO.temp()
 }

@@ -7,8 +7,10 @@ function getTickSpeedMultiplier() {
 function initialGalaxies() {
 	let g = player.galaxies
 	if (hasMasteryStudy("d7") && !tmp.be) {
-		g = Math.max(g-quSave.electrons.sacGals, 0)
+		let sac = quSave.electrons.sacGals
+		g = Math.max(g - sac, 0)
 		g *= Math.max(Math.min(10 - (quSave.electrons.amount + g * getElectronGainFinalMult()) / 16857, 1), 0)
+		g += Math.min(sac, player.galaxies) * PHOTON.eff(0)
 		if (hasBU(14)) g = Math.max(Math.min(player.galaxies, tmp.blu[14]), g)
 	}
 	if (hasGluonUpg("rg4")) g *= 0.4
@@ -21,7 +23,7 @@ function getGalaxyPower(ng, bi, noDil) {
 	if (mod.rs) replGalEff = Math.log10(player.replicanti.limit.log(2)) / Math.log10(2)/10
 	else if (ECComps("eterc8") > 0) replGalEff = getECReward(8)
 	if (hasMasteryStudy("t344")) replGalEff *= getMTSMult(344)
-	
+
 	let extraReplGalPower = 0
 	if (hasTimeStudy(133)) extraReplGalPower += player.replicanti.galaxies * 0.5
 	if (hasTimeStudy(132)) extraReplGalPower += player.replicanti.galaxies * 0.4

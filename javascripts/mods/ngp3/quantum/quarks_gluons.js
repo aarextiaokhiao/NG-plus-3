@@ -248,7 +248,6 @@ function updateColorPowers(log) {
 	bLog = Math.sqrt(log.b + 1.5) - Math.sqrt(1.5)
 
 	if (bLog > 3) bLog = Math.sqrt(bLog  * 3)
-	if (hasNU(14)) bLog *= ntEff("upg", 14)
 	colorBoosts.b = pow10(bLog)
 }
 
@@ -319,6 +318,14 @@ function getRG3Effect() {
 	return E_pow(player.resets, exp)
 }
 
+function getGB6Effect() {
+	return Math.min(1 + Math.pow(player.infinityPower.plus(1).log10(), 0.25) / 2810, 2.5)
+}
+
+function getBR6Effect() {
+	return Math.min(1 + player.meta.resets / 340, 2.5)
+}
+
 function getGU8Effect(type) {
 	return Math.pow(quSave.gluons[type].div("1e565").add(1).log10() + 1, 0.5)
 }
@@ -359,8 +366,8 @@ function updateGluonsTab() {
 	el("rgupg3current").textContent = "Currently: " + shorten(getRG3Effect()) + "x"
 	el("brupg4current").textContent = "Currently: " + shortenMoney(E_pow(getDimensionPowerMultiplier(hasNU(13) && "no-rg4"), 0.0003).max(1)) + "x"
 	if (hasMasteryStudy("d9")) {
-		el("gbupg6current").textContent = "Currently: " + (100-100/(1 + Math.pow(player.infinityPower.plus(1).log10(),0.25)/2810)).toFixed(1) + "%"
-		el("brupg6current").textContent = "Currently: " + (100-100/(1 + player.meta.resets/340)).toFixed(1) + "%"
+		el("gbupg6current").textContent = "Currently: " + (100-100/getGB6Effect()).toFixed(1) + "%"
+		el("brupg6current").textContent = "Currently: " + (100-100/getBR6Effect()).toFixed(1) + "%"
 		el("gbupg7current").textContent = "Currently: " + (100-100/(1 + Math.log10(1+player.infinityPoints.max(1).log10())/100)).toFixed(1) + "%"
 		el("brupg7current").textContent = "Currently: " + (100-100/(1 + Math.log10(1+player.eternityPoints.max(1).log10())/80)).toFixed(1) + "%"
 	}

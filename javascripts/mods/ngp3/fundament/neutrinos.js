@@ -20,12 +20,10 @@ const NEUTRINO = {
 		nts.addType(nts.types[ghSave.neutrinos.generationGain - 1], nts.gain().mul(bulk))
 	},
 	temp() {
-		if (!this.unlocked()) {
-			delete tmp.neutrino
-			return
-		}
+		if (!this.unlocked()) return
+
 		let data = {}
-		tmp.neutrino = data
+		tmp.funda.neutrino = data
 
 		data.amt = []
 		for (let type of this.neutrinos.types) data.amt.push(ghSave.neutrinos[type])
@@ -137,42 +135,40 @@ const NEUTRINO = {
 					if (bigRipped()) nb6exp /= 2
 
 					let nb6 = Math.pow(nb6neutrinos, nb6exp) * 0.525 + 1
-					return Math.min(nb6, 10)
+					return Math.min(nb6, 3)
 				},
 				effDesc: e => `Distant Antimatter Galaxies scale <b>${shorten(e)}x</b> slower.`,
 			}, {
 				cost: E(1e3),
 				eff(nt) {
 					let nb7exp = .5
-					let nb7neutrinos = nt[0].add(1).log10()+nt[1].add(1).log10()+nt[2].add(1).log10()
-					let nb7 = Math.pow(Math.log10(nb7neutrinos + 1), nb7exp) * 1.5
+					let nb7neutrinos = nt[0].add(1).log10() + nt[1].add(1).log10() + nt[2].add(1).log10()
+					let nb7 = (Math.pow(Math.log10(nb7neutrinos + 10), nb7exp) - 1) * 5
 					return Math.min(nb7, 10)
 				},
 				effDesc: e => `Strengthen Tree Upgrades by <b>+${shorten(e*100)}%</b>.`,
 			}, {
 				cost: E(1e9),
 				eff(nt) {
-					let nb8neutrinos = nt[0].add(1).log10()+nt[1].add(1).log10()+nt[2].add(1).log10()
-					let nb8exp = .5
-					if (mod.p3ep) nb8exp = .6
-					var nb8 = Math.pow(nb8neutrinos / 30 + 1, nb8exp)
-					if (nb8 > 3) nb8 = 3
-					return nb8
+					let neutrinos = nt[0].add(1).log10()+nt[1].add(1).log10()+nt[2].add(1).log10()
+					let exp = mod.p3ep ? .6 : .5
+					var nb8 = Math.pow(neutrinos / 30 + 1, exp)
+					return Math.min(nb8, 6)
 				},
 				effDesc: e => `Strengthen Big Rip Upgrade 1 by <b>${shorten(e)}x</b>.`,
 			}, {
 				cost: E(2e15),
 				eff(nt) {
 					var nb9 = nt[0].add(1).log10()+nt[1].add(1).log10()+nt[2].add(1).log10()
+					nb9 = pow10(Math.pow(nb9 / 50, 0.25)).mul(nb9)
 					return nb9
 				},
 				effDesc: e => `Strengthen IC3 multiplier base by <b>${shorten(e)}x</b>.`,
 			}, {
-				cost: E(1/0),
+				cost: E(1e33),
 				eff(nt) {
-					var nb10 = nt[0].add(1).log10()*nt[1].add(1).log10()*nt[2].add(1).log10()
-					var div = mod.p3ep ? 1e5 : 1e6
-					return nb10 / div + 1
+					var nb10 = nt[0].add(1).log10() * nt[1].add(1).log10() * nt[2].add(1).log10()
+					return pow10(Math.pow(nb10, 1/12))
 				},
 				effDesc: e => `Gain <b>${shorten(e)}x</b> more Photons.`,
 			}, {
@@ -182,7 +178,7 @@ const NEUTRINO = {
 					nb11 = Math.log10(nb11 + 10)
 					return nb11
 				},
-				effDesc: e => `Raise Emperor Dimensions by <b>^${shorten(e)}</b>.`,
+				effDesc: e => `Raise Emperor Dimensions and Nanocharge by <b>^${shorten(e)}</b>.`,
 			}, {
 				cost: E(1/0),
 				eff(nt) {
@@ -253,7 +249,7 @@ const NEUTRINO = {
 				cost: E(5e9),
 				desc: `Green power boosts odd Emperor Dimensions and nanocharge.`,
 
-				eff: _ => quSave.colorPowers.g.add(1).root(400),
+				eff: _ => quSave.colorPowers.g.add(1).root(300),
 				effDesc: e => `${shorten(e)}x`
 			}, {
 				unl: _ => ghSave.times >= 6,
@@ -279,14 +275,14 @@ const NEUTRINO = {
 				eff() {
 					return { 
 						normal: E_pow(2, player.galaxies / 1e5),
-						replicated: Math.sqrt(getTotalRG()) * .0175 + 1,
+						replicated: getTotalRG() / 2e4 + 1,
 						free: Math.pow(2, player.dilation.freeGalaxies / 2e3), //NU12 
 					}
 				},
 				effDesc: e => `(hover)`
 			}, {
 				unl: _ => PHOTON.unlocked(),
-				cost: E(1/0),
+				cost: E(1e33),
 				desc: `Tachyonic Galaxies scale Positron softcap later.`,
 
 				eff: _ => player.dilation.freeGalaxies * 2,
@@ -294,10 +290,10 @@ const NEUTRINO = {
 			}, {
 				unl: _ => PHOTON.unlocked(),
 				cost: E(1/0),
-				desc: `Pilons raise Blue Power effect.`,
+				desc: `Galaxy strength adds Meta-Antimatter effect exponent.`,
 
-				eff: _ => Math.log10(quSave.replicants.quarks.max(1).log10() + 10),
-				effDesc: e => `^${shorten(e)}`
+				eff: _ => getGalaxyEff(true) / 2,
+				effDesc: e => `+^${shorten(e)}`
 			}, {
 				unl: _ => PHOTON.unlocked(),
 				cost: E(1/0),
@@ -333,7 +329,7 @@ const NEUTRINO = {
 
 		for (var [i, bst] of Object.entries(NEUTRINO.boosts.data)) {
 			i = parseInt(i)+1
-			el("nt_bst_"+i).innerHTML = hasNB(i) ? bst.effDesc(tmp.neutrino.boost[i]) : ""
+			el("nt_bst_"+i).innerHTML = hasNB(i) ? bst.effDesc(tmp.funda.neutrino.boost[i]) : ""
 		}
 		if (!NEUTRINO.boosts.maxed()) {
 			el("nt_bst_unl").style.display = ""
@@ -345,7 +341,7 @@ const NEUTRINO = {
 			i = parseInt(i)+1
 			el("nt_upg_cost_"+i).textContent = shorten(upg.cost)
 			el("nt_upg_"+i).className = hasNU(i) ? "gluonupgradebought neutrinoupg" : NEUTRINO.upgrades.can(i) ? "gluonupgrade neutrinoupg" : "gluonupgrade unavailablebtn"
-			if (upg.eff) el("nt_upg_eff_"+i).textContent = upg.effDesc(tmp.neutrino.upg[i])
+			if (upg.eff) el("nt_upg_eff_"+i).textContent = upg.effDesc(tmp.funda.neutrino.upg[i])
 			if (upg.unl) el("nt_upg_"+i).style.display = upg.unl() ? "" : "none"
 		}
 		el("nt_upg_12").setAttribute('ach-tooltip',
@@ -371,7 +367,7 @@ function hasNU(x) {
 	return NEUTRINO.upgrades.has(x)
 }
 function ntEff(type, x, def = 1) {
-	return tmp.neutrino?.[type][x] ?? def
+	return tmp.funda.neutrino?.[type][x] ?? def
 }
 
 //Multipliers

@@ -41,15 +41,15 @@ function getGalaxyRequirement(offset = 0, display) {
 	if (inNC(4)) amount = !inNGM(3) ? 99 + base : amount + (inNGM(4) ? 20 : -30)
 	if (tmp.be) {
 		amount *= 50
-		if (beSave && beSave.upgrades.includes(2)) amount /= getBreakUpgMult(2)
+		if (isBreakUpgActive(2)) amount /= getBreakUpgMult(2)
 	}
 	if (!mod.rs) {
 		let distantStart = getDistantScalingStart()
 		if (total >= distantStart) {
 			let speed = 1
 			if (hasGluonUpg("rg6")) speed *= 0.867
-			if (hasGluonUpg("gb6")) speed /= 1 + Math.pow(player.infinityPower.plus(1).log10(), 0.25) / 2810
-			if (hasGluonUpg("br6")) speed /= 1 + player.meta.resets / 340
+			if (hasGluonUpg("gb6")) speed /= getGB6Effect()
+			if (hasGluonUpg("br6")) speed /= getBR6Effect()
 			if (hasNB(6)) speed /= ntEff("boost", 6)
 			if (hasBU(45)) speed /= tmp.blu[45]
 			if (hasAch("ng3p98")) speed *= 0.9

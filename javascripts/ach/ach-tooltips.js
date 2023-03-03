@@ -433,14 +433,6 @@ function setR20Tooltip(){
 	pls.setAttribute('ach-tooltip', "Reach " + shortenCosts(pow10(9.5e5)) + " IP in Big Rip while dilated, with no EP multiplier upgrades, time studies, and Break Eternity within this Fundament. Reward: Gain "+shortenDimensions(2e3)+" galaxies worth of Neutrinos on Fundament. (multiplied by best galaxies in Big Rip)")
 }
 
-function setBMTooltip(){
-	// Brave Milestones (1/16)
-	let bm14 = el("braveMilestone14")
-
-	//BRAVE MILESTONES
-	bm14.setAttribute('ach-tooltip', "Reward: Start with " + shortenCosts(1e25) + " Quark Spins.")
-}
-
 function setR21Tooltip(){
 	// Row 21 (ng3p7) (5/8)
 	//ng3p71/////
@@ -493,7 +485,7 @@ function setR23Tooltip(){
 	aretheseanother.setAttribute('ach-tooltip', "Reach " + shortenCosts(pow10(40000)) + " Quarks. Reward: Gain 500x more Quarks and Elementary Particles.")
 }
 
-function setPreNGP3AchievementTooltip() {
+function setVanillaAchievementTooltip() {
 	setR1Tooltip()
 	setR2Tooltip()
 	setR3Tooltip()
@@ -507,13 +499,10 @@ function setPreNGP3AchievementTooltip() {
 	setR11Tooltip()
 	setR12Tooltip()
 	setR13Tooltip()
-	setR13p5Tooltip()
-	setR14Tooltip()
 }
 
-function setPreNGP3p1AchievementTooltip() {
+function setNGP3AchievementTooltip() {
 	// ng+3 achievements
-	setBMTooltip()
 	setQSRTooltip()
 	setR15Tooltip()
 	setR16Tooltip()
@@ -523,16 +512,12 @@ function setPreNGP3p1AchievementTooltip() {
 	setR20Tooltip()
 	setR21Tooltip()
 	setR22Tooltip()
-}
-
-function setNGP3p1AchievementTooltip(){
 	setR23Tooltip()
 }
 
 function setAchieveTooltip() { 
-	setPreNGP3AchievementTooltip()
-	if (mod.ngp3) {
-		setPreNGP3p1AchievementTooltip()
-		setNGP3p1AchievementTooltip()
-	}
+	setVanillaAchievementTooltip()
+	setR13p5Tooltip()
+	setR14Tooltip()
+	setNGP3AchievementTooltip()
 }

@@ -202,10 +202,10 @@ function getTreeUpgradeCost(upg,add) {
 	if (upg == 1) return pow2(lvl * 2 + Math.max(lvl - 35, 0) * (lvl - 34) / 2).mul(50)
 	if (upg == 2) return E_pow(4, lvl * (lvl + 3) / 2).mul(600)
 	if (upg == 3) return E_pow(32, lvl).mul(3e9)
-	if (upg == 4) return pow2(lvl + Math.max(lvl - 37, 0) * (lvl - 36) / 2).mul(1e12)
-	if (upg == 5) return pow2(lvl + Math.max(lvl - 35, 0) * (lvl - 34) / 2 + Math.pow(Math.max(0, lvl - 50), 1.5)).mul(4e12)
-	if (upg == 6) return E_pow(4, lvl * (lvl + 3) / 2).mul(6e22)
-	if (upg == 7) return E_pow(16, lvl * lvl).mul(4e22)
+	if (upg == 4) return pow2(lvl).mul(1e12)
+	if (upg == 5) return pow2(lvl).mul(4e12)
+	if (upg == 6) return E_pow(6, lvl).mul(1e21)
+	if (upg == 7) return E_pow(16, lvl).mul(4e22)
 	if (upg == 8) return pow2(lvl).mul(3e23)
 	return 0
 }
@@ -250,9 +250,9 @@ function getTreeUpgradeEffect(upg) {
 		if (hasAch("ng3p87")) MA = player.meta.bestOverGhostifies
 		return Math.pow(Math.log10(MA.add(1).log10() + 1) / 5 + 1, Math.sqrt(lvl))
 	}
-	if (upg == 6) return pow2(lvl)
-	if (upg == 7) return E_pow(player.replicanti.amount.max(1).log10() + 1, 0.25 * lvl)
-	if (upg == 8) return Math.log10(Decimal.add(player.meta.bestAntimatter, 1).log10() + 1) / 4 * Math.sqrt(lvl)
+	if (upg == 6) return pow10(lvl / 2)
+	if (upg == 7) return lvl ? pow2(Math.sqrt(player.replicanti.amount.max(1).log10()) / 80 * Math.log10(lvl + 9)) : E(1)
+	if (upg == 8) return Math.log10(Decimal.add(player.meta.bestAntimatter, 1).log10() + 1) * Math.sqrt(lvl + 1)
 	return 0
 }
 
@@ -501,7 +501,6 @@ function getRDPower(branch) {
 	return x * 25 + (Math.pow(y, 2) + y) * 1.25
 }
 
-
 function getBU1Power(branch) {
 	let x = getBranchUpgLevel(branch, 1)
 	let s = Math.floor(Math.sqrt(0.25 + 2 * x / 120) - 0.5)
@@ -544,6 +543,6 @@ function treeOfDecayUpdating(diff){
 
 		var sProd = getQuarkSpinProduction(shorthand)
 		branch.quarks = power.gt(1) ? pow2(power-1).mul(mult) : power.mul(mult)	
-		branch.spin = branch.spin.add(sProd.mul(decayed))	
+		branch.spin = branch.spin.add(sProd.mul(hasBraveMilestone(4) && isAutoGhostActive(1) ? diff : decayed))	
 	}
 }

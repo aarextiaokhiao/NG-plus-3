@@ -182,8 +182,7 @@ function changeAutoGhost(o) {
 }
 
 function isAutoGhostActive(id) {
-	if (!ghostified) return
-	return ghSave.automatorGhosts[id].on
+	return ghSave.automatorGhosts?.[id].on && isAutoGhostsSafe
 }
 
 function getAutoCharge() {

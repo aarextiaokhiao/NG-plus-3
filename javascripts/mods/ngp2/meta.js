@@ -12,7 +12,6 @@ function getDilationMetaDimensionMultiplier() {
 
 	let pow = 0.1
 	if (isNanoEffectUsed("dt_to_ma_exp") && tmp.nf.effects.dt_to_ma_exp) pow *= tmp.nf.effects.dt_to_ma_exp //this is a quick fix, but we need to fix this bug
-	pow *= PHOTON.eff(3)
 
 	if (mod.udp && !aarMod.nguepV) {
 		let l = quSave.colorPowers.b.plus(10).log10()
@@ -358,10 +357,11 @@ function getExtraDimensionBoostPowerExponent(ma) {
 		return power
 	}
 	if (player.dilation.upgrades.includes("ngpp5")) power++
-	power += getECReward(13)
 	if (mod.ngp3) {
+		power += getECReward(13)
 		if (isNanoEffectUsed("ma_effect_exp")) power += tmp.nf.effects.ma_effect_exp
 		if (hasMasteryStudy("d13")) power += getTreeUpgradeEffect(8)
+		if (hasNU(14)) power += ntEff("upg", 14)
 	}
 	return power
 }

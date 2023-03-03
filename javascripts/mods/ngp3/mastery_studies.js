@@ -151,11 +151,11 @@ var masteryStudies = {
 		},
 		344: function(){
 			var ret = Math.pow(quSave.replicants.quarks.div(1e7).add(1).log10(), mod.p3ep ? 0.3 : 0.25) * 0.17 + 1
-			return ret
+			return Math.min(ret, 2)
 		},
-		351: function(){ //maybe use softcap.js
+		351: function() { //maybe use softcap.js
 			let log = player.timeShards.max(1).log10()*14e-7
-			if (log > 1e3) log = Math.sqrt(log*1e3)
+			if (log > 1e3) log = Math.sqrt(log * 1e3)
 			return E_pow(mod.p3ep ? 12 : 10, log)
 		},
 		361: function(){
@@ -202,6 +202,7 @@ var masteryStudies = {
 			if (!tmp.tra) return E(1)
 			var exp = tmp.tra.div(1e24).add(1).log10() / 2
 			if (mod.p3ep) exp += Math.pow((exp + 9) * 3, .2) * Math.log10(exp + 1)
+			if (exp > 5) exp = (exp + 5) / 2
 			return pow10(exp)
 		},
 		421: function(){
@@ -210,20 +211,10 @@ var masteryStudies = {
 		},
 		431: function(){
 			var gals = player.dilation.freeGalaxies
-			if (gals >= 1e6) gals = Math.pow(gals * 1e3, 2/3)
 
-			var effectBase = Math.max(gals / 1e4, 1)
-			if (effectBase > 10 && mod.p3ep) effectBase *= Math.log10(effectBase)
-
-			var effectExp = Math.max(gals / 1e4, 1)
-			if (effectExp > 10 && mod.p3ep) effectExp *= Math.log10(effectExp)
-
-			var eff = E_pow(effectBase, effectExp)
-			if (mod.p3ep) eff = eff.mul(eff.plus(9).log10())
-
-			var log = eff.log10()
-
-			return pow10(log)
+			var base = Math.max(gals / 1e4, 1)
+			var exp = Math.max(gals / 5e3 - 1, 1)
+			return E_pow(base, exp)
 		}
 	},
 	timeStudyDescs: {

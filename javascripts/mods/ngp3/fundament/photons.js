@@ -1,7 +1,7 @@
 let PHOTON = {
 	/* CORE */
 	//Unlock
-	req: _ => bigRipped() && player.money.gte(pow10(2.5e9)),
+	req: _ => bigRipped() && player.money.gte(pow10(2.4e9)),
 	unlocked: _ => ghSave?.photons.unl,
 	unlock() {
 		ghSave.photons.unl = true
@@ -26,19 +26,19 @@ let PHOTON = {
 		if (ghSave.photons.light[0]) {
 			let min = 1/0
 			for (var amt of ghSave.photons.light) min = Math.min(min, amt)
-			if (min > tmp.photon.cap) {
-				ghSave.photons.lighten += min - tmp.photon.cap
+			if (min > tmp.funda.photon.cap) {
+				ghSave.photons.lighten += min - tmp.funda.photon.cap
 				ghSave.photons.plusOne = {}
 			}
 		}
 	},
 	temp() {
-		if (!this.unlocked()) {
-			delete tmp.photon
+		/*if (!this.unlocked()) {
+			delete tmp.funda.photon
 			return
-		}
+		} -- Do I need this for performance?*/
 		let data = {}
-		tmp.photon = data
+		tmp.funda.photon = data
 
 		data.cap = this.globalLightCap()
 		data.eff = []
@@ -48,8 +48,9 @@ let PHOTON = {
 	/* FEATURES */
 	//Feature - Photons
 	photonGain() {
-		let r = E(player.dilation.bestTPOverGhostifies.max(1).log10()).pow(2).div(1e4)
+		let r = E(player.dilation.bestTPOverGhostifies).add(1).pow(.01)
 		if (isNanoEffectUsed("photons")) r = r.mul(tmp.nf.effects.photons)
+		if (hasNB(10)) r = r.mul(ntEff("boost", 10))
 		return r
 	},
 
@@ -72,27 +73,27 @@ let PHOTON = {
 			resName: "Preonic Spin",
 			res: _ => todSave.r.spin,
 
-			req: i => E(1e3).pow(Math.sqrt(i)).mul(1e30),
-			bulk: r => Math.floor(Math.pow(r.div(1e30).log(1e3), 2)+1),
+			req: i => E(100).pow(Math.sqrt(i)).mul(1e27),
+			bulk: r => Math.floor(Math.pow(r.max(1).div(100).log(1e27), 2)) + 1,
 		}, {
 			resName: "Elementary Particles",
 			res: _ => ghSave.ghostParticles,
 
-			req: i => E(1e3).pow(i).mul(1e25),
-			bulk: r => Math.floor(r.div(1e25).log(1e3)+1),
+			req: i => E(100).pow(i).mul(1e25),
+			bulk: r => Math.floor(r.max(1).div(100).log(1e25)) + 1,
 		}, {
 			resName: "Photons",
 			res: _ => ghSave.photons.amt,
 
-			req: i => E(5).pow(i).mul(1e4),
-			bulk: r => Math.floor(r.div(1e4).log(5))+1,
+			req: i => E(8).pow(i).mul(2e6),
+			bulk: r => Math.floor(r.max(1).div(2e6).log(8)) + 1,
 		}
 	],
 
 	//Feature - Lights
 	globalLightCap: _ => 2 + ghSave.photons.lighten,
 	lightCap(i, allPlus) {
-		let gain = tmp.photon.cap
+		let gain = tmp.funda.photon.cap
 		if (allPlus || ghSave.photons.plusOne[i]) gain++
 		return gain
 	},
@@ -109,27 +110,27 @@ let PHOTON = {
 	lightData: [
 		{
 			name: "red",
+			eff: a => Math.min(Math.sqrt(a) / 10, 1),
+			desc: e => `Discharged Galaxies work, but as ${(e*100).toFixed(1)}% strong.`
+		}, {
+			name: "orange",
 			eff: a => Math.log10(a + 10),
 			desc: e => `Free tickspeed upgrades scale ${e.toFixed(3)}x faster.`
 		}, {
-			name: "orange",
+			name: "yellow",
 			eff: a => Math.log10(a + 1) / 100,
 			desc: e => `Gain ${(e * 100).toFixed(1)}% of Positrons in Big Rips.`
 		}, {
-			name: "yellow",
+			name: "green",
 			eff: a => mod.p3ep ? a / 5 + 1 : Math.log10(a + 10),
 			desc: e => `Strengthen Nanobenefits by ${e.toFixed(3)}x.`
-		}, {
-			name: "green",
-			eff: a => Math.log10(a + 1) + 1,
-			desc: e => `Dilated time gives ^${e.toFixed(3)} boost to Meta Dimensions.`
 		}, {
 			name: "blue",
 			eff: a => mod.p3ep ? a / 10 + 1 : Math.log10(a / 3 + 1) + 1,
 			desc: e => `Nanorewards speed up Decay by ${e.toFixed(3)}x each.`
 		}, {
 			name: "violet",
-			eff: a => Math.log10(a / 3 + 1) + 1,
+			eff: a => Math.log2(a + 2),
 			desc: e => `Raise Intergalactic by ^${shorten(e)} outside of Big Rips.`
 		}, {
 			name: "ultraviolet",
@@ -138,7 +139,7 @@ let PHOTON = {
 		}
 	],
 	eff(x, def = 1) {
-		return tmp.photon?.eff[x] ?? def
+		return tmp.funda.photon?.eff[x] ?? def
 	},
 
 	/* HTML */
@@ -156,7 +157,7 @@ let PHOTON = {
 	},
 	update() {
 		if (!PHOTON.unlocked()) {
-			el("gphUnl").textContent = "Get "+shortenCosts(pow10(2.5e9))+" antimatter in Big Rip to unlock Photons."
+			el("gphUnl").textContent = "Get "+shortenCosts(pow10(2.4e9))+" antimatter in Big Rip to unlock Photons."
 			return
 		}
 
@@ -164,7 +165,7 @@ let PHOTON = {
 		el("ph_amt").textContent = shortenMoney(ghSave.photons.amt)
 		el("ph_prod").textContent = "(+" + shortenMoney(PHOTON.photonGain()) + "/s)"
 		el("ph_lighten").textContent = getFullExpansion(ghSave.photons.lighten)
-		el("ph_lighten_req").textContent = "Get " + getFullExpansion(tmp.photon.cap + 1) + " of each Light to Enlighten"
+		el("ph_lighten_req").textContent = "Get " + getFullExpansion(tmp.funda.photon.cap + 1) + " of each Light to Enlighten"
 
 		for (const [i, emission] of Object.entries(PHOTON.emissionData)) {
 			el("ph_shop_req_" + i).textContent = `${shorten(emission.req(ghSave.photons.emission[i] || 0))} ${emission.resName}`

@@ -324,7 +324,7 @@ function updateBreakEternityUpgrade5Temp(){
 	var log1 = ep.div("1e2230").add(1).log10()
 	var log2 = ts.div(1e90).add(1).log10()
 	var exp = Math.pow(log1, 1/3) + Math.pow(log2, 1/3)
-	if (mod.udp && exp > 100) exp = Math.log10(exp) * 50
+	if (exp > 100) exp = Math.log10(exp) * 50
 	exp *= 4
 	tmp.beu[5] = pow10(exp)
 }

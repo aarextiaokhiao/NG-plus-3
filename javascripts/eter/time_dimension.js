@@ -298,7 +298,7 @@ function nonERFreeTickUpdating(){
 	if (threshold < 1.01 && inNGM(2)) threshold = 1.005 + 0.005 / (2.01 - threshold)
 
 	let mult = 1
-	if (mod.ngp3) mult *= PHOTON.eff(0)
+	if (mod.ngp3) mult *= PHOTON.eff(1)
 
 	const gain = Math.ceil(E(player.timeShards).dividedBy(player.tickThreshold).log10()/Math.log10(threshold)*mult)
 	player.totalTickGained += gain

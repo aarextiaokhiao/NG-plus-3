@@ -955,7 +955,6 @@ function onNotationChange() {
 		updateBankedEter()
 		updateQuantumChallenges()
 		updateMasteryStudyTextDisplay()
-		updateReplicants("notation")
 		updateTODStuff()
 	}
 	if (ghostified) {

@@ -7,6 +7,7 @@ let tmp = {
 	bru: {},
 	be: false,
 	beu: {},
+	funda: {}
 }
 
 function updateTemp() {

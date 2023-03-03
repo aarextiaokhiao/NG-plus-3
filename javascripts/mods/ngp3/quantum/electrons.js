@@ -59,7 +59,7 @@ function getElectronBoost(mod) {
 function getElectronGainMult() {
 	let ret = 1
 	if (hasNU(5)) ret = 3
-	if (bigRipped()) ret *= PHOTON.eff(1, 0)
+	if (bigRipped()) ret *= PHOTON.eff(2, 0)
 	else if (!inQC(0)) return 0
 	return ret
 }

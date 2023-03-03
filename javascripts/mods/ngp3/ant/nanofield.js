@@ -36,6 +36,7 @@ function getQuarkChargeProduction() {
 	if (hasMasteryStudy("t421")) ret = ret.mul(getMTSMult(421))
 	if (hasNU(3)) ret = ret.mul(ntEff("upg", 3))
 	if (hasNU(7)) ret = ret.mul(ntEff("upg", 7))
+	if (hasNB(11)) ret = ret.mul(ntEff("boost", 11))
 	return ret
 }
 
@@ -82,8 +83,7 @@ var nanoRewards = {
 			return Math.sqrt(x) * 0.021 + 1
 		},
 		dil_effect_exp: function(x) {
-			if (x > 5) tier = Math.log10(x + 5) + 4
-			return x * 0.36 + 1
+			return Math.min(x * 0.36 + 1, 2)
 		},
 		meta_boost_power: function(x) {
 			let y = 2
@@ -106,7 +106,7 @@ var nanoRewards = {
 			return Math.floor(Math.max(x - 3.5, 0) * 75e5)
 		},
 		photons: function(x) {
-			return pow2(x)
+			return pow2(Math.sqrt(x))
 		},
 		light_threshold_speed: function(x) {
 			return Math.max(Math.sqrt(x + 1) / 4, 1)
@@ -129,7 +129,7 @@ var nanoRewards = {
 			return "in dilation, raise Normal Dimension multipliers and Tickspeed by ^" + x.toFixed(2)
 		},
 		meta_boost_power: function(x) {
-			return "each Meta-Dimension Boost gives " + x.toFixed(2) + "x boost"
+			return "Meta-Dimension Boost gives a " + x.toFixed(2) + "x boost"
 		},
 		remote_start: function(x) {
 			return "Remote Antimatter Galaxies scale " + getFullExpansion(Math.floor(x)) + " later"
@@ -173,7 +173,7 @@ function getNanoRewardPower(reward, rewards) {
 }
 
 function getNanoRewardPowerEff() {
-	let x = PHOTON.eff(2)
+	let x = PHOTON.eff(3)
 	if (hasBU(31)) x *= tmp.blu[31]
 	return x
 }
