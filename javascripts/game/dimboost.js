@@ -70,7 +70,7 @@ function maxBuyDimBoosts(manual) {
 			var firstReq = getShiftRequirement(scaling - player.resets)
 			var supersonicStart = getSupersonicStart()
 			r = (bought - firstReq.amount) / firstReq.mult + scaling + 1
-			if (r > supersonicStart - 1) {
+			if (r > supersonicStart - 1 && mod.ngp3) {
 				var a = getSupersonicMultIncrease() / 2
 				var b = firstReq.mult + a
 				var skips = (Math.sqrt(b * b + 4 * a * (bought - getShiftRequirement(supersonicStart - player.resets - 1).amount) / 4e4) - b) / (2 * a)
@@ -138,10 +138,7 @@ function getSupersonicStart() {
 	if (inNGM(2)) return 1/0
 	let r = 56e4
 	if (mod.udsp && !aarMod.nguepV) r = 1e5
-	if (mod.ngp3) {
-		if (hasMasteryStudy("t331")) r += 24e4
-		if (isNanoEffectUsed("supersonic_start")) if (tmp.nf.effects.supersonic_start) r += tmp.nf.effects.supersonic_start 
-	}
+	if (hasMasteryStudy("t331")) r += 24e4
 	return r
 }
 

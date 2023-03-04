@@ -336,6 +336,8 @@ function updateChallenges() {
 		el("postc3").textContent = "Trapped in"
 	}
 
+	el("nctabbtn").parentElement.style.display = ghostified ? "none" : ""
+	el("postctabbtn").parentElement.style.display = ghostified ? "none" : ""
 	if (player.postChallUnlocked > 0 || Object.keys(player.eternityChalls).length > 0 || player.eternityChallUnlocked !== 0 || quantumed) el("challTabButtons").style.display = "table"
 	for (c=0;c<order.length;c++) el(order[c]).parentElement.parentElement.style.display=player.postChallUnlocked<c+1?"none":""
 }

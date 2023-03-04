@@ -153,7 +153,7 @@ function getDimensionFinalMultiplier(tier) {
 
 	let useHigherNDReplMult = hasMasteryStudy("t323") && !player.dilation.active
 	if (useHigherNDReplMult) mult = mult.mul(tmp.nrm)
-	if (player.dilation.active && isNanoEffectUsed("dil_effect_exp")) mult = mult.pow(tmp.nf.effects.dil_effect_exp)
+	if (player.dilation.active && hasNanoReward("dil_effect_exp")) mult = mult.pow(tmp.nf.eff.dil_effect_exp)
 	if (isBigRipUpgradeActive(1)) mult = mult.mul(tmp.bru[1])
 
 	return mult
@@ -272,7 +272,7 @@ function getMPTBase(focusOn) {
 	if (focusOn == "no-QC5") return ret
 	if (mod.ngp3) {
 		ret += tmp.qcRewards[5]
-		if (isNanoEffectUsed("per_10_power")) ret += tmp.nf.effects.per_10_power
+		if (hasNanoReward("per_10_power")) ret += tmp.nf.eff.per_10_power
 	}
 	return ret
 }
@@ -517,7 +517,7 @@ function getDimensionProductionPerSecond(tier) {
 	if (inNGM(4)) ret = ret.div(100)
 	if (tier == 1 && (inNC(7) || player.currentChallenge == "postcngm3_3" || inQC(4))) ret = ret.plus(getDimensionProductionPerSecond(2))
 	let tick = dilates(Decimal.div(1e3,getTickspeed()),"tick")
-	if (player.dilation.active && isNanoEffectUsed("dil_effect_exp")) tick = tick.pow(tmp.nf.effects.dil_effect_exp)
+	if (player.dilation.active && hasNanoReward("dil_effect_exp")) tick = tick.pow(tmp.nf.eff.dil_effect_exp)
 	ret = ret.mul(tick)
 	return ret
 }

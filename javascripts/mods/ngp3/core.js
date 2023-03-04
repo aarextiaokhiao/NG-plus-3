@@ -1,6 +1,6 @@
 //VERSION: 2.31
 let ngp3_ver = 2.31
-let ngp3_build = 20230302
+let ngp3_build = 20230303
 function doNGP3Updates() {
 	if (!aarMod.ngp3_build) aarMod.ngp3_build = 0
 	if (aarMod.ngp3_build < 20221230) quSave.multPower = 0
@@ -396,7 +396,7 @@ var ngp3Features = {
 	},
 	ph: {
 		name: "Photons",
-		threshold: () => "Get " + shortenCosts(pow10(1e10)) + " antimatter in Big Rip",
+		threshold: () => "Get " + shortenCosts(pow10(2.4e10)) + " antimatter in Big Rip",
 		next: "bl",
 		tab() {
 			showTab("ghostify")
@@ -405,7 +405,7 @@ var ngp3Features = {
 	},
 	bl: {
 		name: "Bosonic Lab",
-		threshold: () => "Get 4 Spectral Ions",
+		threshold: () => "Enlighten your Lights",
 		next: "hb",
 		tab() {
 			showTab("bltab")
@@ -470,7 +470,7 @@ function intergalacticDisplay() {
 	if (tmp.ig && getNormalDimensions() == 8) {
 		el("intergalacticLabel").parentElement.style.display = ""
 		let nanopart = 1
-		if (isNanoEffectUsed("dil_effect_exp")) nanopart = tmp.nf.effects["dil_effect_exp"] || 1
+		if (hasNanoReward("dil_effect_exp")) nanopart = tmp.nf.eff.dil_effect_exp
 		el("intergalacticLabel").innerHTML = 
 			'Intergalactic ' + 
 			'(' + getFullExpansion(player.galaxies) + ')' +
@@ -578,7 +578,6 @@ function ngP3AchieveCheck() {
 	let ableToGetRid5 = ableToGetRid4 && player.dontWant
 	let ableToGetRid6 = ableToGetRid2 && inQC(6) && inQC(8)
 	let noTree = false
-	let minUQ = getMinimumUnstableQuarks()
 	for (var u = 1; u < 9; u++) {
 		if (todSave.upgrades[u]) break
 		else noTree = true
@@ -635,9 +634,9 @@ function ngP3AchieveCheck() {
 	if (PHOTON.unlocked()) giveAchievement("Progressing as a Ghost")
 	if (bigRipped() && player.eternityPoints.e >= 1e5) giveAchievement("Underchallenged")
 	if (nG(getInfinitied(), Number.MAX_VALUE)) giveAchievement("Meta-Infinity confirmed?")
-	if (minUQ.quarks.log10() >= 1e12 && minUQ.decays >=2 && !brSave.times) giveAchievement("Weak Decay")	
+	if (getRadioactiveDecays('r') >= 1 && !brSave.times) giveAchievement("Weak Decay")	
 	if (getRadioactiveDecays('r') >= 2) giveAchievement("Radioactive Decaying to the max!")
-	if (ghSave.best <= 7) giveAchievement("Running through Big Rips")
+	if (ghSave.best <= 20) giveAchievement("Running through Big Rips")
 	if (masteryStudies.bought >= 48) giveAchievement("The Theory of Ultimate Studies")
 	if (ghSave.photons.lighten) giveAchievement("Here comes the light")
 
@@ -647,7 +646,7 @@ function ngP3AchieveCheck() {
 	if (ghSave.hb.higgs >= 1) giveAchievement("The Holy Particle")
 	//if (ghSave.ghostlyPhotons.enpowerments >= 25) giveAchievement("Bright as the Anti-Sun") -- will be back
 	if (quSave.quarks.log10() >= 40000) giveAchievement("Are these another...")
-	if (ghSave.reference && minUQ.decays >= 2) giveAchievement("... references to EC8?")
+	if (ghSave.reference && getRadioactiveDecays("r") >= 2) giveAchievement("... references to EC8?")
 	if (ghSave.times >= Math.pow(Number.MAX_VALUE, 1/4)) giveAchievement("The Ghostliest Side")
 	if (player.money.log10() >= 1e18) giveAchievement("Meta-Quintillion")
 	if (player.unstableThisGhostify <= 10 && getTwoDecaysBool()) giveAchievement("... references to EC8?")

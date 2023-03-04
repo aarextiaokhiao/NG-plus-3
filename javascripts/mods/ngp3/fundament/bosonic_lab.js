@@ -1,16 +1,11 @@
 //Bosonic Lab
 function canUnlockBosonicLab() {
-	return false
+	return false //PHOTON.totalEmissions() >= 25
 }
 
 function updateBLUnlocks() {
 	let unl = ghSave.wzb.unl
 	el("blUnl").style.display = unl ? "none" : ""
-	if (!unl) updateBLUnlockDisplay()
-}
-
-function updateBLUnlockDisplay() {
-	el("blUnl").textContent = "Get ??? Spectral Ions to unlock Bosonic Lab."
 }
 
 function getBosonicWattGain() {

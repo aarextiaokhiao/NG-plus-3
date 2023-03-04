@@ -289,7 +289,7 @@ function getHatchSpeed() {
 	if (hasMasteryStudy("t381")) speed /= getMTSMult(381)
 	if (hasMasteryStudy("t391")) speed /= getMTSMult(391)
 	if (hasMasteryStudy("t402")) speed /= 30
-	if (isNanoEffectUsed("hatch_speed")) speed /= tmp.nf.effects.hatch_speed
+	if (hasNanoReward("hatch_speed")) speed /= tmp.nf.eff.hatch_speed
 	speed /= 5
 	return speed
 }

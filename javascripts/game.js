@@ -326,7 +326,7 @@ function updateEternityChallenges() {
 		el(property).textContent=onchallenge?"Running":"Start"
 		el(property).className=onchallenge?"onchallengebtn":"challengesbtn"
 	}
-	el("eterctabbtn").parentElement.style.display=locked?"none":""
+	el("eterctabbtn").parentElement.style.display=locked?"none":"" //will be hidden on Darkness
 	el("autoEC").style.display=quantumed?"inline-block":"none"
 	if (quantumed) el("autoEC").className=quSave.autoEC?"timestudybought":"storebtn"
 }

@@ -114,7 +114,7 @@ function getRemoteScalingStart(galaxies) {
 	if (mod.ngp3) {
 		for (var t = 251; t < 254; t++) if (hasMasteryStudy("t" + t)) n += getMTSMult(t)
 		if (hasMasteryStudy("t301")) n += getMTSMult(301)
-		if (isNanoEffectUsed("remote_start")) n += tmp.nf.effects.remote_start
+		if (hasNanoReward("remote_start")) n += tmp.nf.eff.remote_start
 	}
 	return n
 }

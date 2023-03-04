@@ -48,8 +48,8 @@ let PHOTON = {
 	/* FEATURES */
 	//Feature - Photons
 	photonGain() {
-		let r = E(player.dilation.bestTPOverGhostifies).add(1).pow(.01)
-		if (isNanoEffectUsed("photons")) r = r.mul(tmp.nf.effects.photons)
+		let r = E(player.dilation.bestTPOverGhostifies.max(1).log10() / 100).pow(3)
+		if (hasNanoReward("photon")) r = r.mul(tmp.nf.eff.photon)
 		if (hasNB(10)) r = r.mul(ntEff("boost", 10))
 		return r
 	},
@@ -73,20 +73,20 @@ let PHOTON = {
 			resName: "Preonic Spin",
 			res: _ => todSave.r.spin,
 
-			req: i => E(100).pow(Math.sqrt(i)).mul(1e27),
-			bulk: r => Math.floor(Math.pow(r.max(1).div(100).log(1e27), 2)) + 1,
+			req: i => E(50).pow(Math.pow(i, 1.5)).mul(1e27),
+			bulk: r => Math.floor(Math.pow(r.max(1).div(1e27).log(50), 2/3)) + 1,
 		}, {
 			resName: "Elementary Particles",
 			res: _ => ghSave.ghostParticles,
 
-			req: i => E(100).pow(i).mul(1e25),
-			bulk: r => Math.floor(r.max(1).div(100).log(1e25)) + 1,
+			req: i => E(200).pow(i).mul(1e27),
+			bulk: r => Math.floor(r.max(1).div(1e27).log(200)) + 1,
 		}, {
 			resName: "Photons",
 			res: _ => ghSave.photons.amt,
 
-			req: i => E(8).pow(i).mul(2e6),
-			bulk: r => Math.floor(r.max(1).div(2e6).log(8)) + 1,
+			req: i => E(8).pow(Math.pow(i, mod.p3ep ? 0.75 : 1)).mul(2e4),
+			bulk: r => Math.floor(Math.pow(r.max(1).div(2e4).log(8), 1 / (mod.p3ep ? 0.75 : 1))) + 1,
 		}
 	],
 
@@ -110,7 +110,7 @@ let PHOTON = {
 	lightData: [
 		{
 			name: "red",
-			eff: a => Math.min(Math.sqrt(a) / 10, 1),
+			eff: a => Math.log10(a + 10) - 1,
 			desc: e => `Discharged Galaxies work, but as ${(e*100).toFixed(1)}% strong.`
 		}, {
 			name: "orange",
@@ -118,15 +118,15 @@ let PHOTON = {
 			desc: e => `Free tickspeed upgrades scale ${e.toFixed(3)}x faster.`
 		}, {
 			name: "yellow",
-			eff: a => Math.log10(a + 1) / 100,
-			desc: e => `Gain ${(e * 100).toFixed(1)}% of Positrons in Big Rips.`
+			eff: a => Math.min(Math.log10(a + 10) - 1, 1) / 100,
+			desc: e => `Gain ${(e * 100).toFixed(2)}% of Positrons in Big Rips.`
 		}, {
 			name: "green",
-			eff: a => mod.p3ep ? a / 5 + 1 : Math.log10(a + 10),
+			eff: a => Math.log10(a + 1) + 1,
 			desc: e => `Strengthen Nanobenefits by ${e.toFixed(3)}x.`
 		}, {
 			name: "blue",
-			eff: a => mod.p3ep ? a / 10 + 1 : Math.log10(a / 3 + 1) + 1,
+			eff: a => Math.log10(a / 3 + 1) + 1,
 			desc: e => `Nanorewards speed up Decay by ${e.toFixed(3)}x each.`
 		}, {
 			name: "violet",
@@ -134,7 +134,7 @@ let PHOTON = {
 			desc: e => `Raise Intergalactic by ^${shorten(e)} outside of Big Rips.`
 		}, {
 			name: "ultraviolet",
-			eff: a => a >= 30 ? 1/0 : Math.pow(2, a / 2),
+			eff: a => Math.pow(2, Math.sqrt(a + 1) - 1),
 			desc: e => e == 1/0 ? `Remove 2nd Infinite Time softcap.` : `2nd Infinite Time softcap scales ^${shorten(e)} later.`
 		}
 	],

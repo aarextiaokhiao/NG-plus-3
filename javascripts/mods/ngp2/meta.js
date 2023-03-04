@@ -11,7 +11,7 @@ function getDilationMetaDimensionMultiplier() {
 	if (mod.udsp) div = 1e50
 
 	let pow = 0.1
-	if (isNanoEffectUsed("dt_to_ma_exp") && tmp.nf.effects.dt_to_ma_exp) pow *= tmp.nf.effects.dt_to_ma_exp //this is a quick fix, but we need to fix this bug
+	if (hasNanoReward("dt_to_ma_exp") && tmp.nf.eff.dt_to_ma_exp) pow *= tmp.nf.eff.dt_to_ma_exp //this is a quick fix, but we need to fix this bug
 
 	if (mod.udp && !aarMod.nguepV) {
 		let l = quSave.colorPowers.b.plus(10).log10()
@@ -94,7 +94,7 @@ function getMetaBoostPower() {
 	let exp = 1
 	if (player.dilation.upgrades.includes("ngpp4")) r = getDil15Bonus()
 	if (mod.ngp3) {
-		if (isNanoEffectUsed("meta_boost_power")) r = tmp.nf.effects.meta_boost_power
+		if (hasNanoReward("meta_boost_power")) r = tmp.nf.eff.meta_boost_power
 		if (hasMasteryStudy("t312")) exp = 1.045
 	}
 	if (hasAch("ngpp14")) r *= 1.01
@@ -359,7 +359,7 @@ function getExtraDimensionBoostPowerExponent(ma) {
 	if (player.dilation.upgrades.includes("ngpp5")) power++
 	if (mod.ngp3) {
 		power += getECReward(13)
-		if (isNanoEffectUsed("ma_effect_exp")) power += tmp.nf.effects.ma_effect_exp
+		if (hasNanoReward("ma_effect_exp")) power += tmp.nf.eff.ma_effect_exp
 		if (hasMasteryStudy("d13")) power += getTreeUpgradeEffect(8)
 		if (hasNU(14)) power += ntEff("upg", 14)
 	}

@@ -959,8 +959,7 @@ function onNotationChange() {
 	}
 	if (ghostified) {
 		updateBosonicStuffCosts()
-		if (!ghSave.wzb.unl) updateBLUnlockDisplay()
-		else if (!ghSave.hb.unl) updateHiggsUnlockDisplay()
+		if (!ghSave.hb.unl) updateHiggsUnlockDisplay()
 	}
 	el("achmultlabel").textContent = "Current achievement multiplier on each Dimension: " + shortenMoney(player.achPow) + "x"
 	if (hasAch("ng3p18") || hasAch("ng3p37")) {

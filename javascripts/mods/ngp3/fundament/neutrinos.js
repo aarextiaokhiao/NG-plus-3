@@ -61,7 +61,11 @@ const NEUTRINO = {
 			for (let type of this.types) this.subType(type, ghSave.neutrinos[type].div(sum).mul(x))
 		},
 
-		gain: _ => E_pow(5, ghSave.neutrinos.multPower - 1)
+		gain() { 
+			let r = E_pow(5, ghSave.neutrinos.multPower - 1)
+			if (mod.p3ep) r = r.mul(pow10(player.galaxies / 1e5))
+			return r
+		}
 	},
 	boosts: {
 		can() {
@@ -113,9 +117,9 @@ const NEUTRINO = {
 				cost: E(6),
 				eff(nt) {
 					var nb4neutrinos = Math.pow(nt[0].add(1).log10(),2)+Math.pow(nt[1].add(1).log10(),2)+Math.pow(nt[2].add(1).log10(),2)
-					var nb4 = Math.log10(nb4neutrinos*(bigRipped()?1:0.07)+1)/4+1
+					var nb4 = Math.log10(nb4neutrinos*(bigRipped()||mod.p3ep?1:0.07)+1)/4+1
 					if (!bigRipped()) nb4 = Math.sqrt(nb4)
-					return Math.min(nb4, 3)
+					return Math.min(nb4, 2)
 				},
 				effDesc: e => `Raise Infinite Time by <b>^${shorten(e)}</b>.`,
 			}, {
@@ -135,7 +139,7 @@ const NEUTRINO = {
 					if (bigRipped()) nb6exp /= 2
 
 					let nb6 = Math.pow(nb6neutrinos, nb6exp) * 0.525 + 1
-					return Math.min(nb6, 3)
+					return Math.min(nb6, 2)
 				},
 				effDesc: e => `Distant Antimatter Galaxies scale <b>${shorten(e)}x</b> slower.`,
 			}, {
@@ -160,19 +164,19 @@ const NEUTRINO = {
 				cost: E(2e15),
 				eff(nt) {
 					var nb9 = nt[0].add(1).log10()+nt[1].add(1).log10()+nt[2].add(1).log10()
-					nb9 = pow10(Math.pow(nb9 / 50, 0.25)).mul(nb9)
+					nb9 = pow10(Math.pow(nb9 / 50, 2/3)).mul(nb9)
 					return nb9
 				},
 				effDesc: e => `Strengthen IC3 multiplier base by <b>${shorten(e)}x</b>.`,
 			}, {
-				cost: E(1e33),
+				cost: E(1e27),
 				eff(nt) {
-					var nb10 = nt[0].add(1).log10() * nt[1].add(1).log10() * nt[2].add(1).log10()
-					return pow10(Math.pow(nb10, 1/12))
+					var nb10 = nt[0].add(1).log10()+nt[1].add(1).log10()+nt[2].add(1).log10()
+					return nb10/10+1
 				},
 				effDesc: e => `Gain <b>${shorten(e)}x</b> more Photons.`,
 			}, {
-				cost: E(1/0),
+				cost: E(1e36),
 				eff(nt) {
 					var nb11 = nt[0].add(1).log10()+nt[1].add(1).log10()+nt[2].add(1).log10()
 					nb11 = Math.log10(nb11 + 10)
@@ -180,11 +184,11 @@ const NEUTRINO = {
 				},
 				effDesc: e => `Raise Emperor Dimensions and Nanocharge by <b>^${shorten(e)}</b>.`,
 			}, {
-				cost: E(1/0),
+				cost: E(1e45),
 				eff(nt) {
 					var nb12 = nt[0].add(1).log10()+nt[1].add(1).log10()+nt[2].add(1).log10()
 					var div = mod.p3ep ? 5 : 10
-					return Math.log10(ghSave.time * nb12 / 1e6 + 1) / div + 1
+					return Math.log10(ghSave.time * nb12 / 100 + 1) / div + 1
 				},
 				effDesc: e => `Fundament time scale Replicanti Slowdown by <b>^${shorten(e)}</b>.`,
 			}
@@ -234,7 +238,7 @@ const NEUTRINO = {
 				cost: E(2e8),
 				desc: `Tickspeed speeds up Decay.`,
 
-				eff: _ => E_pow(3, Math.pow(Math.max(-getTickspeed().div(1e3).log10() / 4e13 - 4, 0), 1/4)),
+				eff: _ => pow10(Math.sqrt(Math.max(-getTickspeed().div(1e3).log10() / 4e13 - 4, 0)) * 0.6),
 				effDesc: e => `${shorten(e)}x`
 			}, {
 				unl: _ => ghSave.times >= 3,
@@ -289,14 +293,14 @@ const NEUTRINO = {
 				effDesc: e => `+${getFullExpansion(e)}`
 			}, {
 				unl: _ => PHOTON.unlocked(),
-				cost: E(1/0),
+				cost: E(1e42),
 				desc: `Galaxy strength adds Meta-Antimatter effect exponent.`,
 
 				eff: _ => getGalaxyEff(true) / 2,
 				effDesc: e => `+^${shorten(e)}`
 			}, {
 				unl: _ => PHOTON.unlocked(),
-				cost: E(1/0),
+				cost: E(1e54),
 				desc: `First Nanobenefit boosts Photons instead.`
 			}
 		]

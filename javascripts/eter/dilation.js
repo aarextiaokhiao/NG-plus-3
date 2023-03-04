@@ -13,7 +13,7 @@ function getBaseDTProduction() {
 	if (player.dilation.upgrades.includes('ngpp6')) gain = gain.mul(getDil17Bonus())
 	if (player.dilation.upgrades.includes('ngusp3')) gain = gain.mul(getD22Bonus())
 	if (mod.ngp3) gain = gain.mul(getDTMultNGP3())
-	if (isNanoEffectUsed("dil_gal_gain")) gain = E(tmp.nf.effects.dil_gal_gain).pow(player.replicanti.galaxies).mul(gain)
+	if (hasNanoReward("dil_gal_gain")) gain = E(tmp.nf.eff.dil_gal_gain).pow(player.replicanti.galaxies).mul(gain)
 	if (mod.p3ep && hasAch("r138") && gain.lt(1e100)) gain = gain.mul(3).min(1e100)
 
 	return gain

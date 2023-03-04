@@ -372,7 +372,7 @@ function updateBreakEternityUpgradesTemp() {
 	updateBreakEternityUpgrade10Temp()
 
 	//Upgrade 7: EP Mult
-	tmp.beu[7] = E_pow(1e9, beSave.epMultPower * Math.max(beSave.epMultPower / 400, 1) ** 3)
+	tmp.beu[7] = E_pow(1e9, beSave.epMultPower * Math.pow(Math.max(beSave.epMultPower / 400, 1), 3))
 }
 
 function getBEUnls() {
@@ -382,7 +382,7 @@ function getBEUnls() {
 	return x
 }
 
-var breakUpgCosts = [1, 1e3, 2e6, 2e11, 8e17, 1e45, null, 1e290, 1/0, 1/0]
+var breakUpgCosts = [1, 1e3, 2e6, 2e11, 8e17, 1e45, null, 1e290, E("1e320"), E("1e350")]
 function getBreakUpgCost(id) {
 	if (id == 7) return pow2(beSave.epMultPower).mul(1e5)
 	return breakUpgCosts[id - 1]

@@ -47,7 +47,6 @@ function loadFundament(reset) {
 	updateBosonicLimits()
 	updateBosonicStuffCosts()
 	updateBLParticleUnlocks()
-	updateBLUnlockDisplay()
 
 	if (ghSave.wzb.dPUse === undefined) {
 		ghSave.wzb.dPUse = 0
@@ -328,16 +327,9 @@ function getGHPGain() {
 
 	let log = brSave.bestThisRun.log10() / getQCGoal(undefined, true) - 1
 	if (log < 0) return E(0)
+	if (log > 15) log = Math.cbrt(log / 15) * 15
 
-	let x = pow10(log)
-	//ng3p58 reward was now free
-	//the square part of the formula maxes at e10, and gets weaker after ~e60 total
-	let boost = Math.min(7, log / 2) + Math.min(3, log / 2)
-	let softcap = x.plus(pow10(log)).plus(10).log10()
-	boost = Math.min(boost, 600 / softcap)
-	log += boost
-
-	return x.mul(getGHPMult()).floor()
+	return pow10(log).mul(getGHPMult()).floor()
 }
 
 function getGHPMult() {

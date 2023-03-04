@@ -447,8 +447,8 @@ function setR21Tooltip(){
 	//ACHIEVEMENT ROW 21
 	uc.setAttribute('ach-tooltip', "Get "+shortenCosts(pow10(1e4))+" EP in Big Rips. Reward: Eternities can't go below your Eternitied gain, and gain Banked Eternities on any Quantum reset.")
 	mi.setAttribute('ach-tooltip', "Get "+shorten(Number.MAX_VALUE)+" infinities. Reward: Banked Infinities don't reset on Quantum.")
-	wd.setAttribute('ach-tooltip', "Get "+shortenCosts(pow10(1e12))+" "+getUQNameFromDecays(2)+" quarks for each Branch without Big Ripping in this Fundament. Reward: Normal duplicant autobuyer buys max.")
-	radioDecay.setAttribute('ach-tooltip', "Get 10 total Radioactive Decays. Reward: Produce 1 galaxy worth of Neutrinos per second.")
+	wd.setAttribute('ach-tooltip', "Get a Radioactive Decay without Big Ripping in this Fundament. Reward: Normal duplicant autobuyer buys max.")
+	radioDecay.setAttribute('ach-tooltip', "Get 2 Radioactive Decays. Reward: Produce 1 galaxy worth of Neutrinos per second.")
 }
 
 function setR22Tooltip(){
