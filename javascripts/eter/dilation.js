@@ -491,6 +491,12 @@ function resetDilationGalaxies() {
 	gainDilationGalaxies()
 }
 
+function getDilGalPower() {
+	let dil = Math.floor(player.dilation.freeGalaxies)
+	if (hasMasteryStudy("t343")) dil *= getReplGalEff()
+	return dil
+}
+
 function startDilatedEternity(auto) {
 	if (!hasDilStudy(1)) return
 

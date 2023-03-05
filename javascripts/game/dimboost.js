@@ -46,7 +46,7 @@ function setInitialMoney() {
 
 function setInitialDimensionPower() {
 	var tickspeedPower = player.totalTickGained
-	player.tickspeed = E_pow(getTickSpeedMultiplier(), tickspeedPower).mul(mod.ngep ? 500 : 1e3)
+	player.tickspeed = E_pow(tmp.tsReduce, tickspeedPower).mul(mod.ngep ? 500 : 1e3)
 
 	var ic3Power = tickspeedPower * getECReward(14)
 	if (inNGM(3) && player.currentChallenge != "postc5") ic3Power += getTickspeedBoostPower()

@@ -1,12 +1,12 @@
 function getTickSpeedMultiplier() {
 	let ret = E(getGalaxyTickSpeedMultiplier())
-	if (tmp.be && beSave.upgrades.includes(5)) ret = ret.div(getBreakUpgMult(5))
+	if (isBreakUpgActive(5)) ret = ret.div(getBreakUpgMult(5))
 	return ret.min(1)
 }
 
 function initialGalaxies() {
 	let g = player.galaxies
-	if (hasMasteryStudy("d7") && !tmp.be) {
+	if (isPositronsOn()) {
 		let sac = quSave.electrons.sacGals
 		g = Math.max(g - sac, 0)
 		g *= Math.max(Math.min(10 - (quSave.electrons.amount + g * getElectronGainFinalMult()) / 16857, 1), 0)
@@ -18,35 +18,16 @@ function initialGalaxies() {
 	return g
 }
 
-function getGalaxyPower(ng, bi, noDil) {
-	let replGalEff = 1
-	if (mod.rs) replGalEff = Math.log10(player.replicanti.limit.log(2)) / Math.log10(2)/10
-	else if (ECComps("eterc8") > 0) replGalEff = getECReward(8)
-	if (hasMasteryStudy("t344")) replGalEff *= getMTSMult(344)
-
-	let extraReplGalPower = 0
-	if (hasTimeStudy(133)) extraReplGalPower += player.replicanti.galaxies * 0.5
-	if (hasTimeStudy(132)) extraReplGalPower += player.replicanti.galaxies * 0.4
-	extraReplGalPower += tmp.extraRG
-	
-	let otherGalPower = player.replicanti.galaxies
-	if (hasMasteryStudy("t342")) otherGalPower = (otherGalPower + extraReplGalPower) * replGalEff
-	else otherGalPower += Math.min(player.replicanti.galaxies, player.replicanti.gal) * (replGalEff - 1) + extraReplGalPower
-	if (!noDil) {
-		let dilGals = Math.floor(player.dilation.freeGalaxies)
-		if (hasMasteryStudy("t343")) dilGals *= replGalEff
-		otherGalPower += dilGals
-	}
-
-	let galaxyPower = ng
-	if (!tmp.be) galaxyPower = Math.max(ng - (bi ? 2 : 0), 0) + otherGalPower
-	if ((inNC(7) || inQC(4) ) && inNGM(2)) galaxyPower *= galaxyPower
-	return galaxyPower
+function getGalaxyPower(ng = tmp.initGal, bi) {
+	let eff = ng
+	if (!tmp.be) eff = Math.max(ng - (bi ? 2 : 0), 0) + getReplGalPower() + getDilGalPower()
+	if ((inNC(7) || inQC(4)) && inNGM(2)) eff *= eff
+	return eff
 }
 
 function getGalaxyEff(bi) {
 	let eff = 1
-	if (inNGM(2)) if (hasGSacUpg(22)) eff *= inNGM(4)?2:5;
+	if (hasGSacUpg(22)) eff *= inNGM(4) ? 2 : 5
 	if (player.infinityUpgrades.includes("galaxyBoost")) eff *= 2;
 	if (player.infinityUpgrades.includes("postGalaxy")) eff *= getPostGalaxyEff();
 	if (player.challenges.includes("postc5")) eff *= inNGM(2) ? 1.15 : 1.1;
@@ -63,7 +44,7 @@ function getGalaxyEff(bi) {
 		}
 	}
 	if (inNGM(3) && (inNC(5) || player.currentChallenge == "postcngm3_3")) eff *= 0.75
-	if (hasAch("ngpp8") && mod.ngpp) eff *= 1.001;
+	if (hasAch("ngpp8") && mod.ngpp) eff *= 1.001
 	if (hasTimeStudy(212)) eff *= tsMults[212]()
 	if (hasTimeStudy(232) && bi) eff *= tmp.ts232
 
@@ -72,6 +53,7 @@ function getGalaxyEff(bi) {
 	if (hasGluonUpg("rg2")) eff *= Math.pow(player.dilation.freeGalaxies / 5e3 + 1, 0.25)
 	if (hasGluonUpg("rg4")) eff *= 1.5
 	if (hasBU(34)) eff *= tmp.blu[34]
+	if (redirectRepl) eff *= getReplGalEff()
 	return eff
 }
 
@@ -81,40 +63,42 @@ function getPostGalaxyEff() {
 }
 
 function getGalaxyTickSpeedMultiplier() {
-	let g = initialGalaxies()
+	if (inQC(2)) return 0.89
+
+	let initGal = tmp.initGal
 	if ((player.currentChallenge == "postc3" || isIC3Trapped()) && !tmp.be) {
 		if (player.currentChallenge == "postcngmm_3" || player.challenges.includes("postcngmm_3")) {
 			var base = inNGM(3) ? 0.9995 : 0.998
 			if (inNGM(4) && player.challenges.includes("postcngmm_3")) base = .9998
-			return E_pow(base, getGalaxyPower(g) * getGalaxyEff(true))
+			return E_pow(base, getGalaxyPower(initGal) * tmp.galStr)
 		}
 		return 1
 	}
-	if (inQC(2)) return 0.89
-	let inRS = mod.rs
-	let galaxies = getGalaxyPower(g, !inRS) * getGalaxyEff(true)
+
+	let gal = getGalaxyPower(initGal, !mod.rs) * tmp.galStr
 	let baseMultiplier = 0.8
-	let linearGalaxies = 2
-	let useLinear = g + player.replicanti.galaxies + player.dilation.freeGalaxies <= linearGalaxies
 	if (inNC(6, 1) || player.currentChallenge == "postc1") baseMultiplier = 0.83
-	if (inRS) {
-		linearGalaxies = Math.min(galaxies, linearGalaxies + 3)
+
+	let linearGalaxies = 2
+	let useLinear = initGal + player.replicanti.gal + player.dilation.freeGalaxies <= linearGalaxies
+	if (mod.rs) {
+		linearGalaxies = Math.min(gal, linearGalaxies + 3)
 		useLinear = true
 	}
 	if (useLinear) {
 		baseMultiplier = 0.9;
-		if (inRS && galaxies == 0) baseMultiplier = 0.89
-		else if (g == 0) baseMultiplier = 0.89
+		if (mod.rs && gal == 0) baseMultiplier = 0.89
+		else if (initGal == 0) baseMultiplier = 0.89
 		if (inNC(6, 1) || player.currentChallenge == "postc1") baseMultiplier = 0.93
-		if (inRS) {
+		if (mod.rs) {
 			baseMultiplier -= linearGalaxies * 0.02
 		} else {
 			let perGalaxy = 0.02 * getGalaxyEff()
-			return Math.max(baseMultiplier - (g * perGalaxy), 0.83)
+			return Math.max(baseMultiplier - (initGal * perGalaxy), 0.83)
 		}
 	}
 
-	var log = Math.log10(0.965) * (galaxies-linearGalaxies) + Math.log10(baseMultiplier)
+	var log = Math.log10(0.965) * (gal - linearGalaxies) + Math.log10(baseMultiplier)
 	return pow10(log)
 }
 
@@ -139,7 +123,7 @@ function getPostC3Base() {
 		if (inNGM(3)) perGalaxy *= tmp.cp / 10 + .9
 		else perGalaxy *= tmp.cp / 5 + .8
 	}
-	var g = initialGalaxies()
+	var g = tmp.initGal
 	perGalaxy *= getGalaxyEff()
 
 	let ret = getGalaxyPower(g) * perGalaxy + 1.05

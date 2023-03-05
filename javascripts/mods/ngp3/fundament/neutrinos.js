@@ -296,7 +296,7 @@ const NEUTRINO = {
 				cost: E(1e42),
 				desc: `Galaxy strength adds Meta-Antimatter effect exponent.`,
 
-				eff: _ => getGalaxyEff(true) / 2,
+				eff: _ => tmp.galStr / 2,
 				effDesc: e => `+^${shorten(e)}`
 			}, {
 				unl: _ => PHOTON.unlocked(),

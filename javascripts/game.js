@@ -2138,7 +2138,7 @@ function ECRewardDisplayUpdating(){
 function challengeOverallDisplayUpdating(){
 	if (el("eternitychallenges").style.display == "block") ECRewardDisplayUpdating()
 	if (el("quantumchallenges").style.display == "block") {
-		el("qcDisclaimer").innerHTML = isQCFree() ? "" : "Spend Positrons to start Quantum Challenges.<br>You have " + getFullExpansion(Math.round(quSave.electrons.amount)) + " Positrons."
+		el("qcDisclaimer").innerHTML = (isQCFree() ? "" : "Spend Positrons to start Quantum Challenges.<br>You have " + getFullExpansion(Math.round(quSave.electrons.amount)) + " Positrons.<br>") + "<b class='red'>Positrons are disabled in Quantum Challenges!</b>"
 		for (var c=1;c<7;c++) {
 			if (c==5) el("qc5reward").textContent = getDimensionPowerMultiplier("linear").toFixed(2)
 			else if (c!=2) el("qc"+c+"reward").textContent = shorten(tmp.qcRewards[c])

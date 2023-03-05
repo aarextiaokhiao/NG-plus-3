@@ -43,11 +43,13 @@ function updateTemp() {
 	updateTS232Temp()
 	updateMatterSpeed()
 
+	tmp.initGal = initialGalaxies()
+	tmp.galStr = getGalaxyEff(true)
 	tmp.tsReduce = getTickSpeedMultiplier()
-	updateInfinityPowerEffects()
-	if (player.replicanti.unl) updateReplicantiTemp()
 
 	updatePowers()
+	updateInfinityPowerEffects()
+	if (player.replicanti.unl) updateReplicantiTemp()
 }
 
 function updateInfiniteTimeTemp() {
@@ -73,7 +75,7 @@ function updateIntergalacticTemp() {
 function updateTS232Temp() {
 	var exp = 0.2
 	if (mod.ngp3 && player.galaxies >= 1e4 && !tmp.be) exp *= Math.max(6 - player.galaxies / 2e3, 0)
-	tmp.ts232 = Math.pow(1 + initialGalaxies() / 1000, exp)
+	tmp.ts232 = Math.pow(1 + tmp.initGal / 1000, exp)
 }
 
 function updateMatterSpeed() {

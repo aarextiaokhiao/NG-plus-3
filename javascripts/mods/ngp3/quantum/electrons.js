@@ -1,3 +1,7 @@
+function isPositronsOn() {
+	return hasMasteryStudy("d7") && inQC(0)
+}
+
 function updateElectronsTab() {
 	el("normalGalaxies").textContent = getFullExpansion(player.galaxies)
 	el("sacrificeGal").className = "gluonupgrade " + (canSacrificeGalaxies() ? "storebtn" : "unavailablebtn")
@@ -8,7 +12,7 @@ function updateElectronsTab() {
 }
 
 function updateElectrons(retroactive) {
-	if (!hasMasteryStudy("d7")) return
+	if (!isPositronsOn()) return
 
 	var mult = getElectronGainFinalMult()
 	el("electronsGainMult").textContent = mult.toFixed(2)
@@ -32,17 +36,20 @@ function updateElectronsEffect() {
 }
 
 function canSacrificeGalaxies() {
-	return getElectronGainMult() > 0 && player.galaxies > quSave.electrons.sacGals
+	return isPositronsOn() && player.galaxies > quSave.electrons.sacGals && getElectronGainMult() > 0
 }
 
-function sacrificeGalaxy(auto = false) {
+function sacrificeGalaxy() {
 	if (!canSacrificeGalaxies()) return
 
 	var gain = player.galaxies - quSave.electrons.sacGals
 	quSave.electrons.sacGals += gain
 	quSave.electrons.amount += getElectronGainFinalMult() * gain
-	if (!quSave.autoOptions.sacrifice) updateElectronsEffect()
-	galaxyReset(0)
+
+	if (!quSave.autoOptions.sacrifice) {
+		updateElectronsEffect()
+		galaxyReset(0)
+	}
 }
 
 function getElectronBoost(mod) {

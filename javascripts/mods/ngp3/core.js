@@ -1,6 +1,6 @@
 //VERSION: 2.31
 let ngp3_ver = 2.31
-let ngp3_build = 20230303
+let ngp3_build = 20230304
 function doNGP3Updates() {
 	if (!aarMod.ngp3_build) aarMod.ngp3_build = 0
 	if (aarMod.ngp3_build < 20221230) quSave.multPower = 0
@@ -122,7 +122,7 @@ function toggleAutoQuantumContent(id) {
 	quSave.autoOptions[id]=!quSave.autoOptions[id]
 	if (id=='sacrifice') {
 		el('sacrificeAuto').textContent = "Auto: " + (quSave.autoOptions.sacrifice ? "ON" : "OFF")
-		if (quSave.autoOptions.sacrifice) sacrificeGalaxy(6)
+		if (quSave.autoOptions.sacrifice) sacrificeGalaxy()
 	}
 }
 
@@ -486,7 +486,7 @@ function updateQuantumTabDisplays() {
 	el("riptabbtn").style.display = hasMasteryStudy("d14") ? "" : "none"
 
 	if (!quantumed) return
-	el("electronstabbtn").style.display = hasMasteryStudy("d7") ? "" : "none"
+	el("electronstabbtn").style.display = isPositronsOn() ? "" : "none"
 	el("antTabs").style.display = hasMasteryStudy("d11") ? "" : "none"
 	el("nanofieldtabbtn").style.display = NF.unl() ? "" : "none"
 	el("todtabbtn").style.display = hasMasteryStudy("d13") ? "" : "none"

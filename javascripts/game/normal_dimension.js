@@ -246,6 +246,7 @@ function getDimensionPowerMultiplier(focusOn, debug) {
 		ret = Decimal.mul(ret, Math.log10(player.resets + 1) + 1)
 		ret = Decimal.mul(ret, Math.log10(Math.max(player.galaxies, 0) + 1) * 5 + 1)
 	}
+	if (mod.ngp3) ret = PHOTON.eff(2).mul(ret)
 	return ret
 }
 	
@@ -278,9 +279,7 @@ function getMPTBase(focusOn) {
 }
 
 function getMPTExp(focusOn) {
-	let x = 1
-	if (hasMasteryStudy("d7")) x = getElectronBoost(focusOn)
-	return x
+	return isPositronsOn() ? getElectronBoost(focusOn) : 1
 }
 
 function infUpg12Pow() {

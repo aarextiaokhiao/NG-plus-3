@@ -231,23 +231,21 @@ function updateColorPowers(log) {
 		if (hasNB(5)) sc_exp += ntEff("boost", 5, 0) / 2
 		if (sc_exp < 1) colorBoosts.r = Math.pow(colorBoosts.r / 2.3, sc_exp) * 2.3
 	}
-	if (colorBoosts.r > 4) colorBoosts.r = Math.pow(colorBoosts.r * 2, 2/3)
+	if (colorBoosts.r > 3) colorBoosts.r = Math.sqrt(colorBoosts.r * 3)
 
 	//Green
 	let m = 1
-	colorBoosts.g = Math.pow(log.g+1, 1/3) * 2 - 1
+	colorBoosts.g = Math.pow(log.g + 1, 1/3) * 2
 	if (aarMod.ngumuV && hasMasteryStudy("t362")) {
 		m += quSave.replicants.quarks.add(1).log10()/10
 		if (m > 4) m = Math.sqrt(m * 4)
 	}
 	if (mod.udp && !aarMod.nguepV) m /= 2
-	colorBoosts.g = (colorBoosts.g - 1) * m + 1
+	colorBoosts.g = colorBoosts.g * m + 1
 
 	//Blue
-	var bLog = log.b
-	bLog = Math.sqrt(log.b + 1.5) - Math.sqrt(1.5)
-
-	if (bLog > 3) bLog = Math.sqrt(bLog  * 3)
+	var bLog = Math.sqrt(log.b + 1.5) - Math.sqrt(1.5)
+	if (bLog > 3) bLog = Math.sqrt(bLog * 3)
 	colorBoosts.b = pow10(bLog)
 }
 

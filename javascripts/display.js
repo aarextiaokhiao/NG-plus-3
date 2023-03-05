@@ -364,7 +364,10 @@ function ETERNITYSTOREDisplay(){
 	if (el("ers_timestudies").style.display == "block") updateERSTTDesc()
 	if (el("masterystudies").style.display == "block") updateMasteryStudyButtons()
 
-	if (el("eternityupgrades").style.display == "block") eternityUpgradesDisplay()
+	if (el("eternityupgrades").style.display == "block") {
+		eternityUpgradesDisplay()
+		breakEternityDisplay()
+	}
 	if (el("dilation").style.display == "block") {
 		updateDilation()
 		updateExdilation()
@@ -385,10 +388,7 @@ function updateTabDisplay() {
 	if (el("statistics").style.display == "block") displayStats()
 	if (el("challenges").style.display == "block") challengeOverallDisplayUpdating()
 	if (el("infinity").style.display == "block") INFINITYUPGRADESDisplay()
-	if (el("eternitystore").style.display == "block") {
-		ETERNITYSTOREDisplay()
-		breakEternityDisplay()
-	}
+	if (el("eternitystore").style.display == "block") ETERNITYSTOREDisplay()
 	if (el("quantumtab").style.display == "block") updateQuantumTabs()
 	if (el("replicants").style.display == "block") updateReplicantsTab()
 	if (el("ghostify").style.display == "block") updateGhostifyTabs()

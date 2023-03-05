@@ -202,6 +202,29 @@ function getTotalRG() {
 	return player.replicanti.galaxies + tmp.extraRG
 }
 
+let redirectRepl = false
+function getReplGalPower() {
+	let repl = player.replicanti.galaxies
+	let replStr = redirectRepl ? 1 : getReplGalEff()
+	let extraRepl = 0
+	if (hasTimeStudy(133)) extraRepl += player.replicanti.galaxies * 0.5
+	if (hasTimeStudy(132)) extraRepl += player.replicanti.galaxies * 0.4
+	extraRepl += tmp.extraRG
+
+	if (hasMasteryStudy("t342")) repl = (repl + extraRepl) * replStr
+	else repl += Math.min(repl, player.replicanti.gal) * (replStr - 1) + extraRepl
+
+	return repl
+}
+
+function getReplGalEff() {
+	let r = 1
+	if (mod.rs) r = Math.log10(player.replicanti.limit.log(2)) / Math.log10(2)/10
+	else if (ECComps("eterc8") > 0) r = getECReward(8)
+	if (hasMasteryStudy("t344")) r *= getMTSMult(344)
+	return r
+}
+
 function replicantiGalaxyAutoToggle() {
 	player.replicanti.galaxybuyer = !player.replicanti.galaxybuyer
 }

@@ -1199,7 +1199,7 @@ function doERSv0tov102(){
 			player.eternityChalls={}
 			for (c in player.eternityChallenges.done) player.eternityChalls["eterc"+c]=player.eternityChallenges.done[parseInt(c)]
 		}
-		player.tickspeed=player.tickspeed.div(E_pow(getTickSpeedMultiplier(),player.totalTickGained))
+		player.tickspeed=player.tickspeed.div(E_pow(tmp.tsReduce, player.totalTickGained))
 		player.totalTickGained=0
 		player.tickThreshold=E(1)
 		if (player.darkMatter) {

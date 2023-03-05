@@ -118,11 +118,11 @@ let PHOTON = {
 			desc: e => `Free tickspeed upgrades scale ${e.toFixed(3)}x faster.`
 		}, {
 			name: "yellow",
-			eff: a => Math.min(Math.log10(a + 10) - 1, 1) / 100,
-			desc: e => `Gain ${(e * 100).toFixed(2)}% of Positrons in Big Rips.`
+			eff: a => E(tmp.tsReduce || 1).pow(-(Math.log10(a + 10) - 1) / 10),
+			desc: e => `Multiply per-ten multiplier by ${shorten(e)}x. (based on tickspeed reduction)`
 		}, {
 			name: "green",
-			eff: a => Math.log10(a + 1) + 1,
+			eff: a => Math.cbrt(a + 1),
 			desc: e => `Strengthen Nanobenefits by ${e.toFixed(3)}x.`
 		}, {
 			name: "blue",
@@ -134,7 +134,7 @@ let PHOTON = {
 			desc: e => `Raise Intergalactic by ^${shorten(e)} outside of Big Rips.`
 		}, {
 			name: "ultraviolet",
-			eff: a => Math.pow(2, Math.sqrt(a + 1) - 1),
+			eff: a => Math.pow(2, a / 3),
 			desc: e => e == 1/0 ? `Remove 2nd Infinite Time softcap.` : `2nd Infinite Time softcap scales ^${shorten(e)} later.`
 		}
 	],

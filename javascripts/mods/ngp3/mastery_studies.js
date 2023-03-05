@@ -145,16 +145,14 @@ var masteryStudies = {
 		},
 		341: function(){
 			var exp = Math.sqrt(quSave.replicants.quarks.add(1).log10())
-			if (exp > 150) exp = 150 * Math.pow(exp / 150, .5)
-			if (exp > 200) exp = 200 * Math.pow(exp / 200, .5)
 			return E_pow(mod.p3ep ? 3 : 2, exp)
 		},
 		344: function(){
-			var ret = Math.pow(quSave.replicants.quarks.div(1e7).add(1).log10(), mod.p3ep ? 0.3 : 0.25) * 0.17 + 1
-			return Math.min(ret, 2)
+			var ret = Math.pow(quSave.replicants.quarks.div(1e7).add(1).log10(), 0.25) * 0.17 + 1
+			return ret
 		},
 		351: function() { //maybe use softcap.js
-			let log = player.timeShards.max(1).log10()*14e-7
+			let log = player.timeShards.max(1).log10() * 14e-7
 			if (log > 1e3) log = Math.sqrt(log * 1e3)
 			return E_pow(mod.p3ep ? 12 : 10, log)
 		},
@@ -177,12 +175,7 @@ var masteryStudies = {
 			return player.eightAmount.max(1).pow(Math.PI)
 		},
 		383: function(){
-			var blueExp = 2/5
-			var bluePortion = Math.pow(getCPLog("b"), blueExp)
-			var exp = bluePortion * Math.log10(2)
-			if (exp > 1e10) exp = Math.pow(exp * 100, 5/6)
-
-			return pow10(exp)
+			return E(colorBoosts.b || 1).max(1).pow(.5)
 		},
 		391: function(){
 			return player.meta.antimatter.max(1).pow(8e-4)
