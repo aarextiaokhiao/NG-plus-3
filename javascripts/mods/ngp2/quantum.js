@@ -505,7 +505,6 @@ RESETS.qu = {
 			updateMilestones()
 			updateMasteryStudyCosts()
 			drawMasteryTree()
-			updateBreakEternity()
 		}
 	}
 }

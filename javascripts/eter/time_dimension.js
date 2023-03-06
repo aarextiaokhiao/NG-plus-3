@@ -192,7 +192,6 @@ function buyTimeDimension(tier, am) {
 	} else {
 		dim.power = dim.power.mul(mod.rs ? 3 : 2)
 		dim.cost = timeDimCost(tier, dim.bought)
-		updateEternityUpgrades()
 	}
 	return true
 }
@@ -260,7 +259,6 @@ function buyMaxTimeDimension(tier, bulk) {
 	} else {
 		dim.cost = timeDimCost(tier, dim.bought)
 		dim.power = dim.power.mul(E_pow(mod.rs ? 3 : 2, toBuy))
-		updateEternityUpgrades()
 	}
 }
 

@@ -456,8 +456,8 @@ function updateAchievements() {
 			if (aarMod.showAchRowNums) numberelement.innerHTML = "Row #" + rowsNum + "<br>" + n + " / 8<br>(" + (n*12.5).toFixed(1) + "%)"
 		}
 	}
-		player.achPow = E_pow(aarMod.newGameMinusMinusVersion ? 5 : 1.5, amount)
-		el("achmultlabel").textContent = "Current achievement multiplier on each " + achMultLabelUpdate() + " Dimension: " + shortenMoney(player.achPow) + "x"
+	player.achPow = E_pow(aarMod.newGameMinusMinusVersion ? 5 : 1.5, amount)
+	el("achmultlabel").textContent = "Current achievement multiplier on each " + achMultLabelUpdate() + " Dimension: " + shortenMoney(player.achPow) + "x"
 	el("nothingness").style.display = rowsShown ? "none" : ""
 
 	rowsShown = 0

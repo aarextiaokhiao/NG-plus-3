@@ -366,6 +366,7 @@ function ETERNITYSTOREDisplay(){
 
 	if (el("eternityupgrades").style.display == "block") {
 		eternityUpgradesDisplay()
+		updateEternityUpgrades()
 		breakEternityDisplay()
 	}
 	if (el("dilation").style.display == "block") {

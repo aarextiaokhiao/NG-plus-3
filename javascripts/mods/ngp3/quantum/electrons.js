@@ -83,8 +83,7 @@ function getElectronUpgCost(u) {
 	amt = Math.max(amt, 0)
 
 	var base = amt * Math.max(amt - 1, 1) + 1
-	var exp = getElectronUpgCostScalingExp(u)
-	base = Math.pow(base, exp)
+	base = Math.pow(base, getElectronUpgCostScalingExp(u))
 	base + [null, 82, 153, 638, 26][u]
 
 	if (u != 4) return pow10(base)

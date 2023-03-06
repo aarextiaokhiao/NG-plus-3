@@ -430,7 +430,6 @@ el("infiMult").onclick = function() {
 	}
 }
 
-
 function updateEternityUpgrades() {
 	el("epmult").innerHTML = "Gain 5x more EP<p>Currently: "+shortenDimensions(player.epmult)+"x<p>Cost: "+shortenDimensions(player.epmultCost)+" EP"
 
@@ -459,10 +458,6 @@ function buyEternityUpgrade(name, cost) {
 	if (player.eternityPoints.gte(cost) && !player.eternityUpgrades.includes(name)) {
 		player.eternityUpgrades.push(name)
 		player.eternityPoints = player.eternityPoints.minus(cost)
-		updateEternityUpgrades();
-		if (name == 4) {
-			achMultLabelUpdate(); // Eternity Upgrade 4 applies achievement multiplier to Time Dimensions
-		}
 	}
 }
 
@@ -480,7 +475,6 @@ function buyEPMult() {
 		}
 		player.eternityPoints = player.eternityPoints.minus(player.epmultCost)
 		player.epmultCost = getEPCost(Math.round(player.epmult.ln()/Math.log(5)))
-		updateEternityUpgrades()
 	}
 }
 
@@ -2273,21 +2267,20 @@ function gameLoop(diff) {
 	if (player.currentEternityChall === "eterc12") diff /= getEC12Slowdown()
 	incrementTimesUpdating(diffStat)
 
-	/*if (mod.ngp3) {
+	if (mod.ngp3) {
 		ngp3DilationUpdating()
-		if (hasBraveMilestone(8)) passiveQuantumLevelStuff(diff)
-		if (hasMasteryStudy('t291')) updateEternityUpgrades() // to fix the 5ep upg display
-		if (quantumed) quantumOverallUpdating(diff)
 		if (ghostified) {
 			if (ghSave.wzb.unl) WZBosonsUpdating(diff) // Bosonic Lab
 			if (PHOTON.unlocked()) PHOTON.calc(diff) // Photons
 			automatorTick(diff)
 		}
+		if (hasBraveMilestone(8)) passiveQuantumLevelStuff(diff)
+		if (quantumed) quantumOverallUpdating(diff)
 		if (hasAch("ng3p72")) player.eternities = nMx(player.eternities, gainEternitiedStat())
 
 		doQuantumButtonDisplayUpdating(diff)
 		doGhostifyButtonDisplayUpdating(diff)
-	}*/
+	}
 	if (mod.ngpp) metaDimsUpdating(diff)
 
 	infinityTimeBlackHoleDimUpdating(diff) //production of those dims

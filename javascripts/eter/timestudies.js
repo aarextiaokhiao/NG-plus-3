@@ -32,9 +32,8 @@ function buyWithEP() {
 		player.timestudy.epcost = player.timestudy.epcost.mul(2)
 		player.timestudy.theorem += 1
 		updateTimeStudyButtons(true)
-		updateEternityUpgrades()
 		return true
-	} else return false
+	}
 }
 
 function canBuyTTWithEP() {
@@ -64,7 +63,6 @@ function maxTheorems() {
 		player.timestudy.epcost = player.timestudy.epcost.mul(pow2(gainTT))
 	}
 	updateTimeStudyButtons(true)
-	updateEternityUpgrades()
 }
 
 function updateTheoremButtons() {
@@ -133,7 +131,6 @@ function buyDilationStudy(name, cost) {
 			if (ECComps("eterc11") + ECComps("eterc12") < 10 || getTotalTT(player) < getDilationTotalTTReq()) return
 			showEternityTab("dilation")
 			if (player.eternityUpgrades.length < 1) giveAchievement("Work harder.")
-			if (player.blackhole != undefined) updateEternityUpgrades()
 		} else if (name > 5) {
 			if (quantumed || !mod.ngp3) {
 				showTab("dimensions")

@@ -1,6 +1,6 @@
 //VERSION: 2.31
 let ngp3_ver = 2.31
-let ngp3_build = 20230305
+let ngp3_build = 20230306
 function doNGP3Updates() {
 	if (!aarMod.ngp3_build) aarMod.ngp3_build = 0
 	if (aarMod.ngp3_build < 20221230) quSave.multPower = 0
@@ -507,13 +507,8 @@ function updateNGP3Temp() {
 	updateGhostifyTempStuff()
 	if (quantumed) {
 		if (beSave && beSave.unlocked) updateBreakEternityUpgradesTemp()
-
 		if (hasMasteryStudy("d14")) updateBigRipUpgradesTemp()
-		if (bigRipped()) {
-			if (!player.dilation.active && hasRipUpg(14)) tmp.nrm = tmp.nrm.pow(tmp.bru[14])
-			if (tmp.nrm.log10() > 1e9) tmp.nrm = pow10(1e9 * Math.pow(tmp.nrm.log10() / 1e9, 2/3))
-		}
-
+		if (bigRipped() && !player.dilation.active && hasRipUpg(14)) tmp.nrm = tmp.nrm.pow(tmp.bru[14])
 		if (hasMasteryStudy("d13")) {
 			tmp.branchSpeed = getBranchSpeed()
 			tmp.tue = getTreeUpgradeEfficiency()

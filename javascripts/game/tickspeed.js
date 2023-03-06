@@ -4,64 +4,6 @@ function getTickSpeedMultiplier() {
 	return ret.min(1)
 }
 
-function initialGalaxies() {
-	let g = player.galaxies
-	if (isPositronsOn()) {
-		let sac = quSave.electrons.sacGals
-		g = Math.max(g - sac, 0)
-		g *= Math.max(Math.min(10 - (quSave.electrons.amount + g * getElectronGainFinalMult()) / 16857, 1), 0)
-		g += Math.min(sac, player.galaxies) * PHOTON.eff(0)
-		if (hasBU(14)) g = Math.max(Math.min(player.galaxies, tmp.blu[14]), g)
-	}
-	if (hasGluonUpg("rg4")) g *= 0.4
-	if ((inNC(15) || player.currentChallenge == "postc1") && inOnlyNGM(3)) g = 0
-	return g
-}
-
-function getGalaxyPower(ng = tmp.initGal, bi) {
-	let eff = ng
-	if (!tmp.be) eff = Math.max(ng - (bi ? 2 : 0), 0) + getReplGalPower() + getDilGalPower()
-	if ((inNC(7) || inQC(4)) && inNGM(2)) eff *= eff
-	return eff
-}
-
-function getGalaxyEff(bi) {
-	let eff = 1
-	if (hasGSacUpg(22)) eff *= inNGM(4) ? 2 : 5
-	if (player.infinityUpgrades.includes("galaxyBoost")) eff *= 2;
-	if (player.infinityUpgrades.includes("postGalaxy")) eff *= getPostGalaxyEff();
-	if (player.challenges.includes("postc5")) eff *= inNGM(2) ? 1.15 : 1.1;
-	if (hasAch("r86")) eff *= inNGM(2) ? 1.05 : 1.01
-	if (inNGM(2)) {
-		if (hasAch("r83")) eff *= 1.05
-		if (hasAch("r45")) eff *= 1.02
-		if (player.infinityUpgrades.includes("postinfi51")) eff *= inNGM(3) ? 1.15 : 1.2
-		if (tmp.cp && hasAch("r67")) {
-			let x = tmp.cp
-			if (x < 0) x = 1
-			if (x > 4 && inNGM(3)) x = Math.sqrt(x - 1) + 2
-			eff += .07 * x
-		}
-	}
-	if (inNGM(3) && (inNC(5) || player.currentChallenge == "postcngm3_3")) eff *= 0.75
-	if (hasAch("ngpp8") && mod.ngpp) eff *= 1.001
-	if (hasTimeStudy(212)) eff *= tsMults[212]()
-	if (hasTimeStudy(232) && bi) eff *= tmp.ts232
-
-	if (mod.udsp && player.dilation.active) eff *= exDilationBenefit() + 1
-	if (mod.ngp3) eff *= colorBoosts.r
-	if (hasGluonUpg("rg2")) eff *= Math.pow(player.dilation.freeGalaxies / 5e3 + 1, 0.25)
-	if (hasGluonUpg("rg4")) eff *= 1.5
-	if (hasBU(34)) eff *= tmp.blu[34]
-	if (redirectRepl) eff *= getReplGalEff()
-	return eff
-}
-
-function getPostGalaxyEff() {
-	let ret = inNGM(3) ? 1.1 : inNGM(2) ? 1.7 : 1.5
-	return ret
-}
-
 function getGalaxyTickSpeedMultiplier() {
 	if (inQC(2)) return 0.89
 
