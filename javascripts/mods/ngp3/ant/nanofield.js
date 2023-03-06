@@ -166,7 +166,7 @@ function getNanoRewardPower(reward, rewards) {
 }
 
 function getNanoRewardPowerEff() {
-	let x = PHOTON.eff(3)
+	let x = PHOTON.eff(2)
 	if (hasBU(31)) x *= tmp.blu[31]
 	return x
 }

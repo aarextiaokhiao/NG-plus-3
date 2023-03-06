@@ -61,7 +61,7 @@ function isQuantumReached() {
 	if (mod.ngp3) {
 		got = got && quarkGain().gt(0)
 		if (inQC(0)) got = got && ECComps("eterc14")
-		if (!inQC(0)) got = got && player.money.gte(pow10(getQCGoal(null, bigRipped())))
+		if (!inQC(0)) got = got && player.money.gte(getQCGoal())
 	}
 	return got
 }
@@ -190,7 +190,7 @@ function doQuantumProgress() {
 			var gg = getGHPGain()
 			if (player.meta.antimatter.lt(quantumReq)) id = 1
 			else if (!beSave.unlocked) id = 4
-			else if (!ghostified || player.money.lt(getQCGoal(undefined, true)) || Decimal.lt(gg, 2)) id = 5
+			else if (!ghostified || player.money.lt(getQCGoal()) || Decimal.lt(gg, 2)) id = 5
 			else if (!PHOTON.unlocked()) id = 7
 			else id = 6
 		} else if (inQC(0)) {
@@ -206,7 +206,7 @@ function doQuantumProgress() {
 		el("progresspercent").textContent = percentage
 		el("progresspercent").setAttribute('ach-tooltip', (mod.ngp3 ? "Meta-antimatter p" : "P") + 'ercentage to quantum')
 	} else if (id == 2) {
-		var percentage = Math.min(player.money.max(1).log10() / getQCGoal() * 100, 100).toFixed(2) + "%"
+		var percentage = Math.min(player.money.max(1).log(getQCGoal()) * 100, 100).toFixed(2) + "%"
 		el("progressbar").style.width = percentage
 		el("progresspercent").textContent = percentage
 		el("progresspercent").setAttribute('ach-tooltip','Percentage to Quantum Challenge goal')
@@ -226,7 +226,7 @@ function doQuantumProgress() {
 		el("progresspercent").textContent = percentage
 		el("progresspercent").setAttribute('ach-tooltip','Eternity points percentage to Break Eternity')
 	} else if (id == 5) {
-		var percentage = Math.min(brSave.bestThisRun.max(1).log10() / getQCGoal(undefined, true) * 100, 100).toFixed(2) + "%"
+		var percentage = Math.min(brSave.bestThisRun.max(1).log(getQCGoal()) * 100, 100).toFixed(2) + "%"
 		el("progressbar").style.width = percentage
 		el("progresspercent").textContent = percentage
 		el("progresspercent").setAttribute('ach-tooltip','Percentage to Ghostify')

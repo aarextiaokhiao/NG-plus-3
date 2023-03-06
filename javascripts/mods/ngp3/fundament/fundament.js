@@ -92,7 +92,7 @@ function ghostify(auto, force) {
 			showQuantumTab("uquarks")
 			showAntTab("antcore")
 			ghostifyReset(false, gain)
-		}, seconds * 750)
+		}, seconds * 625)
 		setTimeout(function(){
 			implosionCheck=0
 		}, seconds * 1000)
@@ -296,7 +296,7 @@ ghostifyAni = function(gain, amount, seconds=4) {
 		el("ghostifyanigained").innerHTML = ghostified ? "You now have <b>" + shortenDimensions(amount) + "</b> Elementary Particles. (+" + shortenDimensions(gain) + ")" : "We became small. You have enlarged enough to see first particles!<br>Congratulations for beating a PC with QCs 6 & 8 combination!"
 		el("ghostifyanitext").style.left = "0%"
 		el("ghostifyanitext").style.opacity = 1
-	}, seconds * 250)
+	}, seconds * 125)
 	setTimeout(function() {
 		el("ghostifyanitext").style.left = "100%"
 		el("ghostifyanitext").style.opacity = 0
@@ -306,14 +306,14 @@ ghostifyAni = function(gain, amount, seconds=4) {
 		el("ghostifyani").style.height = "0%"
 		el("ghostifyani").style.left = "50%"
 		el("ghostifyani").style.top = "50%"
-		el("ghostifyani").style.transform = "rotateZ(45deg)"
-	}, seconds * 750)
+		el("ghostifyani").style.transform = "rotateZ(360deg)"
+	}, seconds * 625)
 	setTimeout(function() {
 		el("ghostifyani").style.width = "0%"
 		el("ghostifyani").style.height = "0%"
 		el("ghostifyani").style.left = "50%"
 		el("ghostifyani").style.top = "50%"
-		el("ghostifyani").style.transform = "rotateZ(-45deg)"
+		el("ghostifyani").style.transform = "rotateZ(-180deg)"
 		el("ghostifyani").style["transition-duration"] = "0s"
 		el("ghostifyanitext").style.left = "-100%"
 		el("ghostifyanitext").style["transition-duration"] = "0s"
@@ -325,9 +325,9 @@ function getGHPGain() {
 	if (!bigRipped()) return E(0)
 	if (!ghostified) return E(1)
 
-	let log = brSave.bestThisRun.log10() / getQCGoal(undefined, true) - 1
+	let log = brSave.bestThisRun.log(getQCGoal()) - 1
 	if (log < 0) return E(0)
-	if (log > 15) log = Math.cbrt(log / 15) * 15
+	if (log > 25) log = Math.cbrt(log / 25) * 25
 
 	return pow10(log).mul(getGHPMult()).floor()
 }

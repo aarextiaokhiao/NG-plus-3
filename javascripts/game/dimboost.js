@@ -48,11 +48,11 @@ function setInitialDimensionPower() {
 	var tickspeedPower = player.totalTickGained
 	player.tickspeed = E_pow(tmp.tsReduce, tickspeedPower).mul(mod.ngep ? 500 : 1e3)
 
-	var ic3Power = tickspeedPower * getECReward(14)
+	var ic3Power = tickspeedPower * getIC3EffFromFreeUpgs()
 	if (inNGM(3) && player.currentChallenge != "postc5") ic3Power += getTickspeedBoostPower()
 	if ((inNC(15) || player.currentChallenge == "postc1" || player.currentChallenge == "postcngm3_3") && inNGM(4)) ic3Power -= (player.resets + player.tdBoosts) * 10
 
-	player.postC3Reward = E_pow(getPostC3Mult(), ic3Power)
+	player.postC3Reward = E_pow(getIC3Mult(), ic3Power)
 }
 
 function maxBuyDimBoosts(manual) {

@@ -22,7 +22,7 @@ function updateElectrons(retroactive) {
 		var cost = getElectronUpgCost(u)
 		el("electronupg" + u).innerHTML = "+" + (getElectronGainMult() / 4).toFixed(2) + "x Positrons<br>" +
 			"Level: " + getFullExpansion(quSave.electrons.rebuyables[u-1]) + "<br>" +
-			"Cost: " + ((u == 4 ? getFullExpansion : shortenCosts)(cost)) + " " + [null, "Time Theorems", "dilated time", "meta-antimatter", "Meta-Dimension Boosts"][u]
+			"Requires: " + ((u == 4 ? getFullExpansion : shortenCosts)(cost)) + " " + [null, "Time Theorems", "dilated time", "meta-antimatter", "Meta-Dimension Boosts"][u]
 	}
 }
 
@@ -64,52 +64,39 @@ function getElectronBoost(mod) {
 }
 
 function getElectronGainMult() {
-	let ret = 1
-	if (hasNU(5)) ret = 3
-	if (bigRipped()) ret *= PHOTON.eff(2, 0)
-	else if (!inQC(0)) return 0
-	return ret
+	if (!inQC(0)) return 0
+	return hasNU(5) ? 3 : 1
 }
 
 function getElectronGainFinalMult() {
 	return quSave.electrons.mult * getElectronGainMult()
 }
 
+function getElectronUpgRes(u) {
+	return E([null, player.timestudy.theorem, player.dilation.dilatedTime, player.meta.antimatter, player.meta.resets][u])
+}
+
 function getElectronUpgCost(u) {
-	var amount = quSave.electrons.rebuyables[u-1]
-	if (hasGluonUpg("gb5")) amount -= 0.3
-	if (hasBU(33)) amount -= tmp.blu[33]
+	var amt = quSave.electrons.rebuyables[u-1]
+	if (hasGluonUpg("gb5")) amt -= 0.3
+	if (hasBU(33)) amt -= tmp.blu[33]
+	amt = Math.max(amt, 0)
 
-	var base = amount * Math.max(amount - 1, 1) + 1
+	var base = amt * Math.max(amt - 1, 1) + 1
 	var exp = getElectronUpgCostScalingExp(u)
-	if (exp != 1) {
-		if (base < 0) base = -Math.pow(-base, exp)
-		else base = Math.pow(base, exp)
-	}
-	base += ([null, 82, 153, 638, 26])[u]
+	base = Math.pow(base, exp)
+	base + [null, 82, 153, 638, 26][u]
 
-	if (u == 1) return Math.pow(10, base)
-	if (u == 4) return Math.max(Math.floor(base), 0)
-	return pow10(base)
+	if (u != 4) return pow10(base)
+	return Math.floor(base)
 }
 
 function getElectronUpgCostScalingExp(u) {
-	if (u == 1 || u == 4) return 1
-	return 2
+	return (u == 1 || u == 4) ? 1 : 2
 }
 
 function buyElectronUpg(u, quick) {
 	if (!canBuyElectronUpg(u)) return false
-	var cost = getElectronUpgCost(u)
-	if (u == 1) player.timestudy.theorem -= cost
-	else if (u == 2) player.dilation.dilatedTime = player.dilation.dilatedTime.sub(cost)
-	else if (u == 3) player.meta.antimatter = player.meta.antimatter.sub(cost)
-	else if (u == 4 && !hasAch("ng3p64")) {
-		player.meta.resets -= cost
-		player.meta.antimatter = getMetaAntimatterStart()
-		clearMetaDimensions()
-		for (let i = 2; i <= 8; i++) if (!canBuyMetaDimension(i)) el(i + "MetaRow").style.display = "none"
-	}
 	quSave.electrons.rebuyables[u - 1]++
 	if (quick) return true
 	quSave.electrons.mult += 0.25
@@ -117,9 +104,5 @@ function buyElectronUpg(u, quick) {
 }
 
 function canBuyElectronUpg(id) {
-	if (!inQC(0)) return false
-	if (id > 3) return player.meta.resets >= getElectronUpgCost(4)
-	if (id > 2) return player.meta.antimatter.gte(getElectronUpgCost(3))
-	if (id > 1) return player.dilation.dilatedTime.gte(getElectronUpgCost(2))
-	return player.timestudy.theorem >= getElectronUpgCost(1)
+	return getElectronUpgRes(id).gte(getElectronUpgCost(id))
 }

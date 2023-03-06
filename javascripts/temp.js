@@ -69,7 +69,7 @@ function updateIntergalacticTemp() {
 	var gal = player.galaxies
 	var exp = Math.min(Math.sqrt(Math.log10(Math.max(gal, 1))) * 2, 2.5)
 	tmp.ig = pow10(Math.pow(gal, exp))
-	if (!bigRipped()) tmp.ig = tmp.ig.pow(PHOTON.eff(5))
+	if (!bigRipped()) tmp.ig = tmp.ig.pow(PHOTON.eff(4))
 }
 
 function updateTS232Temp() {

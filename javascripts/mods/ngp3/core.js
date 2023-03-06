@@ -1,6 +1,6 @@
 //VERSION: 2.31
 let ngp3_ver = 2.31
-let ngp3_build = 20230304
+let ngp3_build = 20230305
 function doNGP3Updates() {
 	if (!aarMod.ngp3_build) aarMod.ngp3_build = 0
 	if (aarMod.ngp3_build < 20221230) quSave.multPower = 0
@@ -388,7 +388,7 @@ var ngp3Features = {
 	},
 	fu: {
 		name: "Fundament",
-		threshold: () => "Get " + shorten(getQuantumReq()) + " meta-Antimatter in Big Rip",
+		threshold: () => "Get " + shortenDimensions(getQCIdGoal([6,8],true)) + " antimatter in Big Rip",
 		next: "ph",
 		tab() {
 			showTab("ghostify")
@@ -396,7 +396,7 @@ var ngp3Features = {
 	},
 	ph: {
 		name: "Photons",
-		threshold: () => "Get " + shortenCosts(pow10(2.4e10)) + " antimatter in Big Rip",
+		threshold: () => "Get " + shortenCosts(pow10(1.8e9)) + " antimatter in Big Rip",
 		next: "bl",
 		tab() {
 			showTab("ghostify")
@@ -425,7 +425,7 @@ function ngp3_feature_notify(k) {
 	$.notify("Congratulations! You unlocked " + ngp3Features[k].name + "!", "success")
 
 	el("ngp3_feature_ani").style.display = ""
-	el("ngp3_feature_ani_4").textContent = ngp3Features[k].name + " is now unlocked!"
+	el("ngp3_feature_ani_4").textContent = "You've unlocked " + ngp3Features[k].name + "!"
 	setTimeout(function() {
 		el("ngp3_feature_ani_1").style.background = "transparent"
 		el("ngp3_feature_ani_2a").style.background = "transparent"
@@ -438,18 +438,17 @@ function ngp3_feature_notify(k) {
 		el("ngp3_feature_ani_2b").style.top = "0"
 		el("ngp3_feature_ani_2b").style.width = "100%"
 		el("ngp3_feature_ani_2b").style.height = "100%"
-		el("ngp3_feature_ani_3").style.right = "0"
 	}, 100)
 
 	setTimeout(function() {
-		el("ngp3_feature_ani").style.left = "150%"
+		el("ngp3_feature_ani").style.opacity = 0
 
 		var nxt = ngp3Features[k].next
 		$.notify(nxt ? ngp3Features[nxt].threshold() + " to unlock the next feature: " + ngp3Features[nxt].name + "!" : "Congratulations, you have reached the end-game for now...", "error")
-	}, 5000)
+	}, 3500)
 	setTimeout(function() {
 		el("ngp3_feature_ani").style.display = "none"
-		el("ngp3_feature_ani").style.left = "0%"
+		el("ngp3_feature_ani").style.opacity = 1
 		el("ngp3_feature_ani_1").style.background = "white"
 		el("ngp3_feature_ani_2a").style.background = "#7fff00"
 		el("ngp3_feature_ani_2a").style.left = "50%"
@@ -461,8 +460,7 @@ function ngp3_feature_notify(k) {
 		el("ngp3_feature_ani_2b").style.top = "50%"
 		el("ngp3_feature_ani_2b").style.width = "0"
 		el("ngp3_feature_ani_2b").style.height = "0"
-		el("ngp3_feature_ani_3").style.right = "150%"
-	}, 6000)
+	}, 4000)
 }
 
 //v2.4: Moved from old functions...

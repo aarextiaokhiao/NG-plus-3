@@ -1785,14 +1785,11 @@ function dimensionTabDisplayUpdating(){
 	el("mdtabbtn").style.display = hasDilStudy(6) ? "" : "none"
 }
 
-function infinityTimeMetaBlackHoleDimUpdating(diff){
+function infinityTimeBlackHoleDimUpdating(diff){
 	var step = inQC(4) ? 2 : 1
 	var stepT = inNC(7) && inNGM(4) ? 2 : step
 	for (let tier = 1 ; tier < 9; tier++) {
-		if (tier < 9 - step){
-			player["infinityDimension"+tier].amount = player["infinityDimension"+tier].amount.plus(DimensionProduction(tier+step).mul(diff / 10))
-			if (mod.ngpp) player.meta[tier].amount = player.meta[tier].amount.plus(getMetaDimensionProduction(tier+step).mul(diff / 10))
-		}
+		if (tier < 9 - step) player["infinityDimension"+tier].amount = player["infinityDimension"+tier].amount.plus(DimensionProduction(tier+step).mul(diff / 10))
 		if (tier < 9 - stepT) player["timeDimension"+tier].amount = player["timeDimension"+tier].amount.plus(getTimeDimensionProduction(tier+stepT).mul(diff / 10))
 		if (mod.ngud) if (isBHDimUnlocked(tier+step)) player["blackholeDimension"+tier].amount = player["blackholeDimension"+tier].amount.plus(getBlackholeDimensionProduction(tier+step).mul(diff / 10))
 	}
@@ -2276,7 +2273,7 @@ function gameLoop(diff) {
 	if (player.currentEternityChall === "eterc12") diff /= getEC12Slowdown()
 	incrementTimesUpdating(diffStat)
 
-	if (mod.ngp3) {
+	/*if (mod.ngp3) {
 		ngp3DilationUpdating()
 		if (hasBraveMilestone(8)) passiveQuantumLevelStuff(diff)
 		if (hasMasteryStudy('t291')) updateEternityUpgrades() // to fix the 5ep upg display
@@ -2290,10 +2287,10 @@ function gameLoop(diff) {
 
 		doQuantumButtonDisplayUpdating(diff)
 		doGhostifyButtonDisplayUpdating(diff)
-	}
+	}*/
 	if (mod.ngpp) metaDimsUpdating(diff)
 
-	infinityTimeMetaBlackHoleDimUpdating(diff) //production of those dims
+	infinityTimeBlackHoleDimUpdating(diff) //production of those dims
 	giveBlackHolePowerUpdating(diff)
 
 	EPonEternityPassiveGain(diff)

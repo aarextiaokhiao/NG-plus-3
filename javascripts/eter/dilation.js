@@ -65,7 +65,7 @@ function getEternityBoostToDT(){
 	var gain = E(1)
 	let eterExp = getEternitiesAndDTBoostExp()
 	if (eterExp > 0) gain = gain.mul(Decimal.max(getEternitied(), 1).pow(eterExp))
-	if (player.dilation.upgrades.includes('ngpp2') && mod.ngep) {
+	if (player.dilation.upgrades.includes('ngpp2') && mod.p3ep) {
 		let e = E(getEternitied())
 		gain = gain.mul(e.max(10).log10()).mul(Math.pow(e.max(1e7).log10()-6,3))
 		if (e.gt(5e14)) gain = gain.mul(Math.sqrt(e.log10())) // this comes into play at the grind right before quantum
@@ -84,9 +84,7 @@ function getNGUDTGain(){
 
 function getDilPower() {
 	var ret = E_pow(getDil3Power(), getDilUpgPower(3))
-	if (NGP3andVanillaCheck()) {
-		if (hasAch("r132")) ret = ret.mul(Math.max(Math.pow(player.galaxies, 0.04), 1))
-	}
+	if (NGP3andVanillaCheck() && hasAch("r132")) ret = ret.mul(Math.max(Math.pow(player.galaxies, 0.04), 1))
 
 	if (player.dilation.upgrades.includes("ngud1")) ret = getD18Bonus().mul(ret)
 	if (mod.ngp3) {
@@ -353,7 +351,7 @@ function buyDilationUpgrade(pos, max, isId) {
 		if (cost.gt("1e100000")) return
 		if (id[1] == 2 && !canBuyGalaxyThresholdUpg()) return
 
-		player.dilation.dilatedTime = player.dilation.dilatedTime.sub(cost)
+		if (player.dilation.dilatedTime.lt(pow10(1e3))) player.dilation.dilatedTime = player.dilation.dilatedTime.sub(cost)
 		player.dilation.rebuyables[id[1]] = (player.dilation.rebuyables[id[1]] || 0) + 1
 		
 		if (id[1] == 2) {

@@ -40,7 +40,7 @@ function isChanceAffordable() {
 
 function upgradeReplicantiInterval() {
 	if (!(player.infinityPoints.gte(player.replicanti.intervalCost) && isIntervalAffordable() && player.eterc8repl !== 0)) return 
-	player.infinityPoints = player.infinityPoints.minus(player.replicanti.intervalCost)
+	if (player.infinityPoints.lt(pow10(1e9))) player.infinityPoints = player.infinityPoints.minus(player.replicanti.intervalCost)
 	player.replicanti.interval *= 0.9
 	if (player.replicanti.interval < 1) {
 		let x = 1 / player.replicanti.interval
@@ -94,7 +94,7 @@ function getRGCost(offset = 0, costChange) {
 function upgradeReplicantiGalaxy() {
 	var cost = getRGCost()
 	if (player.infinityPoints.gte(cost) && player.eterc8repl !== 0) {
-		player.infinityPoints = player.infinityPoints.minus(cost)
+		if (player.infinityPoints.lt(pow10(1e9))) player.infinityPoints = player.infinityPoints.minus(cost)
 		player.replicanti.galCost = getRGCost(1)
 		player.replicanti.gal += 1
 		if (player.currentEternityChall == "eterc8") player.eterc8repl -= 1
@@ -139,10 +139,12 @@ function autoBuyRG() {
 	let cost = getRGCost(toBuy - 1)
 	let toBuy2 = toBuy
 	while (toBuy > 0 && newIP.div(cost).lt(1e16)) {
-		if (newIP.gte(cost)) newIP = newIP.sub(cost)
-		else {
-			newIP = player.infinityPoints.sub(cost)
-			toBuy2--
+		if (player.infinityPoints.lt(pow(1e9))) {
+			if (newIP.gte(cost)) newIP = newIP.sub(cost)
+			else {
+				newIP = player.infinityPoints.sub(cost)
+				toBuy2--
+			}
 		}
 		toBuy--
 		cost = getRGCost(toBuy - 1)

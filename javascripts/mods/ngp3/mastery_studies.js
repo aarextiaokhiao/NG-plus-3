@@ -149,7 +149,7 @@ var masteryStudies = {
 		},
 		344: function(){
 			var ret = Math.pow(quSave.replicants.quarks.div(1e7).add(1).log10(), 0.25) * 0.17 + 1
-			return ret
+			return Math.min(ret, 2)
 		},
 		351: function() { //maybe use softcap.js
 			let log = player.timeShards.max(1).log10() * 14e-7
@@ -199,7 +199,7 @@ var masteryStudies = {
 			return pow10(exp)
 		},
 		421: function(){
-			let ret = Math.pow(Math.max(-getTickspeed().log10() / 1e13 - 0.75, 1), 2)
+			let ret = pow10(Math.pow(-getTickspeed().log10() / 1e13 + 1, 1/3) - 1)
 			return ret
 		},
 		431: function(){

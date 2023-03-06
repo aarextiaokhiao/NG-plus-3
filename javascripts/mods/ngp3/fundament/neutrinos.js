@@ -278,29 +278,29 @@ const NEUTRINO = {
 
 				eff() {
 					return { 
-						normal: E_pow(2, player.galaxies / 1e5),
+						normal: pow2(player.galaxies / 1e5),
 						replicated: getTotalRG() / 2e4 + 1,
-						free: Math.pow(2, player.dilation.freeGalaxies / 2e3), //NU12 
+						free: pow2(player.dilation.freeGalaxies / 2e3), //NU12 
 					}
 				},
 				effDesc: e => `(hover)`
 			}, {
 				unl: _ => PHOTON.unlocked(),
-				cost: E(1e33),
+				cost: E(1e24),
 				desc: `Tachyonic Galaxies scale Positron softcap later.`,
 
-				eff: _ => player.dilation.freeGalaxies * 2,
+				eff: _ => player.dilation.freeGalaxies * 3,
 				effDesc: e => `+${getFullExpansion(e)}`
 			}, {
 				unl: _ => PHOTON.unlocked(),
-				cost: E(1e42),
+				cost: E(1e27),
 				desc: `Galaxy strength adds Meta-Antimatter effect exponent.`,
 
 				eff: _ => tmp.galStr / 2,
 				effDesc: e => `+^${shorten(e)}`
 			}, {
 				unl: _ => PHOTON.unlocked(),
-				cost: E(1e54),
+				cost: E(1e30),
 				desc: `First Nanobenefit boosts Photons instead.`
 			}
 		]

@@ -185,7 +185,7 @@ function buyManyInfinityDimension(tier, max) {
 	var dim = player["infinityDimension" + tier]
 	var toBuy = max ? Math.floor(player.infinityPoints.div(cost).log10() / Math.log10(costMult) + 1) : 1
 	dim.cost = dim.cost.mul(E_pow(costMult, toBuy))
-	if (player.infinityPoints.lt(pow10(1e10))) player.infinityPoints = player.infinityPoints.sub(getIDCost(tier).div(costMult))
+	if (player.infinityPoints.lt(pow10(1e9))) player.infinityPoints = player.infinityPoints.sub(getIDCost(tier).div(costMult))
 	dim.amount = dim.amount.plus(10 * toBuy)
 	dim.power = dim.power.mul(E_pow(getInfBuy10Mult(tier), toBuy))
 	dim.baseAmount += 10 * toBuy
@@ -286,7 +286,7 @@ function getEU2Mult() {
 
 	if (hasAch("ngpp15")) {
 		let exp = Math.pow(Decimal.log10(e), 4.75)
-		exp = Math.min(exp, 1e21)
+		exp = Math.min(exp, 1e13)
 		achReward = pow10(exp)
 	}
 	return E_pow(cap/200 + 1, Math.log(cap * 2 + 1) / Math.log(4)).mul(Decimal.div(soft, 200).add(1).mul(Decimal.mul(soft, 2).add(1).log(4)).max(1)).max(achReward)

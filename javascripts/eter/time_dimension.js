@@ -297,16 +297,13 @@ function nonERFreeTickUpdating(){
 	if (threshold < 1.1 && inNGM(2)) threshold = 1 + 0.1 / (2.1 - threshold)
 	if (threshold < 1.01 && inNGM(2)) threshold = 1.005 + 0.005 / (2.01 - threshold)
 
-	let mult = 1
-	if (mod.ngp3) mult *= PHOTON.eff(1)
-
-	const gain = Math.ceil(E(player.timeShards).dividedBy(player.tickThreshold).log10()/Math.log10(threshold)*mult)
+	const gain = Math.ceil(E(player.timeShards).dividedBy(player.tickThreshold).log10()/Math.log10(threshold))
 	player.totalTickGained += gain
 	player.tickspeed = player.tickspeed.mul(E_pow(tmp.tsReduce, gain))
-	player.postC3Reward = E_pow(getPostC3Mult(), gain * getIC3EffFromFreeUpgs()).mul(player.postC3Reward)
+	player.postC3Reward = E_pow(getIC3Mult(), gain * getIC3EffFromFreeUpgs()).mul(player.postC3Reward)
 
 	const base = inNGM(4) ? 0.01 : inNGM(3) ? .1 : 1
-	player.tickThreshold = E_pow(threshold, player.totalTickGained / mult).mul(base)
+	player.tickThreshold = E_pow(threshold, player.totalTickGained).mul(base)
 	el("totaltickgained").textContent = "You've gained " + getFullExpansion(player.totalTickGained) + " tickspeed upgrades."
 	tmp.tickUpdate = true
 }

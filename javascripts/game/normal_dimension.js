@@ -246,7 +246,7 @@ function getDimensionPowerMultiplier(focusOn, debug) {
 		ret = Decimal.mul(ret, Math.log10(player.resets + 1) + 1)
 		ret = Decimal.mul(ret, Math.log10(Math.max(player.galaxies, 0) + 1) * 5 + 1)
 	}
-	if (mod.ngp3) ret = PHOTON.eff(2).mul(ret)
+	if (mod.ngp3) ret = E(PHOTON.eff(1)).mul(ret)
 	return ret
 }
 	

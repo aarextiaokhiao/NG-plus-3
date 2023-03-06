@@ -1,7 +1,7 @@
 let PHOTON = {
 	/* CORE */
 	//Unlock
-	req: _ => bigRipped() && player.money.gte(pow10(2.4e9)),
+	req: _ => bigRipped() && player.money.gte(pow10(1.8e9)),
 	unlocked: _ => ghSave?.photons.unl,
 	unlock() {
 		ghSave.photons.unl = true
@@ -114,28 +114,28 @@ let PHOTON = {
 			desc: e => `Discharged Galaxies work, but as ${(e*100).toFixed(1)}% strong.`
 		}, {
 			name: "orange",
-			eff: a => Math.log10(a + 10),
-			desc: e => `Free tickspeed upgrades scale ${e.toFixed(3)}x faster.`
-		}, {
-			name: "yellow",
 			eff: a => E(tmp.tsReduce || 1).pow(-(Math.log10(a + 10) - 1) / 10),
 			desc: e => `Multiply per-ten multiplier by ${shorten(e)}x. (based on tickspeed reduction)`
 		}, {
-			name: "green",
+			name: "yellow",
 			eff: a => Math.cbrt(a + 1),
 			desc: e => `Strengthen Nanobenefits by ${e.toFixed(3)}x.`
 		}, {
-			name: "blue",
+			name: "green",
 			eff: a => Math.log10(a / 3 + 1) + 1,
 			desc: e => `Nanorewards speed up Decay by ${e.toFixed(3)}x each.`
 		}, {
-			name: "violet",
+			name: "blue",
 			eff: a => Math.log2(a + 2),
 			desc: e => `Raise Intergalactic by ^${shorten(e)} outside of Big Rips.`
 		}, {
+			name: "violet",
+			eff: a => a/3+1,
+			desc: e => `2nd Infinite Time softcap scales ^${shorten(e)} later.`
+		}, {
 			name: "ultraviolet",
-			eff: a => Math.pow(2, a / 3),
-			desc: e => e == 1/0 ? `Remove 2nd Infinite Time softcap.` : `2nd Infinite Time softcap scales ^${shorten(e)} later.`
+			eff: a => 1,
+			desc: e => `Placeholder.`
 		}
 	],
 	eff(x, def = 1) {
@@ -157,7 +157,7 @@ let PHOTON = {
 	},
 	update() {
 		if (!PHOTON.unlocked()) {
-			el("gphUnl").textContent = "Get "+shortenCosts(pow10(2.4e9))+" antimatter in Big Rip to unlock Photons."
+			el("gphUnl").textContent = "Get "+shortenCosts(pow10(1.8e9))+" antimatter in Big Rip to unlock Photons."
 			return
 		}
 

@@ -102,38 +102,44 @@ function getGalaxyTickSpeedMultiplier() {
 	return pow10(log)
 }
 
-function getPostC3Mult() {
-	let base = getPostC3Base()
-	let exp = getPostC3Exp()
+function getIC3Mult() {
+	let base = getIC3Base()
+	let exp = getIC3Exp()
 	if (exp > 1) return E_pow(base,exp)
 	return base
 }
 
-function getPostC3Base() {
+function getIC3Base() {
 	if (player.currentChallenge=="postcngmm_3") return 1
-	let perGalaxy = 0.005;
-	if (inNGM(3)) perGalaxy = 0.002
-	if (inQC(2)) perGalaxy = 0
+	let power = 0.005;
+	if (inNGM(3)) power = 0.002
+	if (inQC(2)) power = 0
 
-	if (hasNB(9)) perGalaxy *= ntEff("boost", 9)
-	if (hasNU(12)) perGalaxy *= ntEff("upg", 12).free
-	if (inNGM(2)) return player.galaxies * perGalaxy + 1.05
-
-	if (tmp.cp > 1) {
-		if (inNGM(3)) perGalaxy *= tmp.cp / 10 + .9
-		else perGalaxy *= tmp.cp / 5 + .8
+	if (inNGM(2)) {
+		if (tmp.cp > 1) {
+			if (inNGM(3)) power *= tmp.cp / 10 + .9
+			else power *= tmp.cp / 5 + .8
+		}
+		return player.galaxies * power + 1.05
 	}
-	var g = tmp.initGal
-	perGalaxy *= getGalaxyEff()
 
-	let ret = getGalaxyPower(g) * perGalaxy + 1.05
-	if (inNC(6, 1) || player.currentChallenge == "postc1") ret -= inNGM(4) ? 0.02 : 0.05
-	else if (inOnlyNGM(3)) ret -= 0.03
+	power *= getGalaxyEff()
+	if (mod.ngp3) {
+		if (hasNB(9)) power = ntEff("boost", 9).mul(power)
+		if (hasNU(12)) power = ntEff("upg", 12).free.mul(power)
 
-	return ret
+		let ret = power.mul(getGalaxyPower(tmp.initGal)).add(1.05)
+		if (inNC(6, 1) || player.currentChallenge == "postc1") ret = ret.sub(0.05)
+		return ret
+	} else {
+		let ret = getGalaxyPower(tmp.initGal) * power + 1.05
+		if (inNC(6, 1) || player.currentChallenge == "postc1") ret -= inNGM(4) ? 0.02 : 0.05
+		else if (inOnlyNGM(3)) ret -= 0.03
+		return ret
+	}
 }
 
-function getPostC3Exp() {
+function getIC3Exp() {
 	let x = 1
 	if (inNGM(2)) {
 		let g = getGalaxyPower(0, false, true)
@@ -169,7 +175,7 @@ function buyTickSpeed() {
 	if (inNC(2) || player.currentChallenge == "postc1") player.chall2Pow = 0
 	if (!tmp.be) {
 		player.tickspeed = player.tickspeed.mul(tmp.tsReduce)
-		if (player.challenges.includes("postc3") || player.currentChallenge == "postc3" || isIC3Trapped()) player.postC3Reward = player.postC3Reward.mul(getPostC3Mult())
+		if (player.challenges.includes("postc3") || player.currentChallenge == "postc3" || isIC3Trapped()) player.postC3Reward = player.postC3Reward.mul(getIC3Mult())
 	}
 	player.postC8Mult = E(1)
 	if (inNC(14) && !inNGM(3)) player.tickBoughtThisInf.current++
@@ -207,7 +213,7 @@ function buyMaxPostInfTickSpeed(mult) {
 	if (inNC(2) || player.currentChallenge == "postc1") player.chall2Pow = 0
 	if (!tmp.be || player.currentEternityChall == "eterc10") {
 		player.tickspeed = player.tickspeed.mul(E_pow(mult, buying));
-		if (player.challenges.includes("postc3") || player.currentChallenge == "postc3" || isIC3Trapped()) player.postC3Reward = player.postC3Reward.mul(E_pow(getPostC3Mult(), buying))
+		if (player.challenges.includes("postc3") || player.currentChallenge == "postc3" || isIC3Trapped()) player.postC3Reward = player.postC3Reward.mul(E_pow(getIC3Mult(), buying))
 	}
 	player.tickSpeedCost = player.tickSpeedCost.mul(player.tickspeedMultiplier.pow(buying-1)).mul(E_pow(mi, (buying-1)*(buying-2)/2))
 	player.tickspeedMultiplier = player.tickspeedMultiplier.mul(E_pow(mi, buying-1))
@@ -234,7 +240,7 @@ function buyMaxTickSpeed() {
 		getOrSubResource(1, pow10(toBuy).sub(1).div(9).mul(cost))
 		if (!tmp.be || player.currentEternityChall == "eterc10") {
 			player.tickspeed = E_pow(tmp.tsReduce, toBuy).mul(player.tickspeed)
-			if (player.challenges.includes("postc3") || player.currentChallenge == "postc3" || isIC3Trapped()) player.postC3Reward = player.postC3Reward.mul(E_pow(getPostC3Mult(), toBuy))
+			if (player.challenges.includes("postc3") || player.currentChallenge == "postc3" || isIC3Trapped()) player.postC3Reward = player.postC3Reward.mul(E_pow(getIC3Mult(), toBuy))
 		}
 		player.tickSpeedCost = player.tickSpeedCost.mul(pow10(toBuy))
 		player.postC8Mult = E(1)
@@ -250,7 +256,7 @@ function buyMaxTickSpeed() {
 			if (costIncreaseActive(player.tickSpeedCost)) player.tickspeedMultiplier = player.tickspeedMultiplier.mul(getTickSpeedCostMultiplierIncrease())
 			if (!tmp.be || player.currentEternityChall == "eterc10") {
 				player.tickspeed = player.tickspeed.mul(mult);
-				if (player.challenges.includes("postc3") || player.currentChallenge == "postc3" || isIC3Trapped()) player.postC3Reward = player.postC3Reward.mul(getPostC3Mult())
+				if (player.challenges.includes("postc3") || player.currentChallenge == "postc3" || isIC3Trapped()) player.postC3Reward = player.postC3Reward.mul(getIC3Mult())
 			}
 			player.postC8Mult = E(1)
 			if (!cannotUsePostInfTickSpeed()) buyMaxPostInfTickSpeed(mult);

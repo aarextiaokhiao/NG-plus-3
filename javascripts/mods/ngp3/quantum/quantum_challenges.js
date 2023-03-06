@@ -12,7 +12,7 @@ function updateQuantumChallenges() {
 		el(property).textContent = pcFocus ? "Choose" : QCIntensity(qc) ? "Completed" : inQC(qc) ? "Running" : "Start"
 		el(property).className = pcFocus ? "challengesbtn" : QCIntensity(qc) ? "completedchallengesbtn" : inQC(qc) ? "onchallengebtn" : "challengesbtn"
 		el(property + "cost").textContent = isQCFree() ? "" : "Req: " + getFullExpansion(quantumChallenges.costs[qc]) + " Positrons"
-		el(property + "goal").textContent = "Goal: " + shortenCosts(pow10(getQCGoal(qc))) + " antimatter"
+		el(property + "goal").textContent = "Goal: " + shortenCosts(getQCGoal(qc)) + " antimatter"
 	}
 
 	updateQCDisplaysSpecifics()
@@ -40,31 +40,26 @@ function updateInQCs() {
 	}
 }
 
+function getQCIdGoal(qcs, bigRip) {
+	let mult = 1
+	if (hasAch("ng3p96") && !bigRip) mult *= 0.95
+	if (qcs.includes(1) && qcs.includes(3)) mult *= 1.6
+	if (qcs.includes(2) && qcs.includes(6)) mult *= 1.7
+	if (qcs.includes(3) && qcs.includes(7)) mult *= 2.68
+	if (qcs.includes(3) && qcs.includes(6)) mult *= 3
+
+	let r = 0
+	if (!qcs[0] || !qcs[1]) r = quantumChallenges.goals[qcs[0] || qcs[1]] * mult
+	else r = quantumChallenges.goals[qcs[0]] * quantumChallenges.goals[qcs[1]] / 1e11 * mult * mult
+	return pow10(r)
+}
+
 function getQCGoal(num, bigRip) {
 	if (!mod.ngp3) return 0
-	var c1 = 0
-	var c2 = 0
-	var mult = 1
-	if (hasAch("ng3p96") && !bigRip) mult *= 0.95
-	if (num == undefined) {
-		var data = tmp.inQCs
-		if (data[0]) c1 = data[0]
-		if (data[1]) c2 = data[1]
-	} else if (num < 9) {
-		c1 = num
-	} else if (quSave.pairedChallenges.order[num - 8]) {
-		c1 = quSave.pairedChallenges.order[num - 8][0]
-		c2 = quSave.pairedChallenges.order[num - 8][1]
-	}
-	if (c1 == 0) return quantumChallenges.goals[0] * mult
-	if (c2 == 0) return quantumChallenges.goals[c1] * mult
-	var cs = [c1, c2]
-	mult *= mult
-	if (cs.includes(1) && cs.includes(3)) mult *= 1.6
-	if (cs.includes(2) && cs.includes(6)) mult *= 1.7
-	if (cs.includes(3) && cs.includes(7)) mult *= 2.68
-	if (cs.includes(3) && cs.includes(6)) mult *= 3
-	return quantumChallenges.goals[c1] * quantumChallenges.goals[c2] / 1e11 * mult
+
+	if (num == undefined) return getQCIdGoal(tmp.inQCs, bigRipped())
+	if (num > 8) return getQCIdGoal(quSave.pairedChallenges.order[num - 8], bigRip)
+	if (num <= 8) return getQCIdGoal([num], bigRip)
 }
 
 function QCIntensity(num) {
@@ -102,7 +97,7 @@ let qcRewards = {
 			let ipow = player.infinityPower.plus(1).log10()
 			let log = Math.sqrt(ipow / 2e8) 
 			if (comps >= 2) log += Math.pow(ipow / 1e9, 4/9 + comps/9)
-			
+
 			log = softcap(log, "qc3reward")
 			return pow10(log)
 		},
@@ -169,7 +164,7 @@ function selectQC(x) {
 function doReachAMGoalStuff(chall){
 	if (el("welcome").style.display != "flex") el("welcome").style.display = "flex"
 	else aarMod.popUpId = ""
-	el("welcomeMessage").innerHTML = "You reached the antimatter goal (" + shorten(pow10(getQCGoal())) + "), but you didn't reach the meta-antimatter goal yet! Get " + shorten(getQuantumReq()) + " meta-antimatter" + (bigRipped() ? " and then you can fundament!" : " and then go Quantum to complete your challenge!")
+	el("welcomeMessage").innerHTML = "You reached the antimatter goal (" + shorten(getQCGoal()) + "), but you didn't reach the meta-antimatter goal yet! Get " + shorten(getQuantumReq()) + " meta-antimatter" + (bigRipped() ? " and then you can fundament!" : " and then go Quantum to complete your challenge!")
 	quSave.nonMAGoalReached.push(chall)
 }
 
@@ -188,7 +183,7 @@ function updatePairedChallenges() {
 		var sc2 = (sc1 ? quSave.pairedChallenges.order[pc].length > 1 : false) ? quSave.pairedChallenges.order[pc][1] : 0
 		el(property+"desc").textContent = "Paired Challenge "+pc+": Both Quantum Challenge " + (sc1 ? sc1 : "?") + " and " + (sc2 ? sc2 : "?") + " are applied."
 		el(property+"cost").textContent = isQCFree() ? "" : "Req: " + (sc2 ? getFullExpansion(getQCCost(pc + 8)) : "???") + " Positrons"
-		el(property+"goal").textContent = "Goal: " + (sc2 ? shortenCosts(pow10(getQCGoal(pc + 8))) : "???") + " antimatter"
+		el(property+"goal").textContent = "Goal: " + (sc2 ? shortenCosts(getQCGoal(pc + 8)) : "???") + " antimatter"
 		el(property).textContent = pcFocus == pc ? "Cancel" : (quSave.pairedChallenges.order[pc] ? quSave.pairedChallenges.order[pc].length < 2 : true) ? "Assign" : quSave.pairedChallenges.completed >= pc ? "Completed" : quSave.pairedChallenges.completed + 1 < pc ? "Locked" : quSave.pairedChallenges.current == pc ? "Running" : "Start"
 		el(property).className = pcFocus == pc || (quSave.pairedChallenges.order[pc] ? quSave.pairedChallenges.order[pc].length < 2 : true) ? "challengesbtn" : quSave.pairedChallenges.completed >= pc ? "completedchallengesbtn" : quSave.pairedChallenges.completed + 1 <pc ? "lockedchallengesbtn" : quSave.pairedChallenges.current == pc ? "onchallengebtn" : "challengesbtn"
 

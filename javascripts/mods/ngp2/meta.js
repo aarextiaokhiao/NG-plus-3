@@ -341,8 +341,7 @@ function getExtraDimensionBoostPower() {
 }
 
 function getExtraDimensionBoostPowerUse() {
-	if (hasAch("ng3p71")) return player.meta.bestOverQuantums
-	return player.meta.bestAntimatter
+	return player.meta[hasAch("ng3p71") ? "bestOverQuantums" : "bestAntimatter"]
 }
 
 function getMADimBoostPowerExp(ma = player.meta.antimatter){
@@ -413,7 +412,7 @@ function updateMetaDimensions () {
 	var req = getQuantumReq()
 	var reqGotten = isQuantumReached()
 	var newClassName = reqGotten ? (bigRip && player.options.theme == "Aarex's Modifications" ? "" : "storebtn ") + (bigRip ? "aarexmodsghostifybtn" : "") : 'unavailablebtn'
-	el("quantumResetLabel").textContent = (bigRip ? 'Ghostify' : 'Quantum') + ': requires ' + shorten(req) + ' meta-antimatter ' + (!inQC(0) ? "and " + shortenCosts(pow10(getQCGoal())) + " antimatter" : player.masterystudies ? "and an EC14 completion" : "")
+	el("quantumResetLabel").textContent = (bigRip ? 'Ghostify' : 'Quantum') + ': requires ' + shorten(req) + ' meta-antimatter ' + (!inQC(0) ? "and " + shortenCosts(getQCGoal()) + " antimatter" : player.masterystudies ? "and an EC14 completion" : "")
 
 	var message = 'Lose all your prior progress'
 	if (reqGotten && bigRip && ghostified) {
@@ -445,8 +444,13 @@ function getMetaUnlCost() {
 }
 
 function metaDimsUpdating(diff){
+	var step = inQC(4) ? 2 : 1
+	for (let tier = 1 ; tier < 9; tier++) {
+		if (tier < 9 - step) player.meta[tier].amount = player.meta[tier].amount.plus(getMetaDimensionProduction(tier+step).mul(diff / 10))
+	}
+
 	player.meta.antimatter = player.meta.antimatter.plus(getMetaDimensionProduction(1).mul(diff))
-	if (inQC(4)) player.meta.antimatter = player.meta.antimatter.plus(getMetaDimensionProduction(1).mul(diff))
+	if (inQC(4)) player.meta.antimatter = player.meta.antimatter.plus(getMetaDimensionProduction(2).mul(diff))
 	player.meta.bestAntimatter = player.meta.bestAntimatter.max(player.meta.antimatter)
 	if (mod.ngp3) {
 		player.meta.bestOverQuantums = player.meta.bestOverQuantums.max(player.meta.antimatter)

@@ -456,7 +456,7 @@ function drawQuarkAnimation(ts){
 		lastTs = ts
 
 		qkctx.clearRect(0, 0, qkc.width, qkc.height)
-		let amt = Math.min(Math.log10(quantumWorth.add(1).log10() + 1) * 50, 150)
+		let amt = Math.min(Math.log10(quantumWorth.add(1).log10() + 10) * 50, 200)
 		for (let i = 0; i < amt; i++) {
 			let data = quarks[i] || {
 				deg: Math.random() * 1000,

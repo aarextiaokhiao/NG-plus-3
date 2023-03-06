@@ -2165,9 +2165,10 @@ td.lEp {
 	left: 50%;
 	top: 50%;
 	overflow: hidden;
-	transform: rotateZ(-45deg);
+	transform: rotateZ(-180deg);
 	z-index: 3;
-	transition-duration: 1s
+	transition-duration: 1s;
+	box-shadow: 0px 0px 240px white
 }
 #ghostifyanibg {
 	position: absolute;
@@ -2905,7 +2906,7 @@ screen and (max-width: 480px) {
 	height: 100%;
 	left: 0;
 	top: 0;
-	transition-duration: 0.5s
+	transition-duration: 1s
 }
 #ngp3_feature_ani_2a {
 	position: absolute;
@@ -2927,13 +2928,11 @@ screen and (max-width: 480px) {
 }
 #ngp3_feature_ani_3 {
 	position: absolute;
-	background: linear-gradient(90deg, #ff0, #7f0);
+	background: #070;
 	width: 100%;
 	height: 60px;
-	right: 150%;
 	top: calc(50% - 30px);
-	transition-duration: 1s;
-	animation: blink 2s linear infinite;
+	animation: blink 2s linear;
 }
 #ngp3_feature_ani_4 {
 	position: absolute;
@@ -2966,31 +2965,24 @@ screen and (max-width: 480px) {
 }
 @keyframes rainbow { 
 	0%{
-		color: rgba(255, 63, 63, 0.75);
-		text-shadow: 0px 0px 6px rgba(255, 63, 63, 0.75);
+		color: rgba(255, 127, 127, 0.75)
 	}
 	16%{
-		color: rgba(255, 255, 63, 0.75);
-		text-shadow: 0px 0px 6px rgba(255, 255, 63, 0.75);
+		color: rgba(255, 255, 127, 0.75)
 	}
 	33%{
-		color: rgba(63, 255, 63, 0.75);
-		text-shadow: 0px 0px 6px rgba(63, 255, 63, 0.75);
+		color: rgba(127, 255, 127, 0.75)
 	}
 	50%{
-		color: rgba(63, 255, 255, 0.75);
-		text-shadow: 0px 0px 6px rgba(63, 255, 255, 0.75);
+		color: rgba(127, 255, 255, 0.75)
 	}
 	67%{
-		color: rgba(63, 63, 255, 0.75);
-		text-shadow: 0px 0px 6px rgba(63, 63, 255, 0.75);
+		color: rgba(127, 127, 255, 0.75)
 	}
 	83%{
-		color: rgba(255, 63, 255, 0.75);
-		text-shadow: 0px 0px 6px rgba(255, 63, 255, 0.75);
+		color: rgba(255, 127, 255, 0.75)
 	}
 	100%{
-		color: rgba(255, 63, 63, 0.75);
-		text-shadow: 0px 0px 6px rgba(255, 63, 63, 0.75);
+		color: rgba(255, 127, 127, 0.75)
 	}
 }
