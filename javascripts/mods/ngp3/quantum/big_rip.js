@@ -288,7 +288,7 @@ function updateBreakEternityUpgrade1Temp(){
 	var em = beSave.eternalMatter
 	var log1 = ep.div("1e1280").add(1).log10()
 	var log2 = em.mul(10).max(1).log10()
-	var exp = isBreakUpgActive(9) ? Math.pow(log1, 0.5) / 4 + Math.pow(log2, 2) / 100 :
+	var exp = isBreakUpgActive(9) ? Math.pow(log1, 0.5) / 8 + Math.pow(log2, 2) / 200 :
 		Math.pow(log1, 1/3) * 0.5 + Math.pow(log2, 1/3)
 	tmp.beu[1] = pow10(exp)
 }
@@ -313,7 +313,7 @@ function updateBreakEternityUpgrade4Temp(){
 	var ss = brSave && brSave.spaceShards
 	var log1 = ep.div("1e1860").add(1).log10()
 	var log2 = ss.div("7e19").add(1).log10()
-	var exp = isBreakUpgActive(10) ? Math.pow(log1, 0.5) / 2 + Math.pow(log2, 1.5) / 10 :
+	var exp = isBreakUpgActive(9) ? Math.pow(log1, 0.5) / 2 + Math.pow(log2, 1.5) / 10 :
 		Math.pow(log1, 1/3) + Math.pow(log2, 1/3) * 8
 	tmp.beu[4] = pow10(exp)
 }
@@ -336,7 +336,8 @@ function updateBreakEternityUpgrade6Temp(){
 	var log1 = ep.div("1e4900").add(1).log10()
 	var log2 = em.div(1e45).add(1).log10()
 	if (nerfUpgs) log1 /= 2e6
-	var exp = Math.pow(log1, 1/3) / 1.7 + Math.pow(log2, 1/3) * 2
+	var exp = Math.pow(log1, 1/3) / 1.7
+	exp += isBreakUpgActive(10) ? Math.pow(log2, 4/3) / 20 : Math.pow(log2, 1/3) * 2
 	tmp.beu[6] = pow10(exp)
 }
 

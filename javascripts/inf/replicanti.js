@@ -41,13 +41,20 @@ function isChanceAffordable() {
 function upgradeReplicantiInterval() {
 	if (!(player.infinityPoints.gte(player.replicanti.intervalCost) && isIntervalAffordable() && player.eterc8repl !== 0)) return 
 	if (player.infinityPoints.lt(pow10(1e9))) player.infinityPoints = player.infinityPoints.minus(player.replicanti.intervalCost)
-	player.replicanti.interval *= 0.9
-	if (player.replicanti.interval < 1) {
-		let x = 1 / player.replicanti.interval
-		if (x > 1e10) x = Math.pow(x / 1e5, 2)
-		player.replicanti.intervalCost = E_pow("1e800", x)
-	}
-	else player.replicanti.intervalCost = player.replicanti.intervalCost.mul(1e10)
+
+	//Reduce
+	if (E(player.replicanti.interval).gte(1)) player.replicanti.interval *= 0.9
+	else player.replicanti.interval = E(player.replicanti.interval).mul(0.9)
+
+	//Change Cost
+	if (E(player.replicanti.interval).lt(1)) {
+		let cost = E(1).div(player.replicanti.interval)
+		if (cost.gt(1e10)) cost = cost.div(1e5).pow(2)
+		if (dev.replBoost) cost = pow10(800 * Math.pow(cost.log10() * 50 + 1, 4))
+		else cost = pow10(800 * cost.toNumber())
+		player.replicanti.intervalCost = cost
+	} else player.replicanti.intervalCost = player.replicanti.intervalCost.mul(1e10)
+
 	if (!isIntervalAffordable()) player.replicanti.interval = (hasTimeStudy(22) || mod.rs ? 1 : 50)
 	if (player.currentEternityChall == "eterc8") player.eterc8repl -= 1
 	el("eterc8repl").textContent = "You have " + player.eterc8repl + " purchases left."
@@ -139,7 +146,7 @@ function autoBuyRG() {
 	let cost = getRGCost(toBuy - 1)
 	let toBuy2 = toBuy
 	while (toBuy > 0 && newIP.div(cost).lt(1e16)) {
-		if (player.infinityPoints.lt(pow(1e9))) {
+		if (player.infinityPoints.lt(pow10(1e9))) {
 			if (newIP.gte(cost)) newIP = newIP.sub(cost)
 			else {
 				newIP = player.infinityPoints.sub(cost)
@@ -155,6 +162,10 @@ function autoBuyRG() {
 }
 
 function updateExtraReplGalaxies() {
+	if (dev.testZone) {
+		tmp.extraRG = 0
+		return
+	}
 	tmp.extraRGBase = getExtraReplGalaxyBase()
 	tmp.extraRGMult = getExtraReplGalaxyMult()
 	tmp.extraRG = tmp.extraRGBase * tmp.extraRGMult
@@ -204,10 +215,9 @@ function getTotalRG() {
 	return player.replicanti.galaxies + tmp.extraRG
 }
 
-let redirectRepl = false
 function getReplGalPower() {
 	let repl = player.replicanti.galaxies
-	let replStr = redirectRepl ? 1 : getReplGalEff()
+	let replStr = dev.replBoost ? 1 : getReplGalEff()
 	let extraRepl = 0
 	if (hasTimeStudy(133)) extraRepl += player.replicanti.galaxies * 0.5
 	if (hasTimeStudy(132)) extraRepl += player.replicanti.galaxies * 0.4
@@ -249,8 +259,13 @@ function getReplSpeed() {
 	return {inc: inc, exp: exp}
 }
 
+function absorbReplication() {
+	tmp.rep.absorb = hasNU(16) ? -tmp.rep.interval.div(tmp.rep.dupRate).min(1).log10() : 0
+	if (tmp.rep.absorb > 0) tmp.rep.speeds.exp *= tmp.rep.absorb
+}
+
 function getReplicantiInterval() {
-	let interval = player.replicanti.interval
+	let interval = 1
 	if (hasTimeStudy(62)) interval /= tsMults[62]()
 	if (player.replicanti.amount.gt(Number.MAX_VALUE)||hasTimeStudy(133)) interval *= 10
 	if (hasTimeStudy(213)) interval /= tsMults[213]()
@@ -258,7 +273,7 @@ function getReplicantiInterval() {
 	if (player.replicanti.amount.lt(Number.MAX_VALUE) && hasAch("r134")) interval /= 2
 	if (isBigRipUpgradeActive(4)) interval /= 10
 
-	interval = E(interval)
+	interval = E(interval).mul(player.replicanti.interval)
 	if (mod.ngud) interval = interval.div(getBlackholePowerEffect().pow(1/3))
 	if (player.dilation.upgrades.includes('ngpp1') && mod.udsp && !aarMod.nguepV) interval = interval.div(player.dilation.dilatedTime.max(1).pow(0.05))
 	if (hasMasteryStudy("t332")) interval = interval.div(getMTSMult(332))
@@ -266,8 +281,9 @@ function getReplicantiInterval() {
 }
 
 function getReplicantiFinalInterval() {
-	let x = getReplicantiInterval()
-	if (player.replicanti.amount.gt(Number.MAX_VALUE)) x = mod.rs ? Math.pow(hasAch("r107") ? Math.max(player.replicanti.amount.log(2)/1024,1) : 1, -.25) * x.toNumber() : E_pow(tmp.rep.speeds.inc, Math.max(player.replicanti.amount.log10() - tmp.rep.speeds.exp, 0)/tmp.rep.speeds.exp).mul(x)
+	let speed = tmp.rep.speeds
+	let x = tmp.rep.absorb > 0 ? 10 / speed.exp : tmp.rep.interval.div(tmp.rep.dupRate)
+	if (player.replicanti.amount.gt(Number.MAX_VALUE)) x = mod.rs ? Math.pow(hasAch("r107") ? Math.max(player.replicanti.amount.log(2)/1024,1) : 1, -.25) * x.toNumber() : E_pow(speed.inc, Math.max(player.replicanti.amount.log10() / speed.exp - 1, 0)).mul(x)
 	return x
 }
 

@@ -45,7 +45,8 @@ let RESETS = {
 			divideTickspeedIC5()
 		},
 		doReset(order) {
-			if (!(order == "db" || order == "gal") || !postBoostMilestone()) {
+			let resetDims = !(order == "db" || order == "gal") || !postBoostMilestone()
+			if (resetDims) {
 				this.startingAM()
 				this.startingDims()
 				player.sacrificed = E(0)
@@ -66,6 +67,9 @@ let RESETS = {
 			//UPDATE DISPLAYS
 			hideDimensions()
 			tmp.tickUpdate = true
+
+			//FIX
+			if (resetDims) updatePowers()
 		}
 	},
 	tdb: {

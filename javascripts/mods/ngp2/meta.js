@@ -58,11 +58,11 @@ function getMetaDimensionGlobalMultiplier() {
 		if (hasMasteryStudy("t262")) ret = ret.mul(getMTSMult(262))
 		if (hasMasteryStudy("t282")) ret = ret.mul(getMTSMult(282))
 		if (hasMasteryStudy("t303")) ret = ret.mul(getMTSMult(303))
-		if (hasMasteryStudy("t351")) ret = ret.mul(getMTSMult(351))
+		if (hasMasteryStudy("t351") && !dev.testZone) ret = ret.mul(getMTSMult(351))
 		if (hasMasteryStudy("t373")) ret = ret.mul(getMTSMult(373))
 		if (hasMasteryStudy("t382")) ret = ret.mul(getMTSMult(382))
-		if (hasMasteryStudy("t383")) ret = ret.mul(getMTSMult(383))
-		if (hasMasteryStudy("t393")) ret = ret.mul(getMTSMult(393))
+		if (hasMasteryStudy("t383") && !dev.testZone) ret = ret.mul(getMTSMult(383))
+		if (hasMasteryStudy("t393") && !dev.testZone) ret = ret.mul(getMTSMult(393))
 
 		//Quantum Upgrades
 		if (hasGluonUpg("br4")) ret = ret.mul(E_pow(getDimensionPowerMultiplier(), 0.0003).max(1))
@@ -143,7 +143,7 @@ function getMetaShiftRequirement() {
 		if (hasMasteryStudy("t312")) data.mult -= 1
 	}
 	data.amount += data.mult * Math.max(mdb - 4, 0)
-	if (hasMasteryStudy("d13")) data.amount -= getTreeUpgradeEffect(1)
+	if (isDecayOn()) data.amount -= getTreeUpgradeEffect(1)
 	if (hasNU(1)) data.amount -= ntEff("upg", 1, 0)
 
 	data.scalingStart = inQC4 ? 55 : 15
@@ -358,8 +358,8 @@ function getExtraDimensionBoostPowerExponent(ma) {
 	if (player.dilation.upgrades.includes("ngpp5")) power++
 	if (mod.ngp3) {
 		power += getECReward(13)
-		if (hasNanoReward("ma_effect_exp")) power += tmp.nf.eff.ma_effect_exp
-		if (hasMasteryStudy("d13")) power += getTreeUpgradeEffect(8)
+		if (hasNanoReward("ma_effect_exp") && !dev.testZone) power += tmp.nf.eff.ma_effect_exp
+		if (isDecayOn()) power += getTreeUpgradeEffect(8)
 		if (hasNU(14)) power += ntEff("upg", 14)
 	}
 	return power

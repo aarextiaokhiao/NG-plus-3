@@ -59,7 +59,6 @@ function isQuantumReached() {
 	let ma = player.meta.bestAntimatter
 	let got = ma.gte(getQuantumReq())
 	if (mod.ngp3) {
-		got = got && quarkGain().gt(0)
 		if (inQC(0)) got = got && ECComps("eterc14")
 		if (!inQC(0)) got = got && player.money.gte(getQCGoal())
 	}
@@ -121,6 +120,7 @@ function quarkGain() {
 	let ma = player.meta.antimatter.max(1)
 	if (!mod.ngp3) return pow10(ma.log(10) / Math.log10(Number.MAX_VALUE) - 1).floor()
 
+	if (!isQuantumReached()) return E(0)
 	if (!quantumed) return E(1)
 	ma = player.meta.bestAntimatter.max(1)
 

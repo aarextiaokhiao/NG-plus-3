@@ -87,15 +87,12 @@ var masteryStudies = {
 	timeStudies: [],
 	timeStudyEffects: {
 		251: function(){
-			if (hasNU(6)) return 0
 			return Math.floor(player.resets / 3e3)
 		},
 		252: function(){
-			if (hasNU(6)) return 0
 			return Math.floor(player.dilation.freeGalaxies / 7)
 		},
 		253: function(){
-			if (hasNU(6)) return 0
 			return Math.floor(getTotalRG()/4)
 		},
 		262: function(){
@@ -118,15 +115,15 @@ var masteryStudies = {
 		},
 		273: function(uses){
 			var intensity = 5
-			if (hasNB(2) && !uses.includes("pn")) intensity += ntEff("boost", 2, 0)
+			if (hasNB(2)) intensity += ntEff("boost", 2, 0)
 			if (uses.includes("intensity")) return intensity
 			return Decimal.max(Math.log10(player.replicanti.chance + 1), 1).pow(intensity)
 		},
 		281: function(){
-			return pow10(Math.pow(tmp.rm.max(1).log10(), 0.25) / 10 * (mod.p3ep ? 2 : 1))
+			return pow10(Math.pow(E(tmp.rep?.eff || 1).max(1).log10(), 0.25) / 10 * (mod.p3ep ? 2 : 1))
 		},
 		282: function(){
-			return pow10(Math.pow(tmp.rm.max(1).log10(), 0.25) / 15 * (mod.p3ep ? 2 : 1))
+			return pow10(Math.pow(E(tmp.rep?.eff || 1).max(1).log10(), 0.25) / 15 * (mod.p3ep ? 2 : 1))
 		},
 		301: function(){
 			if (hasNU(6)) return 0

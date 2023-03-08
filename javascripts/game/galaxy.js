@@ -169,7 +169,7 @@ function getGalaxyEff(bi) {
 	if (hasGluonUpg("rg2")) eff *= Math.pow(player.dilation.freeGalaxies / 5e3 + 1, 0.25)
 	if (hasGluonUpg("rg4")) eff *= 1.5
 	if (hasBU(34)) eff *= tmp.blu[34]
-	if (redirectRepl) eff *= getReplGalEff()
+	if (dev.replBoost) eff *= getReplGalEff()
 	return eff
 }
 

@@ -1,5 +1,5 @@
 function isPositronsOn() {
-	return hasMasteryStudy("d7") && inQC(0)
+	return hasMasteryStudy("d7") && inQC(0) && !dev.testZone
 }
 
 function updateElectronsTab() {
@@ -59,12 +59,11 @@ function getElectronBoost(mod) {
 	if (r > 37460 + ss) r = Math.sqrt((r - ss) * 37460) + ss
 
 	if (hasGluonUpg("rg4") && mod != "no-rg4") r *= 0.7
-	if (hasMasteryStudy("d13") && mod != "noTree") r *= getTreeUpgradeEffect(4)
+	if (isDecayOn() && mod != "noTree") r *= getTreeUpgradeEffect(4)
 	return r + 1
 }
 
 function getElectronGainMult() {
-	if (!inQC(0)) return 0
 	return hasNU(5) ? 3 : 1
 }
 

@@ -46,7 +46,7 @@ function getNormalDimensionVanillaTimeStudyBonus(tier){
 	if (hasTimeStudy(91)) mult = mult.mul(pow10(Math.min(player.thisEternity, 18000) / 60));
 
 	let useHigherNDReplMult = hasMasteryStudy("t323") && !player.dilation.active
-	if (!useHigherNDReplMult) mult = mult.mul(tmp.nrm)
+	if (!useHigherNDReplMult) mult = mult.mul(tmp.rep?.nd || 1)
 	if (hasTimeStudy(161)) mult = mult.mul(pow10((inNGM(2) ? 6660 : 616) * (mod.ngep ? 5 : 1)))
 	if (hasTimeStudy(234) && tier == 1) mult = mult.mul(tmp.sacPow)
 	if (hasTimeStudy(193)) mult = mult.mul(E_pow(1.03, getEternitied()).min("1e13000"))
@@ -152,7 +152,7 @@ function getDimensionFinalMultiplier(tier) {
 	if (tier == 1 && !inNGM(3) && player.infinityUpgrades.includes("postinfi60")) mult = mult.mul(getNewB60Mult())
 
 	let useHigherNDReplMult = hasMasteryStudy("t323") && !player.dilation.active
-	if (useHigherNDReplMult) mult = mult.mul(tmp.nrm)
+	if (useHigherNDReplMult) mult = mult.mul(tmp.rep?.nd || 1)
 	if (player.dilation.active && hasNanoReward("dil_effect_exp")) mult = mult.pow(tmp.nf.eff.dil_effect_exp)
 	if (isBigRipUpgradeActive(1)) mult = mult.mul(tmp.bru[1])
 

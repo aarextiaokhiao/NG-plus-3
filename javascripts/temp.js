@@ -19,8 +19,6 @@ function updateTemp() {
 		return
 	}
 
-	tmp.nrm = 1
-	if (hasTimeStudy(101)) tmp.nrm = player.replicanti.amount.max(1)
 	tmp.sacPow = calcTotalSacrificeBoost()
 
 	updateNGP3Temp()
@@ -36,10 +34,6 @@ function updateTemp() {
 		tmp.ig = tmp.ig.mul(tmp.blu[41].ig)
 	}
 
-	tmp.rm = getReplMult()
-	updateInfinityPowerEffects()
-	updateExtraReplGalaxies()
-	
 	updateTS232Temp()
 	updateMatterSpeed()
 
@@ -50,6 +44,7 @@ function updateTemp() {
 	updatePowers()
 	updateInfinityPowerEffects()
 	if (player.replicanti.unl) updateReplicantiTemp()
+	updateExtraReplGalaxies()
 }
 
 function updateInfiniteTimeTemp() {
@@ -89,17 +84,23 @@ function updateReplicantiTemp() {
 
 	data.ln = player.replicanti.amount.ln()
 	data.chance = player.replicanti.chance
-	data.speeds = getReplSpeed()
-	data.interval = getReplicantiFinalInterval()
-
-	if (hasMasteryStudy("t273")) {
+	if (hasMasteryStudy("t273") && !dev.testZone) {
 		data.chance = E_pow(data.chance, tmp.mts[273])
-		data.freq = 0
 		if (data.chance.gte("1e9999998")) data.freq = tmp.mts[273].mul(Math.log10(player.replicanti.chance + 1) / Math.log10(2))
 	}
 
-	data.est = Decimal.div((data.freq ? data.freq.mul(Math.log10(2) / Math.log10(Math.E) * 1e3) : Decimal.add(data.chance, 1).log(Math.E) * 1e3), data.interval)
+	data.dupRate = (data.freq ? data.freq.mul(Math.log10(2) / Math.log10(Math.E)) : Decimal.add(data.chance, 1).log(Math.E))
+	data.interval = getReplicantiInterval()
+	data.speeds = getReplSpeed()
+	absorbReplication()
+
+	data.est = E(1e3).div(getReplicantiFinalInterval())
 	data.estLog = data.est.mul(Math.log10(Math.E))
+
+	data.eff = getReplMult()
+	data.nd = E(1)
+	if (hasTimeStudy(101)) data.nd = player.replicanti.amount.max(1)
+	if (bigRipped() && !player.dilation.active && hasRipUpg(14)) data.nd = data.nd.pow(tmp.bru[14])
 }
 
 //Vanilla

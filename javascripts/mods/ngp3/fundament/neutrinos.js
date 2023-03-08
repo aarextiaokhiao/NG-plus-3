@@ -98,7 +98,8 @@ const NEUTRINO = {
 				eff(nt) {
 					let nb2neutrinos = Math.pow(nt[0].add(1).log10(),2)+Math.pow(nt[1].add(1).log10(),2)+Math.pow(nt[2].add(1).log10(),2)
 					let nb2 = Math.pow(nb2neutrinos, .25) * 1.5
-					return nb2 
+					if (nb2 > 10) nb2 = Math.pow(nb2 / 10, PHOTON.eff(6)) + 9
+					return nb2
 				},
 				effDesc: e => `Replicate chance boosts itself more. (<b>+^${shorten(e)}</b>)`,
 			}, {
@@ -187,10 +188,10 @@ const NEUTRINO = {
 				cost: E(1e45),
 				eff(nt) {
 					var nb12 = nt[0].add(1).log10()+nt[1].add(1).log10()+nt[2].add(1).log10()
-					var div = mod.p3ep ? 5 : 10
-					return Math.log10(ghSave.time * nb12 / 100 + 1) / div + 1
+					var mul = mod.p3ep ? 0.5 : 0.25
+					return Math.log10(ghSave.time / 1e3 + 1) * Math.log10(nb12 + 10) * mul + 1
 				},
-				effDesc: e => `Fundament time scale Replicanti Slowdown by <b>^${shorten(e)}</b>.`,
+				effDesc: e => `Fundament time boosts Replicanti Slowdown by <b>^${shorten(e)}</b>.`,
 			}
 		]
 	},
@@ -302,6 +303,10 @@ const NEUTRINO = {
 				unl: _ => PHOTON.unlocked(),
 				cost: E(1e30),
 				desc: `First Nanobenefit boosts Photons instead.`
+			}, {
+				unl: _ => PHOTON.unlocked(),
+				cost: E(1e33),
+				desc: `Replicate slowdown absorbs replicate interval.`
 			}
 		]
 	},
@@ -323,7 +328,7 @@ const NEUTRINO = {
 				${upg.eff ? `Currently: <span id='nt_upg_eff_${i}'></span><br>` : ``}
 				Cost: <span id='nt_upg_cost_${i}'></span> neutrinos
 			</button></td>`
-			if (i % 3 == 0) html += "</tr><tr>"
+			if (i % 4 == 0) html += "</tr><tr>"
 		}
 		el('nt_upg_div').innerHTML = "<tr>" + html + "</tr>"
 	},

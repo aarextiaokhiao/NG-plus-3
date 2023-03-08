@@ -220,6 +220,7 @@ RESETS.funda = {
 		brSave.active = false
 		brSave.times = 0
 		brSave.bestGals = 0
+		brSave.spaceShards = E(0)
 		if (bm < 1) brSave.upgrades = []
 
 		if (bm < 3) {
@@ -327,7 +328,7 @@ function getGHPGain() {
 
 	let log = brSave.bestThisRun.log(getQCGoal()) - 1
 	if (log < 0) return E(0)
-	if (log > 25) log = Math.cbrt(log / 25) * 25
+	if (log > 15) log = Math.cbrt(log / 15) * 15
 
 	return pow10(log).mul(getGHPMult()).floor()
 }

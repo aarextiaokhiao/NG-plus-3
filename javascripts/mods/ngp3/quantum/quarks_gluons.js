@@ -234,14 +234,13 @@ function updateColorPowers(log) {
 	if (colorBoosts.r > 3) colorBoosts.r = Math.sqrt(colorBoosts.r * 3)
 
 	//Green
-	let m = 1
-	colorBoosts.g = Math.pow(log.g + 1, 1/3) * 2
+	let mult = 2
 	if (aarMod.ngumuV && hasMasteryStudy("t362")) {
-		m += quSave.replicants.quarks.add(1).log10()/10
-		if (m > 4) m = Math.sqrt(m * 4)
+		mult += quSave.replicants.quarks.add(1).log10() / 10
+		if (mult > 4) m = Math.sqrt(m * 4)
 	}
-	if (mod.udp && !aarMod.nguepV) m /= 2
-	colorBoosts.g = colorBoosts.g * m + 1
+	if (mod.udp && !aarMod.nguepV) mult /= 2
+	colorBoosts.g = (Math.pow(log.g + 1, 1/3) - 1) * mult + 1
 
 	//Blue
 	var bLog = Math.sqrt(log.b + 1.5) - Math.sqrt(1.5)

@@ -270,8 +270,8 @@ function loadInfAutoBuyers() {
 var infDimPow = 1
 
 function getIDReplMult() {
-	if (hasMasteryStudy('t311')) return tmp.rm.pow(17.3)
-	return tmp.rm
+	if (hasMasteryStudy('t311')) return tmp.rep.eff.pow(17.3)
+	return tmp.rep.eff
 }
 
 function getEU2Mult() {

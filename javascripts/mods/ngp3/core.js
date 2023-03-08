@@ -1,6 +1,6 @@
 //VERSION: 2.31
 let ngp3_ver = 2.31
-let ngp3_build = 20230306
+let ngp3_build = 20230307
 function doNGP3Updates() {
 	if (!aarMod.ngp3_build) aarMod.ngp3_build = 0
 	if (aarMod.ngp3_build < 20221230) quSave.multPower = 0
@@ -487,7 +487,7 @@ function updateQuantumTabDisplays() {
 	el("electronstabbtn").style.display = isPositronsOn() ? "" : "none"
 	el("antTabs").style.display = hasMasteryStudy("d11") ? "" : "none"
 	el("nanofieldtabbtn").style.display = NF.unl() ? "" : "none"
-	el("todtabbtn").style.display = hasMasteryStudy("d13") ? "" : "none"
+	el("todtabbtn").style.display = isDecayOn() ? "" : "none"
 }
 
 function beatNGP3() {
@@ -508,8 +508,7 @@ function updateNGP3Temp() {
 	if (quantumed) {
 		if (beSave && beSave.unlocked) updateBreakEternityUpgradesTemp()
 		if (hasMasteryStudy("d14")) updateBigRipUpgradesTemp()
-		if (bigRipped() && !player.dilation.active && hasRipUpg(14)) tmp.nrm = tmp.nrm.pow(tmp.bru[14])
-		if (hasMasteryStudy("d13")) {
+		if (isDecayOn()) {
 			tmp.branchSpeed = getBranchSpeed()
 			tmp.tue = getTreeUpgradeEfficiency()
 		}
@@ -696,7 +695,7 @@ function quantumOverallUpdating(diff){
 	if (hasMasteryStudy("d10")) replicantOverallUpdating(diff)
 	if (hasMasteryStudy("d11")) emperorDimUpdating(diff)
 	if (NF.unl()) nanofieldUpdating(diff)
-	if (hasMasteryStudy("d13")) treeOfDecayUpdating(diff)
+	if (isDecayOn()) treeOfDecayUpdating(diff)
 	if (bigRipped()) {
 		brSave.totalAntimatter = brSave.totalAntimatter.max(player.money)
 		brSave.bestThisRun = brSave.bestThisRun.max(player.money)

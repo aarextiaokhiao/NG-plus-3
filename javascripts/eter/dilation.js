@@ -49,10 +49,10 @@ function getDTMultNGP3(){
 		if (hasMasteryStudy("t263")) gain = gain.mul(getMTSMult(263))
 		if (hasMasteryStudy("t281")) gain = gain.mul(getMTSMult(281))
 		gain = gain.mul(tmp.qcRewards[1])
-		if (hasMasteryStudy("t322")) gain = gain.mul(getMTSMult(322))
+		if (hasMasteryStudy("t322") && !dev.testZone) gain = gain.mul(getMTSMult(322))
 		if (hasMasteryStudy("t341")) gain = gain.mul(getMTSMult(341))
 		gain = gain.mul(getTreeUpgradeEffect(7))
-		gain = gain.mul(colorBoosts.b)
+		if (!dev.testZone) gain = gain.mul(colorBoosts.b)
 		if (hasGluonUpg("br2")) gain = gain.mul(E_pow(2.2, Math.pow(tmp.sacPow.max(1).log10()/1e6, 0.25)))
 		if (hasAch("r137")) gain = gain.mul(Math.max((player.replicanti.amount.log10()-2e4)/8e3+1,1))
 	}
@@ -117,8 +117,8 @@ function getDilExp(disable) {
 	if (mod.ngep) ret += .001
 	if (mod.ngpp && !mod.udsp) ret += getDilUpgPower(4) / 4
 	if (mod.ngp3) {
-		if ((!bigRipped() || hasRipUpg(11)) && hasMasteryStudy("d13") && disable != "TU3") ret += getTreeUpgradeEffect(2)
-		if (hasNB(1) && disable != "neutrinos") ret += ntEff("boost", 1, 0)
+		if ((!bigRipped() || hasRipUpg(11)) && isDecayOn() && disable != "TU3") ret += getTreeUpgradeEffect(2)
+		if (hasNB(1)) ret += ntEff("boost", 1, 0)
 	}
 	return ret
 }
@@ -516,7 +516,7 @@ function resetDilation(order = "qu") {
 	for (var i in player.dilation.rebuyables) player.dilation.rebuyables[i] = 0
 
 	if (unl) {
-		player.dilation.dilatedTime = !bigRip && speedrunMilestonesReached >= 22 ? E(1e100) : E(0)
+		player.dilation.dilatedTime = !bigRip && speedrunMilestonesReached >= 22 && !dev.testZone ? E(1e100) : E(0)
 		if (order == "qu") {
 			let keepTPHalf = bigRip ? hasRipUpg(11) : hasAch("ng3p37")
 			let keepTP = bigRip ? hasRipUpg(18) : inQC(0) && hasBraveMilestone(4)

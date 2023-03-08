@@ -134,8 +134,8 @@ let PHOTON = {
 			desc: e => `2nd Infinite Time softcap scales ^${shorten(e)} later.`
 		}, {
 			name: "ultraviolet",
-			eff: a => 1,
-			desc: e => `Placeholder.`
+			eff: a => Math.log2(a / 4 + 2),
+			desc: e => `Starting at ^10, raise 2nd Neutrino Boost by ^${shorten(e)}.`
 		}
 	],
 	eff(x, def = 1) {

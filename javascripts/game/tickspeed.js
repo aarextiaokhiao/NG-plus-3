@@ -66,7 +66,7 @@ function getIC3Base() {
 	}
 
 	power *= getGalaxyEff()
-	if (mod.ngp3) {
+	if (ghostified) {
 		if (hasNB(9)) power = ntEff("boost", 9).mul(power)
 		if (hasNU(12)) power = ntEff("upg", 12).free.mul(power)
 

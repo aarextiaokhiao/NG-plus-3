@@ -252,7 +252,7 @@ function automatorTick(diff) {
 
 	//Quantum Layer
 	let limit = ghSave.automatorGhosts[13].o || 1 / 0
-	if (hasMasteryStudy("d13") && isAutoGhostActive(13)) {
+	if (hasMasteryStudy("d14") && isAutoGhostActive(13)) {
 		if (bigRipped()) {
 			if (quSave.time >= ghSave.automatorGhosts[13].u * 10 && brSave.times <= limit) doQuantum(true, true)
 		} else if (quSave.time >= ghSave.automatorGhosts[13].t * 10 && brSave.times < limit) bigRip(true)

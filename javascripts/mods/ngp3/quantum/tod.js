@@ -1,3 +1,7 @@
+function isDecayOn() {
+	return hasMasteryStudy("d13") && !dev.testZone
+}
+
 function getLogTotalSpin() {
 	return todSave.r.spin.add(1).log10()
 }
@@ -250,8 +254,8 @@ function getTreeUpgradeEffect(upg) {
 		return E_pow(Math.log10(MA.add(1).log10() + 1) / 5 + 1, Math.sqrt(lvl))
 	}
 	if (upg == 6) return pow10(lvl / 2)
-	if (upg == 7) return lvl ? pow2(Math.sqrt(player.replicanti.amount.max(1).log10()) / 80 * Math.log10(lvl + 9)) : E(1)
-	if (upg == 8) return Math.log10(Decimal.add(player.meta.bestAntimatter, 1).log10() + 1) * Math.sqrt(lvl + 1)
+	if (upg == 7) return lvl ? pow2(Math.sqrt(tmp.rep.eff.max(1).log10()) / 20 * Math.log10(lvl + 9)) : E(1)
+	if (upg == 8) return Math.log10(Decimal.add(player.meta.bestAntimatter, 1).log10() + 1) * Math.sqrt(lvl)
 	return 0
 }
 
@@ -542,6 +546,6 @@ function treeOfDecayUpdating(diff){
 
 		var sProd = getQuarkSpinProduction(shorthand)
 		branch.quarks = power.gt(1) ? pow2(power-1).mul(mult) : power.mul(mult)	
-		branch.spin = branch.spin.add(sProd.mul(hasBraveMilestone(4) && isAutoGhostActive(1) ? diff : decayed))	
+		branch.spin = branch.spin.add(sProd.mul(hasBraveMilestone(4) && isAutoGhostActive(1) && getUnstableGain("r").gt(0) ? diff : decayed))	
 	}
 }
