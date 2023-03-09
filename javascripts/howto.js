@@ -415,12 +415,10 @@ let HOW_TO = [
 		At a specific amount of Bosons, you'll unlock Bosonic Milestones. Best Bosons strengthen those milestones.
 		<br><br>
 		<b>W & Z Bosons</b><br>
-		There are 3 bars, fillable with W Bosons.<br>
-		Only W+ Bosons boost something dependent on a bar.
-		<br><br>
-		Hypercharge must be 0 or less.<br>
-		- W+ = +1 Hypercharge<br>
-		- W- or Z0 = -1 Hypercharge`
+		There are 3 Capaciators, fillable with W Bosons. Hypercharge must be 0 or less to activate boosts dependent on W+ Bosons.<br>
+		- W+ = +1 Hypercharge if assigned<br>
+		- W- = -1 Hypercharge if assigned<br>
+		- Z0 = -1 Hypercharge`
 	}, {
 		mod: _ => ngp3,
 		req: _ => ghSave?.hb.unl,
@@ -428,11 +426,11 @@ let HOW_TO = [
 		title: "Higgs",
 		tab: "bl",
 		layer: "fundament",
-		desc: `At ??? Bosons, you can prestige Bosonic Lab for Higgs. This doesn't reset Bosonic Milestones.
+		desc: `At ??? Bosons, you can prestige Bosons and W & Bosons for Higgs.
 		<br><br>
 		Higgs gives Higgs Dimensions (dependent on amount), which produce Higgs Mass in return.<br>
 		Higgs Mass provides various boosts depending on which you choosed.<br>
-		Latter selections are less effective as you had less.`
+		There is a size limit on those boosts, and boosts have different sizes.`
 	/*}, {
 		mod: _ => ngp3,
 		req: _ => ghSave?.hb.unl,
