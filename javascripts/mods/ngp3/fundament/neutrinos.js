@@ -90,7 +90,7 @@ const NEUTRINO = {
 					let nb1mult = .75
 					if (mod.p3ep) nb1mult = .8
 					let nb1neutrinos = nt[0].add(1).log10()+nt[1].add(1).log10()+nt[2].add(1).log10()
-					return Math.log10(1+nb1neutrinos)*nb1mult
+					return Math.pow(nb1neutrinos / 5 + 1, 0.5) * nb1mult
 				},
 				effDesc: e => `Increase TP gain exponent by <b>+^${shorten(e)}</b>.`,
 			}, {
@@ -170,7 +170,7 @@ const NEUTRINO = {
 				},
 				effDesc: e => `Strengthen IC3 multiplier base by <b>${shorten(e)}x</b>.`,
 			}, {
-				cost: E(1e27),
+				cost: E(1e21),
 				eff(nt) {
 					var nb10 = nt[0].add(1).log10()+nt[1].add(1).log10()+nt[2].add(1).log10()
 					return nb10/10+1
@@ -205,6 +205,8 @@ const NEUTRINO = {
 
 			NT_RES.spend(NEUTRINO.upgrades.data[x-1].cost)
 			ghSave.neutrinos.upgrades.push(x)
+
+			if (x == 16) resetNanoRewardEffects()
 		},
 		has(x) {
 			return ghSave?.neutrinos.upgrades.includes(x)
@@ -287,7 +289,7 @@ const NEUTRINO = {
 				effDesc: e => `(hover)`
 			}, {
 				unl: _ => PHOTON.unlocked(),
-				cost: E(1e24),
+				cost: E(1e25),
 				desc: `Tachyonic Galaxies scale Positron softcap later.`,
 
 				eff: _ => player.dilation.freeGalaxies * 2,
@@ -302,11 +304,11 @@ const NEUTRINO = {
 			}, {
 				unl: _ => PHOTON.unlocked(),
 				cost: E(1e30),
-				desc: `First Nanobenefit boosts Photons instead.`
+				desc: `Replicate slowdown absorbs replicate interval.`
 			}, {
 				unl: _ => PHOTON.unlocked(),
 				cost: E(1e33),
-				desc: `Replicate slowdown absorbs replicate interval.`
+				desc: `First Nanobenefit boosts Photons instead.`
 			}
 		]
 	},

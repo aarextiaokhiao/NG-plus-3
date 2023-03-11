@@ -48,7 +48,7 @@ let PHOTON = {
 	/* FEATURES */
 	//Feature - Photons
 	photonGain() {
-		let r = E(player.dilation.bestTPOverGhostifies.max(1).log10() / 100).pow(3)
+		let r = E(player.dilation.bestTPOverGhostifies.max(1).log10() / 200).pow(10)
 		if (hasNanoReward("photon")) r = r.mul(tmp.nf.eff.photon)
 		if (hasNB(10)) r = r.mul(ntEff("boost", 10))
 		return r
@@ -73,20 +73,20 @@ let PHOTON = {
 			resName: "Preonic Spin",
 			res: _ => todSave.r.spin,
 
-			req: i => E(50).pow(Math.pow(i, 1.5)).mul(1e27),
-			bulk: r => Math.floor(Math.pow(r.max(1).div(1e27).log(50), 2/3)) + 1,
+			req: i => E(50).pow(Math.pow(i, 1.5)).mul(1e26),
+			bulk: r => Math.floor(Math.pow(r.max(1).div(1e26).log(50), 2/3)) + 1,
 		}, {
 			resName: "Elementary Particles",
 			res: _ => ghSave.ghostParticles,
 
-			req: i => E(200).pow(i).mul(1e27),
-			bulk: r => Math.floor(r.max(1).div(1e27).log(200)) + 1,
+			req: i => E(1e3).pow(i).mul(1e18),
+			bulk: r => Math.floor(r.max(1).div(1e18).log(1e3)) + 1,
 		}, {
 			resName: "Photons",
 			res: _ => ghSave.photons.amt,
 
-			req: i => E(8).pow(Math.pow(i, mod.p3ep ? 0.75 : 1)).mul(2e4),
-			bulk: r => Math.floor(Math.pow(r.max(1).div(2e4).log(8), 1 / (mod.p3ep ? 0.75 : 1))) + 1,
+			req: i => E(5).pow(Math.pow(i, mod.p3ep ? 0.75 : 1)).mul(2e4),
+			bulk: r => Math.floor(Math.pow(r.max(1).div(2e4).log(5), 1 / (mod.p3ep ? 0.75 : 1))) + 1,
 		}
 	],
 
@@ -110,11 +110,11 @@ let PHOTON = {
 	lightData: [
 		{
 			name: "red",
-			eff: a => Math.log10(a + 10) - 1,
+			eff: a => Math.log10(a + 1) / 3,
 			desc: e => `Discharged Galaxies work, but as ${(e*100).toFixed(1)}% strong.`
 		}, {
 			name: "orange",
-			eff: a => E(tmp.tsReduce || 1).pow(-(Math.log10(a + 10) - 1) / 10),
+			eff: a => E_pow(tmp.tsReduce || 1, -Math.cbrt(a) / 10),
 			desc: e => `Multiply per-ten multiplier by ${shorten(e)}x. (based on tickspeed reduction)`
 		}, {
 			name: "yellow",

@@ -328,7 +328,7 @@ function getGHPGain() {
 
 	let log = brSave.bestThisRun.log(getQCGoal()) - 1
 	if (log < 0) return E(0)
-	if (log > 15) log = Math.cbrt(log / 15) * 15
+	if (log > 12) log = Math.cbrt(log / 12) * 15
 
 	return pow10(log).mul(getGHPMult()).floor()
 }

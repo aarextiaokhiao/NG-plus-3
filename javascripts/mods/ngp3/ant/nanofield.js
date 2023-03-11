@@ -145,7 +145,7 @@ var nanoRewards = {
 		}	
 	},
 	usage: {
-		1: _ => hasNU(15) ? ["photon"] : ["hatch_speed"],
+		1: _ => hasNU(16) ? ["photon"] : ["hatch_speed"],
 		2: _ => ["ma_effect_exp"],
 		3: _ => ["dil_gal_gain"],
 		4: _ => ["dt_to_ma_exp"],
@@ -235,6 +235,11 @@ function updateNanoRewardEffects() {
 		let pow = tmp.nf.power[x]
 		for (let r of tmp.nf.reward[x]) data[r] = nanoRewards.eff[r](pow)
 	}
+}
+
+function resetNanoRewardEffects() {
+	updateNanoEffectUsages()
+	updateNanoRewardEffects()
 }
 
 function setupNanoRewardTemp() {

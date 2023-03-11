@@ -260,7 +260,7 @@ function getReplSpeed() {
 }
 
 function absorbReplication() {
-	tmp.rep.absorb = hasNU(16) ? -tmp.rep.interval.div(tmp.rep.dupRate).min(1).log10() : 0
+	tmp.rep.absorb = hasNU(15) ? -tmp.rep.interval.div(tmp.rep.dupRate).min(1).log10() : 0
 	if (tmp.rep.absorb > 0) tmp.rep.speeds.exp *= tmp.rep.absorb
 }
 
