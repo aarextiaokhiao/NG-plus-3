@@ -493,11 +493,10 @@ function mainTimeStudyDisplay(){
 	eternityChallengeUnlockDisplay()
 	el("dilstudy1").innerHTML = "Unlock time dilation" + (hasDilStudy(1) ? "" : "<span>Requirement: 5 EC11 and EC12 completions and " + getFullExpansion(getDilationTotalTTReq()) + " total theorems")+"<span>Cost: " + getFullExpansion(5e3) + " Time Theorems"
 	if (mod.ngp3) {
-		var ts232display = tmp.ts232 * 100 - 100
 		el("221desc").textContent = "Currently: "+shorten(E_pow(1.0025, player.resets))+"x"
 		el("227desc").textContent = "Currently: "+shorten(Math.pow(tmp.sacPow.max(10).log10(), 10))+"x"
 		el("231desc").textContent = "Currently: "+shorten(E_pow(Math.max(player.resets, 1), 0.3))+"x more power"
-		el("232desc").textContent = "Currently: "+(ts232display>=999.95?getFullExpansion(Math.floor(ts232display)):ts232display.toFixed(1))+"%"
+		el("232desc").textContent = "Currently: "+shortenMoney(tmp.ts232 * 100 - 100)+"%"
 	}
 }
 

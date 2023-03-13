@@ -809,11 +809,11 @@ function doGalSacAni() {
 function inNGM(x) {
 	return mod.ngmX >= x
 }
-
 function inOnlyNGM(x) {
 	return mod.ngmX == x
 }
 
+const MAX_NGMX = 4
 function getNGMX(save = player) {
 	let aMod = save.aarMod
 	if (aMod?.ngmX) return aMod.ngmX

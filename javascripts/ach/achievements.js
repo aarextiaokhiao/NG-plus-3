@@ -551,8 +551,8 @@ function toggleCompletedAchs() {
 function toggleSecretAchs() {
 	// 0 == visible, 1 == not visible
 	aarMod.hideSecretAchs = !aarMod.hideSecretAchs;
-	if (el("secretachievements").style.display == "block") showAchTab("normalachievements");
 	el("hideSecretAchs").textContent = (aarMod.hideSecretAchs ? "Show" : "Hide") + " secret achievements";
+	achTabButtonsDisplay()
 }
 
 function achMultLabelUpdate() {
@@ -571,7 +571,6 @@ function metaAchMultLabelUpdate() {
 }
 
 function achTabButtonsDisplay() {
-	var display = aarMod.hideSecretAchs?"none":""
-	el("achTabButtons").style.display=display
-	el("secretachsbtn").style.display=display
+	if (el("normalachievements").style.display != "block") showAchTab("normalachievements");
+	el("achTabButtons").style.display=aarMod.hideSecretAchs?"none":""
 }
