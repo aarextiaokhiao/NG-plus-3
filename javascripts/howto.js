@@ -423,7 +423,7 @@ let HOW_TO = [
 		mod: _ => ngp3,
 		req: _ => ghSave?.hb.unl,
 
-		title: "Higgs",
+		title: "Higgs Field",
 		tab: "bl",
 		layer: "fundament",
 		desc: `At ??? Bosons, you can prestige Bosons and W & Bosons for Higgs.
