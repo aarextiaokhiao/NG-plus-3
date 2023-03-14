@@ -89,7 +89,7 @@ function canGetBadge(x) {
 		if (data[1] == "fu") return
 		if (data[0] == "p3") return
 	}
-	if (data[0] == "sp" && mod.ngud != 3) return
+	if (data[0] == "sp" && (!ngp3 || mod.ngud != 3)) return
 	if (data[1] == "ir") return
 	if (data[0][0] == "m") return ngmX >= data[0][1]
 	if (x == "tgr") return ngp3 && !mod.ngp
