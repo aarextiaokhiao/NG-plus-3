@@ -114,7 +114,7 @@ function reset_mods() {
 //CONDITIONS
 let mod = {}
 function checkMods(save = player) {
-	let aMod = save.aarexModifications
+	let aMod = save.aarexModifications || {}
 	return {
 		ngm: aMod.newGameMinusVersion != undefined,
 		ngp: aMod.ngp4V != undefined ? 2 : aMod.newGamePlusVersion != undefined ? 1 : 0,

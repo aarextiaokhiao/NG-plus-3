@@ -33,10 +33,8 @@ let PHOTON = {
 		}
 	},
 	temp() {
-		/*if (!this.unlocked()) {
-			delete tmp.funda.photon
-			return
-		} -- Do I need this for performance?*/
+		if (!this.unlocked()) return
+
 		let data = {}
 		tmp.funda.photon = data
 
@@ -114,7 +112,7 @@ let PHOTON = {
 			desc: e => `Discharged Galaxies work, but as ${(e*100).toFixed(1)}% strong.`
 		}, {
 			name: "orange",
-			eff: a => E_pow(tmp.tsReduce || 1, -Math.cbrt(a) / 10),
+			eff: a => E_pow(tmp.gal.ts || 1, -Math.cbrt(a) / 10),
 			desc: e => `Multiply per-ten multiplier by ${shorten(e)}x. (based on tickspeed reduction)`
 		}, {
 			name: "yellow",
@@ -139,7 +137,7 @@ let PHOTON = {
 		}
 	],
 	eff(x, def = 1) {
-		return tmp.funda.photon?.eff[x] ?? def
+		return tmp.funda?.photon?.eff[x] ?? def
 	},
 
 	/* HTML */

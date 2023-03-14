@@ -310,10 +310,7 @@ function doQuantum(force, auto, qc = {}) {
 	if (force && hasAch("ng3p72")) player.eternitiesBank = nA(player.eternitiesBank, bankedEterGain)
 
 	//Big Rip
-	if (oldBigRip) {
-		brSave.spaceShards = brSave.spaceShards.add(getSpaceShardsGain()).round()
-		if (player.matter.gt("1e5000")) giveAchievement("Really?")
-	}
+	if (oldBigRip) brSave.spaceShards = brSave.spaceShards.add(getSpaceShardsGain()).round()
 	if (bigRip && !hasRipUpg(12)) {
 		brSave.storedTS = {
 			tt: player.timestudy.theorem,
@@ -344,7 +341,7 @@ function doQuantum(force, auto, qc = {}) {
 
 	//Quantum Challenges
 	if (!force) {
-		var qc = tmp.inQCs
+		var qc = tmp.qc.in
 		var intensity = qc.length
 		var qc1 = qc[0]
 		var qc2 = qc[1]

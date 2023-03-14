@@ -293,12 +293,12 @@ function updateChallenges() {
 		buttons[i].textContent = "Start"
 	}
 
-	tmp.cp=0
+	tmp.ic_power=0
 	infDimPow=1
 	for (var i=0; i < player.challenges.length; i++) {
 		el(player.challenges[i]).className = "completedchallengesbtn";
 		el(player.challenges[i]).textContent = "Completed"
-		if (player.challenges[i].search("postc")==0) tmp.cp++
+		if (player.challenges[i].search("postc")==0) tmp.ic_power++
 		if (player.challenges.includes("postc1")) if (player.challenges[i].split("postc")[1]) infDimPow*=inNGM(2)?2:1.3
 	}
 	
@@ -394,14 +394,9 @@ function updateNCVisuals() {
 	if (inNC(3) || chall == "postc1") el("chall3Pow").style.display = "inline-block"
 	else el("chall3Pow").style.display = "none"
 
-	if (inNC(12) || chall == "postc1" || chall == "postc6") el("matter").style.display = "block"
-	else el("matter").style.display = "none"
-
-	if (isADSCRunning()) el("chall13Mult").style.display = "block"
-	else el("chall13Mult").style.display = "none"
-
-	if (inNC(14) && inNGM(4)) el("c14Resets").style.display = "block"
-	else el("c14Resets").style.display = "none"
+	el("matter").style.display = hasMatter() ? "block" : "none"
+	el("chall13Mult").style.display = isADSCRunning() ? "block" : "none"
+	el("c14Resets").style.display = inNC(14) ? "block" : "none"
 
 	if (inNC(9) || inNC(12) || ((inNC(5) || inNC(14) || chall == "postc4" || chall == "postc5") && !inNGM(3)) || chall == "postc1" || chall == "postc6" || chall == "postc8") el("quickReset").style.display = "inline-block"
 	else el("quickReset").style.display = "none"

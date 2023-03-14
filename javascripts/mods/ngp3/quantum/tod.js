@@ -9,7 +9,7 @@ function getLogTotalSpin() {
 function updateToDSpeedDisplay(){
 	let t = ''
 	if (shiftDown) t = getBranchSpeedText()
-	else t = "Branch speed: " + (todspeed == 1 ? "" : shorten(tmp.branchSpeed) + " * " + shorten(todspeed) + " = ") + shorten(getBranchFinalSpeed()) + "x" + " (hold shift for details)"
+	else t = "Branch speed: " + shorten(getBranchSpeed()) + "x" + " (hold shift for details)"
 	el("todspeed").innerHTML = t
 }
 
@@ -91,7 +91,7 @@ function updateTreeOfDecayTab(){
 		var lvl = getTreeUpgradeLevel(u)
 		el("treeupg" + u).className = "gluonupgrade " + (canBuyTreeUpg(u) ? "r" : "unavailablebtn")
 		el("treeupg" + u + "current").innerHTML = getTreeUpgradeEffectDesc(u)
-		el("treeupg" + u + "lvl").innerHTML = getFullExpansion(lvl) + (tmp.tue > 1 ? " -> " + getFullExpansion(Math.floor(lvl * tmp.tue)) : "")
+		el("treeupg" + u + "lvl").innerHTML = getFullExpansion(lvl) + (tmp.decay_str > 1 ? " -> " + getFullExpansion(Math.floor(lvl * tmp.decay_str)) : "")
 		el("treeupg" + u + "cost").innerHTML = start + shortenMoney(getTreeUpgradeCost(u)) + " preonic spin"
 	}
 	el("treeUpgradeEff").style.display = ghostified ? "" : "none"
@@ -157,7 +157,6 @@ function getBranchSpeedText(){
 	if (E(getTreeUpgradeEffect(5)).gt(1)) text += "Tree Upgrade 5: " + shorten(getTreeUpgradeEffect(5)) + "x, "
 	if (PHOTON.eff(3) > 1) text += "Green Light: " + shorten(E(PHOTON.eff(3)).pow(nfSave.rewards)) + "x, "
 	if (hasAch("ng3p48") && player.meta.resets) text += "'Are you currently dying?' reward: " + shorten(Math.sqrt(player.meta.resets + 1)) + "x, "
-	if (todspeed > 1) text += "ToD Speed: " + shorten(todspeed) + "x, "
 	if (text == "") return "No multipliers currently"
 	return text.slice(0, text.length-2)
 }
@@ -180,23 +179,17 @@ function getBranchSpeed() {
 	return x
 }
 
-function getBranchFinalSpeed() {
-	return tmp.branchSpeed.mul(todspeed)
-}
-
 function getDecayRate(branch) {
 	let ret = pow2(getBU1Power(branch) * Math.max((getRadioactiveDecays(branch) - 8) / 10, 1)).div(getBranchUpgMult(branch, 3)).div(pow2(Math.max(0, getRDPower(branch) - 4)))
-	ret = ret.mul(getBranchFinalSpeed())
-	return ret.min(Math.pow(2, 40)).mul(todspeed)
+	ret = ret.mul(getBranchSpeed())
+	return ret.min(Math.pow(2, 40))
 }
 
 function getQuarkSpinProduction(branch) {
-	let ret = getBranchUpgMult(branch, 1).mul(getBranchFinalSpeed())
+	let ret = getBranchUpgMult(branch, 1).mul(getBranchSpeed())
 	if (hasNU(3)) ret = ret.mul(ntEff("upg", 3))
 	if (hasNU(12)) ret = ret.mul(ntEff("upg", 12).normal)
 	if (hasAch("ng3p74")) ret = ret.mul(1 + (todSave[branch].decays || 0))
-
-	ret = ret.mul(todspeed)
 	return ret
 }
 
@@ -231,15 +224,15 @@ function getTreeUpgradeLevel(upg) {
 }
 
 function getEffectiveTreeUpgLevel(upg){
-	if (!tmp.tue) return 0
-	lvl = getTreeUpgradeLevel(upg) * tmp.tue
+	if (!tmp.decay_str) return 0
+	lvl = getTreeUpgradeLevel(upg) * tmp.decay_str
 	if (upg == 2 && lvl > 64) lvl = (lvl + 128) / 3
 	return lvl
 }
 
 function getTotalNumOfToDUpgrades(){
 	let power = 0
-	for (var upg = 1; upg < 9; upg++) power += getTreeUpgradeLevel(upg)
+	for (var upg = 1; upg <= 8; upg++) power += getTreeUpgradeLevel(upg)
 	return power
 }
 
@@ -288,11 +281,9 @@ function getBranchUpgLevel(branch,upg) {
 	return 0
 }
 
-var todspeed = 1
-
 function rotateAutoAssign() {
 	quSave.autoOptions.assignQKRotate = quSave.autoOptions.assignQKRotate ? (quSave.autoOptions.assignQKRotate + 1) % 3 : 1
-	el('autoAssignRotate').innerHTML = "Rotation: " + (quSave.autoOptions.assignQKRotate > 1 ? "Left" : quSave.autoOptions.assignQKRotate ? "" : "None")
+	el('autoAssignRotate').innerHTML = "Rotation: " + (quSave.autoOptions.assignQKRotate > 1 ? "Left" : quSave.autoOptions.assignQKRotate ? "Right" : "None")
 }
 
 var uq_names = {
@@ -479,7 +470,7 @@ function getMaximumUnstableQuarks() {
 }
 
 function getTreeUpgradeEfficiencyText(){
-	if (!shiftDown) return "Tree upgrade efficiency: "+(tmp.tue*100).toFixed(1)+"%"
+	if (!shiftDown) return "Tree upgrade efficiency: "+(tmp.decay_str*100).toFixed(1)+"%"
 
 	let text = ""
 	if (hasNB(7)) text += "Neutrino Boost 7: +" + shorten(ntEff("boost", 7)) + "x, "

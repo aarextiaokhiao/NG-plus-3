@@ -1,13 +1,8 @@
 let tmp = {
-	nrm: E(1),
-	rm: E(1),
-	extraRG: 0,
-	it: E(1),
-	inQCs: [0],
+	qc: { in: [], reward: {} },
 	bru: {},
 	be: false,
-	beu: {},
-	funda: {}
+	beu: {}
 }
 
 function updateTemp() {
@@ -20,7 +15,6 @@ function updateTemp() {
 	}
 
 	tmp.sacPow = calcTotalSacrificeBoost()
-
 	updateNGP3Temp()
 
 	if (mod.ngpp) tmp.mdgm = getMetaDimensionGlobalMultiplier() //Update global multiplier of all Meta Dimensions
@@ -28,18 +22,11 @@ function updateTemp() {
 	tmp.mpte = getMPTExp()
 
 	updateInfiniteTimeTemp()
-	if (hasBU(41)) {
-		tmp.blu[41] = bu.effects[41]()
-		tmp.it = tmp.it.mul(tmp.blu[41].it)
-		tmp.ig = tmp.ig.mul(tmp.blu[41].ig)
-	}
-
-	updateTS232Temp()
 	updateMatterSpeed()
 
-	tmp.initGal = initialGalaxies()
-	tmp.galStr = getGalaxyEff(true)
-	tmp.tsReduce = getTickSpeedMultiplier()
+	tmp.gal.init = initialGalaxies()
+	tmp.gal.str = getGalaxyEff(true)
+	tmp.gal.ts = getTickSpeedMultiplier()
 
 	updatePowers()
 	updateInfinityPowerEffects()
@@ -55,7 +42,7 @@ function updateInfiniteTimeTemp() {
 		if (isBreakUpgActive(8) && !player.dilation.active) x *= tmp.beu[8]
 		x = softcap(x, "inf_time_log_1")
 	}
-	tmp.it = pow10(x)
+	tmp.inf_time = pow10(x)
 }
 
 function updateIntergalacticTemp() {
@@ -67,15 +54,9 @@ function updateIntergalacticTemp() {
 	if (!bigRipped()) tmp.ig = tmp.ig.pow(PHOTON.eff(4))
 }
 
-function updateTS232Temp() {
-	var exp = 0.2
-	if (mod.ngp3 && player.galaxies >= 1e4 && !tmp.be) exp *= Math.max(6 - player.galaxies / 2e3, 0)
-	tmp.ts232 = Math.pow(1 + player.galaxies / 1000, exp)
-}
-
 function updateMatterSpeed() {
 	//mv: Matter speed
-	tmp.mv = 1.03 + player.resets/200 + player.galaxies/100
+	tmp.matter_rate = 1.03 + player.resets/200 + player.galaxies/100
 }
 
 function updateReplicantiTemp() {
@@ -101,6 +82,8 @@ function updateReplicantiTemp() {
 	data.nd = E(1)
 	if (hasTimeStudy(101)) data.nd = player.replicanti.amount.max(1)
 	if (bigRipped() && !player.dilation.active && hasRipUpg(14)) data.nd = data.nd.pow(tmp.bru[14])
+
+	updateExtraReplGalaxies()
 }
 
 //Vanilla
@@ -132,6 +115,22 @@ function getUnspentBonus() {
 	if (!x) return E(1)
 	if (inNGM(2)) return x.pow(Math.max(Math.min(Math.pow(x.max(1).log(10), 1 / 3) * 3, 8), 1)).plus(1);
 	else return x.dividedBy(2).pow(1.5).plus(1)
+}
+
+function resetPowers() {
+	mult18 = E(1)
+	tmp.it = E(1)
+	tmp.sacPow = E(1)
+	tmp.gal = { str: 1 }
+	tmp.rep = { extra: 0 }
+	tmp.color_eff = { r: 1, g: 1 }
+	tmp.qc.reward = {}
+	tmp.ant = {}
+	delete tmp.ig
+	delete tmp.funda
+
+	setupNanoRewardTemp()
+	updateTemp()
 }
 
 function updatePowers() {

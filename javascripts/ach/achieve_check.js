@@ -20,7 +20,7 @@ function antitablesHaveTurnedCheck(){
 }
 
 function bendTimeCheck(){
-	if (tmp.tsReduce < 0.001) giveAchievement("Do you even bend time bro?")
+	if (tmp.gal.ts < 0.001) giveAchievement("Do you even bend time bro?")
 }
 
 function checkMarathon(){

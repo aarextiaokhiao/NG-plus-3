@@ -109,7 +109,7 @@ function getRemoteScalingStart(galaxies) {
 	var n = 800
 	if (inNGM(4)) {
 		n = 6
-		if (player.challenges.includes("postcngm3_1")) n += tmp.cp / 2
+		if (player.challenges.includes("postcngm3_1")) n += tmp.ic_power / 2
 	} else if (inNGM(2)) n += 1e7
 	if (mod.ngp3) {
 		for (var t = 251; t < 254; t++) if (hasMasteryStudy("t" + t)) n += getMTSMult(t)
@@ -134,11 +134,14 @@ function initialGalaxies() {
 	return g
 }
 
-function getGalaxyPower(ng = tmp.initGal, bi) {
-	let eff = ng
-	if (!tmp.be) eff = Math.max(ng - (bi ? 2 : 0), 0) + getReplGalPower() + getDilGalPower()
-	if ((inNC(7) || inQC(4)) && inNGM(2)) eff *= eff
-	return eff
+function getGalaxyPower() {
+	let r = tmp.gal.init
+	if (!tmp.be) {
+		if (player.break && !mod.rs && !inNGM(2)) r = Math.max(r - 2, 0)
+		r += getReplGalPower() + getDilGalPower()
+	}
+	if ((inNC(7) || inQC(4)) && inNGM(2)) r *= r
+	return r
 }
 
 function getGalaxyEff(bi) {
@@ -152,8 +155,8 @@ function getGalaxyEff(bi) {
 		if (hasAch("r83")) eff *= 1.05
 		if (hasAch("r45")) eff *= 1.02
 		if (player.infinityUpgrades.includes("postinfi51")) eff *= inNGM(3) ? 1.15 : 1.2
-		if (tmp.cp && hasAch("r67")) {
-			let x = tmp.cp
+		if (tmp.ic_power && hasAch("r67")) {
+			let x = tmp.ic_power
 			if (x < 0) x = 1
 			if (x > 4 && inNGM(3)) x = Math.sqrt(x - 1) + 2
 			eff += .07 * x
@@ -162,10 +165,10 @@ function getGalaxyEff(bi) {
 	if (inNGM(3) && (inNC(5) || player.currentChallenge == "postcngm3_3")) eff *= 0.75
 	if (hasAch("ngpp8") && mod.ngpp) eff *= 1.001
 	if (hasTimeStudy(212)) eff *= tsMults[212]()
-	if (hasTimeStudy(232) && bi) eff *= tmp.ts232
+	if (hasTimeStudy(232) && bi) eff *= tsMults[232]()
 
 	if (mod.udsp && player.dilation.active) eff *= exDilationBenefit() + 1
-	if (mod.ngp3) eff *= colorBoosts.r
+	if (mod.ngp3) eff *= tmp.color_eff.r
 	if (hasGluonUpg("rg2")) eff *= Math.pow(player.dilation.freeGalaxies / 5e3 + 1, 0.25)
 	if (hasGluonUpg("rg4")) eff *= 1.5
 	if (hasBU(34)) eff *= tmp.blu[34]

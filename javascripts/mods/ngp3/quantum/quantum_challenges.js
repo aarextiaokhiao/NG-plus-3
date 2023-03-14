@@ -20,23 +20,23 @@ function updateQuantumChallenges() {
 }
 
 function updateQCDisplaysSpecifics(){
-	el("qc2reward").textContent = Math.round(tmp.qcRewards[2] * 100 - 100)
+	el("qc2reward").textContent = Math.round(tmp.qc.reward[2] * 100 - 100)
 	el("qc7desc").textContent = "Dimensions and Tickspeed scale at " + shorten(Number.MAX_VALUE) + "x. Per-10 Dimension multipliers and meta-antimatter boost to dimension boosts do nothing."
-	el("qc7reward").textContent = (100 - tmp.qcRewards[7] * 100).toFixed(2)
-	el("qc8reward").textContent = tmp.qcRewards[8]
+	el("qc7reward").textContent = (100 - tmp.qc.reward[7] * 100).toFixed(2)
+	el("qc8reward").textContent = tmp.qc.reward[8]
 }
 
 function inQC(num) {
-	return tmp.inQCs.includes(num)
+	return tmp.qc.in.includes(num)
 }
 
 function updateInQCs() {
-	tmp.inQCs = [0]
+	tmp.qc.in = [0]
 	if (quSave !== undefined && quSave.challenge !== undefined) {
 		data = quSave.challenge
 		if (typeof(data) == "number") data = [data]
 		else if (data.length == 0) data = [0]
-		tmp.inQCs = data
+		tmp.qc.in = data
 	}
 }
 
@@ -57,13 +57,13 @@ function getQCIdGoal(qcs, bigRip) {
 function getQCGoal(num, bigRip) {
 	if (!mod.ngp3) return 0
 
-	if (num == undefined) return getQCIdGoal(tmp.inQCs, bigRipped())
+	if (num == undefined) return getQCIdGoal(tmp.qc.in, bigRipped())
 	if (num > 8) return getQCIdGoal(quSave.pairedChallenges.order[num - 8], bigRip)
 	if (num <= 8) return getQCIdGoal([num], bigRip)
 }
 
 function QCIntensity(num) {
-	return quSave?.challenges[num] || 0
+	return quSave?.challenges?.[num] || 0
 }
 
 function updateQCTimes() {
@@ -83,7 +83,7 @@ function updateQCTimes() {
 let qcRewards = {
 	effects: {
 		1: function(comps) {
-			if (comps == 0) return 1
+			if (comps == 0) return E(1)
 			let base = getDimensionFinalMultiplier(1).mul(getDimensionFinalMultiplier(2)).max(1).log10()
 			let exp = 0.225 + comps * .025
 			return pow10(Math.pow(base, exp) / 200)
@@ -128,8 +128,8 @@ let qcRewards = {
 }
 
 function updateQCRewardsTemp() {
-	tmp.qcRewards = {}
-	for (var c = 1; c <= 8; c++) tmp.qcRewards[c] = qcRewards.effects[c](QCIntensity(c))
+	tmp.qc.reward = {}
+	for (var c = 1; c <= 8; c++) tmp.qc.reward[c] = qcRewards.effects[c](QCIntensity(c))
 }
 
 function isQCFree() {
@@ -267,19 +267,19 @@ function updatePCCompletions() {
 	el("pccompletionsbtn").style.display = "none"
 	if (!mod.ngp3) return
 	var r = 0
-	tmp.pcc = {} // PC Completion counters
+	tmp.qc.pc_comp = {} // PC Completion counters
 	for (var c1 = 2; c1 < 9; c1++) for (var c2 = 1; c2 < c1; c2++) {
 		var rankingPart = 0
 		if (quSave.pairedChallenges.completions[c2 * 10 + c1]) {
 			rankingPart = 5 - quSave.pairedChallenges.completions[c2 * 10 + c1]
-			tmp.pcc.normal = (tmp.pcc.normal || 0) + 1
+			tmp.qc.pc_comp.normal = (tmp.qc.pc_comp.normal || 0) + 1
 		} else if (c2 * 10 + c1 == 68 && ghostified) {
 			rankingPart = 0.5
-			tmp.pcc.normal = (tmp.pcc.normal || 0) + 1
+			tmp.qc.pc_comp.normal = (tmp.qc.pc_comp.normal || 0) + 1
 		}
 		if (quSave.qcsNoDil["pc" + (c2 * 10 + c1)]) {
 			rankingPart += 5 - quSave.qcsNoDil["pc" + ( c2 * 10 + c1)]
-			tmp.pcc.noDil = (tmp.pcc.noDil || 0) + 1
+			tmp.qc.pc_comp.noDil = (tmp.qc.pc_comp.noDil || 0) + 1
 		}
 		r += Math.sqrt(rankingPart)
 	}
@@ -349,6 +349,6 @@ function updatePCTable() {
 			}
 		}
 	}
-	el("upcc").textContent = "Unique PC completions: " + (tmp.pcc.normal || 0) + " / 28"
-	el("udcc").textContent = "No dilation: " + (tmp.pcc.noDil || 0) + " / 28"
+	el("upcc").textContent = "Unique PC completions: " + (tmp.qc.pc_comp.normal || 0) + " / 28"
+	el("udcc").textContent = "No dilation: " + (tmp.qc.pc_comp.noDil || 0) + " / 28"
 }

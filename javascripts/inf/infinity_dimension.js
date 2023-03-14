@@ -132,10 +132,8 @@ function DimensionPower(tier) {
 }
 
 function resetInfDimensions() {
-	for (var t = 1; t < 9; t++) {
-		if (player.infDimensionsUnlocked[t - 1]) player["infinityDimension" + t].amount = E(player["infinityDimension" + t].baseAmount)
-	}
-	if (player.infDimensionsUnlocked[0]) player.infinityPower = E(0)
+	for (var t = 1; t <= 8; t++) player["infinityDimension" + t].amount = E(player["infinityDimension" + t].baseAmount)
+	player.infinityPower = E(0)
 }
 
 function resetInfDimUnlocked() {

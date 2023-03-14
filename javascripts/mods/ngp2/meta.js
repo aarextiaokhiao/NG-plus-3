@@ -38,7 +38,7 @@ function getMetaDimensionMultiplier(tier) {
 	if (tier == 1 && hasGluonUpg("rg3")) ret = ret.mul(getRG3Effect())
 
 	//QC Rewards:
-	if (tier % 2 > 0) ret = ret.mul(tmp.qcRewards[4])
+	if (tier % 2 > 0) ret = ret.mul(tmp.qc.reward[4])
 	
 	//Achievements:
 	if (tier == 8 && hasAch("ng3p22")) ret = ret.mul(1 + Math.pow(player.meta[1].amount.plus(1).log10() / 10, 2))
@@ -69,8 +69,8 @@ function getMetaDimensionGlobalMultiplier() {
 		if (hasGluonUpg("br5")) ret = ret.mul(3)
 
 		//QC Rewards
-		ret = ret.mul(tmp.qcRewards[3])
-		ret = ret.mul(tmp.qcRewards[6])
+		ret = ret.mul(tmp.qc.reward[3])
+		ret = ret.mul(tmp.qc.reward[6])
 
 		//Achievement Rewards
 		if (hasAch("ng3p13")) ret = ret.mul(Math.pow(Decimal.plus(quantumWorth, 10).log10(), 2))

@@ -61,15 +61,12 @@ let RESETS = {
 			player.postC4Tier = 1
 			player.postC8Mult = E(1)
 			skipResets()
-			updateTemp()
 			Marathon = 0
+			if (resetDims) resetPowers()
 
 			//UPDATE DISPLAYS
 			hideDimensions()
 			tmp.tickUpdate = true
-
-			//FIX
-			if (resetDims) updatePowers()
 		}
 	},
 	tdb: {

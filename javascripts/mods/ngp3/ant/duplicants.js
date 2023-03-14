@@ -1,5 +1,5 @@
 function babyRateUpdating(){
-	var eggonRate = tmp.twr.mul(getEmperorDimensionMultiplier(1)).mul(3)
+	var eggonRate = tmp.ant.workers.mul(getEmperorDimensionMultiplier(1)).mul(3)
 	if (eggonRate.lt(30)) {
 		el("eggonRate").textContent = shortenDimensions(eggonRate)
 		el("eggonRateTimeframe").textContent = "minute"
@@ -11,7 +11,7 @@ function babyRateUpdating(){
 
 function updatePilonDisplay(){
 	el("gatheredQuarks").textContent = shortenDimensions(quSave.replicants.quarks.floor())
-	el("quarkTranslation").textContent = "+" + shortenMoney(tmp.pe * 100) + "%"
+	el("quarkTranslation").textContent = "+" + shortenMoney(tmp.ant.preon_eff * 100) + "%"
 
 	var gatherRateData = getGatherRate()
 	el("normalReplGatherRate").textContent = shortenDimensions(gatherRateData.normal)
@@ -21,7 +21,7 @@ function updatePilonDisplay(){
 }
 
 function getGrowupRatePerMinute(){
-	return tmp.twr.plus(quSave.replicants.amount).mul(0.3)
+	return tmp.ant.workers.plus(quSave.replicants.amount).mul(0.3)
 }
 
 function growupRateUpdating(){
@@ -55,7 +55,7 @@ function updateReplicantsSubtab(){
 	el("replicantReset").className = player.replicanti.amount.lt(quSave.replicants.requirement) ? "unavailablebtn" : "antbtn"
 	el("replicantReset").innerHTML = "Reset replicantis for a duplicant.<br>(requires " + shortenCosts(quSave.replicants.requirement) + " replicanti)"
 	el("replicantAmount").textContent = shortenDimensions(quSave.replicants.amount)
-	el("workerReplAmount").textContent = shortenDimensions(tmp.twr)
+	el("workerReplAmount").textContent = shortenDimensions(tmp.ant.workers)
 	el("babyReplAmount").textContent = shortenDimensions(quSave.replicants.babies)
 
 	babyRateUpdating()
@@ -159,14 +159,14 @@ function hatchSpeedDisplay(next) {
 }
 
 function getTotalReplicants(data) {
-	if (data === undefined) return tmp.twr.add(quSave.replicants.amount).round()
+	if (data === undefined) return tmp.ant.workers.add(quSave.replicants.amount).round()
 	else return getTotalWorkers(data).add(data.quantum.replicants.amount).round()
 }
 
 function getEmperorDimensionMultiplier(dim) {
-	if (!tmp.edgm) return E(1)
+	if (!tmp.ant.global_mult) return E(1)
 
-	let ret = tmp.edgm //Global multiplier of all Emperor Dimensions
+	let ret = tmp.ant.global_mult //Global multiplier of all Emperor Dimensions
 	if (dim == 8) ret = ret.mul(E_pow(1.1, quSave.emperorDimensions[8].perm - 8).max(1))
 	if (dim == 1 && hasAch("ng3p54")) ret = ret.mul(Math.pow(todSave.r.spin.plus(10).log10(), 3))
 	if (hasNU(7) && dim % 2 == 1) ret = ret.mul(ntEff("upg", 7))
@@ -335,7 +335,7 @@ function updateEmperorDimensions() {
 			el("empFeedMax" + d).className = (canFeedReplicant(d) ? "stor" : "unavailabl") + "ebtn"
 		}
 	}
-	el("totalWorkers").textContent = shortenDimensions(tmp.twr)
+	el("totalWorkers").textContent = shortenDimensions(tmp.ant.workers)
 	el("totalQuarkProduction").textContent = shorten(production.workersTotal)
 }
 
@@ -429,7 +429,7 @@ function replicantOverallUpdating(diff){
 }
 
 function replicantEggonUpdating(diff){
-	var newBabies = tmp.twr.mul(getEmperorDimensionMultiplier(1)).mul(diff/20)
+	var newBabies = tmp.ant.workers.mul(getEmperorDimensionMultiplier(1)).mul(diff/20)
 	if (hasAch("ng3p35")) newBabies = newBabies.mul(10)
 
 	quSave.replicants.eggonProgress = quSave.replicants.eggonProgress.add(newBabies)
@@ -458,7 +458,7 @@ function replicantBabyHatchingUpdating(diff){
 }
 
 function replicantBabiesGrowingUpUpdating(diff){
-	if (quSave.replicants.babies.gt(0)&&tmp.tra.gt(0)) {
+	if (quSave.replicants.babies.gt(0)&&tmp.ant.total.gt(0)) {
 		quSave.replicants.ageProgress = quSave.replicants.ageProgress.add(getGrowupRatePerMinute().div(60).mul(diff)).min(quSave.replicants.babies)
 		var toAdd = quSave.replicants.ageProgress.floor()
 		if (toAdd.gt(0)) {

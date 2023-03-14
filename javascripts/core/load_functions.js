@@ -1199,7 +1199,7 @@ function doERSv0tov102(){
 			player.eternityChalls={}
 			for (c in player.eternityChallenges.done) player.eternityChalls["eterc"+c]=player.eternityChallenges.done[parseInt(c)]
 		}
-		player.tickspeed=player.tickspeed.div(E_pow(tmp.tsReduce, player.totalTickGained))
+		player.tickspeed=player.tickspeed.div(E_pow(tmp.gal.ts, player.totalTickGained))
 		player.totalTickGained=0
 		player.tickThreshold=E(1)
 		if (player.darkMatter) {
@@ -1361,7 +1361,6 @@ function doNGp3Init() {
 	delete player.eternityBuyer.presets
 	el('prioritydil').value=player.eternityBuyer.dilationPerAmount
 	if (player.meta.bestOverQuantums === undefined) player.meta.bestOverQuantums = player.meta.bestAntimatter
-	updateColorPowers()
 	el("eggonsCell").style.display = hasNU(2) ? "none" : ""
 	el("workerReplWhat").textContent = hasNU(2) ? "babies" : "eggons"
 	updateQuantumWorth()
@@ -1429,7 +1428,7 @@ function setOptionsDisplaysStuff1(){
 	el("hideRepresentation").textContent=(aarMod.hideRepresentation?"Show":"Hide")+" antimatter representation"
 	el("showAchRowNums").textContent=(aarMod.showAchRowNums?"Hide":"Show")+" achievement info"
 	el("hideCompletedAchs").textContent=(aarMod.hideCompletedAchs?"Show":"Hide")+" completed rows"
-	el("hideSecretAchs").textContent=(aarMod.hideSecretAchs?"Show":"Hide")+" secret achievements"
+	el("hideSecretAchs").textContent=(aarMod.hideSecretAchs?"Show":"Hide")+" extra achievements"
 }
 
 function setDisplaysStuff1(){
@@ -1643,6 +1642,7 @@ function onLoad(noOffline) {
 
 	clearOldAchieves()
 	updateAchievements()
+	updateBadges()
 
 	tmp.tickUpdate = true
 	updateCheckBoxes()
@@ -1657,7 +1657,7 @@ function onLoad(noOffline) {
 
 	updateVersionsONLOAD()
 	mult18 = E(1)
-	updateTemp()
+	resetPowers()
 	updateInQCs()
 	if (mod.ngp3) doNGp3Init()
 
@@ -1704,7 +1704,7 @@ function onLoad(noOffline) {
 		if (el("timestudies").style.display=="block") showEternityTab("ers_timestudies",true)
 		updateGalaxyControl()
 	} else if (el("ers_timestudies").style.display=="block") showEternityTab("timestudies",true)
-	poData=metaSave["presetsOrder"+(mod.rs?"_ers":"")]
+	poData=meta.save["presetsOrder"+(mod.rs?"_ers":"")]
 
 	el("maxTimeDimensions").style.display=removeMaxTD?"none":""
 	el("metaMaxAll").style.display=removeMaxMD?"none":""
@@ -1878,7 +1878,7 @@ function conToDeciTD(){
 	for (let dim = 1; dim <= 8; dim++) {
 		const data = player["timeDimension"+dim]
 		data.amount = E(data.amount)
-		data.cost = E(data.cost)
+		data.cost = isNaN(data.cost.e) ? timeDimCost(dim, data.bought) : E(data.cost)
 		data.power = E(data.power)
 	}
 }
@@ -1988,6 +1988,7 @@ function conToDeciLateEter(){
 
 function conToDeciMS(){
 	if (mod.ngp3) {
+		player.dilation.best = E(player.dilation.best || 0)
 		player.meta.bestOverQuantums = Decimal.max(player.meta.bestOverQuantums, player.meta.bestAntimatter)
 		if (quSave.usedQuarks) {
 			quSave.usedQuarks.r = E(quSave.usedQuarks.r)
@@ -2144,40 +2145,23 @@ function get_save(id) {
 	} catch(e) { }
 }
 
-var meta_started = false
-function initiateMetaSave() {
-	metaSave = localStorage.getItem(metaSaveId)
-	if (metaSave == null) {
-		metaSave = {presetsOrder: [], version: 2.02}
-		meta_started = true
-	} else metaSave = JSON.parse(atob(metaSave))
-	if (metaSave.current == undefined) {
-		metaSave.current = 1
-		metaSave.saveOrder = [1]
-	}
-	if (!metaSave.current) {
-		metaSave.current = 1
-		metaSave.alert = true
-	}
-}
-
 function migrateOldSaves() {
-	if (metaSave.newGameMinus!=undefined) {
-		metaSave.saveOrder = []
+	if (meta.save.newGameMinus!=undefined) {
+		meta.save.saveOrder = []
 		var ngSave = localStorage.getItem('dimensionSave_aarexModifications')
 		if (ngSave != null) {
 			ngSave = JSON.parse(atob(ngSave, function(k, v) { return (v === Infinity) ? "Infinity" : v; }))
 			if (ngSave.saves != null) {
 				for (id=0;id<3;id++) {
 					if (ngSave.saves[id] != null) {
-						metaSave.saveOrder.push(1+id)
+						meta.save.saveOrder.push(1+id)
 						localStorage.setItem(btoa('dsAM_'+(1+id)), btoa(JSON.stringify(ngSave.saves[id], function(k, v) { return (v === Infinity) ? "Infinity" : v; })));
 					}
 				}
-				if (!metaSave.newGameMinus) metaSave.current=1+ngSave.currentSave
+				if (!meta.save.newGameMinus) meta.save.current=1+ngSave.currentSave
 			} else {
-				if (!metaSave.newGameMinus) metaSave.current=1
-				metaSave.saveOrder.push(1)
+				if (!meta.save.newGameMinus) meta.save.current=1
+				meta.save.saveOrder.push(1)
 				localStorage.setItem(btoa('dsAM_1'), btoa(JSON.stringify(ngSave, function(k, v) { return (v === Infinity) ? "Infinity" : v; })));
 			}
 		}
@@ -2188,31 +2172,30 @@ function migrateOldSaves() {
 			if (ngmSave.saves != null) {
 				for (id=0;id<3;id++) {
 					if (ngmSave.saves[id] != null) {
-						metaSave.saveOrder.push(4+id)
+						meta.save.saveOrder.push(4+id)
 						localStorage.setItem(btoa('dsAM_'+(4+id)), btoa(JSON.stringify(ngmSave.saves[id], function(k, v) { return (v === Infinity) ? "Infinity" : v; })));
 					}
 				}
-				if (metaSave.newGameMinus) metaSave.current=4+ngmSave.currentSave
+				if (meta.save.newGameMinus) meta.save.current=4+ngmSave.currentSave
 			} else {
-				if (metaSave.newGameMinus) metaSave.current=4
-				metaSave.saveOrder.push(4)
+				if (meta.save.newGameMinus) meta.save.current=4
+				meta.save.saveOrder.push(4)
 				localStorage.setItem(btoa('dsAM_4'), btoa(JSON.stringify(ngmSave, function(k, v) { return (v === Infinity) ? "Infinity" : v; })));
 			}
 		}
 		localStorage.removeItem('dimensionSave_NGM')
-		delete metaSave.newGameMinus
+		delete meta.save.newGameMinus
 	}
-	if (metaSave.version == undefined) {
-		metaSave.presetsOrder=[]
+	if (meta.save.version == undefined) {
+		meta.save.presetsOrder=[]
 		for (id=1;id<4;id++) {
 			var studyTreePreset=localStorage.getItem("studyTree"+id)
 			if (studyTreePreset !== null) {
-				metaSave.presetsOrder.push(id)
+				meta.save.presetsOrder.push(id)
 				localStorage.setItem(btoa("dsAM_ST_"+id),btoa(JSON.stringify({preset:studyTreePreset})))
 				localStorage.removeItem("studyTree"+id)
 			}
 		}
 	}
-	if (metaSave.version < 2.01) metaSave.presetsOrder_ers=[]
-	metaSave.version=2.02
+	meta.save.version = meta.ver
 }

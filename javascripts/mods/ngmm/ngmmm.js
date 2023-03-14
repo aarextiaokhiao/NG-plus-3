@@ -84,7 +84,7 @@ function getTickspeedBoostPower() {
 	if (inNC(15) || player.currentChallenge == "postc1" || player.currentChallenge == "postcngm3_3") ic3PowerTB *= inNGM(4) ? .2 : Math.max(player.galacticSacrifice.galaxyPoints.div(1e3).add(1).log(8),1)
 	else if (player.challenges.includes("postcngm3_3")) ic3PowerTB *= Math.max(Math.sqrt(player.galacticSacrifice.galaxyPoints.max(1).log10()) / 15 + .6, 1)
 	if (hasAch("r67")) {
-		let x = tmp.cp
+		let x = tmp.ic_power
 		if (x > 4) x = Math.sqrt(x - 1) + 2
 		ic3PowerTB *= x * .15 + 1
 	}

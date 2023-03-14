@@ -15,7 +15,6 @@ var failureCount = 0;
 var implosionCheck = 0;
 var break_infinity_js = 0 //option removed until break_infinity support is fixed
 var forceHardReset = false;
-var metaSave = null
 
 //TO-DO: Move setup into another file.
 function setupAutobuyerToggles(){
@@ -1646,6 +1645,13 @@ function updatePerSecond() {
 	updateHotkeys()
 	updateConvertSave(eligibleConvert())
 
+	// Badges
+	obtainBadges()
+	if (meta.mustSave) {
+		updateBadges()
+		saveMeta()
+	}
+
 	// Errors
 	isInfiniteDetected()
 	if (!mod.ngp3 || !quantumed) if (player.infinityPoints.lt(100)) player.infinityPoints = player.infinityPoints.round()
@@ -1688,15 +1694,16 @@ function updateEPminpeak(diff, type) {
 	return currentEPmin;
 }
 
-function checkMatter(diff){
-	var newMatter = player.matter.mul(E_pow(tmp.mv,diff))
+function hasMatter() {
+	return inNC(12) || player.currentChallenge == "postc1" || player.currentChallenge == "postc7"
+}
+
+function checkMatter(diff) {
+	var newMatter = player.matter.mul(E_pow(tmp.matter_rate, diff))
 	player.matter = newMatter
-	if (player.matter.pow(20).gt(player.money) && player.currentChallenge == "postc7") {
-		if (bigRipped() && tmp.ri) {}
-		else quickReset()
-	} else if (player.matter.gt(player.money) && (inNC(12) || player.currentChallenge == "postc1") && !haveET) {
-		quickReset()
-	}
+
+	var relativeMatter = player.matter.pow(player.currentChallenge == "postc7" ? 20 : 1)
+	if (relativeMatter.gt(player.money)) quickReset()
 }
 
 function passiveIPupdating(diff){
@@ -1742,13 +1749,10 @@ function preInfinityUpdating(diff){
 	}
 	if (player.dontWant && player.firstAmount.gt(0)) player.dontWant = false
 
-	if (isNaN(player.totalmoney.e)) player.totalmoney = E(10)
 	var tempa = getDimensionProductionPerSecond(1).mul(diff)
 	player.money = player.money.plus(tempa)	
 	player.totalmoney = player.totalmoney.plus(tempa)
 	if (bigRipped()) brSave.totalAntimatter = brSave.totalAntimatter.add(tempa)
-
-	tmp.ri=player.money.gte(Number.MAX_VALUE) && ((player.currentChallenge != "" && player.money.gte(player.challengeTarget)) || !onPostBreak())
 }
 
 function chall2PowerUpdating(diff){
@@ -1764,10 +1768,10 @@ function chall2PowerUpdating(diff){
 
 function normalChallPowerUpdating(diff){
 	if (player.currentChallenge == "postc8") player.postC8Mult = player.postC8Mult.mul(Math.pow(0.000000046416, diff))
-
 	if (inNC(3) || player.matter.gte(1)) player.chall3Pow = player.chall3Pow.mul(E_pow(1.00038, diff)).min(1e200);
 
 	chall2PowerUpdating(diff)
+	checkMatter(diff)
 }
 
 function dimensionTabDisplayUpdating(){
@@ -1829,7 +1833,7 @@ function nextICUnlockUpdating(){
 			if (getEternitied() > 6) {
 				player.challenges.push(order[player.postChallUnlocked])
 				if (order[player.postChallUnlocked] == "postc1") for (var i = 0; i < player.challenges.length; i++) if (player.challenges[i].split("postc")[1]) infDimPow *= inNGM(2) ? 2 : 1.3
-				tmp.cp++
+				tmp.ic_power++
 			}
 			player.postChallUnlocked++
 			nextUnlock = getNextAt(order[player.postChallUnlocked])
@@ -2132,7 +2136,7 @@ function challengeOverallDisplayUpdating(){
 		el("qcDisclaimer").innerHTML = (isQCFree() ? "" : "Spend Positrons to start Quantum Challenges.<br>You have " + getFullExpansion(Math.round(quSave.electrons.amount)) + " Positrons.<br>") + "<b class='red'>Positrons are disabled in Quantum Challenges!</b>"
 		for (var c=1;c<7;c++) {
 			if (c==5) el("qc5reward").textContent = getDimensionPowerMultiplier("linear").toFixed(2)
-			else if (c!=2) el("qc"+c+"reward").textContent = shorten(tmp.qcRewards[c])
+			else if (c!=2) el("qc"+c+"reward").textContent = shorten(tmp.qc.reward[c])
 		}
 	}
 	if (el("bigrip").style.display == "block") updateBigRipTab()
@@ -2195,11 +2199,15 @@ function EPonEternityPassiveGain(diff){
 }
 
 function ngp3DilationUpdating(){
+	if (hasMasteryStudy("t292")) {
+		let gain = getDilGain(player.dilation.best)
+		if (gain.gt(player.dilation.tachyonParticles)) setTachyonParticles(gain)
+	}
+
 	if (!player.dilation.active) return
 
-	let gain = getDilGain()
 	if (inNGM(2)) player.dilation.bestIP = player.infinityPoints.max(player.dilation.bestIP)
-	if (player.dilation.tachyonParticles.lt(gain) && hasMasteryStudy("t292")) setTachyonParticles(gain)
+	if (mod.ngp3) player.dilation.best = player.dilation.best.max(player.money)
 }
 
 function passiveQuantumLevelStuff(diff){
@@ -2304,9 +2312,7 @@ function gameLoop(diff) {
 	preInfinityUpdating(diff)
 	otherDimsUpdating(diff)
 
-	checkMatter(diff)
 	normalChallPowerUpdating(diff)
-	chall23PowerUpdating()
 
 	checkPain()
 	checkMarathon()
@@ -2322,6 +2328,7 @@ function gameLoop(diff) {
 
 function updateDisplays() {
 	//Display
+	chall23PowerUpdating()
 	updateMoney()
 	updateCoinPerSec()
 	updateTabDisplay()
@@ -2343,7 +2350,7 @@ function updateDisplays() {
 
 	el("eternityPoints2").innerHTML = "You have <span class=\"EPAmount2\">"+shortenDimensions(player.eternityPoints)+"</span> Eternity points."
 
-	if (el("loadmenu").style.display == "block") changeSaveDesc(metaSave.current, savePlacement)
+	if (el("loadmenu").style.display == "block") changeSaveDesc(meta.save.current, savePlacement)
 }
 
 function simulateTime(seconds, real, id) {
@@ -2796,8 +2803,8 @@ function initGame() {
 	migrateOldSaves()
 	setupBugfixData()
 	setupHTMLAndData()
-	updateNewPlayer(meta_started ? "meta_started" : "")
-	localStorage.setItem(metaSaveId, btoa(JSON.stringify(metaSave)))
+	updateNewPlayer(meta.started ? "meta.started" : "")
+	saveMeta()
 
 	//Load a save.
 	load_game(false, true)

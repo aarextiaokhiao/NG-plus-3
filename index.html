@@ -293,7 +293,7 @@
 				<br><br>
 
 				<b>(NG+3 v2.31: Ghostify Respecced)</b><br>
-				<b class="red">(Beta: 3/12/23 Build)</b><br>
+				<b class="red">(Beta: 3/14/23 Build - Pi Day)</b><br>
 				By <a href="https://aarextiaokhiao.github.io/">Aarex</a>, pg132, and usavictor.
 				<br><br>
 
@@ -396,6 +396,7 @@
 				<br>
 				<div id="stats_dil">
 					<h2>Dilation</h2>
+					<div id="bestmoneydilation"></div>
 					<div id="dilated"></div>
 					<div id="exdilated"></div>
 					<br>
@@ -509,6 +510,7 @@
 				<tr>
 					<td><button class="secondarytabbtn" onclick="showAchTab('normalachievements')">Achievements</button></td>
 					<td><button class="secondarytabbtn" onclick="showAchTab('secretachievements')">Secret Achievements</button></td>
+					<td><button class="secondarytabbtn" id="badgestabbtn" onclick="showAchTab('badges')">Badges</button></td>
 				</tr>
 			</table>
 			<div id="normalachievements" class="achtab">
@@ -1304,6 +1306,13 @@
 					</tr>
 				</table>
 				<div id="nothingnessSecret">You completed all secret achievements! Congratulations!</div>
+			</div><div id="badges" class="achtab">
+				<b class='red'>
+					Badges are saved through saves and mods.<br>
+					You can't get any badge with buffs and NGUd'.<br>
+					You can't also get NG-x badges with NG+, and NG+3 badges with NG+4.
+				</b>
+				<div id="badges_div"></div>
 			</div>
 		</div>
 		<div id="challenges" class="tab">
@@ -4098,8 +4107,8 @@
 				Fundament with least Quantums as possbile for a Reward!
 				<table style="margin: auto">
 					<tr id="braveRow1">
-						<td><div id="braveMilestone1" class="achievement achievementlocked" ach-tooltip="Reward: Keep Speedrun Milestones, Quantum Challenges, and Big Rip upgrades."></div></td>
-						<td><div id="braveMilestone2" class="achievement achievementlocked" ach-tooltip="Reward: Colored quarks don't cancel and keep your gluon upgrades."></div></td>
+						<td><div id="braveMilestone1" class="achievement achievementlocked" ach-tooltip="Reward: Keep Speedrun Milestones, Gluon Upgrades, Quantum Challenges, and Big Rip upgrades."></div></td>
+						<td><div id="braveMilestone2" class="achievement achievementlocked" ach-tooltip="Reward: Colored quarks don't cancel, and keep best antimatter in dilation on Quantum."></div></td>
 						<td><div id="braveMilestone3" class="achievement achievementlocked" ach-tooltip="Reward: Keep Electron upgrades and Quantum features."></div></td>
 						<td><div id="braveMilestone4" class="achievement achievementlocked" ach-tooltip="Reward: Tachyon particles don't reset on Quantum except in challenges, unstabilizing quarks don't lose colored quarks, and you start with 5 of 1st Branch Upgrades."></div></td>
 						<td><div id="braveMilestone5" class="achievement achievementlocked" ach-tooltip="Reward: Meta-Dimension Boosts don't reset on Quantum except in challenges."></div></td>
@@ -4108,10 +4117,10 @@
 						<td><div id="braveMilestone8" class="achievement achievementlocked" ach-tooltip="Reward: Passively generate anti-Quarks (^0.5), Gluons, and Space Shards."></div></td>
 					</tr>
 					<tr id="braveRow2">
-						<td><div id="braveMilestone9" class="achievement achievementlocked" ach-tooltip="Reward: Start with 10 of each one of the first 2 Emperor Dimensions."></div></td>
+						<td><div id="braveMilestone9" class="achievement achievementlocked" ach-tooltip="Reward: Start with 10 of each one of the first 2 Emperor Dimensions"></div></td>
 						<td><div id="braveMilestone10" class="achievement achievementlocked" ach-tooltip="Reward: Start with 10 of each one of the first 4 Emperor Dimensions."></div></td>
 						<td><div id="braveMilestone11" class="achievement achievementlocked" ach-tooltip="Reward: Start with 10 of each one of the first 6 Emperor Dimensions."></div></td>
-						<td><div id="braveMilestone12" class="achievement achievementlocked" ach-tooltip="Reward: Start with 10 of each Emperor Dimension."></div></td>
+						<td><div id="braveMilestone12" class="achievement achievementlocked" ach-tooltip="Reward: Start with 10 of each Emperor Dimension, and keep best antimatter in dilation on Fundament."></div></td>
 						<td><div id="braveMilestone13" class="achievement achievementlocked" ach-tooltip="Reward: Start with 5 Nanorewards."></div></td>
 						<td><div id="braveMilestone14" class="achievement achievementlocked" ach-tooltip="Reward: Workers are freely promotable and produce Duplicants instead."></div></td>
 						<td><div id="braveMilestone15" class="achievement achievementlocked" ach-tooltip="Reward: Passively produce 1% of Quarks per second."></div></td>
@@ -4461,6 +4470,9 @@
 	<script type="text/javascript" src="javascripts/ach/achieve_check.js"></script>
 	<script type="text/javascript" src="javascripts/ach/achievements.js"></script>
 	<script type="text/javascript" src="javascripts/ach/ach-tooltips.js"></script>
+
+	<script type="text/javascript" src="javascripts/meta/meta.js"></script>
+	<script type="text/javascript" src="javascripts/meta/badges.js"></script>
 
 	<!-- GAME -->
 	<script type="text/javascript" src="javascripts/game/autobuyer.js"></script>

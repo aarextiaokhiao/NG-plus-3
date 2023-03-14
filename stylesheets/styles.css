@@ -689,6 +689,21 @@ button b, button span {
     user-select: none;
 }
 
+.achievement.cant {
+	border-color: red;
+	opacity: 0.3
+}
+
+.achievement.gold {
+	border-color: #fb0;
+	box-shadow: 0 0 12px #fb0;
+}
+
+.achievement.diamond {
+	border-color: #0ff;
+	box-shadow: 12px 12px 24px #0ff, -12px -12px 24px #0ff;
+}
+
 .achRowInfo {
     width: 104px;
     margin: 0px auto;

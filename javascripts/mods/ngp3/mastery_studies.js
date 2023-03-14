@@ -93,20 +93,18 @@ var masteryStudies = {
 			return Math.floor(player.dilation.freeGalaxies / 7)
 		},
 		253: function(){
-			return Math.floor(getTotalRG()/4)
+			return Math.floor(getTotalRG() / 4)
 		},
 		262: function(){
 			let r = Math.max(player.resets / 5e4 - 10, 1)
-			let exp = Math.sqrt(Math.max(player.resets / 1e5 - 5.5, 1))
 
-			if (r > 1e4) r = Math.pow(6 + Math.log10(r), 4)
+			exp = 2
 			if (mod.ngep) exp *= 2
 			return E_pow(r, exp)
 		},
 		263: function(){
 			let x = player.meta.resets
-			x = x * (x + 10) / 60
-			return x + 1
+			return Math.max(x * x / 10, 1)
 		},
 		264: function(){
 			let r = player.galaxies / 100 + 1
@@ -127,7 +125,7 @@ var masteryStudies = {
 		},
 		301: function(){
 			if (hasNU(6)) return 0
-			return Math.floor(tmp.extraRG / 4.15)
+			return Math.floor(tmp.rep.extra / 4.15)
 		},
 		303: function(){
 			return E_pow(4.7, Math.pow(Math.log10(Math.max(player.galaxies, 1)), 1.5))
@@ -154,10 +152,10 @@ var masteryStudies = {
 			return E_pow(mod.p3ep ? 12 : 10, log)
 		},
 		361: function(){
-			return player.dilation.tachyonParticles.max(1).pow(0.01824033924212366)
+			return player.dilation.tachyonParticles.max(1).pow(0.015)
 		},
 		371: function(){
-			return Math.pow(tmp.extraRG+1,mod.p3ep?.5:.3)
+			return Math.pow(tmp.rep.extra+1,mod.p3ep?.5:.3)
 		},
 		372: function(){
 			return Math.sqrt(player.timeShards.add(1).log10())/20+1
@@ -166,13 +164,13 @@ var masteryStudies = {
 			return Math.pow(player.galaxies+1,0.55)
 		},
 		381: function(){
-			return Decimal.min(tmp.tsReduce, 1).log10() / -135 + 1
+			return Decimal.min(tmp.gal.ts, 1).log10() / -135 + 1
 		},
 		382: function(){
 			return player.eightAmount.max(1).pow(Math.PI)
 		},
 		383: function(){
-			return E(colorBoosts.b || 1).max(1).pow(.5)
+			return E(tmp.color_eff.b || 1).max(1).pow(.5)
 		},
 		391: function(){
 			return player.meta.antimatter.max(1).pow(8e-4)
@@ -181,16 +179,16 @@ var masteryStudies = {
 			return E_pow(mod.p3ep ? 1.7 : 1.6, Math.sqrt(quSave.replicants.quarks.add(1).log10())).add(1)
 		},
 		393: function(){
-			if (!tmp.twr) return E(1)
-			return E_pow(4e5, Math.sqrt(tmp.twr.add(1).log10()))
+			if (!tmp.ant.workers) return E(1)
+			return E_pow(4e5, Math.sqrt(tmp.ant.workers.add(1).log10()))
 		},
 		401: function(){
 			let log = quSave.replicants.quarks.div(1e28).add(1).log10() / 5
 			return E_pow(mod.p3ep ? 12 : 10, log)
 		},
 		411: function(){
-			if (!tmp.tra) return E(1)
-			var exp = tmp.tra.div(1e24).add(1).log10() / 2
+			if (!tmp.ant.total) return E(1)
+			var exp = tmp.ant.total.div(1e24).add(1).log10() / 2
 			if (mod.p3ep) exp += Math.pow((exp + 9) * 3, .2) * Math.log10(exp + 1)
 			if (exp > 5) exp = (exp + 5) / 2
 			return pow10(exp)
@@ -224,7 +222,7 @@ var masteryStudies = {
 		281: "Replicanti multiplier boosts DT production at a greatly reduced rate.",
 		282: "Replicanti multiplier boosts Meta Dimensions at a greatly reduced rate.",
 		291: "You gain 1% of your EP gained on Eternity per second.",
-		292: "You can gain tachyon particles without disabling dilation.",
+		292: "Gain Tachyon Particles based on best antimatter in dilation.",
 		301: "Extra Replicated Galaxies scale Remote Galaxies later.",
 		302: "You can buy all Time Studies.",
 		303: "Galaxies strengthen Meta Dimensions.",

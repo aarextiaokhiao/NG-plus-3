@@ -192,7 +192,13 @@ function getNanoRewardReqFixed(n){
 	let s = getNanoScalingsStart()
 	if (n >= s[0] && a[0]) x = x.mul(E_pow(4.0, (n - s[0])))
 	if (n >= s[1] && a[1]) x = x.mul(E_pow(2.0, (n - s[1]) * (n - s[1] + 3)))
-	return x.pow(tmp.ppti || 1)
+	return x.pow(getNanoRewardThresholdExp())
+}
+
+function getNanoRewardThresholdExp() {
+	let x = 1
+	if (hasAch("ng3p113")) x /= 2
+	return x
 }
 
 function updateNextPreonEnergyThreshold(){
@@ -208,11 +214,6 @@ function updateNextPreonEnergyThreshold(){
 	}
 	nfSave.power += toSkip
 	nfSave.powerThreshold = getNanoRewardReq(1)
-}
-
-function updateNanofieldTemp() {
-	updateNanorewardTemp()
-	updatePPTITemp() //pilon power threshold increase
 }
 
 function updateNanoEffectUsages() {
@@ -249,7 +250,7 @@ function setupNanoRewardTemp() {
 	updateNanoEffectUsages()
 }
 
-function updateNanorewardTemp() {
+function updateNanofieldTemp() {
 	if (!NF.unl()) return
 	if (!tmp.nf) setupNanoRewardTemp()
 	var x = getNanoRewardPowerEff()
@@ -261,12 +262,6 @@ function updateNanorewardTemp() {
 		updateNanoRewardPowers()
 		updateNanoRewardEffects()
 	}
-}
-
-function updatePPTITemp() {
-	let x = 1
-	if (hasAch("ng3p113")) x /= 2
-	tmp.ppti = x
 }
 
 //HTML

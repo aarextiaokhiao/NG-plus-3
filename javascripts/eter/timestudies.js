@@ -494,6 +494,11 @@ let tsMults = {
 	},
 	222: function() {
 		return !inNGM(2) ? 2 : .5
+	},
+	232: function() {
+		let exp = 0.2
+		if (mod.ngp3 && player.galaxies >= 2e3 && !tmp.be) exp *= Math.max(21 - player.galaxies / 100, 0)
+		return Math.pow(1 + player.galaxies / 1000, exp)
 	}
 }
 
@@ -526,7 +531,7 @@ function new_preset(importing) {
 	latestRow.innerHTML = getPresetLayout(placement)
 	loadedPresets++
 	changePresetTitle(placement, loadedPresets)
-	localStorage.setItem(metaSaveId,btoa(JSON.stringify(metaSave)))
+	saveMeta()
 	$.notify("Preset created", "info")
 }
 
@@ -589,9 +594,9 @@ function delete_preset(presetId) {
 			loadedPresets--
 		} else newPresetsOrder.push(poData[id])
 	}
-	metaSave["presetsOrder"+(mod.rs?"_ers":"")] = newPresetsOrder
+	meta.save["presetsOrder"+(mod.rs?"_ers":"")] = newPresetsOrder
 	poData = newPresetsOrder
-	localStorage.setItem(metaSaveId,btoa(JSON.stringify(metaSave)))
+	saveMeta()
 	$.notify("Preset deleted", "info")
 }
 
@@ -620,7 +625,7 @@ function move_preset(id, offset) {
 	el("presets").rows[placement+offset].innerHTML = getPresetLayout(id)
 	changePresetTitle(poData[placement], placement)
 	changePresetTitle(poData[placement+offset], placement + offset)
-	localStorage.setItem(metaSaveId, btoa(JSON.stringify(metaSave)))
+	saveMeta()
 }
 
 var loadedPresets = 0

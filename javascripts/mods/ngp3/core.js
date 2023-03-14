@@ -1,15 +1,15 @@
 //VERSION: 2.31
 let ngp3_ver = 2.31
-let ngp3_build = 20230312
+let ngp3_build = 20230314
 function doNGP3Updates() {
 	if (!aarMod.ngp3_build) aarMod.ngp3_build = 0
 	if (aarMod.ngp3_build < 20221230) quSave.multPower = 0
-	if (aarMod.ngp3_build < 20220201) {
+	if (aarMod.ngp3_build < 20230201) {
 		if (!quSave.qcsNoDil) quSave.qcsNoDil = {}
 		delete ghSave?.ghostlyPhotons
 		delete aarMod.leNoConf
 	}
-	if (aarMod.ngp3_build < 20220204) {
+	if (aarMod.ngp3_build < 20230204) {
 		delete quSave.tod.g
 		delete quSave.tod.b
 		if (!ghSave?.reached) {
@@ -19,11 +19,11 @@ function doNGP3Updates() {
 		delete ghSave?.disabledRewards
 		delete ghSave?.reached
 	}
-	if (aarMod.ngp3_build < 20220208) {
+	if (aarMod.ngp3_build < 20230208) {
 		delete brSave.savedAutobuyersBR
 		delete brSave.savedAutobuyersNoBR
 	}
-	if (aarMod.ngp3_build < 20220211) {
+	if (aarMod.ngp3_build < 20230211) {
 		quSave.electrons.amount = 0
 		quSave.electrons.sacGals = 0
 		updateElectronsEffect()
@@ -499,6 +499,7 @@ function beatNGP3() {
 	This took you ${timeDisplayShort(player.totalTimePlayed)} and ${player.achievements.length} achievements.<br><br>
 	Post-game is coming soon!<br>
 	Thanks for playing!`
+	onObtainBadgeCheck("tgr")
 }
 
 //v2.4: Code
@@ -508,18 +509,15 @@ function updateNGP3Temp() {
 	if (quantumed) {
 		if (beSave && beSave.unlocked) updateBreakEternityUpgradesTemp()
 		if (hasMasteryStudy("d14")) updateBigRipUpgradesTemp()
-		if (isDecayOn()) {
-			tmp.branchSpeed = getBranchSpeed()
-			tmp.tue = getTreeUpgradeEfficiency()
-		}
-
+		if (isDecayOn()) tmp.decay_str = getTreeUpgradeEfficiency()
 		if (hasMasteryStudy("d12")) updateNanofieldTemp()
-		if (hasMasteryStudy("d11")) tmp.edgm = getEmperorDimensionGlobalMultiplier() //Update global multiplier of all Emperor Dimensions
 		if (hasMasteryStudy("d10")) {
-			tmp.pe = getPilonEffect()
-			tmp.twr = getTotalWorkers()
-			tmp.tra = getTotalReplicants()
+			tmp.ant.preon_eff = getPilonEffect()
+			tmp.ant.workers = getTotalWorkers()
+			tmp.ant.total = getTotalReplicants()
+			tmp.ant.global_mult = getEmperorDimensionGlobalMultiplier() //Update global multiplier of all Emperor Dimensions
 		}
+		updateColorPowers()
 	}
 	updateQCRewardsTemp()
 	if (mod.ngp3) {
@@ -601,7 +599,7 @@ function ngP3AchieveCheck() {
 	if (nfSave.rewards >= 21 && noTree) giveAchievement("But I don't want to grind!")
 	if (player.replicanti.amount.log10() >= (mod.udp ? 268435456 : 36e6)) giveAchievement("Will it be enough?")
 	if (player.options.secrets && player.options.secrets.ghostlyNews && !player.options.newsHidden) giveAchievement("Two tickers")
-	if (tmp.pcc.normal >= 24) giveAchievement("The Challenging Day")
+	if (tmp.qc.pc_comp.normal >= 24) giveAchievement("The Challenging Day")
 	if (speedrunMilestonesReached >= 24) giveAchievement("And the winner is...")
 	if (speedrunMilestonesReached >= 28) giveAchievement("Special Relativity")
 	if (hasMasteryStudy("d13")) giveAchievement("Do protons decay?")
@@ -620,7 +618,7 @@ function ngP3AchieveCheck() {
 	let ableToGetRid8 = ableToGetRid7 && !beSave.did
 	if (brSave.spaceShards.log10() >= 33 && !beSave.did) giveAchievement("Finite Time")
 	if (beSave.eternalMatter.gte(9.999999e99)) giveAchievement("This achievement doesn't exist 4")
-	if (bigRipped() && player.matter.log10() >= 5000) giveAchievement("Really?")
+	if (inQC(6) && inQC(8) && !bigRipped() && player.money.e >= 2e7) giveAchievement("Really?")
 	if (ableToGetRid8 && player.infinityPoints.log10() >= 9.5e5) giveAchievement("Please answer me why you are dying.")
 
 	if (PHOTON.unlocked()) giveAchievement("Progressing as a Ghost")
@@ -645,7 +643,7 @@ function ngP3AchieveCheck() {
 }
 
 function doNGP3UnlockStuff() {
-	var chall = tmp.inQCs
+	var chall = tmp.qc.in
 	if (chall.length < 2) chall = chall[0]
 	else if (chall[0] > chall[1]) chall = chall[1] * 10 + chall[0]
 	else chall = chall[0] * 10 + chall[1]
@@ -691,7 +689,6 @@ function quantumOverallUpdating(diff){
 
 	//Color Powers
 	for (var c=0;c<3;c++) quSave.colorPowers[colorShorthands[c]]=quSave.colorPowers[colorShorthands[c]].add(getColorPowerProduction(colorShorthands[c]).mul(diff))
-	updateColorPowers()
 	if (hasMasteryStudy("d10")) replicantOverallUpdating(diff)
 	if (hasMasteryStudy("d11")) emperorDimUpdating(diff)
 	if (NF.unl()) nanofieldUpdating(diff)
@@ -727,4 +724,7 @@ function setupNGP3HTMLAndData() {
 	setupBosonicExtraction()
 	setupBosonicUpgrades()
 	setupBosonicRunes()
+
+	//META
+	setupBadges()
 }

@@ -231,9 +231,8 @@ const NEUTRINO = {
 				desc: `Blue power boosts nanocharge and preonic spin.`,
 
 				eff() {
-					let bLog = quSave.colorPowers.b.log10()
-					let exp = Math.max(bLog / 1e4 + 1, 2)
-					return E_pow(Math.max(bLog / 500 + 1, 1), exp)
+					let bLog = quSave.colorPowers.b.max(1).log10()
+					return E_pow(2, Math.pow(bLog / 400 + 1, 3 / 4) - 1)
 				},
 				effDesc: e => `${shorten(e)}x`
 			}, {
@@ -299,7 +298,7 @@ const NEUTRINO = {
 				cost: E(1e27),
 				desc: `Galaxy strength adds Meta-Antimatter effect exponent.`,
 
-				eff: _ => tmp.galStr / 2,
+				eff: _ => tmp.gal.str / 2,
 				effDesc: e => `+^${shorten(e)}`
 			}, {
 				unl: _ => PHOTON.unlocked(),
@@ -378,7 +377,7 @@ function hasNU(x) {
 	return NEUTRINO.upgrades.has(x)
 }
 function ntEff(type, x, def = 1) {
-	return tmp.funda.neutrino?.[type][x] ?? def
+	return tmp.funda?.neutrino[type][x] ?? def
 }
 
 //Multipliers

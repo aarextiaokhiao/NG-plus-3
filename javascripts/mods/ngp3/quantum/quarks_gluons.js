@@ -9,7 +9,7 @@ function updateQuantumWorth(mode) {
 	if (mode != "notation") {
 		if (mode != "display") {
 			quantumWorth = quSave.quarks.add(quSave.usedQuarks.r).add(quSave.usedQuarks.g).add(quSave.usedQuarks.b).add(quSave.gluons.rg).add(quSave.gluons.gb).add(quSave.gluons.br).round()
-			colorCharge.qwBonus = quantumWorth.pow(.8).div(100)
+			colorCharge.qwBonus = quantumWorth.add(1).pow(0.9).div(50)
 		}
 		if (ghostified) updateAutomatorStuff(mode)
 	}
@@ -17,15 +17,11 @@ function updateQuantumWorth(mode) {
 }
 
 function getQuarkMultReq() {
-	let lvl = quSave.multPower / 3
-	if (lvl > 467) lvl = lvl * 2 - 467
-	return E_pow(100, lvl).mul(500)
+	return E_pow(10, quSave.multPower).mul(5)
 }
 
 function getQuarkMultBulk() {
-	let bulk = E(quantumWorth).max(1).div(500).log(100)
-	if (bulk > 467) bulk = (bulk + 467) / 2
-	bulk *= 3
+	let bulk = E(quantumWorth).max(1).div(5).log(10)
 	if (bulk < 0) return 0
 	return Math.floor(bulk + 1)
 }
@@ -88,7 +84,7 @@ function assignQuark(color) {
 	updateQuarkDisplay()
 	if (!mult.eq(1)) updateQuantumWorth()
 	updateColorCharge()
-	if (ghSave.another > 0) ghSave.another--
+	if (ghSave?.another > 0) ghSave.another--
 }
 
 function assignAll(auto) {
@@ -105,7 +101,7 @@ function assignAll(auto) {
 		var toAssign = oldQuarks.mul(ratios[colors[c]]/sum).round()
 		if (toAssign.gt(0)) {
 			quSave.usedQuarks[colors[c]] = quSave.usedQuarks[colors[c]].add(toAssign.mul(mult)).round()
-			if (ghSave.another > 0) ghSave.another--
+			if (ghSave?.another > 0) ghSave.another--
 		}
 	}
 	quSave.quarks = quSave.quarks.sub(oldQuarks).round()
@@ -197,12 +193,6 @@ function getColorPowerProduction(color) {
 	return ret
 }
 
-colorBoosts={
-	r: 1,
-	g: 1,
-	b: 1
-}
-
 function getCPLog(c) {
 	var x = Decimal.add(quSave.colorPowers[c], 1).log10()
 	return x
@@ -224,14 +214,14 @@ function updateColorPowers(log) {
 	let div6 = 4
 	if (!player.dilation.active) div6--
 
-	colorBoosts.r = Math.pow(log.r, div6 / 6) / 10 + 1
-	if (colorBoosts.r > 1.3) colorBoosts.r = Math.sqrt(colorBoosts.r * 1.3)
-	if (colorBoosts.r > 2.3) {
+	tmp.color_eff.r = Math.pow(log.r, div6 / 6) / 10 + 1
+	if (tmp.color_eff.r > 1.3) tmp.color_eff.r = Math.sqrt(tmp.color_eff.r * 1.3)
+	if (tmp.color_eff.r > 2.3) {
 		let sc_exp = 0.5
 		if (hasNB(5)) sc_exp += ntEff("boost", 5, 0) / 2
-		if (sc_exp < 1) colorBoosts.r = Math.pow(colorBoosts.r / 2.3, sc_exp) * 2.3
+		if (sc_exp < 1) tmp.color_eff.r = Math.pow(tmp.color_eff.r / 2.3, sc_exp) * 2.3
 	}
-	if (colorBoosts.r > 3) colorBoosts.r = Math.sqrt(colorBoosts.r * 3)
+	if (tmp.color_eff.r > 3) tmp.color_eff.r = Math.sqrt(tmp.color_eff.r * 3)
 
 	//Green
 	let mult = 2
@@ -240,12 +230,12 @@ function updateColorPowers(log) {
 		if (mult > 4) m = Math.sqrt(m * 4)
 	}
 	if (mod.udp && !aarMod.nguepV) mult /= 2
-	colorBoosts.g = (Math.pow(log.g + 1, 1/3) - 1) * mult + 1
+	tmp.color_eff.g = (Math.pow(log.g + 1, 1/3) - 1) * mult + 1
 
 	//Blue
 	var bLog = Math.sqrt(log.b + 1.5) - Math.sqrt(1.5)
 	if (bLog > 3) bLog = Math.sqrt(bLog * 3)
-	colorBoosts.b = pow10(bLog)
+	tmp.color_eff.b = pow10(bLog)
 }
 
 //Gluons
@@ -300,7 +290,7 @@ function hasGluonUpg(id) {
 }
 
 function getGB1Effect() {
-	return Decimal.div(1, tmp.tsReduce).log10() / 100 + 1
+	return Decimal.div(1, tmp.gal.ts).log10() / 100 + 1
 }
 
 function getBR1Effect() {
@@ -332,9 +322,9 @@ function updateQuarksTab(tab) {
 	el("redPower").textContent=shortenMoney(quSave.colorPowers.r)
 	el("greenPower").textContent=shortenMoney(quSave.colorPowers.g)
 	el("bluePower").textContent=shortenMoney(quSave.colorPowers.b)
-	el("redTranslation").textContent=shortenMoney((colorBoosts.r-1)*100)+"%"
-	el("greenTranslation").textContent="+"+shortenMoney((colorBoosts.g-1)*100)+"%"
-	el("blueTranslation").textContent=shortenMoney(colorBoosts.b)+"x"
+	el("redTranslation").textContent=shortenMoney((tmp.color_eff.r-1)*100)+"%"
+	el("greenTranslation").textContent="+"+shortenMoney((tmp.color_eff.g-1)*100)+"%"
+	el("blueTranslation").textContent=shortenMoney(tmp.color_eff.b)+"x"
 
 	if (hasMasteryStudy("t383")) el("blueTranslationMD").textContent=shorten(getMTSMult(383))+"x"
 	if (hasBraveMilestone(8)) {

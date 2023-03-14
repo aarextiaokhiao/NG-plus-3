@@ -22,7 +22,7 @@ function getGSAmount(offset=0) {
 		if (hasGSacUpg(41) && inNGM(4)) ret = ret.mul(Decimal.max(player.tickspeedBoosts, 1).pow(e))
 		if (hasGSacUpg(43) && inNGM(4)) ret = ret.mul(Decimal.max(player.resets, 1).pow(e))
 		if (hasGSacUpg(45) && inNGM(4)) ret = ret.mul(player.eightAmount.max(1).pow(e))
-		if (player.challenges.includes("postcngm3_1") && inNGM(4)) ret = ret.mul(E_pow(3, tmp.cp))
+		if (player.challenges.includes("postcngm3_1") && inNGM(4)) ret = ret.mul(E_pow(3, tmp.ic_power))
 	}
 	var rgs = player.replicanti.galaxies
 	if (hasAch("r98")) rgs *= 2
@@ -71,7 +71,7 @@ function getGSGalaxyExp(galaxies) {
 		y += Math.max(0, 0.05 * (galaxies - 10)) + 0.005 * Math.pow(Math.max(0, galaxies-30) , 2)
 		if (!inNGM(3) || player.challenges.includes("postcngm3_4") || player.currentChallenge == "postcngm3_4") y += 0.0005 * Math.pow(Math.max(0, galaxies - 50) , 3)
 		if (hasAch("r121") && !inNGM(3)) y += 1e-5 * Math.pow(Math.max(galaxies - 500, 0), 4) 
-		y *= .08*(tmp.cp+14)
+		y *= .08*(tmp.ic_power+14)
 		if (player.infinityUpgrades.includes("postinfi60") && inNGM(3)) y *= Math.log10(Math.max(galaxies - 50, 1)) * 2.5 + 1
 		if (inNGM(4)) y += .25 * Math.sqrt(y + (2.5 / 9 * galaxies))
 	}
@@ -89,8 +89,8 @@ function getGSGalaxyExp(galaxies) {
 
 function getGSDimboostExp(galaxies){
 	let z = 1
-	if (tmp.cp > 3) {
-		z = 0.06 * (tmp.cp + 14)
+	if (tmp.ic_power > 3) {
+		z = 0.06 * (tmp.ic_power + 14)
 		z += galaxies / 100
 		if (!inNGM(3)) z *= Math.log(galaxies + 3)
 	}
@@ -562,7 +562,7 @@ let galMults = {
 		if (inNGM(4)){
 			m = 1
 			if (hasAch("r63")) m += .01 * player.galacticSacrifice.upgrades.length
-			if (hasAch("r64")) m += .02 * tmp.cp
+			if (hasAch("r64")) m += .02 * tmp.ic_power
 			exp *= m
 		}
 		let l = Math.max(player.galacticSacrifice.galaxyPoints.log10() - 5e4, 0)
@@ -658,7 +658,7 @@ function getG11Infinities() {
 	let x = getInfinitied()
 	let e = getEternitied()
 	if (e == 0 && x > 1e6) x = Math.min(Math.pow(x * 1e12, 1/3), 1e7)
-	if (e > 0 && x < 1e8 && tmp.cp > 0) x += 2e6
+	if (e > 0 && x < 1e8 && tmp.ic_power > 0) x += 2e6
 	if (player.infinityUpgrades.includes("postinfi61")) x += 1e7
 	if (player.infinityUpgrades.includes("postinfi61") && player.galacticSacrifice.upgrades.length > 9) x += player.galacticSacrifice.upgrades.length * 1e7
 	x += tmp.ec * 1e10
@@ -668,9 +668,9 @@ function getG11Infinities() {
 
 function getG11Divider(){
 	let z = 10
-	let c = tmp.cp // challenges completed
+	let c = tmp.ic_power // challenges completed
 	if (c > 0 && player.challenges.includes("postcngmm_1")) z -= (c + 6) / 4
-	if (c > 6) z += 0.085 * tmp.cp - 0.31
+	if (c > 6) z += 0.085 * tmp.ic_power - 0.31
 	if (player.infinityUpgrades.includes("postinfi61")) z -= .1
 	z -= Math.pow(tmp.ec, 0.3)/10
 	if (getEternitied() > 0) z -= 0.5

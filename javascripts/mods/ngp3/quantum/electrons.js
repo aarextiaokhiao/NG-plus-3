@@ -54,9 +54,10 @@ function sacrificeGalaxy() {
 
 function getElectronBoost(mod) {
 	var r = quSave.electrons.amount
-	var ss = 149840
+	var ss = 8e4
+	var ss_speed = 8e4
 	if (hasNU(13)) ss += ntEff("upg", 13, 0)
-	if (r > 37460 + ss) r = Math.sqrt((r - ss) * 37460) + ss
+	if (r > ss) r = Math.sqrt((r - ss + ss_speed) * ss_speed) + ss - ss_speed
 
 	if (hasGluonUpg("rg4") && mod != "no-rg4") r *= 0.7
 	if (isDecayOn() && mod != "noTree") r *= getTreeUpgradeEffect(4)

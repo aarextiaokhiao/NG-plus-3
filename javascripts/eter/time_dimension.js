@@ -1,7 +1,7 @@
 //time dimensions
 
 function getBreakEternityTDMult(tier){
-	var ret = tmp.it
+	var ret = tmp.inf_time
 	if (hasTimeStudy(11) && tier == 1) ret = ret.mul(tsMults[11]())
 	if (isBreakUpgActive(1) && tier < 5) ret = ret.mul(getBreakUpgMult(1))
 	if (isBreakUpgActive(4) && tier > 3 && tier < 7) ret = ret.mul(getBreakUpgMult(4))
@@ -50,11 +50,11 @@ function getTimeDimensionPower(tier) {
 	var dim = player["timeDimension" + tier]
 	var ret = dim.power.pow(mod.rs ? 1 : 2)
 
-	//if (inNGM(4)) ret = doNGM4TDMultiplier(tier,ret)
+	if (inNGM(4)) ret = doNGM4TDMultiplier(tier, ret)
 
 	if (hasTimeStudy(11) && tier == 1) ret = ret.mul(tsMults[11]())
 	
-	if (hasAch("r105")) ret = ret.mul(tmp.it)
+	if (hasAch("r105")) ret = ret.mul(tmp.inf_time)
 	ret = ret.mul(getERTDAchMults())
 
 	var ret2 = calcNGM2atleastTDPreVPostDilMultiplier(tier)
@@ -149,7 +149,7 @@ function updateTimeDimensions() {
 
 function updateTimeShards() {
 	let p = getTimeDimensionProduction(1)
-	el("itmult").textContent = mod.ngp3 && hasAch('r105') ? 'Your "Infinite Time" multiplier is currently ' + shorten(tmp.it) + 'x.':''
+	el("itmult").textContent = mod.ngp3 && hasAch('r105') ? 'Your "Infinite Time" multiplier is currently ' + shorten(tmp.inf_time) + 'x.':''
 	el("timeShardAmount").textContent = shortenMoney(player.timeShards)
 	el("tickThreshold").textContent = shortenMoney(player.tickThreshold)
 	if (player.currentEternityChall == "eterc7") el("timeShardsPerSec").textContent = "You are getting " + shortenDimensions(p) + " Eighth Infinity Dimensions per second."
@@ -291,13 +291,13 @@ function nonERFreeTickUpdating(){
 		threshold = 1.25
 		if (mod.ngmu) threshold -= 0.08
 	}
-	if (QCIntensity(7)) threshold *= tmp.qcRewards[7]
+	if (QCIntensity(7)) threshold *= tmp.qc.reward[7]
 	if (threshold < 1.1 && inNGM(2)) threshold = 1 + 0.1 / (2.1 - threshold)
 	if (threshold < 1.01 && inNGM(2)) threshold = 1.005 + 0.005 / (2.01 - threshold)
 
 	const gain = Math.ceil(E(player.timeShards).dividedBy(player.tickThreshold).log10()/Math.log10(threshold))
 	player.totalTickGained += gain
-	player.tickspeed = player.tickspeed.mul(E_pow(tmp.tsReduce, gain))
+	player.tickspeed = player.tickspeed.mul(E_pow(tmp.gal.ts, gain))
 	player.postC3Reward = E_pow(getIC3Mult(), gain * getIC3EffFromFreeUpgs()).mul(player.postC3Reward)
 
 	const base = inNGM(4) ? 0.01 : inNGM(3) ? .1 : 1

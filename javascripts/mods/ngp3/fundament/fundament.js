@@ -17,10 +17,7 @@ function setupFundament() {
 	}
 }
 
-function loadFundament(reset) {
-	let newSave = setupFundament()
-	if (reset) player.ghostify = newSave
-
+function loadFundament() {
 	ghSave = player.ghostify
 	ghostified = ghSave?.times > 0 
 	blSave = undefined
@@ -30,7 +27,7 @@ function loadFundament(reset) {
 	player.dilation.bestTPOverGhostifies = Decimal.max(player.dilation.bestTPOverGhostifies, player.dilation.bestTP)
 
 	if (!ghSave) return
-	ghSave = deepUndefinedAndDecimal(ghSave, newSave)
+	ghSave = deepUndefinedAndDecimal(ghSave, setupFundament())
 	blSave = ghSave?.bl
 
 	ghSave.times = nP(ghSave.times)
@@ -56,7 +53,8 @@ function loadFundament(reset) {
 }
 
 function unlockFundament() {
-	loadFundament(true)
+	player.ghostify = setupFundament()
+	loadFundament()
 	if (el("welcome").style.display != "flex") el("welcome").style.display = "flex"
 	else aarMod.popUpId = ""
 	el("welcomeMessage").innerHTML = "You are finally able to complete PC6+8 in Big Rip! However, because of the unstability of this universe, the only way to go further is to fundament. This allows to unlock new stuff in exchange for everything that you have."
@@ -162,7 +160,7 @@ RESETS.funda = {
 			br: E(0),
 		}
 		quSave.multPower = 0
-		if (bm < 2) quSave.upgrades = []
+		if (bm < 1) quSave.upgrades = []
 
 		updateQuantumWorth("quick")
 		updateColorCharge()
@@ -275,10 +273,8 @@ function denyGhostify() {
 function updateGhostifyTempStuff() {
 	updateBosonicLabTemp()
 
-	if (!ghostified) {
-		tmp.funda = {}
-		return
-	}
+	if (!ghostified) return
+	tmp.funda = {}
 	PHOTON.temp()
 	NEUTRINO.temp()
 }

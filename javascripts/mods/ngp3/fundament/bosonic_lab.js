@@ -826,7 +826,7 @@ var bu = {
 			return ret
 		},
 		12: function() {
-			let r = (colorBoosts.g + tmp.pe - 1) * 7e-4
+			let r = (tmp.color_eff.g + tmp.ant.preon_eff - 1) * 7e-4
 			if (r > 0.2) r = 0.35 - 0.04 / r
 			return r
 		},
@@ -894,7 +894,7 @@ var bu = {
 		},
 		41: function() {
 			return {
-				ig: E_pow(bigRipped() ? 1e5 : 1.05, Math.pow(Decimal.max(tmp.it, 1).log10(), 2)),
+				ig: E_pow(bigRipped() ? 1e5 : 1.05, Math.pow(Decimal.max(tmp.inf_time, 1).log10(), 2)),
 				it: E_pow(bigRipped() ? 1.01 : 5, Math.sqrt(Decimal.max(tmp.ig, 1).log10()))
 			}
 		},
@@ -903,7 +903,7 @@ var bu = {
 			return Math.pow(quSave.colorPowers.r.add(1).log10() / 2e4 + 1, exp)
 		},
 		43: function() {
-			return Math.sqrt(colorBoosts.g + tmp.pe) / (bigRipped() ? 100 : 40) + 1
+			return Math.sqrt(tmp.color_eff.g + tmp.ant.preon_eff) / (bigRipped() ? 100 : 40) + 1
 		},
 		44: function() {
 			var exp = mod.p3ep ? .55 : .5

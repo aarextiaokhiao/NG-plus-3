@@ -55,5 +55,5 @@ function ERFreeTickUpdating(){
 	var oldT = player.totalTickGained
 	player.totalTickGained = getTotalTickGained()
 	player.tickThreshold = tickCost(player.totalTickGained+1)
-	player.tickspeed = player.tickspeed.mul(E_pow(tmp.tsReduce, player.totalTickGained - oldT))
+	player.tickspeed = player.tickspeed.mul(E_pow(tmp.gal.ts, player.totalTickGained - oldT))
 }

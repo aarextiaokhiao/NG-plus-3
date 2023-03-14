@@ -8,7 +8,7 @@ el("save").onclick = function () {
 var noSave=false
 function save_game(silent) {
 	if (!game_loaded || noSave || infiniteDetected) return
-	set_save(metaSave.current, player);
+	set_save(meta.save.current, player);
 	$.notify("Game saved", "info")
 }
 
@@ -27,16 +27,16 @@ function runAutoSave(){
 //Loading
 var savePlacement
 function load_game(noOffline, init) {
-	if (!metaSave.saveOrder.includes(metaSave.current)) metaSave.current = metaSave.saveOrder[0]
-	var dimensionSave = get_save(metaSave.current)
+	if (!meta.save.saveOrder.includes(meta.save.current)) meta.save.current = meta.save.saveOrder[0]
+	var dimensionSave = get_save(meta.save.current)
 	infiniteDetected = false
 	if (dimensionSave!=null) {
-		if (dimensionSave.quantum !== undefined) if (dimensionSave.quantum.timeFluxPower !== undefined) dimensionSave = get_save(metaSave.current + "_af2019")
+		if (dimensionSave.quantum !== undefined) if (dimensionSave.quantum.timeFluxPower !== undefined) dimensionSave = get_save(meta.save.current + "_af2019")
 		player = dimensionSave
 		if (detectInfinite()) infiniteCheck=true
 	}
 	savePlacement=1
-	while (metaSave.saveOrder[savePlacement - 1] != metaSave.current) savePlacement++
+	while (meta.save.saveOrder[savePlacement - 1] != meta.save.current) savePlacement++
 	if (infiniteCheck) exportInfiniteSave()
 	if (infiniteCheck || infiniteCheck2 || dimensionSave?.aarMod?.ngp3Build) {
 		updateNewPlayer("reset")
@@ -54,13 +54,13 @@ var occupied=false
 function load_saves() {
 	closeToolTip()
 	el("loadmenu").style.display = "block"
-	changeSaveDesc(metaSave.current, savePlacement)
+	changeSaveDesc(meta.save.current, savePlacement)
 	clearInterval(loadSavesIntervalId)
 	occupied = false
 	loadSavesIntervalId = setInterval(function(){
 		if (occupied) return
 		else occupied = true
-		if (loadedSaves == metaSave.saveOrder.length) {
+		if (loadedSaves == meta.save.saveOrder.length) {
 			clearInterval(loadSavesIntervalId)
 			return
 		} else if (!onLoading) {
@@ -68,7 +68,7 @@ function load_saves() {
 			onLoading = true
 		}
 		try {
-			var id = metaSave.saveOrder[loadedSaves]
+			var id = meta.save.saveOrder[loadedSaves]
 			latestRow.innerHTML = getSaveLayout(id)
 			changeSaveDesc(id, loadedSaves+1)
 			loadedSaves++
@@ -99,7 +99,7 @@ function changeSaveDesc(saveId, placement) {
 	if (element == undefined) return
 
 	try {
-		var isSaveCurrent = metaSave.current == saveId
+		var isSaveCurrent = meta.save.current == saveId
 		var temp = isSaveCurrent ? player : get_save(saveId)
 		if (temp.aarexModifications == null) temp.aarexModifications = {}
 		var msg = modAbbs(checkMods(temp)) + "<br>"
@@ -189,35 +189,35 @@ function verify_save(obj) {
 
 function change_save(id) {
 	if (!game_loaded) {
-		metaSave.current=id
-		localStorage.setItem(metaSaveId, btoa(JSON.stringify(metaSave)))
+		meta.save.current=id
+		saveMeta()
 		document.location.reload(true)
 		return
 	}
 	save_game(true)
 	clearInterval(gameLoopIntervalId)
-	var oldId=metaSave.current
-	metaSave.current=id
+	var oldId=meta.save.current
+	meta.save.current=id
 	changeSaveDesc(oldId, savePlacement)
 	updateNewPlayer()
 	infiniteCheck2 = false
 	closeToolTip()
 	load_game(shiftDown)
 	savePlacement=1
-	while (metaSave.saveOrder[savePlacement-1]!=id) savePlacement++
-	changeSaveDesc(metaSave.current, savePlacement)
+	while (meta.save.saveOrder[savePlacement-1]!=id) savePlacement++
+	changeSaveDesc(meta.save.current, savePlacement)
 
 	$.notify("Save #"+savePlacement+" loaded", "info")
-	localStorage.setItem(metaSaveId,btoa(JSON.stringify(metaSave)))
+	saveMeta()
 }
 
 function export_save(id) {
 	var placement=1
-	if (!id) id = metaSave.current
-	while (metaSave.saveOrder[placement-1] != id) placement++
+	if (!id) id = meta.save.current
+	while (meta.save.saveOrder[placement-1] != id) placement++
 
 	let data
-	if (id == metaSave.current) data = btoa(JSON.stringify(player, function(k, v) { return (v === Infinity) ? "Infinity" : v }))
+	if (id == meta.save.current) data = btoa(JSON.stringify(player, function(k, v) { return (v === Infinity) ? "Infinity" : v }))
 	else data = localStorage.getItem(btoa(savePrefix + id))
 
 	exportData(data, "Exported save #"+placement+" to clipboard")
@@ -256,13 +256,13 @@ function exportData(encoded, success) {
 
 var onImport = false
 function import_save(type) {
-	if (type=="current") type=metaSave.current
+	if (type=="current") type=meta.save.current
 	else if (type!="new") {
 		var placement=1
-		while (metaSave.saveOrder[placement-1]!=type) placement++
+		while (meta.save.saveOrder[placement-1]!=type) placement++
 	}
 	onImport = true
-	var save_data = prompt("Input your save. "+(type=="new"?"":"("+(type==metaSave.current?"your current save file":"save #"+placement)+" will be overwritten!)"));
+	var save_data = prompt("Input your save. "+(type=="new"?"":"("+(type==meta.save.current?"your current save file":"save #"+placement)+" will be overwritten!)"));
 	onImport = false
 	if (save_data.constructor !== String) save_data = "";
 	if (sha512_256(save_data.replace(/\s/g, '').toUpperCase()) === "80b7fdc794f5dfc944da6a445a3f21a2d0f7c974d044f2ea25713037e96af9e3") {
@@ -307,13 +307,13 @@ function import_save(type) {
 			alert('could not load the save..')
 			return
 		}
-		if (type==metaSave.current) {
+		if (type==meta.save.current) {
 			clearInterval(gameLoopIntervalId)
 			infiniteCheck2 = false
 			player = decoded_save_data;
 			if (detectInfinite()) infiniteDetected=true
 			if (!game_loaded) {
-				set_save(metaSave.current, player)
+				set_save(meta.save.current, player)
 				document.location.reload(true)
 				return
 			}
@@ -325,12 +325,12 @@ function import_save(type) {
 			startInterval()
 		} else if (type === "new") {
 			var newSaveId=1
-			while (metaSave.saveOrder.includes(newSaveId)) newSaveId++
-			metaSave.saveOrder.push(newSaveId)
+			while (meta.save.saveOrder.includes(newSaveId)) newSaveId++
+			meta.save.saveOrder.push(newSaveId)
 			localStorage.setItem(btoa(savePrefix+newSaveId),save_data)
 			if (!game_loaded) {
-				metaSave.current=newSaveId
-				localStorage.setItem(metaSaveId,btoa(JSON.stringify(metaSave)))
+				meta.save.current=newSaveId
+				saveMeta()
 				document.location.reload(true)
 				return
 			}
@@ -338,12 +338,12 @@ function import_save(type) {
 			latestRow.innerHTML=getSaveLayout(newSaveId)
 			loadedSaves++
 			changeSaveDesc(newSaveId, loadedSaves)
-			localStorage.setItem(metaSaveId,btoa(JSON.stringify(metaSave)))
+			saveMeta()
 		} else {
 			set_save(type, decoded_save_data)
 			if (!game_loaded) {
-				metaSave.current=type
-				localStorage.setItem(metaSaveId,btoa(JSON.stringify(metaSave)))
+				meta.save.current=type
+				saveMeta()
 				document.location.reload(true)
 				return
 			}
@@ -355,55 +355,55 @@ function import_save(type) {
 
 function move(id,offset) {
 	placement=0
-	while (metaSave.saveOrder[placement]!=id) placement++
+	while (meta.save.saveOrder[placement]!=id) placement++
 	if (offset<0) {
 		if (placement<-offset) return
-	} else if (placement>metaSave.saveOrder.length-offset-1) return
-	var temp=metaSave.saveOrder[placement]
-	if (temp==metaSave.current) savePlacement+=offset
-	if (metaSave.saveOrder[placement+offset]==metaSave.current) savePlacement-=offset
-	metaSave.saveOrder[placement]=metaSave.saveOrder[placement+offset]
-	metaSave.saveOrder[placement+offset]=temp
-	el("saves").rows[placement].innerHTML=getSaveLayout(metaSave.saveOrder[placement])
+	} else if (placement>meta.save.saveOrder.length-offset-1) return
+	var temp=meta.save.saveOrder[placement]
+	if (temp==meta.save.current) savePlacement+=offset
+	if (meta.save.saveOrder[placement+offset]==meta.save.current) savePlacement-=offset
+	meta.save.saveOrder[placement]=meta.save.saveOrder[placement+offset]
+	meta.save.saveOrder[placement+offset]=temp
+	el("saves").rows[placement].innerHTML=getSaveLayout(meta.save.saveOrder[placement])
 	el("saves").rows[placement+offset].innerHTML=getSaveLayout(id)
-	changeSaveDesc(metaSave.saveOrder[placement], placement+1)
+	changeSaveDesc(meta.save.saveOrder[placement], placement+1)
 	changeSaveDesc(id, placement+offset+1)
-	localStorage.setItem(metaSaveId,btoa(JSON.stringify(metaSave)))
+	saveMeta()
 }
 
 function delete_save(saveId) {
-	if (metaSave.saveOrder.length<2) {
+	if (meta.save.saveOrder.length<2) {
 		reset_game()
 		return
 	} else if (!confirm("Do you really want to erase this save? All game data in this save will be deleted!")) return
 	var alreadyDeleted=false
 	var newSaveOrder=[]
-	for (orderId=0;orderId<metaSave.saveOrder.length;orderId++) {
-		if (alreadyDeleted) changeSaveDesc(metaSave.saveOrder[orderId], orderId)
-		if (metaSave.saveOrder[orderId]==saveId) {
+	for (orderId=0;orderId<meta.save.saveOrder.length;orderId++) {
+		if (alreadyDeleted) changeSaveDesc(meta.save.saveOrder[orderId], orderId)
+		if (meta.save.saveOrder[orderId]==saveId) {
 			localStorage.removeItem(btoa(savePrefix+saveId))
 			alreadyDeleted=true
 			el("saves").deleteRow(orderId)
 			if (savePlacement>orderId+1) savePlacement--
 			loadedSaves--
-		} else newSaveOrder.push(metaSave.saveOrder[orderId])
+		} else newSaveOrder.push(meta.save.saveOrder[orderId])
 	}
-	metaSave.saveOrder=newSaveOrder
-	if (metaSave.current==saveId) {
-		change_save(metaSave.saveOrder[0])
+	meta.save.saveOrder=newSaveOrder
+	if (meta.save.current==saveId) {
+		change_save(meta.save.saveOrder[0])
 		el("loadmenu").style.display="block"
-	} else localStorage.setItem(metaSaveId,btoa(JSON.stringify(metaSave)))
+	} else saveMeta()
 	$.notify("Save deleted", "info")
 }
 
 function rename_save(id) {
-	if (metaSave.current != id && id !== undefined) {
+	if (meta.save.current != id && id !== undefined) {
 		var placement=1
-		while (metaSave.saveOrder[placement-1]!=id) placement++
+		while (meta.save.saveOrder[placement-1]!=id) placement++
 	}
-	var save_name = prompt("Input the new name of "+((metaSave.current == id || id === undefined) ? "your current save" : "save #" + placement)+". It's recommended to put the name of the mod as your save name. Leave blank to reset the save's name.")
+	var save_name = prompt("Input the new name of "+((meta.save.current == id || id === undefined) ? "your current save" : "save #" + placement)+". It's recommended to put the name of the mod as your save name. Leave blank to reset the save's name.")
 	if (save_name === null) return
-	if (metaSave.current == id || id === undefined) {
+	if (meta.save.current == id || id === undefined) {
 		aarMod.save_name = save_name
 		el("save_name").textContent = "You are currently playing in " + (aarMod.save_name ? aarMod.save_name : "Save #" + savePlacement)
 	} else {
@@ -423,18 +423,18 @@ function rename_save(id) {
 	}
 	set_save(id, temp_save)
 	placement=1
-	while (metaSave.saveOrder[placement-1]!=id) placement++
+	while (meta.save.saveOrder[placement-1]!=id) placement++
 	changeSaveDesc(id, placement)
 	$.notify("Save #"+placement+" renamed", "info")
 }
 
 function overwrite_save(id) {
-	if (id == metaSave.current) {
+	if (id == meta.save.current) {
 		save_game()
 		return
 	}
 	var placement=1
-	while (metaSave.saveOrder[placement-1]!=id) placement++
+	while (meta.save.saveOrder[placement-1]!=id) placement++
 	if (!confirm("Are you really sure you want to overwrite save #"+placement+"? All progress in the current save will be overwritten with the new save!")) return
 	set_save(id, player)
 	$.notify("Save overwritten", "info")
@@ -446,7 +446,7 @@ function reset_game() {
 	infiniteDetected = false
 	updateNewPlayer("reset")
 	if (!game_loaded) {
-		set_save(metaSave.current, player)
+		set_save(meta.save.current, player)
 		document.location.reload(true)
 		return
 	}
@@ -467,24 +467,24 @@ function new_game(type) {
 	updateNewPlayer(type ? "quick" : "new", type)
 	infiniteCheck2 = false
 
-	var oldId = metaSave.current
-	metaSave.current=1
-	while (metaSave.saveOrder.includes(metaSave.current)) metaSave.current++
-	metaSave.saveOrder.push(metaSave.current)
-	localStorage.setItem(metaSaveId,btoa(JSON.stringify(metaSave)))
+	var oldId = meta.save.current
+	meta.save.current=1
+	while (meta.save.saveOrder.includes(meta.save.current)) meta.save.current++
+	meta.save.saveOrder.push(meta.save.current)
+	saveMeta()
 
 	changeSaveDesc(oldId, savePlacement)
 	latestRow = el("saves").insertRow(loadedSaves)
-	latestRow.innerHTML = getSaveLayout(metaSave.current)
+	latestRow.innerHTML = getSaveLayout(meta.save.current)
 	loadedSaves++
-	changeSaveDesc(metaSave.current, loadedSaves)
+	changeSaveDesc(meta.save.current, loadedSaves)
 	savePlacement = loadedSaves
 
 	onLoad()
 	startInterval()
 	
 	$.notify("Save created", "info")
-	localStorage.setItem(metaSaveId, btoa(JSON.stringify(metaSave)))
+	saveMeta()
 
 	closeToolTip()
 	showDimTab('antimatterdimensions')
@@ -525,7 +525,7 @@ var player
 function updateNewPlayer(mode, preset) {
 	if (mode == "quick") mod = modPresets[preset]
 	else if (mode == "new") mod = modChosen
-	else if (mode == "meta_started") mod = modPresets.ngp3
+	else if (mode == "meta.started") mod = modPresets.ngp3
 	else if (mode != "reset") mod = {}
 
 	player = {
@@ -804,16 +804,12 @@ function updateNewPlayer(mode, preset) {
 			}
 		},
 		aarexModifications: {
-			hideSecretAchs: true,
-			dilationConf: false,
 			offlineProgress: true,
 			autoSave: true,
 			progressBar: true,
-			logRateChange: false,
 			eternityChallRecords: {},
 			popUpId: 0,
-			tabsSave: {on: false},
-			breakInfinity: false
+			tabsSave: {}
 		}
 	}
 	aarMod = player.aarexModifications

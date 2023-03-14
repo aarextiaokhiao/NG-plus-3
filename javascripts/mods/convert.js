@@ -29,7 +29,7 @@ function convertSave(conversion) {
 		if (!player.meta) doNGPlusTwoNewPlayer();
 		doNGPlusThreeNewPlayer();
 		if (conversion === "NGUdS'") doNGUDSemiprimePlayer()
-		set_save(metaSave.current, player);
+		set_save(meta.save.current, player);
 		reload();
 		$.notify("Conversion successful", "success");
 	}

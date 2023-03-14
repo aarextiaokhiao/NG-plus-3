@@ -51,6 +51,7 @@ function displayEternityStats() {
 	let dil = hasAch("r136")
 	el("stats_dil").style.display = dil ? "" : "none"
 	if (dil) {
+		el("bestmoneydilation").textContent = player.dilation.best ? "Your best antimatter in dilation is " + shortenMoney(player.dilation.best) + "." : ""
 		el("dilated").textContent = "You have succesfully dilated "+getFullExpansion(player.dilation.times)+" times."
 		el("exdilated").textContent = exdilated() ? "You have reversed Dilation " + getFullExpansion(player.exdilation.times) + " times." : ""
 	}

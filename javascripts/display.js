@@ -81,7 +81,7 @@ function tickspeedDisplay(){
 	el("tickSpeedRow").style.visibility = unl ? "visible" : "hidden"
 	if (!unl) return
 
-	var tickmult = tmp.tsReduce
+	var tickmult = tmp.gal.ts
 	var tickmultNum = tickmult.toNumber()
 	var ticklabel
 	var e = Math.floor(Math.log10(Math.round(1/tickmultNum)))
@@ -428,7 +428,7 @@ function replicantiDisplay() {
 		el("replicantireset").style.height = (hasAch("ngpp16") && !hasAch("ng3p67") ? 90 : 70) + "px"
 		el("replicantiresettoggle").textContent="Auto galaxy "+(player.replicanti.galaxybuyer?"ON":"OFF")+(!canAutoReplicatedGalaxy()?" (disabled)":"")
 
-		for (var i = i; i <= 3; i++) el("replauto"+i).textContent = "Auto: " + (player.replicanti.auto[i-1] ? "ON" : "OFF")
+		for (var i = i; i <= 3; i++) el("replauto"+i).innerHTML = "Auto: " + (player.replicanti.auto[i-1] ? "ON" : "OFF")
 	} else {
 		el("replicantiunlock").innerHTML = "Unlock Replicantis<br>Cost: " + shortenCosts(inOnlyNGM(2) ? 1e80 : 1e140) + " IP"
 		el("replicantiunlock").className = (player.infinityPoints.gte(inOnlyNGM(2) ? 1e80 : 1e140)) ? "storebtn" : "unavailablebtn"
@@ -496,7 +496,7 @@ function mainTimeStudyDisplay(){
 		el("221desc").textContent = "Currently: "+shorten(E_pow(1.0025, player.resets))+"x"
 		el("227desc").textContent = "Currently: "+shorten(Math.pow(tmp.sacPow.max(10).log10(), 10))+"x"
 		el("231desc").textContent = "Currently: "+shorten(E_pow(Math.max(player.resets, 1), 0.3))+"x more power"
-		el("232desc").textContent = "Currently: "+shortenMoney(tmp.ts232 * 100 - 100)+"%"
+		el("232desc").textContent = "Currently: "+shortenMoney(tsMults[232]() * 100 - 100)+"%"
 	}
 }
 

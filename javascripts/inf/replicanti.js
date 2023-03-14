@@ -163,16 +163,16 @@ function autoBuyRG() {
 
 function updateExtraReplGalaxies() {
 	if (dev.testZone) {
-		tmp.extraRG = 0
+		tmp.rep.extra = 0
 		return
 	}
-	tmp.extraRGBase = getExtraReplGalaxyBase()
-	tmp.extraRGMult = getExtraReplGalaxyMult()
-	tmp.extraRG = tmp.extraRGBase * tmp.extraRGMult
+	tmp.rep.extraBase = getExtraReplGalaxyBase()
+	tmp.rep.extraMult = getExtraReplGalaxyMult()
+	tmp.rep.extra = tmp.rep.extraBase * tmp.rep.extraMult
 }
 
 function getExtraReplGalaxyBase() {
-	let ss_speed = tmp.qcRewards[8] * 2
+	let ss_speed = tmp.qc.reward[8] * 2
 	let ts225Eff = 0
 	let ts226Eff = 0
 	if (hasTimeStudy(225)) {
@@ -194,39 +194,38 @@ function getExtraReplGalaxyBase() {
 
 function getExtraReplGalaxyMult() {
 	let mult = 1
-	if (quantumed) mult = colorBoosts.g
-	if (hasMasteryStudy("d10")) mult += tmp.pe
+	if (quantumed) mult = tmp.color_eff.g
+	if (hasMasteryStudy("d10")) mult += tmp.ant.preon_eff
 	return mult
 }
 
 function getExtraReplGalaxyDisp() {
 	if (shiftDown) {
-		if (tmp.extraRGBase == 0 && tmp.extraRGMult == 1) return ""
-		let r = " + " + getFullExpansion(tmp.extraRGBase)
-		if (tmp.extraRGMult > 1) r += "*" + shorten(tmp.extraRGMult)
+		if (tmp.rep.extraBase == 0 && tmp.rep.extraMult == 1) return ""
+		let r = " + " + getFullExpansion(tmp.rep.extraBase)
+		if (tmp.rep.extraMult > 1) r += "*" + shorten(tmp.rep.extraMult)
 		return r
 	} else {
-		if (tmp.extraRG == 0) return ""
-		return " + " + getFullExpansion(tmp.extraRG)
+		if (tmp.rep.extra == 0) return ""
+		return " + " + getFullExpansion(tmp.rep.extra)
 	}
 }
 
 function getTotalRG() {
-	return player.replicanti.galaxies + tmp.extraRG
+	return player.replicanti.galaxies + tmp.rep.extra
 }
 
 function getReplGalPower() {
-	let repl = player.replicanti.galaxies
-	let replStr = dev.replBoost ? 1 : getReplGalEff()
-	let extraRepl = 0
-	if (hasTimeStudy(133)) extraRepl += player.replicanti.galaxies * 0.5
-	if (hasTimeStudy(132)) extraRepl += player.replicanti.galaxies * 0.4
-	extraRepl += tmp.extraRG
+	let extra = 0
+	if (player.timestudy.studies.includes(133)) extra += player.replicanti.galaxies * 0.5
+	if (player.timestudy.studies.includes(132)) extra += player.replicanti.galaxies * 0.4
+	extra += tmp.rep.extra // extraReplGalaxies is a constant
 
-	if (hasMasteryStudy("t342")) repl = (repl + extraRepl) * replStr
-	else repl += Math.min(repl, player.replicanti.gal) * (replStr - 1) + extraRepl
-
-	return repl
+	let r = player.replicanti.galaxies
+	let eff = getReplGalEff()
+	if (hasMasteryStudy("t342")) r = (r + extra) * eff
+	else r += Math.min(player.replicanti.galaxies, player.replicanti.gal) * (eff - 1) + extra
+	return r
 }
 
 function getReplGalEff() {

@@ -35,11 +35,11 @@ function resetNGM4TDs() {
 function doNGM4TDMultiplier(tier, ret){
 	//Tickspeed multiplier boost
 	var ic3 = player.postC3Reward
-	var exp = ([5, 3, 2, 1.5, 1, .5, 1/3, 0])[tier - 1]
-	if (ic3.gt(1e10)) ic3 = pow10(Math.sqrt(ic3.log10() * 5 + 50))
-	if (hasGSacUpg(25)) exp *= galMults.u25()
-	if (inNC(16)) exp /= 2
-	ret = ret.mul(x.pow(exp))
+	if (ic3.gt(1e10)) ic3 = Decimal.pow(10, Math.sqrt(ic3.log10() * 5 + 50))
+
+	var ic3_exp = ([5, 3, 2, 1.5, 1, .5, 1/3, 0])[tier - 1]
+	if (hasGSacUpg(25)) ic3_exp *= galMults.u25()
+	ret = ret.times(ic3.pow(ic3_exp))
 
 	//NG-4 upgrades
 	if (hasGSacUpg(12)) ret = ret.mul(galMults.u12())
@@ -50,7 +50,6 @@ function doNGM4TDMultiplier(tier, ret){
 		ret = ret.mul(E_pow(player[dimTiers[tier]+"Amount"].plus(10).log10(), e * Math.pow(11 - tier, 2)))
 	}
 	if (hasGSacUpg(31)) ret = ret.pow(galMults.u31())
-	console.log(tier, ic3, ret)
 	return ret
 }
 

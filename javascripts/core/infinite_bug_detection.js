@@ -1,6 +1,6 @@
 function detectInfinite(part) {
 	if (part !== undefined) return isNaN(Decimal.log10(part))
-	return detectInfinite(player.money) || detectInfinite(player.infinityPoints) || detectInfinite(player.eternityPoints) || detectInfinite(player.dilation.dilatedTime)
+	return detectInfinite(player.money) || detectInfinite(player.infinityPoints) || detectInfinite(player.eternityPoints) 
 }
 
 var infiniteDetected = false
