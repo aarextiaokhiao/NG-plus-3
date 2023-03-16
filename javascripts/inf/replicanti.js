@@ -50,7 +50,7 @@ function upgradeReplicantiInterval() {
 	if (E(player.replicanti.interval).lt(1)) {
 		let cost = E(1).div(player.replicanti.interval)
 		if (cost.gt(1e10)) cost = cost.div(1e5).pow(2)
-		if (dev.replBoost) cost = pow10(800 * Math.pow(cost.log10() * 50 + 1, 4))
+		if (hasNU(14)) cost = pow10(800 * Math.pow(cost.log10() * 50 + 1, 4))
 		else cost = pow10(800 * cost.toNumber())
 		player.replicanti.intervalCost = cost
 	} else player.replicanti.intervalCost = player.replicanti.intervalCost.mul(1e10)
@@ -223,6 +223,7 @@ function getReplGalPower() {
 
 	let r = player.replicanti.galaxies
 	let eff = getReplGalEff()
+	if (hasNB(12)) eff = Math.pow(eff, 1 - NT.eff("boost", 12))
 	if (hasMasteryStudy("t342")) r = (r + extra) * eff
 	else r += Math.min(player.replicanti.galaxies, player.replicanti.gal) * (eff - 1) + extra
 	return r
@@ -252,14 +253,14 @@ function getReplSpeed() {
 	}
 	inc = inc + 1
 	if (hasGluonUpg("gb2")) exp *= 2
-	if (hasNB(12)) exp *= ntEff("boost", 12)
 	if (hasBU(35)) exp += tmp.blu[35].rep
 	if (hasBU(44)) exp += tmp.blu[44]
+	exp *= PHOTON.eff(2)
 	return {inc: inc, exp: exp}
 }
 
 function absorbReplication() {
-	tmp.rep.absorb = hasNU(15) ? -tmp.rep.interval.div(tmp.rep.dupRate).min(1).log10() : 0
+	tmp.rep.absorb = hasNU(14) ? -tmp.rep.interval.div(tmp.rep.dupRate).min(1).log10() : 0
 	if (tmp.rep.absorb > 0) tmp.rep.speeds.exp *= tmp.rep.absorb
 }
 

@@ -93,7 +93,7 @@ function getIC3EffFromFreeUpgs() {
 		if (player.currentEternityChall=='eterc14') x = 5
 		else {
 			x = ECComps("eterc14") * 4
-			if (hasNU(12)) x *= ntEff("upg", 12).replicated
+			if (hasNU(12)) x *= NT.eff("upg", 12).replicated
 		}
 	}
 	if (inNGM(2)) x++

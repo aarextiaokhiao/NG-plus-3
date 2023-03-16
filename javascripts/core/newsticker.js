@@ -223,7 +223,7 @@ newsArray = [//always true
 ["Is there meta-infinity?", 'mod.ngpp && player.meta.bestAntimatter.gte(Number.MAX_VALUE)', "am10"],
 ["NG++-+- was confirmed.", 'mod.ngp3', "am11"],
 ["You wanted a prestige layer so here you go.", 'inNGM(2) && player.eternities > (aarMod.newGameMinusVersion?-20:0)', "am12"],
-["You are challenging in a challenge in a challenge. Challenge-ception.", "player.currentChallenge != '' && player.currentEternityChall != '' && !inQC(0)", "am13"],
+["You are challenging in a challenge in a challenge. Challenge-ception.", "player.currentChallenge != '' && player.currentEternityChall != '' && !notInQC()", "am13"],
 ["New updates are coming in a day, not 5 hours. Sorry, jokers!", true, "am14"],
 ["Whale complained that matter and antimatter are balanced and the universe would not be existed.", true, "am15"],
 ["Congratulations for beating Quantum! Now you need to big rip the universe to progress! >:)", "player.totalmoney.gte(pow10(32e14))", "am16"],

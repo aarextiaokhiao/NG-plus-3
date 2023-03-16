@@ -1770,7 +1770,7 @@ br {
     }
 }
 
-.qtable, .qtable_4col, #gluonupgrades {
+.qtable, .qtable_4col {
 	width:100%
 }
 .qtable td {
@@ -1855,57 +1855,56 @@ td.lEp {
 	background: rgba(191, 175, 95, 0.25)
 }
 
+#assign_options input {
+	width: 50px
+}
+
 #rg { animation: rg 5s infinite }
 #gb { animation: gb 5s infinite }
 #br { animation: br 5s infinite }
 
-#gluonupgrades td {
-	min-width:16.7%;
-	width:16.7%;
-	max-width:16.7%;
-	text-align:center
+#gluonupgrades, #gluonupgrades * {
+	margin: 0 auto;
+	text-align: center
 }
 
-.gluonupgrade, .gluonupgradebought {
-    font-weight: bold;
+.qu_upg, .qu_upg_bought {
     width: 190px;
     height: 90px;
-    transition-duration: 0.2s;
     border-radius: 4px;
-    font-size: 12px;
-    vertical-align: top;
+
+    font-weight: bold;
+	font-size: 10.5px;
+
+    transition-duration: 0.2s;
 }
 
-.small {
-    width: 142.5px;
-    height: 67.5px;
-    font-size: 9px;
+.condensed {
+    width: 170px;
+    height: 60px;
+	font-size: 9.5px;
 }
 
-#gluonupgrades td {
-	vertical-align: 0
-}
+.qu_upg.rg { animation: rgupg 5s infinite }
+.qu_upg.gb { animation: gbupg 5s infinite }
+.qu_upg.br { animation: brupg 5s infinite }
 
-.gluonupgrade.rg { animation: rgupg 5s infinite }
-.gluonupgrade.gb { animation: gbupg 5s infinite }
-.gluonupgrade.br { animation: brupg 5s infinite }
-
-.gluonupgrade.rg:hover {
+.qu_upg.rg:hover {
 	animation: rgupghover 5s infinite;
 	cursor: pointer
 }
-.gluonupgrade.gb:hover {
+.qu_upg.gb:hover {
 	animation: gbupghover 5s infinite;
 	cursor: pointer
 }
-.gluonupgrade.br:hover {
+.qu_upg.br:hover {
 	animation: brupghover 5s infinite;
 	cursor: pointer
 }
 
-.gluonupgradebought.rg { animation: rgupgbought 5s infinite }
-.gluonupgradebought.gb { animation: gbupgbought 5s infinite }
-.gluonupgradebought.br { animation: brupgbought 5s infinite }
+.qu_upg_bought.rg { animation: rgupgbought 5s infinite }
+.qu_upg_bought.gb { animation: gbupgbought 5s infinite }
+.qu_upg_bought.br { animation: brupgbought 5s infinite }
 
 @keyframes rg {
 	0% {color: #bf0000}
@@ -1995,21 +1994,21 @@ td.lEp {
 	100% {background-color: #0000bf; border: 1px solid #00007f; color: #00001f}
 }
 
-#electrons .gluonupgrade.storebtn {
-	background-color: black !important;
-	border-color: #8e991e;
-	color: #8e991e;
-	animation: electronupg 5s infinite
+#electrons button {
+	width: 180px;
+	height: 90px;
+	font-size: 12px
 }
-#electrons .gluonupgrade.storebtn:hover {
-	background-color: #8e991e !important;
-	color: #ffffff;
-	animation: electronupg 5s infinite
+.positron {
+	background-color: black;
+	border-color: gold;
+	box-shadow: inset 0px 0px 20px 0px gold;
+	color: gold;
 }
-@keyframes electronupg {
-    0%  {box-shadow: inset 0px 0px 20px 0px #8e991e;}
-    50% {box-shadow: inset 0px 0px 40px 0px #8e991e;}
-    100% {box-shadow: inset 0px 0px 20px 0px #8e991e;}
+.positron:hover {
+	background-color: gold;
+	color: white;
+	cursor: pointer
 }
 
 #pccompletionstable td {
@@ -2098,45 +2097,42 @@ td.lEp {
     font-weight: bold;
 	transition-duration: 0.2s
 }
-#upgradesBranch .gluonupgrade {
-	font-size: 10px
-}
-.gluonupgrade.r {
+.qu_upg.r {
 	background-color: #1f0000 !important;
 	border: 1px solid #3f0000;
 	box-shadow: inset 0px 0px 5px 0px #7f0000;
 	text-shadow: 0px 0px 2px #1f0000, 0px 0px 2px #ff0000;
 	color: #bf0000
 }
-.gluonupgrade.g {
+.qu_upg.g {
 	background-color: #001f00 !important;
 	border: 1px solid #003f00;
 	box-shadow: inset 0px 0px 5px 0px #007f00;
 	text-shadow: 0px 0px 2px #001f00, 0px 0px 2px #00ff00;
 	color: #007f00
 }
-.gluonupgrade.b {
+.qu_upg.b {
 	background-color: #00001f !important;
 	border: 1px solid #00003f;
 	box-shadow: inset 0px 0px 5px 0px #00007f;
 	text-shadow: 0px 0px 2px #00001f, 0px 0px 2px #0000ff;
 	color: #0000ff
 }
-.gluonupgrade.r:hover {
+.qu_upg.r:hover {
 	background-color: #bf0000 !important;
 	border: 1px solid #3f0000;
 	box-shadow: inset 0px 0px 5px 0px #bf0000;
 	color: #1f0000;
 	cursor: pointer
 }
-.gluonupgrade.g:hover {
+.qu_upg.g:hover {
 	background-color: #007f00 !important;
 	border: 1px solid #003f00;
 	box-shadow: inset 0px 0px 5px 0px #00bf00;
 	color: #001f00;
 	cursor: pointer
 }
-.gluonupgrade.b:hover {
+.qu_upg.b:hover {
 	background-color: #0000ff !important;
 	border: 1px solid #00003f;
 	box-shadow: inset 0px 0px 5px 0px #0000bf;
@@ -2160,13 +2156,13 @@ td.lEp {
 #pres_header .bigrip {
 	border-radius: 4px
 }
-.gluonupgradebought.bigrip {
+.qu_upg_bought.bigrip {
 	background: #a0e5a6;
 	border-color: #6b996e;
 	color: #1f1f1f;
 	box-shadow: inset 0px 0px 10px 0px #6b996e, inset 0px 0px 20px 0px #6b996e, inset 0px 0px 30px 0px #6b996e
 }
-.gluonupgradebought.bigripoff {
+.qu_upg_bought.bigripoff {
 	background: #999999;
 	border-color: #727272;
 	color: #bf0000;
@@ -2273,32 +2269,25 @@ td.lEp {
 .neutrinos {
 	font-size: 25px
 }
-
-.gluonupgrade.neutrinoupg {
+.qu_upg.neutrinoupg {
 	background: black !important;
 	border: 1px solid #bfbfbf;
 	box-shadow: inset 0px 0px 20px 0px #bfbfbf;
 	color: #bfbfbf;
 	text-shadow: 0px 0px 3px #bfbfbf, 0px 0px 6px #bfbfbf
 }
-
-.gluonupgrade.neutrinoupg:hover {
+.qu_upg.neutrinoupg:hover {
 	background: white !important;
 	color: #3f3f3f;
 	text-shadow: 0px 0px 3px #3f3f3f, 0px 0px 6px #3f3f3f;
 	cursor: pointer
 }
-
-.gluonupgradebought.neutrinoupg {
+.qu_upg_bought.neutrinoupg {
 	background: #bfcfbf !important;
 	border: 1px solid #7f9f7f;
 	box-shadow: inset 0px 0px 20px 0px #afbfaf;
 	color: #2f5f2f;
 	text-shadow: 0px 0px 3px #2f5f2f
-}
-
-.neutrinoBoosts {
-	height: 60px
 }
 
 .photon {
@@ -2432,7 +2421,7 @@ td.lEp {
 	transition-duration: 0.2s
 }
 
-.gluonupgrade.bl {
+.qu_upg.bl {
 	background: repeating-linear-gradient(#620d65, transparent 50%, #620d65 100%), repeating-linear-gradient(90deg, transparent, #c73415 50%, transparent 100%), black;
 	background-size: 200% 200%;
 	border: 1px solid transparent;
@@ -2443,13 +2432,13 @@ td.lEp {
     height: 110px;
 }
 
-.gluonupgrade.bl:hover {
+.qu_upg.bl:hover {
 	box-shadow: inset 0px 0px 24px #38cbea;
 	border-color: #38cbea;
 	cursor: pointer;
 }
 
-.gluonupgradebought.bl {
+.qu_upg_bought.bl {
 	background: repeating-linear-gradient(#9df29a, transparent 50%, #9df29a 100%), repeating-linear-gradient(90deg, transparent, #38cbea 50%, transparent 100%), black;
 	background-size: 200% 200%;
 	border: 1px solid transparent;
@@ -2561,7 +2550,7 @@ td.lEp {
 	}
 }
 
-.gluonupgrade.hb {
+.qu_upg.hb {
 	background: radial-gradient(#bb0, transparent 75%, transparent 100%), linear-gradient(transparent, #550 50%, transparent 100%), #330;
 	background-position: center;
 	border: 2px solid #ff07;
@@ -2570,7 +2559,7 @@ td.lEp {
 	animation: hb 5s ease infinite
 }
 
-.gluonupgrade.hb:hover {
+.qu_upg.hb:hover {
 	box-shadow: inset 0px 0px 12px #ff07;
 	cursor: pointer
 }
@@ -2602,7 +2591,7 @@ td.lEp {
 	font-size: 15px;
 }
 
-.gluonupgrade.gw {
+.qu_upg.gw {
 	background: linear-gradient(90deg, #3f5f7f, transparent, #3f5f7f), linear-gradient(black, transparent, black), linear-gradient(#003fbf, black, #003fbf);
     box-shadow: inset 0px 0px 20px 0px #003fbf;
 	background-position: center;
@@ -2612,7 +2601,7 @@ td.lEp {
 	animation: hb 5s ease infinite
 }
 
-.gluonupgrade.gw:hover {
+.qu_upg.gw:hover {
     box-shadow: inset 0px 0px 60px 0px #003fbf;
 	color: #003fbf;
 	text-shadow: 0px 0px 3px #003fbf, 0px 0px 6px #003fbf;

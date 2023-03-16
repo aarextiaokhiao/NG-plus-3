@@ -34,9 +34,9 @@ function getQuarkChargeProduction() {
 	let ret = E(1)
 	if (hasNanoReward("preon_charge")) ret = ret.mul(tmp.nf.eff.preon_charge)
 	if (hasMasteryStudy("t421")) ret = ret.mul(getMTSMult(421))
-	if (hasNU(3)) ret = ret.mul(ntEff("upg", 3))
-	if (hasNU(7)) ret = ret.mul(ntEff("upg", 7))
-	if (hasNB(11)) ret = ret.mul(ntEff("boost", 11))
+	if (hasNU(3)) ret = ret.mul(NT.eff("upg", 3))
+	if (hasNU(7)) ret = ret.mul(NT.eff("upg", 7))
+	ret = ret.pow(PHOTON.eff(6))
 	return ret
 }
 
@@ -166,7 +166,7 @@ function getNanoRewardPower(reward, rewards) {
 }
 
 function getNanoRewardPowerEff() {
-	let x = PHOTON.eff(2)
+	let x = 1
 	if (hasBU(31)) x *= tmp.blu[31]
 	return x
 }

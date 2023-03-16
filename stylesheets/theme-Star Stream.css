@@ -119,7 +119,7 @@ button {
 .dilationupglocked,
 .dilationupgrebuyablelocked,
 .nanofieldrewardlocked,
-.gluonupgradebought.bigripoff {
+.qu_upg_bought.bigripoff {
     background-color: #111 !important;
     font-weight: normal !important;
     border-color: #000 !important;
@@ -144,7 +144,7 @@ button {
 .dilationupgrebuyablebought:hover,
 .upgbought:hover,
 .nanofieldrewardlocked:hover,
-.gluonupgradebought.bigripoff:hover {
+.qu_upg_bought.bigripoff:hover {
     background-color: #222 !important;
     color: #eee !important
 }
@@ -728,38 +728,41 @@ strong { color: #0072e5 }
     font-weight: 500 !important;
 }
 
-.gluonupgrade.rg,
-.gluonupgrade.gb,
-.gluonupgrade.br {
+.qu_upg.rg,
+.qu_upg.gb,
+.qu_upg.br {
     background-color: #191919 !important;
     box-shadow: none !important;
     color: #e5e5e5 !important
 }
 
-.gluonupgrade.rg:hover,
-.gluonupgrade.gb:hover,
-.gluonupgrade.br:hover {
+.qu_upg.rg:hover,
+.qu_upg.gb:hover,
+.qu_upg.br:hover {
     box-shadow: none !important;
     color: #fff !important;
 }
 
-.gluonupgradebought.rg,
-.gluonupgradebought.gb,
-.gluonupgradebought.br {
+.qu_upg_bought.rg,
+.qu_upg_bought.gb,
+.qu_upg_bought.br {
     border: 2px solid #191919 !important;
     color: #191919 !important
 }
 
-#electrons .gluonupgrade.storebtn { 
-    background-color: #191919 !important;
-    border: 2px solid #340 !important;
+.positron { 
+    background-color: black !important;
+    border: 2px solid gold !important;
     animation: none !important
+}
+.positron:hover { 
+    background-color: gold !important
 }
 
 #electronsAmount,
 #electronsTranslation,
 #electronsEffect {
-    color: #d2e500 !important;
+    color: gold !important;
     font-weight: 500;
 }
 
@@ -858,7 +861,7 @@ strong { color: #0072e5 }
     text-shadow: none
 }
 
-.gluonupgrade.r {
+.qu_upg.r {
     background-color: #f33 !important;
     border-color: #f33 !important;
     box-shadow: inset 0px 0px 10px 0px #000 !important;
@@ -866,7 +869,7 @@ strong { color: #0072e5 }
     text-shadow: none
 }
 
-.gluonupgrade.g {
+.qu_upg.g {
     background-color: #3f3 !important;
     border-color: #3f3 !important;
     box-shadow: inset 0px 0px 10px 0px #000 !important;
@@ -874,7 +877,7 @@ strong { color: #0072e5 }
     text-shadow: none
 }
 
-.gluonupgrade.b {
+.qu_upg.b {
     background-color: #33f !important;
     border-color: #33f !important;
     box-shadow: inset 0px 0px 10px 0px #000 !important;
@@ -882,17 +885,17 @@ strong { color: #0072e5 }
     text-shadow: none
 }
 
-.gluonupgrade.r:hover {
+.qu_upg.r:hover {
     background-color: #440000 !important;
     color: #fff !important
 }
 
-.gluonupgrade.g:hover {
+.qu_upg.g:hover {
     background-color: #004400 !important;
     color: #fff !important
 }
 
-.gluonupgrade.b:hover {
+.qu_upg.b:hover {
     background-color: #000044 !important;
     color: #fff !important
 }
@@ -905,7 +908,7 @@ strong { color: #0072e5 }
 }
 
 .bigrip:hover,
-.gluonupgradebought.bigrip {
+.qu_upg_bought.bigrip {
     background-color: #5be567 !important;
     color: #191919 !important;
     box-shadow: none !important
@@ -919,18 +922,18 @@ strong { color: #0072e5 }
     color: #191919 !important
 }
 
-.gluonupgradebought.bigrip {
+.qu_upg_bought.bigrip {
     border: 1px solid #191919 !important;
     background: linear-gradient(#9ff, #9f9) !important;
 }
 
-.gluonupgrade.bigrip {
+.qu_upg.bigrip {
     border: 1px solid #191919 !important;
     background: linear-gradient(#090, #030) !important;
     box-shadow: inset 0px 0px 15px 0px green !important
 }
 
-.gluonupgradebought.bigripoff {
+.qu_upg_bought.bigripoff {
     border: 1px solid #000000 !important;
     box-shadow: none !important;
     background: linear-gradient(#999, #fff) !important;
@@ -973,18 +976,18 @@ strong { color: #0072e5 }
     color: #ffffff !important
 }
 
-.gluonupgrade.neutrinoupg {
+.qu_upg.neutrinoupg {
     border-color: #cccccc !important;
     box-shadow: none;
     text-shadow: none;
 }
 
-.gluonupgrade.neutrinoupg:hover {
+.qu_upg.neutrinoupg:hover {
     background-color: #cccccc !important;
     border-color: #cccccc !important
 }
 
-.gluonupgradebought.neutrinoupg {
+.qu_upg_bought.neutrinoupg {
     background-color: #ccffff !important;
     border-color: #0ff !important;
     color: #191919 !important;
@@ -992,13 +995,13 @@ strong { color: #0072e5 }
     text-shadow: none;
 }
 
-.gluonupgrade.gph {
+.qu_upg.gph {
     border-color: #bfaf5f !important;
     color: #191919 !important;
     text-shadow: 0px 0px 3px #191919, 0px 0px 6px #bfaf5f
 }
 
-.gluonupgrade.gph:hover {
+.qu_upg.gph:hover {
     color: #e5e5e5 !important;
     text-shadow: 0px 0px 3px #e5e5e5, 0px 0px 6px #191919;
 }
@@ -1031,11 +1034,11 @@ strong { color: #0072e5 }
     color: #ac00e5
 }
 
-.gluonupgradebought.bl {
+.qu_upg_bought.bl {
     color: #191919 !important
 }
 
-.gluonupgrade.hb:hover {
+.qu_upg.hb:hover {
     color: #ccc !important
 }
 

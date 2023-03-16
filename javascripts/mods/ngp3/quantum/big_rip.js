@@ -17,7 +17,7 @@ function bigRip(auto) {
 }
 
 function canBigRip() {
-	return inQC(0) && canDirectlyBigRip()
+	return notInQC() && canDirectlyBigRip()
 }
 
 function canDirectlyBigRip() {
@@ -60,9 +60,6 @@ function buyBigRipUpg(id) {
 	if (id == 10 && !hasRipUpg(9)) {
 		brSave.upgrades.push(9)
 		if (bigRipped()) tweakBigRip(9, true)
-	}
-	for (var u = 1; u <= 18; u++) {
-		el("bigripupg" + u).className = brSave && hasRipUpg(u) ? "gluonupgradebought bigrip" + (isBigRipUpgradeActive(u, true) ? "" : "off") : brSave.spaceShards.lt(bigRipUpgCosts[u]) ? "gluonupgrade unavailablebtn" : "gluonupgrade bigrip"
 	}
 }
 
@@ -163,12 +160,8 @@ function switchAB(rip) {
 
 function updateBigRipTab() {
 	el("bigRipBtn").innerHTML = bigRipped() ? `Refine the rift.<br>+${shortenDimensions(getSpaceShardsGain())} Space Shards` : canDirectlyBigRip() ? "Big Rip the cosmos!" : "Unlock a Paired Challenge with QC6 and 8 combinations to Big Rip."
-	el("bigRipBtn").className = "gluonupgrade " + (bigRipped() ? "onchallengebtn" : canDirectlyBigRip() ? "bigrip" : "unavailablebtn")
+	el("bigRipBtn").className = "qu_upg " + (bigRipped() ? "onchallengebtn" : canDirectlyBigRip() ? "bigrip" : "unavailablebtn")
 	el("spaceShards").textContent = shortenDimensions(brSave.spaceShards)
-	for (var u = 1; u <= 18; u++) {
-		el("bigripupg" + u).className = brSave && hasRipUpg(u) ? "gluonupgradebought bigrip" + (isBigRipUpgradeActive(u, true) ? "" : "off") : brSave.spaceShards.lt(bigRipUpgCosts[u]) ? "gluonupgrade unavailablebtn" : "gluonupgrade bigrip"
-		el("bigripupg" + u + "cost").textContent = shortenDimensions(E(bigRipUpgCosts[u]))
-	}
 	bigRipUpgradeUpdating()
 }
 
@@ -178,7 +171,7 @@ function updateBRU1Temp() {
 
 	let exp = 1
 	if (hasRipUpg(17)) exp = tmp.bru[17]
-	if (hasNB(8)) exp *= ntEff("boost", 8)
+	if (hasNB(8)) exp *= NT.eff("boost", 8)
 	exp *= player.infinityPoints.max(1).log10()
 	tmp.bru[1] = pow10(exp) // BRU1
 }
@@ -225,13 +218,12 @@ function updateBigRipUpgradesTemp(){
 }
 
 function bigRipUpgradeUpdating() {
-	if (hasBraveMilestone(8)) {
-		el("spaceShards").textContent=shortenDimensions(brSave.spaceShards)
-		for (var u=1;u<=18;u++) {
-			el("bigripupg"+u).className = brSave && hasRipUpg(u) ? "gluonupgradebought bigrip" + (isBigRipUpgradeActive(u, true) ? "" : "off") : brSave.spaceShards.lt(bigRipUpgCosts[u]) ? "gluonupgrade unavailablebtn" : "gluonupgrade bigrip"
-			el("bigripupg"+u+"cost").textContent = shortenDimensions(E(bigRipUpgCosts[u]))
-		}
+	el("spaceShards").textContent=shortenDimensions(brSave.spaceShards)
+	for (var u=1;u<=18;u++) {
+		el("bigripupg"+u).className = brSave && hasRipUpg(u) ? "qu_upg_bought bigrip" + (isBigRipUpgradeActive(u, true) ? "" : "off") : brSave.spaceShards.lt(bigRipUpgCosts[u]) ? "qu_upg unavailablebtn" : "qu_upg bigrip"
+		el("bigripupg"+u+"cost").textContent = shortenDimensions(E(bigRipUpgCosts[u]))
 	}
+
 	el("bigripupg1current").textContent=shortenDimensions(tmp.bru[1])
 	el("bigripupg8current").textContent=shortenDimensions(tmp.bru[8])+(Decimal.gte(tmp.bru[8],Number.MAX_VALUE)&&!hasNU(11)?"x (cap)":"x")
 	el("bigripupg14current").textContent=tmp.bru[14].toFixed(2)
@@ -332,12 +324,12 @@ function updateBreakEternityUpgrade5Temp(){
 function updateBreakEternityUpgrade6Temp(){
 	var ep = player.eternityPoints
 	var em = beSave.eternalMatter
-	var nerfUpgs = !tmp.be && hasBU(24)
 	var log1 = ep.div("1e4900").add(1).log10()
 	var log2 = em.div(1e45).add(1).log10()
-	if (nerfUpgs) log1 /= 2e6
+
 	var exp = Math.pow(log1, 1/3) / 1.7
-	exp += isBreakUpgActive(10) ? Math.pow(log2, 4/3) / 20 : Math.pow(log2, 1/3) * 2
+	exp += isBreakUpgActive(10) ? Math.pow(log2, 4/3) / 50 : Math.pow(log2, 1/3) * 2
+
 	tmp.beu[6] = pow10(exp)
 }
 

@@ -33,11 +33,11 @@ function setupToDHTML() {
 		
 		html = "<table class='table' align='center' style='margin: auto'><tr>"
 		for (var u = 1; u <= 3; u++) {
-			html += "<td style='vertical-align: 0'><button class='gluonupgrade unavailablebtn' id='" + color + "upg" + u + "' onclick='buyBranchUpg(\"" + shorthand + "\", " + u + ")' style='font-size:10px'>" + branchUpgrades[u - 1] + "<br>" 
+			html += "<td style='vertical-align: 0'><button class='qu_upg unavailablebtn' id='" + color + "upg" + u + "' onclick='buyBranchUpg(\"" + shorthand + "\", " + u + ")' style='font-size:10px'>" + branchUpgrades[u - 1] + "<br>" 
 			html += "Currently: <span id='" + color + "upg" + u + "current'>1</span><br><span id='" + color + "upg" + u + "cost'>?</span></button>"
 			html += (u == 2 ? "<br><button class='storebtn' style='width: 190px' onclick='maxBranchUpg(\"" + shorthand + "\")'>Max all upgrades</button>" + "<br><button class='storebtn' style='width: 190px; font-size:10px' onclick='maxBranchUpg(\"" + shorthand + "\", true)'>Max 2nd and 3rd upgrades</button>":"")+"</td>"
 		}
-		html += "</tr></tr><td></td><td><button class='gluonupgrade unavailablebtn' id='" + shorthand + "RadioactiveDecay' style='font-size:9px' onclick='radioactiveDecay(\"" + shorthand + "\")'>Reset to strengthen the 1st upgrade, but nerf this branch.<br><span id='" + shorthand + "RDReq'></span><br>Radioactive Decays: <span id='" + shorthand + "RDLvl'></span></button></td><td></td>"
+		html += "</tr></tr><td></td><td><button class='qu_upg unavailablebtn' id='" + shorthand + "RadioactiveDecay' style='font-size:9px' onclick='radioactiveDecay(\"" + shorthand + "\")'>Reset to strengthen the 1st upgrade, but nerf this branch.<br><span id='" + shorthand + "RDReq'></span><br>Radioactive Decays: <span id='" + shorthand + "RDLvl'></span></button></td><td></td>"
 		html += "</tr></table>"
 		el(color + "Branch").innerHTML = html
 	}
@@ -76,7 +76,7 @@ function updateTreeOfDecayTab(){
 
 		for (var u = 1; u <= 3; u++) {
 			updateBranchUpgrade(shorthand, u)
-			el(color + "upg" + u).className = "gluonupgrade " + (branch.spin.lt(getBranchUpgCost(shorthand, u)) ? "unavailablebtn" : shorthand)
+			el(color + "upg" + u).className = "qu_upg " + (branch.spin.lt(getBranchUpgCost(shorthand, u)) ? "unavailablebtn" : shorthand)
 		}
 
 		document.getElementById(shorthand+"RadioactiveDecay").style.display = ghostified ? "" : "none"
@@ -89,9 +89,9 @@ function updateTreeOfDecayTab(){
 	var start = getLogTotalSpin() > 200 ? "" : "Cost: "
 	for (var u = 1; u <= 8; u++) {
 		var lvl = getTreeUpgradeLevel(u)
-		el("treeupg" + u).className = "gluonupgrade " + (canBuyTreeUpg(u) ? "r" : "unavailablebtn")
+		el("treeupg" + u).className = "qu_upg " + (canBuyTreeUpg(u) ? "r" : "unavailablebtn")
 		el("treeupg" + u + "current").innerHTML = getTreeUpgradeEffectDesc(u)
-		el("treeupg" + u + "lvl").innerHTML = getFullExpansion(lvl) + (tmp.decay_str > 1 ? " -> " + getFullExpansion(Math.floor(lvl * tmp.decay_str)) : "")
+		el("treeupg" + u + "lvl").innerHTML = getFullExpansion(lvl) + (tmp.decay_str > 1 ? " → " + getFullExpansion(Math.floor(lvl * tmp.decay_str)) : "")
 		el("treeupg" + u + "cost").innerHTML = start + shortenMoney(getTreeUpgradeCost(u)) + " preonic spin"
 	}
 	el("treeUpgradeEff").style.display = ghostified ? "" : "none"
@@ -155,7 +155,6 @@ function getBranchSpeedText(){
 	if (getGluonBranchSpeed().gt(1)) text += "Gluon Upgrades: " + shorten(getGluonBranchSpeed()) + "x, "
 	if (E(getTreeUpgradeEffect(3)).gt(1)) text += "Tree Upgrade 3: " + shorten(getTreeUpgradeEffect(3)) + "x, "
 	if (E(getTreeUpgradeEffect(5)).gt(1)) text += "Tree Upgrade 5: " + shorten(getTreeUpgradeEffect(5)) + "x, "
-	if (PHOTON.eff(3) > 1) text += "Green Light: " + shorten(E(PHOTON.eff(3)).pow(nfSave.rewards)) + "x, "
 	if (hasAch("ng3p48") && player.meta.resets) text += "'Are you currently dying?' reward: " + shorten(Math.sqrt(player.meta.resets + 1)) + "x, "
 	if (text == "") return "No multipliers currently"
 	return text.slice(0, text.length-2)
@@ -174,7 +173,6 @@ function getBranchSpeed() {
 	if (hasMasteryStudy("t431")) x = x.mul(getMTSMult(431))
 	x = x.mul(getGluonBranchSpeed())
 	x = x.mul(getTreeUpgradeEffect(3), getTreeUpgradeEffect(5))
-	x = E(PHOTON.eff(3)).pow(nfSave.rewards).mul(x)
 	if (hasAch("ng3p48")) x = x.mul(Math.sqrt(player.meta.resets + 1))
 	return x
 }
@@ -187,8 +185,8 @@ function getDecayRate(branch) {
 
 function getQuarkSpinProduction(branch) {
 	let ret = getBranchUpgMult(branch, 1).mul(getBranchSpeed())
-	if (hasNU(3)) ret = ret.mul(ntEff("upg", 3))
-	if (hasNU(12)) ret = ret.mul(ntEff("upg", 12).normal)
+	if (hasNU(3)) ret = ret.mul(NT.eff("upg", 3))
+	if (hasNU(12)) ret = ret.mul(NT.eff("upg", 12).normal)
 	if (hasAch("ng3p74")) ret = ret.mul(1 + (todSave[branch].decays || 0))
 	return ret
 }
@@ -254,8 +252,8 @@ function getTreeUpgradeEffect(upg) {
 
 function getTreeUpgradeEffectDesc(upg) {
 	if (upg == 1) return getFullExpansion(getTreeUpgradeEffect(upg))
-	if (upg == 2) return getDilExp("TU3").toFixed(2) + " -> " + getDilExp().toFixed(2)
-	if (upg == 4) return "^" + getFullExpansion(Math.round(getElectronBoost("noTree"))) + " -> ^" + getFullExpansion(Math.round(tmp.mpte))
+	if (upg == 2) return getDilExp("TU3").toFixed(2) + " → " + getDilExp().toFixed(2)
+	if (upg == 4) return "^" + getFullExpansion(Math.round(getElectronBoost("noTree"))) + " → ^" + getFullExpansion(Math.round(tmp.mpte))
 	if (upg == 8) return getTreeUpgradeEffect(8).toFixed(2)
 	return shortenMoney(getTreeUpgradeEffect(upg))
 }
@@ -473,7 +471,7 @@ function getTreeUpgradeEfficiencyText(){
 	if (!shiftDown) return "Tree upgrade efficiency: "+(tmp.decay_str*100).toFixed(1)+"%"
 
 	let text = ""
-	if (hasNB(7)) text += "Neutrino Boost 7: +" + shorten(ntEff("boost", 7)) + "x, "
+	if (hasNB(7)) text += "Neutrino Boost 7: +" + shorten(NT.eff("boost", 7)) + "x, "
 	if (hasAch("ng3p62")) text += "Finite Time Reward: +0.1x, "
 	if (hasBU(43)) text += "Bosonic Lab Upgrade 18: " + shorten(tmp.blu[43]) + "x, "
 
@@ -483,7 +481,7 @@ function getTreeUpgradeEfficiencyText(){
 
 function getTreeUpgradeEfficiency(mod) {
 	let r = 1
-	if (hasNB(7) && mod != "noNB") r += ntEff("boost", 7, 0)
+	if (hasNB(7) && mod != "noNB") r += NT.eff("boost", 7, 0)
 	if (hasAch("ng3p62")) r += 0.1
 	if (hasBU(43)) r *= tmp.blu[43]
 	return r

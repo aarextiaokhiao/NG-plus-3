@@ -246,7 +246,7 @@ function onAntimatterClick() {
 function getEternitied() {
 	let banked = player.eternitiesBank
 	let total = player.eternities
-	if (banked && (inQC(0) || hasNU(10))) total = nA(total, player.eternitiesBank)
+	if (banked && (notInQC() || hasNU(10))) total = nA(total, player.eternitiesBank)
 	return total
 }
 
@@ -531,7 +531,7 @@ el("postinfi31").onclick = function() {
 		player.infinityPoints = player.infinityPoints.minus(player.tickSpeedMultDecreaseCost)
 		player.tickSpeedMultDecreaseCost *= 5
 		player.tickSpeedMultDecrease--;
-		if (player.tickSpeedMultDecrease > 2) el("postinfi31").innerHTML = "Tickspeed cost multiplier increase <br>"+player.tickSpeedMultDecrease+"x -> "+(player.tickSpeedMultDecrease-1)+"x<br>Cost: "+shortenDimensions(player.tickSpeedMultDecreaseCost) +" IP"
+		if (player.tickSpeedMultDecrease > 2) el("postinfi31").innerHTML = "Tickspeed cost multiplier increase <br>"+player.tickSpeedMultDecrease+"x → "+(player.tickSpeedMultDecrease-1)+"x<br>Cost: "+shortenDimensions(player.tickSpeedMultDecreaseCost) +" IP"
 		else {
 			for (c=0;c<ECComps("eterc11");c++) player.tickSpeedMultDecrease-=0.07
 			el("postinfi31").innerHTML = "Tickspeed cost multiplier increase<br>"+player.tickSpeedMultDecrease.toFixed(player.tickSpeedMultDecrease<2?2:0)+"x"
@@ -560,7 +560,7 @@ el("postinfi42").onclick = function() {
 		player.infinityPoints = player.infinityPoints.minus(player.dimensionMultDecreaseCost)
 		player.dimensionMultDecreaseCost *= 5000
 		player.dimensionMultDecrease--;
-		if (player.dimensionMultDecrease > 3) el("postinfi42").innerHTML = "Dimension cost multiplier increase <br>"+player.dimensionMultDecrease+"x -> "+(player.dimensionMultDecrease-1)+"x<br>Cost: "+shortenCosts(player.dimensionMultDecreaseCost) +" IP"
+		if (player.dimensionMultDecrease > 3) el("postinfi42").innerHTML = "Dimension cost multiplier increase <br>"+player.dimensionMultDecrease+"x → "+(player.dimensionMultDecrease-1)+"x<br>Cost: "+shortenCosts(player.dimensionMultDecreaseCost) +" IP"
 		else {
 			for (c=0;c<ECComps("eterc6");c++) player.dimensionMultDecrease-=0.2
 			el("postinfi42").innerHTML = "Dimension cost multiplier increase<br>"+player.dimensionMultDecrease.toFixed(ECComps("eterc6")%5>0?1:0)+"x"
@@ -1443,7 +1443,7 @@ function exitChallenge() {
 		updateEternityChallenges();
 		return
 	}
-	if (mod.ngp3 && !inQC(0)) quantum(false, true, 0)
+	if (mod.ngp3 && !notInQC()) quantum(false, true, 0)
 }
 
 function quickReset() {
@@ -1496,7 +1496,7 @@ function updateBlinkOfAnEye(){
 
 function canQuickBigRip() {
 	var x = false
-	if (hasMasteryStudy("d14") && inQC(0) && quSave.electrons.amount >= 62500) {
+	if (hasMasteryStudy("d14") && notInQC() && quSave.electrons.amount >= 62500) {
 		for (var p = 1; p < 5; p++) {
 			var pcData = quSave.pairedChallenges.order[p]
 			if (pcData) {
@@ -1930,12 +1930,12 @@ function doQuantumButtonDisplayUpdating(diff){
 
 	let flavor = "I need to go quantum."
 	if (!quantumed) flavor = "We have enough to reform... " + flavor
-	if (!inQC(0)) flavor = "Gather the dark energy... " + flavor
+	if (!notInQC()) flavor = "Gather the dark energy... " + flavor
 	if (bigRipped()) flavor = "This isn't potential enough..."
 	if (ghostified) flavor = "Go quantum."
 	el("quantumbtnFlavor").textContent = flavor
 
-	var showGain = quantumed && inQC(0) ? "QK" : ""
+	var showGain = quantumed && notInQC() ? "QK" : ""
 	if (bigRipped()) showGain = "SS"
 
 	var gainMsg = ""
@@ -2107,7 +2107,7 @@ function progressBarUpdating(){
 		r138Progress()
 	} else if (player.dilation.active && player.dilation.totalTachyonParticles.gte(getDilGain())) {
 		gainTPProgress()
-	} else if ((!inQC(0) || gainedEternityPoints().gte(pow2(1048576))) && mod.ngpp) doQuantumProgress()
+	} else if ((!notInQC() || gainedEternityPoints().gte(pow2(1048576))) && mod.ngpp) doQuantumProgress()
 	else preQuantumNormalProgress()
 }
 

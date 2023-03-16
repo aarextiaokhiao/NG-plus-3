@@ -1,6 +1,6 @@
 //VERSION: 2.31
 let ngp3_ver = 2.31
-let ngp3_build = 20230314
+let ngp3_build = 20230315
 function doNGP3Updates() {
 	if (!aarMod.ngp3_build) aarMod.ngp3_build = 0
 	if (aarMod.ngp3_build < 20221230) quSave.multPower = 0
@@ -27,6 +27,21 @@ function doNGP3Updates() {
 		quSave.electrons.amount = 0
 		quSave.electrons.sacGals = 0
 		updateElectronsEffect()
+	}
+	if (aarMod.ngp3_build < 20230215) player.dilation.freeGalaxies = 0
+	if (aarMod.ngp3_build < 20230215 && E(ghSave?.ghostParticles).gte(1e20)) {
+		ghSave.ghostParticles = E(1e20)
+		ghSave.multPower = 1
+		ghSave.neutrinos.electron = E(0)
+		ghSave.neutrinos.mu = E(0)
+		ghSave.neutrinos.tau = E(0)
+		ghSave.neutrinos.multPower = 1
+		ghSave.neutrinos.boosts = 9
+		ghSave.neutrinos.upgrades = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+		beSave.upgrades = [1, 2, 3, 4, 5, 6]
+
+		alert("Due to massive balancing changes, you will be pushed back to e20 Elementary Particles!")
+		doReset("qu")
 	}
 	aarMod.newGame3PlusVersion = ngp3_ver
 	aarMod.ngp3_build = ngp3_build
@@ -553,6 +568,7 @@ function doPerSecondNGP3Stuff(){
 	notifyGhostifyMilestones()
 
 	notifyQuantumMilestones()
+	updateAssortOptions()
 	updateQuantumWorth()
 	updateQCDisplaysSpecifics()
 	updatePostBM14Display()
@@ -618,14 +634,15 @@ function ngP3AchieveCheck() {
 	let ableToGetRid8 = ableToGetRid7 && !beSave.did
 	if (brSave.spaceShards.log10() >= 33 && !beSave.did) giveAchievement("Finite Time")
 	if (beSave.eternalMatter.gte(9.999999e99)) giveAchievement("This achievement doesn't exist 4")
-	if (inQC(6) && inQC(8) && !bigRipped() && player.money.e >= 2e7) giveAchievement("Really?")
+	if (ghSave.milestones == 16) giveAchievement("I rather oppose the theory of everything")
+	if (inQC(6) && inQC(8) && !bigRipped() && player.money.e >= 5e7) giveAchievement("Really?")
 	if (ableToGetRid8 && player.infinityPoints.log10() >= 9.5e5) giveAchievement("Please answer me why you are dying.")
 
 	if (PHOTON.unlocked()) giveAchievement("Progressing as a Ghost")
 	if (bigRipped() && player.eternityPoints.e >= 1e5) giveAchievement("Underchallenged")
 	if (nG(getInfinitied(), Number.MAX_VALUE)) giveAchievement("Meta-Infinity confirmed?")
 	if (getRadioactiveDecays('r') >= 1 && !brSave.times) giveAchievement("Weak Decay")	
-	if (getRadioactiveDecays('r') >= 2) giveAchievement("Radioactive Decaying to the max!")
+	if (getRadioactiveDecays('r') >= 1) giveAchievement("Radioactive Decaying to the max!")
 	if (ghSave.best <= 20) giveAchievement("Running through Big Rips")
 	if (masteryStudies.bought >= 48) giveAchievement("The Theory of Ultimate Studies")
 	if (ghSave.photons.lighten) giveAchievement("Here comes the light")
@@ -658,7 +675,7 @@ function doNGP3UnlockStuff() {
 		let DONEbool = !quSave.nonMAGoalReached.includes(chall)
 		let TIMEbool = quSave.time > 10
 
-		if (!inQC(0) && player.money.gt(pow10(getQCGoal())) && MAbool && DONEbool && TIMEbool) doReachAMGoalStuff(chall)
+		if (!notInQC() && player.money.gt(pow10(getQCGoal())) && MAbool && DONEbool && TIMEbool) doReachAMGoalStuff(chall)
 		if (!beSave.unlocked && player.eternityPoints.gte("1e1200") && bigRipped()) unlockBreakEternity()
 		if (!ghSave && isQuantumReached() && bigRipped()) unlockFundament()
 
@@ -719,7 +736,7 @@ function setupNGP3HTMLAndData() {
 	setupToDHTML()
 	setupBraveMilestones()
 	setupAutomatorHTML()
-	NEUTRINO.setupTab()
+	NT.setupTab()
 	PHOTON.setupTab()
 	setupBosonicExtraction()
 	setupBosonicUpgrades()

@@ -1,4 +1,4 @@
-const NEUTRINO = {
+const NEUTRINO = NT = {
 	/* CORE */
 	//Unlock
 	unlocked: () => ghostified,
@@ -15,10 +15,6 @@ const NEUTRINO = {
 			upgrades: []
 		}
 	},
-	onGalaxy(bulk) {
-		let nts = NT_RES
-		nts.addType(nts.types[ghSave.neutrinos.generationGain - 1], nts.gain().mul(bulk))
-	},
 	temp() {
 		if (!this.unlocked()) return
 
@@ -26,17 +22,26 @@ const NEUTRINO = {
 		tmp.funda.neutrino = data
 
 		data.amt = []
-		for (let type of this.neutrinos.types) data.amt.push(ghSave.neutrinos[type])
+		for (let type of NT_RES.types) data.amt.push(ghSave.neutrinos[type])
 
 		data.boost = {}
 		for (let i = 1; i <= ghSave.neutrinos.boosts; i++) data.boost[i] = this.boosts.data[i-1].eff(data.amt)
 
 		data.upg = {}
-		for (let [i, upg] of Object.entries(NEUTRINO.upgrades.data)) if (upg.eff) data.upg[parseInt(i)+1] = upg.eff()
+		for (let [i, upg] of Object.entries(NT.upgrades.data)) if (upg.eff) data.upg[parseInt(i)+1] = upg.eff()
+	},
+
+	/* OTHERS */
+	onGalaxy(bulk) {
+		let nts = NT_RES
+		nts.addType(nts.types[ghSave.neutrinos.generationGain - 1], nts.gain().mul(bulk))
+	},
+	eff(type, x, def = 1) {
+		return tmp.funda?.neutrino[type][x] ?? def
 	},
 
 	/* FEATURES */
-	neutrinos: {
+	resources: {
 		names: ["electron", "Muon", "Tau"],
 		types: ["electron", "mu", "tau"],
 		total() {
@@ -63,20 +68,21 @@ const NEUTRINO = {
 
 		gain() { 
 			let r = E_pow(5, ghSave.neutrinos.multPower - 1)
+			r = E_pow(PHOTON.eff(3), brSave.bestGals).mul(r)
 			if (mod.p3ep) r = r.mul(pow10(player.galaxies / 1e5))
 			return r
 		}
 	},
 	boosts: {
 		can() {
-			return ghSave.ghostParticles.gte(NEUTRINO.boosts.data[ghSave.neutrinos.boosts].cost) && !this.maxed()
+			return ghSave.ghostParticles.gte(NT.boosts.data[ghSave.neutrinos.boosts].cost) && !this.maxed()
 		},
 		maxed() {
-			return ghSave.neutrinos.boosts == NEUTRINO.boosts.data.length
+			return ghSave.neutrinos.boosts == NT.boosts.data.length
 		},
 		unlock() {
-			if (!NEUTRINO.boosts.can()) return
-			ghSave.ghostParticles = ghSave.ghostParticles.sub(NEUTRINO.boosts.data[ghSave.neutrinos.boosts].cost).round()
+			if (!NT.boosts.can()) return
+			ghSave.ghostParticles = ghSave.ghostParticles.sub(NT.boosts.data[ghSave.neutrinos.boosts].cost).round()
 			ghSave.neutrinos.boosts++
 		},
 		has(x) {
@@ -98,7 +104,7 @@ const NEUTRINO = {
 				eff(nt) {
 					let nb2neutrinos = Math.pow(nt[0].add(1).log10(),2)+Math.pow(nt[1].add(1).log10(),2)+Math.pow(nt[2].add(1).log10(),2)
 					let nb2 = Math.pow(nb2neutrinos, .25) * 1.5
-					if (nb2 > 10) nb2 = Math.pow(nb2 / 10, PHOTON.eff(6)) + 9
+					if (nb2 > 9) nb2 = Math.pow(nb2 - 8, PHOTON.eff(1)) + 8
 					return nb2
 				},
 				effDesc: e => `Replicate chance boosts itself more. (<b>+^${shorten(e)}</b>)`,
@@ -172,38 +178,36 @@ const NEUTRINO = {
 			}, {
 				cost: E(1e21),
 				eff(nt) {
-					var nb10 = nt[0].add(1).log10()+nt[1].add(1).log10()+nt[2].add(1).log10()
-					return nb10/10+1
+					nt = nt[0].add(1).log10()+nt[1].add(1).log10()+nt[2].add(1).log10()
+					return Math.min(Math.sqrt(nt) / 4e3, 1)
 				},
-				effDesc: e => `Gain <b>${shorten(e)}x</b> more Photons.`,
+				effDesc: e => `TS232 regains <b>${shorten(e*100)}%</b> power.`,
 			}, {
-				cost: E(1e36),
+				cost: E(1e30),
 				eff(nt) {
-					var nb11 = nt[0].add(1).log10()+nt[1].add(1).log10()+nt[2].add(1).log10()
-					nb11 = Math.log10(nb11 + 10)
-					return nb11
+					nt = nt[0].add(1).log10()+nt[1].add(1).log10()+nt[2].add(1).log10()
+					return Math.sqrt(Math.max(nt / 60))
 				},
-				effDesc: e => `Raise Emperor Dimensions and Nanocharge by <b>^${shorten(e)}</b>.`,
+				effDesc: e => `2nd Infinite Time softcap starts <b>^${shorten(e)}</b> later.`,
 			}, {
 				cost: E(1e45),
 				eff(nt) {
-					var nb12 = nt[0].add(1).log10()+nt[1].add(1).log10()+nt[2].add(1).log10()
-					var mul = mod.p3ep ? 0.5 : 0.25
-					return Math.log10(ghSave.time / 1e3 + 1) * Math.log10(nb12 + 10) * mul + 1
+					nt = nt[0].add(1).log10()*nt[1].add(1).log10()*nt[2].add(1).log10()
+					return Math.min(Math.log10(nt / 5 + 1) / 5, 1)
 				},
-				effDesc: e => `Fundament time boosts Replicanti Slowdown by <b>^${shorten(e)}</b>.`,
+				effDesc: e => `<b>^${shorten(e)}</b> of RG strength carries to Galaxies.`,
 			}
 		]
 	},
 	upgrades: {
 		can(x) {
-			return NT_RES.total().gte(NEUTRINO.upgrades.data[x-1].cost)
+			return NT_RES.total().gte(NT.upgrades.data[x-1].cost)
 		},
 		buy(x) {
 			if (hasNU(x)) return
-			if (!NEUTRINO.upgrades.can(x)) return
+			if (!NT.upgrades.can(x)) return
 
-			NT_RES.spend(NEUTRINO.upgrades.data[x-1].cost)
+			NT_RES.spend(NT.upgrades.data[x-1].cost)
 			ghSave.neutrinos.upgrades.push(x)
 
 			if (x == 16) resetNanoRewardEffects()
@@ -295,18 +299,18 @@ const NEUTRINO = {
 				effDesc: e => `+${getFullExpansion(e)}`
 			}, {
 				unl: _ => PHOTON.unlocked(),
-				cost: E(1e27),
+				cost: E(1e30),
+				desc: `Replicate slowdown absorbs replicate interval. Replicate interval scales slower.`
+			}, {
+				unl: _ => PHOTON.unlocked(),
+				cost: E(1e35),
 				desc: `Galaxy strength adds Meta-Antimatter effect exponent.`,
 
 				eff: _ => tmp.gal.str / 2,
 				effDesc: e => `+^${shorten(e)}`
 			}, {
 				unl: _ => PHOTON.unlocked(),
-				cost: E(1e30),
-				desc: `Replicate slowdown absorbs replicate interval.`
-			}, {
-				unl: _ => PHOTON.unlocked(),
-				cost: E(1e33),
+				cost: E(1e40),
 				desc: `First Nanobenefit boosts Photons instead.`
 			}
 		]
@@ -315,16 +319,16 @@ const NEUTRINO = {
 	/* HTML */
 	setupTab() {
 		var html = ""
-		for (var b in NEUTRINO.boosts.data) {
+		for (var b in NT.boosts.data) {
 			html += `<td id='nt_bst_${parseInt(b) + 1}'></td>`
 			if (b % 3 == 2) html += "</tr><tr>"
 		}
 		el('nt_bst_div').innerHTML = "<tr>" + html + "</tr>"
 
 		var html = ""
-		for (var [i, upg] of Object.entries(NEUTRINO.upgrades.data)) {
+		for (var [i, upg] of Object.entries(NT.upgrades.data)) {
 			i = parseInt(i)+1
-			html += `<td><button id='nt_upg_${i}' onclick='NEUTRINO.upgrades.buy(${i})'>
+			html += `<td><button id='nt_upg_${i}' onclick='NT.upgrades.buy(${i})'>
 				${upg.desc}<br>
 				${upg.eff ? `Currently: <span id='nt_upg_eff_${i}'></span><br>` : ``}
 				Cost: <span id='nt_upg_cost_${i}'></span> neutrinos
@@ -337,47 +341,44 @@ const NEUTRINO = {
 		for (var type of NT_RES.types) el(type + "Neutrinos").textContent = shortenDimensions(ghSave.neutrinos[type])
 		el("neutrinosGain").textContent = "+" + shortenDimensions(NT_RES.gain()) + " " + NT_RES.names[ghSave.neutrinos.generationGain - 1] + " Neutrinos per Antimatter Galaxy"
 
-		for (var [i, bst] of Object.entries(NEUTRINO.boosts.data)) {
+		for (var [i, bst] of Object.entries(NT.boosts.data)) {
 			i = parseInt(i)+1
 			el("nt_bst_"+i).innerHTML = hasNB(i) ? bst.effDesc(tmp.funda.neutrino.boost[i]) : ""
 		}
-		if (!NEUTRINO.boosts.maxed()) {
+		if (!NT.boosts.maxed()) {
 			el("nt_bst_unl").style.display = ""
-			el("nt_bst_unl").className = "gluonupgrade " + (NEUTRINO.boosts.can() ? "neutrinoupg" : "unavailablebtn")
-			el("nt_bst_cost").innerHTML = shortenDimensions(NEUTRINO.boosts.data[ghSave.neutrinos.boosts].cost)
+			el("nt_bst_unl").className = "qu_upg " + (NT.boosts.can() ? "neutrinoupg" : "unavailablebtn")
+			el("nt_bst_cost").innerHTML = shortenDimensions(NT.boosts.data[ghSave.neutrinos.boosts].cost)
 		} else el("nt_bst_unl").style.display = "none"
 
-		for (var [i, upg] of Object.entries(NEUTRINO.upgrades.data)) {
+		for (var [i, upg] of Object.entries(NT.upgrades.data)) {
 			i = parseInt(i)+1
 			el("nt_upg_cost_"+i).textContent = shorten(upg.cost)
-			el("nt_upg_"+i).className = hasNU(i) ? "gluonupgradebought neutrinoupg" : NEUTRINO.upgrades.can(i) ? "gluonupgrade neutrinoupg" : "gluonupgrade unavailablebtn"
+			el("nt_upg_"+i).className = (hasNU(i) ? "qu_upg_bought neutrinoupg" : NT.upgrades.can(i) ? "qu_upg neutrinoupg" : "qu_upg unavailablebtn") + " condensed"
 			if (upg.eff) el("nt_upg_eff_"+i).textContent = upg.effDesc(tmp.funda.neutrino.upg[i])
 			if (upg.unl) el("nt_upg_"+i).style.display = upg.unl() ? "" : "none"
 		}
 		el("nt_upg_12").setAttribute('ach-tooltip',
-			`Normal galaxy effect: ${shorten(ntEff('upg', 12).normal)}x to quark spin production,
-			Replicated galaxy effect: ${shorten(ntEff('upg', 12).replicated)}x to EC14 reward,
-			Tachyonic galaxy effect: ${shorten(ntEff('upg', 12).free)}x to IC3 base`
+			`Normal galaxy effect: ${shorten(NT.eff('upg', 12).normal)}x to preonic spin production,
+			Replicated galaxy effect: ${shorten(NT.eff('upg', 12).replicated)}x to EC14 reward,
+			Tachyonic galaxy effect: ${shorten(NT.eff('upg', 12).free)}x to IC3 base`
 		)
 
-		el("neutrinoMultUpg").className = "gluonupgrade " + (ghSave.ghostParticles.gte(getNeutrinoMultCost()) ? "storebtn" : "unavailablebtn")
+		el("neutrinoMultUpg").className = "qu_upg " + (ghSave.ghostParticles.gte(getNeutrinoMultCost()) ? "storebtn" : "unavailablebtn")
 		el("neutrinoMult").textContent = shortenDimensions(E_pow(5, ghSave.neutrinos.multPower - 1))
 		el("neutrinoMultUpgCost").textContent = shortenDimensions(getNeutrinoMultCost())
-		el("ghpMultUpg").className = "gluonupgrade " + (NT_RES.total().gte(getGHPMultCost()) ? "storebtn" : "unavailablebtn")
+		el("ghpMultUpg").className = "qu_upg " + (NT_RES.total().gte(getGHPMultCost()) ? "storebtn" : "unavailablebtn")
 		el("ghpMult").textContent = shortenDimensions(getGHPBaseMult())
 		el("ghpMultUpgCost").textContent = shortenDimensions(getGHPMultCost())
 	},
 }
-const NT_RES = NEUTRINO_RES = NEUTRINO.neutrinos
+const NT_RES = NT.resources
 
 function hasNB(x) {
-	return NEUTRINO.boosts.has(x)
+	return NT.boosts.has(x)
 }
 function hasNU(x) {
-	return NEUTRINO.upgrades.has(x)
-}
-function ntEff(type, x, def = 1) {
-	return tmp.funda?.neutrino[type][x] ?? def
+	return NT.upgrades.has(x)
 }
 
 //Multipliers

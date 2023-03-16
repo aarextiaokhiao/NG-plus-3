@@ -8,7 +8,7 @@ function galaxyReset(bulk) {
 	if (player.sacrificed == 0 && bulk) giveAchievement("I don't believe in Gods");
 	if (mod.ngp3 && bulk) {
 		if (quSave.autoOptions.sacrifice) sacrificeGalaxy()
-		if (hasNB(1)) NEUTRINO.onGalaxy(bulk)
+		if (hasNB(1)) NT.onGalaxy(bulk)
 	}
 
 	let am = player.money
@@ -50,7 +50,7 @@ function getGalaxyRequirement(offset = 0, display) {
 			if (hasGluonUpg("rg6")) speed *= 0.867
 			if (hasGluonUpg("gb6")) speed /= getGB6Effect()
 			if (hasGluonUpg("br6")) speed /= getBR6Effect()
-			if (hasNB(6)) speed /= ntEff("boost", 6)
+			if (hasNB(6)) speed /= NT.eff("boost", 6)
 			if (hasBU(45)) speed /= tmp.blu[45]
 			if (hasAch("ng3p98")) speed *= 0.9
 			amount += getDistantAdd(total-distantStart+1)*speed
@@ -126,10 +126,9 @@ function initialGalaxies() {
 		let sac = quSave.electrons.sacGals
 		g = Math.max(g - sac, 0)
 		g *= Math.max(Math.min(10 - (quSave.electrons.amount + g * getElectronGainFinalMult()) / 16857, 1), 0)
-		g += Math.min(sac, player.galaxies) * PHOTON.eff(0)
-		if (hasBU(14)) g = Math.max(Math.min(player.galaxies, tmp.blu[14]), g)
+		g += Math.min(sac, player.galaxies) * PHOTON.eff(4, 0)
 	}
-	if (hasGluonUpg("rg4")) g *= 0.4
+	if (!notInQC() && !tmp.be) g = 0
 	if ((inNC(15) || player.currentChallenge == "postc1") && inOnlyNGM(3)) g = 0
 	return g
 }
@@ -168,11 +167,14 @@ function getGalaxyEff(bi) {
 	if (hasTimeStudy(232) && bi) eff *= tsMults[232]()
 
 	if (mod.udsp && player.dilation.active) eff *= exDilationBenefit() + 1
-	if (mod.ngp3) eff *= tmp.color_eff.r
-	if (hasGluonUpg("rg2")) eff *= Math.pow(player.dilation.freeGalaxies / 5e3 + 1, 0.25)
-	if (hasGluonUpg("rg4")) eff *= 1.5
-	if (hasBU(34)) eff *= tmp.blu[34]
-	if (dev.replBoost) eff *= getReplGalEff()
+	if (mod.ngp3) {
+		eff *= tmp.color_eff.r
+		if (hasGluonUpg("rg2")) eff *= Math.pow(player.dilation.freeGalaxies / 5e3 + 1, 0.25)
+		if (hasGluonUpg("rg4")) eff *= 1.5
+		if (tmp.be) eff *= 0.4
+		if (hasBU(34)) eff *= tmp.blu[34]
+		if (hasNB(12)) eff *= Math.pow(getReplGalEff(), NT.eff("boost", 12))
+	}
 	return eff
 }
 

@@ -74,8 +74,8 @@ function getIC3Base() {
 		}
 	}
 	if (ghostified) {
-		if (hasNB(8)) mult = ntEff("boost", 9).mul(mult)
-		if (hasNU(12)) mult = ntEff("upg", 12).free.mul(mult)
+		if (hasNB(9)) mult = NT.eff("boost", 9).mul(mult)
+		if (hasNU(12)) mult = NT.eff("upg", 12).free.mul(mult)
 		return E(mult).mul(gal).add(add)
 	}
 	return mult * gal + add

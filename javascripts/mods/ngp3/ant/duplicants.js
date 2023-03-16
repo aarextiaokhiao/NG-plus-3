@@ -64,7 +64,7 @@ function updateReplicantsSubtab(){
 
 	growupRateUpdating()
 	
-	el("reduceHatchSpeed").innerHTML = "Hatch speed: " + hatchSpeedDisplay() + " -> " + hatchSpeedDisplay(true) + "<br>Cost: " + shortenDimensions(quSave.replicants.hatchSpeedCost) + " for all 3 gluons"
+	el("reduceHatchSpeed").innerHTML = "Hatch speed: " + hatchSpeedDisplay() + " → " + hatchSpeedDisplay(true) + "<br>Cost: " + shortenDimensions(quSave.replicants.hatchSpeedCost) + " for all 3 gluons"
 }
 
 var antTabs = {
@@ -80,7 +80,7 @@ function updateReplicants(mode) {
 	let showCosts = quSave.replicants.limit < 1e3
 	el("quantumFoodAmount").textContent = getFullExpansion(quSave.replicants.quantumFood)
 
-	el("buyQuantumFood").className = "gluonupgrade " + (quSave.gluons.rg.min(quSave.gluons.gb).min(quSave.gluons.br).lt(quSave.replicants.quantumFoodCost) ? "unavailable" : "ant") + "btn"
+	el("buyQuantumFood").className = "qu_upg " + (quSave.gluons.rg.min(quSave.gluons.gb).min(quSave.gluons.br).lt(quSave.replicants.quantumFoodCost) ? "unavailable" : "ant") + "btn"
 	el("breakLimit").className = (quSave.gluons.rg.min(quSave.gluons.gb).min(quSave.gluons.br).lt(quSave.replicants.limitCost) || !isLimitUpgAffordable() ? "unavailable" : "ant") + "btn"
 	el("reduceHatchSpeed").className = (quSave.gluons.rg.min(quSave.gluons.gb).min(quSave.gluons.br).lt(quSave.replicants.hatchSpeedCost) ? "unavailable" : "ant") + "btn"
 
@@ -91,8 +91,8 @@ function updateReplicants(mode) {
 
 		el("buyQuantumFood").innerHTML = "Buy 1 quantum food<br>Cost: "+shortenDimensions(quSave.replicants.quantumFoodCost)+" for all 3 gluons"
 		el("buyQuantumFoodED").innerHTML = "Buy 1 quantum food<br>Cost: "+shortenDimensions(quSave.replicants.quantumFoodCost)+" for all 3 gluons"
-		el("breakLimit").innerHTML = "Limit of workers: " + getLimitMsg() + (isLimitUpgAffordable() ? " -> " + getNextLimitMsg() + "<br>Cost: " + shortenDimensions(quSave.replicants.limitCost) + " of all 3 gluons":"")
-		el("breakLimitED").innerHTML = "Limit of workers: " + getLimitMsg() + (isLimitUpgAffordable() ? " -> " + getNextLimitMsg() + "<br>Cost: " + shortenDimensions(quSave.replicants.limitCost) + " of all 3 gluons":"")
+		el("breakLimit").innerHTML = "Limit of workers: " + getLimitMsg() + (isLimitUpgAffordable() ? " → " + getNextLimitMsg() + "<br>Cost: " + shortenDimensions(quSave.replicants.limitCost) + " of all 3 gluons":"")
+		el("breakLimitED").innerHTML = "Limit of workers: " + getLimitMsg() + (isLimitUpgAffordable() ? " → " + getNextLimitMsg() + "<br>Cost: " + shortenDimensions(quSave.replicants.limitCost) + " of all 3 gluons":"")
 	} else {
 		el("rgRepl").textContent = "lots of"
 		el("gbRepl").textContent = "many"
@@ -106,7 +106,7 @@ function updateReplicants(mode) {
 
 	if (hasMasteryStudy('d11')) {
 		el("quantumFoodAmountED").textContent = getFullExpansion(quSave.replicants.quantumFood)
-		el("buyQuantumFoodED").className = "gluonupgrade " + (quSave.gluons.rg.min(quSave.gluons.gb).min(quSave.gluons.br).lt(quSave.replicants.quantumFoodCost) ? "unavailable" : "ant") + "btn"
+		el("buyQuantumFoodED").className = "qu_upg " + (quSave.gluons.rg.min(quSave.gluons.gb).min(quSave.gluons.br).lt(quSave.replicants.quantumFoodCost) ? "unavailable" : "ant") + "btn"
 		el("breakLimitED").className = (quSave.gluons.rg.min(quSave.gluons.gb).min(quSave.gluons.br).lt(quSave.replicants.limitCost) || !isLimitUpgAffordable() ? "unavailable" : "ant") + "btn"
 	}
 }
@@ -169,8 +169,8 @@ function getEmperorDimensionMultiplier(dim) {
 	let ret = tmp.ant.global_mult //Global multiplier of all Emperor Dimensions
 	if (dim == 8) ret = ret.mul(E_pow(1.1, quSave.emperorDimensions[8].perm - 8).max(1))
 	if (dim == 1 && hasAch("ng3p54")) ret = ret.mul(Math.pow(todSave.r.spin.plus(10).log10(), 3))
-	if (hasNU(7) && dim % 2 == 1) ret = ret.mul(ntEff("upg", 7))
-	if (hasNB(11)) ret = ret.pow(ntEff("boost", 11))
+	if (hasNU(7) && dim % 2 == 1) ret = ret.mul(NT.eff("upg", 7))
+	ret = ret.pow(PHOTON.eff(6))
 	return ret
 }
 

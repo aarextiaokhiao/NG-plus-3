@@ -1,7 +1,7 @@
 let PHOTON = {
 	/* CORE */
 	//Unlock
-	req: _ => bigRipped() && player.money.gte(pow10(1.8e9)),
+	req: _ => bigRipped() && player.money.gte(pow10(1.9e9)),
 	unlocked: _ => ghSave?.photons.unl,
 	unlock() {
 		ghSave.photons.unl = true
@@ -48,7 +48,6 @@ let PHOTON = {
 	photonGain() {
 		let r = E(player.dilation.bestTPOverGhostifies.max(1).log10() / 200).pow(10)
 		if (hasNanoReward("photon")) r = r.mul(tmp.nf.eff.photon)
-		if (hasNB(10)) r = r.mul(ntEff("boost", 10))
 		return r
 	},
 
@@ -57,9 +56,9 @@ let PHOTON = {
 		let amt = ghSave.photons.emission[i] || 0
 		let kind = this.emissionData[i]
 		let bulk = kind.bulk(kind.res())
-		if (bulk <= amt) return
+		if (isNaN(bulk)) return
 
-		ghSave.photons.emission[i] = kind.bulk(kind.res())
+		ghSave.photons.emission[i] = Math.max(bulk, amt)
 	},
 	totalEmissions() {
 		let total = 0
@@ -71,20 +70,20 @@ let PHOTON = {
 			resName: "Preonic Spin",
 			res: _ => todSave.r.spin,
 
-			req: i => E(50).pow(Math.pow(i, 1.5)).mul(1e26),
-			bulk: r => Math.floor(Math.pow(r.max(1).div(1e26).log(50), 2/3)) + 1,
+			req: i => E(50).pow(i).mul(1e27),
+			bulk: r => Math.floor(r.max(1).div(1e27).log(50)) + 1,
 		}, {
 			resName: "Elementary Particles",
 			res: _ => ghSave.ghostParticles,
 
-			req: i => E(1e3).pow(i).mul(1e18),
-			bulk: r => Math.floor(r.max(1).div(1e18).log(1e3)) + 1,
+			req: i => E(1e3).pow(i).mul(1e19),
+			bulk: r => Math.floor(r.max(1).div(1e19).log(1e3)) + 1,
 		}, {
 			resName: "Photons",
 			res: _ => ghSave.photons.amt,
 
-			req: i => E(5).pow(Math.pow(i, mod.p3ep ? 0.75 : 1)).mul(2e4),
-			bulk: r => Math.floor(Math.pow(r.max(1).div(2e4).log(5), 1 / (mod.p3ep ? 0.75 : 1))) + 1,
+			req: i => E(3).pow(Math.pow(i, mod.p3ep ? 0.75 : 1)).mul(1e5),
+			bulk: r => Math.floor(Math.pow(r.max(1).div(1e5).log(3), 1 / (mod.p3ep ? 0.75 : 1))) + 1,
 		}
 	],
 
@@ -108,32 +107,32 @@ let PHOTON = {
 	lightData: [
 		{
 			name: "red",
-			eff: a => Math.log10(a + 1) / 3,
-			desc: e => `Discharged Galaxies work, but as ${(e*100).toFixed(1)}% strong.`
-		}, {
-			name: "orange",
 			eff: a => E_pow(tmp.gal.ts || 1, -Math.cbrt(a) / 10),
 			desc: e => `Multiply per-ten multiplier by ${shorten(e)}x. (based on tickspeed reduction)`
 		}, {
+			name: "orange",
+			eff: a => Math.min(Math.log2(a / 2 + 2), 3),
+			desc: e => `Starting at ^9, raise 2nd Neutrino Boost by ^${shorten(e)}.`
+		}, {
 			name: "yellow",
 			eff: a => Math.cbrt(a + 1),
-			desc: e => `Strengthen Nanobenefits by ${e.toFixed(3)}x.`
+			desc: e => `Raise Replicate Slowdown by ^${shorten(e)}. (based on Fundament time)`
 		}, {
 			name: "green",
-			eff: a => Math.log10(a / 3 + 1) + 1,
-			desc: e => `Nanorewards speed up Decay by ${e.toFixed(3)}x each.`
+			eff: a => 1+a/1.5e3,
+			desc: e => `Gain ${shorten((e-1)*100)}% more Neutrinos per Big Rip galaxy.`
 		}, {
 			name: "blue",
-			eff: a => Math.log2(a + 2),
-			desc: e => `Raise Intergalactic by ^${shorten(e)} outside of Big Rips.`
+			eff: a => Math.cbrt(a / 10 + 1) - 1,
+			desc: e => `Discharged Galaxies work, but as ${(e*100).toFixed(1)}% strong.`
 		}, {
 			name: "violet",
-			eff: a => a/3+1,
+			eff: a => Math.cbrt(a / 3 + 1),
 			desc: e => `2nd Infinite Time softcap scales ^${shorten(e)} later.`
 		}, {
 			name: "ultraviolet",
-			eff: a => Math.log2(a / 4 + 2),
-			desc: e => `Starting at ^10, raise 2nd Neutrino Boost by ^${shorten(e)}.`
+			eff: a => Math.cbrt(a + 1),
+			desc: e => `Raise Emperor Dimensions and Nanocharge by ^${shorten(e)}.`
 		}
 	],
 	eff(x, def = 1) {
@@ -149,13 +148,13 @@ let PHOTON = {
 		for (var [i, light] of Object.entries(PHOTON.lightData)) {
 			el('ph_light_'+i).innerHTML = `<span id='ph_light_amt_${i}' style='font-size: 18px'></span>
 			${light.name} Light<br>
-			<button class="storebtn" id='ph_light_cap_${i}' onclick='ghSave.photons.plusOne[${i}] = !ghSave.photons.plusOne[${i}]'>+1</button><br>
+			<button class="storebtn" id='ph_light_cap_${i}' onclick='ghSave.photons.plusOne[${i}] = !ghSave.photons.plusOne[${i}]'>Overpower</button><br>
 			<span id='ph_light_eff_${i}'></span>`
 		}
 	},
 	update() {
 		if (!PHOTON.unlocked()) {
-			el("gphUnl").textContent = "Get "+shortenCosts(pow10(1.8e9))+" antimatter in Big Rip to unlock Photons."
+			el("gphUnl").textContent = "Get "+shortenCosts(pow10(1.9e9))+" antimatter in Big Rip to unlock Photons."
 			return
 		}
 

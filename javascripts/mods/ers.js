@@ -1,10 +1,10 @@
 function updateERSTTDesc() {
-	el("ts1desc").textContent = shorten(calcTotalSacrificeBoost()) + "x -> " + shorten(calcTotalSacrificeBoost(true)) + "x"
-	el("ts2desc").textContent = getFullExpansion(getTotalTickGained()) + " -> " + getFullExpansion(getTotalTickGained(true))
-	el("ts3desc").textContent = shorten(getReplMult()) + "x -> " + shorten(getReplMult(true)) + "x"
-	el("ts4desc").textContent = shorten(getDimensionBoostPower()) + "x -> " + shorten(getDimensionBoostPower(true)) + "x"
-	el("ts5desc").textContent = shorten(gainedInfinityPoints()) + "x -> " + shorten(gainedInfinityPoints(5)) + "x"
-	el("ts6desc").textContent = shorten(gainedInfinityPoints()) + "x -> " + shorten(gainedInfinityPoints(6)) + "x"
+	el("ts1desc").textContent = shorten(calcTotalSacrificeBoost()) + "x → " + shorten(calcTotalSacrificeBoost(true)) + "x"
+	el("ts2desc").textContent = getFullExpansion(getTotalTickGained()) + " → " + getFullExpansion(getTotalTickGained(true))
+	el("ts3desc").textContent = shorten(getReplMult()) + "x → " + shorten(getReplMult(true)) + "x"
+	el("ts4desc").textContent = shorten(getDimensionBoostPower()) + "x → " + shorten(getDimensionBoostPower(true)) + "x"
+	el("ts5desc").textContent = shorten(gainedInfinityPoints()) + "x → " + shorten(gainedInfinityPoints(5)) + "x"
+	el("ts6desc").textContent = shorten(gainedInfinityPoints()) + "x → " + shorten(gainedInfinityPoints(6)) + "x"
 }
 
 function get_c(next) {

@@ -8,7 +8,7 @@ function setupFundament() {
 		milestones: 0,
 		ghostParticles: E(0),
 		multPower: 1,
-		neutrinos: NEUTRINO.setup(),
+		neutrinos: NT.setup(),
 		automatorGhosts: setupAutomaticGhostsData(),
 		photons: PHOTON.setup(),
 		bl: getBrandNewBosonicLabData(),
@@ -125,7 +125,6 @@ function ghostifyReset(force, gain) {
 		updateBraveMilestones()
 
 		giveAchievement("Kee-hee-hee!")
-		if (bm == 16) giveAchievement("I rather oppose the theory of everything")
 		if (quSave.times >= 1e3 && hasBraveMilestone(16)) giveAchievement("Scared of ghosts?")
 	}
 
@@ -232,9 +231,6 @@ RESETS.funda = {
 
 	doReset() {
 		let bm = ghSave.milestones
-		ghSave.time = 0
-		GHPminpeak = E(0)
-		GHPminpeakValue = E(0)
 
 		player.infinitiedBank = 0
 		player.eternitiesBank = ghostified ? 200 : 0
@@ -256,7 +252,20 @@ RESETS.funda = {
 		this.resetRip(bm)
 
 		updateAutoQuantumMode()
-		doGhostifyGhostifyResetStuff()
+		if (bm < 7) {
+			ghSave.neutrinos.electron = E(0)
+			ghSave.neutrinos.mu = E(0)
+			ghSave.neutrinos.tau = E(0)
+		}
+
+		ghSave.time = 0
+		GHPminpeak = E(0)
+		GHPminpeakValue = E(0)
+
+		player.unstableThisGhostify = 0
+		ghSave.under = true
+		ghSave.another = 10
+		ghSave.reference = 10
 	}
 }
 
@@ -276,7 +285,7 @@ function updateGhostifyTempStuff() {
 	if (!ghostified) return
 	tmp.funda = {}
 	PHOTON.temp()
-	NEUTRINO.temp()
+	NT.temp()
 }
 
 //Animations
@@ -324,7 +333,7 @@ function getGHPGain() {
 
 	let log = brSave.bestThisRun.log(getQCGoal()) - 1
 	if (log < 0) return E(0)
-	if (log > 12) log = Math.cbrt(log / 12) * 15
+	if (log > 15) log = Math.cbrt(log / 15) * 15
 
 	return pow10(log).mul(getGHPMult()).floor()
 }
@@ -421,7 +430,7 @@ function showGhostifyTab(tabName) {
 }
 
 function updateGhostifyTabs() {
-	if (el("neutrinos").style.display == "block") NEUTRINO.update()
+	if (el("neutrinos").style.display == "block") NT.update()
 	if (el("gphtab").style.display == "block") PHOTON.update()
 	if (el("automaticghosts").style.display == "block") updateAutomatorHTML()
 }

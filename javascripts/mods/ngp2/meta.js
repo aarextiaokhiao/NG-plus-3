@@ -126,11 +126,13 @@ function canBuyMetaDimension(tier) {
 	return true;
 }
 
-function clearMetaDimensions () { //Resets costs and amounts
-	for (var i = 1; i <= 8; i++) {
-		player.meta[i].amount = E(0);
-		player.meta[i].bought = 0;
-		player.meta[i].cost = E(initCost[i]);
+function clearMetaDimensions() { //Resets costs and amounts
+	for (let i = 1; i <= 8; i++) {
+		player.meta[i] = {
+			amount: E(0),
+			bought: 0,
+			cost: initCost[i]
+		}
 	}
 }
 
@@ -144,7 +146,7 @@ function getMetaShiftRequirement() {
 	}
 	data.amount += data.mult * Math.max(mdb - 4, 0)
 	if (isDecayOn()) data.amount -= getTreeUpgradeEffect(1)
-	if (hasNU(1)) data.amount -= ntEff("upg", 1, 0)
+	if (hasNU(1)) data.amount -= NT.eff("upg", 1, 0)
 
 	data.scalingStart = inQC4 ? 55 : 15
 	if (player.meta.resets >= data.scalingStart) {
@@ -360,7 +362,7 @@ function getExtraDimensionBoostPowerExponent(ma) {
 		power += getECReward(13)
 		if (hasNanoReward("ma_effect_exp") && !dev.testZone) power += tmp.nf.eff.ma_effect_exp
 		if (isDecayOn()) power += getTreeUpgradeEffect(8)
-		if (hasNU(14)) power += ntEff("upg", 14)
+		if (hasNU(15)) power += NT.eff("upg", 15)
 	}
 	return power
 }
@@ -412,7 +414,7 @@ function updateMetaDimensions () {
 	var req = getQuantumReq()
 	var reqGotten = isQuantumReached()
 	var newClassName = reqGotten ? (bigRip && player.options.theme == "Aarex's Modifications" ? "" : "storebtn ") + (bigRip ? "aarexmodsghostifybtn" : "") : 'unavailablebtn'
-	el("quantumResetLabel").textContent = (bigRip ? 'Ghostify' : 'Quantum') + ': requires ' + shorten(req) + ' meta-antimatter ' + (!inQC(0) ? "and " + shortenCosts(getQCGoal()) + " antimatter" : player.masterystudies ? "and an EC14 completion" : "")
+	el("quantumResetLabel").textContent = (bigRip ? 'Ghostify' : 'Quantum') + ': requires ' + shorten(req) + ' meta-antimatter ' + (!notInQC() ? "and " + shortenCosts(getQCGoal()) + " antimatter" : player.masterystudies ? "and an EC14 completion" : "")
 
 	var message = 'Lose all your prior progress'
 	if (reqGotten && bigRip && ghostified) {
@@ -430,7 +432,7 @@ function getDil15Bonus() {
 	let x = 1
 	let max = 3
 	if (hasNB(3)) {
-		x = ntEff("boost", 3)
+		x = NT.eff("boost", 3)
 		max = 1/0
 	}
 	if (mod.udsp) x *= Math.min(Math.max(player.dilation.dilatedTime.max(1).log10() / 10 - 6.25, 2), max)

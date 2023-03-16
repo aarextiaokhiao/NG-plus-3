@@ -53,6 +53,7 @@ let RESETS = {
 				if (inNGM(2)) reduceDimCosts()
 				if (inNGM(4)) resetNGM4TDs()
 			}
+			if (resetDims) resetPowers()
 			this.startingTickspeed()
 			setInitialDimensionPower()
 			player.chall3Pow = E(0.01)
@@ -62,7 +63,6 @@ let RESETS = {
 			player.postC8Mult = E(1)
 			skipResets()
 			Marathon = 0
-			if (resetDims) resetPowers()
 
 			//UPDATE DISPLAYS
 			hideDimensions()
@@ -249,54 +249,6 @@ function nanofieldResetOnQuantum(){
 }
 		
 function doMetaDimensionsReset(order, qc) {
-	let keepMDB = hasBraveMilestone(5) && order == "qu" && !qc
-	player.meta = {
-		antimatter: getMetaAntimatterStart(),
-		bestAntimatter: getMetaAntimatterStart(),
-		bestOverQuantums: player.meta.bestOverQuantums,
-		bestOverGhostifies: player.meta.bestOverGhostifies,
-		resets: keepMDB ? player.meta.resets : isRewardEnabled(27) ? 4 : 0,
-		'1': {
-			amount: E(0),
-			bought: 0,
-			cost: E(10)
-		},
-		'2': {
-			amount: E(0),
-			bought: 0,
-			cost: E(100)
-		},
-		'3': {
-			amount: E(0),
-			bought: 0,
-			cost: E(1e4)
-		},
-		'4': {
-			amount: E(0),
-			bought: 0,
-			cost: E(1e6)
-		},
-		'5': {
-			amount: E(0),
-			bought: 0,
-			cost: E(1e9)
-		},
-		'6': {
-			amount: E(0),
-			bought: 0,
-			cost: E(1e13)
-		},
-		'7': {
-			amount: E(0),
-			bought: 0,
-			cost: E(1e18)
-		},
-		'8': {
-			amount: E(0),
-			bought: 0,
-			cost: E(1e24)
-		}
-	}
 }
 
 function completelyResetInfinityDimensions(){
@@ -358,73 +310,12 @@ function completelyResetInfinityDimensions(){
 	}
 }
 
-function completelyResetTimeDimensions(){
-	player.timeDimension1 = {
-		cost: E(1),
-		amount: E(0),
-		power: E(1),
-		bought: 0
+function completelyResetTimeDimensions() {
+	for (let dim = 1; dim <= 8; dim++) {
+		player["timeDimension"+dim] = {
+			cost: timeDimCost(dim, 0),
+			power: E(1),
+			bought: 0
+		}
 	}
-	player.timeDimension2 = {
-		cost: E(5),
-		amount: E(0),
-		power: E(1),
-		bought: 0
-	}
-	player.timeDimension3 = {
-		cost: E(100),
-		amount: E(0),
-		power: E(1),
-		bought: 0
-	}
-	player.timeDimension4 = {
-		cost: E(1000),
-		amount: E(0),
-		power: E(1),
-		bought: 0
-	}
-	player.timeDimension5 = {
-		cost: E("1e2350"),
-		amount: E(0),
-		power: E(1),
-		bought: 0
-	}
-	player.timeDimension6 = {
-		cost: E("1e2650"),
-		amount: E(0),
-		power: E(1),
-		bought: 0
-	}
-	player.timeDimension7 = {
-		cost: E("1e3000"),
-		amount: E(0),
-		power: E(1),
-		bought: 0
-	}
-	player.timeDimension8 = {
-		cost: E("1e3350"),
-		amount: E(0),
-		power: E(1),
-		bought: 0
-	}
-}
-
-function doGhostifyGhostifyResetStuff(bm, force){
-	GHPminpeak = E(0)
-	GHPminpeakValue = E(0)
-
-	if (bm < 7) {
-		ghSave.neutrinos.electron = E(0)
-		ghSave.neutrinos.mu = E(0)
-		ghSave.neutrinos.tau = E(0)
-	}
-
-	blSave.watt = 0
-
-	updateLastTenGhostifies()
-
-	player.unstableThisGhostify = 0
-	ghSave.under = true
-	ghSave.another = 10
-	ghSave.reference = 10
 }

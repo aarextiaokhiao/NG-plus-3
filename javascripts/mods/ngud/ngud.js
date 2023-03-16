@@ -292,8 +292,8 @@ function updateExdilationStats() {
 			el("xd" + i).style.height = mod.udsp ? "60px" : "50px"
 			el("xd" + i).className = player.exdilation.unspent.eq(0) ? "dilationupgrebuyablelocked" : "dilationupgrebuyable";
 
-			if (mod.udsp) el("xd" + i + "span").textContent = '+' + exDilationUpgradeStrength(i).toFixed(1) + ' free upgrades -> +' + exDilationUpgradeStrength(i,player.exdilation.unspent).toFixed(1)
-			else el("xd" + i + "span").textContent = exDilationUpgradeStrength(i).toFixed(2) + 'x -> ' + exDilationUpgradeStrength(i,player.exdilation.unspent).toFixed(2) + 'x'
+			if (mod.udsp) el("xd" + i + "span").textContent = '+' + exDilationUpgradeStrength(i).toFixed(1) + ' free upgrades → +' + exDilationUpgradeStrength(i,player.exdilation.unspent).toFixed(1)
+			else el("xd" + i + "span").textContent = exDilationUpgradeStrength(i).toFixed(2) + 'x → ' + exDilationUpgradeStrength(i,player.exdilation.unspent).toFixed(2) + 'x'
 		}
 		el("xd"+i).parentElement.style.display = unl ? "" : "none"
 	}

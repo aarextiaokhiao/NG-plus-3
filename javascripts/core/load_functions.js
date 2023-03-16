@@ -1445,8 +1445,8 @@ function setDisplaysStuff1(){
 		el("galaxy11").innerHTML = "Normal"+(inNGM(4)?" and Time D":" d")+"imensions are "+(player.infinitied>0||getEternitied()!==0||quantumed?"cheaper based on your Infinities.<br>Currently: <span id='galspan11'></span>x":"99% cheaper.")+"<br>Cost: 1 GP"
 		el("galaxy15").innerHTML = "Normal and Time Dimensions produce "+(player.infinitied>0||getEternitied()!==0||quantumed?"faster based on your Infinities.<br>Currently: <span id='galspan15'></span>x":"100x faster")+".<br>Cost: 1 GP"
 	} else {
-		el("infi21").innerHTML = "Increase the multiplier for buying 10 Dimensions<br>"+(mod.ngep?"20x -> 24x":"2x -> 2.2x")+"<br>Cost: 1 IP"
-		el("infi33").innerHTML = "Increase Dimension Boost multiplier<br>2x -> 2.5x<br>Cost: 7 IP"
+		el("infi21").innerHTML = "Increase the multiplier for buying 10 Dimensions<br>"+(mod.ngep?"20x → 24x":"2x → 2.2x")+"<br>Cost: 1 IP"
+		el("infi33").innerHTML = "Increase Dimension Boost multiplier<br>2x → 2.5x<br>Cost: 7 IP"
 	}
 	var resetSkipCosts=[20,40,80]
 	for (u=1;u<4;u++) el("infi4"+u).innerHTML="You start with the "+(u+4)+"th dimension unlocked"+(!inNGM(3)?"":" and "+(u*4)+" tickspeed boosts")+"<br>Cost: "+resetSkipCosts[u-1]+" IP"
@@ -1595,11 +1595,6 @@ function setSomeQuantumAutomationDisplay(){
 		for (i=1;i<9;i++) el("td"+i+'Auto').textContent="Auto: O"+(player.autoEterOptions["td"+i]?"N":"FF")
 	}
 	el('replicantibulkmodetoggle').textContent="Mode: "+(player.galaxyMaxBulk?"Max":"Singles")
-
-	var autoAssignUnl = quSave?.reachedInfQK
-	el('autoAssign').style.display = autoAssignUnl ? "" : "none"
-	el('autoAssignRotate').style.display = autoAssignUnl ? "" : "none"
-	el('autoReset').style.display = hasAch("ng3p47") ? "" : "none"
 }
 
 function setReplAutoDisplay(){

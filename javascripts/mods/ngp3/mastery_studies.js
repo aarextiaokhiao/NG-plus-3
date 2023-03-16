@@ -113,7 +113,7 @@ var masteryStudies = {
 		},
 		273: function(uses){
 			var intensity = 5
-			if (hasNB(2)) intensity += ntEff("boost", 2, 0)
+			if (hasNB(2)) intensity += NT.eff("boost", 2, 0)
 			if (uses.includes("intensity")) return intensity
 			return Decimal.max(Math.log10(player.replicanti.chance + 1), 1).pow(intensity)
 		},

@@ -1069,24 +1069,24 @@ td .timestudybought.pos_study {
     box-shadow: inset 0 0 25px #f795, 0 0 8px #f797;
 }
 
-.gluonupgrade.storebtn {
+.qu_upg.storebtn {
     background: linear-gradient(#342, #121) !important;
     color: #9f7 !important;
     border: 1px solid #9f7 !important;
     box-shadow: inset 0 0 5px #9f73;
     animation: none !important;
 }
-.gluonupgrade.storebtn:hover {
+.qu_upg.storebtn:hover {
     box-shadow: inset 0 0 5px #9f73, 0 0 8px #f9f7;
 }
-.gluonupgrade.unavailablebtn, .gluonupgrade.unavailablebtn:hover,
+.qu_upg.unavailablebtn, .qu_upg.unavailablebtn:hover,
 .qMs_locked, .qMs_locked:hover {
     background: linear-gradient(#010, #010) !important;
     color: #9f77 !important;
     border: 1px solid #9f7 !important;
     filter: none !important;
 }
-.gluonupgradebought,
+.qu_upg_bought,
 .qMs_reward {
     background: linear-gradient(#231, #363) !important;
     color: #9f7;
@@ -1095,16 +1095,16 @@ td .timestudybought.pos_study {
     box-shadow: inset 0 0 25px #9f75, 0 0 8px #9f77;
 }
 
-.gluonupgrade.rg {
+.qu_upg.rg {
     background: linear-gradient(45deg, #f003, #0f03), linear-gradient(#444, #111) !important;
     box-shadow: inset 0 0 15px #ff73;
     text-shadow: 0 0 5px #000;
     animation: rgAnim 5s ease-in-out infinite alternate !important;
 }
-.gluonupgrade.rg:hover {
+.qu_upg.rg:hover {
     box-shadow: inset 0 0 15px #ff73, 0 0 8px #ff77;
 }
-.gluonupgradebought.rg {
+.qu_upg_bought.rg {
     background: linear-gradient(45deg, #f005, #0f05),linear-gradient(#222, #666) !important;
     box-shadow: inset 0 0 15px #ff75, 0 0 8px #ff77;
     text-shadow: 0 0 5px #000;
@@ -1120,16 +1120,16 @@ td .timestudybought.pos_study {
         border: 1px solid #7f7;
     }
 }
-.gluonupgrade.gb {
+.qu_upg.gb {
     background: linear-gradient(45deg, #0f03, #00f3), linear-gradient(#444, #111) !important;
     box-shadow: inset 0 0 15px #7ff3;
     text-shadow: 0 0 5px #000;
     animation: gbAnim 5s ease-in-out infinite alternate !important;
 }
-.gluonupgrade.gb:hover {
+.qu_upg.gb:hover {
     box-shadow: inset 0 0 15px #7ff3, 0 0 8px #7ff7;
 }
-.gluonupgradebought.gb {
+.qu_upg_bought.gb {
     background: linear-gradient(45deg, #0f05, #00f5), linear-gradient(#222, #666) !important;
     box-shadow: inset 0 0 15px #7ff5, 0 0 8px #7ff7;
     text-shadow: 0 0 5px #000;
@@ -1145,16 +1145,16 @@ td .timestudybought.pos_study {
         border: 1px solid #77f;
     }
 }
-.gluonupgrade.br {
+.qu_upg.br {
     background: linear-gradient(45deg, #00f3, #f003), linear-gradient(#444, #111) !important;
     box-shadow: inset 0 0 15px #f7f3;
     text-shadow: 0 0 5px #000;
     animation: brAnim 5s ease-in-out infinite alternate !important;
 }
-.gluonupgrade.br:hover {
+.qu_upg.br:hover {
     box-shadow: inset 0 0 15px #f7f3, 0 0 8px #f7f7;
 }
-.gluonupgradebought.br {
+.qu_upg_bought.br {
     background: linear-gradient(45deg, #00f5, #f005), linear-gradient(#222, #666) !important;
     box-shadow: inset 0 0 15px #f7f5, 0 0 8px #f7f7;
     text-shadow: 0 0 5px #000;
@@ -1171,7 +1171,15 @@ td .timestudybought.pos_study {
     }
 }
 
-.gluonupgrade.r {
+.positron {
+    background: linear-gradient(45deg, #fb04, #fb02), linear-gradient(#444, #111) !important;
+    color: #fd7 !important;
+    border: 1px solid #fd7 !important;
+    box-shadow: inset 0 0 15px #fd73;
+    text-shadow: 0 0 5px #000;
+}
+
+.qu_upg.r {
     background: linear-gradient(45deg, #f004, #f002), linear-gradient(#444, #111) !important;
     color: #f77 !important;
     border: 1px solid #f77 !important;
@@ -1179,10 +1187,10 @@ td .timestudybought.pos_study {
     text-shadow: 0 0 5px #000;
     animation: none !important;
 }
-.gluonupgrade.r:hover {
+.qu_upg.r:hover {
     box-shadow: inset 0 0 15px #f773, 0 0 8px #f777;
 }
-.gluonupgradebought.r {
+.qu_upg_bought.r {
     background: linear-gradient(45deg, #f006, #f003), linear-gradient(#222, #666) !important;
     color: #f77 !important;
     border: 1px solid #f77 !important;
@@ -1190,7 +1198,7 @@ td .timestudybought.pos_study {
     text-shadow: 0 0 5px #000;
     animation: none !important;
 }
-.gluonupgrade.g {
+.qu_upg.g {
     background: linear-gradient(45deg, #0f04, #0f02), linear-gradient(#444, #111) !important;
     color: #7f7 !important;
     border: 1px solid #7f7 !important;
@@ -1198,10 +1206,10 @@ td .timestudybought.pos_study {
     text-shadow: 0 0 5px #000;
     animation: none !important;
 }
-.gluonupgrade.g:hover {
+.qu_upg.g:hover {
     box-shadow: inset 0 0 15px #7f73, 0 0 8px #7f77;
 }
-.gluonupgradebought.g {
+.qu_upg_bought.g {
     background: linear-gradient(45deg, #0f06, #0f03), linear-gradient(#222, #666) !important;
     color: #7f7 !important;
     border: 1px solid #7f7 !important;
@@ -1209,7 +1217,7 @@ td .timestudybought.pos_study {
     text-shadow: 0 0 5px #000;
     animation: none !important;
 }
-.gluonupgrade.b {
+.qu_upg.b {
     background: linear-gradient(45deg, #00f4, #00f2), linear-gradient(#444, #111) !important;
     color: #77f !important;
     border: 1px solid #77f !important;
@@ -1217,10 +1225,10 @@ td .timestudybought.pos_study {
     text-shadow: 0 0 5px #000;
     animation: none !important;
 }
-.gluonupgrade.b:hover {
+.qu_upg.b:hover {
     box-shadow: inset 0 0 15px #77f3, 0 0 8px #77f7;
 }
-.gluonupgradebought.b {
+.qu_upg_bought.b {
     background: linear-gradient(45deg, #00f6, #00f3), linear-gradient(#222, #666) !important;
     color: #77f !important;
     border: 1px solid #77f !important;
@@ -1228,7 +1236,7 @@ td .timestudybought.pos_study {
     text-shadow: 0 0 5px #000;
     animation: none !important;
 }
-.gluonupgrade.chosenbtn {
+.qu_upg.chosenbtn {
     font-size: 12px;
 }
 
@@ -1243,14 +1251,14 @@ td .timestudybought.pos_study {
     background: linear-gradient(#242, #121) !important;
     box-shadow: inset 0 0 25px #0007, 0 0 8px #7f77;
 }
-.gluonupgradebought.bigrip {
+.qu_upg_bought.bigrip {
     background: linear-gradient(#131, #363) !important;
     color: #7f7 !important;
     border: 1px solid #7f7 !important;
     box-shadow: inset 0 0 15px #7f75, 0 0 8px #7f77;
     animation: none !important;
 }
-.gluonupgradebought.bigripoff {
+.qu_upg_bought.bigripoff {
     background: linear-gradient(#020, #242) !important;
     color: #7f77 !important;
     border: 1px solid #7f7 !important;
@@ -1258,7 +1266,7 @@ td .timestudybought.pos_study {
     animation: none !important;
 }
 
-.gluonupgrade.neutrinoupg {
+.qu_upg.neutrinoupg {
     background: linear-gradient(#222, #000) !important;
     color: #aaa !important;
     border: 1px solid #aaa !important;
@@ -1266,11 +1274,11 @@ td .timestudybought.pos_study {
     text-shadow: 0 0 2px #aaa7;
     animation: none !important;
 }
-.gluonupgrade.neutrinoupg:hover {
+.qu_upg.neutrinoupg:hover {
     background: linear-gradient(#222, #000) !important;
     box-shadow: inset 0 0 15px #fff3, 0 0 8px #aaa7;
 }
-.gluonupgradebought.neutrinoupg {
+.qu_upg_bought.neutrinoupg {
     background: linear-gradient(#000, #222) !important;
     color: #aaa !important;
     border: 1px solid #aaa !important;
@@ -1279,7 +1287,7 @@ td .timestudybought.pos_study {
     animation: none !important;
 }
 
-.gluonupgrade.gph {
+.qu_upg.gph {
     background: linear-gradient(#cb5, #894) !important;
     color: #000 !important;
     border: 1px solid #fff !important;
@@ -1287,12 +1295,12 @@ td .timestudybought.pos_study {
     text-shadow: 0 0 2px #0007;
     animation: none !important;
 }
-.gluonupgrade.gph:hover {
+.qu_upg.gph:hover {
     text-shadow: 0 0 2px #000;
     box-shadow: inset 0 0 15px #fff3, 0 0 8px #fff7;
 }
 
-.gluonupgrade.bl {
+.qu_upg.bl {
     background: 
         linear-gradient(#6164, #0000 50%, #6164 100%), 
         linear-gradient(90deg, #0000, #c314 50%, #0000 100%),
@@ -1303,10 +1311,10 @@ td .timestudybought.pos_study {
     text-shadow: 0 0 5px #fff2;
     animation: none !important;
 }
-.gluonupgrade.bl:hover {
+.qu_upg.bl:hover {
     box-shadow: inset 0 0 15px #fff3, 0 0 8px #fff7;
 }
-.gluonupgradebought.bl {
+.qu_upg_bought.bl {
     background: 
         linear-gradient(#6164, #0000 50%, #6164 100%), 
         linear-gradient(90deg, #0000, #c314 50%, #0000 100%),
@@ -1318,7 +1326,7 @@ td .timestudybought.pos_study {
     animation: none !important;
 }
 
-.gluonupgrade.hb {
+.qu_upg.hb {
 	background:
         linear-gradient(90deg, #0000, #ff02, #0000), 
         linear-gradient(#550, #110) !important;
@@ -1328,7 +1336,7 @@ td .timestudybought.pos_study {
     text-shadow: 0 0 5px #000;
     animation: none !important;
 }
-.gluonupgrade.hb:hover {
+.qu_upg.hb:hover {
     text-shadow: 0 0 5px #000, 0 0 5px #000;
     box-shadow: inset 0 0 15px #fff3, 0 0 8px #fff7;
 }

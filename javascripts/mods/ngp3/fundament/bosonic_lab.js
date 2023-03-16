@@ -222,7 +222,7 @@ function updateBosonicLabTab(){
 	if (ghSave.hb.unl) {
 		var req = getHiggsRequirement()
 		el("hb").textContent = getFullExpansion(ghSave.hb.higgs)
-		el("hbReset").className = "gluonupgrade " + (ghSave.bl.am.gte(req) ? "hb" : "unavailablebtn")
+		el("hbReset").className = "qu_upg " + (ghSave.bl.am.gte(req) ? "hb" : "unavailablebtn")
 		el("hbResetReq").textContent = shorten(req)
 		el("hbResetDesc").textContent = hasAch("future") ? "+" + getFullExpansion(getHiggsGain()) + " Higgs" : "Reset Bosonic Lab to gain +" + getFullExpansion(getHiggsGain()) + " Higgs."
 	}
@@ -387,7 +387,7 @@ function setupBosonicExtraction(){
 		for (var g1 = 1; g1 < g2; g1++) {
 			var col = row.insertCell(g1 - 1)
 			var id = (g1 * 10 + g2)
-			col.innerHTML = "<button id='bEn" + id + "' class='gluonupgrade unavailablebtn' style='font-size: 9px' onclick='takeEnchantAction("+id+")'>"+(bEn.descs[id]||"???")+"<br>"+
+			col.innerHTML = "<button id='bEn" + id + "' class='qu_upg unavailablebtn' style='font-size: 9px' onclick='takeEnchantAction("+id+")'>"+(bEn.descs[id]||"???")+"<br>"+
 			"Currently: <span id='bEnEffect" + id + "'>???</span><br>"+
 			"<span id='bEnLvl" + id + "'></span><br>" +
 			"<span id='bEnOn" + id + "'></span><br>" +
@@ -433,8 +433,8 @@ function updateEnchantDescs() {
 	let data = ghSave.bl
 	for (var g2 = 2; g2 <= br.limit; g2++) for (var g1 = 1; g1 < g2; g1++) {
 		var id = g1 * 10 + g2
-		if (bEn.action == "upgrade" || bEn.action == "max") el("bEn" + id).className = "gluonupgrade " + (canBuyEnchant(id) ? "bl" : "unavailablebtn")
-		else if (bEn.action == "use") el("bEn" + id).className = "gluonupgrade " + (canUseEnchant(id) ? "storebtn" : "unavailablebtn")
+		if (bEn.action == "upgrade" || bEn.action == "max") el("bEn" + id).className = "qu_upg " + (canBuyEnchant(id) ? "bl" : "unavailablebtn")
+		else if (bEn.action == "use") el("bEn" + id).className = "qu_upg " + (canUseEnchant(id) ? "storebtn" : "unavailablebtn")
 		if (id == 14) el("bEn14").style = "font-size: 8px"
 		if (shiftDown) el("bEnLvl" + id).textContent = "Enchant id: " + id
 		else el("bEnLvl" + id).textContent = "Level: " + shortenDimensions(tmp.bEn.lvl[id])
@@ -552,7 +552,7 @@ var bEn = {
 			return "/" + shorten(x.higgs) + " to Higgs requirement, " + getFullExpansion(x.bUpgs) + " starting upgrades"
 		},
 		15(x) {
-			return "x^0.500 -> x^" + x.toFixed(3)
+			return "x^0.500 → x^" + x.toFixed(3)
 		},
 	},
 	action: "upgrade",
@@ -589,7 +589,7 @@ function setupBosonicUpgrades(){
 		for (c = 1; c < 6; c++) {
 			var col = row.insertCell(c - 1)
 			var id = (r * 10 + c)
-			col.innerHTML = "<button id='bUpg" + id + "' class='gluonupgrade unavailablebtn' style='font-size: 9px' onclick='buyBosonicUpgrade(" + id + ")'>" + (bu.descs[id] || "???") + "<br>" +
+			col.innerHTML = "<button id='bUpg" + id + "' class='qu_upg unavailablebtn' style='font-size: 9px' onclick='buyBosonicUpgrade(" + id + ")'>" + (bu.descs[id] || "???") + "<br>" +
 			(bu.effects[id] !== undefined ? "Currently: <span id='bUpgEffect" + id + "'>0</span><br>" : "") +
 			"Cost: <span id='bUpgCost" + id + "'></span> Bosons<br>" +
 			"Requires: <span id='bUpgG1Req" + id + "'></span> <div class='bRune' type='" + bu.reqData[id][2] + "'></div> & <span id='bUpgG2Req" + id + "'></span> <div class='bRune' type='" + bu.reqData[id][4] + "'></div></button>"
@@ -679,7 +679,7 @@ function hasBU(x) {
 function updateBosonicUpgradeDescs() {
 	for (var r = 1; r <= bu.rows; r++) for (var c = 1; c <= 5; c++) {
 		var id = r * 10 + c
-		el("bUpg" + id).className = hasBU(id) ? "gluonupgradebought bl" : canBuyBosonicUpg(id) ? "gluonupgrade bl" : "gluonupgrade unavailablebtn bllocked"
+		el("bUpg" + id).className = hasBU(id) ? "qu_upg_bought bl" : canBuyBosonicUpg(id) ? "qu_upg bl" : "qu_upg unavailablebtn bllocked"
 		if (tmp.blu[id] !== undefined) el("bUpgEffect"+id).textContent = (bu.effectDescs[id] !== undefined && bu.effectDescs[id](tmp.blu[id])) || shorten(tmp.blu[id]) + "x"
 	}
 }

@@ -455,7 +455,7 @@ function importStudyTree(input) {
 };
 
 let tsMults = {
-	11: function() {
+	11() {
 		let bigRip = bigRipped()
 		let log = -player.tickspeed.div(1e3).pow(0.005).mul(0.95).plus(player.tickspeed.div(1e3).pow(0.0003).mul(0.95)).log10()
 		if (bigRip && log > 900) log = Math.sqrt(log * 900)
@@ -465,40 +465,43 @@ let tsMults = {
 		if (bigRip) log = softcap(log, "ts11_log_big_rip", 1)
 		return pow10(log)
 	},
-	32: function() {
+	32() {
 		return Math.pow(Math.max(player.resets, 1), mod.ngmu ? 4 : 1)
 	},
-	41: function() {
+	41() {
 		return mod.ngep ? 1.5 : 1.2
 	},
-	42: function() {
+	42() {
 		return (mod.ngep ? 12 : 13) / 15
 	},
-	61: function() {
+	61() {
 		return mod.ngep ? 100 : 10
 	},
-	62: function() {
+	62() {
 		let r = mod.ngep ? 4 : 3
 		return r
 	},
-	211: function() {
+	211() {
 		return !inNGM(2) ? 5 : 1
 	},
-	212: function() {
+	212() {
 		let r = player.timeShards.max(2).log2()
 		if (mod.ngep) return Math.min(Math.pow(r, 0.006), 1.15)
 		return Math.min(Math.pow(r, 0.005), 1.1)
 	},
-	213: function() {
+	213() {
 		return 20
 	},
-	222: function() {
+	222() {
 		return !inNGM(2) ? 2 : .5
 	},
-	232: function() {
-		let exp = 0.2
-		if (mod.ngp3 && player.galaxies >= 2e3 && !tmp.be) exp *= Math.max(21 - player.galaxies / 100, 0)
-		return Math.pow(1 + player.galaxies / 1000, exp)
+	232() {
+		let pow = 0.001
+		if (!bigRipped()) {
+			if (hasGluonUpg("rg4")) pow = 0
+			if (hasNB(10)) pow = Math.max(NT.eff("boost", 10) * 0.001, pow)
+		}
+		return Math.pow(1 + player.galaxies * pow, 0.2)
 	}
 }
 

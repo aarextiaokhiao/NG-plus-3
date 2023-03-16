@@ -293,7 +293,7 @@
 				<br><br>
 
 				<b>(NG+3 v2.31: Ghostify Respecced)</b><br>
-				<b class="red">(Beta: 3/14/23 Build - Pi Day)</b><br>
+				<b class="red">(Beta: 3/15/23 Build)</b><br>
 				By <a href="https://aarextiaokhiao.github.io/">Aarex</a>, pg132, and usavictor.
 				<br><br>
 
@@ -1079,7 +1079,7 @@
 							<div id="Weak Decay" class="achievement achievementlocked" style="background-image: url(images/162.png)"></div>
 						</td>
 						<td>
-							<div id="Radioactive Decaying to the max!" class="achievement achievementlocked" style="background-image: url(images/163.png)" ach-tooltip="Get 2 Radioactive Decays. Reward: Gain Neutrinos on Fundament."></div>
+							<div id="Radioactive Decaying to the max!" class="achievement achievementlocked" style="background-image: url(images/163.png)" ach-tooltip="Get a Radioactive Decay. Reward: Gain Neutrinos on Fundament."></div>
 						</td>
 						<td>
 							<div id="Running through Big Rips" class="achievement achievementlocked" style="background-image: url(images/164.png)" ach-tooltip="Fundament in 2 seconds."></div>
@@ -2176,8 +2176,10 @@
 					</table>
 				</div>
 			</div><div class="challengeTab" id="bigrip">
-				<button class="gluonupgrade quantumbtn" onclick="buyingDilStudyPC()">Teleport to Paired Challenges.</button>
-				<button id="bigRipBtn" class="gluonupgrade unavailablebtn" onclick="bigRip()"></button><br>
+				<table style='margin: auto'>
+					<td><button class="qu_upg quantumbtn" onclick="buyingDilStudyPC()">Teleport to Paired Challenges.</button></td>
+					<td><button id="bigRipBtn" onclick="bigRip()"></button></td>
+				</table>
 				<span class="SSAmount" id="spaceShards" style="font-size:35px">0</span> Space Shards<br>
 				<b class='red'>Upgrades only work in Big Rips. Upgrades starting at 3rd nullify 1st upgrade.</b>
 				<table class="table" align="center" style="margin: auto">
@@ -2783,24 +2785,24 @@
 							<button id="postinfi04" class="infinimultbtn"></button>
 						</td>
 						<td>
-							<button id="postinfi31" class="infinimultbtn">Tickspeed cost multiplier increase <br>10x -> 9x<br>Cost: 300 K IP</button>
+							<button id="postinfi31" class="infinimultbtn">Tickspeed cost multiplier increase <br>10x → 9x<br>Cost: 300 K IP</button>
 						</td>
 						<td>
-							<button id="postinfi42" class="infinimultbtn">Dimension cost multiplier increase <br>10x -> 9x<br>Cost: 10 M IP</button>
+							<button id="postinfi42" class="infinimultbtn">Dimension cost multiplier increase <br>10x → 9x<br>Cost: 10 M IP</button>
 						</td>
 						<td>
-							<button id="offlineProd" class="infinimultbtn">Dimension cost multiplier increase <br>10x -> 9x<br>Cost: 10 M IP</button>
+							<button id="offlineProd" class="infinimultbtn">Dimension cost multiplier increase <br>10x → 9x<br>Cost: 10 M IP</button>
 						</td>
 					</tr>
 					<tr id="postinfir5">
 						<td>
-							<button id="postinfi50" class="infinistorebtn1">Dimension boost cost increases by 0.5 less.<br>4 -> 3.5<br>Cost: 1e25 IP</button>
+							<button id="postinfi50" class="infinistorebtn1">Dimension boost cost increases by 0.5 less.<br>4 → 3.5<br>Cost: 1e25 IP</button>
 						</td>
 						<td>
 							<button id="postinfi51" class="infinistorebtn1">Galaxies are 20% more stronger.<br>Cost: 1e29 IP</button>
 						</td>
 						<td>
-							<button id="postinfi52" class="infinistorebtn1">Galaxy cost increases by 3 less.<br>25 -> 22<br>Cost: 1e33 IP</button>
+							<button id="postinfi52" class="infinistorebtn1">Galaxy cost increases by 3 less.<br>25 → 22<br>Cost: 1e33 IP</button>
 						</td>
 						<td>
 							<button id="postinfi53" class="infinistorebtn1">Divide all Infinity Dimension cost multipliers by 50.<br>Cost: 1e37 IP</button>
@@ -2830,7 +2832,7 @@
 				<p style="font-size: 15px">You have <span id="replicantiamount" style="font-size:23px; color: black">0</span> replicanti, translated to <span id="replicantimult" style="font-size:23px; color: black">0</span>x multiplier to all Infinity Dimensions.</p>
 				<br>
 				<button class="storebtn" id="replicantichance" onclick="upgradeReplicantiChance()" style="width:180px; height: 50px; font-size: 10px">Replicate chance: 1%<br>+1% Costs: 1e6969 IP</button>
-				<button class="storebtn" id="replicantiinterval" onclick="upgradeReplicantiInterval()" style="width:180px; height: 50px; font-size: 10px">Interval: 1000ms<br>-> 900 Costs: 1e6969 IP</button>
+				<button class="storebtn" id="replicantiinterval" onclick="upgradeReplicantiInterval()" style="width:180px; height: 50px; font-size: 10px">Interval: 1000ms<br>→ 900 Costs: 1e6969 IP</button>
 				<button class="storebtn" id="replicantimax" onclick="upgradeReplicantiGalaxy()" style="width:180px; height: 50px; font-size: 10px">Max Replicanti galaxies: 0<br>+1 Costs: 1e6969 IP</button>
 				<br>
 				<button class="storebtn" id="replauto1" onclick="toggleReplAuto(0)" style="width:180px; font-size: 10px; visibility: hidden">Auto: ON</button>
@@ -2881,7 +2883,7 @@
 				<br>
 				<table class="table" id="studytable">
 					<tr>
-						<td><button id="21" onclick="buyTimeStudy(21)">Replicanti multiplier formula is better (log2(x)^2 -> x^0.032)<span>Cost: 3 Time Theorems</button></td>
+						<td><button id="21" onclick="buyTimeStudy(21)">Replicanti multiplier formula is better (log2(x)^2 → x^0.032)<span>Cost: 3 Time Theorems</button></td>
 						<td><button id="22" onclick="buyTimeStudy(22)">Decrease the Replicanti interval limit from 50ms to 1ms<span>Cost: 2 Time Theorems</button></td>
 					</tr>
 				</table>
@@ -3553,13 +3555,13 @@
 					</td>
 				</tr><tr id="xdrow">
 					<td>
-						<button id="xd1" style="height: 50px;" onclick="boostDilationUpgrade(1)">Boost the upgrade above with ex-dilation<br><span id="xd1span">1x -> 1.5x</span></button>
+						<button id="xd1" style="height: 50px;" onclick="boostDilationUpgrade(1)">Boost the upgrade above with ex-dilation<br><span id="xd1span">1x → 1.5x</span></button>
 					</td><td>
-						<button id="xd2" style="height: 50px;" onclick="boostDilationUpgrade(2)">Boost the upgrade above with ex-dilation<br><span id="xd2span">1x -> 1.5x</span></button>
+						<button id="xd2" style="height: 50px;" onclick="boostDilationUpgrade(2)">Boost the upgrade above with ex-dilation<br><span id="xd2span">1x → 1.5x</span></button>
 					</td><td>
-						<button id="xd3" style="height: 50px;" onclick="boostDilationUpgrade(3)">Boost the upgrade above with ex-dilation<br><span id="xd3span">1x -> 1.5x</span></button>
+						<button id="xd3" style="height: 50px;" onclick="boostDilationUpgrade(3)">Boost the upgrade above with ex-dilation<br><span id="xd3span">1x → 1.5x</span></button>
 					</td><td>
-						<button id="xd4" style="height: 50px;" onclick="boostDilationUpgrade(4)">Boost the upgrade above with ex-dilation<br><span id="xd4span">1x -> 1.5x</span></button>
+						<button id="xd4" style="height: 50px;" onclick="boostDilationUpgrade(4)">Boost the upgrade above with ex-dilation<br><span id="xd4span">1x → 1.5x</span></button>
 					</td>
 				</tr></table>
 				<table><tr>
@@ -3590,7 +3592,7 @@
 					</td><td>
 						<button id="dil52" onclick="buyDilationUpgrade(52)" style='font-size:10px'>Meta-dimension shifts, boosts, and per-ten upgrades are boosted by dilated time.<span id="dil52formula"> (log(log(x))+1)</span><br><span id="dil52desc"></span><br><span id="dil52cost"></span></button>
 					</td><td>
-						<button id="dil53" onclick="buyDilationUpgrade(53)">The meta-antimatter effect on dimension boosts is stronger.<br>(^8 -> ^9)<br><span id="dil53cost"></span></button>
+						<button id="dil53" onclick="buyDilationUpgrade(53)">The meta-antimatter effect on dimension boosts is stronger.<br>(^8 → ^9)<br><span id="dil53cost"></span></button>
 					</td><td>
 						<button id="dil54" onclick="buyDilationUpgrade(54)" style='font-size:10px'>Dilated time production is boosted based on best meta-antimatter.<br><span id="dil54formula"></span><br><span id="dil54desc"></span><br><span id="dil54cost"></span></button>
 					</td>
@@ -3722,6 +3724,24 @@
 			</table>
 			<div class='quantumtab' id='uquarks'>
 				<canvas id="quarkCanvas"></canvas>
+				<table id='assign_options' class='qtable'>
+					<td class='red'>
+						<button class='storebtn' id="assignAllButton" onclick='assignAll()'>Distribute</button>
+						<button class='storebtn' id="autoAssign" onclick='toggleAutoAssign()'>Auto: OFF</button>
+						<button class='storebtn' id="autoAssignRotate" style="width:135px" onclick='rotateAutoAssign()'>Rotation: None</button>
+					</td><td class='green'>
+						Assort percentage: <input id="assort_percentage" type="number" min=1 max=100 onchange="changeAssortPercentage()">%
+						<button class='storebtn' id="assort_percentage_10" style="width:50px" onclick="changeAssortPercentage(10)">10%</button>
+						<button class='storebtn' id="assort_percentage_25" style="width:50px" onclick="changeAssortPercentage(25)">25%</button>
+						<button class='storebtn' id="assort_percentage_50" style="width:50px" onclick="changeAssortPercentage(50)">50%</button>
+						<button class='storebtn' id="assort_percentage_100" style="width:50px" onclick="changeAssortPercentage(100)">100%</button>
+					</td><td class='blue'>
+						R: <input id="ratio_r" type="number" min=0 onchange="changeRatio('r')"></input>
+						G: <input id="ratio_g" type="number" min=0 onchange="changeRatio('g')"></input>
+						B: <input id="ratio_b" type="number" min=0 onchange="changeRatio('b')"></input>
+					</td>
+				</table>
+				<div id="assign_opt_req">More assort options unlock at 100 Quantum Worth.</div>
 				<table class='qtable'><tr>
 					<td class="rqC">
 						<span class="red" id="redQuarks" style="font-size:35px">0</span> red anti-quarks
@@ -3732,7 +3752,7 @@
 					<td class="bqC">
 						<span class="blue" id="blueQuarks" style="font-size:35px">0</span> blue anti-quarks
 					</td>
-				</tr><tr >
+				</tr><tr>
 					<td>
 						<button class='storebtn' id='redAssort' onclick='assignQuark("r")'>Assort</button>
 					</td>
@@ -3743,23 +3763,7 @@
 						<button class='storebtn' id='blueAssort' onclick='assignQuark("b")'>Assort</button>
 					</td>
 				</tr></table>
-				<div id="assignAll">
-					<button class='storebtn' id="assignAllButton" style="width:135px" onclick='assignAll()'>Distribute</button>
-					<button class='storebtn' id="autoAssign" onclick='toggleAutoAssign()'>Auto: OFF</button>
-					<button class='storebtn' id="autoAssignRotate" style="width:135px" onclick='rotateAutoAssign()'>Rotation: None</button>
-				</div><div>
-					You will get <span id="assort_amount"></span> colored quarks when you assort quarks<br>
-					Assort percentage: <input id="assort_percentage" type="number" min=1 max=100 onchange="changeAssortPercentage()">%<br>
-					<button class='storebtn' id="assort_percentage_10" style="width:50px" onclick="changeAssortPercentage(10)">10%</button>
-					<button class='storebtn' id="assort_percentage_25" style="width:50px" onclick="changeAssortPercentage(25)">25%</button>
-					<button class='storebtn' id="assort_percentage_50" style="width:50px" onclick="changeAssortPercentage(50)">50%</button>
-					<button class='storebtn' id="assort_percentage_100" style="width:50px" onclick="changeAssortPercentage(100)">100%</button>
-				</div><div>
-					Ratios:<br>
-					R: <input id="ratio_r" type="number" min=0 onchange="changeRatio('r')"></input>
-					G: <input id="ratio_g" type="number" min=0 onchange="changeRatio('g')"></input>
-					B: <input id="ratio_b" type="number" min=0 onchange="changeRatio('b')"></input>
-				</div>
+				You will get <span id="assort_amount"></span> colored quarks when you assort quarks<br>
 				Your quarks have a net <span id='colorCharge'></span>.<br>
 				<table class='qtable'>
 					<tr>
@@ -3788,7 +3792,7 @@
 				<button class="storebtn" onclick='maxQuarkMult()' style='width:190px'>Max</button>
 			</div>
 			<div class='quantumtab' id='gluons'>
-				<table id='gluonupgrades' style="margin: 0 auto"><tr>
+				<table id='gluonupgrades'><tr>
 					<td class="rqC">
 						<span id="rg" style="font-size:35px">0</span> red-green gluons<br>
 						(next quantum: <span id='rgnext'>0</span> red, +<span id='rggain'>0</span>)
@@ -3798,7 +3802,7 @@
 								<td><button id='rgupg2' onclick='buyGluonUpg("rg",2)'>Galaxies are more effective based on your Tachyonic Galaxies.<br><span id='rgupg2current'></span><br>Cost: 2 RG gluons</button></td>
 							</tr><tr>
 								<td><button id='rgupg3' onclick='buyGluonUpg("rg",3)'>Dimension Boosts boost 1st Meta Dimensions.<br><span id='rgupg3current'></span><br>Cost: 4 RG gluons</button></td>
-								<td><button id='rgupg4' onclick='buyGluonUpg("rg",4)'>Galaxies are 50% stronger, but electrons are 30% weaker and normal galaxies are 60% weaker.<br>Cost: 100 RG gluons</button></td>
+								<td><button id='rgupg4' onclick='buyGluonUpg("rg",4)'>Galaxies are 50% stronger, but electrons are 30% weaker and disable Time Study 232.<br>Cost: 100 RG gluons</button></td>
 							</tr><tr id='rgupg3row'>
 								<td><button id='rgupg5' onclick='buyGluonUpg("rg",5)'>Gain 10x more Quarks.<br>Cost: <span id='rgupg5cost'></span> RG gluons</button></td>
 								<td><button id='rgupg6' onclick='buyGluonUpg("rg",6)'>Slow down the Distant Antimatter Galaxy cost scaling by 13.2%.<br>Cost: <span id='rgupg6cost'></span> RG gluons</button></td>
@@ -3812,7 +3816,7 @@
 						(next quantum: <span id='gbnext'>0</span> red, +<span id='gbgain'>0</span>)
 						<table>
 							<tr>
-								<td><button id='gbupg1' onclick='buyGluonUpg("gb",1)' style='font-size:8.5px'>You gain replicanti faster based on your tickspeed reduction multiplier.<br><span id='gbupg1current'></span><br>Cost: 1 GB gluons</button></td>
+								<td><button id='gbupg1' onclick='buyGluonUpg("gb",1)'>You gain replicanti faster based on your tickspeed reduction multiplier.<br><span id='gbupg1current'></span><br>Cost: 1 GB gluons</button></td>
 								<td><button id='gbupg2' onclick='buyGluonUpg("gb",2)'>Replicate interval scaling is 2x slower.<br>Cost: 2 GB gluons</button></td>
 							</tr><tr>
 								<td><button id='gbupg3' onclick='buyGluonUpg("gb",3)'>The IP mult multiplies IP gain by 2.3x per upgrade.<br>Cost: 4 GB gluons</button></td>
@@ -3896,15 +3900,15 @@
 			<div class='quantumtab' id='electrons'>
 				You have <span id="normalGalaxies">0</span> Antimatter Galaxies.<br>
 				You discharged <span id='sacrificedGals'>0</span> galaxies.<br>
-				<button class='gluonupgrade storebtn' id='sacrificeGal' onclick='sacrificeGalaxy()' style='width:210px; height:90px'>Discharge <span id='sacrificeGals'>0</span> for <span id="electronsGain"></span> Positrons<br>(+<span id='electronsGainMult'>2</span> per galaxy)</button><br>
-				<button class='storebtn' id='sacrificeAuto' onclick='toggleAutoQuantumContent("sacrifice")' style='width:210px'></button><br>
+				<button class='gluonupgrade storebtn' id='sacrificeGal' onclick='sacrificeGalaxy()'>Discharge <span id='sacrificeGals'>0</span> for <span id="electronsGain"></span> Positrons<br>(+<span id='electronsGainMult'>2</span> per galaxy)</button><br>
+				<button class='storebtn' id='sacrificeAuto' onclick='toggleAutoQuantumContent("sacrifice")' style='height: 24px'></button><br>
 				<span id="electronsAmount" style="font-size:35px">0</span> Positrons<br>
-				Multiplier per ten dimensions: <span id="linearPerTenMult" style="font-size:15px">2.00</span>, <span id="electronsTranslation" style="font-size:15px">1.00</span> -> <span id="electronsEffect" style="font-size:25px">2.00</span>
+				Multiplier per ten dimensions: <span id="linearPerTenMult" style="font-size:15px">2.00</span>, <span id="electronsTranslation" style="font-size:15px">1.00</span> → <span id="electronsEffect" style="font-size:25px">2.00</span>
 				<table class="table" align="center" style="margin: auto"><tr>
-					<td><button class='gluonupgrade storebtn' id='electronupg1' onclick='buyElectronUpg(1)'></button></td>
-					<td><button class='gluonupgrade storebtn' id='electronupg2' onclick='buyElectronUpg(2)'></button></td>
-					<td><button class='gluonupgrade storebtn' id='electronupg3' onclick='buyElectronUpg(3)'></button></td>
-					<td><button class='gluonupgrade storebtn' id='electronupg4' onclick='buyElectronUpg(4)'></button></td>
+					<td><button id='electronupg1' onclick='buyElectronUpg(1)'></button></td>
+					<td><button id='electronupg2' onclick='buyElectronUpg(2)'></button></td>
+					<td><button id='electronupg3' onclick='buyElectronUpg(3)'></button></td>
+					<td><button id='electronupg4' onclick='buyElectronUpg(4)'></button></td>
 				</tr></table>
 			</div>
 			<div class='quantumtab' id='tod'>
@@ -4266,7 +4270,7 @@
 		<div id="modsTab" style="height:320px;overflow-y:auto;display:none">
 			<button class="storebtn" style="width: 360px; font-size: 15px" onclick="new_game('vanilla')" style="display: inline">Vanilla (NG=)</button><br>
 			<button class="storebtn" style="width: 360px; font-size: 15px" onclick="new_game('ngp3')" style="display: inline">New Game Plus 3 (Recommended)</button><br>
-			<button class="storebtn" style="width: 360px; font-size: 15px" onclick="new_game('grand_run')" style="display: inline">Grand Run (NG= -> NG+3)</button><br>
+			<button class="storebtn" style="width: 360px; font-size: 15px" onclick="new_game('grand_run')" style="display: inline">Grand Run (NG= → NG+3)</button><br>
 		</div>
 		<div id="advModsTab" style="height: 320px; overflow-y: auto; display: none">
 			Select a mod first before you start your new journey.<br>

@@ -18,19 +18,17 @@ function quantum(auto, force, qc, bigRip = false) {
 		let req = getQCIdCost(qc.qc)
 		if (quSave.electrons.amount < req) return
 
-		let conf = player.options.challConf
-		if (auto) conf = false
+		let conf = !auto && player.options.challConf
 		if (qc.pc) {
 			if (quSave.pairedChallenges.completed < qc.pc - 1) return
-			if (bigRip && !hasAch("ng3p41")) conf = true
-			if (!bigRip && quSave.pairedChallenges.completions.length < 1 && !ghostified) conf = true
+			if (!hasAch("ng3p41")) conf = true
 			if (conf) {
-				if (bigRip && confirm("Big Ripping the universe starts PC6+8, but with various changes. You can give your Time Theorems and Time Studies back by undoing Big Rip. If you can beat this, you will be able to unlock the next layer.")) return
-				if (!bigRip && confirm("You will start a Quantum Challenge, but as a Paired Challenge, there will be two challenges at once. Completing it boosts the rewards of the Quantum Challenges that you chose in this Paired Challenge. You will keep electrons & sacrificed galaxies, but they don't work in this Challenge.")) return
+				if (bigRip && !confirm("Big Ripping the universe starts PC6+8, but with various changes. You can give your Time Theorems and Time Studies back by undoing Big Rip. If you can beat this, you will be able to unlock the next layer.")) return
+				if (!bigRip && !confirm("You will start a Quantum Challenge, but as a Paired Challenge, there will be two challenges at once. Completing it boosts the rewards of the Quantum Challenges that you chose in this Paired Challenge. You will keep electrons & sacrificed galaxies, but they don't work in this Challenge.")) return
 			}
 		} else {
 			if (QCIntensity(1) == 0 && !ghostified) conf = true
-			if (conf && confirm("You will do a Quantum reset, but you will not gain quarks, you keep your electrons & sacrificed galaxies, and you can't buy electron upgrades. You have to reach the set goal of antimatter while getting the meta-antimatter requirement to Quantum to complete this challenge. Electrons and banked eternities have no effect in Quantum Challenges and your electrons and sacrificed galaxies don't reset until you end the challenge.")) return
+			if (conf && !confirm("You will do a Quantum reset, but you will not gain quarks, you keep your electrons & sacrificed galaxies, and you can't buy electron upgrades. You have to reach the set goal of antimatter while getting the meta-antimatter requirement to Quantum to complete this challenge. Electrons and banked eternities have no effect in Quantum Challenges and your electrons and sacrificed galaxies don't reset until you end the challenge.")) return
 		}
 	}
 
@@ -59,8 +57,8 @@ function isQuantumReached() {
 	let ma = player.meta.bestAntimatter
 	let got = ma.gte(getQuantumReq())
 	if (mod.ngp3) {
-		if (inQC(0)) got = got && ECComps("eterc14")
-		if (!inQC(0)) got = got && player.money.gte(getQCGoal())
+		if (notInQC()) got = got && ECComps("eterc14")
+		if (!notInQC()) got = got && player.money.gte(getQCGoal())
 	}
 	return got
 }
@@ -193,7 +191,7 @@ function doQuantumProgress() {
 			else if (!ghostified || player.money.lt(getQCGoal()) || Decimal.lt(gg, 2)) id = 5
 			else if (!PHOTON.unlocked()) id = 7
 			else id = 6
-		} else if (inQC(0)) {
+		} else if (notInQC()) {
 			var gqk = quarkGain()
 			if (player.meta.antimatter.gte(quantumReq) && Decimal.gt(gqk, 1)) id = 3
 		} else if (player.money.lt(pow10(getQCGoal())) || player.meta.antimatter.gte(quantumReq)) id = 2
@@ -273,7 +271,7 @@ function doQuantum(force, auto, qc = {}) {
 		}
 		var qkGain = quarkGain()
 		var array = [quSave.time, qkGain]
-		if (!inQC(0)) {
+		if (!notInQC()) {
 			if (quSave.pairedChallenges.current > 0) {
 				array.push([quSave.pairedChallenges.current, quSave.challenge])
 			} else {
@@ -406,9 +404,51 @@ function doQuantum(force, auto, qc = {}) {
 }
 
 RESETS.qu = {
+	resetEC(order) {
+		if (bigRip ? !hasRipUpg(2) : !isRewardEnabled(3)) {
+			player.eternityChalls = {}
+			updateEternityChallenges()
+		}
+		player.eternityChallGoal = E(Number.MAX_VALUE)
+		player.currentEternityChall = ""
+		player.eternityChallUnlocked = isRewardEnabled(11) ? player.eternityChallUnlocked : 0
+		player.etercreq = 0
+	},
+	resetDil(order) {
+		player.dilation.tachyonParticles = E(0)
+		player.dilation.dilatedTime = E(0)
+		player.dilation.studies = (bigRip ? hasRipUpg(10) : isRewardEnabled(4)) ? (
+			(bigRip ? hasRipUpg(12) : speedrunMilestonesReached >= 4) ? player.dilation.studies : [1]
+		) : []
+		resetDilation(order)
+	},
+	resetNGUd() {
+		player.exdilation = {
+			unspent: E(0),
+			spent: {
+				1: E(0),
+				2: E(0),
+				3: E(0),
+				4: E(0)
+			},
+			times: 0
+		}
+		resetBlackhole()
+	},
+	resetMeta(order, qc) {
+		let keepMDB = hasBraveMilestone(5) && order == "qu" && !qc
+		player.meta = {
+			antimatter: getMetaAntimatterStart(),
+			bestAntimatter: getMetaAntimatterStart(),
+			bestOverQuantums: player.meta.bestOverQuantums,
+			bestOverGhostifies: player.meta.bestOverGhostifies,
+			resets: keepMDB ? player.meta.resets : isRewardEnabled(27) ? 4 : 0
+		}
+		clearMetaDimensions()
+	},
 	doReset(order) {
 		let bigRip = bigRipped()
-		let qc = !inQC(0)
+		let qc = !notInQC()
 
 		if (order != "qu" || !hasAch("ng3p73")) player.infinitiedBank = 0
 		player.eternities = speedrunMilestonesReached ? 2e4 : quantumed ? 1 : 0
@@ -427,7 +467,6 @@ RESETS.qu = {
 			bought: 1
 		}
 
-		player.respec = false
 		if (bigRip ? !hasRipUpg(12) : !isRewardEnabled(11)) player.timestudy = {
 			theorem: 0,
 			amcost: E("1e20000"),
@@ -440,36 +479,10 @@ RESETS.qu = {
 		player.epmult = E(1)
 		player.epmultCost = E(5)
 
-		if (bigRip ? !hasRipUpg(2) : !isRewardEnabled(3)) {
-			player.eternityChalls = {}
-			updateEternityChallenges()
-		}
-		player.eternityChallGoal = E(Number.MAX_VALUE)
-		player.currentEternityChall = ""
-		player.eternityChallUnlocked = isRewardEnabled(11) ? player.eternityChallUnlocked : 0
-		player.etercreq = 0
-
-		player.dilation.tachyonParticles = E(0)
-		player.dilation.dilatedTime = E(0)
-		player.dilation.studies = (bigRip ? hasRipUpg(10) : isRewardEnabled(4)) ? (
-			(bigRip ? hasRipUpg(12) : speedrunMilestonesReached >= 4) ? player.dilation.studies : [1]
-		) : []
-		resetDilation(order)
-
-		doMetaDimensionsReset(order, qc)
-		if (mod.ngud) {
-			player.exdilation = {
-				unspent: E(0),
-				spent: {
-					1: E(0),
-					2: E(0),
-					3: E(0),
-					4: E(0)
-				},
-				times: 0
-			}
-			resetBlackhole()
-		}
+		this.resetEC()
+		this.resetDil(order)
+		if (mod.ngud) this.resetNGUd()
+		this.resetMeta(order, qc)
 
 		//NG+3
 		if (speedrunMilestonesReached >= 4 && !isRewardEnabled(4)) {

@@ -30,14 +30,18 @@ function inQC(num) {
 	return tmp.qc.in.includes(num)
 }
 
+function notInQC() {
+	return inQC(0)
+}
+
 function updateInQCs() {
 	tmp.qc.in = [0]
-	if (quSave !== undefined && quSave.challenge !== undefined) {
-		data = quSave.challenge
-		if (typeof(data) == "number") data = [data]
-		else if (data.length == 0) data = [0]
-		tmp.qc.in = data
-	}
+	if (!quSave?.challenge) return
+
+	data = quSave.challenge
+	if (typeof(data) == "number") data = [data]
+	if (!data.length) data = [0]
+	tmp.qc.in = data
 }
 
 function getQCIdGoal(qcs, bigRip) {

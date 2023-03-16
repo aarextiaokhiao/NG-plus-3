@@ -42,6 +42,7 @@ var softcap_data = {
 			func: "pow",
 			start() {
 				let r = 1.2e7
+				if (hasNB(11)) r *= NT.eff("boost", 11)
 				r *= PHOTON.eff(5)
 				return r
 			},

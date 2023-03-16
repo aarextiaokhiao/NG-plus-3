@@ -46,29 +46,9 @@ function increaseQuarkMult(toAdd) {
 	updateGluonsTab("spend")
 }
 
-//Quark Assertment Machine (Quark Assignation: NG+3L)
-function getAssortPercentage() {
-	return quSave.assortPercentage ? quSave.assortPercentage : 100
-}
-
+//Quark Assertment Machine
 function getAssortAmount() {
 	return quSave.quarks.floor().min(quSave.quarks).mul(getAssortPercentage() / 100).round()
-}
-
-var assortDefaultPercentages = [10, 25, 50, 100]
-function updateAssortPercentage() {
-	let percentage = getAssortPercentage()
-	el("assort_percentage").value = percentage
-	for (var i = 0; i < assortDefaultPercentages.length; i++) {
-		var percentage2 = assortDefaultPercentages[i]
-		el("assort_percentage_" + percentage2).className = percentage2 == percentage ? "chosenbtn" : "storebtn"
-	}
-}
-
-function changeAssortPercentage(x) {
-	quSave.assortPercentage = Math.max(Math.min(parseFloat(x || el("assort_percentage").value), 100), 0)
-	updateAssortPercentage()
-	updateQuarksTabOnUpdate()
 }
 
 function assignQuark(color) {
@@ -87,14 +67,18 @@ function assignQuark(color) {
 	if (ghSave?.another > 0) ghSave.another--
 }
 
+function isAdvancedAssortUnlocked() {
+	return quantumWorth.gte(100) || quSave?.reachedInfQK
+}
+
 function assignAll(auto) {
 	var ratios = quSave.assignAllRatios
 	var sum = ratios.r+ratios.g+ratios.b
 	var oldQuarks = getAssortAmount()
 	var colors = ['r','g','b']
 	var mult = getQuarkAssignMult()
-	if (oldQuarks.lt(100)) {
-		if (!auto) $.notify("You can only use this feature if you will assign at least 100 quarks.")
+	if (!isAdvancedAssortUnlocked()) {
+		if (!auto) $.notify("You can only use this feature if you have at least 100 Quantum Worth.")
 		return
 	}
 	for (c = 0; c < 3; c++) {
@@ -124,10 +108,41 @@ function assignAll(auto) {
 	updateColorCharge()
 }
 
+function toggleAutoAssign() {
+	quSave.autoOptions.assignQK = !quSave.autoOptions.assignQK
+	el('autoAssign').textContent="Auto: O"+(quSave.autoOptions.assignQK?"N":"FF")
+	if (quSave.autoOptions.assignQK && quSave.quarks.gt(0)) assignAll(true)
+}
+
+function rotateAutoAssign() {
+	quSave.autoOptions.assignQKRotate=quSave.autoOptions.assignQKRotate?(quSave.autoOptions.assignQKRotate+1)%3:1
+	el('autoAssignRotate').textContent="Rotation: "+(quSave.autoOptions.assignQKRotate>1?"Left":quSave.autoOptions.assignQKRotate?"Right":"None")
+}
+
 function getQuarkAssignMult() {
 	let r = E(1)
 	if (hasBU(23)) r = r.mul(tmp.blu[23])
 	return r
+}
+
+function getAssortPercentage() {
+	return quSave.assortPercentage ? quSave.assortPercentage : 100
+}
+
+var assortDefaultPercentages = [10, 25, 50, 100]
+function updateAssortPercentage() {
+	let percentage = getAssortPercentage()
+	el("assort_percentage").value = percentage
+	for (var i = 0; i < assortDefaultPercentages.length; i++) {
+		var percentage2 = assortDefaultPercentages[i]
+		el("assort_percentage_" + percentage2).className = percentage2 == percentage ? "chosenbtn" : "storebtn"
+	}
+}
+
+function changeAssortPercentage(x) {
+	quSave.assortPercentage = Math.max(Math.min(parseFloat(x || el("assort_percentage").value), 100), 0)
+	updateAssortPercentage()
+	updateQuarksTabOnUpdate()
 }
 
 function changeRatio(color) {
@@ -146,15 +161,14 @@ function changeRatio(color) {
 	quSave.assignAllRatios[color] = value
 }
 
-function toggleAutoAssign() {
-	quSave.autoOptions.assignQK = !quSave.autoOptions.assignQK
-	el('autoAssign').textContent="Auto: O"+(quSave.autoOptions.assignQK?"N":"FF")
-	if (quSave.autoOptions.assignQK && quSave.quarks.gt(0)) assignAll(true)
-}
-
-function rotateAutoAssign() {
-	quSave.autoOptions.assignQKRotate=quSave.autoOptions.assignQKRotate?(quSave.autoOptions.assignQKRotate+1)%3:1
-	el('autoAssignRotate').textContent="Rotation: "+(quSave.autoOptions.assignQKRotate>1?"Left":quSave.autoOptions.assignQKRotate?"Right":"None")
+function updateAssortOptions() {
+	var advancedUnl = isAdvancedAssortUnlocked()
+	var autoAssignUnl = quSave?.reachedInfQK
+	el('assign_opt_req').style.display = !advancedUnl ? "" : "none"
+	el('assign_options').style.display = advancedUnl ? "" : "none"
+	el('autoAssign').style.display = autoAssignUnl ? "" : "none"
+	el('autoAssignRotate').style.display = autoAssignUnl ? "" : "none"
+	el('autoReset').style.display = hasAch("ng3p47") ? "" : "none"
 }
 
 //Color Charge
@@ -218,10 +232,10 @@ function updateColorPowers(log) {
 	if (tmp.color_eff.r > 1.3) tmp.color_eff.r = Math.sqrt(tmp.color_eff.r * 1.3)
 	if (tmp.color_eff.r > 2.3) {
 		let sc_exp = 0.5
-		if (hasNB(5)) sc_exp += ntEff("boost", 5, 0) / 2
+		if (hasNB(5)) sc_exp += NT.eff("boost", 5, 0) / 2
 		if (sc_exp < 1) tmp.color_eff.r = Math.pow(tmp.color_eff.r / 2.3, sc_exp) * 2.3
 	}
-	if (tmp.color_eff.r > 3) tmp.color_eff.r = Math.sqrt(tmp.color_eff.r * 3)
+	if (tmp.color_eff.r > 4) tmp.color_eff.r = Math.sqrt(tmp.color_eff.r * 4)
 
 	//Green
 	let mult = 2
@@ -333,11 +347,11 @@ function updateQuarksTab(tab) {
 		el("assort_amount").textContent = shortenDimensions(assortAmount.mul(getQuarkAssignMult()))
 		for (c = 0; c < 3; c++) if (colorCharge[colors[c]].div(colorCharge.qwBonus).lte(1e16)) el(colors[c]+"PowerRate").textContent="+"+shorten(getColorPowerProduction(colors[c]))+"/s"
 
-		el("assignAllButton").className=(assortAmount.lt(1)?"unavailabl":"stor")+"ebtn"
+		el("assignAllButton").className = (assortAmount.lt(1) ? "unavailabl" : "stor") + "ebtn"
 	}
 
 	//UPGRADES
-	el("qk_mult_upg").className = "gluonupgrade " + (E(quantumWorth).gte(getQuarkMultReq()) ? "storebtn" : "unavailablebtn")
+	el("qk_mult_upg").className = "qu_upg " + (E(quantumWorth).gte(getQuarkMultReq()) ? "storebtn" : "unavailablebtn")
 	el("qk_mult_upg").innerHTML = `
 		<b>Double anti-quarks.</b><br>
 		Currently: ${shortenDimensions(getQuarkMult())}x<br>
@@ -425,9 +439,9 @@ function updateGluonsTabOnUpdate(mode) {
 			for (u = 1; u <= (eightUpgrades ? 8 : sevenUpgrades ? 7 : 4); u++) {
 				var upg = name + "upg" + u
 				if (u > 4) el(upg + "cost").textContent = shortenMoney(E(GUCosts[u]))
-				if (hasGluonUpg(name + u)) el(upg).className="gluonupgradebought small "+name
-				else if (quSave.gluons[name].lt(GUCosts[u])) el(upg).className="gluonupgrade small unavailablebtn"
-				else el(upg).className="gluonupgrade small "+name
+				if (hasGluonUpg(name + u)) el(upg).className="qu_upg_bought condensed "+name
+				else if (quSave.gluons[name].lt(GUCosts[u])) el(upg).className="qu_upg condensed unavailablebtn"
+				else el(upg).className="qu_upg condensed "+name
 			}
 		}
 	}

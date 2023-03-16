@@ -487,15 +487,7 @@ function new_game(type) {
 	saveMeta()
 
 	closeToolTip()
-	showDimTab('antimatterdimensions')
-	showStatsTab('stats')
-	showAchTab('normalachievements')
-	showChallengesTab('normalchallenges')
-	showInftab('preinf')
-	showEternityTab('timestudies', true)
-	showQuantumTab('uquarks')
-	showGhostifyTab('neutrinos')
-	showBLTab('bextab')
+	show_mods()
 }
 
 //Saving Options

@@ -1,13 +1,13 @@
 function isPositronsOn() {
-	return hasMasteryStudy("d7") && inQC(0) && !dev.testZone
+	return hasMasteryStudy("d7") && notInQC() && !dev.testZone
 }
 
 function updateElectronsTab() {
 	el("normalGalaxies").textContent = getFullExpansion(player.galaxies)
-	el("sacrificeGal").className = "gluonupgrade " + (canSacrificeGalaxies() ? "storebtn" : "unavailablebtn")
+	el("sacrificeGal").className = canSacrificeGalaxies() ? "storebtn positron" : "unavailablebtn"
 	el("sacrificeGals").textContent = getFullExpansion(Math.max(player.galaxies-quSave.electrons.sacGals, 0))
 	el("electronsGain").textContent = getFullExpansion(Math.floor(Math.max(player.galaxies-quSave.electrons.sacGals, 0) * getElectronGainFinalMult()))
-	for (var u = 1; u < 5; u++) el("electronupg" + u).className = "gluonupgrade " + (canBuyElectronUpg(u) ? "stor" : "unavailabl") + "ebtn"
+	for (var u = 1; u < 5; u++) el("electronupg" + u).className = canBuyElectronUpg(u) ? "storebtn positron" : "unavailablebtn"
 	if (quSave.autoOptions.sacrifice) updateElectronsEffect()
 }
 
@@ -56,7 +56,7 @@ function getElectronBoost(mod) {
 	var r = quSave.electrons.amount
 	var ss = 8e4
 	var ss_speed = 8e4
-	if (hasNU(13)) ss += ntEff("upg", 13, 0)
+	if (hasNU(13)) ss += NT.eff("upg", 13, 0)
 	if (r > ss) r = Math.sqrt((r - ss + ss_speed) * ss_speed) + ss - ss_speed
 
 	if (hasGluonUpg("rg4") && mod != "no-rg4") r *= 0.7

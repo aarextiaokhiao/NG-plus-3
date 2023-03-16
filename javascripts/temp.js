@@ -1,5 +1,5 @@
 let tmp = {
-	qc: { in: [], reward: {} },
+	qc: { in: [0], reward: {} },
 	bru: {},
 	be: false,
 	beu: {}
@@ -38,7 +38,7 @@ function updateInfiniteTimeTemp() {
 	var x = (3 - getTickspeed().log10()) * 0.000005
 	if (mod.ngp3) {
 		if (hasAch("ng3p56")) x *= 1.03
-		if (hasNB(4)) x *= ntEff("boost", 4)
+		if (hasNB(4)) x *= NT.eff("boost", 4)
 		if (isBreakUpgActive(8) && !player.dilation.active) x *= tmp.beu[8]
 		x = softcap(x, "inf_time_log_1")
 	}
@@ -51,7 +51,6 @@ function updateIntergalacticTemp() {
 	var gal = player.galaxies
 	var exp = Math.min(Math.sqrt(Math.log10(Math.max(gal, 1))) * 2, 2.5)
 	tmp.ig = pow10(Math.pow(gal, exp))
-	if (!bigRipped()) tmp.ig = tmp.ig.pow(PHOTON.eff(4))
 }
 
 function updateMatterSpeed() {
@@ -66,8 +65,9 @@ function updateReplicantiTemp() {
 	data.ln = player.replicanti.amount.ln()
 	data.chance = player.replicanti.chance
 	if (hasMasteryStudy("t273") && !dev.testZone) {
-		data.chance = E_pow(data.chance, tmp.mts[273])
-		if (data.chance.gte("1e9999998")) data.freq = tmp.mts[273].mul(Math.log10(player.replicanti.chance + 1) / Math.log10(2))
+		let ms273 = getMTSMult(273)
+		data.chance = E_pow(data.chance, ms273)
+		if (data.chance.gte("1e9999998")) data.freq = ms273.mul(Math.log10(player.replicanti.chance + 1) / Math.log10(2))
 	}
 
 	data.dupRate = (data.freq ? data.freq.mul(Math.log10(2) / Math.log10(Math.E)) : Decimal.add(data.chance, 1).log(Math.E))
@@ -119,7 +119,6 @@ function getUnspentBonus() {
 
 function resetPowers() {
 	mult18 = E(1)
-	tmp.it = E(1)
 	tmp.sacPow = E(1)
 	tmp.gal = { str: 1 }
 	tmp.rep = { extra: 0 }

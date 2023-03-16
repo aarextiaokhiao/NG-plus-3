@@ -13,7 +13,6 @@ function getBaseDTProduction() {
 	if (player.dilation.upgrades.includes('ngpp6')) gain = gain.mul(getDil17Bonus())
 	if (player.dilation.upgrades.includes('ngusp3')) gain = gain.mul(getD22Bonus())
 	if (mod.ngp3) gain = gain.mul(getDTMultNGP3())
-	if (hasNanoReward("dil_gal_gain")) gain = E(tmp.nf.eff.dil_gal_gain).pow(player.replicanti.galaxies).mul(gain)
 	if (mod.p3ep && hasAch("r138") && gain.lt(1e100)) gain = gain.mul(3).min(1e100)
 
 	return gain
@@ -44,17 +43,19 @@ function getEternitiesAndDTBoostExp() {
 function getDTMultNGP3(){
 	let gain = E(1)
 	if (!bigRipped() || hasRipUpg(11)) {
+		if (hasAch("r137")) gain = gain.mul(Math.max((player.replicanti.amount.log10() - 2e4) / 8e3+1,1))
 		if (hasAch("ng3p11")) gain = gain.mul(Math.max(player.galaxies / 600 + 0.5, 1))
 		if (hasAch("ng3p41")) gain = gain.mul(E_pow(4, Math.sqrt(nfSave.rewards)))
 		if (hasMasteryStudy("t263")) gain = gain.mul(getMTSMult(263))
 		if (hasMasteryStudy("t281")) gain = gain.mul(getMTSMult(281))
-		gain = gain.mul(tmp.qc.reward[1])
 		if (hasMasteryStudy("t322") && !dev.testZone) gain = gain.mul(getMTSMult(322))
 		if (hasMasteryStudy("t341")) gain = gain.mul(getMTSMult(341))
-		gain = gain.mul(getTreeUpgradeEffect(7))
+
 		if (!dev.testZone) gain = gain.mul(tmp.color_eff.b)
-		if (hasGluonUpg("br2")) gain = gain.mul(E_pow(2.2, Math.pow(tmp.sacPow.max(1).log10()/1e6, 0.25)))
-		if (hasAch("r137")) gain = gain.mul(Math.max((player.replicanti.amount.log10()-2e4)/8e3+1,1))
+		if (hasGluonUpg("br2")) gain = gain.mul(E_pow(2.2, Math.pow(tmp.sacPow.max(1).log10() / 1e6, 0.25)))
+		gain = gain.mul(tmp.qc.reward[1])
+		if (hasNanoReward("dil_gal_gain")) gain = E(tmp.nf.eff.dil_gal_gain).pow(player.replicanti.galaxies).mul(gain)
+		gain = gain.mul(getTreeUpgradeEffect(7))
 	}
 	if (hasAch("ngpp13")) gain = gain.mul(2)
 	if (hasBU(15)) gain = gain.mul(tmp.blu[15].dt)
@@ -118,7 +119,7 @@ function getDilExp(disable) {
 	if (mod.ngpp && !mod.udsp) ret += getDilUpgPower(4) / 4
 	if (mod.ngp3) {
 		if ((!bigRipped() || hasRipUpg(11)) && isDecayOn() && disable != "TU3") ret += getTreeUpgradeEffect(2)
-		if (hasNB(1)) ret += ntEff("boost", 1, 0)
+		if (hasNB(1)) ret += NT.eff("boost", 1, 0)
 	}
 	return ret
 }
@@ -164,7 +165,7 @@ function dilates(x, m) {
 	let e = 1
 	let y = x
 	let a = false
-	if (player.dilation.active && m != 2 && (m != "meta" || !hasAch("ng3p63") || !inQC(0))) {
+	if (player.dilation.active && m != 2 && (m != "meta" || !hasAch("ng3p63") || !notInQC())) {
 		e *= dilationPowerStrength()
 		if (mod.ngmu) e = 0.9 + Math.min((player.dilation.dilatedTime.add(1).log10()) / 1000, 0.05)
 		if (mod.ngud && !mod.udp) e += exDilationBenefit() * (1-e)
@@ -488,9 +489,10 @@ function resetDilationGalaxies() {
 }
 
 function getDilGalPower() {
-	let dil = Math.floor(player.dilation.freeGalaxies)
-	if (hasMasteryStudy("t343")) dil *= getReplGalEff()
-	return dil
+	let r = 1
+	if (hasMasteryStudy("t343")) r *= getReplGalEff()
+	if (hasNB(12)) r = Math.pow(r, 1 - NT.eff("boost", 12))
+	return r * Math.floor(player.dilation.freeGalaxies)
 }
 
 function startDilatedEternity(auto) {
@@ -517,7 +519,7 @@ function resetDilation(order = "qu") {
 	if (unl) {
 		if (order == "qu") {
 			if (bigRip ? hasRipUpg(11) : hasAch("ng3p37")) keepTP = 0.5
-			if (bigRip ? hasRipUpg(18) : inQC(0) && hasBraveMilestone(4)) keepTP = 1
+			if (bigRip ? hasRipUpg(18) : notInQC() && hasBraveMilestone(4)) keepTP = 1
 		}
 		player.dilation.dilatedTime = !bigRip && speedrunMilestonesReached >= 22 && !dev.testZone ? E(1e100) : E(0)
 	}

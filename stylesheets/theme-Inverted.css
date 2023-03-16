@@ -45,18 +45,18 @@ body {
     background-color: #ED85DF !important;
 }
 
-.gluonupgrade.r {
+.qu_upg.r {
 	color: #ff0000
 }
 
-.gluonupgrade.b {
+.qu_upg.b {
 	color: #1f1fff
 }
 
-.gluonupgrade.r:hover {
+.qu_upg.r:hover {
 	background-color: #ff0000 !important
 }
 
-.gluonupgrade.b:hover {
+.qu_upg.b:hover {
 	background-color: #1f1fff !important
 }
