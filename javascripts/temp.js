@@ -122,7 +122,7 @@ function resetPowers() {
 	tmp.sacPow = E(1)
 	tmp.gal = { str: 1 }
 	tmp.rep = { extra: 0 }
-	tmp.color_eff = { r: 1, g: 1 }
+	tmp.color_eff = { r: 1, g: 1, b: 1 }
 	tmp.qc.reward = {}
 	tmp.ant = {}
 	delete tmp.ig

@@ -40,7 +40,7 @@ function getEternitiesAndDTBoostExp() {
 	return exp
 }
 
-function getDTMultNGP3(){
+function getDTMultNGP3() {
 	let gain = E(1)
 	if (!bigRipped() || hasRipUpg(11)) {
 		if (hasAch("r137")) gain = gain.mul(Math.max((player.replicanti.amount.log10() - 2e4) / 8e3+1,1))
