@@ -429,8 +429,8 @@ let HOW_TO = [
 		desc: `At ??? Bosons, you can prestige Bosons and W & Bosons for Higgs.
 		<br><br>
 		Higgs gives Higgs Dimensions (dependent on amount), which produce Higgs Mass in return.<br>
-		Higgs Mass provides various boosts depending on which you choosed.<br>
-		There is a size limit on those boosts, and boosts have different sizes.`
+		Higgs Mass provide Higgs Boosts depending on which you choosed.<br>
+		There is a size limit for Higgs Boosts on a Higgs Dimension.`
 	/*}, {
 		mod: _ => ngp3,
 		req: _ => ghSave?.hb.unl,
