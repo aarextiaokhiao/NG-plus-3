@@ -405,6 +405,7 @@ function doQuantum(force, auto, qc = {}) {
 
 RESETS.qu = {
 	resetEC(order) {
+		let bigRip = bigRipped()
 		if (bigRip ? !hasRipUpg(2) : !isRewardEnabled(3)) {
 			player.eternityChalls = {}
 			updateEternityChallenges()
@@ -415,10 +416,11 @@ RESETS.qu = {
 		player.etercreq = 0
 	},
 	resetDil(order) {
+		let bigRip = bigRipped()
 		player.dilation.tachyonParticles = E(0)
 		player.dilation.dilatedTime = E(0)
 		player.dilation.studies = (bigRip ? hasRipUpg(10) : isRewardEnabled(4)) ? (
-			(bigRip ? hasRipUpg(12) : speedrunMilestonesReached >= 4) ? player.dilation.studies : [1]
+			(bigRip ? hasRipUpg(12) : isRewardEnabled(6)) ? player.dilation.studies : [1]
 		) : []
 		resetDilation(order)
 	},

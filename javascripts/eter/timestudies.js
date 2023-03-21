@@ -242,8 +242,8 @@ function updateTimeStudyButtons(changed, forceupdate = false) {
 		}
 		return
 	}
-	for (let id of all) {
-		updateTimeStudyClass(id, hasTimeStudy(id) ? "bought" : canBuyStudy(id) && player.timestudy.theorem >= studyCosts[id] ? "" : "locked")
+	for (let [i, id] of Object.entries(all)) {
+		updateTimeStudyClass(id, hasTimeStudy(id) ? "bought" : canBuyStudy(id) && player.timestudy.theorem >= studyCosts[i] ? "" : "locked")
 	}
 
 	//Dilation

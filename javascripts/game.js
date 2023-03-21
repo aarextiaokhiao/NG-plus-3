@@ -2245,7 +2245,7 @@ function TTpassiveGain(diff){
 }
 
 function thisQuantumTimeUpdating(){
-	setAndMaybeShow("quantumClock", mod.ngp3 ? (quantumed && quSave.times > 1 && speedrunMilestonesReached < 28) : false, '"Quantum time: <b class=\'QKAmount\'>"+timeDisplayShort(quSave.time)+"</b>"')
+	setAndMaybeShow("quantumClock", (quSave.times >= 2 || ghostified) && speedrunMilestonesReached < 28, '"Quantum time: <b class=\'QKAmount\'>"+timeDisplayShort(quSave.time)+"</b>"')
 }
 
 function fixInfinityTimes(){

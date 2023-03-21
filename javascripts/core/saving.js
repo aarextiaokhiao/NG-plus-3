@@ -264,6 +264,11 @@ function import_save(type) {
 	onImport = true
 	var save_data = prompt("Input your save. "+(type=="new"?"":"("+(type==meta.save.current?"your current save file":"save #"+placement)+" will be overwritten!)"));
 	onImport = false
+
+	if (save_data.split("AntimatterDimensions")[1] && save_data.split("EndOf")[1]) {
+		$.notify("Reality isn't supported in this mod!", "error")
+		return
+	}
 	if (save_data.constructor !== String) save_data = "";
 	if (sha512_256(save_data.replace(/\s/g, '').toUpperCase()) === "80b7fdc794f5dfc944da6a445a3f21a2d0f7c974d044f2ea25713037e96af9e3") {
 		el("body").style.animation = "barrelRoll 5s 1";
@@ -305,6 +310,10 @@ function import_save(type) {
 			return
 		} else if (!decoded_save_data||!save_data) {
 			alert('could not load the save..')
+			return
+		}
+		if (decoded_save_data?.reality || decoded_save_data?.celestials) {
+			$.notify("Reality or NG+Reality aren't supported in this mod!", "error")
 			return
 		}
 		if (type==meta.save.current) {
