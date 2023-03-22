@@ -1287,7 +1287,7 @@ td .timestudybought.pos_study {
     animation: none !important;
 }
 
-.qu_upg.gph {
+.photon {
     background: linear-gradient(#cb5, #894) !important;
     color: #000 !important;
     border: 1px solid #fff !important;
@@ -1295,7 +1295,7 @@ td .timestudybought.pos_study {
     text-shadow: 0 0 2px #0007;
     animation: none !important;
 }
-.qu_upg.gph:hover {
+.photon:hover {
     text-shadow: 0 0 2px #000;
     box-shadow: inset 0 0 15px #fff3, 0 0 8px #fff7;
 }

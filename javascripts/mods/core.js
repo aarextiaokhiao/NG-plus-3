@@ -25,6 +25,8 @@ var modPresets = {
 	vanilla: {},
 	ngp3: {ngpp: 2, ngp: 1},
 	grand_run: {ngpp: 2},
+	ngm5: {ngmm: 4},
+	udsp: {ngpp: 2, ngp: 1, ngud: 3},
 }
 var modFullNames = {
 	rs: "Respecced",

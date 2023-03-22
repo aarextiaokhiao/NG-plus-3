@@ -105,8 +105,7 @@ function DimensionPower(tier) {
 	if (inQC(3)) return getExtraDimensionBoostPower()
 
 	var mult = getStartingIDPower(tier)
-
-	mult = mult.mul(infDimPow)
+	if (player.challenges.includes("postc1")) mult = mult.mul(E_pow(inNGM(2)? 2 : 1.3, tmp.ic_power))
 
 	if (hasAch("r94") && tier == 1) mult = mult.mul(2);
 	if (hasAch("r75") && !mod.rs) mult = mult.mul(player.achPow);
@@ -264,8 +263,6 @@ function loadInfAutoBuyers() {
 	}
 	hideMaxIDButton(true)
 }
-
-var infDimPow = 1
 
 function getIDReplMult() {
 	if (hasMasteryStudy('t311')) return tmp.rep.eff.pow(17.3)

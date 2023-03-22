@@ -293,13 +293,11 @@ function updateChallenges() {
 		buttons[i].textContent = "Start"
 	}
 
-	tmp.ic_power=0
-	infDimPow=1
+	tmp.ic_power = 0
 	for (var i=0; i < player.challenges.length; i++) {
 		el(player.challenges[i]).className = "completedchallengesbtn";
 		el(player.challenges[i]).textContent = "Completed"
 		if (player.challenges[i].search("postc")==0) tmp.ic_power++
-		if (player.challenges.includes("postc1")) if (player.challenges[i].split("postc")[1]) infDimPow*=inNGM(2)?2:1.3
 	}
 	
 	var challengeRunning

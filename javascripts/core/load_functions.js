@@ -1369,7 +1369,7 @@ function doNGp3Init() {
 	if (quSave.challengeRecords === undefined) quSave.challengeRecords = {}
 	if (quSave.pairedChallenges.completions === undefined) quSave.pairedChallenges.completions = {}
 	if (quSave["10ofield"] !== undefined) {
-		nfSave = quSave["10ofield"]
+		quSave.nanofield = nfSave = quSave["10ofield"]
 		delete quSave["10ofield"]
 	}
 	if (nfSave.powerThreshold === undefined) {

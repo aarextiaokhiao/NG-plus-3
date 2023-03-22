@@ -104,7 +104,7 @@ const NEUTRINO = NT = {
 				eff(nt) {
 					let nb2neutrinos = Math.pow(nt[0].add(1).log10(),2)+Math.pow(nt[1].add(1).log10(),2)+Math.pow(nt[2].add(1).log10(),2)
 					let nb2 = Math.pow(nb2neutrinos, .25) * 1.5
-					if (nb2 > 9) nb2 = Math.pow(nb2 - 8, PHOTON.eff(1)) + 8
+					if (nb2 > 9) nb2 = Math.pow(nb2 / 9, PHOTON.eff(1)) * 3 + 6
 					return nb2
 				},
 				effDesc: e => `Replicate chance boosts itself more. (<b>+^${shorten(e)}</b>)`,

@@ -1832,7 +1832,6 @@ function nextICUnlockUpdating(){
 		while (player.money.gte(nextUnlock) && nextUnlock != undefined) {
 			if (getEternitied() > 6) {
 				player.challenges.push(order[player.postChallUnlocked])
-				if (order[player.postChallUnlocked] == "postc1") for (var i = 0; i < player.challenges.length; i++) if (player.challenges[i].split("postc")[1]) infDimPow *= inNGM(2) ? 2 : 1.3
 				tmp.ic_power++
 			}
 			player.postChallUnlocked++

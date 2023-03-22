@@ -72,22 +72,9 @@ dev.fixSave = function() {
 		return;
 	}
 
-	saved = 0;
-	totalMult = 1
-	currentMult = 1
-	infinitiedMult = 1
-	achievementMult = 1
-	challengeMult = 1
-	unspentBonus = 1
-	infDimPow = 1
-	postc8Mult = E(0)
-	mult18 = E(1)
-	ec10bonus = E(1)
 	player = save_data;
 	save_game();
-	load_game();
-	updateChallenges()
-	transformSaveToDecimal()
+	reload();
 }
 
 dev.implode = function() {
