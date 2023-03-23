@@ -51,7 +51,7 @@ function getDTMultNGP3() {
 		if (hasMasteryStudy("t322") && !dev.testZone) gain = gain.mul(getMTSMult(322))
 		if (hasMasteryStudy("t341")) gain = gain.mul(getMTSMult(341))
 
-		if (!dev.testZone) gain = gain.mul(tmp.color_eff.b)
+		gain = gain.mul(tmp.color_eff.b)
 		if (hasGluonUpg("br2")) gain = gain.mul(E_pow(2.2, Math.pow(tmp.sacPow.max(1).log10() / 1e6, 0.25)))
 		gain = gain.mul(tmp.qc.reward[1])
 		if (hasNanoReward("dil_gal_gain")) gain = E(tmp.nf.eff.dil_gal_gain).pow(player.replicanti.galaxies).mul(gain)
@@ -117,7 +117,7 @@ function getDilExp(disable) {
 	let ret = 1.5
 	if (mod.ngep) ret += .001
 	if (mod.ngpp && !mod.udsp) ret += getDilUpgPower(4) / 4
-	if (mod.ngp3) {
+	if (mod.ngp3 && !dev.testZone) {
 		if ((!bigRipped() || hasRipUpg(11)) && isDecayOn() && disable != "TU3") ret += getTreeUpgradeEffect(2)
 		if (hasNB(1)) ret += NT.eff("boost", 1, 0)
 	}
@@ -525,7 +525,7 @@ function resetDilation(order = "qu") {
 	}
 	if (mod.ngp3) {
 		if (order == "qu" && !hasBraveMilestone(2)) player.dilation.best = E(0)
-		if (order == "funda" && !hasBraveMilestone(12)) player.dilation.best = E(0)
+		if (order == "funda" && (dev.testZone || !hasBraveMilestone(12))) player.dilation.best = E(0)
 	}
 	player.dilation.tachyonParticles = keepTP == 0 ? E(0) : player.dilation.bestTP.pow(keepTP)
 	player.dilation.totalTachyonParticles = player.dilation.tachyonParticles

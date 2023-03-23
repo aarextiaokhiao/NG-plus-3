@@ -116,7 +116,7 @@ let PHOTON = {
 		}, {
 			name: "yellow",
 			eff: a => Math.cbrt(a + 1),
-			desc: e => `Raise Replicate Slowdown by ^${shorten(e)}. (based on Fundament time)`
+			desc: e => `Raise Replicate Slowdown by ^${shorten(e)}.`
 		}, {
 			name: "green",
 			eff: a => 1+a/1.5e3,

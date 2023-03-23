@@ -162,10 +162,6 @@ function autoBuyRG() {
 }
 
 function updateExtraReplGalaxies() {
-	if (dev.testZone) {
-		tmp.rep.extra = 0
-		return
-	}
 	tmp.rep.extraBase = getExtraReplGalaxyBase()
 	tmp.rep.extraMult = getExtraReplGalaxyMult()
 	tmp.rep.extra = tmp.rep.extraBase * tmp.rep.extraMult

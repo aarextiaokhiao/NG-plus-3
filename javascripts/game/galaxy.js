@@ -128,7 +128,7 @@ function initialGalaxies() {
 		g *= Math.max(Math.min(10 - (quSave.electrons.amount + g * getElectronGainFinalMult()) / 16857, 1), 0)
 		g += Math.min(sac, player.galaxies) * PHOTON.eff(4, 0)
 	}
-	if (!notInQC() && !tmp.be) g = 0
+	if ((!notInQC() || dev.testZone) && !tmp.be) g = 0
 	if ((inNC(15) || player.currentChallenge == "postc1") && inOnlyNGM(3)) g = 0
 	return g
 }

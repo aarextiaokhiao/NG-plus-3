@@ -61,7 +61,7 @@ function getMetaDimensionGlobalMultiplier() {
 		if (hasMasteryStudy("t351") && !dev.testZone) ret = ret.mul(getMTSMult(351))
 		if (hasMasteryStudy("t373")) ret = ret.mul(getMTSMult(373))
 		if (hasMasteryStudy("t382")) ret = ret.mul(getMTSMult(382))
-		if (hasMasteryStudy("t383") && !dev.testZone) ret = ret.mul(getMTSMult(383))
+		if (hasMasteryStudy("t383")) ret = ret.mul(getMTSMult(383))
 		if (hasMasteryStudy("t393") && !dev.testZone) ret = ret.mul(getMTSMult(393))
 
 		//Quantum Upgrades

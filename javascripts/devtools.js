@@ -166,12 +166,10 @@ dev.addNeutrinos = function(n){
 dev.enterTestZone = function() {
 	/* 
 	Test the Fundament Challenge:
-	- You can't gain Extra Replicated Galaxies.
-	- Start with 0 Dilated Time.
-	- Mastery Studies 273, 322, 351, 383, and 393 are disabled.
-	- Blue Power effect is disabled.
+	- Start with 0 best Antimatter in Dilation and 0 Dilated Time.
+	- Mastery Studies 273, 322, 351, 393 are disabled.
 	- No Positrons.
-	- MA Exponent Nanoreward is disabled.
+	- No Extra TP Exponents.
 	- No Decay.
 	*/
 	dev.testZone = !dev.testZone
