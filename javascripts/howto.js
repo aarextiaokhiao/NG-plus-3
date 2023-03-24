@@ -409,7 +409,7 @@ let HOW_TO = [
 		tab: "bl",
 		layer: "fundament",
 		desc: `<b>Hypotheses</b><br>
-		There's a 4x4 grid where pairs of Hypotheses give something dependent on kinds.
+		There's a 4x4 grid where each unique bond of Hypotheses has its unique boost.
 		<br><br>
 		<b>Bosonic Milestones</b><br>
 		At a specific amount of Bosons, you'll unlock Bosonic Milestones. Best Bosons strengthen those milestones.
