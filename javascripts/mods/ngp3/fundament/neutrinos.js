@@ -268,7 +268,7 @@ const NEUTRINO = NT = {
 			}, {
 				unl: _ => ghSave.times >= 7,
 				cost: E(1e10),
-				desc: `Eternities and Space Shards boost each other.`
+				desc: `Eternities and Space Shards synergy each other.`
 			}, {
 				unl: _ => ghSave.times >= 8,
 				cost: E(1e12),
@@ -276,11 +276,11 @@ const NEUTRINO = NT = {
 			}, {
 				unl: _ => ghSave.times >= 9,
 				cost: E(1e16),
-				desc: `8th Big Rip upgrade is never repealed and capped.`
+				desc: `Reactivate and uncap Big Rip upgrade 8.`
 			}, {
 				unl: _ => ghSave.times >= 10,
 				cost: E(1e20),
-				desc: `Galaxy types boosts several things.`,
+				desc: `Galaxy types boost several things.`,
 
 				eff() {
 					return { 
@@ -300,11 +300,11 @@ const NEUTRINO = NT = {
 			}, {
 				unl: _ => PHOTON.unlocked(),
 				cost: E(1e30),
-				desc: `Replicate slowdown absorbs replicate interval. Replicate interval scales slower.`
+				desc: `Replicate Slowdown absorbs replicate interval. Replicate interval scales slower.`
 			}, {
 				unl: _ => PHOTON.unlocked(),
 				cost: E(1e35),
-				desc: `Galaxy strength adds Meta-Antimatter effect exponent.`,
+				desc: `Galaxy strength raises Meta-Antimatter effect.`,
 
 				eff: _ => tmp.gal.str / 2,
 				effDesc: e => `+^${shorten(e)}`
