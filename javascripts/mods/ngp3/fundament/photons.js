@@ -124,7 +124,7 @@ let PHOTON = {
 		}, {
 			name: "blue",
 			eff: a => Math.cbrt(a / 10 + 1) - 1,
-			desc: e => `Discharged Galaxies work, but as ${(e*100).toFixed(1)}% strong.`
+			desc: e => `Discharged Galaxies work, but as ${(e*100).toFixed(1)}% effective.`
 		}, {
 			name: "violet",
 			eff: a => Math.cbrt(a / 3 + 1),
