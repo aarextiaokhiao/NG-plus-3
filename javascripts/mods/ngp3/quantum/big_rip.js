@@ -256,6 +256,7 @@ function unlockBreakEternity() {
 function breakEternity() {
 	beSave.break = !beSave.break
 	beSave.did = true
+	updateBreakEternity()
 	if (beSave.break && el("timedimensions").style.display == "block") showDimTab("antimatterdimensions")
 	if (!player.dilation.active && isSmartPeakActivated) {
 		EPminpeakType = 'normal'
