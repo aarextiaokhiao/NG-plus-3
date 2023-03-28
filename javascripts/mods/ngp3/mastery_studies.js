@@ -79,7 +79,7 @@ var masteryStudies = {
 			return getFullExpansion(nfSave.rewards) + " / " + getFullExpansion(16) + " Nanorewards"
 		},
 		14: function() {
-			return ghostified ? "<s>24 Paired Challenge combinations</s> Free!" : getFullExpansion(tmp.qc.pc_comp.normal) + " / " + getFullExpansion(24) + " Paired Challenge combinations"
+			return ghostified ? "<s>24 Paired Challenge combinations</s> Free!" : getFullExpansion(tmp.qc?.pc_comp?.normal) + " / " + getFullExpansion(24) + " Paired Challenge combinations"
 		}
 	},
 	types: {t: "time", ec: "ec", d: "dil"},
