@@ -311,9 +311,12 @@ function setupAutomatorHTML() {
 	let html = ``
 	let htmlCount = 0
 	let htmlCustom = ``
+	let htmlCustomCount = 0
 	for (let id of automatorOrder) {
 		let g = automators[id]
-		if (g.html) htmlCustom += `<td id="autoGhost${id}" class="autoBuyerDiv">
+		if (g.html) {
+			htmlCustomCount++
+			htmlCustom += `<td id="autoGhost${id}" class="autoBuyerDiv">
 				<div class='top'>
 					<b>${g.title}</b>: ${g.pow} Power<br>
 					<button class='storebtn' id="isAutoGhostOn${id}" onclick="toggleAutoGhost(${id})"></button>
@@ -322,7 +325,8 @@ function setupAutomatorHTML() {
 					${g.html}
 				</div>
 			</td>`
-		else {
+			if (htmlCustomCount % 3 == 0) htmlCustom += "</tr><tr>"
+		} else {
 			htmlCount++
 			html += `<td id="autoGhost${id}" class="autoBuyerDiv">
 				<b>${g.title}</b><br>

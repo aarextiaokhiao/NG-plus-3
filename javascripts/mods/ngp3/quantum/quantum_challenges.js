@@ -288,13 +288,16 @@ function updatePCCompletions() {
 		r += Math.sqrt(rankingPart)
 	}
 	r *= 100 / 56
+	tmp.qc.rank = r // its global
+	updatePCTable()
+
 	if (r) el("pccompletionsbtn").style.display = "inline-block"
+
+	el("bpc68").textContent = "You've made " + shortenMoney(quSave.pairedChallenges.pc68best) + " in Paired Challenge combinations 6 and 8."
+	el("upcc").textContent = "You've completed " + (tmp.qc.pc_comp.normal || 0) + " / 28 unique Paired Challenges."
+	el("udcc").textContent = "(" + (tmp.qc.pc_comp.noDil || 0) + " combinations without dilation runs)"
 	el("pccranking").textContent = r.toFixed(1)
 	el("pccrankingMax").textContent = Math.sqrt(2e4).toFixed(1)
-	el("bpc68").textContent = shortenMoney(quSave.pairedChallenges.pc68best)
-	updatePCTable()
-	
-	ranking = r // its global
 }
 
 function setupPCTable() {
@@ -306,7 +309,7 @@ function setupPCTable() {
 	}
 	for (let r = 1; r <= 8; r++) {
 		row = pcct.insertRow(r)
-		for (let c = 0; c <= 8; c++) {
+		for (let c = 0; c <= r; c++) {
 			var col = row.insertCell(c)
 			if (c < 1) col.textContent = "#" + r
 			else if (c == r) {
@@ -317,7 +320,7 @@ function setupPCTable() {
 }
 
 function updatePCTable() {
-	for (r = 1; r < 9; r++) for (c = 1; c < 9; c++) {
+	for (r = 1; r < 9; r++) for (c = 1; c <= r; c++) {
 		if (r != c) {
 			var divid = "pc" + (r * 10 + c)
 			var pcid = r * 10 + c
@@ -353,6 +356,4 @@ function updatePCTable() {
 			}
 		}
 	}
-	el("upcc").textContent = "Unique PC completions: " + (tmp.qc.pc_comp.normal || 0) + " / 28"
-	el("udcc").textContent = "No dilation: " + (tmp.qc.pc_comp.noDil || 0) + " / 28"
 }

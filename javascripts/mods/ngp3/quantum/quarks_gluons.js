@@ -1,4 +1,4 @@
-//Quantum worth
+//Net Quarks
 var quantumWorth
 function updateQuantumWorth(mode) {
 	if (!mod.ngp3) return
@@ -13,7 +13,13 @@ function updateQuantumWorth(mode) {
 		}
 		if (ghostified) updateAutomatorStuff(mode)
 	}
-	if (mode != "quick") for (var e=1;e<=2;e++) el("quantumWorth"+e).textContent = shortenDimensions(quantumWorth)
+	if (mode != "quick") {
+		for (let e = 1; e <= 2; e++) el("quantumWorth"+e).innerHTML = getQuantumWorthMsg()
+	}
+}
+
+function getQuantumWorthMsg() {
+	return "<b class='QKAmount'>" + shortenDimensions(quantumWorth) + "</b> net Quarks" + (shiftDown ? "<br><span style='font-size: 7px'>(anti-quarks + colored anti-quarks + gluons)</span>" : "")
 }
 
 function getQuarkMultReq() {
@@ -77,10 +83,6 @@ function assignAll(auto) {
 	var oldQuarks = getAssortAmount()
 	var colors = ['r','g','b']
 	var mult = getQuarkAssignMult()
-	if (!isAdvancedAssortUnlocked()) {
-		if (!auto) $.notify("You can only use this feature if you have at least 100 Quantum Worth.")
-		return
-	}
 	for (c = 0; c < 3; c++) {
 		var toAssign = oldQuarks.mul(ratios[colors[c]]/sum).round()
 		if (toAssign.gt(0)) {
@@ -253,15 +255,22 @@ function updateColorPowers(log) {
 }
 
 //Gluons
+function getGluonGains() {
+	var qk = quSave.usedQuarks
+	var types = ["rg", "gb", "br"]
+	var gains = {}
+	for (let color of types) gains[color] = qk[color[0]].min(qk[color[1]])
+	return gains
+}
+
 function convertAQToGluons() {
-	var u = quSave.usedQuarks
-	var g = quSave.gluons
-	var p = ["rg", "gb", "br"]
-	var d = []
-	for (var c = 0; c < 3; c++) d[c] = u[p[c][0]].min(u[p[c][1]])
-	for (var c = 0; c < 3; c++) {
-		g[p[c]] = g[p[c]].add(d[c]).round()
-		u[p[c][0]] = u[p[c][0]].sub(d[c]).round()
+	var qk = quSave.usedQuarks
+	var gl = quSave.gluons
+	var types = ["rg", "gb", "br"]
+	var gains = getGluonGains()
+	for (var color of types) {
+		gl[color] = gl[color].add(d[c]).round()
+		qk[color[0]] = qk[color[0]].sub(d[c]).round()
 	}
 
 	updateQuarkDisplay()
@@ -272,10 +281,16 @@ function convertAQToGluons() {
 function checkGluonRounding(){
 	if (!quantumed) return
 	if (hasBraveMilestone(8)) return
-	if (quSave.gluons.rg.lt(101)) quSave.gluons.rg = quSave.gluons.rg.round()
-	if (quSave.gluons.gb.lt(101)) quSave.gluons.gb = quSave.gluons.gb.round()
-	if (quSave.gluons.br.lt(101)) quSave.gluons.br = quSave.gluons.br.round()
-	if (quSave.quarks.lt(101)) quSave.quarks = quSave.quarks.round()
+	if (quSave.gluons.rg.lte(100)) quSave.gluons.rg = quSave.gluons.rg.round()
+	if (quSave.gluons.gb.lte(100)) quSave.gluons.gb = quSave.gluons.gb.round()
+	if (quSave.gluons.br.lte(100)) quSave.gluons.br = quSave.gluons.br.round()
+	if (quSave.quarks.lte(100)) quSave.quarks = quSave.quarks.round()
+}
+
+function subtractGluons(toSpend = 0) {
+	quSave.gluons.rg = quSave.gluons.rg.sub(quSave.gluons.rg.min(toSpend))
+	quSave.gluons.gb = quSave.gluons.gb.sub(quSave.gluons.gb.min(toSpend))
+	quSave.gluons.br = quSave.gluons.br.sub(quSave.gluons.br.min(toSpend))
 }
 
 const GUCosts = [null, 1, 2, 4, 100, 7e15, 4e19, 3e28, "1e570"]
@@ -355,7 +370,7 @@ function updateQuarksTab(tab) {
 	el("qk_mult_upg").innerHTML = `
 		<b>Double anti-quarks.</b><br>
 		Currently: ${shortenDimensions(getQuarkMult())}x<br>
-		(req: ${shortenDimensions(getQuarkMultReq())} quantum worth)
+		(req: ${shortenDimensions(getQuarkMultReq())} net Quarks)
 	`
 }
 
@@ -403,11 +418,10 @@ function updateQuarksTabOnUpdate(mode) {
 
 	var uq = quSave.usedQuarks
 	var gl = quSave.gluons
-	for (var p = 0; p < 3; p++) {
-		var pair = (["rg", "gb", "br"])[p]
-		var diff = uq[pair[0]].min(uq[pair[1]])
-		el(pair + "gain").textContent = shortenDimensions(diff)
-		el(pair + "next").textContent = shortenDimensions(uq[pair[0]].sub(diff).round())
+	var gains = getGluonGains()
+	for (var [pair, amt] of Object.entries(gains)) {
+		el(pair + "gain").textContent = shortenDimensions(amt)
+		el(pair + "next").textContent = shortenDimensions(uq[pair[0]].sub(amt))
 	}
 	el("assignAllButton").className = canAssign ? "storebtn" : "unavailablebtn"
 	el("bluePowerMDEffect").style.display = hasMasteryStudy("t383") ? "" : "none"

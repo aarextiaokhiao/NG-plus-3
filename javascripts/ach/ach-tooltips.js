@@ -310,7 +310,7 @@ function setR15Tooltip(){
 
 	//ACHIEVEMENT ROW 15
 	notenough.setAttribute('ach-tooltip', "Reach " + shorten(Number.MAX_VALUE) + " meta-antimatter. Reward: You produce more dilated time based on your normal galaxies, and gain more Tachyon particles based on your replicated galaxies.")
-	hadron.setAttribute('ach-tooltip', "Have colored quarks, but have no color charge. Reward: Quantum worth boosts all Meta Dimensions.")
+	hadron.setAttribute('ach-tooltip', "Have colored quarks, but have no color charge. Reward: Net Quarks boost all Meta Dimensions.")
 	old.setAttribute('ach-tooltip', "Reach " + shortenCosts(getOldAgeRequirement()) + " antimatter. Reward: Get a multiplier to the 1st Meta Dimension based on total antimatter.")
 	rid.setAttribute('ach-tooltip', "Reach " + shortenCosts(E("1e400000")) + " IP while dilated, without having time studies and electrons. Reward: Generate Time Theorems based on your best-ever Tachyon particles.")
 	winner.setAttribute('ach-tooltip', "Quantum in under 30 seconds. Reward: Your EP multiplies Quark gain.")

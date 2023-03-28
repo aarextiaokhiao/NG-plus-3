@@ -242,9 +242,7 @@ function buyMaxQuantumFood() {
 	let toBuy = Math.floor(minGluons.div(quSave.replicants.quantumFoodCost).mul(4).add(1).log(5))
 	if (toBuy < 1) return
 	let toSpend = E_pow(5, toBuy).minus(1).div(4).mul(quSave.replicants.quantumFoodCost)
-	quSave.gluons.rg = quSave.gluons.rg.sub(quSave.gluons.rg.min(toSpend))
-	quSave.gluons.gb = quSave.gluons.gb.sub(quSave.gluons.gb.min(toSpend))
-	quSave.gluons.br = quSave.gluons.br.sub(quSave.gluons.br.min(toSpend))
+	subtractGluons(toSpend)
 	quSave.replicants.quantumFood += toBuy
 	quSave.replicants.quantumFoodCost = quSave.replicants.quantumFoodCost.mul(E_pow(5, toBuy))
 	updateGluonsTabOnUpdate("spend")
@@ -344,12 +342,7 @@ function maxReduceHatchSpeed() {
 	let toBuy = Math.floor(minGluons.div(quSave.replicants.hatchSpeedCost).mul(9).add(1).log10())
 	if (toBuy < 1) return
 	let toSpend = pow10(toBuy).minus(1).div(9).mul(quSave.replicants.hatchSpeedCost)
-	if (toSpend.gt(quSave.gluons.rg)) quSave.gluons.rg = E(0)
-	else quSave.gluons.rg = quSave.gluons.rg.sub(toSpend)
-	if (toSpend.gt(quSave.gluons.gb)) quSave.gluons.gb = E(0)
-	else quSave.gluons.gb = quSave.gluons.gb.sub(toSpend)
-	if (toSpend.gt(quSave.gluons.br)) quSave.gluons.br = E(0)
-	else quSave.gluons.br = quSave.gluons.br.sub(toSpend)
+	subtractGluons(toSpend)
 	quSave.replicants.hatchSpeed /= Math.pow(1.1, toBuy)
 	quSave.replicants.hatchSpeedCost = quSave.replicants.hatchSpeedCost.mul(pow10(toBuy))
 	updateGluonsTabOnUpdate()
@@ -370,9 +363,7 @@ function replicantReset(bulk = false) {
 
 function breakLimit() {
 	if (quSave.gluons.rg.min(quSave.gluons.gb).min(quSave.gluons.br).gte(quSave.replicants.limitCost) && isLimitUpgAffordable()) {
-		quSave.gluons.rg = quSave.gluons.rg.sub(quSave.replicants.limitCost)
-		quSave.gluons.gb = quSave.gluons.gb.sub(quSave.replicants.limitCost)
-		quSave.gluons.br = quSave.gluons.br.sub(quSave.replicants.limitCost)
+		subtractGluons(quSave.replicants.limitCost)
 		quSave.replicants.limit++
 		if (quSave.replicants.limit > 10 && quSave.replicants.limitDim < 8) {
 			quSave.replicants.limit = 1
@@ -391,9 +382,7 @@ function maxBuyLimit() {
 			var toAdd = Math.floor(min.div(quSave.replicants.limitCost).log(200) / 9)
 			if (toAdd) {
 				var toSpend = E_pow(200, toAdd * 9).mul(quSave.replicants.limitCost)
-				quSave.gluons.rg = quSave.gluons.rg.sub(quSave.gluons.rg.min(toSpend))
-				quSave.gluons.gb = quSave.gluons.gb.sub(quSave.gluons.gb.min(toSpend))
-				quSave.gluons.br = quSave.gluons.br.sub(quSave.gluons.br.min(toSpend))
+				subtractGluons(toSpend)
 				quSave.replicants.limitCost = quSave.replicants.limitCost.mul(E_pow(200, toAdd * 9))
 				quSave.replicants.limit += toAdd * 10
 			}
@@ -401,9 +390,7 @@ function maxBuyLimit() {
 			var limit = quSave.replicants.limit
 			var toAdd = Math.max(Math.min(Math.floor(min.div(quSave.replicants.limitCost).mul(199).add(1).log(200)), 10 - limit % 10), 0)
 			var toSpend = E_pow(200,toAdd).sub(1).div(199).round().mul(quSave.replicants.limitCost)
-			quSave.gluons.rg = quSave.gluons.rg.sub(quSave.gluons.rg.min(toSpend))
-			quSave.gluons.gb = quSave.gluons.gb.sub(quSave.gluons.gb.min(toSpend))
-			quSave.gluons.br = quSave.gluons.br.sub(quSave.gluons.br.min(toSpend))
+			subtractGluons(toSpend)
 			quSave.replicants.limitCost = quSave.replicants.limitCost.mul(E_pow(200, Math.max(Math.min(toAdd, 9 - limit % 10), 0)))
 			quSave.replicants.limit += toAdd
 		}

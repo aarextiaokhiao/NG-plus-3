@@ -946,7 +946,7 @@ function onNotationChange() {
 	setAchieveTooltip()
 	updateMilestones()
 	if (mod.ngp3) {
-		updateLastTenQuantums();
+		updateLastTenQuantums()
 		updateLastTenGhostifies()
 		updateQuarksTabOnUpdate()
 		updateGluonsTabOnUpdate("notation")
@@ -954,7 +954,6 @@ function onNotationChange() {
 		updateElectrons()
 		updateBankedEter()
 		updateQuantumChallenges()
-		updateMasteryStudyTextDisplay()
 		updateTODStuff()
 	}
 	if (ghostified) updateBosonicStuffCosts()

@@ -379,7 +379,7 @@ let HOW_TO = [
 		Brave Milestones can be achieved by Fundamenting while under a certain amount of Quantums. Likewise, each Brave Milestone provides you with a reward that greatly boosts progress and makes Fundaments much faster and more efficient.
 		<br><br>
 		<b>Automators</b><br>
-		Automator Charge is gained based on your Quantum Worth (resets on fundament), and when it passes certain thresholds, Automators unlock. Automator Power is your best Automator Charge, however when Automators are used, Automator Power is used up. If Automator Power doesn't exceed the cap, Automators automate various features such as Nanofield and Big Rips.`
+		Automator Charge is gained based on your net Quarks (resets on fundament), and when it passes certain thresholds, Automators unlock. Automator Power is your best Automator Charge, however when Automators are used, Automator Power is used up. If Automator Power doesn't exceed the cap, Automators automate various features such as Nanofield and Big Rips.`
 	}, {
 		mod: _ => ngp3,
 		req: _ => ghSave?.times,

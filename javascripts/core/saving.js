@@ -118,7 +118,7 @@ function changeSaveDesc(saveId, placement) {
 				msg+="Bosons: "+shorten(E(temp.ghostify.bl.am))+", W+ Bosons: "+shortenDimensions(E(data.wpb))+", W- Bosons: "+shortenDimensions(E(data.wnb))+", Z Bosons: "+shortenDimensions(E(data.zb))
 			} else if (temp.achievements.includes("ng3p71")) {
 				//var data=temp.ghostify.photons
-				msg+="Elementary Particles: "+shortenDimensions(E(temp.ghostify.ghostParticles))+", Light Emissions: 0, Lightenments: 0"
+				msg+="Elementary Particles: "+shortenDimensions(E(temp.ghostify.ghostParticles))+", Enlightenments: "+getFullExpansion(temp.ghostify.photons.lighten)
 			} else msg+="Elementary Particles: "+shortenDimensions(E(temp.ghostify.ghostParticles))+", Neutrinos: "+shortenDimensions(Decimal.add(temp.ghostify.neutrinos.electron, temp.ghostify.neutrinos.mu).add(temp.ghostify.neutrinos.tau).round())
 		} else if (isSaveQuantumed) {
 			if (!temp.masterystudies) msg+="Endgame of NG++"

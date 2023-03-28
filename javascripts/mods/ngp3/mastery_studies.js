@@ -58,10 +58,10 @@ var masteryStudies = {
 	},
 	unlockReqDisplays: {
 		7: function() {
-			return "50 quantum worth"
+			return shortenDimensions(quantumWorth) + " / " + shortenDimensions(50) + " net Quarks"
 		},
 		8: function() {
-			return getFullExpansion(16750) + " electrons"
+			return getFullExpansion(quSave.electrons.amount) + " / " + getFullExpansion(16750) + " electrons"
 		},
 		9: function() {
 			return "Complete Quantum Challenge 8"
@@ -70,16 +70,16 @@ var masteryStudies = {
 			return "Complete Paired Challenge 4"
 		},
 		11: function() {
-			return getFullExpansion(10) + " worker duplicants"
+			return getFullExpansion(EDsave[1].perm) + " / " + getFullExpansion(10) + " worker limit"
 		},
 		12: function() {
-			return getFullExpansion(10) + " Eighth Emperor Dimensions"
+			return getFullExpansion(EDsave[8].perm) + " / " + getFullExpansion(10) + " Eighth Emperor Dimensions"
 		},
 		13: function() {
-			return getFullExpansion(16) + " Nanorewards"
+			return getFullExpansion(nfSave.rewards) + " / " + getFullExpansion(16) + " Nanorewards"
 		},
 		14: function() {
-			return "Get 'The Challenging Day' achievement"
+			return ghostified ? "<s>24 Paired Challenge combinations</s> Free!" : getFullExpansion(tmp.qc.pc_comp.normal) + " / " + getFullExpansion(24) + " Paired Challenge combinations"
 		}
 	},
 	types: {t: "time", ec: "ec", d: "dil"},

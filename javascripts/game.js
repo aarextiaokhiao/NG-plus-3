@@ -688,10 +688,10 @@ function toggleTabsSave() {
 function updatePerformanceTicks() {
 	if (aarMod.performanceTicks) el("updaterateslider").min=1
 	else {
-		slider.min=33
-		if (player.options.updateRate<33) {
+		slider.min = 33
+		if (player.options.updateRate < 33) {
 			clearInterval(gameLoopIntervalId)
-			player.options.updateRate=33
+			player.options.updateRate = 33
 			sliderText.textContent="Update rate: "+player.options.updateRate+"ms"
 			startInterval()
 		}
@@ -1929,9 +1929,9 @@ function doQuantumButtonDisplayUpdating(diff){
 
 	let flavor = "I need to go quantum."
 	if (!quantumed) flavor = "We have enough to reform... " + flavor
-	if (!notInQC()) flavor = "Gather the dark energy... " + flavor
-	if (bigRipped()) flavor = "This isn't potential enough..."
+	if (!notInQC()) flavor = "Embrace the quantum... " + flavor
 	if (ghostified) flavor = "Go quantum."
+	if (bigRipped()) flavor = (ghostified ? "" : "This isn't potential... ") + "Restore the rift."
 	el("quantumbtnFlavor").textContent = flavor
 
 	var showGain = quantumed && notInQC() ? "QK" : ""
@@ -1950,6 +1950,16 @@ function doQuantumButtonDisplayUpdating(diff){
 	} else {
 		el("quantumbtnRate").textContent = ''
 		el("quantumbtnPeak").textContent = ''
+	}
+
+	if (bigRip) el("quantumbtn").removeAttribute('ach-tooltip')
+	else {
+		let gluons = getGluonGains()
+		el("quantumbtn").setAttribute('ach-tooltip', `More information:
+			+${shortenDimensions(gluons.rg)} red-green gluons,
+			+${shortenDimensions(gluons.gb)} green-blue gluons,
+			+${shortenDimensions(gluons.br)} blue-red gluons
+		`)
 	}
 }
 

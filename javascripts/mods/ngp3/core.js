@@ -1,6 +1,6 @@
 //VERSION: 2.31
 let ngp3_ver = 2.31
-let ngp3_build = 20230321
+let ngp3_build = 20230327
 function doNGP3Updates() {
 	if (!aarMod.ngp3_build) aarMod.ngp3_build = 0
 	if (aarMod.ngp3_build < 20221230) quSave.multPower = 0
@@ -330,7 +330,7 @@ var ngp3Features = {
 	},
 	el: {
 		name: "Electrons",
-		threshold: () => "Get " + shorten(50) + " Quantum Worth",
+		threshold: () => "Get " + shorten(50) + " net Quarks",
 		next: "qc",
 		tab() {
 			showTab("quantumtab")
@@ -391,7 +391,7 @@ var ngp3Features = {
 	},
 	br: {
 		name: "Big Rip",
-		threshold: () => "Get 'The Challenging Day' achievement",
+		threshold: () => "Complete 24 Paired Challenge combinations",
 		next: "fu",
 		tab() {
 			showTab("quantumtab")
@@ -544,6 +544,7 @@ function updateNGP3Temp() {
 function doPerSecondNGP3Stuff(){
 	updateQuantumTabDisplays()
 	updateQuarkDisplay()
+	updateNetTop()
 	el('toggleautoquantummode').style.display = quSave?.reachedInfQK ? "" : "none"
 	el('dilationmode').style.display=speedrunMilestonesReached>4?"":"none"
 	el('rebuyupgmax').style.display=speedrunMilestonesReached<26?"":"none"
@@ -565,9 +566,11 @@ function doPerSecondNGP3Stuff(){
 	//Others
 	ngP3AchieveCheck()
 	doNGP3UnlockStuff()	
-	notifyGhostifyMilestones()
 
+	notifyGhostifyMilestones()
 	notifyQuantumMilestones()
+
+	updateMasteryStudyTextDisplay()
 	updateAssortOptions()
 	updateQuantumWorth()
 	updateQCDisplaysSpecifics()
@@ -725,6 +728,18 @@ function quantumOverallUpdating(diff){
 		}
 	}
 	thisQuantumTimeUpdating()
+}
+
+//Settings
+function updateNetTop(toggle) {
+	if (toggle) aarMod.netQuarkTop = !aarMod.netQuarkTop
+
+	el("netQuarkTop").style.display = quantumed ? "" : "none"
+	el("netQuarkTop").textContent = "Show net Quarks in: " + (aarMod.netQuarkTop ? "Top" : "Anti-Quarks")
+
+	el("quarks2").style.display = aarMod.netQuarkTop ? "" : "none"
+	el("quantumWorth1").style.display = aarMod.netQuarkTop ? "none" : ""
+	el("quantumWorth2").style.display = aarMod.netQuarkTop ? "none" : ""
 }
 
 //Setup
