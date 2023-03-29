@@ -1314,7 +1314,7 @@ function canEternity() {
 
 function eternity(force, auto, dil, presetLoad) {
 	if (!force && !canEternity()) return
-	if (!auto && !dil && player.options.eternityconfirm && !confirm("Eternity will reset everything except achievements and challenge records. You will also gain an Eternity point and unlock various upgrades.")) return
+	if (!auto && !dil && player.options.eternityconfirm && !confirm("Eternity will reset everything except achievements and challenge records. You will also gain an Eternity Point and unlock various upgrades.")) return
 
 	var oldEter = getEternitied()
 	var oldEP = player.eternityPoints
@@ -1779,7 +1779,7 @@ function dimensionTabDisplayUpdating(){
 	if (player.infDimensionsUnlocked[0] || player.eternities !== 0 || quantumed || inNGM(4)) el("dimTabButtons").style.display = "inline-block"
 
 	el("idtabbtn").style.display = ((player.infDimensionsUnlocked[0] || player.eternities > 0 || quantumed) && !inQC(8)) ? "" : "none"
-	el("tdtabbtn").style.display = ((player.eternities > 0 || quantumed || inNGM(4)) && (!inQC(8) || tmp.be)) ? "" : "none"
+	el("tdtabbtn").style.display = ((player.eternities > 0 || quantumed || inNGM(4)) && (!inQC(8) || tmp.be) && player.currentEternityChall != "eterc10") ? "" : "none"
 	el("mdtabbtn").style.display = hasDilStudy(6) ? "" : "none"
 }
 
@@ -1818,7 +1818,7 @@ function bigCrunchButtonUpdating(){
 			if (IPminpeak.log10() > 1e6) el("postInfinityButton").innerHTML = "Big Crunch"
 			else {
 				var IPminpart = IPminpeak.log10() > 1e4 ? "" : "<br>" + shortenDimensions(currentIPmin) + " IP/min" + "<br>Peaked at " + shortenDimensions(IPminpeak) + " IP/min"
-				el("postInfinityButton").innerHTML = "<b>" + (IPminpeak.log10() > 1e4 ? "Gain " : "Big Crunch for ") + shortenDimensions(gainedInfinityPoints()) + " Infinity points.</b>" + IPminpart
+				el("postInfinityButton").innerHTML = "<b>" + (IPminpeak.log10() > 1e4 ? "Gain " : "Big Crunch for ") + shortenDimensions(gainedInfinityPoints()) + " Infinity Points.</b>" + IPminpart
 			}
 		}
 	}
@@ -1899,7 +1899,7 @@ function doEternityButtonDisplayUpdating(diff){
 	else {
 		if ((EPminpeak.lt(pow10(9)) && EPminpeakType == "logarithm") || (EPminpeakType == 'normal' && EPminpeak.lt(pow10(1e9)))) {
 			el("eternitybtnEPGain").innerHTML = ((player.eternities > 0 && (player.currentEternityChall==""||player.options.theme=="Aarex's Modifications"))
-											? "Gain <b>"+(player.dilation.active?shortenMoney(getDilGain().sub(player.dilation.totalTachyonParticles)):shortenDimensions(gainedEternityPoints()))+"</b> "+(player.dilation.active?"Tachyon particles.":tmp.be?"EP and <b>"+shortenDimensions(getEMGain())+"</b> Eternal Matter.":"Eternity points.") : "")
+											? "Gain <b>"+(player.dilation.active?shortenMoney(getDilGain().sub(player.dilation.totalTachyonParticles)):shortenDimensions(gainedEternityPoints()))+"</b> "+(player.dilation.active?"Tachyon particles.":tmp.be?"EP and <b>"+shortenDimensions(getEMGain())+"</b> Eternal Matter.":"Eternity Points.") : "")
 		} else el("eternitybtnEPGain").innerHTML = "<b>Go eternal</b>"
 	}
 	var showEPmin=(player.currentEternityChall===""||player.options.theme=="Aarex's Modifications")&&EPminpeak>0&&player.eternities>0&&player.options.notation!='Morse code'&&player.options.notation!='Spazzy'&&(!(player.dilation.active||tmp.be)||isSmartPeakActivated)
@@ -1988,7 +1988,7 @@ function doGhostifyButtonDisplayUpdating(diff){
 	el("GHPPeak").textContent = ghostifyGains.length == 1 ? (showGHPPeakValue?"":"Peaked at ")+getGHPRate(GHPminpeak)+(showGHPPeakValue?" at "+shortenDimensions(GHPminpeakValue)+" ElP":"") : ""
 }
 
-function normalSacDisplay(){
+function normalSacDisplay() {
 	let unl = (player.resets > 4 || player.infinitied > 0 || player.eternities !== 0 || quantumed) && !inQC(6)
 	el("confirmation").style.display = unl ? "inline-block" : "none"
 	el("sacrifice").style.display = unl ? "inline-block" : "none"
@@ -2345,9 +2345,13 @@ function updateDisplays() {
 	galSacDisplay()
 	progressBarUpdating()
 
-	var s = shortenDimensions(player.infinityPoints)
-	el("infinityPoints1").innerHTML = "You have <span class=\"IPAmount1\">"+s+"</span> Infinity points."
-	el("infinityPoints2").innerHTML = "You have <span class=\"IPAmount2\">"+s+"</span> Infinity points."
+	let msg = shortenDimensions(player.infinityPoints)
+	el("infinityPoints1").innerHTML = "You have <span class='IPAmount'>"+msg+"</span> Infinity Points."
+	msg = "<b class='IPAmount'>"+msg+"</b> Infinity Points"
+	if (mod.ngp3 && hasTimeStudy(192)) msg += "<br><b class='IPAmount'>"+shortenDimensions(player.replicanti.amount)+"</b> Replicantis"
+	else msg = "You have "+msg+"."
+	el("infinityPoints2").innerHTML = msg
+
 	bigCrunchButtonUpdating()
 	challengeOverallDisplayUpdating()
 	nextICUnlockUpdating()
@@ -2357,7 +2361,11 @@ function updateDisplays() {
 	else el("iplimit").style.display = "none"
 	el("IPPeakDiv").style.display=(player.break&&mod.rs)?"":"none"
 
-	el("eternityPoints2").innerHTML = "You have <span class=\"EPAmount2\">"+shortenDimensions(player.eternityPoints)+"</span> Eternity points."
+	msg = "<span class='EPAmount2'>"+shortenDimensions(player.eternityPoints)+"</span> Eternity Points"
+	if (tmp.be) msg += "<br><span class='EPAmount2'>"+shortenDimensions(beSave.eternalMatter)+"</span> Eternal Matter"
+	else if (mod.ngp3 && hasDilStudy(6)) msg += "<br><span class='EPAmount2'>"+shortenDimensions(getEternitied())+"</span> Eternities"
+	else msg = "You have " + msg + "."
+	el("eternityPoints2").innerHTML = msg
 
 	if (el("loadmenu").style.display == "block") changeSaveDesc(meta.save.current, savePlacement)
 }

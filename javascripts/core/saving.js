@@ -141,7 +141,7 @@ function changeSaveDesc(saveId, placement) {
 				}
 			}
 		} else if (temp.exdilation==undefined?false:temp.blackhole.unl) {
-			var tempstart="Eternity points: "+shortenDimensions(E(temp.eternityPoints))
+			var tempstart="Eternity Points: "+shortenDimensions(E(temp.eternityPoints))
 			var tempend=", Black hole power: "+shortenMoney(E(temp.blackhole.power))
 			if (temp.exdilation.times > 0) msg+=tempstart+tempend+", Ex-dilation: "+shortenDimensions(E(temp.exdilation.unspent))
 			else msg+=tempstart+", Dilated time: "+shortenMoney(E(temp.dilation.dilatedTime))+", Banked infinities: "+getFullExpansion(temp.infinitiedBank)+", Replicanti: "+shortenMoney(E(temp.replicanti.amount))+tempend
@@ -149,22 +149,22 @@ function changeSaveDesc(saveId, placement) {
 			var temp2="Tachyon particles: "+shortenMoney(E(temp.dilation.totalTachyonParticles))+", Dilated time: "+shortenMoney(E(temp.dilation.dilatedTime))
 			if (temp.dilation.studies.includes(6)) temp2+=", Best meta-antimatter: "+shortenMoney(E(temp.meta.bestAntimatter))+", Meta-dimension shifts/boosts: "+temp.meta.resets
 			else if (!temp.dilation.studies.includes(5)) temp2="Time Theorems: "+shortenMoney(getTotalTT(temp))+", "+temp2
-			else if (!temp.dilation.upgrades.includes(10)) temp2="Eternity points: "+shortenDimensions(temp.eternityPoints)+", "+temp2
+			else if (!temp.dilation.upgrades.includes(10)) temp2="Eternity Points: "+shortenDimensions(temp.eternityPoints)+", "+temp2
 			msg+=temp2
 		} else {
 			var totalChallengeCompletions=(temp.aarexModifications.newGameMinusVersion?-6:0)
 			for (ec=1;ec<13;ec++) totalChallengeCompletions+=(temp.eternityChalls['eterc'+ec]?temp.eternityChalls['eterc'+ec]:0)
 			if (totalChallengeCompletions>0) {
 				msg+="Time Theorems: "+getFullExpansion(getTotalTT(temp))+", Challenge completions: "+totalChallengeCompletions
-			} else if (temp.eternities>(temp.aarexModifications.newGameMinusVersion?-20:0)) msg+="Eternity points: "+shortenDimensions(E(temp.eternityPoints))+", Eternities: "+temp.eternities.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")+", Time Theorems: "+getTotalTT(temp)
+			} else if (temp.eternities>(temp.aarexModifications.newGameMinusVersion?-20:0)) msg+="Eternity Points: "+shortenDimensions(E(temp.eternityPoints))+", Eternities: "+temp.eternities.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")+", Time Theorems: "+getTotalTT(temp)
 			else if (temp.achievements.includes("r51")) {
-				msg+="Antimatter: "+shortenMoney(E(temp.money))+", Infinity points: "+shortenDimensions(E(temp.infinityPoints))
+				msg+="Antimatter: "+shortenMoney(E(temp.money))+", Infinity Points: "+shortenDimensions(E(temp.infinityPoints))
 				if (temp.postChallUnlocked>0&&!temp.replicanti.unlocked) {
 					var totalChallengeCompletions=0
 					for (ic=1;ic<13;ic++) totalChallengeCompletions+=temp.challenges.includes("postc"+ic)?1:0
 					msg+=", Challenge completions: "+totalChallengeCompletions
 				}
-			} else if (temp.infinitied>(temp.aarexModifications.newGameMinusVersion?990:temp.aarexModifications.newGamePlusVersion?1:0)) msg+="Infinity points: "+shortenDimensions(E(temp.infinityPoints))+", Infinities: "+temp.infinitied.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")+", Challenge completions: "+temp.challenges.length
+			} else if (temp.infinitied>(temp.aarexModifications.newGameMinusVersion?990:temp.aarexModifications.newGamePlusVersion?1:0)) msg+="Infinity Points: "+shortenDimensions(E(temp.infinityPoints))+", Infinities: "+temp.infinitied.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")+", Challenge completions: "+temp.challenges.length
 			else if (temp?.galacticSacrifice?.times) msg+="Antimatter: "+shortenMoney(E(temp.money))+", Galaxy points: "+shortenDimensions(E(temp.galacticSacrifice.galaxyPoints))
 			else msg+="Antimatter: "+shortenMoney(E(temp.money))+", Dimension Shifts/Boosts: "+temp.resets+((temp.tickspeedBoosts != undefined ? (temp.resets > 0 || temp.tickspeedBoosts > 0 || temp.galaxies > 0 || temp.infinitied > 0 || temp.eternities != 0 || isSaveQuantumed) : false)?", Tickspeed boosts: "+getFullExpansion(temp.tickspeedBoosts):"")+", Galaxies: "+temp.galaxies
 		}

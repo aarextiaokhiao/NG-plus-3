@@ -36,7 +36,6 @@ function getQuarkChargeProduction() {
 	if (hasMasteryStudy("t421")) ret = ret.mul(getMTSMult(421))
 	if (hasNU(3)) ret = ret.mul(NT.eff("upg", 3))
 	if (hasNU(7)) ret = ret.mul(NT.eff("upg", 7))
-	ret = ret.pow(PHOTON.eff(6))
 	return ret
 }
 
@@ -94,7 +93,7 @@ var nanoRewards = {
 			return x * 2150
 		},
 		preon_charge: function(x) {
-			return pow2(x * 2)
+			return pow2(x * (hasNU(16) ? 4 : 2))
 		},
 		per_10_power: function(x) {
 			return x * 0.76
@@ -102,11 +101,11 @@ var nanoRewards = {
 		preon_energy: function(x) {
 			return pow2(x)
 		},
+		ms431_exp: function(x) {
+			return Math.log2(Math.max(x / 3, 2))
+		},
 		photon: function(x) {
 			return Math.pow(x / 5 + 1, 3)
-		},
-		light_threshold_speed: function(x) {
-			return Math.max(Math.sqrt(x + 1) / 4, 1)
 		}
 	},
 	effDisp: {
@@ -140,9 +139,12 @@ var nanoRewards = {
 		preon_energy: function(x) {
 			return "produce nanoenergy " + shorten(x) + "x faster"
 		},
+		ms431_exp: function(x) {
+			return "Raise Mastery Study 431 by ^" + shorten(x)
+		},
 		photon: function(x) {
 			return "gain " + shorten(x) + "x more Photons"
-		}	
+		}
 	},
 	usage: {
 		1: _ => hasNU(16) ? ["photon"] : ["hatch_speed"],
@@ -151,7 +153,7 @@ var nanoRewards = {
 		4: _ => ["dt_to_ma_exp"],
 		5: _ => ["dil_effect_exp"],
 		6: _ => ["meta_boost_power"],
-		7: _ => hasNU(6) ? ["preon_charge"] : ["remote_start", "preon_charge"],
+		7: _ => hasNU(6) ? ["ms431_exp", "preon_charge"] : ["remote_start", "preon_charge"],
 		8: _ => ["per_10_power", "preon_energy"],
 	},
 }
@@ -177,7 +179,6 @@ function getNanoRewardReq(additional){
 
 function getActiveNanoScalings(){
 	ret = [true, true]
-	//there are two total scalings and they all start active
 	return ret
 }
 
@@ -191,13 +192,7 @@ function getNanoRewardReqFixed(n){
 	let a = getActiveNanoScalings()
 	let s = getNanoScalingsStart()
 	if (n >= s[0] && a[0]) x = x.mul(E_pow(4.0, (n - s[0])))
-	if (n >= s[1] && a[1]) x = x.mul(E_pow(2.0, (n - s[1]) * (n - s[1] + 3)))
-	return x.pow(getNanoRewardThresholdExp())
-}
-
-function getNanoRewardThresholdExp() {
-	let x = 1
-	if (hasAch("ng3p113")) x /= 2
+	if (n >= s[1] && a[1]) x = x.mul(E_pow(2.0, (n - s[1]) * (n - s[1] + 3) / PHOTON.eff(5)))
 	return x
 }
 

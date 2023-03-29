@@ -127,12 +127,12 @@ let PHOTON = {
 			desc: e => `Discharged Galaxies work, but as ${(e*100).toFixed(1)}% effective.`
 		}, {
 			name: "violet",
-			eff: a => Math.cbrt(a / 3 + 1),
-			desc: e => `2nd Infinite Time softcap scales ^${shorten(e)} later.`
+			eff: a => Math.cbrt(a + 1),
+			desc: e => `Post-16 Nanoreward scaling scales ${shorten(e)}x slower.`
 		}, {
 			name: "ultraviolet",
 			eff: a => Math.cbrt(a + 1),
-			desc: e => `Raise Emperor Dimensions and Nanocharge by ^${shorten(e)}.`
+			desc: e => `Raise Emperor Dimensions by ^${shorten(e)}.`
 		}
 	],
 	eff(x, def = 1) {

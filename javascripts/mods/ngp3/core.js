@@ -1,6 +1,6 @@
 //VERSION: 2.31
 let ngp3_ver = 2.31
-let ngp3_build = 20230327
+let ngp3_build = 20230328
 function doNGP3Updates() {
 	if (!aarMod.ngp3_build) aarMod.ngp3_build = 0
 	if (aarMod.ngp3_build < 20221230) quSave.multPower = 0
@@ -646,7 +646,7 @@ function ngP3AchieveCheck() {
 	if (nG(getInfinitied(), Number.MAX_VALUE)) giveAchievement("Meta-Infinity confirmed?")
 	if (getRadioactiveDecays('r') >= 1 && !brSave.times) giveAchievement("Weak Decay")	
 	if (getRadioactiveDecays('r') >= 1) giveAchievement("Radioactive Decaying to the max!")
-	if (ghSave.best <= 20) giveAchievement("Running through Big Rips")
+	if (ghSave.best <= 30) giveAchievement("Running through Big Rips")
 	if (masteryStudies.bought >= 48) giveAchievement("The Theory of Ultimate Studies")
 	if (ghSave.photons.lighten) giveAchievement("Here comes the light")
 

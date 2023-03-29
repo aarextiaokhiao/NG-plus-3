@@ -47,7 +47,6 @@ function getDTMultNGP3() {
 		if (hasAch("ng3p11")) gain = gain.mul(Math.max(player.galaxies / 600 + 0.5, 1))
 		if (hasAch("ng3p41")) gain = gain.mul(E_pow(4, Math.sqrt(nfSave.rewards)))
 		if (hasMasteryStudy("t263")) gain = gain.mul(getMTSMult(263))
-		if (hasMasteryStudy("t281")) gain = gain.mul(getMTSMult(281))
 		if (hasMasteryStudy("t322") && !dev.testZone) gain = gain.mul(getMTSMult(322))
 		if (hasMasteryStudy("t341")) gain = gain.mul(getMTSMult(341))
 
@@ -55,10 +54,17 @@ function getDTMultNGP3() {
 		if (hasGluonUpg("br2")) gain = gain.mul(E_pow(2.2, Math.pow(tmp.sacPow.max(1).log10() / 1e6, 0.25)))
 		gain = gain.mul(tmp.qc.reward[1])
 		if (hasNanoReward("dil_gal_gain")) gain = E(tmp.nf.eff.dil_gal_gain).pow(player.replicanti.galaxies).mul(gain)
-		gain = gain.mul(getTreeUpgradeEffect(7))
+		gain = gain.mul(getReplDilBonus())
 	}
 	if (hasAch("ngpp13")) gain = gain.mul(2)
 	if (hasBU(15)) gain = gain.mul(tmp.blu[15].dt)
+	return gain
+}
+
+function getReplDilBonus() {
+	let gain = E(1)
+	if (hasMasteryStudy("t281")) gain = gain.mul(getMTSMult(281))
+	if (hasMasteryStudy("d13")) gain = gain.mul(getTreeUpgradeEffect(7))
 	return gain
 }
 

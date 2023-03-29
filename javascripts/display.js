@@ -402,16 +402,21 @@ function replicantiDisplay() {
 	el("replicantiunlock").style.display=!unl?"":"none"
 
 	if (unl) {
+		let time = mod.ngp3 && player.dilation.upgrades.includes(6)
+		let dil = hasMasteryStudy("t281") || hasMasteryStudy("d13")
+		el("replicantiamount").textContent = shortenDimensions(player.replicanti.amount) + (hasTimeStudy(192) ? "" : " / " + shortenDimensions(getReplicantiLimit()))
+		el("replicantieff").textContent = shiftDown ? "Efficiency: " + shorten(tmp.rep.eff) + "x" : ""
+		el("replicantimult").textContent = shorten(dil ? getReplDilBonus() : time ? tmp.rep.eff.pow(0.1) : getIDReplMult()) + "x"
+		el("replDesc").textContent = dil ? "dilated time" : time ? "Time Dimensions" : " Infinity Dimensions"
+
 		let replGalOver = getMaxRG() - player.replicanti.gal
 		let chance = Decimal.mul(tmp.rep.chance, 100)
-		el("replicantiamount").textContent = shortenDimensions(player.replicanti.amount)
-		el("replicantimult").textContent = shorten(getIDReplMult())
-		
-		var chanceDisplayEnding = (isChanceAffordable() && player.infinityPoints.lt(pow10(1e9)) ? "<br>+1% Cost: " + shortenCosts(player.replicanti.chanceCost) + " IP" : "")
+		let chanceDisplayEnding = (isChanceAffordable() && player.infinityPoints.lt(pow10(1e9)) ? "<br>+1% Cost: " + shortenCosts(player.replicanti.chanceCost) + " IP" : "")
 		el("replicantichance").innerHTML = (tmp.rep.freq?"Frequency: "+shorten(tmp.rep.freq)+"x":"Chance: "+getFullExpansion(chance.gt(1e12)?chance:Math.round(chance.toNumber()))+"%") + chanceDisplayEnding
 		el("replicantiinterval").innerHTML = "Interval: "+timeDisplayShort(Decimal.div(tmp.rep.interval, 100), true, 3) + (isIntervalAffordable() ? "<br>→ "+timeDisplayShort(Decimal.mul(tmp.rep.interval, 9e-3), true, 3)+" Cost: "+shortenCosts(player.replicanti.intervalCost)+" IP" : "")
-		var replGalName = player.replicanti.gal < 3e3 ? "Max Replicanti Galaxies" : (player.replicanti.gal < 58200 ? "Distant" : "Farther") + " Replicanti Galaxies"
-		var replGalCostPortion = player.infinityPoints.lt(pow10(1e9)) ? "<br>+1 Cost: " + shortenCosts(getRGCost()) + " IP" : ""
+
+		let replGalName = player.replicanti.gal < 3e3 ? "Max Replicanti Galaxies" : (player.replicanti.gal < 58200 ? "Distant" : "Farther") + " Replicanti Galaxies"
+		let replGalCostPortion = player.infinityPoints.lt(pow10(1e9)) ? "<br>+1 Cost: " + shortenCosts(getRGCost()) + " IP" : ""
 		el("replicantimax").innerHTML = replGalName + ": " + getFullExpansion(player.replicanti.gal) + (replGalOver > 1 ? "+" + getFullExpansion(replGalOver) : "") + replGalCostPortion
 		el("replicantireset").innerHTML = (hasAch("ng3p67") ? "Get " : hasAch("ngpp16") ? "Divide replicanti by " + shorten(Number.MAX_VALUE) + " for" : "Reset replicanti amount for") + " 1 galaxy.<br>" + getFullExpansion(player.replicanti.galaxies) + getExtraReplGalaxyDisp() + " replicanti galax" + (getTotalRG() == 1 ? "y" : "ies") + " created."
 		el("replicantiapprox").innerHTML = mod.ngp3 && player.dilation.upgrades.includes("ngpp1") && hasTimeStudy(192) && player.replicanti.amount.gte(Number.MAX_VALUE) && (!mod.udsp || aarMod.nguepV) ? 

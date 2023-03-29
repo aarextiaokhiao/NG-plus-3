@@ -138,7 +138,7 @@ strong { color: #0072e5 }
 .infinitybtn:hover, .newdim:hover, #infinitydimensions td:nth-child(4) .storebtn:hover, #replicantichance.storebtn:hover, #replicantiinterval.storebtn:hover, #replicantimax.storebtn:hover, .respecbtn:hover {
     background-color: #e2bd00 !important
 }
-.IPAmount1, .IPAmount2, #infPowAmount, #infDimMultAmount, #infDimEffectPower, #replicantiamount, #replicantimult {
+.IPAmount, #infPowAmount, #infDimMultAmount, #infDimEffectPower, #replicantiamount, #replicantimult {
     color: #e2bd00 !important
 }
 .infinistorebtn1, .infinistorebtn3 {

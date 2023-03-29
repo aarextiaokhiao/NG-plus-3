@@ -232,7 +232,7 @@ input[type=checkbox] {
     background-position: 1px 1px, 0 0;
     width: 14px !important;
     height: 14px !important;
-    display: inline-block !important;
+    display: inline-block;
     transform: translateY(5px);
     text-align: center;
 }
@@ -412,7 +412,7 @@ option {
     color: #99f;
     text-shadow: 0 0 5px #99f;
 }
-.IPAmount1, .IPAmount2 {
+.IPAmount {
     color: #fa7;
     text-shadow: 0 0 5px #fa7;
 }

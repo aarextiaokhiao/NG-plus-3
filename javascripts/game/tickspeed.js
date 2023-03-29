@@ -1,6 +1,6 @@
 function getTickSpeedMultiplier() {
 	let ret = E(getGalaxyTickSpeedMultiplier())
-	if (isBreakUpgActive(5)) ret = ret.div(getBreakUpgMult(5))
+	if (isBreakUpgActive(5)) ret = ret.div(tmp.beu[5])
 	return ret.min(1)
 }
 

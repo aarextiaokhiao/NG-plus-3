@@ -84,7 +84,7 @@ button:hover {
 	color: #ff7f00 !important
 }
 
-.IPAmount1, .IPAmount2, .IPAmount1, .IPAmount2, #infPowAmount, #infDimMultAmount, #replicantiamount, #replicantimult {
+.IPAmount, #infPowAmount, #infDimMultAmount, #replicantiamount, #replicantimult {
 	color: #bf8f00 !important
 }
 

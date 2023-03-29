@@ -41,7 +41,7 @@ function getGalaxyRequirement(offset = 0, display) {
 	if (inNC(4)) amount = !inNGM(3) ? 99 + base : amount + (inNGM(4) ? 20 : -30)
 	if (tmp.be) {
 		amount *= 50
-		if (isBreakUpgActive(2)) amount /= getBreakUpgMult(2)
+		if (isBreakUpgActive(2)) amount /= tmp.beu[2]
 	}
 	if (!mod.rs) {
 		let distantStart = getDistantScalingStart()

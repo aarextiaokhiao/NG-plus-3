@@ -222,7 +222,7 @@ function doQuantumProgress() {
 		var percentage = Math.min(player.eternityPoints.max(1).log10() / 12.15, 100).toFixed(2) + "%"
 		el("progressbar").style.width = percentage
 		el("progresspercent").textContent = percentage
-		el("progresspercent").setAttribute('ach-tooltip','Eternity points percentage to Break Eternity')
+		el("progresspercent").setAttribute('ach-tooltip','Eternity Points percentage to Break Eternity')
 	} else if (id == 5) {
 		var percentage = Math.min(brSave.bestThisRun.max(1).log(getQCGoal()) * 100, 100).toFixed(2) + "%"
 		el("progressbar").style.width = percentage

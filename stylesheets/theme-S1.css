@@ -147,12 +147,7 @@ body {
     background: #7d3c1b !important;
 }
 
-.IPAmount1 {
-    color: #7d3c1b;
-    text-shadow: 1px 1px 0px black;
-}
-
-.IPAmount2 {
+.IPAmount {
     color: #7d3c1b;
     text-shadow: 1px 1px 0px black;
 }

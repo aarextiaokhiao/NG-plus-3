@@ -190,10 +190,10 @@ const NEUTRINO = NT = {
 				},
 				effDesc: e => `2nd Infinite Time softcap starts <b>^${shorten(e)}</b> later.`,
 			}, {
-				cost: E(1e45),
+				cost: E(1e100),
 				eff(nt) {
 					nt = nt[0].add(1).log10()*nt[1].add(1).log10()*nt[2].add(1).log10()
-					return Math.min(Math.log10(nt / 5 + 1) / 5, 1)
+					return Math.min(Math.log10(nt + 1) / 10, 1)
 				},
 				effDesc: e => `<b>^${shorten(e)}</b> of RG strength carries to Galaxies.`,
 			}
@@ -311,7 +311,7 @@ const NEUTRINO = NT = {
 			}, {
 				unl: _ => PHOTON.unlocked(),
 				cost: E(1e40),
-				desc: `First Nanobenefit boosts Photons instead.`
+				desc: `Unlock new Nanobenefits. 7th Nanobenefit gives more Nanocharge.`
 			}
 		]
 	},

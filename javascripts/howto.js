@@ -161,7 +161,7 @@ let HOW_TO = [
 
 		title: "Break Infinity",
 		layer: "infinity",
-		desc: `Originally Antimatter Dimensions was restricted by "Infinity". Since a significant update, you can now "Break Infinity" once your Big Crunch autobuyer has been maxed. This opens up a selection of new upgrades as well as the ability to gain more than 1 infinity point per run.
+		desc: `Originally Antimatter Dimensions was restricted by "Infinity". Since a significant update, you can now "Break Infinity" once your Big Crunch autobuyer has been maxed. This opens up a selection of new upgrades as well as the ability to gain more than 1 infinity Point per run.
 		<br>
 		<b>Fixing Infinity:</b>You can revert the breaking at anytime by clicking fix infinity.
 		<br>
@@ -174,7 +174,7 @@ let HOW_TO = [
 		layer: "infinity",
 		desc: `<b>Unlocking Infinity Dimensions:</b>Infinity Dimensions are unlocked by reaching a certain amount of antimatter.
 		<br>
-		<b>Infinity Dimension Cost:</b>Infinity dimensions are only purchasable in sets of 10, and cost Infinity points.
+		<b>Infinity Dimension Cost:</b>Infinity dimensions are only purchasable in sets of 10, and cost Infinity Points.
 		<br>
 		<b>Infinity Dimension Production:</b>Similar to the original dimensions, each infinity dimension produces the dimension below it. Dimension 3 produce 2, 2 produces 1.	Instead of antimatter, Infinity Dimension produces Infinity power, which translates to an overall multiplier on all original dimensions.
 		<br>
@@ -247,7 +247,7 @@ let HOW_TO = [
 		layer: "eternity",
 		desc: `A Time Study is a powerful post-eternity upgrade, which costs Time Theorems. Time Studies are laid out in a tree-like fashion, where you must buy prerequisites before continuing. There are sometimes choices to make with which Time Study to buy, as you cannot get all of them even if affordable.
 		<br>
-		Time Theorems are a limited resource which costs more for each one you buy. They can be bought with antimatter, infinity points, and eternity points.
+		Time Theorems are a limited resource which costs more for each one you buy. They can be bought with antimatter, Infinity Points, and Eternity Points.
 		<br>
 		<b>Respecs:</b> A Respec allows you to reset the upgrades you have in the tree to retrieve the Time Theorems spent on them. It can be done for free on eternity.
 		<br>

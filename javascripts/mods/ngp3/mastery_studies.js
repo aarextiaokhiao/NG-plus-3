@@ -201,7 +201,8 @@ var masteryStudies = {
 			var gals = player.dilation.freeGalaxies
 
 			var base = Math.max(gals / 1e4, 1)
-			var exp = Math.max(gals / 5e3 - 1, 1)
+			var exp = Math.max(gals / 4e3 - 2, 1)
+			if (hasNanoReward("ms431_exp")) exp *= tmp.nf.eff.ms431_exp
 			return E_pow(base, exp)
 		}
 	},
@@ -221,7 +222,7 @@ var masteryStudies = {
 		273: "Replicate chance boosts itself.",
 		281: "Replicanti multiplier boosts DT production at a greatly reduced rate.",
 		282: "Replicanti multiplier boosts Meta Dimensions at a greatly reduced rate.",
-		291: "You gain 1% of your EP gained on Eternity per second.",
+		291: "You gain 1% of your EP gained on Eternity Per second.",
 		292: "Gain Tachyon Particles based on best antimatter in dilation.",
 		301: "Extra Replicated Galaxies scale Remote Galaxies later.",
 		302: "You can buy all Time Studies.",
@@ -760,7 +761,3 @@ function recordUpDown(x) {
 	upDown.times++
 	if (upDown.times>=200) giveAchievement("Up and Down and Up and Down...")
 }
-
-
-
-

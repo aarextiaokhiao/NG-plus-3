@@ -39,8 +39,8 @@ function getSpaceShardsGain() {
 	let ret = bigRipped() ? brSave.bestThisRun : player.money
 	ret = E_pow(ret.add(1).log10() / 2000, 1.5).mul(player.dilation.dilatedTime.add(1).pow(0.05)).div(50)
 	if (tmp.be) {
-		if (isBreakUpgActive(3)) ret = ret.mul(getBreakUpgMult(3))
-		if (isBreakUpgActive(6)) ret = ret.mul(getBreakUpgMult(6))
+		if (isBreakUpgActive(3)) ret = ret.mul(tmp.beu[3])
+		if (isBreakUpgActive(6)) ret = ret.mul(tmp.beu[6])
 	}
 	if (hasNU(9)) ret = ret.mul(Decimal.max(getEternitied(), 1).pow(0.1))
 
@@ -281,7 +281,7 @@ function updateBreakEternityUpgrade1Temp(){
 	var em = beSave.eternalMatter
 	var log1 = ep.div("1e1280").add(1).log10()
 	var log2 = em.mul(10).max(1).log10()
-	var exp = isBreakUpgActive(9) ? Math.pow(log1, 0.5) / 8 + Math.pow(log2, 2) / 200 :
+	var exp = isBreakUpgActive(9) ? Math.pow(log1, 0.5) / 15 + Math.pow(log2, 2) / 400 :
 		Math.pow(log1, 1/3) * 0.5 + Math.pow(log2, 1/3)
 	tmp.beu[1] = pow10(exp)
 }
@@ -306,7 +306,7 @@ function updateBreakEternityUpgrade4Temp(){
 	var ss = brSave && brSave.spaceShards
 	var log1 = ep.div("1e1860").add(1).log10()
 	var log2 = ss.div("7e19").add(1).log10()
-	var exp = isBreakUpgActive(9) ? Math.pow(log1, 0.5) / 2 + Math.pow(log2, 1.5) / 10 :
+	var exp = isBreakUpgActive(9) ? Math.pow(log1, 0.5) / 15 + Math.pow(log2, 1.5) / 8 :
 		Math.pow(log1, 1/3) + Math.pow(log2, 1/3) * 8
 	tmp.beu[4] = pow10(exp)
 }

@@ -297,7 +297,7 @@ function galacticUpgradeSpanDisplay () {
 function updateGalaxyUpgradesDisplay(){
 	var text41 = inNGM(4) ? "Square g11, and tickspeed boosts multiply GP gain." : "Galaxy points boost per-10 bought Infinity Dimensions multiplier."
 	el("galaxy41").innerHTML = text41 + "<br>Cost: <span id='galcost41'></span> GP"
-	var text42 = inNGM(4) ? "Buff g12 and make it post dilation." : "Eternity points reduce Infinity Dimension cost multipliers."
+	var text42 = inNGM(4) ? "Buff g12 and make it post dilation." : "Eternity Points reduce Infinity Dimension cost multipliers."
 	el("galaxy42").innerHTML = text42 + "<br>Cost: <span id='galcost42'></span> GP"
 	var text43 = inNGM(4) ? "Reduce Dimension Boost cost multiplier by 1, and Dimension Boosts multiply GP gain." : "Galaxy points boost Time Dimensions."
 	var curr43 = inNGM(4) ? "" : "<br>Currently: <span id='galspan43'>?</span>x"

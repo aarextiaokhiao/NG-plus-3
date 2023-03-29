@@ -146,7 +146,7 @@ button, div.storebtn {
 	display: none
 }
 
-.IPAmount2, #sacrificedIP, #infPowAmount, #infPowEffectPower, #infDimMultAmount, #replicantiamount, #replicantimult, #replicantiAmount2, #InfAndReplMultAmount {
+.IPAmount, #sacrificedIP, #infPowAmount, #infPowEffectPower, #infDimMultAmount, #replicantiamount, #replicantimult, #replicantiAmount2, #InfAndReplMultAmount {
 	color: #e59900 !important;
 }
 
