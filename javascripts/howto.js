@@ -397,10 +397,10 @@ let HOW_TO = [
 
 		title: "Photons",
 		layer: "fundament",
-		desc: `Best Tachyon Particles produce Photons. Spend Elementary Particles, Neutrinos, or Photons for Spectral Ions.<br>
-		On clicking "Transfer", Spectral Ions go to Lights which boost things. Caps can be increased, only by +1.
+		desc: `Best Tachyon Particles produce Photons. Your Elementary Particles, Neutrinos, Photons give Light Emissions.<br>
+		For each Light, the amount is dependent on Light Emissions. One of them can be converted into the next color.
 		<br><br>
-		On getting all Lights with all +1 on, you'll get a Light Empowerment. This also increases the cap by +1.`
+		Having enough Light Emissions allow you to get Enlightenments, which increase the limit of transferrable Lights in one color.`
 	}, {
 		mod: _ => ngp3,
 		req: _ => ghSave?.wzb.unl,
