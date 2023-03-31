@@ -397,10 +397,14 @@ let HOW_TO = [
 
 		title: "Photons",
 		layer: "fundament",
-		desc: `Best Tachyon Particles produce Photons. Your Elementary Particles, Neutrinos, Photons give Light Emissions.<br>
-		For each Light, the amount is dependent on Light Emissions. One of them can be converted into the next color.
+		desc: `Best Tachyon Particles produce Photons. Photons reset on Fundament.
 		<br><br>
-		Having enough Light Emissions allow you to get Enlightenments, which increase the limit of transferrable Lights in one color.`
+		Your Elementary Particles, Neutrinos, Photons give Light Emissions.<br>
+		Every Light has a capacity dependent on Light Emissions, but has a limit.<br>
+		Having enough Lights allow you to Enlighten, which increase all Light limits.
+		<br><br>
+		The multiplier portions can be traded through Lights.<br>
+		Trading will either increase, or decrease if you have no percentage to trade.`
 	}, {
 		mod: _ => ngp3,
 		req: _ => ghSave?.wzb.unl,

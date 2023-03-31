@@ -266,6 +266,10 @@ RESETS.funda = {
 		ghSave.under = true
 		ghSave.another = 10
 		ghSave.reference = 10
+
+		ghSave.photons.amt = E(0)
+		ghSave.photons.light = []
+		delete ghSave.photons.emission[2]
 	}
 }
 
