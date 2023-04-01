@@ -43,7 +43,7 @@ function doNGP3Updates() {
 		alert("Due to massive balancing changes, you will be pushed back to e20 Elementary Particles!")
 		doReset("qu")
 	}
-	if (aarMod.ngp3_build < 20230331) {
+	if (aarMod.ngp3_build < 20230331 && ghSave) {
 		delete ghSave.wzb
 		delete ghSave.hb
 		delete ghSave.bl
