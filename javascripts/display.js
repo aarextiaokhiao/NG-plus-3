@@ -393,7 +393,7 @@ function updateTabDisplay() {
 	if (el("quantumtab").style.display == "block") updateQuantumTabs()
 	if (el("replicants").style.display == "block") updateReplicantsTab()
 	if (el("ghostify").style.display == "block") updateGhostifyTabs()
-	if (el("bltab").style.display == "block") updateBosonicLabTab()
+	//if (el("bltab").style.display == "block") updateBosonicLabTab()
 }
 
 function replicantiDisplay() {
@@ -659,7 +659,7 @@ function updateHeaders() {
 
 	//Side-Tabs
 	el("challengesbtn").style.display = chal ? "inline-block" : "none"
-	el("tab_bl").style.display = funda && ghSave.wzb.unl ? "inline-block" : "none"
+	//el("tab_bl").style.display = funda && ghSave.wzb.unl ? "inline-block" : "none"
 }
 
 function updateResetTierButtons(){

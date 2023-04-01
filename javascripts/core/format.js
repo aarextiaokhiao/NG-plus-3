@@ -956,7 +956,6 @@ function onNotationChange() {
 		updateQuantumChallenges()
 		updateTODStuff()
 	}
-	if (ghostified) updateBosonicStuffCosts()
 	el("achmultlabel").textContent = "Current achievement multiplier on each Dimension: " + shortenMoney(player.achPow) + "x"
 	if (hasAch("ng3p18") || hasAch("ng3p37")) {
 		el('bestTP').textContent="Your best"+(ghostified ? "" : " ever")+" Tachyon particles"+(ghostified ? " in this Fundament" : "")+" was "+shorten(player.dilation.bestTP)+"."

@@ -64,8 +64,8 @@ function assignQuark(color) {
 		return
 	}
 	if (color != "r" && quSave.times < 2 && !ghostified && !confirm("It is strongly recommended to assign your first quarks to red. Are you sure you want to do that?")) return
-	var mult = getQuarkAssignMult()
-	quSave.usedQuarks[color] = quSave.usedQuarks[color].add(usedQuarks.mul(mult)).round()
+
+	quSave.usedQuarks[color] = quSave.usedQuarks[color].add(usedQuarks).round()
 	quSave.quarks = quSave.quarks.sub(usedQuarks)
 	updateQuarkDisplay()
 	if (!mult.eq(1)) updateQuantumWorth()
@@ -82,11 +82,10 @@ function assignAll(auto) {
 	var sum = ratios.r+ratios.g+ratios.b
 	var oldQuarks = getAssortAmount()
 	var colors = ['r','g','b']
-	var mult = getQuarkAssignMult()
 	for (c = 0; c < 3; c++) {
 		var toAssign = oldQuarks.mul(ratios[colors[c]]/sum).round()
 		if (toAssign.gt(0)) {
-			quSave.usedQuarks[colors[c]] = quSave.usedQuarks[colors[c]].add(toAssign.mul(mult)).round()
+			quSave.usedQuarks[colors[c]] = quSave.usedQuarks[colors[c]].add(toAssign).round()
 			if (ghSave?.another > 0) ghSave.another--
 		}
 	}
@@ -119,12 +118,6 @@ function toggleAutoAssign() {
 function rotateAutoAssign() {
 	quSave.autoOptions.assignQKRotate=quSave.autoOptions.assignQKRotate?(quSave.autoOptions.assignQKRotate+1)%3:1
 	el('autoAssignRotate').textContent="Rotation: "+(quSave.autoOptions.assignQKRotate>1?"Left":quSave.autoOptions.assignQKRotate?"Right":"None")
-}
-
-function getQuarkAssignMult() {
-	let r = E(1)
-	if (hasBU(23)) r = r.mul(tmp.blu[23])
-	return r
 }
 
 function getAssortPercentage() {
@@ -237,6 +230,7 @@ function updateColorPowers(log) {
 		if (hasNB(5)) sc_exp += NT.eff("boost", 5, 0) / 2
 		if (sc_exp < 1) red = Math.pow(red / 2.3, sc_exp) * 2.3
 	}
+	if (red > 5) red = Math.log10(red * 2) + 4
 	tmp.color_eff.r = red
 
 	//Green
@@ -359,7 +353,7 @@ function updateQuarksTab(tab) {
 	if (hasBraveMilestone(8)) {
 		var assortAmount=getAssortAmount()
 		var colors=['r','g','b']
-		el("assort_amount").textContent = shortenDimensions(assortAmount.mul(getQuarkAssignMult()))
+		el("assort_amount").textContent = shortenDimensions(assortAmount)
 		for (c = 0; c < 3; c++) if (colorCharge[colors[c]].div(colorCharge.qwBonus).lte(1e16)) el(colors[c]+"PowerRate").textContent="+"+shorten(getColorPowerProduction(colors[c]))+"/s"
 
 		el("assignAllButton").className = (assortAmount.lt(1) ? "unavailabl" : "stor") + "ebtn"
@@ -411,7 +405,7 @@ function updateQuarksTabOnUpdate(mode) {
 
 	var assortAmount = getAssortAmount()
 	var canAssign = assortAmount.gt(0)
-	el("assort_amount").textContent = shortenDimensions(assortAmount.mul(getQuarkAssignMult()))
+	el("assort_amount").textContent = shortenDimensions(assortAmount)
 	el("redAssort").className = canAssign ? "storebtn" : "unavailablebtn"
 	el("greenAssort").className = canAssign ? "storebtn" : "unavailablebtn"
 	el("blueAssort").className = canAssign ? "storebtn" : "unavailablebtn"

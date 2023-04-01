@@ -215,27 +215,6 @@ function automatorTick(diff) {
 	if (!isAutoGhostsSafe) return
 
 	//Ghostify Layer
-	if (ghSave.wzb.unl) {
-		if (isAutoGhostActive(17)) {
-			let ag = ghSave.automatorGhosts[17]
-
-			let change = getRemainingExtractTime().gte(ag.s || 60)
-			if (!change) change = ag.oc && ag.t >= 2
-			if (change) changeTypeToExtract(blSave.typeToExtract % br.limit + 1)
-
-			if (!blSave.extracting) extract()
-		}
-		if (isAutoGhostActive(20)) buyMaxBosonicUpgrades()
-		if (isAutoGhostActive(21)) {
-			let data = ghSave.wzb
-			let hasWNB = data.wnb.gt(0)
-
-			if (data.dPUse == 0 && data.dP.gt(0)) useAntiPreon(hasWNB ? 3 : 1)
-			if (data.dPUse == 1) useAntiPreon(hasWNB ? 3 : 2)
-			if (data.dPUse == 2) useAntiPreon(1)
-			if (data.dPUse == 3 && !hasWNB) useAntiPreon(2)
-		}
-	}
 	if (isAutoGhostActive(19)) {
 		let ag = ghSave.automatorGhosts[19]
 		let perSec = 1/2

@@ -90,7 +90,7 @@ function canGetBadge(x) {
 		if (data[0] == "p3") return
 	}
 	if (data[0] == "sp" && (!ngp3 || mod.ngud != 3)) return
-	if (data[1] == "ir") return
+	if (data[1] == "ir" || data[1] == "bl") return
 	if (data[0][0] == "m") return ngmX >= data[0][1]
 	if (x == "tgr") return ngp3 && !mod.ngp
 	return true
@@ -138,7 +138,7 @@ function obtainBadges() {
 		if (quantumed) onObtainBadgeCheck("p3_qu")
 		if (hasMasteryStudy("d10")) onObtainBadgeCheck("p3_ant")
 		if (ghostified) onObtainBadgeCheck("p3_fu")
-		if (ghSave?.wzb.unl) onObtainBadgeCheck("p3_bl")
+		//if (ghSave?.wzb.unl) onObtainBadgeCheck("p3_bl")
 	}
 	if (mod.ngud == 3) {
 		if (quantumed) onObtainBadgeCheck("sp_qu")

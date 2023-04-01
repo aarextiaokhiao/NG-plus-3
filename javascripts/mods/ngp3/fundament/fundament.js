@@ -11,9 +11,7 @@ function setupFundament() {
 		neutrinos: NT.setup(),
 		automatorGhosts: setupAutomaticGhostsData(),
 		photons: PHOTON.setup(),
-		bl: getBrandNewBosonicLabData(),
-		wzb: getBrandNewWZBosonsData(),
-		hb: setupHiggsSave()
+		lab_real: BOSONIC_LAB.setup()
 	}
 }
 
@@ -34,22 +32,6 @@ function loadFundament() {
 	updateBraveMilestones()
 	updateAutoGhosts(true)
 	updatePhotonUnlocks()
-
-	if (!blSave.usedEnchants.length) blSave.usedEnchants=[]
-	for (var g2 = 2; g2 <= br.maxLimit; g2++) for (var g1 = 1; g1 < g2; g1++) if (blSave.enchants[g1*10+g2]) blSave.enchants[g1*10+g2] = E(blSave.enchants[g1*10+g2])
-	el("odSlider").value=Math.round((blSave.odSpeed-1)/4*50)
-	blSave.odSpeed = Math.max(blSave.odSpeed, 1)
-	for (var g=1;g<=br.limit;g++) el("typeToExtract"+g).className=blSave.typeToExtract==g?"chosenbtn":"storebtn"
-	updateBLUnlocks()
-	updateBosonicLimits()
-	updateBosonicStuffCosts()
-	updateBLParticleUnlocks()
-
-	if (ghSave.wzb.dPUse === undefined) {
-		ghSave.wzb.dPUse = 0
-		ghSave.wzb.wQkUp = true
-		ghSave.wzb.zNeGen = 1
-	}
 }
 
 function unlockFundament() {
@@ -284,8 +266,6 @@ function denyGhostify() {
 }
 
 function updateGhostifyTempStuff() {
-	updateBosonicLabTemp()
-
 	if (!ghostified) return
 	tmp.funda = {}
 	PHOTON.temp()
@@ -355,13 +335,6 @@ function getGHPRate(num) {
 	if (num.lt(1 / 60)) return (num * 1440).toFixed(1) + " ElP/day"
 	if (num.lt(1)) return (num * 60).toFixed(1) + " ElP/hr"
 	return shorten(num) + " ElP/min"
-}
-
-//Ghostified
-function getGhostifiedGain() {
-	let r = 1
-	if (hasBU(15)) r = nN(tmp.blu[15].gh)
-	return r
 }
 
 //Brave Milestones

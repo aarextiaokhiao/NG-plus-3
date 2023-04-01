@@ -1156,10 +1156,10 @@ function toggleBulk() {
 function toggleHotkeys() {
 	if (player.options.hotkeys) {
 		player.options.hotkeys = false
-		el("hotkeys").textContent = "Enable hotkeys"
+		el("disablehotkeys").textContent = "Enable hotkeys"
 	} else {
 		player.options.hotkeys = true
-		el("hotkeys").textContent = "Disable hotkeys"
+		el("disablehotkeys").textContent = "Disable hotkeys"
 	}
 }
 
@@ -1179,7 +1179,8 @@ function updateHotkeys() {
 	if (hasAch("ng3p51")) html += ", B for Big Rip, F to fundament"
 	html += "."
 	if (mod.rs) html += "<br>You can hold shift while buying time studies to buy all up until that point, see each study's number, and save study trees."
-	html += "<br>Hotkeys do not work while holding control."
+	if (BOSONIC_LAB.started() && ghSave.lab_real.signed) html += "<br><b onclick='BOSONIC_LAB.findKey()'>Hotkeys</b> do not work while holding control."
+	else html += "<br>Hotkeys do not work while holding control."
 	el("hotkeysDesc").innerHTML = html
 }
 
@@ -1579,15 +1580,6 @@ function dilationStuffABTick(){
 	updateDilationUpgradeButtons()
 }
 
-function doBosonsUnlockStuff() {
-	ghSave.wzb.unl=true
-	ngp3_feature_notify("bl")
-
-	updateTemp()
-	updateBLUnlocks()
-	updateBosonicLimits()
-}
-
 function updateOrderGoals(){
 	if (order) for (var i=0; i<order.length; i++) el(order[i]+"goal").textContent = "Goal: "+shortenCosts(getGoal(order[i]))
 }
@@ -1974,11 +1966,7 @@ function doGhostifyButtonDisplayUpdating(diff){
 	}
 
 	var ghostifyGains = []
-	if (ghostified) {
-		ghostifyGains.push(shortenDimensions(getGHPGain()) + " Elementary Particles")
-		//if (hasAch("ng3p75")) ghostifyGains.push(shortenDimensions(Decimal.mul(6e3 * brSave.bestGals, getGhostifiedGain()).mul(getNeutrinoGain())) + " Neutrinos")
-		if (hasBU(15)) ghostifyGains.push(getFullExpansion(getGhostifiedGain()) + " Fundaments")
-	}
+	if (ghostified) ghostifyGains.push(shortenDimensions(getGHPGain()) + " Elementary Particles")
 
 	el("ghostifybtnFlavor").textContent = ghostified ? "" : "Time to enlarge! I need to fundament."
 	el("GHPGain").textContent = ghostifyGains.length ? "Gain " + ghostifyGains[0] + (ghostifyGains.length > 2 ? ", " + ghostifyGains[1] + "," : "") + (ghostifyGains.length > 1 ? " and " + ghostifyGains[ghostifyGains.length-1] : "") + "." : ""
@@ -2228,7 +2216,7 @@ function passiveQuantumLevelStuff(diff){
 		ghSave.neutrinos.mu = ghSave.neutrinos.mu.add(ngain.mul(diff))
 		ghSave.neutrinos.tau = ghSave.neutrinos.tau.add(ngain.mul(diff))
 	}
-	if (bigRipped() || hasBU(24)) brSave.spaceShards = brSave && brSave.spaceShards.add(getSpaceShardsGain().mul(diff / 100))
+	if (bigRipped()) brSave.spaceShards = brSave && brSave.spaceShards.add(getSpaceShardsGain().mul(diff / 100))
 	if (!bigRipped()) {
 		quSave.quarks = quSave.quarks.add(quarkGain().sqrt().mul(diff))
 		var p = ["rg", "gb", "br"]
@@ -2287,7 +2275,6 @@ function gameLoop(diff) {
 	if (mod.ngp3) {
 		ngp3DilationUpdating()
 		if (ghostified) {
-			if (ghSave.wzb.unl) WZBosonsUpdating(diff) // Bosonic Lab
 			if (PHOTON.unlocked()) PHOTON.calc(diff) // Photons
 			automatorTick(diff)
 		}

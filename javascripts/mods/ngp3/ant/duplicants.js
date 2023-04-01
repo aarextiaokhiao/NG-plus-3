@@ -179,7 +179,6 @@ function getEmperorDimensionGlobalMultiplier() {
 	if (hasMasteryStudy("t392")) ret = getMTSMult(392)
 	if (hasMasteryStudy("t402")) ret = ret.mul(30)
 	if (isDecayOn()) ret = ret.mul(getTreeUpgradeEffect(6))
-	if (hasBU(35)) ret = ret.mul(tmp.blu[35].eds)
 	return ret
 }
 
@@ -492,7 +491,9 @@ function getPilonEffect() {
 	if (hasMasteryStudy("t362")) exp = .4
 	if (hasMasteryStudy("t412")) exp = .5
 
-	return Math.pow(quSave.replicants.quarks.add(1).log10(), exp) * 0.8
+	let ret = Math.pow(quSave.replicants.quarks.add(1).log10(), exp) * 0.8
+	if (ret > 100) ret = Math.pow(ret * 10, 2/3)
+	return ret
 }
 
 function updatePostBM14Display() {

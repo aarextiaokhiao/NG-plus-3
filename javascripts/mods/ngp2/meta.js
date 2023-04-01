@@ -84,7 +84,6 @@ function getPerTenMetaPower() {
 	let r = 2
 	let exp = 1
 	if (player.dilation.upgrades.includes("ngpp4")) r = getDil15Bonus()
-	if (hasBU(25)) exp = tmp.blu[25]
 	return Math.pow(r, exp)
 }
 

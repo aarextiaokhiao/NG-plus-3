@@ -249,8 +249,6 @@ function getReplSpeed() {
 	}
 	inc = inc + 1
 	if (hasGluonUpg("gb2")) exp *= 2
-	if (hasBU(35)) exp += tmp.blu[35].rep
-	if (hasBU(44)) exp += tmp.blu[44]
 	exp *= PHOTON.eff(2)
 	return {inc: inc, exp: exp}
 }

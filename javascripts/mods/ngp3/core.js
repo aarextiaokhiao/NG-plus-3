@@ -43,6 +43,13 @@ function doNGP3Updates() {
 		alert("Due to massive balancing changes, you will be pushed back to e20 Elementary Particles!")
 		doReset("qu")
 	}
+	if (aarMod.ngp3_build < 20230331) {
+		delete ghSave.wzb
+		delete ghSave.hb
+		delete ghSave.bl
+		delete ghSave.photons.plusOne
+		ghSave.photons.offset = [0,0,0,0,0,0,0]
+	}
 	aarMod.newGame3PlusVersion = ngp3_ver
 	aarMod.ngp3_build = ngp3_build
 }
@@ -551,6 +558,7 @@ function doPerSecondNGP3Stuff(){
 	el('toggleallmetadims').style.display=speedrunMilestonesReached>7?"":"none"
 	el('metaboostAuto').style.display=speedrunMilestonesReached>14?"":"none"
 	updateBreakEternity()
+	BOSONIC_LAB.updateHTML()
 	if (!mod.ngp3) return
 
 	//Automators
@@ -650,10 +658,10 @@ function ngP3AchieveCheck() {
 	if (masteryStudies.bought >= 48) giveAchievement("The Theory of Ultimate Studies")
 	if (ghSave.photons.lighten) giveAchievement("Here comes the light")
 
-	if (ghSave.wzb.unl) giveAchievement("Even Ghostlier than before")
+	//if (ghSave.wzb.unl) giveAchievement("Even Ghostlier than before")
 	if (nG(getEternitied(), Number.MAX_VALUE)) giveAchievement("Everlasting Eternities")
 
-	if (ghSave.hb.higgs >= 1) giveAchievement("The Holy Particle")
+	//if (ghSave.hb.higgs >= 1) giveAchievement("The Holy Particle")
 	//if (ghSave.ghostlyPhotons.enpowerments >= 25) giveAchievement("Bright as the Anti-Sun") -- will be back
 	if (quSave.quarks.log10() >= 40000) giveAchievement("Are these another...")
 	if (ghSave.reference && getRadioactiveDecays("r") >= 2) giveAchievement("... references to EC8?")
@@ -670,8 +678,6 @@ function doNGP3UnlockStuff() {
 
 	if (ghostified) {
 		if (!PHOTON.unlocked() && PHOTON.req()) PHOTON.unlock()
-		if (!ghSave.wzb.unl && canUnlockBosonicLab()) doBosonsUnlockStuff()
-		if (!ghSave.hb.unl && canUnlockHiggs()) unlockHiggs()
 	}
 	if (quantumed) {
 		let MAbool = player.meta.bestAntimatter.lt(getQuantumReq())
@@ -753,9 +759,6 @@ function setupNGP3HTMLAndData() {
 	setupAutomatorHTML()
 	NT.setupTab()
 	PHOTON.setupTab()
-	setupBosonicExtraction()
-	setupBosonicUpgrades()
-	setupBosonicRunes()
 
 	//META
 	setupBadges()

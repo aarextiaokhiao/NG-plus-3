@@ -79,7 +79,6 @@ function getElectronUpgRes(u) {
 function getElectronUpgCost(u) {
 	var amt = quSave.electrons.rebuyables[u-1]
 	if (hasGluonUpg("gb5")) amt -= 0.3
-	if (hasBU(33)) amt -= tmp.blu[33]
 	amt = Math.max(amt, 0)
 
 	var base = amt * Math.max(amt - 1, 1) + 1

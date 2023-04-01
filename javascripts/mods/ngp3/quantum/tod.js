@@ -156,6 +156,7 @@ function getBranchSpeedText(){
 	if (E(getTreeUpgradeEffect(3)).gt(1)) text += "Tree Upgrade 3: " + shorten(getTreeUpgradeEffect(3)) + "x, "
 	if (E(getTreeUpgradeEffect(5)).gt(1)) text += "Tree Upgrade 5: " + shorten(getTreeUpgradeEffect(5)) + "x, "
 	if (hasAch("ng3p48") && player.meta.resets) text += "'Are you currently dying?' reward: " + shorten(Math.sqrt(player.meta.resets + 1)) + "x, "
+	if (hasNanoReward("decay_exp")) text += "7th Nanobenefit: ^" + shorten(tmp.nf.eff.decay_exp) + ", "
 	if (text == "") return "No multipliers currently"
 	return text.slice(0, text.length-2)
 }
@@ -174,6 +175,7 @@ function getBranchSpeed() {
 	x = x.mul(getGluonBranchSpeed())
 	x = x.mul(getTreeUpgradeEffect(3), getTreeUpgradeEffect(5))
 	if (hasAch("ng3p48")) x = x.mul(Math.sqrt(player.meta.resets + 1))
+	if (hasNanoReward("decay_exp")) x = x.pow(tmp.nf.eff.decay_exp)
 	return x
 }
 
@@ -473,7 +475,6 @@ function getTreeUpgradeEfficiencyText(){
 	let text = ""
 	if (hasNB(7)) text += "Neutrino Boost 7: +" + shorten(NT.eff("boost", 7)) + "x, "
 	if (hasAch("ng3p62")) text += "Finite Time Reward: +0.1x, "
-	if (hasBU(43)) text += "Bosonic Lab Upgrade 18: " + shorten(tmp.blu[43]) + "x, "
 
 	if (text == "") return "No multipliers currently"
 	return text.slice(0, text.length-2)
@@ -483,7 +484,6 @@ function getTreeUpgradeEfficiency(mod) {
 	let r = 1
 	if (hasNB(7) && mod != "noNB") r += NT.eff("boost", 7, 0)
 	if (hasAch("ng3p62")) r += 0.1
-	if (hasBU(43)) r *= tmp.blu[43]
 	return r
 }
 

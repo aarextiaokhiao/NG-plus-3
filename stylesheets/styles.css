@@ -844,6 +844,16 @@ button b, button span {
 	display: var(--footer)
 }
 
+#info {
+    position: fixed;
+    bottom: 2px;
+    left: 2px;
+
+	width: 24px;
+	height: 24px;
+	border-radius: 12px
+}
+
 #progress {
     width: 98%;
     background-color: #A3A3A3;

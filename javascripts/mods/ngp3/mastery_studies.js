@@ -144,7 +144,8 @@ var masteryStudies = {
 		},
 		344: function(){
 			var ret = Math.pow(quSave.replicants.quarks.div(1e7).add(1).log10(), 0.25) * 0.17 + 1
-			return Math.min(ret, 2)
+			if (ret > 2) ret = Math.log2(ret) + 1
+			return ret
 		},
 		351: function() { //maybe use softcap.js
 			let log = player.timeShards.max(1).log10() * 14e-7
@@ -200,9 +201,8 @@ var masteryStudies = {
 		431: function(){
 			var gals = player.dilation.freeGalaxies
 
-			var base = Math.max(gals / 1e4, 1)
-			var exp = Math.max(gals / 4e3 - 2, 1)
-			if (hasNanoReward("ms431_exp")) exp *= tmp.nf.eff.ms431_exp
+			var base = Math.max(gals / 5e3 - 2, 1)
+			var exp = Math.max(gals / 5e3 - 1, 1)
 			return E_pow(base, exp)
 		}
 	},

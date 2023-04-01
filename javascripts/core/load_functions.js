@@ -935,14 +935,6 @@ function doFundamentUpdates(){
 
 	//v2.3: Higgs
 	if (aarMod.newGame3PlusVersion < 2.3) skip++
-	if (ghSave) {
-		if (ghSave.hb.amount !== undefined) ghSave.hb = setupHiggsSave()
-		else {
-			delete ghSave.hb.higgsUnspent
-			delete ghSave.hb.particlesUnlocked
-			delete ghSave.hb.field
-		}
-	}
 
 	//v2.31: Ghostify Respecced
 	if (aarMod.newGame3PlusVersion < 2.31) skip++ //v2.31 reworks them
@@ -1322,7 +1314,7 @@ function dov12tov122(){
 
 function updateVersionsONLOAD(){
 	el('versionMod').textContent = modAbbs()
-	el('versionDesc').style.display = mod.ngp3 ? "" : "none"
+	el('info').style.display = mod.ngp3 ? "" : "none"
 
 	dov7tov10()
 	doNGM1Versions()
@@ -1421,7 +1413,7 @@ function setOptionsDisplaysStuff1(){
 	el("maxHighestTD").textContent = "Max only highest Time Dimensions: O"+(aarMod.maxHighestTD?"N":"FF")
 
 	el("infmultbuyer").style.display = getEternitied()>0||mod.ngp3?"inline-block":"none"
-	if (!player.options.hotkeys) el("hotkeys").textContent = "Enable hotkeys"
+	if (!player.options.hotkeys) el("disablehotkeys").textContent = "Enable hotkeys"
 
 	document.getElementsByClassName("hideInMorse").display = player.options.notation == "Morse code" ? "none" : ""
 
@@ -1743,7 +1735,6 @@ function onLoad(noOffline) {
 	showQuantumTab((tabsSave.on && tabsSave.tabQuantum) || 'uquarks')
 	showAntTab((tabsSave.on && tabsSave.tabAnt) || 'antcore')
 	showGhostifyTab((tabsSave.on && tabsSave.tabGhostify) || 'neutrinos')
-	showBLTab((tabsSave.on && tabsSave.tabBL) || 'bextab')
 
 	if (player.totalTimePlayed < 1 || inflationCheck || forceToQuantumAndRemove) {
 		updateNGModeMessage()

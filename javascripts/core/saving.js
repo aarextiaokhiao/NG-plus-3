@@ -1018,43 +1018,6 @@ function getBrandNewNanofieldData(){
 	}
 }
 
-function getBrandNewBosonicLabData() {
-	let r = {
-		watt: E(0),
-		speed: E(1),
-		ticks: E(0),
-		am: E(0),
-		typeToExtract: 1,
-		extracting: false,
-		extractProgress: E(0),
-		autoExtract: E(0),
-		glyphs: [],
-		enchants: {},
-		usedEnchants: [],
-		upgrades: [],
-		battery: E(0),
-		odSpeed: 1
-	}
-	for (var g = 1; g <= br.maxLimit; g++) r.glyphs.push(E(0))
-	return r
-}
-
-function getBrandNewWZBosonsData() {
-	return {
-		unl: false,
-		dP: E(0),
-		dPUse: 0,
-		wQkUp: true,
-		wQkProgress: 0,
-		zNeGen: 1,
-		zNeProgress: 1,
-		zNeReq: E(1),
-		wpb: E(0),
-		wnb: E(0),
-		zb: E(0)
-	}
-}
-
 function doNGPlusThreeNewPlayer() {
 	aarMod.newGame3PlusVersion = ngp3_ver
 	aarMod.ngp3_build = ngp3_build

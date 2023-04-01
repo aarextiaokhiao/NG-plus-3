@@ -57,7 +57,6 @@ function getDTMultNGP3() {
 		gain = gain.mul(getReplDilBonus())
 	}
 	if (hasAch("ngpp13")) gain = gain.mul(2)
-	if (hasBU(15)) gain = gain.mul(tmp.blu[15].dt)
 	return gain
 }
 
@@ -460,7 +459,6 @@ function updateDilationUpgradeCost(pos, id) {
 
 function getFreeGalaxyThresholdIncrease(){
 	let thresholdMult = inQC(5) ? Math.pow(10, 2.8) : !canBuyGalaxyThresholdUpg() ? 1.35 : 1.35 + 3.65 * Math.pow(0.8, getDilUpgPower(2))
-	if (hasBU(12)) thresholdMult -= tmp.blu[12]
 	if (mod.ngud) thresholdMult -= Math.min(.1 * exDilationUpgradeStrength(2), 0.2)
 	if (thresholdMult < 1.15 && mod.udsp) thresholdMult = 1.05 + 0.1 / (2.15 - thresholdMult)
 	return thresholdMult

@@ -100,7 +100,7 @@
 			<button id="tab_qu" style="font-size: 20px; display: none" class="quantumbtn" onclick='showTab("quantumtab")'>Quantum</button>
 			<button id="tab_ant" style="font-size: 20px" class="antbtn" onclick='showTab("replicants")'>Duplicants</button>
 			<button id="tab_fund" style="font-size: 20px" class="ghostifybtn" onclick='showTab("ghostify")'>Fundament</button>
-			<button id="tab_bl" style="font-size: 20px" class="bltabbtn" onclick='showTab("bltab")'>Bosonic Lab</button>
+			<button id="tab_bl" style="font-size: 20px" class="bltabbtn" onclick='showTab("labreal")'>???</button>
 		</div>
 		<div style="position:absolute; left: 0; right: 0; margin-left: auto; margin-right: auto; width: 360px; top: 19px">
 			<button class="infinitybtn" id="bigcrunch" style="font-size: 50px; width: 360px; height: 100px;" onclick="bigCrunch()">Big Crunch</button>
@@ -212,6 +212,7 @@
 				<tr>
 					<td><button class="secondarytabbtn" onclick="showOptionTab('saving')">Saves</button></td>
 					<td><button class="secondarytabbtn" onclick="showOptionTab('displayoptions')">Display</button></td>
+					<td><button class="secondarytabbtn" onclick="showOptionTab('hotkeys')">Hotkeys</button></td>
 					<td><button class="secondarytabbtn" onclick="showOptionTab('otheroptions')">Others</button></td>
 					<td id="secretoptionsbtn"><button class="secondarytabbtn" onclick="showOptionTab('secrets')">Secrets</button></td>
 				</tr>
@@ -228,7 +229,7 @@
 						<td><div><button id="exportybtn" class="storebtn" onclick='export_file()' style="color:black; width: 200px; height: 55px; font-size: 20px">Download</button></div></td>
 						<td><div><button id="load" class="storebtn" onclick='load_saves()' style="color:black; width: 200px; height: 55px; font-size: 20px">Load</button></div></td>
 					</tr><tr>
-						<td colspan=3><br><hr></td>
+						<td colspan=3><<hr></td>
 					</tr><tr>
 						<td><div class="storebtn" id="autoSaveIntDiv" style="color:black; width: 198px; height: 55px; font-size:130%; text-align: center;"><b id="autoSaveInterval">Auto-save interval: 30s</b><input id="autoSaveIntervalSlider" style="width: 170px;" type="range" min="15" max="120" value="30" class="slider" oninput="changeAutoSaveInterval()"></div></td>
 						<td><div><button id="offlineProgress" onclick='toggleOfflineProgress()' class="storebtn" style="color:black; width: 200px; height: 55px; font-size: 15px"></button></div></td>
@@ -246,8 +247,7 @@
 						<td></td>
 					</tr>
 				</table>
-			</div>
-			<div class='optionstab' id='displayoptions' style='display:none'>
+			</div><div class='optionstab' id='displayoptions' style='display:none'>
 				<table>
 					<tr>
 						<td><button id="theme" class="storebtn" style="color:black; width: 200px; height: 55px; font-size: 12px"></button></td>
@@ -259,11 +259,12 @@
 						<td><button id="netQuarkTop" onclick="updateNetTop(true)" class="storebtn" style="color:black; width: 200px; height: 55px"></button></td>
 					</tr>
 				</table>
-			</div>
-			<div class='optionstab' id='otheroptions' style='display:none'>
+			</div><div class='optionstab' id='hotkeys' style='display:none'>
+				<button id="disablehotkeys" onclick="toggleHotkeys()" class="storebtn" style="color:black; width: 200px; height: 55px; font-size:120%">Disable hotkeys</button><br>
+				<p id='hotkeysDesc'></p>
+			</div><div class='optionstab' id='otheroptions' style='display:none'>
 				<table>
 					<tr>
-						<td><button id="hotkeys" onclick="toggleHotkeys()" class="storebtn" style="color:black; width: 200px; height: 55px; font-size:120%">Disable hotkeys</button></td>
 						<td><button id="confirmations" onclick="showConfirmations()" class="storebtn" style="color:black; width: 200px; height: 55px; font-size: 15px">Confirmations</button></td>
 						<td><button id="tabsSave" onclick="toggleTabsSave()" class="storebtn" style="color:black; width: 200px; height: 55px; font-size: 15px"></button></td>
 					</tr><tr>
@@ -276,28 +277,13 @@
 						<td></td>
 					</tr>
 				</table>
-			</div>
-			<div class='optionstab' id='secrets' style='display:none'>
+			</div><div class='optionstab' id='secrets' style='display:none'>
 				<table>
 					<tr>
 						<td><div><button id="ghostlynewsbtn" onclick="updateGhostlyNews(true)" class="storebtn" style="color:black; width: 200px; height: 55px; font-size:120%">Show ghostly news ticker</button></div></td>
 					</tr>
 				</table>
 			</div>
-			<p id='hotkeysDesc'></p>
-			<br>
-			<p id='versionDesc'>
-				<b>You are playing <span id='versionMod'></span>.</b>
-				<br><br>
-
-				<b>(NG+3 v2.31: Ghostify Respecced)</b><br>
-				<b class="red">(Beta: 3/30/23 Build)</b><br>
-				By <a href="https://aarextiaokhiao.github.io/">Aarex</a>, pg132, and usavictor.
-				<br><br>
-
-				NG++ is by dan-simon.
-				Part of Quantum animation is contributed by MrRedShark77.
-			</p>
 		</div>
 		<div id="statistics" class="tab" align="center" style="color: black; font-size: 12px; margin: 0 auto">
 			<div id='statstabs'>
@@ -430,6 +416,7 @@
 				<div id="eterchallengetime14"></div>
 				<br>
 				<div id="eterchallengetimesum"></div>
+				<button class="qu_upg storebtn" id="bl_portion_1" onclick='BOSONIC_LAB.find(1)' style='opacity: 0.1'>You agree that you will remain hidden in eternity.</button>
 			</div><div id="stats_qu" class="statstab" >
 				<h1>Quantum</h1>
 				<div id="quantumed"></div>
@@ -3071,6 +3058,7 @@
 					</tr>
 				</table>
 				<div style="height: 60px;"></div>
+				<button class="qu_upg storebtn" id="bl_portion_2" onclick='BOSONIC_LAB.find(2)' style='opacity: 0.1'>You agree that your interior knowledge is shared to ours.</button>
 			</div>
 			<div class="eternitytab" id="ers_timestudies" style="font-size: 15px">
 				<button class="storebtn" onclick="exportStudyTree()" style="width:150px; height: 40px; font-size: 10px; margin: auto">Export spec</button>
@@ -3799,7 +3787,7 @@
 								<td><button id='rgupg6' onclick='buyGluonUpg("rg",6)'>Slow down the Distant Antimatter Galaxy cost scaling by 13.2%.<br>Cost: <span id='rgupg6cost'></span> RG gluons</button></td>
 							</tr><tr>
 								<td id='rgupg7col'><button id='rgupg7' onclick='buyGluonUpg("rg",7)'>Slow down the Remote Antimatter Galaxy scaling by 10%.<br>Cost: <span id='rgupg7cost'></span> RG gluons</button></td>
-								<td id='rgupg8col'><button id='rgupg8' onclick='buyGluonUpg("rg",8)'>Preons decay slower based on your RG gluons.<br><span id='rgupg8current'></span><br>Cost: <span id='rgupg8cost'></span> RG gluons</button></td>
+								<td id='rgupg8col'><button id='rgupg8' onclick='buyGluonUpg("rg",8)'>RG gluons speed up Decay.<br><span id='rgupg8current'></span><br>Cost: <span id='rgupg8cost'></span> RG gluons</button></td>
 							</tr>
 						</table>
 					</td><td class="gqC">
@@ -3817,7 +3805,7 @@
 								<td><button id='gbupg6' onclick='buyGluonUpg("gb",6)'>Infinity Power slows down the Distant Antimatter Galaxy cost scaling.<br><span id='gbupg6current'></span><br>Cost: <span id='gbupg6cost'></span> GB gluons</button></td>
 							</tr><tr>
 								<td id='gbupg7col'><button id='gbupg7' onclick='buyGluonUpg("gb",7)'>Infinity Points slow down the Remote Antimatter Galaxy scaling.<br><span id='gbupg7current'></span><br>Cost: <span id='gbupg7cost'></span> GB gluons</button></td>
-								<td id='gbupg8col'><button id='gbupg8' onclick='buyGluonUpg("gb",8)'>Preons decay slower based on your GB gluons.<br><span id='gbupg8current'></span><br>Cost: <span id='gbupg8cost'></span> GB gluons</button></td>
+								<td id='gbupg8col'><button id='gbupg8' onclick='buyGluonUpg("gb",8)'>GB gluons speed up Decay.<br><span id='gbupg8current'></span><br>Cost: <span id='gbupg8cost'></span> GB gluons</button></td>
 							</tr>
 						</table>
 					</td><td class="bqC">
@@ -3835,7 +3823,7 @@
 								<td><button id='brupg6' onclick='buyGluonUpg("br",6)' style='font-size:8.5px'>Meta-Dimension Boosts slow down the Distant Antimatter Galaxy cost scaling.<br><span id='brupg6current'></span><br>Cost: <span id='brupg6cost'></span> BR gluons</button></td>
 							</tr><tr>
 								<td id='brupg7col'><button id='brupg7' onclick='buyGluonUpg("br",7)'>Eternity Points slow down the Remote Antimatter Galaxy scaling.<br><span id='brupg7current'></span><br>Cost: <span id='brupg7cost'></span> BR gluons</button></td>
-								<td id='brupg8col'><button id='brupg8' onclick='buyGluonUpg("br",8)'>Preons decay slower based on your BR gluons.<br><span id='brupg8current'></span><br>Cost: <span id='brupg8cost'></span> BR gluons</button></td>
+								<td id='brupg8col'><button id='brupg8' onclick='buyGluonUpg("br",8)'>BR gluons speed up Decay.<br><span id='brupg8current'></span><br>Cost: <span id='brupg8cost'></span> BR gluons</button></td>
 							</tr>
 						</table>
 					</td>
@@ -3901,6 +3889,7 @@
 					<td><button id='electronupg3' onclick='buyElectronUpg(3)'></button></td>
 					<td><button id='electronupg4' onclick='buyElectronUpg(4)'></button></td>
 				</tr></table>
+				<button class="qu_upg storebtn" id="bl_portion_3" onclick='BOSONIC_LAB.find(3)' style='opacity: 0.1'>You agree that you are willing to sacrifice yourself.</button>
 			</div>
 			<div class='quantumtab' id='tod'>
 				<span id="todspeed"></span>
@@ -4073,13 +4062,14 @@
 							<td class="uv" id="ph_light_6"></td>
 							<td class="lEp">
 								<span id="ph_lighten" style='font-size: 24px'></span>
-								Enlightenments<br>
+								Enlightenments
+								(<b id="ph_lighten_eff"></b>)<br>
 								<b id="ph_lighten_req"></b>
 							</td>
 						</tr>
 					</table>
-					<p id="blUnl">Get 25 Light Emissions to unlock Bosonic Lab. (soon!)</p>
-					<i style="opacity: 0.1">You were too spectral. Tributes to Ghostify!</i>
+					<i style="opacity: 0.1">You were too spectral. Tributes to Ghostify!</i><br>
+					<button class="qu_upg storebtn" id="bl_portion_4" onclick='BOSONIC_LAB.find(4)' style='opacity: 0.1'>You agree to research what lies beyond physics.</button>
 				</div>
 			</div><div id="automaticghosts" class="ghostifytab">
 				<span id="quantumWorth2">0</span>
@@ -4125,104 +4115,17 @@
 				</table>
 			</div>
 		</div>
-		<div class="tab" id="bltab">
-			<b class="red">Warning: This will be rewritten soon!</b>
-			<table class='qtable'><tr>
-				<td>
-					<span id="bWatt" style="font-size:25px"></span> Bosonic Force<br>
-				</td>
-				<td>
-					<span id="bBt" style="font-size:25px"></span> Heavy Force <span id="bBtProduction" style="font-size:15px"></span><br>
-					Overdrive: <span id="odSpeed" style="font-size:25px"></span><span id="odSpeedWBBt"></span><br>
-					<input id="odSlider" style="width: 180px;" type="range" min="0" max="30" class="slider" oninput="changeOverdriveSpeed()">
-				</td>
-				<td>
-					<span id="bSpeed" style="font-size:35px"></span>x Speed<br>(total: <span id="bTotalSpeed" style="font-size:15px"></span>x)
-				</td>
-			<tr></tr>
-				<td>
-					<span id="bAM" style="font-size:25px"></span> Bosons <span id="bAMProduction" style="font-size:15px"></span>
-				</td>
-				<td id="bosonicResets">
-					<span class="yellow" id="hb" style="font-size:25px">0</span> Higgs
-					<br>
-					<button class="gluonupgrade hb" id="hbReset" onclick="higgsReset()"><span id="hbResetDesc"></span><br>(Requires <span id="hbResetReq"></span> Bosons)</button>
-				</td>
-				<td></td>
-			</tr></table>
-			<span id="nextParticle"></span><br>
-			<table class="table" align="center" style="margin: auto">
-				<tr>
-					<td><button class="secondarytabbtn" onclick="showBLTab('bextab')">Experiments</button></td>
-					<td><button class="secondarytabbtn" onclick="showBLTab('butab')">Upgrades</button></td>
-					<td><button class="secondarytabbtn" onclick="showBLTab('wzbtab')">W & Z Bosons</button></td>
-				</tr>
-			</table>
-			<div id="bRunesDiv">
-				<b style="font-size: 20px">Hypotheses</b><br>
-				<table id="bRunes" align="center"><tr></tr></table>
-			</div>
-			<div id="bextab" class="bltab">
-				<span id="typeToExtract"></span>
-				<button class="storebtn" id="extract" onclick="extract()" style="width: 120px"></button><br>
-				<span id="extractTime"></span>
-
-				<br><br>
-				<button class="storebtn" onclick="changeEnchantAction(1)">Upgrade</button>
-				<button class="storebtn" onclick="changeEnchantAction(2)">Max</button>
-				<button class="storebtn" onclick="changeEnchantAction(3)">Toggle</button>
-
-				<br>
-				<button class="storebtn" onclick="$.notify('Soon.')">Export</button>
-				<button class="storebtn" onclick="$.notify('Soon.')">Import</button>
-
-				<br>
-				<span id="usedEnchants"></span><br>
-				<table class="table" id="enchants" align="center" style="margin: auto"></table>
-			</div>
-			<div id="butab" class="bltab"><table class="table" id="bUpgs" align="center" style="margin: auto"></table></div>
-			<div id="wzbtab" class="bltab">
-				<!--<span id="wzbSpeed"></span>-->
-				<span id="ap" style="font-size:35px"></span> Anti-Preons <span id="apProduction" style="font-size:25px"></span><br>
-				<span id="apUse"></span><br>
-				<button class="storebtn" onclick="useAntiPreon(0)">Produce AP</button> <button class="storebtn" onclick="useAntiPreon(1)">Produce W</button> <button class="storebtn" onclick="useAntiPreon(3)">Convert W</button> <button class="storebtn" onclick="useAntiPreon(2)">Produce Z</button>
-				<table class="table_fix" align="center">
-					<tr>
-						<td>
-							<span id="wpb" style="font-size:35px"></span> W+ Bosons and <span id="wnb" style="font-size:35px"></span> W- Bosons
-						</td>
-						<td>
-							<span id="zb" style="font-size:35px"></span> Z Bosons
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<span id="wbTime" style="font-size:25px"></span>x experiment speed, <span id="wbOscillate" style="font-size:25px"></span>x faster oscillation, <span id="wbProduction" style="font-size:25px"></span>x Bosons production.
-						</td>
-						<td>
-							<span id="zbSpeed" style="font-size:25px"></span>x faster decay and conversion.
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<div id="wQk"><span id="wQkSymbol"></span></div><br>
-							W Boson is currently <span id="wQkType"></span>.<br>
-							<span id="wQkProgress"></span>
-						</td>
-						<td>
-							<div id="zNe"><span id="zNeSymbol"></span></div><br>
-							Z Boson is currently <span id="zNeGen">electron</span>.<br>
-							<span id="zNeProgress"></span><br>
-							<span id="zNeReq"></span><br>
-							<span id="zbGain"></span>
-						</td>
-					</tr>
-				</table>
-			</div>
+		<div class="tab" id="labreal">
+			By agreeing, you have readed all 5 portions hidden from the game, and become a ghost scientist for the rest of life.<br>
+			<b class='red'>Violating the terms of service will end the contract early.</b>
+			<br><br>
+			<button class="qu_upg storebtn" onclick="BOSONIC_LAB.sign()">Sign the contract</button>
+			<button class="qu_upg unavailablebtn" id='bl_unl' onclick="BOSONIC_LAB.unlock()"><b>Unlock Bosonic Lab</b></button>
 		</div>
 
 		<!-- FOOTER -->
 		<div id="footer">
+			<button class='storebtn' id='info' onclick='el("ngp3_info").style.display = "block"'>i</button>
 			<b class="red">TEST SERVER</b><br>
 			<a href="howto.html" target="_newtab">Help</a> |
 			<a href="about.html" onclick="giveAchievement('A sound financial decision')" target="_newtab">About</a> |-|
@@ -4240,6 +4143,21 @@
 	<div class="popup optionmenu" id="welcome">
 		<div><text id="welcomeMessage"></text></div>
 		<button class="storebtn" style="font-size: 15px" onclick="showNextModeMessage()" style="display: inline">Okay</button>
+	</div>
+	<div class="popup optionmenu" id="ngp3_info">
+		<p>
+			<b id='versionMod' style='font-size: 24px'></b>
+			<br><br><hr>
+
+			<b>(NG+3 v2.31: Ghostify Respecced)</b><br>
+			<b class="red">(Beta: 3/30/23 Build)</b><br>
+			By <a href="https://aarextiaokhiao.github.io/">Aarex</a>, pg132, and usavictor.
+			<br><br>
+
+			NG++ is by dan-simon.
+			Part of Quantum animation is contributed by MrRedShark77.
+		</p>
+		<button class="storebtn" style="font-size: 15px" onclick="closeToolTip()" style="display: inline">Close</button>
 	</div>
 	<div class="popup" id="offlineprogress" style="width: 450px; height: 200px;">
 		<div id="offlinePopup" style="height: 150px"></div>
@@ -4287,7 +4205,8 @@
 			<br><br>
 			<b>Others</b><br>
 			<button class="storebtn longbtn" id='rsBtn' onclick="toggle_mod('rs')">Respecced: OFF</button>
-			<button class="storebtn longbtn" id='aauBtn' onclick="toggle_mod('aau')" ach-tooltip="Start with all achievements unlocked.">AAU: OFF</button>
+			<button class="storebtn longbtn" id='aauBtn' onclick="toggle_mod('aau')" ach-tooltip="Start with all achievements unlocked.">AAU: OFF</button><br>
+			<button class="qu_upg storebtn" id="bl_portion_5" onclick='BOSONIC_LAB.find(5)' style='opacity: 0.1'>You agree to explore other places.</button>
 		</div>
 	</div>
 	<div class="popup loadmenu" id="presetsmenu" style="overflow-y:hidden">
@@ -4508,8 +4427,7 @@
 	<script type="text/javascript" src="javascripts/mods/ngp3/fundament/fundament.js"></script>
 	<script type="text/javascript" src="javascripts/mods/ngp3/fundament/neutrinos.js"></script>
 	<script type="text/javascript" src="javascripts/mods/ngp3/fundament/photons.js"></script>
-	<script type="text/javascript" src="javascripts/mods/ngp3/fundament/bosonic_lab.js"></script>
-	<script type="text/javascript" src="javascripts/mods/ngp3/fundament/higgs.js"></script>
+	<script type="text/javascript" src="javascripts/mods/ngp3/fundament/bl.js"></script>
 	<script type="text/javascript" src="javascripts/mods/ngp3/core.js"></script>
 
 	<script type="text/javascript" src="javascripts/mods/ngmm/ngmm.js"></script>

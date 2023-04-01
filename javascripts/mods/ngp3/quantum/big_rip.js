@@ -294,9 +294,7 @@ function updateBreakEternityUpgrade2Temp(){
 
 function updateBreakEternityUpgrade3Temp(){
 	var ep = player.eternityPoints
-	var nerfUpgs = !tmp.be && hasBU(24)
 	var log = ep.div("1e1370").add(1).log10()
-	if (nerfUpgs) log /= 2e6
 	var exp = Math.pow(log, 1/3) * 0.5
 	tmp.beu[3] = pow10(exp)
 }
@@ -318,8 +316,7 @@ function updateBreakEternityUpgrade5Temp(){
 	var log2 = ts.div(1e90).add(1).log10()
 	var exp = Math.pow(log1, 1/3) + Math.pow(log2, 1/3)
 	if (exp > 100) exp = Math.log10(exp) * 50
-	exp *= 4
-	tmp.beu[5] = pow10(exp)
+	tmp.beu[5] = pow10(exp * 4)
 }
 
 function updateBreakEternityUpgrade6Temp(){
@@ -348,13 +345,6 @@ function updateBreakEternityUpgrade10Temp(){
 }
 
 function updateBreakEternityUpgradesTemp() {
-	//Setup
-	var ep = player.eternityPoints
-	var ts = player.timeShards
-	var ss = brSave && brSave.spaceShards
-	var em = beSave.eternalMatter
-	var nerfUpgs = !tmp.be && hasBU(24)
-
 	updateBreakEternityUpgrade1Temp()
 	updateBreakEternityUpgrade2Temp()
 	updateBreakEternityUpgrade3Temp()

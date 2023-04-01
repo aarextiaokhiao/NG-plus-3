@@ -51,7 +51,6 @@ function getGalaxyRequirement(offset = 0, display) {
 			if (hasGluonUpg("gb6")) speed /= getGB6Effect()
 			if (hasGluonUpg("br6")) speed /= getBR6Effect()
 			if (hasNB(6)) speed /= NT.eff("boost", 6)
-			if (hasBU(45)) speed /= tmp.blu[45]
 			if (hasAch("ng3p98")) speed *= 0.9
 			amount += getDistantAdd(total-distantStart+1)*speed
 			if (total >= distantStart * 2.5 && inNGM(2)) {
@@ -172,7 +171,6 @@ function getGalaxyEff(bi) {
 		if (hasGluonUpg("rg2")) eff *= Math.pow(player.dilation.freeGalaxies / 5e3 + 1, 0.25)
 		if (hasGluonUpg("rg4")) eff *= 1.5
 		if (tmp.be) eff *= 0.4
-		if (hasBU(34)) eff *= tmp.blu[34]
 		if (hasNB(12)) eff *= Math.pow(getReplGalEff(), NT.eff("boost", 12))
 	}
 	return eff

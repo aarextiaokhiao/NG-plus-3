@@ -101,8 +101,8 @@ var nanoRewards = {
 		preon_energy: function(x) {
 			return pow2(x)
 		},
-		ms431_exp: function(x) {
-			return Math.log2(Math.max(x / 3, 2))
+		decay_exp: function(x) {
+			return Math.log10(Math.max(x + 8, 10))
 		},
 		photon: function(x) {
 			return Math.pow(x / 5 + 1, 3)
@@ -139,8 +139,8 @@ var nanoRewards = {
 		preon_energy: function(x) {
 			return "produce nanoenergy " + shorten(x) + "x faster"
 		},
-		ms431_exp: function(x) {
-			return "Raise Mastery Study 431 by ^" + shorten(x)
+		decay_exp: function(x) {
+			return "Raise Decay speed by ^" + shorten(x)
 		},
 		photon: function(x) {
 			return "gain " + shorten(x) + "x more Photons"
@@ -153,7 +153,7 @@ var nanoRewards = {
 		4: _ => ["dt_to_ma_exp"],
 		5: _ => ["dil_effect_exp"],
 		6: _ => ["meta_boost_power"],
-		7: _ => hasNU(6) ? ["ms431_exp", "preon_charge"] : ["remote_start", "preon_charge"],
+		7: _ => hasNU(6) ? ["preon_charge", "decay_exp"] : ["remote_start", "preon_charge"],
 		8: _ => ["per_10_power", "preon_energy"],
 	},
 }
@@ -165,12 +165,6 @@ function hasNanoReward(x) {
 function getNanoRewardPower(reward, rewards) {
 	let x = Math.ceil((rewards - reward + 1) / 8)
 	return x * tmp.nf.str
-}
-
-function getNanoRewardPowerEff() {
-	let x = 1
-	if (hasBU(31)) x *= tmp.blu[31]
-	return x
 }
 
 function getNanoRewardReq(additional){
@@ -248,7 +242,7 @@ function setupNanoRewardTemp() {
 function updateNanofieldTemp() {
 	if (!NF.unl()) return
 	if (!tmp.nf) setupNanoRewardTemp()
-	var x = getNanoRewardPowerEff()
+	var x = 1 //getNanoRewardPowerEff()
 	var y = nfSave.rewards
 	if (tmp.nf.str !== x || tmp.nf.rewards !== y) {
 		tmp.nf.str = x
@@ -283,8 +277,6 @@ function setupNanofieldHTML() {
 			"<td><button class='nfRewardlocked' id='nfReward" + (r + 3) + "'></button></td>"
 		row++
 	}
-	el("nfReward7").style["font-size"] = "10px"
-	el("nfReward8").style["font-size"] = "10px"
 }
 
 function nanofieldUpdating(diff){
