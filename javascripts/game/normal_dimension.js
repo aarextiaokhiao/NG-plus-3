@@ -105,8 +105,8 @@ function getDimensionFinalMultiplier(tier) {
 	let mult = getStartingNDMult(tier)
 	if (tier == 8) mult = mult.mul(getTotalSacrificeBoost())
 
-	if (player.currentChallenge == "postcngm3_2") return tmp.infPow.max(1e100)
-	if (player.currentEternityChall == "eterc11") return tmp.infPow.mul(E_pow(getDimensionBoostPower(), player.resets - tier + 1).max(1))
+	if (player.currentChallenge == "postcngm3_2") return E(1e100).max(tmp.infPow)
+	if (player.currentEternityChall == "eterc11") return E_pow(getDimensionBoostPower(), player.resets - tier + 1).max(1).mul(tmp.infPow)
 	if ((inNC(7) || player.currentChallenge == "postcngm3_3") && inNGM(2)) {
 		if (tier == 4) mult = mult.pow(1.4)
 		if (tier == 2) mult = mult.pow(1.7)

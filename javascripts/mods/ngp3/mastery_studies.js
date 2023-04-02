@@ -86,123 +86,123 @@ var masteryStudies = {
 	studies: [],
 	timeStudies: [],
 	timeStudyEffects: {
-		251: function(){
+		251() {
 			return Math.floor(player.resets / 3e3)
 		},
-		252: function(){
+		252() {
 			return Math.floor(player.dilation.freeGalaxies / 7)
 		},
-		253: function(){
+		253() {
 			return Math.floor(getTotalRG() / 4)
 		},
-		262: function(){
+		262() {
 			let r = Math.max(player.resets / 5e4 - 10, 1)
 
 			exp = 2
 			if (mod.ngep) exp *= 2
 			return E_pow(r, exp)
 		},
-		263: function(){
+		263() {
 			let x = player.meta.resets
 			return Math.max(x * x / 10, 1)
 		},
-		264: function(){
+		264() {
 			let r = player.galaxies / 100 + 1
 			if (mod.ngep) return Math.pow(r, 2)
 			return r
 		},
-		273: function(uses){
+		273(uses){
 			var intensity = 5
 			if (hasNB(2)) intensity += NT.eff("boost", 2, 0)
 			if (uses.includes("intensity")) return intensity
 			return Decimal.max(Math.log10(player.replicanti.chance + 1), 1).pow(intensity)
 		},
-		281: function(){
+		281() {
 			return pow10(Math.pow(E(tmp.rep?.eff || 1).max(1).log10(), 0.25) / 10 * (mod.p3ep ? 2 : 1))
 		},
-		282: function(){
+		282() {
 			return pow10(Math.pow(E(tmp.rep?.eff || 1).max(1).log10(), 0.25) / 15 * (mod.p3ep ? 2 : 1))
 		},
-		301: function(){
+		301() {
 			if (hasNU(6)) return 0
 			return Math.floor(tmp.rep.extra / 4.15)
 		},
-		303: function(){
+		303() {
 			return E_pow(4.7, Math.pow(Math.log10(Math.max(player.galaxies, 1)), 1.5))
 		},
-		322: function(){
+		322() {
 			let log = Math.sqrt(Math.max(3 - getTickspeed().log10(), 0)) / 2e4
 			if (log > 110) log = Math.sqrt(log * 27.5) + 55
 			return pow10(log)
 		},
-		332: function(){
+		332() {
 			return Math.max(player.galaxies, 1)
 		},
-		341: function(){
+		341() {
 			var exp = Math.sqrt(quSave.replicants.quarks.add(1).log10())
 			return E_pow(mod.p3ep ? 3 : 2, exp)
 		},
-		344: function(){
+		344() {
 			var ret = Math.pow(quSave.replicants.quarks.div(1e7).add(1).log10(), 0.25) * 0.17 + 1
 			if (ret > 2) ret = Math.log2(ret) + 1
 			return ret
 		},
-		351: function() { //maybe use softcap.js
+		351() { //maybe use softcap.js
 			let log = player.timeShards.max(1).log10() * 14e-7
 			if (log > 1e3) log = Math.sqrt(log * 1e3)
 			return E_pow(mod.p3ep ? 12 : 10, log)
 		},
-		361: function(){
+		361() {
 			return player.dilation.tachyonParticles.max(1).pow(0.015)
 		},
-		371: function(){
+		371() {
 			return Math.pow(tmp.rep.extra+1,mod.p3ep?.5:.3)
 		},
-		372: function(){
+		372() {
 			return Math.sqrt(player.timeShards.add(1).log10())/20+1
 		},
-		373: function(){
+		373() {
 			return Math.pow(player.galaxies+1,0.55)
 		},
-		381: function(){
+		381() {
 			return Decimal.min(tmp.gal.ts, 1).log10() / -135 + 1
 		},
-		382: function(){
+		382() {
 			return player.eightAmount.max(1).pow(Math.PI)
 		},
-		383: function(){
+		383() {
 			return E(tmp.color_eff.b || 1).max(1).pow(.5)
 		},
-		391: function(){
+		391() {
 			return player.meta.antimatter.max(1).pow(8e-4)
 		},
-		392: function(){
+		392() {
 			return E_pow(mod.p3ep ? 1.7 : 1.6, Math.sqrt(quSave.replicants.quarks.add(1).log10())).add(1)
 		},
-		393: function(){
+		393() {
 			if (!tmp.ant.workers) return E(1)
 			return E_pow(4e5, Math.sqrt(tmp.ant.workers.add(1).log10()))
 		},
-		401: function(){
+		401() {
 			let log = quSave.replicants.quarks.div(1e28).add(1).log10() / 5
 			return E_pow(mod.p3ep ? 12 : 10, log)
 		},
-		411: function(){
+		411() {
 			if (!tmp.ant.total) return E(1)
 			var exp = tmp.ant.total.div(1e24).add(1).log10() / 2
 			if (mod.p3ep) exp += Math.pow((exp + 9) * 3, .2) * Math.log10(exp + 1)
 			if (exp > 5) exp = (exp + 5) / 2
 			return pow10(exp)
 		},
-		421: function(){
+		421() {
 			let ret = pow10(Math.pow(-getTickspeed().log10() / 1e13 + 1, 1/3) - 1)
 			return ret
 		},
-		431: function(){
+		431() {
 			var gals = player.dilation.freeGalaxies
 
-			var base = Math.max(gals / 5e3 - 2, 1)
-			var exp = Math.max(gals / 5e3 - 1, 1)
+			var base = Math.max(gals / 5e3 - 1, 1)
+			var exp = Math.max(gals / 1e4 + Math.log10(gals) / 4, 1)
 			return E_pow(base, exp)
 		}
 	},

@@ -35,9 +35,17 @@ function setupToDHTML() {
 		for (var u = 1; u <= 3; u++) {
 			html += "<td style='vertical-align: 0'><button class='qu_upg unavailablebtn' id='" + color + "upg" + u + "' onclick='buyBranchUpg(\"" + shorthand + "\", " + u + ")' style='font-size:10px'>" + branchUpgrades[u - 1] + "<br>" 
 			html += "Currently: <span id='" + color + "upg" + u + "current'>1</span><br><span id='" + color + "upg" + u + "cost'>?</span></button>"
-			html += (u == 2 ? "<br><button class='storebtn' style='width: 190px' onclick='maxBranchUpg(\"" + shorthand + "\")'>Max all upgrades</button>" + "<br><button class='storebtn' style='width: 190px; font-size:10px' onclick='maxBranchUpg(\"" + shorthand + "\", true)'>Max 2nd and 3rd upgrades</button>":"")+"</td>"
 		}
-		html += "</tr></tr><td></td><td><button class='qu_upg unavailablebtn' id='" + shorthand + "RadioactiveDecay' style='font-size:9px' onclick='radioactiveDecay(\"" + shorthand + "\")'>Reset to strengthen the 1st upgrade, but nerf this branch.<br><span id='" + shorthand + "RDReq'></span><br>Radioactive Decays: <span id='" + shorthand + "RDLvl'></span></button></td><td></td>"
+		html += `</tr></tr>
+			<td></td>
+			<td>
+				<button class='storebtn' style='width: 190px' onclick='maxBranchUpg("${shorthand}")'>Max all upgrades</button><br>
+				<button class='storebtn' style='width: 190px; font-size:10px' onclick='maxBranchUpg("${shorthand}", true)'>Max 2nd and 3rd upgrades</button>
+			</td>
+			<td></td>`
+		html += `</tr></tr>
+			<td></td>
+			<td><button class='qu_upg unavailablebtn' id='${shorthand}RadioactiveDecay' onclick='radioactiveDecay("${shorthand}")'>Reset to tier up.<br><span id='${shorthand}RDReq'></span><br>Radioactive Decays: <span id='${shorthand}RDLvl'></span></button></td>`
 		html += "</tr></table>"
 		el(color + "Branch").innerHTML = html
 	}
@@ -133,9 +141,11 @@ function updateTODStuff() {
 
 function getUnstableGain(branch) {
 	let ret = quSave.usedQuarks[branch].div("1e420").add(1).log10()
-	if (ret < 2) ret = Math.max(quSave.usedQuarks[branch].div("1e300").div(99).log10() / 60,0)
+	if (ret < 2) ret = Math.max(quSave.usedQuarks[branch].div("1e300").div(99).log10() / 60, 0)
+
 	let power = getBranchUpgLevel(branch, 2) - getRDPower(branch)
 	ret = pow2(power).mul(ret)
+
 	if (ret.gt(1)) ret = E_pow(ret, Math.pow(2, power + 1))
 	return ret.mul(pow2(getRDPower(branch) + 1)).min(pow10(Math.pow(2, 51)))
 }
@@ -152,11 +162,11 @@ function unstableQuarks(branch) {
 function getBranchSpeedText(){
 	let text = ""
 	if (hasMasteryStudy("t431") && getMTSMult(431).gt(1)) text += "Mastery Study 431: " + shorten(getMTSMult(431)) + "x, "
-	if (getGluonBranchSpeed().gt(1)) text += "Gluon Upgrades: " + shorten(getGluonBranchSpeed()) + "x, "
 	if (E(getTreeUpgradeEffect(3)).gt(1)) text += "Tree Upgrade 3: " + shorten(getTreeUpgradeEffect(3)) + "x, "
 	if (E(getTreeUpgradeEffect(5)).gt(1)) text += "Tree Upgrade 5: " + shorten(getTreeUpgradeEffect(5)) + "x, "
-	if (hasAch("ng3p48") && player.meta.resets) text += "'Are you currently dying?' reward: " + shorten(Math.sqrt(player.meta.resets + 1)) + "x, "
+	if (hasNU(4)) text += "Neutrino Upgrade 4: " + shorten(NT.eff("upg", 4)) + "x, "
 	if (hasNanoReward("decay_exp")) text += "7th Nanobenefit: ^" + shorten(tmp.nf.eff.decay_exp) + ", "
+	if (hasAch("ng3p48") && player.meta.resets) text += "'Are you currently dying?' reward: " + shorten(Math.sqrt(player.meta.resets + 1)) + "x, "
 	if (text == "") return "No multipliers currently"
 	return text.slice(0, text.length-2)
 }
@@ -172,16 +182,18 @@ function getGluonBranchSpeed() {
 function getBranchSpeed() {
 	let x = E(1)
 	if (hasMasteryStudy("t431")) x = x.mul(getMTSMult(431))
-	x = x.mul(getGluonBranchSpeed())
-	x = x.mul(getTreeUpgradeEffect(3), getTreeUpgradeEffect(5))
-	if (hasAch("ng3p48")) x = x.mul(Math.sqrt(player.meta.resets + 1))
+	x = x.mul(getTreeUpgradeEffect(3))
+	x = x.mul(getTreeUpgradeEffect(5))
+	if (hasNU(4)) x = x.mul(NT.eff("upg", 4))
 	if (hasNanoReward("decay_exp")) x = x.pow(tmp.nf.eff.decay_exp)
+	if (hasAch("ng3p48")) x = x.mul(Math.sqrt(player.meta.resets + 1))
 	return x
 }
 
 function getDecayRate(branch) {
 	let ret = pow2(getBU1Power(branch) * Math.max((getRadioactiveDecays(branch) - 8) / 10, 1)).div(getBranchUpgMult(branch, 3)).div(pow2(Math.max(0, getRDPower(branch) - 4)))
 	ret = ret.mul(getBranchSpeed())
+	ret = ret.div(getGluonBranchSpeed())
 	return ret.min(Math.pow(2, 40))
 }
 
@@ -244,7 +256,7 @@ function getTreeUpgradeEffect(upg) {
 	if (upg == 4) return Math.sqrt(1 + Math.log10(lvl * 0.5 + 1) * 0.1)
 	if (upg == 5) {
 		let MA = hasAch("ng3p87") ? player.meta.bestOverGhostifies : player.meta.bestOverQuantums
-		return E_pow(Math.log10(MA.add(1).log10() + 1) / 5 + 1, Math.sqrt(lvl))
+		return E_pow(Math.log10(MA.add(1).log10() + 1) / 5 + 1, Math.sqrt(lvl) / 2)
 	}
 	if (upg == 6) return pow10(lvl / 2)
 	if (upg == 7) return lvl ? pow2(Math.sqrt(tmp.rep.eff.max(1).log10()) / 20 * Math.log10(lvl + 9)) : E(1)
@@ -433,7 +445,6 @@ function radioactiveDecay(shorthand) {
 	let data = todSave[shorthand]
 	if (!data.quarks.gte(pow10(Math.pow(2, 50)))) return
 	data.quarks = E(0)
-	data.spin = E(0)
 	data.upgrades = {}
 	if (hasBraveMilestone(4)) data.upgrades[1] = 5
 	data.decays = data.decays === undefined ? 1 : data.decays + 1
@@ -470,11 +481,12 @@ function getMaximumUnstableQuarks() {
 }
 
 function getTreeUpgradeEfficiencyText(){
-	if (!shiftDown) return "Tree upgrade efficiency: "+(tmp.decay_str*100).toFixed(1)+"%"
+	if (!shiftDown) return "Tree upgrade efficiency: "+(tmp.decay_str * 100).toFixed(1)+"%"
 
 	let text = ""
+	if (todSave.r.decays) text += "Radioactive Decays: +" + (todSave.r.decays / 5).toFixed(1) + "x, "
 	if (hasNB(7)) text += "Neutrino Boost 7: +" + shorten(NT.eff("boost", 7)) + "x, "
-	if (hasAch("ng3p62")) text += "Finite Time Reward: +0.1x, "
+	if (hasAch("ng3p62")) text += "'Finite Time' Reward: +0.1x, "
 
 	if (text == "") return "No multipliers currently"
 	return text.slice(0, text.length-2)
@@ -482,6 +494,7 @@ function getTreeUpgradeEfficiencyText(){
 
 function getTreeUpgradeEfficiency(mod) {
 	let r = 1
+	r += (todSave.r.decays || 0) / 5
 	if (hasNB(7) && mod != "noNB") r += NT.eff("boost", 7, 0)
 	if (hasAch("ng3p62")) r += 0.1
 	return r

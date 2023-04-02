@@ -176,14 +176,14 @@ const NEUTRINO = NT = {
 				},
 				effDesc: e => `Strengthen IC3 multiplier base by <b>${shorten(e)}x</b>.`,
 			}, {
-				cost: E(1e21),
+				cost: E(1e25),
 				eff(nt) {
 					nt = nt[0].add(1).log10()+nt[1].add(1).log10()+nt[2].add(1).log10()
 					return Math.min(Math.sqrt(nt) / 4e3, 1)
 				},
 				effDesc: e => `TS232 regains <b>${shorten(e*100)}%</b> power.`,
 			}, {
-				cost: E(1e30),
+				cost: E(1e50),
 				eff(nt) {
 					nt = nt[0].add(1).log10()+nt[1].add(1).log10()+nt[2].add(1).log10()
 					return Math.sqrt(Math.max(nt / 60))
@@ -192,8 +192,8 @@ const NEUTRINO = NT = {
 			}, {
 				cost: E(1e100),
 				eff(nt) {
-					nt = nt[0].add(1).log10()*nt[1].add(1).log10()*nt[2].add(1).log10()
-					return Math.min(Math.log10(nt + 1) / 10, 1)
+					nt = nt[0].add(1).log10()+nt[1].add(1).log10()+nt[2].add(1).log10()
+					return Math.min(Math.log10(nt / 400 + 1) / 2, 1)
 				},
 				effDesc: e => `<b>^${shorten(e)}</b> of RG strength carries to Galaxies.`,
 			}
@@ -244,7 +244,7 @@ const NEUTRINO = NT = {
 				cost: E(2e8),
 				desc: `Tickspeed speeds up Decay.`,
 
-				eff: _ => pow10(Math.sqrt(Math.max(-getTickspeed().div(1e3).log10() / 4e13 - 4, 0)) * 0.6),
+				eff: _ => pow10(Math.pow(Math.max(-getTickspeed().div(1e3).log10() / 4e13 - 4, 0), .25)),
 				effDesc: e => `${shorten(e)}x`
 			}, {
 				unl: _ => ghSave.times >= 3,
@@ -299,7 +299,7 @@ const NEUTRINO = NT = {
 				effDesc: e => `+${getFullExpansion(e)}`
 			}, {
 				unl: _ => PHOTON.unlocked(),
-				cost: E(1e30),
+				cost: E(1e33),
 				desc: `Replicate Slowdown absorbs replicate interval. Replicate interval scales slower.`
 			}, {
 				unl: _ => PHOTON.unlocked(),

@@ -102,7 +102,7 @@ var nanoRewards = {
 			return pow2(x)
 		},
 		decay_exp: function(x) {
-			return Math.log10(Math.max(x + 8, 10))
+			return Math.log10(Math.max(x + 9, 10))
 		},
 		photon: function(x) {
 			return Math.pow(x / 5 + 1, 3)
@@ -140,7 +140,7 @@ var nanoRewards = {
 			return "produce nanoenergy " + shorten(x) + "x faster"
 		},
 		decay_exp: function(x) {
-			return "Raise Decay speed by ^" + shorten(x)
+			return "raise Decay speed by ^" + shorten(x)
 		},
 		photon: function(x) {
 			return "gain " + shorten(x) + "x more Photons"

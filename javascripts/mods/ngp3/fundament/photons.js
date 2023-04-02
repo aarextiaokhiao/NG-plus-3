@@ -67,8 +67,8 @@ let PHOTON = {
 			resName: "Preonic Spin",
 			res: _ => todSave.r.spin,
 
-			req: i => E(100).pow(i).mul(1e27),
-			bulk: r => Math.floor(r.max(1).div(1e27).log(100)) + 1,
+			req: i => E(20).pow(Math.pow(i,1.5)).mul(1e27),
+			bulk: r => Math.floor(Math.pow(r.max(1).div(1e27).log(20),2/3)) + 1,
 		}, {
 			resName: "Elementary Particles",
 			res: _ => ghSave.ghostParticles,
@@ -116,12 +116,12 @@ let PHOTON = {
 			desc: e => `Raise Replicate Slowdown by ^${shorten(e)}.`
 		}, {
 			name: "green",
-			start: 7,
-			eff: a => Math.log2(a/1e3+2),
+			start: 8,
+			eff: a => 1+Math.log2(a+1)/1e3,
 			desc: e => `Gain ${shorten((e-1)*100)}% more Neutrinos per Big Rip galaxy.`
 		}, {
 			name: "blue",
-			start: 9,
+			start: 10,
 			eff: a => Math.min(Math.cbrt(a / 10 + 1) - 1, 1),
 			desc: e => `Discharged Galaxies work, but as ${(e*100).toFixed(1)}% effective.`
 		}, {

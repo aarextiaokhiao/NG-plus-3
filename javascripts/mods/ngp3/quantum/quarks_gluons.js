@@ -105,7 +105,6 @@ function assignAll(auto) {
 		var colors = ['r','g','b']
 		for (c = 0; c < 3; c++) el("ratio_" + colors[c]).value = quSave.assignAllRatios[colors[c]]
 	}
-	if (mult.gt(1)) updateQuantumWorth()
 	updateColorCharge()
 }
 
@@ -337,7 +336,7 @@ function getBR6Effect() {
 }
 
 function getGU8Effect(type) {
-	return Math.pow(quSave.gluons[type].div("1e565").add(1).log10() + 1, 0.5)
+	return Math.max(quSave.gluons[type].add(1).log10() / 100 - 4, 1)
 }
 
 //Display
