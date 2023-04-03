@@ -116,12 +116,12 @@ let PHOTON = {
 			desc: e => `Raise Replicate Slowdown by ^${shorten(e)}.`
 		}, {
 			name: "green",
-			start: 8,
-			eff: a => 1+Math.log2(a+1)/1e3,
+			start: 6,
+			eff: a => 1+a/2e3,
 			desc: e => `Gain ${shorten((e-1)*100)}% more Neutrinos per Big Rip galaxy.`
 		}, {
 			name: "blue",
-			start: 10,
+			start: 9,
 			eff: a => Math.min(Math.cbrt(a / 10 + 1) - 1, 1),
 			desc: e => `Discharged Galaxies work, but as ${(e*100).toFixed(1)}% effective.`
 		}, {
@@ -159,13 +159,14 @@ let PHOTON = {
 		el("ph_shop").innerHTML = shop
 
 		for (var [i, light] of Object.entries(PHOTON.lightData)) {
-			el('ph_light_'+i).innerHTML = `<span id='ph_light_amt_${i}' style='font-size: 18px'></span>
-			${light.name} (<span id='ph_light_per_${i}'></span>%)<br>
-			(Req: ${light.start} Emissions)<br>
-			<button class='storebtn' onclick='PHOTON.trade(${i})'>Trade</button>
-			<br><br>
-			<hr>
-			<span id='ph_light_eff_${i}'></span>`
+			el('ph_light_'+i).innerHTML = `<div id='ph_light_div_${i}' style='display: none'>
+				<span id='ph_light_amt_${i}' style='font-size: 18px'></span>
+				${light.name} (<span id='ph_light_per_${i}'></span>%)<br>
+				<span id='ph_light_eff_${i}'></span><br>
+				<button class='storebtn' id='ph_light_trade_${i}' onclick='PHOTON.trade(${i})'>Trade</button>
+			</div><div id='ph_light_req_${i}'>
+				Requires ${light.start} Emissions
+			</div>`
 		}
 	},
 	update() {
@@ -177,18 +178,21 @@ let PHOTON = {
 		el("ph_emission").textContent = getFullExpansion(PHOTON.totalEmissions())
 		el("ph_amt").textContent = shortenMoney(ghSave.photons.amt)
 		el("ph_prod").textContent = "(+" + shortenMoney(PHOTON.photonGain()) + "/s)"
-		el("ph_leftover").textContent = (tmp.funda.photon.leftover * 100).toFixed(0) + "%"
 		el("ph_lighten").textContent = getFullExpansion(ghSave.photons.lighten)
 		el("ph_lighten_eff").textContent = "+" + getFullExpansion(ghSave.photons.lighten * 6) + " cap"
-		el("ph_lighten_req").textContent = "(Requires " + getFullExpansion(ghSave.photons.lighten * 4 + 20) + " Light Emissions)"
+		el("ph_lighten_req").textContent = "Requires " + getFullExpansion(ghSave.photons.lighten * 4 + 20) + " Emissions"
 
 		for (const [i, emission] of Object.entries(PHOTON.emissionData)) {
 			el("ph_shop_req_" + i).textContent = `${shorten(emission.req(ghSave.photons.emission[i] || 0))} ${emission.resName}`
 		}
 		for (const [i, light] of Object.entries(PHOTON.lightData)) {
 			el("ph_light_per_" + i).textContent = ((1 + ghSave.photons.offset[i]) * 100).toFixed(0)
-			el("ph_light_amt_" + i).textContent = shorten(ghSave.photons.light[i] || 0) + " / " + getFullExpansion(PHOTON.lightCap(i))
+			el("ph_light_amt_" + i).textContent = shorten(ghSave.photons.light[i] || 0) + " / " + shorten(PHOTON.lightCap(i))
 			el("ph_light_eff_" + i).textContent = light.desc(PHOTON.eff(i))
+			el("ph_light_trade_" + i).textContent = tmp.funda.photon.leftover ? "Absorb" : "Exchange"
+
+			el("ph_light_div_" + i).style.display = ghSave.photons.light[i] ? "" : "none"
+			el("ph_light_req_" + i).style.display = ghSave.photons.light[i] ? "none" : ""
 		}
 	}
 }

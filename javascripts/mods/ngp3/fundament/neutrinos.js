@@ -179,14 +179,14 @@ const NEUTRINO = NT = {
 				cost: E(1e25),
 				eff(nt) {
 					nt = nt[0].add(1).log10()+nt[1].add(1).log10()+nt[2].add(1).log10()
-					return Math.min(Math.sqrt(nt) / 4e3, 1)
+					return Math.log2(nt/10+1)/750
 				},
 				effDesc: e => `TS232 regains <b>${shorten(e*100)}%</b> power.`,
 			}, {
-				cost: E(1e50),
+				cost: E(1e30),
 				eff(nt) {
 					nt = nt[0].add(1).log10()+nt[1].add(1).log10()+nt[2].add(1).log10()
-					return Math.sqrt(Math.max(nt / 60))
+					return Math.cbrt(Math.max(nt / 50 - 1, 1))
 				},
 				effDesc: e => `2nd Infinite Time softcap starts <b>^${shorten(e)}</b> later.`,
 			}, {
