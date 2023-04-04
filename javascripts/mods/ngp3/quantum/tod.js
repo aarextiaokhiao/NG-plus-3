@@ -99,7 +99,7 @@ function updateTreeOfDecayTab(){
 		var lvl = getTreeUpgradeLevel(u)
 		el("treeupg" + u).className = "qu_upg " + (canBuyTreeUpg(u) ? "r" : "unavailablebtn")
 		el("treeupg" + u + "current").innerHTML = getTreeUpgradeEffectDesc(u)
-		el("treeupg" + u + "lvl").innerHTML = getFullExpansion(lvl) + (tmp.decay_str > 1 ? " → " + getFullExpansion(Math.floor(lvl * tmp.decay_str)) : "")
+		el("treeupg" + u + "lvl").innerHTML = getFullExpansion(lvl) + (tmp.qu.tree_str > 1 ? " → " + getFullExpansion(Math.floor(lvl * tmp.qu.tree_str)) : "")
 		el("treeupg" + u + "cost").innerHTML = start + shortenMoney(getTreeUpgradeCost(u)) + " preonic spin"
 	}
 	el("treeUpgradeEff").style.display = ghostified ? "" : "none"
@@ -165,7 +165,7 @@ function getBranchSpeedText(){
 	if (E(getTreeUpgradeEffect(3)).gt(1)) text += "Tree Upgrade 3: " + shorten(getTreeUpgradeEffect(3)) + "x, "
 	if (E(getTreeUpgradeEffect(5)).gt(1)) text += "Tree Upgrade 5: " + shorten(getTreeUpgradeEffect(5)) + "x, "
 	if (hasNU(4)) text += "Neutrino Upgrade 4: " + shorten(NT.eff("upg", 4)) + "x, "
-	if (hasNanoReward("decay_exp")) text += "7th Nanobenefit: ^" + shorten(tmp.nf.eff.decay_exp) + ", "
+	if (hasNanoReward("decay_exp")) text += "7th Nanobenefit: ^" + shorten(getNanorewardEff("decay_exp")) + ", "
 	if (hasAch("ng3p48") && player.meta.resets) text += "'Are you currently dying?' reward: " + shorten(Math.sqrt(player.meta.resets + 1)) + "x, "
 	if (text == "") return "No multipliers currently"
 	return text.slice(0, text.length-2)
@@ -185,7 +185,7 @@ function getBranchSpeed() {
 	x = x.mul(getTreeUpgradeEffect(3))
 	x = x.mul(getTreeUpgradeEffect(5))
 	if (hasNU(4)) x = x.mul(NT.eff("upg", 4))
-	if (hasNanoReward("decay_exp")) x = x.pow(tmp.nf.eff.decay_exp)
+	if (hasNanoReward("decay_exp")) x = x.pow(getNanorewardEff("decay_exp"))
 	if (hasAch("ng3p48")) x = x.mul(Math.sqrt(player.meta.resets + 1))
 	return x
 }
@@ -236,8 +236,8 @@ function getTreeUpgradeLevel(upg) {
 }
 
 function getEffectiveTreeUpgLevel(upg){
-	if (!tmp.decay_str) return 0
-	lvl = getTreeUpgradeLevel(upg) * tmp.decay_str
+	if (!tmp.qu.tree_str) return 0
+	lvl = getTreeUpgradeLevel(upg) * tmp.qu.tree_str
 	if (upg == 2 && lvl > 64) lvl = (lvl + 128) / 3
 	return lvl
 }
@@ -267,7 +267,7 @@ function getTreeUpgradeEffect(upg) {
 function getTreeUpgradeEffectDesc(upg) {
 	if (upg == 1) return getFullExpansion(getTreeUpgradeEffect(upg))
 	if (upg == 2) return getDilExp("TU3").toFixed(2) + " → " + getDilExp().toFixed(2)
-	if (upg == 4) return "^" + getFullExpansion(Math.round(getElectronBoost("noTree"))) + " → ^" + getFullExpansion(Math.round(tmp.mpte))
+	if (upg == 4) return "^" + getFullExpansion(Math.round(getPositronBoost("noTree"))) + " → ^" + getFullExpansion(Math.round(tmp.mpte))
 	if (upg == 8) return getTreeUpgradeEffect(8).toFixed(2)
 	return shortenMoney(getTreeUpgradeEffect(upg))
 }
@@ -481,7 +481,7 @@ function getMaximumUnstableQuarks() {
 }
 
 function getTreeUpgradeEfficiencyText(){
-	if (!shiftDown) return "Tree upgrade efficiency: "+(tmp.decay_str * 100).toFixed(1)+"%"
+	if (!shiftDown) return "Tree upgrade efficiency: "+(tmp.qu.tree_str * 100).toFixed(1)+"%"
 
 	let text = ""
 	if (todSave.r.decays) text += "Radioactive Decays: +" + (todSave.r.decays / 5).toFixed(1) + "x, "

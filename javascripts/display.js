@@ -90,7 +90,7 @@ function tickspeedDisplay(){
 	else if (tickmultNum > .9) ticklabel = 'Reduce the tick interval by ' + shorten((1 - tickmultNum) * 100) + '%'
 	else ticklabel = 'Reduce the tick interval by ' + ((1 - tickmultNum) * 100).toFixed(e) + '%'
 	let ic3mult=getIC3Mult()
-	if (player.galacticSacrifice || player.currentChallenge == "postc3" || isIC3Trapped()) el("tickLabel").innerHTML = ((isIC3Trapped() || player.currentChallenge == "postc3") && player.currentChallenge != "postcngmm_3" && !player.challenges.includes("postcngmm_3") && !tmp.be ? "M" : ticklabel + '<br>and m') + 'ultiply all dimensions by ' + (ic3mult > 999.95 ? shorten(ic3mult) : E(ic3mult).toNumber().toPrecision(4)) + '.'
+	if (player.galacticSacrifice || player.currentChallenge == "postc3" || isIC3Trapped()) el("tickLabel").innerHTML = ((isIC3Trapped() || player.currentChallenge == "postc3") && player.currentChallenge != "postcngmm_3" && !player.challenges.includes("postcngmm_3") && !tmp.qu.be ? "M" : ticklabel + '<br>and m') + 'ultiply all dimensions by ' + (ic3mult > 999.95 ? shorten(ic3mult) : E(ic3mult).toNumber().toPrecision(4)) + '.'
 	else el("tickLabel").textContent = ticklabel + '.'
 	tickspeedButtonDisplay()
 

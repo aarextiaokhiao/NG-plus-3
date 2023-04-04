@@ -1,6 +1,6 @@
 //VERSION: 2.31
 let ngp3_ver = 2.31
-let ngp3_build = 20230402
+let ngp3_build = 20230403
 function doNGP3Updates() {
 	if (!aarMod.ngp3_build) aarMod.ngp3_build = 0
 	if (aarMod.ngp3_build < 20221230) quSave.multPower = 0
@@ -26,7 +26,7 @@ function doNGP3Updates() {
 	if (aarMod.ngp3_build < 20230211) {
 		quSave.electrons.amount = 0
 		quSave.electrons.sacGals = 0
-		updateElectronsEffect()
+		updatePositronsEffect()
 	}
 	if (aarMod.ngp3_build < 20230215) player.dilation.freeGalaxies = 0
 	if (aarMod.ngp3_build < 20230215 && E(ghSave?.ghostParticles).gte(1e20)) {
@@ -80,11 +80,11 @@ function showQuantumTab(tabName) {
 }
 
 var quantumTabs = {
-	tabIds: ["uquarks", "gluons", "electrons", "replicants", "tod"],
+	tabIds: ["uquarks", "gluons", "positrons", "replicants", "tod"],
 	update: {
 		uquarks: updateQuarksTab,
 		gluons: updateGluonsTab,
-		electrons: updateElectronsTab,
+		positrons: updatePositronsTab,
 		tod: updateTreeOfDecayTab
 	}
 }
@@ -336,17 +336,17 @@ var ngp3Features = {
 		}
 	},
 	el: {
-		name: "Electrons",
+		name: "Positrons",
 		threshold: () => "Get " + shorten(50) + " net Quarks",
 		next: "qc",
 		tab() {
 			showTab("quantumtab")
-			showQuantumTab('electrons')
+			showQuantumTab('positrons')
 		}
 	},
 	qc: {
 		name: "Quantum Challenges",
-		threshold: () => "Get " + getFullExpansion(16750) + " electrons",
+		threshold: () => "Get " + getFullExpansion(16750) + " positrons",
 		next: "pc",
 		tab() {
 			showTab("challenges")
@@ -418,7 +418,7 @@ var ngp3Features = {
 	},
 	ph: {
 		name: "Photons",
-		threshold: () => "Get " + shortenCosts(pow10(1.8e9)) + " antimatter in Big Rip",
+		threshold: () => "Get " + shortenCosts(pow10(1.9e9)) + " antimatter in Big Rip",
 		next: "bl",
 		tab() {
 			showTab("ghostify")
@@ -487,15 +487,15 @@ function ngp3_feature_notify(k) {
 
 //v2.4: Moved from old functions...
 function intergalacticDisplay() {
-	if (tmp.ig && getNormalDimensions() == 8) {
+	if (tmp.qu.intergal && getNormalDimensions() == 8) {
 		el("intergalacticLabel").parentElement.style.display = ""
 		let nanopart = 1
-		if (hasNanoReward("dil_effect_exp")) nanopart = tmp.nf.eff.dil_effect_exp
+		if (hasNanoReward("dil_exp")) nanopart = getNanorewardEff("dil_exp")
 		el("intergalacticLabel").innerHTML = 
 			'Intergalactic ' + 
 			'(' + getFullExpansion(player.galaxies) + ')' +
 			(player.dilation.active || inNGM(2) ? ": (estimated)" : ": ") +
-			shorten(dilates(tmp.ig).pow(player.dilation.active ? nanopart : 1)) + 
+			shorten(dilates(tmp.qu.intergal).pow(player.dilation.active ? nanopart : 1)) + 
 			'x to Eighth Dimensions'
 	} else el("intergalacticLabel").parentElement.style.display = "none"
 }
@@ -506,7 +506,7 @@ function updateQuantumTabDisplays() {
 	el("riptabbtn").style.display = hasMasteryStudy("d14") ? "" : "none"
 
 	if (!quantumed) return
-	el("electronstabbtn").style.display = isPositronsOn() ? "" : "none"
+	el("positronstabbtn").style.display = isPositronsOn() ? "" : "none"
 	el("antTabs").style.display = hasMasteryStudy("d11") ? "" : "none"
 	el("nanofieldtabbtn").style.display = NF.unl() ? "" : "none"
 	el("todtabbtn").style.display = isDecayOn() ? "" : "none"
@@ -526,18 +526,18 @@ function beatNGP3() {
 
 //v2.4: Code
 function updateNGP3Temp() {
-	tmp.be = brokeEternity()
+	tmp.qu.be = brokeEternity()
 	updateGhostifyTempStuff()
 	if (quantumed) {
 		if (beSave && beSave.unlocked) updateBreakEternityUpgradesTemp()
 		if (hasMasteryStudy("d14")) updateBigRipUpgradesTemp()
-		if (isDecayOn()) tmp.decay_str = getTreeUpgradeEfficiency()
+		if (isDecayOn()) tmp.qu.tree_str = getTreeUpgradeEfficiency()
 		if (hasMasteryStudy("d12")) updateNanofieldTemp()
 		if (hasMasteryStudy("d10")) {
-			tmp.ant.preon_eff = getPilonEffect()
-			tmp.ant.workers = getTotalWorkers()
-			tmp.ant.total = getTotalReplicants()
-			tmp.ant.global_mult = getEmperorDimensionGlobalMultiplier() //Update global multiplier of all Emperor Dimensions
+			tmp.qu.ant.preon_eff = getPilonEffect()
+			tmp.qu.ant.workers = getTotalWorkers()
+			tmp.qu.ant.total = getTotalReplicants()
+			tmp.qu.ant.global_mult = getEmperorDimensionGlobalMultiplier() //Update global multiplier of all Emperor Dimensions
 		}
 		updateColorPowers()
 	}
@@ -552,6 +552,7 @@ function doPerSecondNGP3Stuff(){
 	updateQuantumTabDisplays()
 	updateQuarkDisplay()
 	updateNetTop()
+	el("autoBuyerQuantum").style.display = speedrunMilestonesReached >= 23 ? "" : "none"
 	el('toggleautoquantummode').style.display = quSave?.reachedInfQK ? "" : "none"
 	el('dilationmode').style.display=speedrunMilestonesReached>4?"":"none"
 	el('rebuyupgmax').style.display=speedrunMilestonesReached<26?"":"none"
@@ -626,7 +627,7 @@ function ngP3AchieveCheck() {
 	if (nfSave.rewards >= 21 && noTree) giveAchievement("But I don't want to grind!")
 	if (player.replicanti.amount.log10() >= (mod.udp ? 268435456 : 36e6)) giveAchievement("Will it be enough?")
 	if (player.options.secrets && player.options.secrets.ghostlyNews && !player.options.newsHidden) giveAchievement("Two tickers")
-	if (tmp.qc.pc_comp.normal >= 24) giveAchievement("The Challenging Day")
+	if (tmp.qu.chal.pc_comp.normal >= 24) giveAchievement("The Challenging Day")
 	if (speedrunMilestonesReached >= 24) giveAchievement("And the winner is...")
 	if (speedrunMilestonesReached >= 28) giveAchievement("Special Relativity")
 	if (hasMasteryStudy("d13")) giveAchievement("Do protons decay?")
@@ -636,9 +637,9 @@ function ngP3AchieveCheck() {
 	let ableToGetRid7 = ableToGetRid2 && bigRipped() && player.epmult.eq(1)
 	if (bigRipped()) giveAchievement("To the new dimension!")
 	if (quSave.best <= 10) giveAchievement("Quantum doesn't take so long")
-	if (tmp.be) giveAchievement("Time Breaker")
+	if (tmp.qu.be) giveAchievement("Time Breaker")
 	if (bigRipped() && player.currentEternityChall == "eterc7" && player.galaxies == 1 && player.money.log10() >= 8e7) giveAchievement("Time Immunity")
-	if (tmp.be && !hasTimeStudy(11) && player.timeShards.log10() >= 215) giveAchievement("You're not really smart.")
+	if (tmp.qu.be && !hasTimeStudy(11) && player.timeShards.log10() >= 215) giveAchievement("You're not really smart.")
 	if (ableToGetRid7 && player.infinityPoints.log10() >= 3.5e5) giveAchievement("And so your life?")
 
 	if (!ghostified) return
@@ -671,7 +672,7 @@ function ngP3AchieveCheck() {
 }
 
 function doNGP3UnlockStuff() {
-	var chall = tmp.qc.in
+	var chall = tmp.qu.chal.in
 	if (chall.length < 2) chall = chall[0]
 	else if (chall[0] > chall[1]) chall = chall[1] * 10 + chall[0]
 	else chall = chall[0] * 10 + chall[1]
@@ -684,7 +685,7 @@ function doNGP3UnlockStuff() {
 		let DONEbool = !quSave.nonMAGoalReached.includes(chall)
 		let TIMEbool = quSave.time > 10
 
-		if (!notInQC() && player.money.gt(pow10(getQCGoal())) && MAbool && DONEbool && TIMEbool) doReachAMGoalStuff(chall)
+		if (inAnyQC() && player.money.gt(pow10(getQCGoal())) && MAbool && DONEbool && TIMEbool) doReachAMGoalStuff(chall)
 		if (!beSave.unlocked && player.eternityPoints.gte("1e1200") && bigRipped()) unlockBreakEternity()
 		if (!ghSave && isQuantumReached() && bigRipped()) unlockFundament()
 
@@ -714,7 +715,9 @@ function quantumOverallUpdating(diff){
 	var colorShorthands=["r","g","b"]
 
 	//Color Powers
-	for (var c=0;c<3;c++) quSave.colorPowers[colorShorthands[c]]=quSave.colorPowers[colorShorthands[c]].add(getColorPowerProduction(colorShorthands[c]).mul(diff))
+	for (var c of colorShorthands) quSave.colorPowers[c]=quSave.colorPowers[c].add(getColorPowerProduction(c).mul(diff))
+
+	if (hasMasteryStudy("d7")) quSave.electrons.amount = getPositronGainFinalMult() * quSave.electrons.sacGals
 	if (hasMasteryStudy("d10")) replicantOverallUpdating(diff)
 	if (hasMasteryStudy("d11")) emperorDimUpdating(diff)
 	if (NF.unl()) nanofieldUpdating(diff)

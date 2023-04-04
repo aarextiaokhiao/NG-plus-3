@@ -230,7 +230,7 @@ function updateColorPowers(log) {
 		if (sc_exp < 1) red = Math.pow(red / 2.3, sc_exp) * 2.3
 	}
 	if (red > 5) red = Math.log10(red * 2) + 4
-	tmp.color_eff.r = red
+	tmp.qu.color_eff.r = red
 
 	//Green
 	let mult = 2
@@ -239,12 +239,12 @@ function updateColorPowers(log) {
 		if (mult > 4) m = Math.sqrt(m * 4)
 	}
 	if (mod.udp && !aarMod.nguepV) mult /= 2
-	tmp.color_eff.g = (Math.pow(log.g + 1, 1/3) - 1) * mult + 1
+	tmp.qu.color_eff.g = (Math.pow(log.g + 1, 1/3) - 1) * mult + 1
 
 	//Blue
 	var bLog = Math.sqrt(log.b + 1.5) - Math.sqrt(1.5)
 	if (bLog > 3) bLog = Math.sqrt(bLog * 3)
-	tmp.color_eff.b = pow10(bLog)
+	tmp.qu.color_eff.b = pow10(bLog)
 }
 
 //Gluons
@@ -301,7 +301,7 @@ function buyGluonUpg(color, id) {
 		ipMultPower = 2.3
 		player.infMult = player.infMult.div(otherMults).pow(Math.log10(getIPMultPower()) / Math.log10(old)).mul(otherMults)
 	}
-	if (name == "rg4" && !quSave.autoOptions.sacrifice) updateElectronsEffect()
+	if (name == "rg4") updatePositronsEffect()
 	if (name == "gb4") player.tickSpeedMultDecrease = 1.25
 	updateQuantumWorth()
 	updateGluonsTabOnUpdate()
@@ -344,9 +344,9 @@ function updateQuarksTab(tab) {
 	el("redPower").textContent=shortenMoney(quSave.colorPowers.r)
 	el("greenPower").textContent=shortenMoney(quSave.colorPowers.g)
 	el("bluePower").textContent=shortenMoney(quSave.colorPowers.b)
-	el("redTranslation").textContent=shortenMoney((tmp.color_eff.r-1)*100)+"%"
-	el("greenTranslation").textContent="+"+shortenMoney((tmp.color_eff.g-1)*100)+"%"
-	el("blueTranslation").textContent=shortenMoney(tmp.color_eff.b)+"x"
+	el("redTranslation").textContent=shortenMoney((tmp.qu.color_eff.r-1)*100)+"%"
+	el("greenTranslation").textContent="+"+shortenMoney((tmp.qu.color_eff.g-1)*100)+"%"
+	el("blueTranslation").textContent=shortenMoney(tmp.qu.color_eff.b)+"x"
 
 	if (hasMasteryStudy("t383")) el("blueTranslationMD").textContent=shorten(getMTSMult(383))+"x"
 	if (hasBraveMilestone(8)) {

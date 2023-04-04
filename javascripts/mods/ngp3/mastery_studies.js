@@ -61,7 +61,7 @@ var masteryStudies = {
 			return shortenDimensions(quantumWorth) + " / " + shortenDimensions(50) + " net Quarks"
 		},
 		8: function() {
-			return getFullExpansion(quSave.electrons.amount) + " / " + getFullExpansion(16750) + " electrons"
+			return getFullExpansion(quSave.electrons.amount) + " / " + getFullExpansion(16750) + " positrons"
 		},
 		9: function() {
 			return "Complete Quantum Challenge 8"
@@ -79,7 +79,7 @@ var masteryStudies = {
 			return getFullExpansion(nfSave.rewards) + " / " + getFullExpansion(16) + " Nanorewards"
 		},
 		14: function() {
-			return ghostified ? "<s>24 Paired Challenge combinations</s> Free!" : getFullExpansion(tmp.qc?.pc_comp?.normal) + " / " + getFullExpansion(24) + " Paired Challenge combinations"
+			return ghostified ? "<s>24 Paired Challenge combinations</s> Free!" : getFullExpansion(tmp.qu.chal?.pc_comp?.normal) + " / " + getFullExpansion(24) + " Paired Challenge combinations"
 		}
 	},
 	types: {t: "time", ec: "ec", d: "dil"},
@@ -171,7 +171,7 @@ var masteryStudies = {
 			return player.eightAmount.max(1).pow(Math.PI)
 		},
 		383() {
-			return E(tmp.color_eff.b || 1).max(1).pow(.5)
+			return E(tmp.qu.color_eff.b || 1).max(1).pow(.5)
 		},
 		391() {
 			return player.meta.antimatter.max(1).pow(8e-4)
@@ -180,16 +180,16 @@ var masteryStudies = {
 			return E_pow(mod.p3ep ? 1.7 : 1.6, Math.sqrt(quSave.replicants.quarks.add(1).log10())).add(1)
 		},
 		393() {
-			if (!tmp.ant.workers) return E(1)
-			return E_pow(4e5, Math.sqrt(tmp.ant.workers.add(1).log10()))
+			if (!tmp.qu.ant.workers) return E(1)
+			return E_pow(4e5, Math.sqrt(tmp.qu.ant.workers.add(1).log10()))
 		},
 		401() {
 			let log = quSave.replicants.quarks.div(1e28).add(1).log10() / 5
 			return E_pow(mod.p3ep ? 12 : 10, log)
 		},
 		411() {
-			if (!tmp.ant.total) return E(1)
-			var exp = tmp.ant.total.div(1e24).add(1).log10() / 2
+			if (!tmp.qu.ant.total) return E(1)
+			var exp = tmp.qu.ant.total.div(1e24).add(1).log10() / 2
 			if (mod.p3ep) exp += Math.pow((exp + 9) * 3, .2) * Math.log10(exp + 1)
 			if (exp > 5) exp = (exp + 5) / 2
 			return pow10(exp)
@@ -463,8 +463,8 @@ function getMasteryStudyCostMult(id) {
 
 function buyingD7Changes(){
 	showTab("quantumtab")
-	showQuantumTab("electrons")
-	updateElectrons()
+	showQuantumTab("positrons")
+	updatePositrons()
 }
 
 function buyingDilStudyQC(){

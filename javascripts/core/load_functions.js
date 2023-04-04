@@ -735,7 +735,6 @@ function doQuantumUpdates(){
 	if (aarMod.newGame3PlusVersion < 1.9) {
 		player.replicanti.intervalCost = E_pow(1e10, Math.round(Math.log10(1000/player.replicanti.interval)/-Math.log10(0.9))+14)
 		quSave.disabledRewards={}
-		quSave.electrons.mult=2
 	}
 	if (aarMod.newGame3PlusVersion < 1.901 && !quSave.electrons.rebuyables) quSave.electrons.rebuyables=[0,0,0,0]
 	if (aarMod.newGame3PlusVersion < 1.95) {
@@ -1567,7 +1566,7 @@ function updateNGp3DisplayStuff(){
 	el('autoReset').textContent="Auto: O"+(quSave.autoOptions.replicantiReset?"N":"FF")
 
 	updateAssortPercentage()
-	updateElectrons()
+	updatePositrons()
 	updateAutoQuantumMode()
 	updateColorCharge()
 	updateGluonsTabOnUpdate()

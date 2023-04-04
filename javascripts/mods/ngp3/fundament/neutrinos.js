@@ -33,8 +33,7 @@ const NEUTRINO = NT = {
 
 	/* OTHERS */
 	onGalaxy(bulk) {
-		let nts = NT_RES
-		nts.addType(nts.types[ghSave.neutrinos.generationGain - 1], nts.gain().mul(bulk))
+		NT_RES.addType(NT_RES.types[ghSave.neutrinos.generationGain - 1], NT_RES.gain().mul(bulk))
 	},
 	eff(type, x, def = 1) {
 		return tmp.funda?.neutrino[type][x] ?? def
@@ -42,7 +41,7 @@ const NEUTRINO = NT = {
 
 	/* FEATURES */
 	resources: {
-		names: ["electron", "Muon", "Tau"],
+		names: ["", "Muon ", "Tau "],
 		types: ["electron", "mu", "tau"],
 		total() {
 			let r = E(0)
@@ -179,7 +178,7 @@ const NEUTRINO = NT = {
 				cost: E(1e25),
 				eff(nt) {
 					nt = nt[0].add(1).log10()+nt[1].add(1).log10()+nt[2].add(1).log10()
-					return Math.log2(nt/10+1)/750
+					return Math.log2(nt/80+1)/200
 				},
 				effDesc: e => `TS232 regains <b>${shorten(e*100)}%</b> power.`,
 			}, {
@@ -339,7 +338,7 @@ const NEUTRINO = NT = {
 	},
 	update() {
 		for (var type of NT_RES.types) el(type + "Neutrinos").textContent = shortenDimensions(ghSave.neutrinos[type])
-		el("neutrinosGain").textContent = "+" + shortenDimensions(NT_RES.gain()) + " " + NT_RES.names[ghSave.neutrinos.generationGain - 1] + " Neutrinos per Antimatter Galaxy"
+		el("neutrinosGain").textContent = "+" + shortenDimensions(NT_RES.gain()) + " " + NT_RES.names[ghSave.neutrinos.generationGain - 1] + "Neutrinos per Antimatter Galaxy"
 
 		for (var [i, bst] of Object.entries(NT.boosts.data)) {
 			i = parseInt(i)+1

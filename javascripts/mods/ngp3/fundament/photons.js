@@ -44,7 +44,7 @@ let PHOTON = {
 	//Feature - Photons
 	photonGain() {
 		let r = E(player.dilation.bestTPOverGhostifies.max(1).log10() / 200).pow(10)
-		if (hasNanoReward("photon")) r = r.mul(tmp.nf.eff.photon)
+		if (hasNanoReward("photon")) r = r.mul(getNanorewardEff("photon"))
 		return r
 	},
 
@@ -67,20 +67,20 @@ let PHOTON = {
 			resName: "Preonic Spin",
 			res: _ => todSave.r.spin,
 
-			req: i => E(20).pow(Math.pow(i,1.5)).mul(1e27),
-			bulk: r => Math.floor(Math.pow(r.max(1).div(1e27).log(20),2/3)) + 1,
+			req: i => E(20).pow(Math.pow(i,1.5)).mul(1e28),
+			bulk: r => Math.floor(Math.pow(r.max(1).div(1e28).log(20),2/3)) + 1,
 		}, {
 			resName: "Elementary Particles",
 			res: _ => ghSave.ghostParticles,
 
-			req: i => E(1e3).pow(i).mul(1e19),
-			bulk: r => Math.floor(r.max(1).div(1e19).log(1e3)) + 1,
+			req: i => E(1e3).pow(i).mul(1e21),
+			bulk: r => Math.floor(r.max(1).div(1e21).log(1e3)) + 1,
 		}, {
 			resName: "Photons",
 			res: _ => ghSave.photons.amt,
 
-			req: i => E(3).pow(Math.pow(i, mod.p3ep ? 0.75 : 1)).mul(1e5),
-			bulk: r => Math.floor(Math.pow(r.max(1).div(1e5).log(3), 1 / (mod.p3ep ? 0.75 : 1))) + 1,
+			req: i => E(3).pow(Math.pow(i, mod.p3ep ? 0.75 : 1)).mul(2e5),
+			bulk: r => Math.floor(Math.pow(r.max(1).div(2e5).log(3), 1 / (mod.p3ep ? 0.75 : 1))) + 1,
 		}
 	],
 
@@ -102,7 +102,7 @@ let PHOTON = {
 		{
 			name: "red",
 			start: 1,
-			eff: a => E_pow(tmp.gal.ts || 1, -Math.min(Math.cbrt(a) / 10, 0.3)),
+			eff: a => E_pow(tmp.gal.ts || 1, -Math.min(Math.sqrt(a) / 10, 1)),
 			desc: e => `Multiply per-ten multiplier by ${shorten(e)}x. (based on tickspeed reduction)`
 		}, {
 			name: "orange",

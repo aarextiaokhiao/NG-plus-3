@@ -1964,7 +1964,7 @@
 			</div>
 			<div id="quantumchallenges" class="challengeTab">
 				<div id='qcDisclaimer'></div>
-				<div id='electronsAmount2'></div>
+				<div id='positronsAmount2'></div>
 				<table class="table" style="margin: 0 auto">
 					<tr>
 						<td>
@@ -1977,7 +1977,7 @@
 									<br>
 									<span id="qc1cost"></span><br>
 									<span id="qc1goal"></span><br>
-									Reward: Add 0.25x to electron gain multiplier for each Quantum Challenge completed, and First & Second Dimensions boost dilated time production. Currently: <span id="qc1reward"></span>x
+									Reward: Add 0.25x to positron gain multiplier for each Quantum Challenge completed, and First & Second Dimensions boost dilated time production. Currently: <span id="qc1reward"></span>x
 								</div>
 							</div>
 						</td>
@@ -3153,7 +3153,7 @@
 				</table>
 				<table class="table" id="studytable">
 					<tr>
-						<td><button class="timestudylocked" id="dilstudy7" onclick='buyMasteryStudy("d", 7)'>Unlock Electrons</span><br><span id="ds7Cost"></span><span id="ds7Req"></span></button></td>
+						<td><button class="timestudylocked" id="dilstudy7" onclick='buyMasteryStudy("d", 7)'>Unlock Positrons</span><br><span id="ds7Cost"></span><span id="ds7Req"></span></button></td>
 					</tr>
 				</table>
 				<table class="table" id="studytable">
@@ -3694,7 +3694,7 @@
 				<tr>
 					<td><button class="secondarytabbtn" onclick="showQuantumTab('uquarks')">Anti-Quarks</button></td>
 					<td><button class="secondarytabbtn" onclick="showQuantumTab('gluons')">Gluons</button></td>
-					<td id='electronstabbtn'><button class="secondarytabbtn" onclick="showQuantumTab('electrons')">Positrons</button></td>
+					<td id='positronstabbtn'><button class="secondarytabbtn" onclick="showQuantumTab('positrons')">Positrons</button></td>
 					<td id='todtabbtn'><button class="secondarytabbtn" onclick="showQuantumTab('tod')">Decay</button></td>
 					<td><button class="secondarytabbtn" onclick="showQuantumTab('speedruns')">Speedrun Milestones</button></td>
 				</tr>
@@ -3781,7 +3781,7 @@
 								<td><button id='rgupg2' onclick='buyGluonUpg("rg",2)'>Galaxies are more effective based on your Tachyonic Galaxies.<br><span id='rgupg2current'></span><br>Cost: 2 RG gluons</button></td>
 							</tr><tr>
 								<td><button id='rgupg3' onclick='buyGluonUpg("rg",3)'>Dimension Boosts boost 1st Meta Dimensions.<br><span id='rgupg3current'></span><br>Cost: 4 RG gluons</button></td>
-								<td><button id='rgupg4' onclick='buyGluonUpg("rg",4)'>Galaxies are 50% stronger, but electrons are 30% weaker and disable Time Study 232.<br>Cost: 100 RG gluons</button></td>
+								<td><button id='rgupg4' onclick='buyGluonUpg("rg",4)'>Galaxies are 50% stronger, but positrons are 30% weaker and disable Time Study 232.<br>Cost: 100 RG gluons</button></td>
 							</tr><tr id='rgupg3row'>
 								<td><button id='rgupg5' onclick='buyGluonUpg("rg",5)'>Gain 10x more Quarks.<br>Cost: <span id='rgupg5cost'></span> RG gluons</button></td>
 								<td><button id='rgupg6' onclick='buyGluonUpg("rg",6)'>Slow down the Distant Antimatter Galaxy cost scaling by 13.2%.<br>Cost: <span id='rgupg6cost'></span> RG gluons</button></td>
@@ -3801,7 +3801,7 @@
 								<td><button id='gbupg3' onclick='buyGluonUpg("gb",3)'>The IP mult multiplies IP gain by 2.3x per upgrade.<br>Cost: 4 GB gluons</button></td>
 								<td><button id='gbupg4' onclick='buyGluonUpg("gb",4)'>Massively decrease the tickspeed cost multiplier increase to 1.25x.<br>Cost: 100 GB gluons</button></td>
 							</tr><tr id='gbupg3row'>
-								<td><button id='gbupg5' onclick='buyGluonUpg("gb",5)'>Electron Upgrades scale 0.3 levels lower.<br>Cost: <span id='gbupg5cost'></span> GB gluons</button></td>
+								<td><button id='gbupg5' onclick='buyGluonUpg("gb",5)'>Positron Upgrades scale 0.3 levels lower.<br>Cost: <span id='gbupg5cost'></span> GB gluons</button></td>
 								<td><button id='gbupg6' onclick='buyGluonUpg("gb",6)'>Infinity Power slows down the Distant Antimatter Galaxy cost scaling.<br><span id='gbupg6current'></span><br>Cost: <span id='gbupg6cost'></span> GB gluons</button></td>
 							</tr><tr>
 								<td id='gbupg7col'><button id='gbupg7' onclick='buyGluonUpg("gb",7)'>Infinity Points slow down the Remote Antimatter Galaxy scaling.<br><span id='gbupg7current'></span><br>Cost: <span id='gbupg7cost'></span> GB gluons</button></td>
@@ -3876,18 +3876,18 @@
 					</tr>
 				</table>
 			</div>
-			<div class='quantumtab' id='electrons'>
+			<div class='quantumtab' id='positrons'>
 				You have <span id="normalGalaxies">0</span> Antimatter Galaxies.<br>
 				You discharged <span id='sacrificedGals'>0</span> galaxies.<br>
-				<button class='gluonupgrade storebtn' id='sacrificeGal' onclick='sacrificeGalaxy()'>Discharge <span id='sacrificeGals'>0</span> for <span id="electronsGain"></span> Positrons<br>(+<span id='electronsGainMult'>2</span> per galaxy)</button><br>
+				<button class='gluonupgrade storebtn' id='sacrificeGal' onclick='sacrificeGalaxy()'>Discharge <span id='sacrificeGals'>0</span> for <span id="positronsGain"></span> Positrons<br>(+<span id='positronsGainMult'>2</span> per galaxy)</button><br>
 				<button class='storebtn' id='sacrificeAuto' onclick='toggleAutoQuantumContent("sacrifice")' style='height: 24px'></button><br>
-				<span id="electronsAmount" style="font-size:35px">0</span> Positrons<br>
-				Multiplier per ten dimensions: <span id="linearPerTenMult" style="font-size:15px">2.00</span>, <span id="electronsTranslation" style="font-size:15px">1.00</span> → <span id="electronsEffect" style="font-size:25px">2.00</span>
+				<span id="positronsAmount" style="font-size:35px">0</span> Positrons<br>
+				Multiplier per ten dimensions: <span id="linearPerTenMult" style="font-size:15px">2.00</span>, <span id="positronsTranslation" style="font-size:15px">1.00</span> → <span id="positronsEffect" style="font-size:25px">2.00</span>
 				<table class="table" align="center" style="margin: auto"><tr>
-					<td><button id='electronupg1' onclick='buyElectronUpg(1)'></button></td>
-					<td><button id='electronupg2' onclick='buyElectronUpg(2)'></button></td>
-					<td><button id='electronupg3' onclick='buyElectronUpg(3)'></button></td>
-					<td><button id='electronupg4' onclick='buyElectronUpg(4)'></button></td>
+					<td><button id='positronupg1' onclick='buyPositronUpg(1)'></button></td>
+					<td><button id='positronupg2' onclick='buyPositronUpg(2)'></button></td>
+					<td><button id='positronupg3' onclick='buyPositronUpg(3)'></button></td>
+					<td><button id='positronupg4' onclick='buyPositronUpg(4)'></button></td>
 				</tr></table>
 				<button class="qu_upg storebtn" id="bl_portion_3" onclick='BOSONIC_LAB.find(3)' style='opacity: 0.1'>You agree that you are willing to sacrifice yourself.</button>
 			</div>
@@ -4020,7 +4020,7 @@
 				<div id="neutrinosGain"></div>
 				<table class='qtable'>
 					<tr style="font-size: 15px">
-						<td class="grey"><span class="neutrinos" id="electronNeutrinos">0</span> Electron Neutrinos</td>
+						<td class="grey"><span class="neutrinos" id="electronNeutrinos">0</span> Neutrinos</td>
 						<td class="grey"><span class="neutrinos" id="muNeutrinos">0</span> Muon Neutrinos</td>
 						<td class="grey"><span class="neutrinos" id="tauNeutrinos">0</span> Tau Neutrinos</td>
 					</tr>
@@ -4093,7 +4093,7 @@
 					<tr id="braveRow1">
 						<td><div id="braveMilestone1" class="achievement achievementlocked" ach-tooltip="Reward: Keep Speedrun Milestones, Gluon Upgrades, Quantum Challenges, and Big Rip upgrades."></div></td>
 						<td><div id="braveMilestone2" class="achievement achievementlocked" ach-tooltip="Reward: Colored quarks don't cancel, and keep best antimatter in dilation on Quantum."></div></td>
-						<td><div id="braveMilestone3" class="achievement achievementlocked" ach-tooltip="Reward: Keep Electron upgrades and Quantum features."></div></td>
+						<td><div id="braveMilestone3" class="achievement achievementlocked" ach-tooltip="Reward: Keep Positron upgrades and Quantum features."></div></td>
 						<td><div id="braveMilestone4" class="achievement achievementlocked" ach-tooltip="Reward: Tachyon particles don't reset on Quantum except in challenges, unstabilizing quarks don't lose colored quarks, and you start with 5 of 1st Branch Upgrades."></div></td>
 						<td><div id="braveMilestone5" class="achievement achievementlocked" ach-tooltip="Reward: Meta-Dimension Boosts don't reset on Quantum except in challenges."></div></td>
 						<td><div id="braveMilestone6" class="achievement achievementlocked" ach-tooltip="Reward: Normal duplicants don't reset on Quantum except in challenges."></div></td>
@@ -4148,7 +4148,7 @@
 			<br><br><hr>
 
 			<b>(NG+3 v2.31: Ghostify Respecced)</b><br>
-			<b class="red">(Beta: 4/2/23 Build)</b><br>
+			<b class="red">(Beta: 4/3/23 Build)</b><br>
 			By <a href="https://aarextiaokhiao.github.io/">Aarex</a>, pg132, and usavictor.
 			<br><br>
 
@@ -4416,7 +4416,7 @@
 	<script type="text/javascript" src="javascripts/mods/ngp3/quantum/quantum_challenges.js"></script>
 	<script type="text/javascript" src="javascripts/mods/ngp3/quantum/tod.js"></script>
 	<script type="text/javascript" src="javascripts/mods/ngp3/quantum/big_rip.js"></script>
-	<script type="text/javascript" src="javascripts/mods/ngp3/quantum/electrons.js"></script>
+	<script type="text/javascript" src="javascripts/mods/ngp3/quantum/positrons.js"></script>
 
 	<script type="text/javascript" src="javascripts/mods/ngp3/ant/duplicants.js"></script>
 	<script type="text/javascript" src="javascripts/mods/ngp3/ant/nanofield.js"></script>

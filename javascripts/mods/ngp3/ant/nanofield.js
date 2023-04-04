@@ -22,17 +22,17 @@ function updateNanoverseTab() {
 
 	for (var reward = 1; reward < 9; reward++) {
 		el("nfReward" + reward).className = reward > amt ? "nfRewardlocked" : "nfReward"
-		el("nfReward" + reward).textContent = wordizeList(tmp.nf.reward[reward].map(x => nanoRewards.effDisp[x](tmp.nf.eff[x])), true) + "."
+		el("nfReward" + reward).textContent = wordizeList(tmp.qu.nf.reward[reward].map(x => nanoRewards.effDisp[x](tmp.qu.nf.eff[x])), true) + "."
 		el("nfRewardHeader" + reward).innerHTML = "<u>" + (amt % 8 + 1 == reward ? "Next" : dimNames[reward]) + " Nanobenefit</u>"
 		el("nfRewardHeader" + reward).className = (amt % 8 + 1 == reward ? "grey" : "") + " milestoneTextSmall"
-		el("nfRewardTier" + reward).textContent = "Tier " + getFullExpansion(Math.ceil((amt + 1 - reward) / 8)) + " / Power: " + tmp.nf.power[reward].toFixed(1)
+		el("nfRewardTier" + reward).textContent = "Tier " + getFullExpansion(Math.ceil((amt + 1 - reward) / 8)) + " / Power: " + tmp.qu.nf.power[reward].toFixed(1)
 	}
 }
 
 
 function getQuarkChargeProduction() {
 	let ret = E(1)
-	if (hasNanoReward("preon_charge")) ret = ret.mul(tmp.nf.eff.preon_charge)
+	if (hasNanoReward("pilon_charge")) ret = ret.mul(tmp.qu.nf.eff.pilon_charge)
 	if (hasMasteryStudy("t421")) ret = ret.mul(getMTSMult(421))
 	if (hasNU(3)) ret = ret.mul(NT.eff("upg", 3))
 	if (hasNU(7)) ret = ret.mul(NT.eff("upg", 7))
@@ -52,7 +52,7 @@ function getQuarkLossProduction() {
 
 function getQuarkEnergyProduction() {
 	let ret = nfSave.charge.mul(5).sqrt()
-	if (hasNanoReward("preon_energy")) ret = ret.mul(tmp.nf.eff.preon_energy)
+	if (hasNanoReward("pilon_energy")) ret = ret.mul(tmp.qu.nf.eff.pilon_energy)
 	if (hasMasteryStudy("t411")) ret = ret.mul(getMTSMult(411))
 	return ret
 }
@@ -72,7 +72,7 @@ var nanoRewards = {
 		hatch_speed: function(x) {
 			return E_pow(30, x)
 		},
-		ma_effect_exp: function(x) {
+		ma_eff_exp: function(x) {
 			return x * 6.8
 		},
 		dil_gal_gain: function(x) {
@@ -81,10 +81,10 @@ var nanoRewards = {
 		dt_to_ma_exp: function(x) {
 			return Math.sqrt(x) * 0.021 + 1
 		},
-		dil_effect_exp: function(x) {
+		dil_exp: function(x) {
 			return Math.min(x * 0.36 + 1, 2)
 		},
-		meta_boost_power: function(x) {
+		md_boost: function(x) {
 			let y = 2
 			if (player.dilation.upgrades.includes("ngpp4")) y = getDil15Bonus()
 			return x * 1.34 + y
@@ -92,13 +92,13 @@ var nanoRewards = {
 		remote_start: function(x) {
 			return x * 2150
 		},
-		preon_charge: function(x) {
+		pilon_charge: function(x) {
 			return pow2(x * (hasNU(16) ? 4 : 2))
 		},
 		per_10_power: function(x) {
 			return x * 0.76
 		},
-		preon_energy: function(x) {
+		pilon_energy: function(x) {
 			return pow2(x)
 		},
 		decay_exp: function(x) {
@@ -112,7 +112,7 @@ var nanoRewards = {
 		hatch_speed: function(x) {
 			return "eggons hatch " + shorten(x) + "x faster"
 		},
-		ma_effect_exp: function(x) {
+		ma_eff_exp: function(x) {
 			return "meta-antimatter effect is ^" + x.toFixed(2)
 		},
 		dil_gal_gain: function(x) {
@@ -121,22 +121,22 @@ var nanoRewards = {
 		dt_to_ma_exp: function(x) {
 			return "dilated time gives ^" + x.toFixed(3) + " boost to Meta Dimensions"
 		},
-		dil_effect_exp: function(x) {
+		dil_exp: function(x) {
 			return "in dilation, raise Normal Dimension multipliers and Tickspeed by ^" + x.toFixed(2)
 		},
-		meta_boost_power: function(x) {
+		md_boost: function(x) {
 			return "Meta-Dimension Boost gives a " + x.toFixed(2) + "x boost"
 		},
 		remote_start: function(x) {
 			return "Remote Antimatter Galaxies scale " + getFullExpansion(Math.floor(x)) + " later"
 		},
-		preon_charge: function(x) {
+		pilon_charge: function(x) {
 			return "produce nanocharge " + shorten(x) + "x faster"
 		},
 		per_10_power: function(x) {
-			return "before Electrons, add " + shorten(x) + "x to multiplier per ten Dimensions"
+			return "before Positrons, add " + shorten(x) + "x to multiplier per ten Dimensions"
 		},
-		preon_energy: function(x) {
+		pilon_energy: function(x) {
 			return "produce nanoenergy " + shorten(x) + "x faster"
 		},
 		decay_exp: function(x) {
@@ -148,23 +148,27 @@ var nanoRewards = {
 	},
 	usage: {
 		1: _ => hasNU(16) ? ["photon"] : ["hatch_speed"],
-		2: _ => ["ma_effect_exp"],
+		2: _ => ["ma_eff_exp"],
 		3: _ => ["dil_gal_gain"],
 		4: _ => ["dt_to_ma_exp"],
-		5: _ => ["dil_effect_exp"],
-		6: _ => ["meta_boost_power"],
-		7: _ => hasNU(6) ? ["preon_charge", "decay_exp"] : ["remote_start", "preon_charge"],
-		8: _ => ["per_10_power", "preon_energy"],
+		5: _ => ["dil_exp"],
+		6: _ => ["md_boost"],
+		7: _ => hasNU(6) ? ["pilon_charge", "decay_exp"] : ["remote_start", "pilon_charge"],
+		8: _ => ["per_10_power", "pilon_energy"],
 	},
 }
 
 function hasNanoReward(x) {
-	return tmp.nf?.eff?.[x] ?? false
+	return getNanorewardEff(x) ? true : false
+}
+
+function getNanorewardEff(x) {
+	return tmp.qu.nf?.eff?.[x]
 }
 
 function getNanoRewardPower(reward, rewards) {
 	let x = Math.ceil((rewards - reward + 1) / 8)
-	return x * tmp.nf.str
+	return x * tmp.qu.nf.str
 }
 
 function getNanoRewardReq(additional){
@@ -207,23 +211,23 @@ function updateNextPreonEnergyThreshold(){
 
 function updateNanoEffectUsages() {
 	let data = {}
-	tmp.nf.reward = data
+	tmp.qu.nf.reward = data
 	for (let x = 1; x <= 8; x++) data[x] = nanoRewards.usage[x]()
 }
 
 function updateNanoRewardPowers() {
 	let data = {}
-	tmp.nf.power = data
-	for (let x = 1; x <= 8; x++) data[x] = getNanoRewardPower(x, tmp.nf.rewards)
+	tmp.qu.nf.power = data
+	for (let x = 1; x <= 8; x++) data[x] = getNanoRewardPower(x, tmp.qu.nf.rewards)
 }
 
 function updateNanoRewardEffects() {
 	let data = {}
-	tmp.nf.eff = data
+	tmp.qu.nf.eff = data
 
 	for (let x = 1; x <= 8; x++) {
-		let pow = tmp.nf.power[x]
-		for (let r of tmp.nf.reward[x]) data[r] = nanoRewards.eff[r](pow)
+		let pow = tmp.qu.nf.power[x]
+		for (let r of tmp.qu.nf.reward[x]) data[r] = nanoRewards.eff[r](pow)
 	}
 }
 
@@ -233,7 +237,7 @@ function resetNanoRewardEffects() {
 }
 
 function setupNanoRewardTemp() {
-	tmp.nf = {}
+	tmp.qu.nf = {}
 	if (!hasMasteryStudy("d11")) return
 
 	updateNanoEffectUsages()
@@ -241,12 +245,12 @@ function setupNanoRewardTemp() {
 
 function updateNanofieldTemp() {
 	if (!NF.unl()) return
-	if (!tmp.nf) setupNanoRewardTemp()
+	if (!tmp.qu.nf) setupNanoRewardTemp()
 	var x = 1 //getNanoRewardPowerEff()
 	var y = nfSave.rewards
-	if (tmp.nf.str !== x || tmp.nf.rewards !== y) {
-		tmp.nf.str = x
-		tmp.nf.rewards = y
+	if (tmp.qu.nf.str !== x || tmp.qu.nf.rewards !== y) {
+		tmp.qu.nf.str = x
+		tmp.qu.nf.rewards = y
 
 		updateNanoRewardPowers()
 		updateNanoRewardEffects()

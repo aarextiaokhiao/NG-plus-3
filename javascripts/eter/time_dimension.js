@@ -3,10 +3,10 @@
 function getBreakEternityTDMult(tier){
 	var ret = tmp.inf_time
 	if (hasTimeStudy(11) && tier == 1) ret = ret.mul(tsMults[11]())
-	if (isBreakUpgActive(1) && tier < 5) ret = ret.mul(tmp.beu[1])
-	if (isBreakUpgActive(4) && tier > 3 && tier < 7) ret = ret.mul(tmp.beu[4])
+	if (isBreakUpgActive(1) && tier < 5) ret = ret.mul(tmp.qu.beu[1])
+	if (isBreakUpgActive(4) && tier > 3 && tier < 7) ret = ret.mul(tmp.qu.beu[4])
 	if (hasRipUpg(13)) ret = ret.mul(player.replicanti.amount.max(1).pow(1e-6))
-	if (tier == 7 && hasRipUpg(16)) ret = ret.mul(tmp.bru[16])
+	if (tier == 7 && hasRipUpg(16)) ret = ret.mul(tmp.qu.bru[16])
 	if (ret.lt(0)) ret = E(0)
 	return dilates(ret)
 }
@@ -24,7 +24,7 @@ function getERTDAchMults(){
 function calcNGM2atleastTDPreVPostDilMultiplier(tier){
 	var ret2 = E(1)
 	var ngPlus = (aarMod.newGamePlusVersion ? 103680000 : 0)
-	if (player.currentEternityChall == "eterc9") ret2 = ret2.mul(tmp.infPow)
+	if (player.currentEternityChall == "eterc9") ret2 = ret2.mul(tmp.inf_pow)
 	if (ECComps("eterc1") !== 0) ret2 = ret2.mul(getECReward(1))
 	if (player.eternityUpgrades.includes(4)) ret2 = ret2.mul(player.achPow)
 	if (player.eternityUpgrades.includes(5)) ret2 = ret2.mul(Math.max(player.timestudy.theorem, 1))
@@ -45,7 +45,7 @@ function calcVanillaTSTDMult(tier){
 
 function getTimeDimensionPower(tier) {
 	if (player.currentEternityChall == "eterc11") return E(1)
-	if (tmp.be) return getBreakEternityTDMult(tier)
+	if (tmp.qu.be) return getBreakEternityTDMult(tier)
 	var dim = player["timeDimension" + tier]
 	var ret = dim.power.pow(mod.rs ? 1 : 2)
 
@@ -73,7 +73,7 @@ function getTimeDimensionPower(tier) {
 }
 
 function getTimeDimensionProduction(tier) {
-	if (player.currentEternityChall == "eterc1" || player.currentEternityChall == "eterc10" || (!tmp.be && inQC(8))) return E(0)
+	if (player.currentEternityChall == "eterc1" || player.currentEternityChall == "eterc10" || (!tmp.qu.be && inQC(8))) return E(0)
 	var dim = player["timeDimension" + tier]
 	if (player.currentEternityChall == "eterc11") return dim.amount
 	var ret = dim.amount
@@ -290,7 +290,7 @@ function nonERFreeTickUpdating(){
 		threshold = 1.25
 		if (mod.ngmu) threshold -= 0.08
 	}
-	if (QCIntensity(7)) threshold *= tmp.qc.reward[7]
+	if (QCIntensity(7)) threshold *= tmp.qu.chal.reward[7]
 	if (threshold < 1.1 && inNGM(2)) threshold = 1 + 0.1 / (2.1 - threshold)
 	if (threshold < 1.01 && inNGM(2)) threshold = 1.005 + 0.005 / (2.01 - threshold)
 

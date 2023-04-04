@@ -68,7 +68,7 @@ var automators = {
 		title: "Fundament",
 		html: `Seconds to wait until reset: <input id="autoGhost15a" onchange="changeAutoGhost('15a')"/>`,
 		req: 8,
-		pow: 4,
+		pow: 3,
 	},
 	16: {
 		title: "Neutrino Upgrader",
@@ -79,6 +79,14 @@ var automators = {
 		title: "Experimenter",
 		req: 25,
 		pow: 4,
+	},
+	2: {
+		title: "EC10 Challenger",
+		html: `(big rip only)<br>
+		Big Rip times: <input id="autoGhost2b" onchange="changeAutoGhost('2b')"/><br>
+		Ends in: <input id="autoGhost2t" onchange="changeAutoGhost('2t')"/>s`,
+		req: 13,
+		pow: 1.5,
 	},
 	19: {
 		title: "Enchanter",
@@ -99,7 +107,7 @@ var automators = {
 		pow: 3,
 	},
 }
-const automatorOrder = [1,5,6,7,18,8,9,10,11,12,13,14,15,16,17,19,20,21]
+const automatorOrder = [1,5,6,7,18,8,9,10,11,12,13,14,15,16,2,17,19,20,21]
 
 function setupAutomaticGhostsData() {
 	var data = {power: 0, ghosts: 3}
@@ -110,6 +118,8 @@ function setupAutomaticGhostsData() {
 	data[15].a = 1
 	data[17].a = 60
 	data[17].t = 0
+	data[2].b = 3
+	data[2].t = 5
 	return data
 }
 
@@ -132,8 +142,10 @@ function updateAutoGhosts(load) {
 		el("autoGhost13t").value = data[13].t
 		el("autoGhost13u").value = data[13].u
 		el("autoGhost13o").value = data[13].o
-		el("autoGhost15a").value = data[15].a || 300
-		el("autoGhost17s").value = data[17].s || 60
+		el("autoGhost15a").value = data[15].a
+		el("autoGhost17s").value = data[17].s
+		el("autoGhost2b").value = data[2].b
+		el("autoGhost2t").value = data[2].t
 	}
 
 	isAutoGhostsSafe = data.power >= powerConsumed
@@ -178,6 +190,12 @@ function changeAutoGhost(o) {
 	} else if (o == "17a") {
 		var num = fromValue(el("autoGhost17s").value)
 		if (!isNaN(break_infinity_js ? num : num.l)) ghSave.automatorGhosts[17].s = num
+	} else if (o == "2t") {
+		var num = fromValue(el("autoGhost2t").value)
+		if (!isNaN(num) && num > 0) ghSave.automatorGhosts[2].t = num
+	} else if (o == "2b") {
+		var num = fromValue(el("autoGhost2b").value)
+		if (!isNaN(num) && num >= 0) ghSave.automatorGhosts[2].b = num
 	}
 }
 
@@ -222,7 +240,7 @@ function automatorTick(diff) {
 		let times = Math.floor(ag.t)
 		if (times > 0) {
 			let max = times
-			if (isEnchantUsed(35)) max = tmp.bEn[35].mul(max)
+			if (isEnchantUsed(35)) max = tmp.qu.ben[35].mul(max)
 			autoMaxAllEnchants(max)
 			ag.t = ag.t - times
 		}
@@ -231,6 +249,12 @@ function automatorTick(diff) {
 
 	//Quantum Layer
 	let limit = ghSave.automatorGhosts[13].o || 1 / 0
+	if (bigRipped() && isAutoGhostActive(2) && brSave.times >= ghSave.automatorGhosts[2].b) {
+		if (quSave.time < ghSave.automatorGhosts[2].t * 10 && player.currentEternityChall != "eterc10") {
+			startEC10()
+		}
+		if (quSave.time >= ghSave.automatorGhosts[2].t * 10 && player.currentEternityChall == "eterc10") eternity(true)
+	}
 	if (hasMasteryStudy("d14") && isAutoGhostActive(13)) {
 		if (bigRipped()) {
 			if (quSave.time >= ghSave.automatorGhosts[13].u * 10 && brSave.times <= limit) doQuantum(true, true)
@@ -260,8 +284,8 @@ function automatorTick(diff) {
 function automatorPerSec() {
 	if (!isAutoGhostsSafe) return
 	if (isAutoGhostActive(18)) {
-		for (var i = 1; i <= 4; i++) while (buyElectronUpg(i, true)) {}
-		updateElectrons()
+		for (var i = 1; i <= 4; i++) while (buyPositronUpg(i, true)) {}
+		updatePositrons()
 	}
 	if (isAutoGhostActive(16)) {
 		maxNeutrinoMult()

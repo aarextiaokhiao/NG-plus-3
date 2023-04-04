@@ -80,13 +80,12 @@ function ghostify(auto, force) {
 }
 
 function ghostifyReset(force, gain) {
-	var bulk = getGhostifiedGain()
 	if (!force) {
 		ghSave.ghostParticles = ghSave.ghostParticles.add(gain).round()
 		el("GHPAmount").textContent = shortenDimensions(ghSave.ghostParticles)
 
 		//Records
-		ghSave.times = nA(ghSave.times, bulk)
+		ghSave.times++
 		if (!ghostified) {
 			ghostified = true
 			ngp3_feature_notify("fu")
@@ -147,7 +146,7 @@ RESETS.funda = {
 		updateColorCharge()
 		updateGluonsTabOnUpdate("prestige")
 	},
-	resetElectrons(bm) {
+	resetPositrons(bm) {
 		if (bm >= 3) return
 		quSave.electrons.mult = 2
 		quSave.electrons.rebuyables = [0, 0, 0, 0]
@@ -159,8 +158,6 @@ RESETS.funda = {
 			quSave.challenges = {}
 			quSave.pairedChallenges.order = {}
 			quSave.pairedChallenges.completed = 0
-		} else if (bm < 3) {
-			for (var comp of Object.values(quSave.challenges)) quSave.electrons.mult += .5 - comp * .25
 		}
 		updateInQCs()
 		updateQuantumChallenges()
@@ -227,7 +224,7 @@ RESETS.funda = {
 
 		this.resetQuantums(bm)
 		this.resetQuarkGluons(bm)
-		this.resetElectrons(bm)
+		this.resetPositrons(bm)
 		this.resetQCs(bm)
 		this.resetDuplicants(bm)
 		this.resetDecay(bm)

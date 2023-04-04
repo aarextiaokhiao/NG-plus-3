@@ -757,9 +757,9 @@ strong { color: #0072e5 }
     background-color: gold !important
 }
 
-#electronsAmount,
-#electronsTranslation,
-#electronsEffect {
+#positronsAmount,
+#positronsTranslation,
+#positronsEffect {
     color: gold !important;
     font-weight: 500;
 }

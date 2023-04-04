@@ -168,7 +168,7 @@ function updateExtraReplGalaxies() {
 }
 
 function getExtraReplGalaxyBase() {
-	let ss_speed = tmp.qc.reward[8] * 2
+	let ss_speed = tmp.qu.chal.reward[8] * 2
 	let ts225Eff = 0
 	let ts226Eff = 0
 	if (hasTimeStudy(225)) {
@@ -190,8 +190,8 @@ function getExtraReplGalaxyBase() {
 
 function getExtraReplGalaxyMult() {
 	let mult = 1
-	if (quantumed) mult = tmp.color_eff.g
-	if (hasMasteryStudy("d10")) mult += tmp.ant.preon_eff
+	if (quantumed) mult = tmp.qu.color_eff.g
+	if (hasMasteryStudy("d10")) mult += tmp.qu.ant.preon_eff
 	return mult
 }
 

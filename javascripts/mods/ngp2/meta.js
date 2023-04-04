@@ -11,7 +11,7 @@ function getDilationMetaDimensionMultiplier() {
 	if (mod.udsp) div = 1e50
 
 	let pow = 0.1
-	if (hasNanoReward("dt_to_ma_exp") && tmp.nf.eff.dt_to_ma_exp) pow *= tmp.nf.eff.dt_to_ma_exp //this is a quick fix, but we need to fix this bug
+	if (hasNanoReward("dt_to_ma_exp")) pow *= getNanorewardEff("dt_to_ma_exp")
 
 	if (mod.udp && !aarMod.nguepV) {
 		let l = quSave.colorPowers.b.plus(10).log10()
@@ -38,7 +38,7 @@ function getMetaDimensionMultiplier(tier) {
 	if (tier == 1 && hasGluonUpg("rg3")) ret = ret.mul(getRG3Effect())
 
 	//QC Rewards:
-	if (tier % 2 > 0) ret = ret.mul(tmp.qc.reward[4])
+	if (tier % 2 > 0) ret = ret.mul(tmp.qu.chal.reward[4])
 	
 	//Achievements:
 	if (tier == 8 && hasAch("ng3p22")) ret = ret.mul(1 + Math.pow(player.meta[1].amount.plus(1).log10() / 10, 2))
@@ -69,8 +69,8 @@ function getMetaDimensionGlobalMultiplier() {
 		if (hasGluonUpg("br5")) ret = ret.mul(3)
 
 		//QC Rewards
-		ret = ret.mul(tmp.qc.reward[3])
-		ret = ret.mul(tmp.qc.reward[6])
+		ret = ret.mul(tmp.qu.chal.reward[3])
+		ret = ret.mul(tmp.qu.chal.reward[6])
 
 		//Achievement Rewards
 		if (hasAch("ng3p13")) ret = ret.mul(Math.pow(Decimal.plus(quantumWorth, 10).log10(), 2))
@@ -93,7 +93,7 @@ function getMetaBoostPower() {
 	let exp = 1
 	if (player.dilation.upgrades.includes("ngpp4")) r = getDil15Bonus()
 	if (mod.ngp3) {
-		if (hasNanoReward("meta_boost_power")) r = tmp.nf.eff.meta_boost_power
+		if (hasNanoReward("md_boost")) r = getNanorewardEff("md_boost")
 		if (hasMasteryStudy("t312")) exp = 1.045
 	}
 	if (hasAch("ngpp14")) r *= 1.01
@@ -359,7 +359,7 @@ function getExtraDimensionBoostPowerExponent(ma) {
 	if (player.dilation.upgrades.includes("ngpp5")) power++
 	if (mod.ngp3) {
 		power += getECReward(13)
-		if (hasNanoReward("ma_effect_exp") && !dev.testZone) power += tmp.nf.eff.ma_effect_exp
+		if (hasNanoReward("ma_eff_exp") && !dev.testZone) power += getNanorewardEff("ma_eff_exp")
 		if (isDecayOn()) power += getTreeUpgradeEffect(8)
 		if (hasNU(15)) power += NT.eff("upg", 15)
 	}
@@ -413,7 +413,7 @@ function updateMetaDimensions () {
 	var req = getQuantumReq()
 	var reqGotten = isQuantumReached()
 	var newClassName = reqGotten ? (bigRip && player.options.theme == "Aarex's Modifications" ? "" : "storebtn ") + (bigRip ? "aarexmodsghostifybtn" : "") : 'unavailablebtn'
-	el("quantumResetLabel").textContent = (bigRip ? 'Ghostify' : 'Quantum') + ': requires ' + shorten(req) + ' meta-antimatter ' + (!notInQC() ? "and " + shortenCosts(getQCGoal()) + " antimatter" : player.masterystudies ? "and an EC14 completion" : "")
+	el("quantumResetLabel").textContent = (bigRip ? 'Ghostify' : 'Quantum') + ': requires ' + shorten(req) + ' meta-antimatter ' + (inAnyQC() ? "and " + shortenCosts(getQCGoal()) + " antimatter" : player.masterystudies ? "and an EC14 completion" : "")
 
 	var message = 'Lose all your prior progress'
 	if (reqGotten && bigRip && ghostified) {

@@ -136,7 +136,7 @@ function changeSaveDesc(saveId, placement) {
 					msg+=", Challenge completions: "+completions
 				} else {
 					if (temp.quantum.gluons.rg) msg+=", Gluons: "+shortenDimensions(Decimal.add(temp.quantum.gluons.rg,temp.quantum.gluons.gb).add(temp.quantum.gluons.br))
-					if (temp.masterystudies.includes('d7')) msg+=", Electrons: "+shortenDimensions(temp.quantum.electrons.amount)
+					if (temp.masterystudies.includes('d7')) msg+=", Positrons: "+shortenDimensions(temp.quantum.positrons.amount)
 					msg+=", Best quantum: "+timeDisplayShort(temp.quantum.best)
 				}
 			}
@@ -988,7 +988,7 @@ function getBrandNewBigRipData(){
 	}
 }
 
-function getBrandNewElectronData(){
+function getBrandNewPositronData(){
 	return {
 		amount: 0,
 		sacGals: 0,
@@ -1194,7 +1194,6 @@ function doNGPlusFourPlayer(){
 	quSave.best = 10
 	for (var d = 7; d < 14; d++) player.masterystudies.push("d"+d)
 
-	quSave.electrons.mult = 6
 	for (var c = 1; c < 9; c++) quSave.challenges[c] = 2
 	quSave.pairedChallenges.completed = 4
 	quSave.nanofield.rewards = 19

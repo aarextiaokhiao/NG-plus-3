@@ -22,7 +22,7 @@ el("secondSoftReset").onclick = function() {
 	let bool2 = player.currentChallenge != "postc1"
 	let bool3 = player.currentChallenge != "postc5" || !inNGM(3)
 	let bool4 = player.currentChallenge != "postc7"
-	let bool5 = (player.currentEternityChall == "eterc6" || inQC(6)) && !tmp.be
+	let bool5 = (player.currentEternityChall == "eterc6" || inQC(6)) && !tmp.qu.be
 	var bool = bool1 && bool2  && bool3 && bool4 && !bool5 && !tmp.ri && !cantReset()
 	if (getAmount(inNC(4) ? 6 : 8) >= getGalaxyRequirement() && bool) {
 		if ((getEternitied() >= 7 || player.autobuyers[10].bulkBought) && !shiftDown && (!inNC(14) || !inNGM(3))) maxBuyGalaxies(true);
@@ -39,9 +39,9 @@ function getGalaxyRequirement(offset = 0, display) {
 	if (inNGM(2)) amount -= (hasGSacUpg(22) && player.galaxies > 0) ? 80 : 60
 	if (inNGM(4)) amount -= 10
 	if (inNC(4)) amount = !inNGM(3) ? 99 + base : amount + (inNGM(4) ? 20 : -30)
-	if (tmp.be) {
+	if (tmp.qu.be) {
 		amount *= 50
-		if (isBreakUpgActive(2)) amount /= tmp.beu[2]
+		if (isBreakUpgActive(2)) amount /= tmp.qu.beu[2]
 	}
 	if (!mod.rs) {
 		let distantStart = getDistantScalingStart()
@@ -94,7 +94,7 @@ function getDistantScalingStart() {
 	var n = 100 + getECReward(5)
 	if (hasTimeStudy(223)) n += 7
 	if (hasTimeStudy(224)) n += Math.floor(player.resets/2000)
-	if (bigRipped() && hasRipUpg(15)) n += tmp.bru[15]
+	if (bigRipped() && hasRipUpg(15)) n += tmp.qu.bru[15]
 
 	return Math.max(n, 0)
 }
@@ -113,7 +113,7 @@ function getRemoteScalingStart(galaxies) {
 	if (mod.ngp3) {
 		for (var t = 251; t < 254; t++) if (hasMasteryStudy("t" + t)) n += getMTSMult(t)
 		if (hasMasteryStudy("t301")) n += getMTSMult(301)
-		if (hasNanoReward("remote_start")) n += tmp.nf.eff.remote_start
+		if (hasNanoReward("remote_start")) n += getNanorewardEff("remote_start")
 	}
 	return n
 }
@@ -124,17 +124,17 @@ function initialGalaxies() {
 	if (isPositronsOn()) {
 		let sac = quSave.electrons.sacGals
 		g = Math.max(g - sac, 0)
-		g *= Math.max(Math.min(10 - (quSave.electrons.amount + g * getElectronGainFinalMult()) / 16857, 1), 0)
+		g *= Math.max(Math.min(10 - (quSave.electrons.amount + g * getPositronGainFinalMult()) / 16857, 1), 0)
 		g += Math.min(sac, player.galaxies) * PHOTON.eff(4, 0)
 	}
-	if ((!notInQC() || dev.testZone) && !tmp.be) g = 0
+	if ((inAnyQC() || dev.testZone) && !tmp.qu.be) g = 0
 	if ((inNC(15) || player.currentChallenge == "postc1") && inOnlyNGM(3)) g = 0
 	return g
 }
 
 function getGalaxyPower() {
 	let r = tmp.gal.init
-	if (!tmp.be) {
+	if (!tmp.qu.be) {
 		if (player.break && !mod.rs && !inNGM(2)) r = Math.max(r - 2, 0)
 		r += getReplGalPower() + getDilGalPower()
 	}
@@ -167,10 +167,10 @@ function getGalaxyEff(bi) {
 
 	if (mod.udsp && player.dilation.active) eff *= exDilationBenefit() + 1
 	if (mod.ngp3) {
-		eff *= tmp.color_eff.r
+		eff *= tmp.qu.color_eff.r
 		if (hasGluonUpg("rg2")) eff *= Math.pow(player.dilation.freeGalaxies / 5e3 + 1, 0.25)
 		if (hasGluonUpg("rg4")) eff *= 1.5
-		if (tmp.be) eff *= 0.4
+		if (tmp.qu.be) eff *= 0.4
 		if (hasNB(12)) eff *= Math.pow(getReplGalEff(), NT.eff("boost", 12))
 	}
 	return eff

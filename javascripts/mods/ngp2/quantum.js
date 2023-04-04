@@ -24,11 +24,11 @@ function quantum(auto, force, qc, bigRip = false) {
 			if (!hasAch("ng3p41")) conf = true
 			if (conf) {
 				if (bigRip && !confirm("Big Ripping the universe starts PC6+8, but with various changes. You can give your Time Theorems and Time Studies back by undoing Big Rip. If you can beat this, you will be able to unlock the next layer.")) return
-				if (!bigRip && !confirm("You will start a Quantum Challenge, but as a Paired Challenge, there will be two challenges at once. Completing it boosts the rewards of the Quantum Challenges that you chose in this Paired Challenge. You will keep electrons & sacrificed galaxies, but they don't work in this Challenge.")) return
+				if (!bigRip && !confirm("You will start a Quantum Challenge, but as a Paired Challenge, there will be two challenges at once. Completing it boosts the rewards of the Quantum Challenges that you chose in this Paired Challenge. You will keep positrons & sacrificed galaxies, but they don't work in this Challenge.")) return
 			}
 		} else {
 			if (QCIntensity(1) == 0 && !ghostified) conf = true
-			if (conf && !confirm("You will do a Quantum reset, but you will not gain quarks, you keep your electrons & sacrificed galaxies, and you can't buy electron upgrades. You have to reach the set goal of antimatter while getting the meta-antimatter requirement to Quantum to complete this challenge. Electrons and banked eternities have no effect in Quantum Challenges and your electrons and sacrificed galaxies don't reset until you end the challenge.")) return
+			if (conf && !confirm("You will do a Quantum reset, but you will not gain quarks, you keep your positrons & sacrificed galaxies, and you can't buy positron upgrades. You have to reach the set goal of antimatter while getting the meta-antimatter requirement to Quantum to complete this challenge. Positrons and banked eternities have no effect in Quantum Challenges and your positrons and sacrificed galaxies don't reset until you end the challenge.")) return
 		}
 	}
 
@@ -58,7 +58,7 @@ function isQuantumReached() {
 	let got = ma.gte(getQuantumReq())
 	if (mod.ngp3) {
 		if (notInQC()) got = got && ECComps("eterc14")
-		if (!notInQC()) got = got && player.money.gte(getQCGoal())
+		if (inAnyQC()) got = got && player.money.gte(getQCGoal())
 	}
 	return got
 }
@@ -271,7 +271,7 @@ function doQuantum(force, auto, qc = {}) {
 		}
 		var qkGain = quarkGain()
 		var array = [quSave.time, qkGain]
-		if (!notInQC()) {
+		if (inAnyQC()) {
 			if (quSave.pairedChallenges.current > 0) {
 				array.push([quSave.pairedChallenges.current, quSave.challenge])
 			} else {
@@ -307,7 +307,7 @@ function doQuantum(force, auto, qc = {}) {
 	}
 	if (force && hasAch("ng3p72")) player.eternitiesBank = nA(player.eternitiesBank, bankedEterGain)
 
-	//Big Rip
+	// Big Rip
 	if (oldBigRip) brSave.spaceShards = brSave.spaceShards.add(getSpaceShardsGain()).round()
 	if (bigRip && !hasRipUpg(12)) {
 		brSave.storedTS = {
@@ -337,51 +337,47 @@ function doQuantum(force, auto, qc = {}) {
 	}
 	brSave.active = bigRip
 
-	//Quantum Challenges
-	if (!force) {
-		var qc = tmp.qc.in
-		var intensity = qc.length
-		var qc1 = qc[0]
-		var qc2 = qc[1]
-		if (intensity > 1) {
-			var qc1st = Math.min(qc1, qc2)
-			var qc2st = Math.max(qc1, qc2)
-			if (qc1st == qc2st) console.log("There is an issue, you have assigned a QC twice (QC" + qc1st + ")")
+	// Paired Challenges
+	let qcs = tmp.qu.chal.in
+	let intensity = qcs.length
+	if (hasMasteryStudy("d9")) {
+		if (!force && intensity == 2) {
+			quSave.pairedChallenges.completed = Math.max(quSave.pairedChallenges.completed, quSave.pairedChallenges.current)
+
+			let qc1 = Math.min(qcs[0], qcs[0])
+			let qc2 = Math.max(qcs[0], qcs[1])
+			var pcid = qc1 * 10 + qc2
+			if (qc1 == qc2) console.log("There is an issue, you have assigned a QC twice (QC" + qc1 + ")")
 			//them being the same should do something lol, not just this
-			var pcid = qc1st * 10 + qc2st
-			if (quSave.pairedChallenges.current > quSave.pairedChallenges.completed) {
-				quSave.challenges[qc1] = 2
-				quSave.challenges[qc2] = 2
-				quSave.electrons.mult += 0.5
-				quSave.pairedChallenges.completed = quSave.pairedChallenges.current
-				if (pcid == 68 && quSave.pairedChallenges.current == 1 && oldMoney.e >= 1.65e9) giveAchievement("Back to Challenge One")
-				if (quSave.pairedChallenges.current == 4) giveAchievement("Twice in a row")
-			}
-			if (quSave.pairedChallenges.completions[pcid] === undefined) quSave.pairedChallenges.completions[pcid] = quSave.pairedChallenges.current
-			else quSave.pairedChallenges.completions[pcid] = Math.min(quSave.pairedChallenges.current, quSave.pairedChallenges.completions[pcid])
-			if (dilTimes == 0) {
-				if (quSave.qcsNoDil["pc" + pcid] === undefined) quSave.qcsNoDil["pc" + pcid] = quSave.pairedChallenges.current
-				else quSave.qcsNoDil["pc" + pcid] = Math.min(quSave.pairedChallenges.current,quSave.qcsNoDil["pc" + pcid])
-			}
-			if (quSave.pairedChallenges.fastest[pcid] === undefined) quSave.pairedChallenges.fastest[pcid] = oldTime
-			else quSave.pairedChallenges.fastest[pcid] = quSave.pairedChallenges.fastest[pcid] = Math.min(quSave.pairedChallenges.fastest[pcid], oldTime)
-		} else if (intensity) {
-			if (!quSave.challenges[qc1]) {
-				quSave.challenges[qc1] = 1
-				quSave.electrons.mult += 0.25
-			}
-			if (quSave.challengeRecords[qc1] == undefined) quSave.challengeRecords[qc1] = oldTime
-			else quSave.challengeRecords[qc1] = Math.min(quSave.challengeRecords[qc1], oldTime)
-			if (dilTimes == 0) quSave.qcsNoDil["qc" + qc1] = 1
+
+			if (pcid == 68 && quSave.pairedChallenges.current == 1 && oldMoney.e >= 1.65e9) giveAchievement("Back to Challenge One")
+			if (quSave.pairedChallenges.current == 4) giveAchievement("Twice in a row")
+
+			quSave.pairedChallenges.completions[pcid] = Math.min(quSave.pairedChallenges.completions[pcid] || 1/0, quSave.pairedChallenges.current)
+			quSave.pairedChallenges.fastest[pcid] = quSave.pairedChallenges.fastest[pcid] = Math.min(quSave.pairedChallenges.fastest[pcid] || 1/0, oldTime)
+			if (dilTimes == 0) quSave.qcsNoDil["pc" + pcid] = Math.min(quSave.qcsNoDil["pc" + pcid] || 1/0, quSave.pairedChallenges.current)
 		}
+		if (inQC(6) && inQC(8) && !bigRipped()) quSave.pairedChallenges.pc68best = player.money.max(quSave.pairedChallenges.pc68best)
+
+		quSave.pairedChallenges.current = qc.pc || 0
+		updatePCCompletions()
 	}
-	if (inQC(6) && inQC(8) && player.money.gt(quSave.pairedChallenges.pc68best) && !bigRipped()) quSave.pairedChallenges.pc68best = player.money
-	quSave.challenge = qc.qc || []
-	quSave.pairedChallenges.current = qc.pc || 0
-	updateInQCs()
-	updateQCTimes()
-	updateQuantumChallenges()
-	updatePCCompletions()
+
+	// Quantum Challenges
+	if (hasMasteryStudy("d8")) {
+		if (!force && inAnyQC()) {
+			for (let qc of qcs) quSave.challenges[qc] = Math.max(intensity, quSave.challenges[qc])
+			if (intensity == 1) {
+				quSave.challengeRecords[qc[0]] = Math.min(quSave.challengeRecords[qc[0]] || 1/0, quSave.time)
+				if (player.dilation.times == 0) quSave.qcsNoDil["qc" + qc[0]] = 1
+			}
+		}
+
+		quSave.challenge = qc.qc || []
+		updateInQCs()
+		updateQCTimes()
+		updateQuantumChallenges()
+	}
 
 	//Achievements
 	if (!force) {
@@ -450,7 +446,7 @@ RESETS.qu = {
 	},
 	doReset(order) {
 		let bigRip = bigRipped()
-		let qc = !notInQC()
+		let qc = inAnyQC()
 
 		if (order != "qu" || !hasAch("ng3p73")) player.infinitiedBank = 0
 		player.eternities = speedrunMilestonesReached ? 2e4 : quantumed ? 1 : 0

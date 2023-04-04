@@ -50,10 +50,10 @@ function getDTMultNGP3() {
 		if (hasMasteryStudy("t322") && !dev.testZone) gain = gain.mul(getMTSMult(322))
 		if (hasMasteryStudy("t341")) gain = gain.mul(getMTSMult(341))
 
-		gain = gain.mul(tmp.color_eff.b)
+		gain = gain.mul(tmp.qu.color_eff.b)
 		if (hasGluonUpg("br2")) gain = gain.mul(E_pow(2.2, Math.pow(tmp.sacPow.max(1).log10() / 1e6, 0.25)))
-		gain = gain.mul(tmp.qc.reward[1])
-		if (hasNanoReward("dil_gal_gain")) gain = E(tmp.nf.eff.dil_gal_gain).pow(player.replicanti.galaxies).mul(gain)
+		gain = gain.mul(tmp.qu.chal.reward[1])
+		if (hasNanoReward("dil_gal_gain")) gain = E(getNanorewardEff("dil_gal_gain")).pow(player.replicanti.galaxies).mul(gain)
 		gain = gain.mul(getReplDilBonus())
 	}
 	if (hasAch("ngpp13")) gain = gain.mul(2)
@@ -146,7 +146,7 @@ function getDilGain(am = player.money) {
 
 function getReqForTPGain() {
 	let tplog = player.dilation.totalTachyonParticles.log10()
-	if (tplog > 100 && !tmp.be && bigRipped()) tplog = Math.pow(tplog, 2) / 100
+	if (tplog > 100 && !tmp.qu.be && bigRipped()) tplog = Math.pow(tplog, 2) / 100
 	return pow10(pow10(tplog).div(getDilPower()).pow(1 / getDilExp()).toNumber() * 400)
 }
 
@@ -170,7 +170,7 @@ function dilates(x, m) {
 	let e = 1
 	let y = x
 	let a = false
-	if (player.dilation.active && m != 2 && (m != "meta" || !hasAch("ng3p63") || !notInQC())) {
+	if (player.dilation.active && m != 2 && (m != "meta" || !hasAch("ng3p63") || inAnyQC())) {
 		e *= dilationPowerStrength()
 		if (mod.ngmu) e = 0.9 + Math.min((player.dilation.dilatedTime.add(1).log10()) / 1000, 0.05)
 		if (mod.ngud && !mod.udp) e += exDilationBenefit() * (1-e)
@@ -478,7 +478,7 @@ function gainDilationGalaxies() {
 function getFreeGalaxyGainMult() {
 	let galaxyMult = player.dilation.upgrades.includes(4) ? 2 : 1
 	if (mod.udp && !aarMod.nguepV) galaxyMult /= 1.5
-	galaxyMult *= tmp.qc.reward[2]
+	galaxyMult *= tmp.qu.chal.reward[2]
 	return galaxyMult
 }
 

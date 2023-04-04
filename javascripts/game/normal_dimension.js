@@ -105,14 +105,14 @@ function getDimensionFinalMultiplier(tier) {
 	let mult = getStartingNDMult(tier)
 	if (tier == 8) mult = mult.mul(getTotalSacrificeBoost())
 
-	if (player.currentChallenge == "postcngm3_2") return E(1e100).max(tmp.infPow)
-	if (player.currentEternityChall == "eterc11") return E_pow(getDimensionBoostPower(), player.resets - tier + 1).max(1).mul(tmp.infPow)
+	if (player.currentChallenge == "postcngm3_2") return E(1e100).max(tmp.inf_pow)
+	if (player.currentEternityChall == "eterc11") return E_pow(getDimensionBoostPower(), player.resets - tier + 1).max(1).mul(tmp.inf_pow)
 	if ((inNC(7) || player.currentChallenge == "postcngm3_3") && inNGM(2)) {
 		if (tier == 4) mult = mult.pow(1.4)
 		if (tier == 2) mult = mult.pow(1.7)
 	}
 
-	if (player.currentEternityChall != "eterc9" && (!inNGM(3) || player.currentChallenge != "postc2")) mult = mult.mul(tmp.infPow)
+	if (player.currentEternityChall != "eterc9" && (!inNGM(3) || player.currentChallenge != "postc2")) mult = mult.mul(tmp.inf_pow)
 
 	mult = mult.mul(getPostBreakInfNDMult())
 
@@ -141,7 +141,7 @@ function getDimensionFinalMultiplier(tier) {
 	
 	if (player.currentEternityChall == "eterc10") mult = mult.mul(ec10bonus)
 
-	if (tier == 8 && hasAch("ng3p27")) mult = mult.mul(tmp.ig)
+	if (tier == 8 && hasAch("ng3p27")) mult = mult.mul(tmp.qu.intergal)
 	
 	if (mult.gt(10)) mult = dilates(mult.max(1), 2)
 	mult = mult.mul(getAfterDefaultDilationLayerAchBonus(tier))
@@ -153,8 +153,8 @@ function getDimensionFinalMultiplier(tier) {
 
 	let useHigherNDReplMult = hasMasteryStudy("t323") && !player.dilation.active
 	if (useHigherNDReplMult) mult = mult.mul(tmp.rep.nd || 1)
-	if (player.dilation.active && hasNanoReward("dil_effect_exp")) mult = mult.pow(tmp.nf.eff.dil_effect_exp)
-	if (isBigRipUpgradeActive(1)) mult = mult.mul(tmp.bru[1])
+	if (player.dilation.active && hasNanoReward("dil_exp")) mult = mult.pow(getNanorewardEff("dil_exp"))
+	if (isBigRipUpgradeActive(1)) mult = mult.mul(tmp.qu.bru[1])
 
 	return mult
 }
@@ -239,14 +239,18 @@ function canBuyDimension(tier) {
 	
 function getDimensionPowerMultiplier(focusOn, debug) {
 	let ret = focusOn || inNC(9) || player.currentChallenge=="postc1" ? getMPTBase(focusOn) : tmp.mptb
+	if (focusOn == "linear") return ret
+
 	let exp = 1
-	if (mod.ngp3 && focusOn != "linear") exp = focusOn == "no-rg4" ? getMPTExp(focusOn) : tmp.mpte
+	if (mod.ngp3) exp = focusOn == "no-rg4" ? getMPTExp(focusOn) : tmp.mpte
 	if (exp > 1) ret = E_pow(ret, exp)
-	if (mod.ngmu) {
-		ret = Decimal.mul(ret, Math.log10(player.resets + 1) + 1)
-		ret = Decimal.mul(ret, Math.log10(Math.max(player.galaxies, 0) + 1) * 5 + 1)
-	}
+	if (focusOn == "positrons") return ret
+
 	if (mod.ngp3) ret = E(PHOTON.eff(0)).mul(ret)
+	if (mod.ngmu) {
+		ret = E(Math.log10(player.resets + 1) + 1).mul(ret)
+		ret = E(Math.log10(Math.max(player.galaxies, 0) + 1) * 5 + 1).mul(ret)
+	}
 	return ret
 }
 	
@@ -272,14 +276,14 @@ function getMPTBase(focusOn) {
 	if (inNGM(2)) if (hasGSacUpg(33) && ((!inNC(14) && player.currentChallenge != "postcngm3_3") || !inNGM(3) || inNGM(4)) && player.currentChallenge != "postcngm3_4") ret *= galMults.u33();
 	if (focusOn == "no-QC5") return ret
 	if (mod.ngp3) {
-		ret += tmp.qc.reward[5]
-		if (hasNanoReward("per_10_power")) ret += tmp.nf.eff.per_10_power
+		ret += tmp.qu.chal.reward[5]
+		if (hasNanoReward("per_10_power")) ret += getNanorewardEff("per_10_power")
 	}
 	return ret
 }
 
 function getMPTExp(focusOn) {
-	return isPositronsOn() ? getElectronBoost(focusOn) : 1
+	return isPositronsOn() ? getPositronBoost(focusOn) : 1
 }
 
 function infUpg12Pow() {
@@ -516,7 +520,7 @@ function getDimensionProductionPerSecond(tier) {
 	if (inNGM(4)) ret = ret.div(100)
 	if (tier == 1 && (inNC(7) || player.currentChallenge == "postcngm3_3" || inQC(4))) ret = ret.plus(getDimensionProductionPerSecond(2))
 	let tick = dilates(Decimal.div(1e3,getTickspeed()),"tick")
-	if (player.dilation.active && hasNanoReward("dil_effect_exp")) tick = tick.pow(tmp.nf.eff.dil_effect_exp)
+	if (player.dilation.active && hasNanoReward("dil_exp")) tick = tick.pow(getNanorewardEff("dil_exp"))
 	ret = ret.mul(tick)
 	return ret
 }

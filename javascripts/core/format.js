@@ -951,7 +951,7 @@ function onNotationChange() {
 		updateQuarksTabOnUpdate()
 		updateGluonsTabOnUpdate("notation")
 		updateQuantumWorth("notation")
-		updateElectrons()
+		updatePositrons()
 		updateBankedEter()
 		updateQuantumChallenges()
 		updateTODStuff()

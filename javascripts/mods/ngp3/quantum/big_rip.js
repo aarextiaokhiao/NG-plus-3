@@ -17,7 +17,7 @@ function bigRip(auto) {
 }
 
 function canBigRip() {
-	return notInQC() && canDirectlyBigRip()
+	return !bigRipped() && canDirectlyBigRip()
 }
 
 function canDirectlyBigRip() {
@@ -38,9 +38,9 @@ function bigRipped() {
 function getSpaceShardsGain() {
 	let ret = bigRipped() ? brSave.bestThisRun : player.money
 	ret = E_pow(ret.add(1).log10() / 2000, 1.5).mul(player.dilation.dilatedTime.add(1).pow(0.05)).div(50)
-	if (tmp.be) {
-		if (isBreakUpgActive(3)) ret = ret.mul(tmp.beu[3])
-		if (isBreakUpgActive(6)) ret = ret.mul(tmp.beu[6])
+	if (tmp.qu.be) {
+		if (isBreakUpgActive(3)) ret = ret.mul(tmp.qu.beu[3])
+		if (isBreakUpgActive(6)) ret = ret.mul(tmp.qu.beu[6])
 	}
 	if (hasNU(9)) ret = ret.mul(Decimal.max(getEternitied(), 1).pow(0.1))
 
@@ -166,46 +166,46 @@ function updateBigRipTab() {
 }
 
 function updateBRU1Temp() {
-	tmp.bru[1] = 1
+	tmp.qu.bru[1] = 1
 	if (!bigRipped()) return
 
 	let exp = 1
-	if (hasRipUpg(17)) exp = tmp.bru[17]
+	if (hasRipUpg(17)) exp = tmp.qu.bru[17]
 	if (hasNB(8)) exp *= NT.eff("boost", 8)
 	exp *= player.infinityPoints.max(1).log10()
-	tmp.bru[1] = pow10(exp) // BRU1
+	tmp.qu.bru[1] = pow10(exp) // BRU1
 }
 
 function updateBRU8Temp() {
-	tmp.bru[8] = 1
+	tmp.qu.bru[8] = 1
 	if (!bigRipped()) return
-	tmp.bru[8] = pow2(getTotalRG()) // BRU8
-	if (!hasNU(11)) tmp.bru[8] = tmp.bru[8].min(Number.MAX_VALUE)
+	tmp.qu.bru[8] = pow2(getTotalRG()) // BRU8
+	if (!hasNU(11)) tmp.qu.bru[8] = tmp.qu.bru[8].min(Number.MAX_VALUE)
 }
 
 function updateBRU14Temp() {
 	if (!bigRipped()) {
-		tmp.bru[14] = 1
+		tmp.qu.bru[14] = 1
 		return
 	}
 	var ret = Math.min(brSave.spaceShards.div(3e18).add(1).log10()/3,0.4)
 	var val = Math.sqrt(brSave.spaceShards.div(3e15).add(1).log10()*ret+1)
 	if (val > 12) val = 10 + Math.log10(4 + 8 * val)
-	tmp.bru[14] = val //BRU14
+	tmp.qu.bru[14] = val //BRU14
 }
 
 function updateBRU15Temp() {
 	let r = Math.sqrt(player.eternityPoints.add(1).log10()) * 3.55
 	if (r > 1e3) r = Math.sqrt(r * 1e3)
-	tmp.bru[15] = r
+	tmp.qu.bru[15] = r
 }
 
 function updateBRU16Temp() {
-	tmp.bru[16] = player.dilation.dilatedTime.div(1e100).pow(0.155).max(1)
+	tmp.qu.bru[16] = player.dilation.dilatedTime.div(1e100).pow(0.155).max(1)
 }
 
 function updateBRU17Temp() {
-	tmp.bru[17] = ghostified ? 3 : 2.9
+	tmp.qu.bru[17] = ghostified ? 3 : 2.9
 }
 
 function updateBigRipUpgradesTemp(){
@@ -224,12 +224,12 @@ function bigRipUpgradeUpdating() {
 		el("bigripupg"+u+"cost").textContent = shortenDimensions(E(bigRipUpgCosts[u]))
 	}
 
-	el("bigripupg1current").textContent=shortenDimensions(tmp.bru[1])
-	el("bigripupg8current").textContent=shortenDimensions(tmp.bru[8])+(Decimal.gte(tmp.bru[8],Number.MAX_VALUE)&&!hasNU(11)?"x (cap)":"x")
-	el("bigripupg14current").textContent=tmp.bru[14].toFixed(2)
-	el("bigripupg15current").textContent=shorten(tmp.bru[15])
-	el("bigripupg16current").textContent=shorten(tmp.bru[16])
-	el("bigripupg17current").textContent=tmp.bru[17]
+	el("bigripupg1current").textContent=shortenDimensions(tmp.qu.bru[1])
+	el("bigripupg8current").textContent=shortenDimensions(tmp.qu.bru[8])+(Decimal.gte(tmp.qu.bru[8],Number.MAX_VALUE)&&!hasNU(11)?"x (cap)":"x")
+	el("bigripupg14current").textContent=tmp.qu.bru[14].toFixed(2)
+	el("bigripupg15current").textContent=shorten(tmp.qu.bru[15])
+	el("bigripupg16current").textContent=shorten(tmp.qu.bru[16])
+	el("bigripupg17current").textContent=tmp.qu.bru[17]
 }
 
 function toggleBigRipConf() {
@@ -283,20 +283,20 @@ function updateBreakEternityUpgrade1Temp(){
 	var log2 = em.mul(10).max(1).log10()
 	var exp = isBreakUpgActive(9) ? Math.pow(log1, 0.5) / 15 + Math.pow(log2, 2) / 400 :
 		Math.pow(log1, 1/3) * 0.5 + Math.pow(log2, 1/3)
-	tmp.beu[1] = pow10(exp)
+	tmp.qu.beu[1] = pow10(exp)
 }
 
 function updateBreakEternityUpgrade2Temp(){
 	var ep = player.eternityPoints
 	var log = ep.div("1e1290").add(1).log10()
-	tmp.beu[2] = Math.pow(Math.log10(log + 1) * 1.6 + 1, player.currentEternityChall == "eterc10" ? 1 : 2)
+	tmp.qu.beu[2] = Math.pow(Math.log10(log + 1) * 1.6 + 1, player.currentEternityChall == "eterc10" ? 1 : 2)
 }
 
 function updateBreakEternityUpgrade3Temp(){
 	var ep = player.eternityPoints
 	var log = ep.div("1e1370").add(1).log10()
 	var exp = Math.pow(log, 1/3) * 0.5
-	tmp.beu[3] = pow10(exp)
+	tmp.qu.beu[3] = pow10(exp)
 }
 
 function updateBreakEternityUpgrade4Temp(){
@@ -306,7 +306,7 @@ function updateBreakEternityUpgrade4Temp(){
 	var log2 = ss.div("7e19").add(1).log10()
 	var exp = isBreakUpgActive(9) ? Math.pow(log1, 0.5) / 15 + Math.pow(log2, 1.5) / 8 :
 		Math.pow(log1, 1/3) + Math.pow(log2, 1/3) * 8
-	tmp.beu[4] = pow10(exp)
+	tmp.qu.beu[4] = pow10(exp)
 }
 
 function updateBreakEternityUpgrade5Temp(){
@@ -316,7 +316,7 @@ function updateBreakEternityUpgrade5Temp(){
 	var log2 = ts.div(1e90).add(1).log10()
 	var exp = Math.pow(log1, 1/3) + Math.pow(log2, 1/3)
 	if (exp > 100) exp = Math.log10(exp) * 50
-	tmp.beu[5] = pow10(exp * 4)
+	tmp.qu.beu[5] = pow10(exp * 4)
 }
 
 function updateBreakEternityUpgrade6Temp(){
@@ -328,20 +328,20 @@ function updateBreakEternityUpgrade6Temp(){
 	var exp = Math.pow(log1, 1/3) / 1.7
 	exp += isBreakUpgActive(10) ? Math.pow(log2, 4/3) / 50 : Math.pow(log2, 1/3) * 2
 
-	tmp.beu[6] = pow10(exp)
+	tmp.qu.beu[6] = pow10(exp)
 }
 
 function updateBreakEternityUpgrade8Temp(){
 	var x = Math.min(Math.max(player.dilation.tachyonParticles.max(1).log10() / 200, 1), 2)
-	tmp.beu[8] = x
+	tmp.qu.beu[8] = x
 }
 
 function updateBreakEternityUpgrade9Temp(){
-	tmp.beu[9] = 1
+	tmp.qu.beu[9] = 1
 }
 
 function updateBreakEternityUpgrade10Temp(){
-	tmp.beu[10] = 1
+	tmp.qu.beu[10] = 1
 }
 
 function updateBreakEternityUpgradesTemp() {
@@ -356,7 +356,7 @@ function updateBreakEternityUpgradesTemp() {
 	updateBreakEternityUpgrade10Temp()
 
 	//Upgrade 7: EP Mult
-	tmp.beu[7] = E_pow(1e9, beSave.epMultPower * Math.pow(Math.max(beSave.epMultPower / 400, 1), 3))
+	tmp.qu.beu[7] = E_pow(1e9, beSave.epMultPower * Math.pow(Math.max(beSave.epMultPower / 400, 1), 3))
 }
 
 function getBEUnls() {
@@ -386,11 +386,11 @@ function buyBreakUpg(id) {
 }
 
 function getBreakUpgMult(id) {
-	return tmp.beu[id]
+	return tmp.qu.beu[id]
 }
 
 function isBreakUpgActive(id) {
-	return tmp.be && beSave.upgrades.includes(id)
+	return tmp.qu.be && beSave.upgrades.includes(id)
 }
 
 function maxBuyBEEPMult() {

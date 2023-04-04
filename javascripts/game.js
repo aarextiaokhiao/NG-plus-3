@@ -641,9 +641,9 @@ function gainedEternityPoints() {
 	if (hasGSacUpg(51)) ret = ret.mul(galMults.u51())
 	if (bigRipped()) {
 		if (isBigRipUpgradeActive(5)) ret = ret.mul(brSave.spaceShards.max(1))
-		if (isBigRipUpgradeActive(8)) ret = ret.mul(tmp.bru[8])
+		if (isBigRipUpgradeActive(8)) ret = ret.mul(tmp.qu.bru[8])
 	}
-	if (tmp.be) ret = ret.mul(getBreakUpgMult(7))
+	if (tmp.qu.be) ret = ret.mul(getBreakUpgMult(7))
 	return ret.floor()
 }
 
@@ -944,8 +944,7 @@ function updateAutobuyers() {
 		}
 	}
 
-	el("autoBuyerQuantum").style.display = speedrunMilestonesReached >= 23 ? "" : "none"
-	if (quSave && quSave.autobuyer) quSave.autobuyer.enabled = el("quantumison").checked
+	if (quSave?.autobuyer) quSave.autobuyer.enabled = el("quantumison").checked
 
 	loadAutoBuyerSettings()
 
@@ -1335,7 +1334,7 @@ function eternity(force, auto, dil, presetLoad) {
 		var array = [player.thisEternity, gainedEternityPoints()]
 		if (player.dilation.active) array = [player.thisEternity, getDilGain().sub(player.dilation.totalTachyonParticles).max(0), "d2"]
 		else if (player.currentEternityChall != "") array.push(player.eternityChallUnlocked)
-		else if (tmp.be) {
+		else if (tmp.qu.be) {
 			beSave.eternalMatter = beSave.eternalMatter.add(getEMGain())
 			if (!hasBraveMilestone(16)) beSave.eternalMatter = beSave.eternalMatter.round()
 			array = [player.thisEternity, getEMGain(), "b"]
@@ -1444,7 +1443,7 @@ function exitChallenge() {
 		updateEternityChallenges();
 		return
 	}
-	if (mod.ngp3 && !notInQC()) quantum(false, true, 0)
+	if (mod.ngp3 && inAnyQC()) quantum(false, true, 0)
 }
 
 function quickReset() {
@@ -1771,7 +1770,7 @@ function dimensionTabDisplayUpdating(){
 	if (player.infDimensionsUnlocked[0] || player.eternities !== 0 || quantumed || inNGM(4)) el("dimTabButtons").style.display = "inline-block"
 
 	el("idtabbtn").style.display = ((player.infDimensionsUnlocked[0] || player.eternities > 0 || quantumed) && !inQC(8)) ? "" : "none"
-	el("tdtabbtn").style.display = ((player.eternities > 0 || quantumed || inNGM(4)) && (!inQC(8) || tmp.be) && player.currentEternityChall != "eterc10") ? "" : "none"
+	el("tdtabbtn").style.display = ((player.eternities > 0 || quantumed || inNGM(4)) && (!inQC(8) || tmp.qu.be) && player.currentEternityChall != "eterc10") ? "" : "none"
 	el("mdtabbtn").style.display = hasDilStudy(6) ? "" : "none"
 }
 
@@ -1881,7 +1880,7 @@ function doEternityButtonDisplayUpdating(diff){
 	if (!unl) return
 
 	var isSmartPeakActivated = mod.ngp3 && getEternitied() >= 1e13
-	var EPminpeakUnits = isSmartPeakActivated ? (player.dilation.active ? 'TP' : tmp.be ? 'EM' : 'EP') : 'EP'
+	var EPminpeakUnits = isSmartPeakActivated ? (player.dilation.active ? 'TP' : tmp.qu.be ? 'EM' : 'EP') : 'EP'
 	var currentEPmin = updateEPminpeak(diff, EPminpeakUnits)
 	EPminpeakUnits = (EPminpeakType == 'logarithm' ? ' log(' + EPminpeakUnits + ')' : ' ' + EPminpeakUnits) + '/min'
 
@@ -1892,10 +1891,10 @@ function doEternityButtonDisplayUpdating(diff){
 	else {
 		if ((EPminpeak.lt(pow10(9)) && EPminpeakType == "logarithm") || (EPminpeakType == 'normal' && EPminpeak.lt(pow10(1e9)))) {
 			el("eternitybtnEPGain").innerHTML = ((player.eternities > 0 && (player.currentEternityChall==""||player.options.theme=="Aarex's Modifications"))
-											? "Gain <b>"+(player.dilation.active?shortenMoney(getDilGain().sub(player.dilation.totalTachyonParticles)):shortenDimensions(gainedEternityPoints()))+"</b> "+(player.dilation.active?"Tachyon particles.":tmp.be?"EP and <b>"+shortenDimensions(getEMGain())+"</b> Eternal Matter.":"Eternity Points.") : "")
+											? "Gain <b>"+(player.dilation.active?shortenMoney(getDilGain().sub(player.dilation.totalTachyonParticles)):shortenDimensions(gainedEternityPoints()))+"</b> "+(player.dilation.active?"Tachyon particles.":tmp.qu.be?"EP and <b>"+shortenDimensions(getEMGain())+"</b> Eternal Matter.":"Eternity Points.") : "")
 		} else el("eternitybtnEPGain").innerHTML = flavor == "" ? "<b>Go eternal</b>" : ""
 	}
-	var showEPmin=(player.currentEternityChall===""||player.options.theme=="Aarex's Modifications")&&EPminpeak>0&&player.eternities>0&&player.options.notation!='Morse code'&&player.options.notation!='Spazzy'&&(!(player.dilation.active||tmp.be)||isSmartPeakActivated)
+	var showEPmin=(player.currentEternityChall===""||player.options.theme=="Aarex's Modifications")&&EPminpeak>0&&player.eternities>0&&player.options.notation!='Morse code'&&player.options.notation!='Spazzy'&&(!(player.dilation.active||tmp.qu.be)||isSmartPeakActivated)
 	if (EPminpeak.log10() < 1e5) {
 		el("eternitybtnRate").textContent = (showEPmin&&(EPminpeak.lt("1e30003")||player.options.theme=="Aarex's Modifications")
 										? (EPminpeakType == "normal" ? shortenDimensions(currentEPmin) : shorten(currentEPmin))+EPminpeakUnits : "")
@@ -1922,7 +1921,7 @@ function doQuantumButtonDisplayUpdating(diff){
 
 	let flavor = "I need to go quantum."
 	if (!quantumed) flavor = "We have enough to reform... " + flavor
-	if (!notInQC()) flavor = "Embrace the quantum... " + flavor
+	if (inAnyQC()) flavor = "Embrace the quantum... " + flavor
 	if (ghostified) flavor = "Go quantum."
 	if (bigRipped()) flavor = (ghostified ? "" : "This isn't potential... ") + "Restore the rift."
 	el("quantumbtnFlavor").textContent = flavor
@@ -2105,7 +2104,7 @@ function progressBarUpdating(){
 		r138Progress()
 	} else if (player.dilation.active && player.dilation.totalTachyonParticles.gte(getDilGain())) {
 		gainTPProgress()
-	} else if ((!notInQC() || gainedEternityPoints().gte(pow2(1048576))) && mod.ngpp) doQuantumProgress()
+	} else if ((inAnyQC() || gainedEternityPoints().gte(pow2(1048576))) && mod.ngpp) doQuantumProgress()
 	else preQuantumNormalProgress()
 }
 
@@ -2134,7 +2133,7 @@ function challengeOverallDisplayUpdating(){
 		el("qcDisclaimer").innerHTML = (isQCFree() ? "" : "Spend Positrons to start Quantum Challenges.<br>You have " + getFullExpansion(Math.round(quSave.electrons.amount)) + " Positrons.<br>") + "<b class='red'>Positrons are disabled in Quantum Challenges!</b>"
 		for (var c=1;c<7;c++) {
 			if (c==5) el("qc5reward").textContent = getDimensionPowerMultiplier("linear").toFixed(2)
-			else if (c!=2) el("qc"+c+"reward").textContent = shorten(tmp.qc.reward[c])
+			else if (c!=2) el("qc"+c+"reward").textContent = shorten(tmp.qu.chal.reward[c])
 		}
 	}
 	if (el("bigrip").style.display == "block") updateBigRipTab()
@@ -2211,7 +2210,6 @@ function ngp3DilationUpdating(){
 function passiveQuantumLevelStuff(diff){
 	if (bigRipped() && hasAch("ng3p107")) {
 		ghSave.ghostParticles = ghSave.ghostParticles.add(getGHPGain().mul(diff))
-		ghSave.times = nA(ghSave.times, E(getGhostifiedGain()).mul(diff))
 		let ngain = getNeutrinoGain()
 		ghSave.neutrinos.electron = ghSave.neutrinos.electron.add(ngain.mul(diff))
 		ghSave.neutrinos.mu = ghSave.neutrinos.mu.add(ngain.mul(diff))
@@ -2227,7 +2225,7 @@ function passiveQuantumLevelStuff(diff){
 		}
 		if (hasBraveMilestone(15)) quSave.quarks=quSave.quarks.add(quarkGain().mul(diff / 100))
 	}
-	if (tmp.be && hasBraveMilestone(16)) beSave.eternalMatter=beSave.eternalMatter.add(getEMGain().mul(diff / 100))
+	if (tmp.qu.be && hasBraveMilestone(16)) beSave.eternalMatter=beSave.eternalMatter.add(getEMGain().mul(diff / 100))
 	updateQuarkDisplay()
 	updateQuantumWorth("quick")
 }
@@ -2350,7 +2348,7 @@ function updateDisplays() {
 	el("IPPeakDiv").style.display=(player.break&&mod.rs)?"":"none"
 
 	msg = "<span class='EPAmount2'>"+shortenDimensions(player.eternityPoints)+"</span> Eternity Points"
-	if (tmp.be) msg += "<br><span class='EPAmount2'>"+shortenDimensions(beSave.eternalMatter)+"</span> Eternal Matter"
+	if (tmp.qu.be) msg += "<br><span class='EPAmount2'>"+shortenDimensions(beSave.eternalMatter)+"</span> Eternal Matter"
 	else if (mod.ngp3 && hasDilStudy(6)) msg += "<br><span class='EPAmount2'>"+shortenDimensions(getEternitied())+"</span> Eternities"
 	else msg = "You have " + msg + "."
 	el("eternityPoints2").innerHTML = msg
@@ -2391,7 +2389,7 @@ function simulateTime(seconds, real, id) {
 	if (storage.bp) if (player.blackhole.power.gt(storage.bp)) popupString+= ",<br> black hole power increased "+shortenMoney(player.blackhole.power.log10() - (Decimal.max(storage.bp, 1)).log10())+" orders of magnitude"
 	if (storage.ma) if (player.meta.antimatter.gt(storage.ma)) popupString+= ",<br> meta-antimatter increased "+shortenMoney(player.meta.antimatter.log10() - (Decimal.max(storage.ma, 1)).log10())+" orders of magnitude"
 	if (storage.dt) {
-		if (quSave.electrons.amount>storage.ec) popupString+= ",<br> electrons increased by "+getFullExpansion(Math.round(quSave.electrons.amount-storage.ec))
+		if (quSave.electrons.amount>storage.ec) popupString+= ",<br> positrons increased by "+getFullExpansion(Math.round(quSave.electrons.amount-storage.ec))
 		if (quSave.replicants.amount.gt(storage.nr)) popupString+= ",<br> normal duplicants increased "+shortenMoney(quSave.replicants.amount.log10() - (Decimal.max(storage.nr, 1)).log10())+" orders of magnitude"
 		//if (ghSave.bl.am.gt(storage.ma)) popupString+= ",<br> Bosons increased "+shortenMoney(ghSave.bl.am.log10() - (Decimal.max(storage.bAm, 1)).log10())+" orders of magnitude"
 	}
@@ -2475,7 +2473,7 @@ function dimBoolean() {
 
 
 function maxBuyGalaxies(manual) {
-	if ((inNC(11) || player.currentEternityChall == "eterc6" || player.currentChallenge == "postc1" || (player.currentChallenge == "postc5" && inNGM(3)) || player.currentChallenge == "postc7" || inQC(6)) && !tmp.be) return
+	if ((inNC(11) || player.currentEternityChall == "eterc6" || player.currentChallenge == "postc1" || (player.currentChallenge == "postc5" && inNGM(3)) || player.currentChallenge == "postc7" || inQC(6)) && !tmp.qu.be) return
 	if (player.autobuyers[10].priority > player.galaxies || manual) {
 		let amount=getAmount(inNC(4)?6:8)
 		let increment=0.5

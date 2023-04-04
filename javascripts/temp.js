@@ -1,11 +1,14 @@
 let tmp = {
-	qc: { in: [0], reward: {} },
-	bru: {},
-	be: false,
-	beu: {}
+	qu: {
+		chal: { in: [0], reward: {} },
+		bru: {},
+		beu: {},
+	}
 }
 
 function updateTemp() {
+	tmp.mod = mod
+
 	if (typeof player != "undefined") {
 		if (player.money) tmp.ri = player.money.gte(Number.MAX_VALUE) && ((player.currentChallenge != "" && player.money.gte(player.challengeTarget)) || !onPostBreak())
 		else tmp.ri = false
@@ -39,7 +42,7 @@ function updateInfiniteTimeTemp() {
 	if (mod.ngp3) {
 		if (hasAch("ng3p56")) x *= 1.03
 		if (hasNB(4)) x *= NT.eff("boost", 4)
-		if (isBreakUpgActive(8) && !player.dilation.active) x *= tmp.beu[8]
+		if (isBreakUpgActive(8) && !player.dilation.active) x *= tmp.qu.beu[8]
 		x = softcap(x, "inf_time_log_1")
 	}
 	tmp.inf_time = pow10(x)
@@ -50,7 +53,7 @@ function updateIntergalacticTemp() {
 
 	var gal = player.galaxies
 	var exp = Math.min(Math.sqrt(Math.log10(Math.max(gal, 1))) * 2, 2.5)
-	tmp.ig = pow10(Math.pow(gal, exp))
+	tmp.qu.intergal = pow10(Math.pow(gal, exp))
 }
 
 function updateMatterSpeed() {
@@ -81,7 +84,7 @@ function updateReplicantiTemp() {
 	data.eff = getReplMult()
 	data.nd = E(1)
 	if (hasTimeStudy(101)) data.nd = player.replicanti.amount.max(1)
-	if (bigRipped() && !player.dilation.active && hasRipUpg(14)) data.nd = data.nd.pow(tmp.bru[14])
+	if (bigRipped() && !player.dilation.active && hasRipUpg(14)) data.nd = data.nd.pow(tmp.qu.bru[14])
 
 	updateExtraReplGalaxies()
 }
@@ -122,10 +125,10 @@ function resetPowers() {
 	tmp.sacPow = E(1)
 	tmp.gal = { str: 1 }
 	tmp.rep = { extra: 0 }
-	tmp.color_eff = { r: 1, g: 1, b: 1 }
-	tmp.qc.reward = {}
-	tmp.ant = {}
-	delete tmp.ig
+	tmp.qu.color_eff = { r: 1, g: 1, b: 1 }
+	tmp.qu.chal.reward = {}
+	tmp.qu.ant = {}
+	delete tmp.qu.intergal
 	delete tmp.funda
 
 	setupNanoRewardTemp()

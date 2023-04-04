@@ -9,8 +9,8 @@ function updateQuantumChallenges() {
 	for (var qc = 1; qc <= 8; qc++) {
 		var property = "qc" + qc
 		el(property + "div").style.display = (qc < 2 || QCIntensity(qc - 1)) ? "inline-block" : "none"
-		el(property).textContent = pcFocus ? "Choose" : QCIntensity(qc) ? "Completed" : inQC(qc) ? "Running" : "Start"
-		el(property).className = pcFocus ? "challengesbtn" : QCIntensity(qc) ? "completedchallengesbtn" : inQC(qc) ? "onchallengebtn" : "challengesbtn"
+		el(property).textContent = pcFocus ? "Choose" : inQC(qc) ? "Running" : QCIntensity(qc) ? "Completed" : "Start"
+		el(property).className = pcFocus ? "challengesbtn" : inQC(qc) ? "onchallengebtn" : QCIntensity(qc) ? "completedchallengesbtn" : "challengesbtn"
 		el(property + "cost").textContent = isQCFree() ? "" : "Req: " + getFullExpansion(quantumChallenges.costs[qc]) + " Positrons"
 		el(property + "goal").textContent = "Goal: " + shortenCosts(getQCGoal(qc)) + " antimatter"
 	}
@@ -20,28 +20,30 @@ function updateQuantumChallenges() {
 }
 
 function updateQCDisplaysSpecifics(){
-	el("qc2reward").textContent = Math.round(tmp.qc.reward[2] * 100 - 100)
+	el("qc2reward").textContent = Math.round(tmp.qu.chal.reward[2] * 100 - 100)
 	el("qc7desc").textContent = "Dimensions and Tickspeed scale at " + shorten(Number.MAX_VALUE) + "x. Per-10 Dimension multipliers and meta-antimatter boost to dimension boosts do nothing."
-	el("qc7reward").textContent = (100 - tmp.qc.reward[7] * 100).toFixed(2)
-	el("qc8reward").textContent = tmp.qc.reward[8]
+	el("qc7reward").textContent = (100 - tmp.qu.chal.reward[7] * 100).toFixed(2)
+	el("qc8reward").textContent = tmp.qu.chal.reward[8]
 }
 
 function inQC(num) {
-	return tmp.qc.in.includes(num)
+	return tmp.qu.chal.in.includes(num)
 }
-
+function inAnyQC() {
+	return !inQC(0)
+}
 function notInQC() {
 	return inQC(0)
 }
 
 function updateInQCs() {
-	tmp.qc.in = [0]
+	tmp.qu.chal.in = [0]
 	if (!quSave?.challenge) return
 
 	data = quSave.challenge
 	if (typeof(data) == "number") data = [data]
 	if (!data.length) data = [0]
-	tmp.qc.in = data
+	tmp.qu.chal.in = data
 }
 
 function getQCIdGoal(qcs, bigRip) {
@@ -61,7 +63,7 @@ function getQCIdGoal(qcs, bigRip) {
 function getQCGoal(num, bigRip) {
 	if (!mod.ngp3) return 0
 
-	if (num == undefined) return getQCIdGoal(tmp.qc.in, bigRipped())
+	if (num == undefined) return getQCIdGoal(tmp.qu.chal.in, bigRipped())
 	if (num > 8) return getQCIdGoal(quSave.pairedChallenges.order[num - 8], bigRip)
 	if (num <= 8) return getQCIdGoal([num], bigRip)
 }
@@ -132,8 +134,8 @@ let qcRewards = {
 }
 
 function updateQCRewardsTemp() {
-	tmp.qc.reward = {}
-	for (var c = 1; c <= 8; c++) tmp.qc.reward[c] = qcRewards.effects[c](QCIntensity(c))
+	tmp.qu.chal.reward = {}
+	for (var c = 1; c <= 8; c++) tmp.qu.chal.reward[c] = qcRewards.effects[c](QCIntensity(c))
 }
 
 function isQCFree() {
@@ -228,10 +230,9 @@ function assignPC(pc, qc) {
 }
 
 function respecPC(force) {
-	if (!force && !confirm("Are you sure to respec your challenges? This will force a Quantum without rewards!")) return
+	if (!force && !confirm("Are you sure to respec your challenges? This will force a Quantum!")) return
 
-	quantum(false, !isQuantumReached() || bigRipped())
-	quSave.electrons.mult -= quSave.pairedChallenges.completed * 0.5
+	quantum(true, !isQuantumReached() || bigRipped())
 	for (qc = 1; qc <= 8; qc++) quSave.challenges[qc] = 1
 	quSave.pairedChallenges.order = {}
 	quSave.pairedChallenges.current = 0
@@ -271,31 +272,31 @@ function updatePCCompletions() {
 	el("pccompletionsbtn").style.display = "none"
 	if (!mod.ngp3) return
 	var r = 0
-	tmp.qc.pc_comp = {} // PC Completion counters
+	tmp.qu.chal.pc_comp = {} // PC Completion counters
 	for (var c1 = 2; c1 < 9; c1++) for (var c2 = 1; c2 < c1; c2++) {
 		var rankingPart = 0
 		if (quSave.pairedChallenges.completions[c2 * 10 + c1]) {
 			rankingPart = 5 - quSave.pairedChallenges.completions[c2 * 10 + c1]
-			tmp.qc.pc_comp.normal = (tmp.qc.pc_comp.normal || 0) + 1
+			tmp.qu.chal.pc_comp.normal = (tmp.qu.chal.pc_comp.normal || 0) + 1
 		} else if (c2 * 10 + c1 == 68 && ghostified) {
 			rankingPart = 0.5
-			tmp.qc.pc_comp.normal = (tmp.qc.pc_comp.normal || 0) + 1
+			tmp.qu.chal.pc_comp.normal = (tmp.qu.chal.pc_comp.normal || 0) + 1
 		}
 		if (quSave.qcsNoDil["pc" + (c2 * 10 + c1)]) {
 			rankingPart += 5 - quSave.qcsNoDil["pc" + ( c2 * 10 + c1)]
-			tmp.qc.pc_comp.noDil = (tmp.qc.pc_comp.noDil || 0) + 1
+			tmp.qu.chal.pc_comp.noDil = (tmp.qu.chal.pc_comp.noDil || 0) + 1
 		}
 		r += Math.sqrt(rankingPart)
 	}
 	r *= 100 / 56
-	tmp.qc.rank = r // its global
+	tmp.qu.chal.rank = r // its global
 	updatePCTable()
 
 	if (r) el("pccompletionsbtn").style.display = "inline-block"
 
 	el("bpc68").textContent = "You've made " + shortenMoney(quSave.pairedChallenges.pc68best) + " in Paired Challenge combinations 6 and 8."
-	el("upcc").textContent = "You've completed " + (tmp.qc.pc_comp.normal || 0) + " / 28 unique Paired Challenges."
-	el("udcc").textContent = "(" + (tmp.qc.pc_comp.noDil || 0) + " combinations without dilation runs)"
+	el("upcc").textContent = "You've completed " + (tmp.qu.chal.pc_comp.normal || 0) + " / 28 unique Paired Challenges."
+	el("udcc").textContent = "(" + (tmp.qu.chal.pc_comp.noDil || 0) + " combinations without dilation runs)"
 	el("pccranking").textContent = r.toFixed(1)
 	el("pccrankingMax").textContent = Math.sqrt(2e4).toFixed(1)
 }

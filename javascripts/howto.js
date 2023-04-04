@@ -386,7 +386,7 @@ let HOW_TO = [
 
 		title: "Neutrinos",
 		layer: "fundament",
-		desc: `There are 3 kinds of Neutrinos: Electrons, Mu, Tau. Getting a galaxy produces a Neutrino of a kind.<br>
+		desc: `There are 3 kinds of Neutrinos: Positrons, Mu, Tau. Getting a galaxy produces a Neutrino of a kind.<br>
 		Going Quantum switches which kind to produce. Fundamenting resets Neutrinos.
 		<br><br>
 		They boost things by spending Elementary Particles.<br>

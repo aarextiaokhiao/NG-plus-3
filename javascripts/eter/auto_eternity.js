@@ -61,7 +61,7 @@ function toggleAutoEter(id) {
 function doAutoEterTick() {
 	if (!mod.ngpp) return
 	if (hasAch("ngpp17")) {
-		if (!bigRipped() || tmp.be) for (var d = 1; d < 9; d++) if (player.autoEterOptions["td" + d]) buyMaxTimeDimension(d)
+		if (!bigRipped() || tmp.qu.be) for (var d = 1; d < 9; d++) if (player.autoEterOptions["td" + d]) buyMaxTimeDimension(d)
 		if (player.autoEterOptions.epmult) buyMaxEPMult()
 		if (player.autoEterOptions.blackhole) {
 			buyMaxBlackholeDimensions()

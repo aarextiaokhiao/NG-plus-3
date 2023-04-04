@@ -566,7 +566,7 @@ function metaAchMultLabelUpdate() {
 	if (!QCIntensity(6)) return
 
 	el("metaAchMultLabel").style.display = "inline-block"
-	el("metaAchMultLabel").textContent = "Achievement multiplier to Meta Dimensions: " + shorten(tmp.qc.reward[6]) + "x"
+	el("metaAchMultLabel").textContent = "Achievement multiplier to Meta Dimensions: " + shorten(tmp.qu.chal.reward[6]) + "x"
 }
 
 function achTabButtonsDisplay() {

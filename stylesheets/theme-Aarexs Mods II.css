@@ -378,12 +378,12 @@ button, div.storebtn {
 	color: #0000e5 !important
 }
 
-#dilstudy7.dilationupgbought, #electronstabbtn button, .positron {
+#dilstudy7.dilationupgbought, #positronstabbtn button, .positron {
 	background-color: #e5e500 !important;
 	animation: none !important
 }
 
-#dilstudy7.dilationupg, #electronstabbtn button:hover, .positron:hover {
+#dilstudy7.dilationupg, #positronstabbtn button:hover, .positron:hover {
 	background-color: #e5e539 !important
 }
 
@@ -391,7 +391,7 @@ button, div.storebtn {
 	background-color: #e5e557 !important
 }
 
-#electronsAmount, #electronsTranslation, #electronsEffect {
+#positronsAmount, #positronsTranslation, #positronsEffect {
 	color: #e5e500
 }
 
