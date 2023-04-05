@@ -400,11 +400,10 @@ let HOW_TO = [
 		desc: `Best Tachyon Particles produce Photons. Photons reset on Fundament.
 		<br><br>
 		Your Elementary Particles, Neutrinos, Photons give Light Emissions.<br>
-		Every Light has a capacity dependent on Light Emissions, but has a limit.<br>
-		Having enough Lights allow you to Enlighten, which increase all Light limits.
+		Every Light is dependent on Emissions, but has a fixed limit.<br>
+		Enlightenments require Emissions to gain, in which increase those limits.
 		<br><br>
-		The multiplier portions can be traded through Lights.<br>
-		Trading will either increase, or decrease if you have no percentage to trade.`
+		The multiplier can be exchanged through Lights, by taking one from any Light and putting into another.`
 	}, {
 		mod: _ => ngp3,
 		req: _ => ghSave?.wzb.unl,
