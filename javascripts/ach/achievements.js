@@ -394,20 +394,21 @@ function updateAchievements() {
 	var rowsShown = 0
 	var rowsNum = 0
 	for (var i = 1; i < 25; i++) {
-		var shown=true
+		var shown = true
 		var rowid = i
 		var rownum = i
-		if (i > 15) {
+		if (i >= 16) {
 			shown = mod.ngp3
 			rownum = i - 15
 			rowid = "ng3p" + rownum
-		} else if (i > 14) {
-			shown = mod.ngpp
+		} else if (i >= 15) {
+			shown = mod.ngpp > 0
 			rowid = "ngpp1"
-		} else if (i > 13) {
-			shown = player.exdilation
+		} else if (i >= 14) {
+			shown = mod.ngud
 			rowid = "ngud1"
-		} else if (i > 10) shown = !mod.rs
+		} else if (i >= 11) shown = !mod.rs
+
 		rowid="achRow" + rowid
 		var n = 0
 		if (shown) {
@@ -423,13 +424,13 @@ function updateAchievements() {
 					else if (realAchNum == 41) realAchNum = 76
 				}
 				var achId = "r" + achNum
-				if (achNum > 160) achId="ng3p" + (achNum - 150)
-				else if (achNum > 150) achId = "ngpp" + (achNum - 140)
+				if (achNum >= 160) achId = "ng3p" + (achNum - 150)
+				else if (achNum >= 150) achId = "ngpp" + (achNum - 140)
 				else if (achNum == 145) achId = "ngpp13"
 				else if (achNum == 147) achId = "ngpp18"
-				else if (achNum > 140) achId = "ngud" + (achNum - 130)
+				else if (achNum >= 140) achId = "ngud" + (achNum - 130)
 				var name = allAchievements[achId]
-								if (!el(name)) continue
+				if (!el(name)) continue
 				if (hasAch(achId)) {
 					n++
 					el(name).className = "achievement achievementunlocked"
@@ -452,7 +453,7 @@ function updateAchievements() {
 				numberelement = el(rowid + "number")
 			}
 			numberelement.parentElement.style.display = aarMod.showAchRowNums ? "" : "none"
-			if (aarMod.showAchRowNums) numberelement.innerHTML = "Row #" + rowsNum + "<br>" + n + " / 8<br>(" + (n*12.5).toFixed(1) + "%)"
+			if (aarMod.showAchRowNums) numberelement.innerHTML = `Row #${rowsNum} - ${n} / 8<br>(${(n*100/8).toFixed(1)}%)`
 		}
 	}
 	player.achPow = E_pow(aarMod.newGameMinusMinusVersion ? 5 : 1.5, amount)

@@ -381,7 +381,7 @@ function doQuantum(force, auto, qc = {}) {
 
 	//Achievements
 	if (!force) {
-		if (!inQC(4) && player.meta.resets < 1) giveAchievement("Infinity Morals")
+		if (player.meta.resets == 0) giveAchievement("Infinity Morals")
 		if (player.dilation.rebuyables[1] + player.dilation.rebuyables[2] + player.dilation.rebuyables[3] + player.dilation.rebuyables[4] < 1 && player.dilation.upgrades.length < 1) giveAchievement("Never make paradoxes!")
 	}
 	if (!bigRip && oldBigRip && player.galaxies == 9 && player.replicanti.galaxies == 9 && player.timeDimension4.amount.round().eq(9)) giveAchievement("We can really afford 9.")
@@ -416,7 +416,7 @@ RESETS.qu = {
 		player.dilation.tachyonParticles = E(0)
 		player.dilation.dilatedTime = E(0)
 		player.dilation.studies = (bigRip ? hasRipUpg(10) : isRewardEnabled(4)) ? (
-			(bigRip ? hasRipUpg(12) : isRewardEnabled(6)) ? player.dilation.studies : [1]
+			(bigRip ? hasRipUpg(12) : isRewardEnabled(6)) ? [1,2,3,4,5,6] : [1]
 		) : []
 		resetDilation(order)
 	},
@@ -443,12 +443,13 @@ RESETS.qu = {
 			resets: keepMDB ? player.meta.resets : isRewardEnabled(27) ? 4 : 0
 		}
 		clearMetaDimensions()
+		player.old = true
 	},
 	doReset(order) {
 		let bigRip = bigRipped()
 		let qc = inAnyQC()
 
-		if (order != "qu" || !hasAch("ng3p73")) player.infinitiedBank = 0
+		if (order != "qu" || !hasAch("ng3p45")) player.infinitiedBank = 0
 		player.eternities = speedrunMilestonesReached ? 2e4 : quantumed ? 1 : 0
 		player.bestEternity = 999999999
 		player.lastTenEternities = [[600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)]]

@@ -160,7 +160,6 @@ function selectQC(x) {
 		pcChosen.push(x)
 		if (pcChosen.length == 2) {
 			quSave.pairedChallenges.order[pcFocus] = pcChosen
-			showChallengesTab("pChalls")
 			pcFocus = 0
 		}
 		updateQuantumChallenges()

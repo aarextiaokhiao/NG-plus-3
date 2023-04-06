@@ -496,7 +496,8 @@ newsArray = [//always true
 ["~<: NEXTA COMMUNINC: CONSTELLA' THE STARS ~:> It seems that Higgs Field are messing up our Nanofield...", "hasAch('ng3p91')", "am285"],
 ["There is no April Fools 2022 event for my incremental games. :)", "mod.ngp3", "am286"],
 ["Hello there. You might see recent updates in few months, but still... be patient! ~ Aarex, Lightning Incrementalist", "mod.ngp3", "am287"],
-["Fly on, zappie. Altar awaits your adventure- oh wait. Is Spectraglow coming to get me? Whatever...", "mod.ngp3", "am288"],
+["Fly on. Altar awaits your adventure- oh wait. Is Spectraglow coming to get me? Whatever...", "mod.ngp3", "am288"],
+["Number hell is my enemy ~ Aarex, Lightning Incrementalist", "mod.ngp3", "am289"],
 
 /* Post-NG+3R: 300 - ??? */
 /*["Gravity seems to so strong, that it intensifies anything.", 'mod.ngp3 && ghSave.gravitons.unl', "am301"],

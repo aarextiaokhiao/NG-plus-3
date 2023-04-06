@@ -145,7 +145,7 @@ function setR8Tooltip(){
 	reference.setAttribute('ach-tooltip', "Get a x"+shortenDimensions(Number.MAX_VALUE)+" multiplier in a single sacrifice. Reward: Sacrifices are stronger.")
 	spare.setAttribute('ach-tooltip', "Reach " +formatValue(player.options.notation, E("1e35000"), 0, 0)+" antimatter. Reward: Dimensions are more powerful the more unspent antimatter you have.");
 	twomillion.setAttribute('ach-tooltip', "Get 2,000,000 Infinities. Reward: Infinities longer than 5 seconds give 250 Infinities" + (inNGM(2) ? ", and you gain an additive +249 Infinities per crunch post multipliers" : "") + ".")
-	hevipelledidnothing.setAttribute('ach-tooltip', "Beat Infinity Challenge " + (inNGM(2) ? (inNGM(3) ? 13 : 7 ) : 5) + " in 10 seconds or less" + (inNGM(2) ? "" : " Reward: g13's effect is more powerful when outside of Eternity Challenges") + ".")
+	hevipelledidnothing.setAttribute('ach-tooltip', "Beat Infinity Challenge " + (inNGM(2) ? (inNGM(3) ? 13 : 7 ) : 5) + " in 10 seconds or less" + (inNGM(2) ? " Reward: g13's effect is more powerful when outside of Eternity Challenges" : "") + ".")
 }
 
 function setR9Tooltip(){
@@ -446,7 +446,7 @@ function setR21Tooltip(){
 
 	//ACHIEVEMENT ROW 21
 	uc.setAttribute('ach-tooltip', "Get "+shortenCosts(pow10(1e4))+" EP in Big Rips. Reward: Eternities can't go below your Eternitied gain, and gain Banked Eternities on any Quantum reset.")
-	mi.setAttribute('ach-tooltip', "Get "+shorten(Number.MAX_VALUE)+" infinities. Reward: Banked Infinities don't reset on Quantum.")
+	mi.setAttribute('ach-tooltip', "Get "+shorten(Number.MAX_VALUE)+" infinities.")
 	wd.setAttribute('ach-tooltip', "Get a Radioactive Decay without Big Ripping in this Fundament. Reward: Normal duplicant autobuyer buys max.")
 	radioDecay.setAttribute('ach-tooltip', "Get 2 Radioactive Decays. Reward: Produce 1 galaxy worth of Neutrinos per second.")
 }

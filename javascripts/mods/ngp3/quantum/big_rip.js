@@ -36,8 +36,8 @@ function bigRipped() {
 }
 
 function getSpaceShardsGain() {
-	let ret = bigRipped() ? brSave.bestThisRun : player.money
-	ret = E_pow(ret.add(1).log10() / 2000, 1.5).mul(player.dilation.dilatedTime.add(1).pow(0.05)).div(50)
+	let ret = E_pow(brSave.bestThisRun.add(1).log10() / 1e3, 1.5).mul(player.dilation.dilatedTime.add(1).pow(0.05)).add(1)
+
 	if (tmp.qu.be) {
 		if (isBreakUpgActive(3)) ret = ret.mul(tmp.qu.beu[3])
 		if (isBreakUpgActive(6)) ret = ret.mul(tmp.qu.beu[6])
