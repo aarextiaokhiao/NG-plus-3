@@ -112,7 +112,7 @@ let RESETS = {
 			let keepRep = hasAch("r95")
 			if (!keepRep) player.replicanti.amount = E(1)
 
-			let keepRepGal = speedrunMilestonesReached >= 28 || hasAch("ng3p67")
+			let keepRepGal = (order == "eter" && hasAch("ng3p67")) || (order == "inf" && speedrunMilestonesReached >= 28)
 			if (!keepRepGal) player.replicanti.galaxies = (order == "inf" && hasTimeStudy(33)) ? Math.floor(player.replicanti.galaxies / 2) : 0
 		}
 	},
@@ -162,7 +162,7 @@ let RESETS = {
 			} else if (order != "eter" || speedrunMilestonesReached < 24) {
 				player.replicanti.amount = E(1)
 			}
-			if (order != "eter" || !hasAch("ng3p67") || player.dilation.active) {
+			if (order != "eter" || !hasAch("ng3p67")) {
 				let keepPartial = mod.ngp3 && player.dilation.upgrades.includes("ngpp3") && getEternitied() >= 2e10
 				player.replicanti.chance = keepPartial ? Math.min(player.replicanti.chance, 1) : 0.01
 				player.replicanti.chanceCost = E_pow(1e15, player.replicanti.chance * 100).mul(inNGM(2) ? 1e75 : 1e135)

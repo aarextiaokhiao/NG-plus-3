@@ -449,7 +449,7 @@ RESETS.qu = {
 		let bigRip = bigRipped()
 		let qc = inAnyQC()
 
-		if (order != "qu" || !hasAch("ng3p45")) player.infinitiedBank = 0
+		if (order != "qu" || !hasAch("ng3p14")) player.infinitiedBank = 0
 		player.eternities = speedrunMilestonesReached ? 2e4 : quantumed ? 1 : 0
 		player.bestEternity = 999999999
 		player.lastTenEternities = [[600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)]]

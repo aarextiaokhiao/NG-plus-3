@@ -251,7 +251,7 @@ function setR13Tooltip(){
 	//ACHIEVEMENT ROW 13
 	unique.setAttribute('ach-tooltip', "Have 540 galaxies without having any Replicated galaxies." + (NGP3andVanillaCheck() ? " Reward: Gain a multiplier to Tachyon Particle and Dilated Time gain based on Antimatter Galaxies." : ""))
 	potato3.setAttribute('ach-tooltip', "Get more than "+shortenCosts(E("1e8296262"))+" ticks per second." + (inNGM(2) ? " Reward: The Galaxy boost to Galaxy points gain is buffed based on a specific value (~663 galaxies)." : ""))
-	infstuff.setAttribute('ach-tooltip', "Reach "+shortenCosts(E("1e140000"))+" IP without buying IDs or IP multipliers. Reward: You start eternities with all Infinity Challenges unlocked and completed" + (mod.ngpp ? ", and your Infinity gain is multiplied by dilated time^(1/4)." : "."))
+	infstuff.setAttribute('ach-tooltip', "Reach "+shortenCosts(E("1e140000"))+" IP without buying IDs or IP multipliers. Reward: Start with all Infinity Challenges completed" + (mod.ngpp ? " and multiply Infinitied gain by dilated time^(1/4)." : "."))
 	when.setAttribute('ach-tooltip', "Reach "+shortenCosts(E("1e20000"))+" replicanti. Reward: You gain replicanti 2 times faster under " + shortenMoney(Number.MAX_VALUE) + " replicanti.")
 	thinking.setAttribute('ach-tooltip', "Eternity for " + shortenCosts(E("1e600")) + " EP in 1 minute or less while dilated." + (thinking != "" ? " Reward: " + thinkingReward + "." : ""))
 	thisis.setAttribute('ach-tooltip', "Reach "+shortenCosts(E('1e20000'))+" IP without any time studies while dilated."+(thisisReward != "" ? " Reward: " + thisisReward + "." : ""))
@@ -373,7 +373,7 @@ function setR18Tooltip(){
 	let error404 = el("ERROR 404: DIMENSIONS NOT FOUND")
 	let ie = el("Impossible expectations")
 	let wasted = el("Studies are wasted")
-	let protonsDecay = el("Do protons decay?")
+	//ng3p45/////
 	//ng3p46/////
 	let stop = el("Stop blocking me!")
 	let dying = el("Are you currently dying?")
@@ -383,7 +383,6 @@ function setR18Tooltip(){
 	error404.setAttribute('ach-tooltip', "Get " + shorten(pow10(1.6e12))+" antimatter while having only the 1st Dimensions of each type of Dimension and at least 2 normal galaxies.")
 	ie.setAttribute('ach-tooltip', "Get " + shorten(pow10(8e6)) + " antimatter in a paired challenge with the PC6+8 combination. Reward: Automatically buy the Quark multiplier to dimensions every second if you have the 8th brave milestone.")
 	wasted.setAttribute('ach-tooltip', "Get " + shorten(1.1e7) + " TT without having TT generation, keeping your previous TT, and respeccing studies. Reward: While you have less than 1 hour worth of TT production, you gain 10x as much TT.")
-	protonsDecay.setAttribute('ach-tooltip', "Unlock Quark Decay. Reward: You keep the two thirds power of your pilons upon quantum when outside of a Quantum Challenge.")
 	stop.setAttribute('ach-tooltip', "Get the replicanti reset requirement to " + shorten(pow10(1.25e7)) + ". Reward: Getting a normal duplicant manually doesn't reset your replicanti and can be automated.")
 	dying.setAttribute('ach-tooltip', "Reach " + shorten(pow10(2.75e5)) + " IP while dilated, in PC6+8, and without having time studies. Reward: Branches are faster based on your Meta-Dimension Boosts.")
 }
@@ -419,8 +418,7 @@ function setR20Tooltip(){
 	let pls = el("Please answer me why you are dying.")
 
 	let willenoughReward = [] // for the achievement "Will it be enough?"
-	willenoughReward.push("Replicated Galaxies don't reset until next Eternity")
-	willenoughReward.push("keep Replicanti upgrades on normal Eternity runs")
+	willenoughReward.push("keep Replicanti on Eternity")
 	if (mod.udp && !aarMod.ngumuV) willenoughReward.push("keep Black Hole Dimensions on Quantum")
 	willenoughReward = wordizeList(willenoughReward, true)
 
