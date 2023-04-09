@@ -194,7 +194,7 @@ const NEUTRINO = NT = {
 					nt = nt[0].add(1).log10()+nt[1].add(1).log10()+nt[2].add(1).log10()
 					return Math.min(Math.log10(nt / 400 + 1) / 2, 1)
 				},
-				effDesc: e => `<b>^${shorten(e)}</b> of RG strength carries to Galaxies.`,
+				effDesc: e => `<b>^${shorten(e)}</b> of replicated galaxy strength shares to Galaxies.`,
 			}
 		]
 	},
