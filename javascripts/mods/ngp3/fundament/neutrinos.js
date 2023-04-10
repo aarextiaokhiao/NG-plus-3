@@ -175,17 +175,17 @@ const NEUTRINO = NT = {
 				},
 				effDesc: e => `Strengthen IC3 multiplier base by <b>${shorten(e)}x</b>.`,
 			}, {
-				cost: E(1e25),
+				cost: E(1e19),
 				eff(nt) {
 					nt = nt[0].add(1).log10()+nt[1].add(1).log10()+nt[2].add(1).log10()
-					return Math.log2(nt/80+1)/200
+					return Math.log2(Math.max(nt/70,1))/150
 				},
 				effDesc: e => `TS232 regains <b>${shorten(e*100)}%</b> power.`,
 			}, {
-				cost: E(1e30),
+				cost: E(1e35),
 				eff(nt) {
 					nt = nt[0].add(1).log10()+nt[1].add(1).log10()+nt[2].add(1).log10()
-					return Math.cbrt(Math.max(nt / 50 - 1, 1))
+					return Math.cbrt(Math.max(nt / 40 - 2, 1))
 				},
 				effDesc: e => `2nd Infinite Time softcap starts <b>^${shorten(e)}</b> later.`,
 			}, {
@@ -298,8 +298,8 @@ const NEUTRINO = NT = {
 				effDesc: e => `+${getFullExpansion(e)}`
 			}, {
 				unl: _ => PHOTON.unlocked(),
-				cost: E(1e33),
-				desc: `Replicate Slowdown absorbs replicate interval. Replicate interval scales slower.`
+				cost: E(1e29),
+				desc: `Replicate Slowdown absorbs Replicate Interval. Lower Replicate Interval.`
 			}, {
 				unl: _ => PHOTON.unlocked(),
 				cost: E(1e35),
@@ -309,7 +309,7 @@ const NEUTRINO = NT = {
 				effDesc: e => `+^${shorten(e)}`
 			}, {
 				unl: _ => PHOTON.unlocked(),
-				cost: E(1e40),
+				cost: E(1e48),
 				desc: `Unlock new Nanobenefits. 7th Nanobenefit gives more Nanocharge.`
 			}
 		]

@@ -102,10 +102,10 @@ var nanoRewards = {
 			return pow2(x)
 		},
 		decay_exp: function(x) {
-			return Math.log10(Math.max(x * 2 + 7, 10))
+			return Math.log10(Math.max(x * 2 + 4, 10))
 		},
 		photon: function(x) {
-			return Math.pow(x / 5 + 1, 3)
+			return Math.pow(x + 1, 1.5)
 		}
 	},
 	effDisp: {
@@ -190,7 +190,7 @@ function getNanoRewardReqFixed(n){
 	let a = getActiveNanoScalings()
 	let s = getNanoScalingsStart()
 	if (n >= s[0] && a[0]) x = x.mul(E_pow(4.0, (n - s[0])))
-	if (n >= s[1] && a[1]) x = x.mul(E_pow(2.0, (n - s[1]) * (n - s[1] + 3) / PHOTON.eff(5)))
+	if (n >= s[1] && a[1]) x = x.mul(E_pow(2.0, (n - s[1]) * (n - s[1] + 3) / PHOTON.eff(6)))
 	return x
 }
 
