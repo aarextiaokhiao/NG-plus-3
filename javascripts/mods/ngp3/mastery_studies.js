@@ -216,7 +216,7 @@ var masteryStudies = {
 		263: "Meta-Dimension Boosts boost Dilated Time.",
 		264: "Antimatter Galaxies boost Tachyon Particles.",
 		265: "Replicate chance can go over 100%.",
-		266: "Reduce the post-400 replicated galaxy scaling.",
+		266: "Reduce the post-400 Replicated Galaxy scaling.",
 		271: "Replicate interval can go below 1ms, but cost scales faster.",
 		272: "You can buy all Time Studies in all 3-way splits.",
 		273: "Replicate chance boosts itself.",
@@ -235,13 +235,13 @@ var masteryStudies = {
 		331: "Dimension Supersonic scaling starts 240,000 later, and the cost increase is reduced by 3.",
 		332: "You gain replicanti faster based on your normal galaxies.",
 		341: "Preons boost dilated time production at reduced rate.",
-		342: "All replicated galaxies are stronger and use the same formula.",
+		342: "All Replicated Galaxies are stronger and use the same formula.",
 		343: "Tachyonic Galaxies are as strong as a normal Replicated Galaxy.",
 		344: "Pilons strengthen Replicated Galaxies.",
 		351: "Time Shards boost Meta Dimensions.",
 		361: "Hatch speed is faster based on your tachyon particles.",
 		362: () => "Reduce the softcap for the pilon boost"+(aarMod.ngumuV?", but reduce the efficiency.":"."),
-		371: "Hatch speed is faster based on your extra replicated galaxies.",
+		371: "Hatch speed is faster based on your extra Replicated Galaxies.",
 		372: "Hatch speed is faster based on your time shards.",
 		373: "You get more pilons based on your galaxies.",
 		381: "Hatch speed is faster based on your tickspeed reduction multiplier.",
@@ -481,7 +481,7 @@ function buyingDilStudyPC(){
 
 function buyingDilStudyReplicant(){
 	showTab("quantumtab")
-	showQuantumTab("replicants")
+	showQuantumTab("duplicants")
 	el("timestudy322").style.display=""
 }
 
@@ -493,7 +493,7 @@ function buyingDilStudyED(){
 
 function buyingDilStudyNanofield(){
 	showTab("quantumtab")
-	showQuantumTab("replicants")
+	showQuantumTab("duplicants")
 	showQuantumTab("nanofield")
 	NF.shown()
 }
@@ -671,7 +671,6 @@ function updateMasteryStudyTextDisplay() {
 	}
 }
 
-var occupied
 function drawMasteryBranch(id1, id2) {
 	var type1 = id1.split("ec")[1] ? "c" : id1.split("dil")[1] ? "d" : id1.split("time")[1] ? "t" : undefined
 	var type2 = id2.split("ec")[1] ? "c" : id2.split("dil")[1] ? "d" : id2.split("time")[1] ? "t" : undefined
@@ -700,37 +699,33 @@ function drawMasteryBranch(id1, id2) {
 	} else msctx.strokeStyle = "#444";
 	msctx.moveTo(x1, y1);
 	msctx.lineTo(x2, y2);
-	msctx.stroke();
-	if (!occupied.includes(id2) && type2 == "t") {
-		occupied.push(id2)
-		if (shiftDown) {
-			var start = el(id2).getBoundingClientRect();
-			var x1 = start.left + (start.width / 2) + (document.documentElement.scrollLeft || document.body.scrollLeft);
-			var y1 = start.top + (start.height / 2) + (document.documentElement.scrollTop || document.body.scrollTop);
-			var mult = getMasteryStudyCostMult(id2.split("study")[1])
-			var msg = id2.split("study")[1] + " (" + (mult>1e3?shorten(mult):mult) + "x)"
-			msctx.fillStyle = 'white';
-			msctx.strokeStyle = 'black';
-			msctx.lineWidth = 3;
-			msctx.font = "15px Typewriter";
-			msctx.strokeText(msg, x1 - start.width / 2, y1 - start.height / 2 - 1);
-			msctx.fillText(msg, x1 - start.width / 2, y1 - start.height / 2 - 1);
-		}
-	}
+	msctx.stroke()
 }
 
 function drawMasteryTree() {
 	msctx.clearRect(0, 0, msc.width, msc.height);
 	if (player === undefined) return
-	if (el("eternitystore").style.display === "none" || el("masterystudies").style.display === "none" || !mod.ngp3) return
-	occupied=[]
+	if (!isTabShown("masterystudies")) return
 	drawMasteryBranch("back", "timestudy241")
-	for (var x = 0; x < masteryStudies.studies.length; x++) {
-		var id = masteryStudies.studies[x]
-		var paths = getMasteryStudyConnections(id)
-		if (!masteryStudies.unlocked.includes(id)) return
-		if (paths) for (var y = 0; y < paths.length; y++) if (masteryStudies.unlocked.includes(paths[y])) drawMasteryBranch(convertMasteryStudyIdToDisplay(id), convertMasteryStudyIdToDisplay(paths[y]))
+	for (let id of masteryStudies.unlocked) {
+		let paths = getMasteryStudyConnections(id)
+		if (!paths) continue
+		for (let to of paths) {
+			if (!masteryStudies.unlocked.includes(to)) continue
+			drawMasteryBranch(convertMasteryStudyIdToDisplay(id), convertMasteryStudyIdToDisplay(to))
+		}
 	}
+	if (!shiftDown) return
+
+	for (let id of masteryStudies.unlocked) {
+		if (id + 0 != id) continue
+		let mult = getMasteryStudyCostMult(id)
+		drawStudyHeader(msctx, convertMasteryStudyIdToDisplay(id), id + " (" + shorten(mult) + "x)")
+	}
+	/*
+	drawStudyHeader(msctx, "999", "999 (forbidden)")
+	drawStudyHeader(msctx, "999_2", "999 (forbidden)")
+	*/
 }
 
 function getMasteryStudyMultiplier(id, uses = ""){

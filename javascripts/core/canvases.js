@@ -143,7 +143,8 @@ function drawAnimations(ts){
 }
 
 function drawTreeBranch(num1, num2) {
-	if (el("timestudies").style.display === "none") return
+	if (!isTabShown("timestudies")) return
+
 	var name1 = parseInt(num1);
 	var isECName = false;
 	var isDilStudyName = false;
@@ -212,6 +213,20 @@ function drawTreeBranch(num1, num2) {
 	ctx.moveTo(x1, y1);
 	ctx.lineTo(x2, y2);
 	ctx.stroke();
+}
+
+function drawStudyHeader(ctx, id, disp) {
+	if (!shiftDown) return
+
+	var start = el(id).getBoundingClientRect();
+	var x1 = start.left + (start.width / 2) + (document.documentElement.scrollLeft || document.body.scrollLeft);
+	var y1 = start.top + (start.height / 2) + (document.documentElement.scrollTop || document.body.scrollTop);
+	ctx.fillStyle = 'white';
+	ctx.strokeStyle = 'black';
+	ctx.lineWidth = 3;
+	ctx.font = "15px Typewriter";
+	ctx.strokeText(disp, x1 - start.width / 2, y1 - start.height / 2 - 1);
+	ctx.fillText(disp, x1 - start.width / 2, y1 - start.height / 2 - 1);
 }
 
 function drawStudyTree() {
@@ -310,30 +325,21 @@ function drawStudyTree() {
 	if (mod.ngp3) drawTreeBranch("dilstudy6", "masteryportal")
 	if (shiftDown && el("eternitystore").style.display !== "none" && el("timestudies").style.display !== "none") {
 		for (i=0; i<all.length; i++) {
-			var start = el(all[i]).getBoundingClientRect();
-			var x1 = start.left + (start.width / 2) + (document.documentElement.scrollLeft || document.body.scrollLeft);
-			var y1 = start.top + (start.height / 2) + (document.documentElement.scrollTop || document.body.scrollTop);
-			ctx.fillStyle = 'white';
-			ctx.strokeStyle = 'black';
-			ctx.lineWidth = 3;
-			ctx.font = "15px Typewriter";
-			if (el(all[i]).className.split(" ")[1] !== undefined || all[i] > 220) {
-				var tempName = el(all[i]).className.split(" ")[1];
-				var name;
-				if (all[i] == 222 || all[i] == 223 || all[i] == 226 || all[i] == 227 || all[i] == 232 || all[i] == 234) name = "dark"
-				else if (all[i] == 221 || all[i] == 224 || all[i] == 225 || all[i] == 228 || all[i] == 231 || all[i] == 233) name = "light"
-				else if (tempName.includes("normaldimstudy")) name = "normal dims"
-				else if (tempName.includes("infdimstudy")) name = "infinity dims"
-				else if (tempName.includes("timedimstudy")) name = "time dims"
-				else if (tempName.includes("activestudy")) name = "active"
-				else if (tempName.includes("passivestudy")) name = "passive"
-				else if (tempName.includes("idlestudy")) name = "idle"
-				ctx.strokeText(all[i]+" "+name, x1 - start.width / 2, y1 - start.height / 2 - 1);
-				ctx.fillText(all[i]+" "+name, x1 - start.width / 2, y1 - start.height / 2 - 1);
-			} else {
-				ctx.strokeText(all[i], x1 - start.width / 2, y1 - start.height / 2 - 1);
-				ctx.fillText(all[i], x1 - start.width / 2, y1 - start.height / 2 - 1);
+			let id = all[i]
+			let disp = id
+			let type = el(all[i]).className.split(" ")[1]
+			if (type !== undefined) {
+				if (all[i] == 222 || all[i] == 223 || all[i] == 226 || all[i] == 227 || all[i] == 232 || all[i] == 234) type = "dark"
+				else if (all[i] == 221 || all[i] == 224 || all[i] == 225 || all[i] == 228 || all[i] == 231 || all[i] == 233) type = "light"
+				else if (type.includes("normaldimstudy")) type = "normal dims"
+				else if (type.includes("infdimstudy")) type = "infinity dims"
+				else if (type.includes("timedimstudy")) type = "time dims"
+				else if (type.includes("activestudy")) type = "active"
+				else if (type.includes("passivestudy")) type = "passive"
+				else if (type.includes("idlestudy")) type = "idle"
+				disp += " " + type
 			}
+			drawStudyHeader(ctx, id, disp)
 		}
 	}
 }

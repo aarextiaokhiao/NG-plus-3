@@ -75,11 +75,6 @@ var automators = {
 		req: 12,
 		pow: 1,
 	},
-	17: {
-		title: "Experimenter",
-		req: 25,
-		pow: 4,
-	},
 	2: {
 		title: "EC10 Challenger",
 		html: `(big rip only)<br>
@@ -88,26 +83,8 @@ var automators = {
 		req: 13,
 		pow: 1.5,
 	},
-	19: {
-		title: "Enchanter",
-		html: `Changes hypotheses on a complete experiment after 2s<br>
-		or change at X seconds remaining: <input id="autoGhost17s" onchange="changeAutoGhost('17s')"/>`,
-		req: 32,
-		pow: 3,
-	},
-	20: {
-		title: "Bosonic Upgrader",
-		html: `(doesn't consume your Hypotheses, enchant per 2 seconds)`,
-		req: 36,
-		pow: 9,
-	},
-	21: {
-		title: "W & Z Worker",
-		req: 40,
-		pow: 3,
-	},
 }
-const automatorOrder = [1,5,6,7,18,8,9,10,11,12,13,14,15,16,2,17,19,20,21]
+const automatorOrder = [1,5,6,7,18,8,9,10,11,12,13,14,15,16,2]
 
 function setupAutomaticGhostsData() {
 	var data = {power: 0, ghosts: 3}
@@ -116,8 +93,6 @@ function setupAutomaticGhostsData() {
 	data[11].lw = 1
 	data[11].cw = 1
 	data[15].a = 1
-	data[17].a = 60
-	data[17].t = 0
 	data[2].b = 3
 	data[2].t = 5
 	return data
@@ -143,7 +118,6 @@ function updateAutoGhosts(load) {
 		el("autoGhost13u").value = data[13].u
 		el("autoGhost13o").value = data[13].o
 		el("autoGhost15a").value = data[15].a
-		el("autoGhost17s").value = data[17].s
 		el("autoGhost2b").value = data[2].b
 		el("autoGhost2t").value = data[2].t
 	}
@@ -187,9 +161,6 @@ function changeAutoGhost(o) {
 	} else if (o == "15a") {
 		var num = parseFloat(el("autoGhost15a").value)
 		if (!isNaN(num) && num > 0) ghSave.automatorGhosts[13].u = num
-	} else if (o == "17a") {
-		var num = fromValue(el("autoGhost17s").value)
-		if (!isNaN(break_infinity_js ? num : num.l)) ghSave.automatorGhosts[17].s = num
 	} else if (o == "2t") {
 		var num = fromValue(el("autoGhost2t").value)
 		if (!isNaN(num) && num > 0) ghSave.automatorGhosts[2].t = num
@@ -233,18 +204,6 @@ function automatorTick(diff) {
 	if (!isAutoGhostsSafe) return
 
 	//Ghostify Layer
-	if (isAutoGhostActive(19)) {
-		let ag = ghSave.automatorGhosts[19]
-		let perSec = 1/2
-		ag.t = (ag.t || 0) + diff * perSec
-		let times = Math.floor(ag.t)
-		if (times > 0) {
-			let max = times
-			if (isEnchantUsed(35)) max = tmp.qu.ben[35].mul(max)
-			autoMaxAllEnchants(max)
-			ag.t = ag.t - times
-		}
-	}
 	if (isAutoGhostActive(15) && ghSave.time >= ghSave.automatorGhosts[15].a * 10) ghostify(true)
 
 	//Quantum Layer

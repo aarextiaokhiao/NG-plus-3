@@ -439,10 +439,6 @@ function setSaveStuffHTML(){
 }
 
 function setSomeEterEraStuff2(){
-	el("automation_ng" + (inNGM(4) ? "m4" : "") + "_placement").appendChild(el("autobuyers"))
-	if (inNGM(4)) el("autobuyers").style.display="none"
-	el("autobuyers").className=(inNGM(4)?"":"inf")+"tab"
-	el("autobuyersbtn").style.display=inNGM(4)?"none":""
 	var updatedLTR = []
 	for (var lastRun = 0; lastRun < 10; lastRun++) {
 		if (typeof(player.lastTenRuns[lastRun]) !== "number") if (player.lastTenRuns[lastRun][0] != 26784000 || player.lastTenRuns[lastRun][1].neq(1)) updatedLTR.push(player.lastTenRuns[lastRun])
@@ -849,10 +845,7 @@ function doQuantumUpdates(){
 			charge: 0,
 			energy: 0,
 			antienergy: 0,
-			power: 0,
-			powerThreshold: 50,
 			rewards: 0,
-			producingCharge: false
 		}
 		nfSave = quSave.nanofield
 		quSave.assignAllRatios = {
@@ -1363,10 +1356,6 @@ function doNGp3Init() {
 		quSave.nanofield = nfSave = quSave["10ofield"]
 		delete quSave["10ofield"]
 	}
-	if (nfSave.powerThreshold === undefined) {
-		nfSave.powerThreshold = 50
-		nfSave.producingCharge = false
-	}
 	if (quSave.autobuyer.peakTime === undefined) quSave.autobuyer.peakTime = 0
 	if (nfSave.rewards>17&&todSave.upgrades[1]==undefined&&!ghSave?.reached&&!aarMod.ngp4V) {
 		var newMS=[]
@@ -1724,16 +1713,7 @@ function onLoad(noOffline) {
 	updateGhostlyNews()
 	if (!player.options.newsHidden) scrollNextMessage()
 
-	var tabsSave = aarMod.tabsSave
-	showDimTab((tabsSave.on && tabsSave.tabDims) || 'antimatterdimensions')
-	showStatsTab((tabsSave.on && tabsSave.tabStats) || 'stats')
-	showAchTab((tabsSave.on && (tabsSave.tabAchs == 'normalachievements' || tabsSave.tabAchs == 'secretachievements') && tabsSave.tabAchs) || 'normalachievements')
-	showChallengesTab((tabsSave.on && tabsSave.tabChalls) || 'normalchallenges')
-	showInftab((tabsSave.on && tabsSave.tabInfinity) || 'preinf')
-	showEternityTab((tabsSave.on && tabsSave.tabEternity) || 'timestudies', true)
-	showQuantumTab((tabsSave.on && tabsSave.tabQuantum) || 'uquarks')
-	showAntTab((tabsSave.on && tabsSave.tabAnt) || 'antcore')
-	showGhostifyTab((tabsSave.on && tabsSave.tabGhostify) || 'neutrinos')
+	resetTabs()
 
 	if (player.totalTimePlayed < 1 || inflationCheck || forceToQuantumAndRemove) {
 		updateNGModeMessage()

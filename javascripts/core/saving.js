@@ -118,8 +118,8 @@ function changeSaveDesc(saveId, placement) {
 				msg+="Bosons: "+shorten(E(temp.ghostify.bl.am))+", W+ Bosons: "+shortenDimensions(E(data.wpb))+", W- Bosons: "+shortenDimensions(E(data.wnb))+", Z Bosons: "+shortenDimensions(E(data.zb))
 			} else if (temp.achievements.includes("ng3p71")) {
 				//var data=temp.ghostify.photons
-				msg+="Elementary Particles: "+shortenDimensions(E(temp.ghostify.ghostParticles))+", Enlightenments: "+getFullExpansion(temp.ghostify.photons.lighten)
-			} else msg+="Elementary Particles: "+shortenDimensions(E(temp.ghostify.ghostParticles))+", Neutrinos: "+shortenDimensions(Decimal.add(temp.ghostify.neutrinos.electron, temp.ghostify.neutrinos.mu).add(temp.ghostify.neutrinos.tau).round())
+				msg+="Spectral Particles: "+shortenDimensions(E(temp.ghostify.ghostParticles))+", Enlightenments: "+getFullExpansion(temp.ghostify.photons.lighten)
+			} else msg+="Spectral Particles: "+shortenDimensions(E(temp.ghostify.ghostParticles))+", Neutrinos: "+shortenDimensions(Decimal.add(temp.ghostify.neutrinos.electron, temp.ghostify.neutrinos.mu).add(temp.ghostify.neutrinos.tau).round())
 		} else if (isSaveQuantumed) {
 			if (!temp.masterystudies) msg+="Endgame of NG++"
 			else if (temp.masterystudies.includes('d14')) msg+="Total antimatter in Big Rips: "+shortenDimensions(E(temp.quantum.bigRip.totalAntimatter))+", Space Shards: "+shortenDimensions(E(temp.quantum.bigRip.spaceShards))+(temp.achievements.includes("ng3p55")?", Eternal Matter: "+shortenDimensions(E(temp.quantum.breakEternity.eternalMatter)):"")
@@ -935,7 +935,7 @@ function doNGMinusTwoNewPlayer(){
 	player.options.gSacrificeConfirmation = true
 }
 
-function getBrandNewReplicantsData() {
+function getBrandNewDuplicantsData() {
 	return {
 		amount: E(0),
 		requirement: E("1e3000000"),
@@ -1093,10 +1093,7 @@ function doNGPlusThreeNewPlayer() {
 		charge: 0,
 		energy: 0,
 		antienergy: 0,
-		power: 0,
-		powerThreshold: 50,
 		rewards: 0,
-		producingCharge: false
 	}
 	quSave.assignAllRatios = {
 		r: 1,

@@ -1,6 +1,6 @@
 //VERSION: 2.31
 let ngp3_ver = 2.31
-let ngp3_build = 20230409
+let ngp3_build = 20230410
 function doNGP3Updates() {
 	if (!aarMod.ngp3_build) aarMod.ngp3_build = 0
 	if (aarMod.ngp3_build < 20221230) quSave.multPower = 0
@@ -40,7 +40,7 @@ function doNGP3Updates() {
 		ghSave.neutrinos.upgrades = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
 		beSave.upgrades = [1, 2, 3, 4, 5, 6]
 
-		alert("Due to massive balancing changes, you will be pushed back to e20 Elementary Particles!")
+		alert("Due to massive balancing changes, you will be pushed back to e20 Spectral Particles!")
 		doReset("qu")
 	}
 	if (aarMod.ngp3_build < 20230331 && ghSave) {
@@ -56,31 +56,11 @@ function doNGP3Updates() {
 
 //v1.5 
 function showQuantumTab(tabName) {
-	//iterate over all elements in div_tab class. Hide everything that's not tabName and show tabName
-	var tabs = document.getElementsByClassName('quantumtab');
-	var tab;
-	var oldTab
-	for (var i = 0; i < tabs.length; i++) {
-		tab = tabs.item(i);
-		if (tab.style.display == 'block') oldTab = tab.id
-		if (tab.id === tabName) { 
-			tab.style.display = 'block';
-		} else {
-			tab.style.display = 'none';
-		}
-	}
-	if (oldTab != tabName) {
-		aarMod.tabsSave.tabQuantum = tabName
-		if (tabName == "uquarks" && el("quantumtab").style.display !== "none") {
-			resizeCanvas()
-			requestAnimationFrame(drawQuarkAnimation)
-		}
-	}
-	closeToolTip()
+	showTab(tabName, false, "quantumtab")
 }
 
 var quantumTabs = {
-	tabIds: ["uquarks", "gluons", "positrons", "replicants", "tod"],
+	tabIds: ["uquarks", "gluons", "positrons", "duplicants", "tod"],
 	update: {
 		uquarks: updateQuarksTab,
 		gluons: updateGluonsTab,
@@ -92,7 +72,7 @@ var quantumTabs = {
 function updateQuantumTabs() {
 	for (var i = 0; i < quantumTabs.tabIds.length; i++) {
 		var id = quantumTabs.tabIds[i]
-		if (el(id).style.display == "block") quantumTabs.update[id]()
+		if (isTabShown(id)) quantumTabs.update[id]()
 	}
 	if (hasBraveMilestone(8)) updateQuantumWorth("display")
 }
@@ -279,21 +259,7 @@ function canBuyGalaxyThresholdUpg() {
 }
 
 function showAntTab(tabName) {
-	//iterate over all elements in div_tab class. Hide everything that's not tabName and show tabName
-	var tabs = document.getElementsByClassName('anttab');
-	var tab;
-	var oldTab
-	for (var i = 0; i < tabs.length; i++) {
-		tab = tabs.item(i);
-		if (tab.style.display == 'block') oldTab = tab.id
-		if (tab.id === tabName) {
-			tab.style.display = 'block';
-		} else {
-			tab.style.display = 'none';
-		}
-	}
-	if (oldTab !== tabName) aarMod.tabsSave.tabAnt = tabName
-	closeToolTip()
+	showTab(tabName, false, "anttab")
 }
 
 //v2.21: NG+3.1
@@ -367,7 +333,7 @@ var ngp3Features = {
 		threshold: () => "Complete Paired Challenge 4",
 		next: "ed",
 		tab() {
-			showTab("replicants")
+			showTab("duplicants")
 		}
 	},
 	ed: {
@@ -383,7 +349,7 @@ var ngp3Features = {
 		threshold: () => "Get " + getFullExpansion(10) + " Eighth Emperor Dimensions",
 		next: "tod",
 		tab() {
-			showTab("replicants")
+			showTab("duplicants")
 			showAntTab('nanofield')
 		}
 	},
@@ -536,7 +502,7 @@ function updateNGP3Temp() {
 		if (hasMasteryStudy("d10")) {
 			tmp.qu.ant.preon_eff = getPilonEffect()
 			tmp.qu.ant.workers = getTotalWorkers()
-			tmp.qu.ant.total = getTotalReplicants()
+			tmp.qu.ant.total = getTotalDuplicants()
 			tmp.qu.ant.global_mult = getEmperorDimensionGlobalMultiplier() //Update global multiplier of all Emperor Dimensions
 		}
 		updateColorPowers()
@@ -647,14 +613,14 @@ function ngP3AchieveCheck() {
 	if (brSave.spaceShards.log10() >= 33 && !beSave.did) giveAchievement("Finite Time")
 	if (beSave.eternalMatter.gte(9.999999e99)) giveAchievement("This achievement doesn't exist 4")
 	if (ghSave.milestones == 16) giveAchievement("I rather oppose the theory of everything")
-	if (inQC(6) && inQC(8) && !bigRipped() && player.money.e >= 5e7) giveAchievement("Really?")
+	if (inQC(6) && inQC(8) && !bigRipped() && player.money.e >= 4e7) giveAchievement("Really?")
 	if (ableToGetRid8 && player.infinityPoints.log10() >= 9.5e5) giveAchievement("Please answer me why you are dying.")
 
 	if (PHOTON.unlocked()) giveAchievement("Progressing as a Ghost")
 	if (bigRipped() && player.eternityPoints.e >= 1e5) giveAchievement("Underchallenged")
 	if (nG(getInfinitied(), Number.MAX_VALUE)) giveAchievement("Meta-Infinity confirmed?")
-	if (getRadioactiveDecays('r') >= 1 && !brSave.times) giveAchievement("Weak Decay")	
-	if (getRadioactiveDecays('r') >= 1) giveAchievement("Radioactive Decaying to the max!")
+	if (todSave.r.quarks.gte(pow10(1e12)) && !brSave.times) giveAchievement("Weak Decay")	
+	if (getRadioactiveDecays('r')) giveAchievement("Radioactive Decaying to the max!")
 	if (ghSave.best <= 30) giveAchievement("Running through Big Rips")
 	if (masteryStudies.bought >= 48) giveAchievement("The Theory of Ultimate Studies")
 	if (ghSave.photons.lighten) giveAchievement("Here comes the light")

@@ -238,7 +238,6 @@ function getTreeUpgradeLevel(upg) {
 function getEffectiveTreeUpgLevel(upg){
 	if (!tmp.qu.tree_str) return 0
 	lvl = getTreeUpgradeLevel(upg) * tmp.qu.tree_str
-	if (upg == 2 && lvl > 64) lvl = (lvl + 128) / 3
 	return lvl
 }
 

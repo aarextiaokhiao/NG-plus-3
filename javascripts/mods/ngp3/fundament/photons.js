@@ -70,7 +70,7 @@ let PHOTON = {
 			req: i => E(10).pow(Math.pow(i,1.5)).mul(1e27),
 			bulk: r => Math.floor(Math.pow(r.max(1).div(1e27).log(10),2/3)) + 1,
 		}, {
-			resName: "Elementary Particles",
+			resName: "Spectral Particles",
 			res: _ => ghSave.ghostParticles,
 
 			req: i => E(1e3).pow(i).mul(1e19),
@@ -85,7 +85,7 @@ let PHOTON = {
 	],
 
 	//Feature - Lights
-	lightCap: _ => 5 + ghSave.photons.lighten * 6,
+	lightCap: _ => 5 + ghSave.photons.lighten,
 	release() {
 		ghSave.photons.light = []
 
@@ -107,7 +107,7 @@ let PHOTON = {
 		}, {
 			name: "orange",
 			start: 3,
-			eff: a => Math.min(Math.log2(a / 2 + 2), 1.5),
+			eff: a => 1.5 - 0.5 / (a / 3 + 1),
 			desc: e => `Starting at ^9, raise 2nd Neutrino Boost by ^${shorten(e)}.`
 		}, {
 			name: "yellow",
@@ -132,7 +132,7 @@ let PHOTON = {
 		}, {
 			name: "ultraviolet",
 			start: 13,
-			eff: a => Math.log10(a + 1) * 2 + 1,
+			eff: a => Math.log2(a / 5 + 1) + 1,
 			desc: e => `Post-16 Nanoreward scaling scales ${shorten(e)}x slower.`
 		}
 	],
@@ -148,7 +148,7 @@ let PHOTON = {
 	//Feature - Enlighten
 	enlighten() {
 		let lighten = ghSave.photons.lighten
-		let gain = Math.floor((this.totalEmissions() - 20) / 4) + 1
+		let gain = Math.floor(Math.sqrt(PHOTON.totalEmissions()) - 4) + 1
 		ghSave.photons.lighten = Math.max(gain, lighten)
 	},
 
@@ -179,8 +179,8 @@ let PHOTON = {
 		el("ph_amt").textContent = shortenMoney(ghSave.photons.amt)
 		el("ph_prod").textContent = "(+" + shortenMoney(PHOTON.photonGain()) + "/s)"
 		el("ph_lighten").textContent = getFullExpansion(ghSave.photons.lighten)
-		el("ph_lighten_eff").textContent = "+" + getFullExpansion(ghSave.photons.lighten * 6) + " cap"
-		el("ph_lighten_req").textContent = "Requires " + getFullExpansion(ghSave.photons.lighten * 4 + 20) + " Emissions"
+		el("ph_lighten_eff").textContent = "+" + getFullExpansion(ghSave.photons.lighten) + " cap"
+		el("ph_lighten_req").textContent = "Requires " + getFullExpansion(Math.pow(ghSave.photons.lighten + 4, 2)) + " Emissions"
 
 		for (const [i, emission] of Object.entries(PHOTON.emissionData)) {
 			el("ph_shop_req_" + i).textContent = `${shorten(emission.req(ghSave.photons.emission[i] || 0))} ${emission.resName}`

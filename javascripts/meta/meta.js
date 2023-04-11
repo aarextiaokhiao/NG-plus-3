@@ -15,7 +15,7 @@ function initiateMetaSave() {
 		meta.save.saveOrder = [1]
 		meta.save.alert = true
 	}
-	if (!meta.save.presetsOrder_ers) meta.save.presetsOrder_ers=[]
+	if (!meta.save.presetsOrder_ers) meta.save.presetsOrder_ers = []
 	if (!meta.save.badges) meta.save.badges = {}
 }
 

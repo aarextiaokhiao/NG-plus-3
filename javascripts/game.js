@@ -172,46 +172,17 @@ el("theme").onclick = function () {
 	el('thememenu').style.display="flex"
 }
 
-function showTab(tabName, init) {
-	if (tabName == 'quantumtab' && !mod.ngp3) {
-		alert("Because Quantum was never fully developed due to the abandonment of development, you cannot access the Quantum tab in NG++. This is the definitive endgame.")
-		return
-	}
+function showTab(tabName, init, type = "tab") {
 	//iterate over all elements in div_tab class. Hide everything that's not tabName and show tabName
-	var tabs = document.getElementsByClassName("tab");
-	var tab;
-	var oldTab
+	var tabs = document.getElementsByClassName(type);
+	var tab, oldTab
 	for (var i = 0; i < tabs.length; i++) {
 		tab = tabs.item(i);
-		if (tab.style.display == 'block') oldTab = tab.id
-		if (tab.id === tabName) {
-			tab.style.display = 'block';
-		} else {
-			tab.style.display = 'none';
-		}
+		if (tab.style.display == "block") oldTab = tab.id
+		tab.style.display = tab.id == tabName ? "block" : "none"
 	}
-	if (oldTab !== tabName) {
-		aarMod.tabsSave.tabMain = tabName
-		if ((el("antimatterdimensions").style.display != "none" || el("metadimensions").style.display != "none") && aarMod.progressBar && tabName == "dimensions") el("progress").style.display = "block";
-		else el("progress").style.display = "none"
-		if ((el("timestudies").style.display != "none" || el("ers_timestudies").style.display != "none" || el("masterystudies").style.display != "none") && tabName=="eternitystore") el("TTbuttons").style.display = "block";
-		else el("TTbuttons").style.display = "none"
-		if (tabName=="eternitystore") {
-			if (el('timestudies') !== "none" || el('masterystudies') !== "none" || el('dilation') !== "none" || el("blackhole") !== "none") resizeCanvas()
-			if (el("dilation") !== "none") requestAnimationFrame(drawAnimations)
-			if (el("blackhole") !== "none") requestAnimationFrame(drawBlackhole)
-		}
-		if (tabName=="quantumtab") {
-			if (el('uquarks') !== "none") resizeCanvas()
-			if (el("uquarks") !== "none") requestAnimationFrame(drawQuarkAnimation)
-		}
-		showHideFooter(tabName)
-
-		var oldEmpty = isEmptiness
-		isEmptiness = tabName=="emptiness" || tabName==""
-		if (oldEmpty != isEmptiness) updateHeaders()
-	}
-	if (!init) closeToolTip();
+	aarMod.tabsSave[type] = tabName
+	if (oldTab !== tabName && !init) onTabSwitch()
 }
 
 
@@ -1170,7 +1141,7 @@ function updateHotkeys() {
 		if (inNGM(4)) html += ", N for time dimension boost"
 		html += ", G for galaxy"
 	}
-	html += ", C for crunch, A for toggle autobuyers, R for replicanti galaxies, E for eternity"
+	html += ", C for crunch, A for toggle autobuyers, R for Replicated Galaxies, E for eternity"
 	if (hasAch("r136")) html += ", D to dilate time"
 	if (hasAch("ngpp11")) html += ", shift+D to Meta-Dimension Boost"
 	if (mod.ngpp) html += ", Q for quantum"
@@ -1553,7 +1524,7 @@ function updateNGpp16Reward(){
 function notifyQuantumMilestones(){
 	if (typeof notifyId == "undefined") notifyId = 24
 	if (speedrunMilestonesReached > notifyId) {
-		$.notify("You have unlocked the "+timeDisplayShort(speedrunMilestones[notifyId + 1]*10)+" speedrun milestone! "+(["You now start with 20,000 eternities when going Quantum","You unlocked the Time Theorem autobuyer","You now start with all Eternity Challenges completed and\nEternity Upgrades bought","You now start with Dilation unlocked","You unlocked the Dilation option for the Eternity autobuyer","You now start with all dilation studies and\nnon-rebuyable dilation upgrades before Meta Dimensions unlocked, except the passive TT gen upgrade","You unlocked the First Meta Dimension autobuyer","You unlocked the Second Meta Dimension autobuyer","You unlocked the Third Meta Dimension autobuyer","You unlocked the Fourth Meta Dimension autobuyer","You unlocked the Fifth Meta Dimension autobuyer, and you now keep Time Studies","You unlocked the Sixth Meta Dimension autobuyer","You unlocked the Seventh Meta Dimension autobuyer","You unlocked Eighth Meta Dimension autobuyer, and\nall non-rebuyable dilation upgrades","You unlocked the Meta-Dimension Boost autobuyer","You now keep your Mastery Studies","All Meta Dimensions are instantly available for purchase on Quantum","You now start with "+shortenCosts(1e13)+" eternities","You now start with "+shortenCosts(1e25)+" meta-antimatter on reset","You can now turn on automatic replicated galaxies regardless of your second Time Study split path","Rebuyable Dilation upgrade and Meta Dimension autobuyers are 3x faster","You now start with "+shortenCosts(1e100)+" dilated time on Quantum, and dilated time only resets on Quantum","You unlocked the Quantum autobuyer","You now keep your Replicanti on Eternity","You unlocked the manual mode for the Eternity autobuyer and got the sacrifice galaxy autobuyer","Your rebuyable dilation upgrade autobuyer can now buy the maximum upgrades possible","You now can buy max Meta-Dimension Boosts and start with 4 Meta-Dimension Boosts","From now on, you can gain banked infinities based on your post-crunch infinitied stat"])[notifyId]+".","success")
+		$.notify("You have unlocked the "+timeDisplayShort(speedrunMilestones[notifyId + 1]*10)+" speedrun milestone! "+(["You now start with 20,000 eternities when going Quantum","You unlocked the Time Theorem autobuyer","You now start with all Eternity Challenges completed and\nEternity Upgrades bought","You now start with Dilation unlocked","You unlocked the Dilation option for the Eternity autobuyer","You now start with all dilation studies and\nnon-rebuyable dilation upgrades before Meta Dimensions unlocked, except the passive TT gen upgrade","You unlocked the First Meta Dimension autobuyer","You unlocked the Second Meta Dimension autobuyer","You unlocked the Third Meta Dimension autobuyer","You unlocked the Fourth Meta Dimension autobuyer","You unlocked the Fifth Meta Dimension autobuyer, and you now keep Time Studies","You unlocked the Sixth Meta Dimension autobuyer","You unlocked the Seventh Meta Dimension autobuyer","You unlocked Eighth Meta Dimension autobuyer, and\nall non-rebuyable dilation upgrades","You unlocked the Meta-Dimension Boost autobuyer","You now keep your Mastery Studies","All Meta Dimensions are instantly available for purchase on Quantum","You now start with "+shortenCosts(1e13)+" eternities","You now start with "+shortenCosts(1e25)+" meta-antimatter on reset","You can now turn on automatic Replicated Galaxies regardless of your second Time Study split path","Rebuyable Dilation upgrade and Meta Dimension autobuyers are 3x faster","You now start with "+shortenCosts(1e100)+" dilated time on Quantum, and dilated time only resets on Quantum","You unlocked the Quantum autobuyer","You now keep your Replicanti on Eternity","You unlocked the manual mode for the Eternity autobuyer and got the sacrifice galaxy autobuyer","Your rebuyable dilation upgrade autobuyer can now buy the maximum upgrades possible","You now can buy max Meta-Dimension Boosts and start with 4 Meta-Dimension Boosts","From now on, you can gain banked infinities based on your post-crunch infinitied stat"])[notifyId]+".","success")
 		notifyId++
 	}
 }
@@ -1966,7 +1937,7 @@ function doGhostifyButtonDisplayUpdating(diff){
 	}
 
 	var ghostifyGains = []
-	if (ghostified) ghostifyGains.push(shortenDimensions(getGHPGain()) + " Elementary Particles")
+	if (ghostified) ghostifyGains.push(shortenDimensions(getGHPGain()) + " Spectral Particles")
 
 	el("ghostifybtnFlavor").textContent = ghostified ? "" : "Time to enlarge! I need to fundament."
 	el("GHPGain").textContent = ghostifyGains.length ? "Gain " + ghostifyGains[0] + (ghostifyGains.length > 2 ? ", " + ghostifyGains[1] + "," : "") + (ghostifyGains.length > 1 ? " and " + ghostifyGains[ghostifyGains.length-1] : "") + "." : ""
@@ -2087,7 +2058,7 @@ function progressBarUpdating(){
 	if (!aarMod.progressBar) return
 
 	el("progressbar").className=""
-	if (el("metadimensions").style.display == "block") doQuantumProgress() 
+	if (isTabShown("metadimensions")) doQuantumProgress() 
 	else if (player.currentChallenge !== "") {
 		currentChallengeProgress()
 	} else if (!player.break) {
@@ -2116,7 +2087,7 @@ function ECRewardDisplayUpdating(){
 	el("ec5reward").textContent = "Reward: Galaxy cost scaling starts " + getECReward(5) + " galaxies later."
 	el("ec6reward").textContent = "Reward: Further reduce the dimension cost multiplier increase. Currently: " + player.dimensionMultDecrease.toFixed(1) + "x "
 	el("ec7reward").textContent = "Reward: First Time Dimensions produce Eighth Infinity Dimensions. Currently: " + shortenMoney(DimensionProduction(9)) + " per second. "
-	el("ec8reward").textContent = "Reward: Infinity Power powers up replicanti galaxies. Currently: " + (getECReward(8) * 100 - 100).toFixed(2) + "%"
+	el("ec8reward").textContent = "Reward: Infinity Power powers up Replicated Galaxies. Currently: " + (getECReward(8) * 100 - 100).toFixed(2) + "%"
 	el("ec9reward").textContent = "Reward: Infinity Dimensions gain a " + (inNGM(2) ? "post dilation " : "") + " multiplier based on your Time Shards. Currently: "+shortenMoney(getECReward(9))+"x "
 	el("ec10reward").textContent = "Reward: Time Dimensions gain a multiplier from your Infinities. Currently: " + shortenMoney(getECReward(10)) + "x "
 	el("ec11reward").textContent = "Reward: Further reduce the tickspeed cost multiplier increase. Currently: " + player.tickSpeedMultDecrease.toFixed(2) + "x "
@@ -2128,15 +2099,15 @@ function ECRewardDisplayUpdating(){
 }
 
 function challengeOverallDisplayUpdating(){
-	if (el("eternitychallenges").style.display == "block") ECRewardDisplayUpdating()
-	if (el("quantumchallenges").style.display == "block") {
+	if (isTabShown("eternitychallenges")) ECRewardDisplayUpdating()
+	if (isTabShown("quantumchallenges")) {
 		el("qcDisclaimer").innerHTML = (isQCFree() ? "" : "Spend Positrons to start Quantum Challenges.<br>You have " + getFullExpansion(Math.round(quSave.electrons.amount)) + " Positrons.<br>") + "<b class='red'>Positrons are disabled in Quantum Challenges!</b>"
 		for (var c=1;c<7;c++) {
 			if (c==5) el("qc5reward").textContent = getDimensionPowerMultiplier("linear").toFixed(2)
 			else if (c!=2) el("qc"+c+"reward").textContent = shorten(tmp.qu.chal.reward[c])
 		}
 	}
-	if (el("bigrip").style.display == "block") updateBigRipTab()
+	if (isTabShown("bigrip")) updateBigRipTab()
 }
 
 function chall23PowerUpdating(){
@@ -2670,50 +2641,15 @@ function isEterBuyerOn() {
 }
 
 function showInftab(tabName) {
-	//iterate over all elements in div_tab class. Hide everything that's not tabName and show tabName
-	var tabs = document.getElementsByClassName('inftab');
-	var tab;
-	for (var i = 0; i < tabs.length; i++) {
-		tab = tabs.item(i);
-		if (tab.id === tabName) {
-			tab.style.display = 'block';
-		} else {
-			tab.style.display = 'none';
-		}
-	}
-	aarMod.tabsSave.tabInfinity = tabName
+	showTab(tabName, false, "inftab")
 }
 
 function showStatsTab(tabName) {
-	//iterate over all elements in div_tab class. Hide everything that's not tabName and show tabName
-	var tabs = document.getElementsByClassName('statstab');
-	var tab;
-	for (var i = 0; i < tabs.length; i++) {
-		tab = tabs.item(i);
-		if (tab.id === tabName) {
-			tab.style.display = 'block';
-		} else {
-			tab.style.display = 'none';
-		}
-	}
-	aarMod.tabsSave.tabStats = tabName
+	showTab(tabName, false, "statstab")
 }
 
 function showDimTab(tabName) {
-	//iterate over all elements in div_tab class. Hide everything that's not tabName and show tabName
-	var tabs = document.getElementsByClassName('dimtab');
-	var tab;
-	for (var i = 0; i < tabs.length; i++) {
-		tab = tabs.item(i);
-		if (tab.id === tabName) {
-			tab.style.display = 'block';
-		} else {
-			tab.style.display = 'none';
-		}
-	}
-	aarMod.tabsSave.tabDims = tabName
-	if (el("dimensions").style.display !== "none" && aarMod.progressBar && (tabName === 'antimatterdimensions' || tabName === 'metadimensions')) el("progress").style.display = "block"
-	else el("progress").style.display = "none"
+	showTab(tabName, false, "dimtab")
 }
 
 function toggleProgressBar() {
@@ -2722,75 +2658,24 @@ function toggleProgressBar() {
 }
 
 function showChallengesTab(tabName) {
-	//iterate over all elements in div_tab class. Hide everything that's not tabName and show tabName
-	var tabs = document.getElementsByClassName('challengeTab');
-	var tab;
-	for (var i = 0; i < tabs.length; i++) {
-		tab = tabs.item(i);
-		if (tab.id === tabName) {
-			tab.style.display = 'block';
-		} else {
-			tab.style.display = 'none';
-		}
-	}
-	aarMod.tabsSave.tabChalls = tabName
+	showTab(tabName, false, "challengeTab")
 }
 
 function showEternityTab(tabName, init) {
 	if (tabName == "timestudies" && mod.rs) tabName = "ers_" + tabName
-	//iterate over all elements in div_tab class. Hide everything that's not tabName and show tabName
-	var tabs = document.getElementsByClassName('eternitytab');
-	var tab;
-	var oldTab
-	for (var i = 0; i < tabs.length; i++) {
-		tab = tabs.item(i);
-		if (tab.style.display == 'block') oldTab = tab.id
-		if (tab.id === tabName) {
-			tab.style.display = 'block';
-		} else {
-			tab.style.display = 'none';
-		}
-	}
-	if ((tabName === 'timestudies' || tabName === 'ers_timestudies' || tabName === 'masterystudies') && !init) el("TTbuttons").style.display = "block"
-	else el("TTbuttons").style.display = "none"
-	if (tabName != oldTab) {
-		aarMod.tabsSave.tabEternity = tabName
-		if (tabName === 'timestudies' || tabName === 'masterystudies' || tabName === 'dilation' || tabName === 'blackhole') resizeCanvas()
-		if (tabName === "dilation") requestAnimationFrame(drawAnimations)
-		if (tabName === "blackhole") requestAnimationFrame(drawBlackhole)
-	}
-	closeToolTip()
+	showTab(tabName, init, "eternitytab")
 }
 
 function showAchTab(tabName) {
-	//iterate over all elements in div_tab class. Hide everything that's not tabName and show tabName
-	var tabs = document.getElementsByClassName('achtab');
-	var tab;
-	for (var i = 0; i < tabs.length; i++) {
-		tab = tabs.item(i);
-		if (tab.id === tabName) {
-			tab.style.display = 'block';
-		} else {
-			tab.style.display = 'none';
-		}
-	}
-	aarMod.tabsSave.tabAchs = tabName
+	showTab(tabName, false, "achtab")
+}
+
+function showAutoTab(tabName) {
+	showTab(tabName, false, "autotab")
 }
 
 function showOptionTab(tabName) {
-	//iterate over all elements in div_tab class. Hide everything that's not tabName and show tabName
-	var tabs = document.getElementsByClassName('optionstab');
-	var tab;
-	for (var i = 0; i < tabs.length; i++) {
-		tab = tabs.item(i);
-		if (tab.id === tabName) {
-			tab.style.display = 'block';
-		} else {
-			tab.style.display = 'none';
-		}
-	}
-	aarMod.tabsSave.tabOptions = tabName
-	closeToolTip()
+	showTab(tabName, false, "optionstab")
 }
 
 function closeToolTip(showStuck) {

@@ -288,7 +288,6 @@ function doQuantum(force, auto, qc = {}) {
 			ngp3_feature_notify("qu")
 			el("quarks").style.display=""
 			el("bestAntimatterType").textContent = "Your best meta-antimatter for this quantum"
-			if (isEmptiness) showTab("dimensions")
 		}
 
 		//Gluons
@@ -502,7 +501,7 @@ RESETS.qu = {
 		quSave.electrons.amount = 0
 		quSave.electrons.sacGals = 0
 		if (speedrunMilestonesReached < 25 && player.quantum.autoOptions.sacrifice) toggleAutoQuantumContent('sacrifice')
-		replicantsResetOnQuantum(qc)
+		duplicantsResetOnQuantum(qc)
 		nanofieldResetOnQuantum()
 
 		quSave.time = 0

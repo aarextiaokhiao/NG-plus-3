@@ -98,7 +98,7 @@ let HOW_TO = [
 		<br>
 		Your first galaxy will increase your tickspeed interval upgrade as if it were 10% originally, so you will have 12% after 1 galaxy.
 		<br>
-		Galaxies require 80+(galaxies*60) (base) Eighth Dimensions. (80+galaxies*60+(galaxies-99)^2*2 when above 100 non-replicanti galaxies, with even faster scaling later on)
+		Galaxies require 80+(galaxies*60) (base) Eighth Dimensions. (80+galaxies*60+(galaxies-99)^2*2 when above 100 non-Replicated Galaxies, with even faster scaling later on)
 		<br>
 		<b>Hotkey: G</b>`
 	}, {
@@ -196,7 +196,7 @@ let HOW_TO = [
 		layer: "infinity",
 		desc: `Each replicanti has an upgradable chance to update every replicanti tick. You will gain a bonus to infinity dimensions based on how much replicanti you have.
 		<br>
-		When replicanti reach infinity, you can buy a galaxy. This will not increase the cost of normal galaxies. The amount of replicanti galaxies you can have is capped (upgradable). Once you reach infinity replicanti, they will not continue growing (unless you have the relevant time study).
+		When replicanti reach infinity, you can buy a galaxy. This will not increase the cost of normal galaxies. The amount of Replicated Galaxies you can have is capped (upgradable). Once you reach infinity replicanti, they will not continue growing (unless you have the relevant time study).
 		<br>
 		When offline, in an inactive tab, lagging, or a tickspeed under 50ms, replicanti get calculated with an approximation. This can cause wildly varying results, especially at extremely low numbers (1-5).
 		<br>
@@ -301,7 +301,7 @@ let HOW_TO = [
 
 		title: "Quarks & Gluons",
 		layer: "quantum",
-		desc: `When you go quantum, you receive a number of quarks based on meta-antimatter. At any time, you can assign all your quarks to be either red, green, or blue quarks. Your quarks will produce an amount of color power based on the difference between the color quarks you have the most of and the color you have the second-most of. So, if you had 4 red quarks and 1 blue quark, you would get 3 red charge, producing 3 red power per second. Each color power provides a boost: red provides stronger galaxies, green provides more replicated galaxies, and blue provide faster dilated time production. Note that even if you aren't generating a particular color power, the color power you have already generated is still effective.
+		desc: `When you go quantum, you receive a number of quarks based on meta-antimatter. At any time, you can assign all your quarks to be either red, green, or blue quarks. Your quarks will produce an amount of color power based on the difference between the color quarks you have the most of and the color you have the second-most of. So, if you had 4 red quarks and 1 blue quark, you would get 3 red charge, producing 3 red power per second. Each color power provides a boost: red provides stronger galaxies, green provides more Replicated Galaxies, and blue provide faster dilated time production. Note that even if you aren't generating a particular color power, the color power you have already generated is still effective.
 		<br>
 		If you have two or more quark colors, upon quantum some quarks will fuse to become gluons. There are three types of gluons: red-green, green-blue, and blue-red. T form them you must have both of the specified colors; when you quantum, only the first color in the gluon's name will be removed, however. For example, if you had 4 green quarks and 2 blue quarks, two green-blue gluons would form, and you'd have 2 green quarks left over. If you had 4 red, 3 green, and 2 blue, you'd end up with 3 red-green gluons, 2 green-blue gluons and 2 blue-red gluons, with 1 red and 1 green quark left. You can spend your accumulated gluons on various upgrades to increase your production further, as well as an upgrade that doubles the amount of quarks you gain on quantum.`
 	}, {
@@ -332,7 +332,7 @@ let HOW_TO = [
 		title: "Duplicants",
 		tab: "ant",
 		layer: "quantum",
-		desc: `Upon buying the appropriate mastery study, you can make duplicants to gather preons which provide a boost to extra replicated galaxies. To get a duplicant you have to reset your replicanti amount after reaching certain requirements (starts at e3,000,000, increases e100,000 each time).
+		desc: `Upon buying the appropriate mastery study, you can make duplicants to gather preons which provide a boost to extra Replicated Galaxies. To get a duplicant you have to reset your replicanti amount after reaching certain requirements (starts at e3,000,000, increases e100,000 each time).
 		<br>
 		You can spend gluons to buy quantum food, which, when used, turns normal duplicants into worker duplicants. Worker duplicants gather more preons, and also produce eggons, which turn into baby duplicants. Baby duplicants will eventually become normal duplicants. You can also spend gluons to make eggons hatch faster.`
 	}, {
@@ -373,7 +373,7 @@ let HOW_TO = [
 
 		title: "Fundament",
 		layer: "fundament",
-		desc: `This is a prestige layer beyond Quantum that unlocks on reaching the goal in Big Rip. This resets all previous progress, and gives you Elementary Particles based on your antimatter in Big Rips.
+		desc: `This is a prestige layer beyond Quantum that unlocks on reaching the goal in Big Rip. This resets all previous progress, and gives you Spectral Particles based on your antimatter in Big Rips.
 		<br><br>
 		<b>Brave Milestones</b><br>
 		Brave Milestones can be achieved by Fundamenting while under a certain amount of Quantums. Likewise, each Brave Milestone provides you with a reward that greatly boosts progress and makes Fundaments much faster and more efficient.
@@ -389,7 +389,7 @@ let HOW_TO = [
 		desc: `There are 3 kinds of Neutrinos: Positrons, Mu, Tau. Getting a galaxy produces a Neutrino of a kind.<br>
 		Going Quantum switches which kind to produce. Fundamenting resets Neutrinos.
 		<br><br>
-		They boost things by spending Elementary Particles.<br>
+		They boost things by spending Spectral Particles.<br>
 		You can also spend Neutrinos for upgrades.`
 	}, {
 		mod: _ => ngp3,
@@ -399,7 +399,7 @@ let HOW_TO = [
 		layer: "fundament",
 		desc: `Best Tachyon Particles produce Photons. Photons reset on Fundament.
 		<br><br>
-		Your Elementary Particles, Neutrinos, Photons give Light Emissions.<br>
+		Your Spectral Particles, Neutrinos, Photons give Light Emissions.<br>
 		Every Light is dependent on Emissions, but has a fixed limit.<br>
 		Enlightenments require Emissions to gain, in which increase those limits.
 		<br><br>

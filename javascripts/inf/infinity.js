@@ -169,7 +169,7 @@ function updateAutoCrunchMode() {
 		el("limittext").textContent = "X times last crunch:"
 	} else if (mod == "replicanti") {
 		el("togglecrunchmode").innerHTML = "Auto crunch mode: Replicated Galaxies"
-		el("limittext").innerHTML = "Replicanti galaxies needed for crunch:"
+		el("limittext").innerHTML = "Replicated Galaxies needed for crunch:"
 	}
 	el("maxReplicantiCrunchSwitchDiv").style.display = mod == "replicanti" ? "inline" : 'none'
 }

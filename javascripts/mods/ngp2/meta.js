@@ -418,7 +418,7 @@ function updateMetaDimensions () {
 	var message = 'Lose all your prior progress'
 	if (reqGotten && bigRip && ghostified) {
 		var GS = getGHPGain()
-		message += ", +" + shortenDimensions(GS) + " Elementary Particle" + (GS.lt(2) ? "" : "s")
+		message += ", +" + shortenDimensions(GS) + " Spectral Particle" + (GS.lt(2) ? "" : "s")
 	} else if (reqGotten && !bigRip && quantumed) {
 		var QS = quarkGain()
 		message += ", +" + shortenDimensions(QS) + " quark" + (QS.lt(2) ? "" : "s")

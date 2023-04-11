@@ -41,16 +41,16 @@ function growupRateUpdating(){
 	el("growupProgress").textContent = Math.round(quSave.replicants.ageProgress.toNumber() * 100) + "%"
 }
 
-function updateReplicantsTab(){
+function updateDuplicantsTab() {
 	for (var i = 0; i < antTabs.tabIds.length; i++) {
 		var id = antTabs.tabIds[i]
-		if (el(id).style.display == "block") antTabs.update[id]()
+		if (isTabShown(id)) antTabs.update[id]()
 	}
-	updateReplicants()
+	updateDuplicants()
 	updatePilonDisplay()
 }
 
-function updateReplicantsSubtab(){
+function updateDuplicantsSubtab(){
 	el("replicantiAmount2").textContent = shortenDimensions(player.replicanti.amount)
 	el("replicantReset").className = player.replicanti.amount.lt(quSave.replicants.requirement) ? "unavailablebtn" : "antbtn"
 	el("replicantReset").innerHTML = "Reset replicantis for a duplicant.<br>(requires " + shortenCosts(quSave.replicants.requirement) + " replicanti)"
@@ -70,13 +70,13 @@ function updateReplicantsSubtab(){
 var antTabs = {
 	tabIds: ["antcore", "emperordimensions", "nanofield"],
 	update: {
-		antcore: () => updateReplicantsSubtab(),
+		antcore: () => updateDuplicantsSubtab(),
 		emperordimensions: () => updateEmperorDimensions(),
 		nanofield: () => updateNanoverseTab()
 	}
 }
 
-function updateReplicants(mode) {
+function updateDuplicants(mode) {
 	let showCosts = quSave.replicants.limit < 1e3
 	el("quantumFoodAmount").textContent = getFullExpansion(quSave.replicants.quantumFood)
 
@@ -158,9 +158,9 @@ function hatchSpeedDisplay(next) {
 	return timeDisplayShort(speed * 10, true, 1)
 }
 
-function getTotalReplicants(data) {
+function getTotalDuplicants(data) {
 	if (data === undefined) return tmp.qu.ant.workers.add(quSave.replicants.amount).round()
-	else return getTotalWorkers(data).add(data.quantum.replicants.amount).round()
+	else return getTotalWorkers(data).add(data.quantum.duplicants.amount).round()
 }
 
 function getEmperorDimensionMultiplier(dim) {
@@ -228,7 +228,7 @@ function getWorkerAmount(tier) {
 
 function getTotalWorkers(data) {
 	if (data) {
-		if (data.quantum.emperorDimensions == undefined) return E(data.quantum.replicants.workers)
+		if (data.quantum.emperorDimensions == undefined) return E(data.quantum.duplicants.workers)
 		data = data.quantum.emperorDimensions
 	} else data = EDsave
 	var total = E(0)
@@ -292,7 +292,7 @@ function getHatchSpeed() {
 }
 
 function teleportToEDs() {
-	showTab("replicants")
+	showTab("duplicants")
 	showAntTab("emperordimensions")
 }
 
@@ -497,8 +497,10 @@ function getPilonEffect() {
 }
 
 function updatePostBM14Display() {
-	el("anttabbtn").style.display = hasBraveMilestone(14) ? "none" : ""
-	if (el("antcore").style.display == "block" && hasBraveMilestone(14)) showAntTab("emperordimensions")
-	el("foodCell").style.display = hasBraveMilestone(14) ? "none" : ""
-	el(hasBraveMilestone(14) ? "pilonsCellED" : "pilonsCell").appendChild(el("pilonsDiv"))
+	let bm14 = hasBraveMilestone(14)
+
+	el("anttabbtn").style.display = bm14 ? "none" : ""
+	if (el("antcore").style.display == "block" && bm14) showAntTab("emperordimensions")
+	el("foodCell").style.display = bm14 ? "none" : ""
+	el(bm14 ? "pilonsCellED" : "pilonsCell").appendChild(el("pilonsDiv"))
 }

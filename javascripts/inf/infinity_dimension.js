@@ -43,7 +43,7 @@ function DimensionRateOfChange(tier) {
 }
 
 function updateInfinityDimensions() {
-	if (el("dimensions").style.display == "block" && el("infinitydimensions").style.display == "block") {
+	if (isTabShown("infinitydimensions")) {
 		updateInfPower()
 		for (let tier = 1; tier <= 8; ++tier) {
 			var unl = player.infDimensionsUnlocked[tier-1]

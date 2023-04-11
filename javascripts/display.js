@@ -300,9 +300,8 @@ function breakNGm2UpgradeRow6Display(){
 }
 
 function INFINITYUPGRADESDisplay(){
-	if (el("preinf").style.display == "block") {
-		preBreakUpgradeDisplay()
-	} else if (el("postinf").style.display == "block" && el("breaktable").style.display == "inline-block") {
+	if (isTabShown("preinf")) preBreakUpgradeDisplay()
+	if (isTabShown("postinf") && el("breaktable").style.display == "inline-block") {
 		breakInfinityUpgradeDisplay()
 		if (inNGM(2)) breakNGm2UpgradeColumnDisplay()
 		if (inNGM(2) && (player.infinityDimension3.amount.gt(0) || player.eternities > (aarMod.newGameMinusVersion? -20 : 0) || quantumed)) {
@@ -312,7 +311,7 @@ function INFINITYUPGRADESDisplay(){
 			breakNGm2UpgradeRow6Display()
 		} else el("postinfir6").style.display = "none"
 	}
-	if (el("replicantis").style.display == "block" && el("infinity").style.display == "block") replicantiDisplay()
+	if (isTabShown("replicantis")) replicantiDisplay()
 }
 
 function eternityUpgradesDisplay(){
@@ -358,42 +357,43 @@ function updateDilation(){
 }
 
 function ETERNITYSTOREDisplay(){
-	if (el("TTbuttons").style.display == "block") updateTheoremButtons()
-	if (el("timestudies").style.display == "block" || el("ers_timestudies").style.display == "block") updateTimeStudyButtons()
-	if (el("timestudies").style.display == "block") mainTimeStudyDisplay()
-	if (el("ers_timestudies").style.display == "block") updateERSTTDesc()
-	if (el("masterystudies").style.display == "block") updateMasteryStudyButtons()
+	if (el("TTbuttons").style.display !== "none") updateTheoremButtons()
 
-	if (el("eternityupgrades").style.display == "block") {
+	if (isTabShown("timestudies")) mainTimeStudyDisplay()
+	if (isTabShown("timestudies") || isTabShown("ers_timestudies")) updateTimeStudyButtons()
+	if (isTabShown("ers_timestudies")) updateERSTTDesc()
+	if (isTabShown("masterystudies")) updateMasteryStudyButtons()
+
+	if (isTabShown("eternityupgrades")) {
 		eternityUpgradesDisplay()
 		updateEternityUpgrades()
 		breakEternityDisplay()
 	}
-	if (el("dilation").style.display == "block") {
+	if (isTabShown("dilation")) {
 		updateDilation()
 		updateExdilation()
 	}
-	if (el("blackhole").style.display == "block") updateBlackhole()
+	if (isTabShown("blackhole")) updateBlackhole()
 }
 
 function updateDimensionsDisplay() {
 	dimensionTabDisplayUpdating()
-	if (el("antimatterdimensions").style.display == "block") dimensionTabDisplay()
-	if (el("infinitydimensions").style.display == "block") updateInfinityDimensions()
-	if (el("timedimensions").style.display == "block") updateTimeDimensions()
-	if (el("metadimensions").style.display == "block") updateMetaDimensions()
+	if (isTabShown("antimatterdimensions")) dimensionTabDisplay()
+	if (isTabShown("infinitydimensions")) updateInfinityDimensions()
+	if (isTabShown("timedimensions")) updateTimeDimensions()
+	if (isTabShown("metadimensions")) updateMetaDimensions()
 }
 
 function updateTabDisplay() {
-	if (el("dimensions").style.display == "block") updateDimensionsDisplay()
-	if (el("statistics").style.display == "block") displayStats()
-	if (el("challenges").style.display == "block") challengeOverallDisplayUpdating()
-	if (el("infinity").style.display == "block") INFINITYUPGRADESDisplay()
-	if (el("eternitystore").style.display == "block") ETERNITYSTOREDisplay()
-	if (el("quantumtab").style.display == "block") updateQuantumTabs()
-	if (el("replicants").style.display == "block") updateReplicantsTab()
-	if (el("ghostify").style.display == "block") updateGhostifyTabs()
-	//if (el("bltab").style.display == "block") updateBosonicLabTab()
+	if (isTabShown("dimensions")) updateDimensionsDisplay()
+	if (isTabShown("statistics")) displayStats()
+	if (isTabShown("challenges")) challengeOverallDisplayUpdating()
+	if (isTabShown("infinity")) INFINITYUPGRADESDisplay()
+	if (isTabShown("eternitystore")) ETERNITYSTOREDisplay()
+	if (isTabShown("quantumtab")) updateQuantumTabs()
+	if (isTabShown("duplicants")) updateDuplicantsTab()
+	if (isTabShown("ghostify")) updateGhostifyTabs()
+	//if (isTabShown("bltab")) updateBosonicLabTab()
 }
 
 function replicantiDisplay() {
@@ -415,10 +415,10 @@ function replicantiDisplay() {
 		el("replicantichance").innerHTML = (tmp.rep.freq?"Frequency: "+shorten(tmp.rep.freq)+"x":"Chance: "+getFullExpansion(chance.gt(1e12)?chance:Math.round(chance.toNumber()))+"%") + chanceDisplayEnding
 		el("replicantiinterval").innerHTML = "Interval: "+timeDisplayShort(Decimal.div(tmp.rep.interval, 100), true, 3) + (isIntervalAffordable() ? "<br>→ "+timeDisplayShort(Decimal.mul(tmp.rep.interval, 9e-3), true, 3)+" Cost: "+shortenCosts(player.replicanti.intervalCost)+" IP" : "")
 
-		let replGalName = player.replicanti.gal < 3e3 ? "Max Replicanti Galaxies" : (player.replicanti.gal < 58200 ? "Distant" : "Farther") + " Replicanti Galaxies"
+		let replGalName = player.replicanti.gal < 100 ? "Max Replicated Galaxies" : getGalaxyScaleName(player.replicanti.gal < 400 ? 1 : player.replicanti.gal < 2999 ? 2 : player.replicanti.gal < 5e4 ? 3 : 4) + " Replicated Galaxies"
 		let replGalCostPortion = player.infinityPoints.lt(pow10(1e9)) ? "<br>+1 Cost: " + shortenCosts(getRGCost()) + " IP" : ""
 		el("replicantimax").innerHTML = replGalName + ": " + getFullExpansion(player.replicanti.gal) + (replGalOver > 1 ? "+" + getFullExpansion(replGalOver) : "") + replGalCostPortion
-		el("replicantireset").innerHTML = (hasAch("ng3p67") ? "Get " : hasAch("ngpp16") ? "Divide replicanti by " + shorten(Number.MAX_VALUE) + " for" : "Reset replicanti amount for") + " 1 galaxy.<br>" + getFullExpansion(player.replicanti.galaxies) + getExtraReplGalaxyDisp() + " replicanti galax" + (getTotalRG() == 1 ? "y" : "ies") + " created."
+		el("replicantireset").innerHTML = (hasAch("ng3p67") ? "Get " : hasAch("ngpp16") ? "Divide replicanti by " + shorten(Number.MAX_VALUE) + " for" : "Reset replicanti amount for") + " 1 galaxy.<br>" + getFullExpansion(player.replicanti.galaxies) + getExtraReplGalaxyDisp() + " Replicated Galax" + (getTotalRG() == 1 ? "y" : "ies") + " created."
 		el("replicantiapprox").innerHTML = mod.ngp3 && player.dilation.upgrades.includes("ngpp1") && hasTimeStudy(192) && player.replicanti.amount.gte(Number.MAX_VALUE) && (!mod.udsp || aarMod.nguepV) ? 
 			"Replicanti increases by " + (tmp.rep.est < Math.log10(2) ? "x2.00 per " + timeDisplayShort(Math.log10(2) / tmp.rep.est * 10) : shorten(pow10(tmp.rep.est.toNumber())) + "x per second") + ".<br>" +
 			"Replicanti Slowdown: " + tmp.rep.speeds.inc.toFixed(3) + "x slower per " + shorten(pow10(tmp.rep.speeds.exp)) + "x.<br>" +
@@ -478,7 +478,7 @@ function eternityChallengeUnlockDisplay(){
 	else el("ec4unl").innerHTML = "Eternity Challenge 4<span>Cost: 70 Time Theorems"
 	if (player.etercreq !== 5) el("ec5unl").innerHTML = "Eternity Challenge 5<span>Requirement: "+(160+(ECComps("eterc5")*14))+" galaxies<span>Cost: 130 Time Theorems"
 	else el("ec5unl").innerHTML = "Eternity Challenge 5<span>Cost: 130 Time Theorems"
-	if (player.etercreq !== 6) el("ec6unl").innerHTML = "Eternity Challenge 6<span>Requirement: "+(40+(ECComps("eterc6")*5))+" replicanti galaxies<span>Cost: 85 Time Theorems"
+	if (player.etercreq !== 6) el("ec6unl").innerHTML = "Eternity Challenge 6<span>Requirement: "+(40+(ECComps("eterc6")*5))+" Replicated Galaxies<span>Cost: 85 Time Theorems"
 	else el("ec6unl").innerHTML = "Eternity Challenge 6<span>Cost: 85 Time Theorems"
 	if (player.etercreq !== 7) el("ec7unl").innerHTML = "Eternity Challenge 7<span>Requirement: "+shortenCosts(E("1e500000").mul(E("1e300000").pow(ECComps("eterc7"))))+" antimatter <span>Cost: 115 Time Theorems"
 	else el("ec7unl").innerHTML = "Eternity Challenge 7<span>Cost: 115 Time Theorems"
@@ -655,7 +655,7 @@ function updateHeaders() {
 	let chal = inNGM(4) ? gSacrificed() || inf : player.challenges.includes("challenge1") || inf
 
 	//NG-X Hell
-	el("automationbtn").style.display = inNGM(4) && chal ? "inline-block" : "none"
+	el("automationbtn").style.display = tmp.tab.auto && chal ? "inline-block" : "none"
 
 	//Side-Tabs
 	el("challengesbtn").style.display = chal ? "inline-block" : "none"
@@ -704,4 +704,65 @@ function updateResetTierButtons(){
 		el("quantumedBM").style.display = showQuantumed ? "" : "none"
 		if (showQuantumed) el("quantumedBMAmount").textContent = getFullExpansion(quSave.times)
 	}
+}
+
+function resetTabs() {
+	setTabPlacements()
+
+	var tabs = aarMod.tabsSave
+	if (!tabs?.on) tabs = {}
+
+	showDimTab(tabs?.dimtab || 'antimatterdimensions', true)
+	showStatsTab(tabs?.statstab || 'stats', true)
+	showAchTab(tabs?.achtab || 'normalachievements', true)
+	showChallengesTab(tabs?.challengeTab || 'normalchallenges', true)
+	showAutoTab(tabs?.autotab || 'autobuyers', true)
+	showInftab(tabs?.inftab || 'preinf', true)
+	showEternityTab(tabs?.eternitytab || 'timestudies', true)
+	showQuantumTab(tabs?.quantumtab || 'uquarks', true)
+	showAntTab(tabs?.anttab || 'antcore', true)
+	showGhostifyTab(tabs?.ghostifytab || 'neutrinos', true)
+	onTabSwitch()
+}
+
+function onTabSwitch() {
+	el("progress").style.display = aarMod.progressBar ? "block" : "none"
+
+	let study_tree = isTabShown("eternitystore") && (isTabShown('timestudies') || isTabShown('masterystudies'))
+	el("TTbuttons").style.display = study_tree ? "block" : "none"
+	if (study_tree) resizeCanvas()
+
+	if (isTabShown("eternitystore")) {
+		if (isTabShown('dilation') || isTabShown("blackhole")) resizeCanvas()
+		if (isTabShown("dilation")) requestAnimationFrame(drawAnimations)
+		if (isTabShown("blackhole")) requestAnimationFrame(drawBlackhole)
+	}
+	if (isTabShown("quantumtab") && isTabShown("uquarks")) {
+		resizeCanvas()
+		requestAnimationFrame(drawQuarkAnimation)
+	}
+
+	var oldEmpty = isEmptiness
+	isEmptiness = isTabShown("emptiness")
+	if (oldEmpty != isEmptiness) updateHeaders()
+
+	showHideFooter(isTabShown("options"))
+}
+
+function setTabPlacements() {
+	//Automation
+	let auto = inNGM(4)
+	if (tmp.tab.auto != auto) { 
+		tmp.tab.auto = auto
+		el(auto ? "automation" : "infinity").appendChild(el("autobuyers"))
+		el("autobuyers").className = auto ? "autotab" : "inftab"
+		el("autobuyersbtn").style.display = auto ? "none" : ""
+
+		el(auto ? "automation" : "ghostify").appendChild(el("automaticghosts"))
+		el("automaticghosts").className = auto ? "autotab" : "ghostifytab"
+	}
+}
+
+function isTabShown(x) {
+	return el(x).style.display !== "none"
 }

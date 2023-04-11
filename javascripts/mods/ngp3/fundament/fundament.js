@@ -165,7 +165,7 @@ RESETS.funda = {
 		updatePCCompletions()
 	},
 	resetDuplicants(bm) {
-		quSave.replicants = getBrandNewReplicantsData()
+		quSave.replicants = getBrandNewDuplicantsData()
 
 		let permUnlocks = [null, 7, 9, 10, 10, 11, 11, 12, 12]
 		for (let d = 1; d <= 8; d++) {
@@ -280,7 +280,7 @@ ghostifyAni = function(gain, amount, seconds=4) {
 	el("ghostifyani").style["transition-duration"] = (seconds / 4) + "s"
 	el("ghostifyanitext").style["transition-duration"] = (seconds / 8) + "s"
 	setTimeout(function() {
-		el("ghostifyanigained").innerHTML = ghostified ? "You now have <b>" + shortenDimensions(amount) + "</b> Elementary Particles. (+" + shortenDimensions(gain) + ")" : "We became small. You have enlarged enough to see first particles!<br>Congratulations for beating a PC with QCs 6 & 8 combination!"
+		el("ghostifyanigained").innerHTML = ghostified ? "You now have <b>" + shortenDimensions(amount) + "</b> Spectral Particles. (+" + shortenDimensions(gain) + ")" : "We were quantumly small, and enlarged for a spectral realm..."
 		el("ghostifyanitext").style.left = "0%"
 		el("ghostifyanitext").style.opacity = 1
 	}, seconds * 125)
@@ -329,9 +329,9 @@ function getGHPMult() {
 var averageGHP = E(0)
 var bestGHP
 function getGHPRate(num) {
-	if (num.lt(1 / 60)) return (num * 1440).toFixed(1) + " ElP/day"
-	if (num.lt(1)) return (num * 60).toFixed(1) + " ElP/hr"
-	return shorten(num) + " ElP/min"
+	if (num.lt(1 / 60)) return (num * 1440).toFixed(1) + " SP/day"
+	if (num.lt(1)) return (num * 60).toFixed(1) + " SP/hr"
+	return shorten(num) + " SP/min"
 }
 
 //Brave Milestones
@@ -358,9 +358,9 @@ function updateLastTenGhostifies() {
 	for (var i=0; i<10; i++) {
 		if (ghSave.last10[i][1].gt(0)) {
 			var qkpm = ghSave.last10[i][1].dividedBy(ghSave.last10[i][0]/600)
-			var tempstring = shorten(qkpm) + " ElP/min"
-			if (qkpm<1) tempstring = shorten(qkpm*60) + " ElP/hour"
-			var msg = "The Fundament " + (i+1) + " ago took " + timeDisplayShort(ghSave.last10[i][0], false, 3) + " and gave " + shortenDimensions(ghSave.last10[i][1]) +" ElP. "+ tempstring
+			var tempstring = shorten(qkpm) + " SP/min"
+			if (qkpm<1) tempstring = shorten(qkpm*60) + " SP/hour"
+			var msg = "The Fundament " + (i+1) + " ago took " + timeDisplayShort(ghSave.last10[i][0], false, 3) + " and gave " + shortenDimensions(ghSave.last10[i][1]) +" SP. "+ tempstring
 			el("ghostifyrun"+(i+1)).textContent = msg
 			tempTime = tempTime.plus(ghSave.last10[i][0])
 			tempGHP = tempGHP.plus(ghSave.last10[i][1])
@@ -372,10 +372,10 @@ function updateLastTenGhostifies() {
 		tempTime = tempTime.dividedBy(listed)
 		tempGHP = tempGHP.dividedBy(listed)
 		var qkpm = tempGHP.dividedBy(tempTime/600)
-		var tempstring = shorten(qkpm) + " ElP/min"
+		var tempstring = shorten(qkpm) + " SP/min"
 		averageGHP = tempGHP
-		if (qkpm<1) tempstring = shorten(qkpm*60) + " ElP/hour"
-		el("averageGhostifyRun").textContent = "Last " + listed + " Fundaments average time: "+ timeDisplayShort(tempTime, false, 3)+" Average ElP gain: "+shortenDimensions(tempGHP)+" ElP. "+tempstring
+		if (qkpm<1) tempstring = shorten(qkpm*60) + " SP/hour"
+		el("averageGhostifyRun").textContent = "Last " + listed + " Fundaments average time: "+ timeDisplayShort(tempTime, false, 3)+" Average SP gain: "+shortenDimensions(tempGHP)+" SP. "+tempstring
 	} else el("averageGhostifyRun").textContent = ""
 }
 
@@ -386,25 +386,11 @@ function updateBraveMilestones() {
 }
 
 function showGhostifyTab(tabName) {
-	//iterate over all elements in div_tab class. Hide everything that's not tabName and show tabName
-	var tabs = document.getElementsByClassName('ghostifytab');
-	var tab;
-	var oldTab
-	for (var i = 0; i < tabs.length; i++) {
-		tab = tabs.item(i);
-		if (tab.style.display == 'block') oldTab = tab.id
-		if (tab.id === tabName) {
-			tab.style.display = 'block';
-		} else {
-			tab.style.display = 'none';
-		}
-	}
-	if (oldTab !== tabName) aarMod.tabsSave.tabGhostify = tabName
-	closeToolTip()
+	showTab(tabName, false, "ghostifytab")
 }
 
 function updateGhostifyTabs() {
-	if (el("neutrinos").style.display == "block") NT.update()
-	if (el("gphtab").style.display == "block") PHOTON.update()
-	if (el("automaticghosts").style.display == "block") updateAutomatorHTML()
+	if (isTabShown("neutrinos")) NT.update()
+	if (isTabShown("gphtab")) PHOTON.update()
+	if (isTabShown("automaticghosts")) updateAutomatorHTML()
 }

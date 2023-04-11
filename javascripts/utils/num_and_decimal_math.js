@@ -54,3 +54,10 @@ function nG(a,b) {
 	if (typeof(b)=="number") return true
 	return a.gt(b)
 }
+
+function nGE(a,b) {
+	if (typeof(a)=="number"&&typeof(b)=="number") return a>=b
+	if (typeof(a)=="number") return false
+	if (typeof(b)=="number") return true
+	return a.gte(b)
+}

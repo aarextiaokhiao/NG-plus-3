@@ -5,20 +5,20 @@ let NF = {
 }
 
 function updateNanoverseTab() {
-	var amt = nfSave.rewards
 	el("quarksNanofield").textContent = shortenDimensions(quSave.replicants.quarks)		
 	el("quarkCharge").textContent = shortenMoney(nfSave.charge)
 	el("quarkChargeRate").textContent = shortenDimensions(getQuarkChargeProduction())
 	el("quarkLoss").textContent = shortenDimensions(getQuarkLossProduction())
 	el("preonEnergy").textContent = shortenMoney(nfSave.energy)
 	el("quarkEnergyRate").textContent = shortenMoney(getQuarkEnergyProduction())
-	el("quarkPower").textContent = getFullExpansion(nfSave.power)
-	el("quarkPowerThreshold").textContent = shortenMoney(nfSave.powerThreshold)
 	el("quarkAntienergy").textContent = shortenMoney(nfSave.antienergy)
 	el("quarkAntienergyRate").textContent = shortenMoney(getQuarkAntienergyProduction())
 	el("quarkChargeProductionCap").textContent = shortenMoney(getQuarkChargeProductionCap())
-	el("rewards").textContent = getFullExpansion(amt)
 	el("produceQuarkCharge").innerHTML = (nfSave.producingCharge ? "Stop" : "Start") + " production of nanocharge." + (nfSave.producingCharge ? "" : "<br>(You won't gain pilons on production)")
+
+	var amt = nfSave.rewards
+	el("nanorewards").textContent = getFullExpansion(amt)
+	el("nanorewardThreshold").textContent = shortenMoney(getNanoRewardReq(1))
 
 	for (var reward = 1; reward < 9; reward++) {
 		el("nfReward" + reward).className = reward > amt ? "nfRewardlocked" : "nfReward"
@@ -102,7 +102,7 @@ var nanoRewards = {
 			return pow2(x)
 		},
 		decay_exp: function(x) {
-			return Math.log10(Math.max(x * 2 + 4, 10))
+			return Math.log10(Math.max(x * 2 + 6, 10))
 		},
 		photon: function(x) {
 			return Math.pow(x + 1, 1.5)
@@ -116,7 +116,7 @@ var nanoRewards = {
 			return "meta-antimatter effect is ^" + x.toFixed(2)
 		},
 		dil_gal_gain: function(x) {
-			return "each replicated galaxy gives " + x.toFixed(3) + "x more dilated time"
+			return "each Replicated Galaxy gives " + x.toFixed(3) + "x more dilated time"
 		},
 		dt_to_ma_exp: function(x) {
 			return "dilated time gives ^" + x.toFixed(3) + " boost to Meta Dimensions"
@@ -172,7 +172,7 @@ function getNanoRewardPower(reward, rewards) {
 }
 
 function getNanoRewardReq(additional){
-	return getNanoRewardReqFixed(additional - 1 + nfSave.power)
+	return getNanoRewardReqFixed(additional - 1 + nfSave.rewards)
 }
 
 function getActiveNanoScalings(){
@@ -194,7 +194,7 @@ function getNanoRewardReqFixed(n){
 	return x
 }
 
-function updateNextPreonEnergyThreshold(){
+function updateNextPreonEnergyThreshold() {
 	let en = nfSave.energy
 	let increment = 0.5
 	let toSkip = 0
@@ -205,8 +205,7 @@ function updateNextPreonEnergyThreshold(){
 		if (en.gte(getNanoRewardReq(check))) toSkip += increment
 		increment /= 2
 	}
-	nfSave.power += toSkip
-	nfSave.powerThreshold = getNanoRewardReq(1)
+	nfSave.rewards += toSkip
 }
 
 function updateNanoEffectUsages() {
@@ -292,7 +291,6 @@ function nanofieldUpdating(diff){
 		nfSave.energy = nfSave.energy.add(toAddAE.div(AErate).mul(getQuarkEnergyProduction()))
 
 		updateNextPreonEnergyThreshold()
-		if (nfSave.power > nfSave.rewards) nfSave.rewards = nfSave.power
 	}
 }
 

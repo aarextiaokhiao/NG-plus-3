@@ -3,7 +3,8 @@ let tmp = {
 		chal: { in: [0], reward: {} },
 		bru: {},
 		beu: {},
-	}
+	},
+	tab: {}
 }
 
 function updateTemp() {

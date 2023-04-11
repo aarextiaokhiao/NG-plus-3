@@ -216,7 +216,7 @@ function doReset(order, auto) {
 }
 
 //OLD CODE
-function replicantsResetOnQuantum(qc) {
+function duplicantsResetOnQuantum(qc) {
 	let keepAnt = hasBraveMilestone(6) && !qc
 	if (!keepAnt) {
 		quSave.replicants.requirement = E("1e3000000")

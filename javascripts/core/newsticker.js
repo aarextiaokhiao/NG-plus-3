@@ -586,7 +586,7 @@ function updateGhostlyNewsArray() {
 	ghostlyNewsArray = [//Ghostly news ticker messages
 	["Kee-hee-hee!", true, "gn1"],
 	["Every ghostly antimatter is safe.", true, "gn2"],
-	["Are you a ghost and want to use computers? Get Ghostified Hands! This stuff makes your hands feel like a human again! To order, you need to pay Elementary Particles and pass through your universe.", true, "gn3"],
+	["Are you a ghost and want to use computers? Get Ghostified Hands! This stuff makes your hands feel like a human again! To order, you need to pay Spectral Particles and pass through your universe.", true, "gn3"],
 	["Ghosts can't actually pass through walls because they're stuck in space.", true, "gn4"],
 	['"August is here already" - Aarex', true, "gn5"],
 	["Ghostly news tickers are dead... they also serve no purpose... right..?", "player.newsArray.includes('am32')", "gn6"],
@@ -603,7 +603,7 @@ function updateGhostlyNewsArray() {
 	["[placeholder]", false, "gn17"],
 	["WARNING: Do not interact evil ghosts. They can scare you out.", true, "gn18"],
 	["Do you know that ghosts are proved to be undead?", true, "gn19"],
-	["I got Elementary Particles. I got Neutrinos. That makes me a ghost.", true, "gn20"],
+	["I got Spectral Particles. I got Neutrinos. That makes me a ghost.", true, "gn20"],
 	["Photons can now emit light, due to normalcy process of Ghostify.", "hasAch('ng3p71')", "gn21"],
 	["You got Lights? That means you have a gloomy light inside! Kee-hee-hee!", "PHOTONS.unlocked()", "gn22"],
 	["Ghosts can experiment and discover some Bosons.", "hasAch('ng3p81')", "gn23"],

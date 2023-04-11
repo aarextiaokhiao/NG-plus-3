@@ -399,9 +399,8 @@ function getPassiveTTGen() {
 
 function getTTGenPart(x) {
 	if (!x) return E(0)
-	if (NGP3andVanillaCheck()) {
-		if (hasAch("r137") && player.dilation.active) x = x.mul(2)
-	}
+	if (NGP3andVanillaCheck() && hasAch("r137") && player.dilation.active) x = x.mul(2)
+
 	if (mod.ngp3) {
 		x = x.max(1).log10()
 		let y = mod.udp && !aarMod.nguepV ? 73 : 80

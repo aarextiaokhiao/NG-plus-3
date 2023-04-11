@@ -1,15 +1,13 @@
 function displayStats() {
-	if (el("stats").style.display == "block") {
+	if (isTabShown("stats")) {
 		displayMainStats()
 		displayGalSacStats()
 		infoScaleDisplay()
 	}
-	if (el("stats_inf").style.display == "block") displayInfinityStats()
-	if (el("stats_eter").style.display == "block") displayEternityStats()
-	if (el("stats_qu").style.display == "block") displayQuantumStats()
-	if (el("stats_fund").style.display == "block") {
-		bestGhostifyDisplay()
-	}
+	if (isTabShown("stats_inf")) displayInfinityStats()
+	if (isTabShown("stats_eter")) displayEternityStats()
+	if (isTabShown("stats_qu")) displayQuantumStats()
+	if (isTabShown("stats_fund")) bestGhostifyDisplay()
 }
 
 function displayMainStats() {
@@ -73,7 +71,7 @@ function displayQuantumStats() {
 }
 
 function bestGhostifyDisplay(){
-	el("ghostified").textContent = "You fundamented universes " + getFullExpansion(ghSave.times) + " times."
+	el("ghostified").textContent = "You enlarged " + getFullExpansion(ghSave.times) + " times."
 	el("thisGhostify").textContent = "You have spent " + timeDisplay(ghSave.time) + " in this Fundament."
 	el("bestGhostify").textContent = "Your fastest Fundament is in " + timeDisplay(ghSave.best) + "."
 }
