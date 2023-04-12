@@ -712,16 +712,16 @@ function resetTabs() {
 	var tabs = aarMod.tabsSave
 	if (!tabs?.on) tabs = {}
 
-	showDimTab(tabs?.dimtab || 'antimatterdimensions', true)
-	showStatsTab(tabs?.statstab || 'stats', true)
-	showAchTab(tabs?.achtab || 'normalachievements', true)
-	showChallengesTab(tabs?.challengeTab || 'normalchallenges', true)
-	showAutoTab(tabs?.autotab || 'autobuyers', true)
-	showInftab(tabs?.inftab || 'preinf', true)
-	showEternityTab(tabs?.eternitytab || 'timestudies', true)
-	showQuantumTab(tabs?.quantumtab || 'uquarks', true)
-	showAntTab(tabs?.anttab || 'antcore', true)
-	showGhostifyTab(tabs?.ghostifytab || 'neutrinos', true)
+	showDimTab(tabs?.dimtab || 'antimatterdimensions')
+	showStatsTab(tabs?.statstab || 'stats')
+	showAchTab(tabs?.achtab || 'normalachievements')
+	showChallengesTab(tabs?.challengeTab || 'normalchallenges')
+	showAutoTab(tabs?.autotab || 'autobuyers')
+	showInftab(tabs?.inftab || 'preinf')
+	showEternityTab(tabs?.eternitytab || 'timestudies')
+	showQuantumTab(tabs?.quantumtab || 'uquarks')
+	showAntTab(tabs?.anttab || 'antcore')
+	showGhostifyTab(tabs?.ghostifytab || 'neutrinos')
 	onTabSwitch()
 }
 
@@ -746,7 +746,7 @@ function onTabSwitch() {
 	isEmptiness = isTabShown("emptiness")
 	if (oldEmpty != isEmptiness) updateHeaders()
 
-	showHideFooter(isTabShown("options"))
+	showHideFooter()
 }
 
 function setTabPlacements() {

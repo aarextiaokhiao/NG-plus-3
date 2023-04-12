@@ -172,7 +172,7 @@ el("theme").onclick = function () {
 	el('thememenu').style.display="flex"
 }
 
-function showTab(tabName, init, type = "tab") {
+function showTab(tabName, type = "tab", init) {
 	//iterate over all elements in div_tab class. Hide everything that's not tabName and show tabName
 	var tabs = document.getElementsByClassName(type);
 	var tab, oldTab
@@ -675,10 +675,10 @@ function togglePerformanceTicks() {
 	updatePerformanceTicks()
 }
 
-function showHideFooter(tab, toggle) {
+function showHideFooter(toggle) {
 	if (toggle) aarMod.noFooter = !aarMod.noFooter
 	el("nofooterbtn").textContent = (aarMod.noFooter ? "Show" : "Hide") + " footer"
-	el("footer").style.display = tab == "options" || !aarMod.noFooter ? "" : "none"
+	el("footer").style.display = !aarMod.noFooter || isTabShown("options") ? "" : "none"
 }
 
 el("newsbtn").onclick = function(force) {
@@ -2641,15 +2641,15 @@ function isEterBuyerOn() {
 }
 
 function showInftab(tabName) {
-	showTab(tabName, false, "inftab")
+	showTab(tabName, "inftab")
 }
 
 function showStatsTab(tabName) {
-	showTab(tabName, false, "statstab")
+	showTab(tabName, "statstab")
 }
 
 function showDimTab(tabName) {
-	showTab(tabName, false, "dimtab")
+	showTab(tabName, "dimtab")
 }
 
 function toggleProgressBar() {
@@ -2658,24 +2658,24 @@ function toggleProgressBar() {
 }
 
 function showChallengesTab(tabName) {
-	showTab(tabName, false, "challengeTab")
+	showTab(tabName, "challengeTab")
 }
 
 function showEternityTab(tabName, init) {
 	if (tabName == "timestudies" && mod.rs) tabName = "ers_" + tabName
-	showTab(tabName, init, "eternitytab")
+	showTab(tabName, "eternitytab", init)
 }
 
 function showAchTab(tabName) {
-	showTab(tabName, false, "achtab")
+	showTab(tabName, "achtab")
 }
 
 function showAutoTab(tabName) {
-	showTab(tabName, false, "autotab")
+	showTab(tabName, "autotab")
 }
 
 function showOptionTab(tabName) {
-	showTab(tabName, false, "optionstab")
+	showTab(tabName, "optionstab")
 }
 
 function closeToolTip(showStuck) {
@@ -2697,15 +2697,10 @@ function initGame() {
 	//Load a save.
 	load_game(false, true)
 
-	//show one tab during init or they'll all start hidden
-	let tabsSaveData = aarMod.tabsSave
-	let tabsSave = tabsSaveData&&tabsSaveData.on
-	showTab((tabsSave && tabsSaveData.tabMain) || "dimensions",true)
-	showOptionTab((tabsSave && tabsSaveData.tabOptions) || "saving")
-	if (aarMod.progressBar && el("dimensions").style.display != "none") el("progress").style.display = "block"
-	else el("progress").style.display = "none"
-
-	window.addEventListener("resize", resizeCanvas);
+	//Show one tab during init or they'll all start hidden
+	let tabsSave = aarMod.tabsSave
+	showOptionTab((tabsSave?.on && tabsSave?.optionstab) || "saving")
+	showTab((tabsSave?.on && tabsSave?.tab) || "dimensions")
 
 	//On load
 	game_loaded = true
@@ -2720,6 +2715,7 @@ function initGame() {
 	updatePerSecond()
 }
 
+window.addEventListener("resize", resizeCanvas)
 window.addEventListener('keydown', function(event) {
 	if (keySequence == 0 && event.keyCode == 38) keySequence++
 	else if (keySequence == 1 && event.keyCode == 38) keySequence++

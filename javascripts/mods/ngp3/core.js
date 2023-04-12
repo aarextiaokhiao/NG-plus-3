@@ -1,6 +1,6 @@
 //VERSION: 2.31
 let ngp3_ver = 2.31
-let ngp3_build = 20230410
+let ngp3_build = 20230411
 function doNGP3Updates() {
 	if (!aarMod.ngp3_build) aarMod.ngp3_build = 0
 	if (aarMod.ngp3_build < 20221230) quSave.multPower = 0
@@ -56,7 +56,7 @@ function doNGP3Updates() {
 
 //v1.5 
 function showQuantumTab(tabName) {
-	showTab(tabName, false, "quantumtab")
+	showTab(tabName, "quantumtab")
 }
 
 var quantumTabs = {
@@ -259,7 +259,7 @@ function canBuyGalaxyThresholdUpg() {
 }
 
 function showAntTab(tabName) {
-	showTab(tabName, false, "anttab")
+	showTab(tabName, "anttab")
 }
 
 //v2.21: NG+3.1

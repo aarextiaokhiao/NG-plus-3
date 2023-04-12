@@ -85,7 +85,7 @@ let PHOTON = {
 	],
 
 	//Feature - Lights
-	lightCap: _ => 5 + ghSave.photons.lighten,
+	lightCap: _ => 5 + ghSave.photons.lighten * 3,
 	release() {
 		ghSave.photons.light = []
 
@@ -102,7 +102,7 @@ let PHOTON = {
 		{
 			name: "red",
 			start: 1,
-			eff: a => E_pow(tmp.gal.ts || 1, -Math.min(Math.sqrt(a) / 20, 1)),
+			eff: a => E_pow(tmp.gal.ts || 1, -Math.min(Math.sqrt(a) / 20, 0.5)),
 			desc: e => `Multiply per-ten multiplier by ${shorten(e)}x. (based on tickspeed reduction)`
 		}, {
 			name: "orange",
@@ -131,8 +131,8 @@ let PHOTON = {
 			desc: e => `Raise Emperor Dimensions by ^${shorten(e)}.`
 		}, {
 			name: "ultraviolet",
-			start: 13,
-			eff: a => Math.log2(a / 5 + 1) + 1,
+			start: 12,
+			eff: a => Math.cbrt(a / 5 + 1),
 			desc: e => `Post-16 Nanoreward scaling scales ${shorten(e)}x slower.`
 		}
 	],
@@ -148,7 +148,7 @@ let PHOTON = {
 	//Feature - Enlighten
 	enlighten() {
 		let lighten = ghSave.photons.lighten
-		let gain = Math.floor(Math.sqrt(PHOTON.totalEmissions()) - 4) + 1
+		let gain = Math.floor(Math.floor((PHOTON.totalEmissions() - 14) / 2)) + 1
 		ghSave.photons.lighten = Math.max(gain, lighten)
 	},
 
@@ -180,7 +180,7 @@ let PHOTON = {
 		el("ph_prod").textContent = "(+" + shortenMoney(PHOTON.photonGain()) + "/s)"
 		el("ph_lighten").textContent = getFullExpansion(ghSave.photons.lighten)
 		el("ph_lighten_eff").textContent = "+" + getFullExpansion(ghSave.photons.lighten) + " cap"
-		el("ph_lighten_req").textContent = "Requires " + getFullExpansion(Math.pow(ghSave.photons.lighten + 4, 2)) + " Emissions"
+		el("ph_lighten_req").textContent = "Requires " + getFullExpansion(ghSave.photons.lighten * 2 + 15) + " Emissions"
 
 		for (const [i, emission] of Object.entries(PHOTON.emissionData)) {
 			el("ph_shop_req_" + i).textContent = `${shorten(emission.req(ghSave.photons.emission[i] || 0))} ${emission.resName}`

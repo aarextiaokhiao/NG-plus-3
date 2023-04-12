@@ -386,7 +386,7 @@ function updateBraveMilestones() {
 }
 
 function showGhostifyTab(tabName) {
-	showTab(tabName, false, "ghostifytab")
+	showTab(tabName, "ghostifytab")
 }
 
 function updateGhostifyTabs() {

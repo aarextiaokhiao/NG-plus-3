@@ -124,7 +124,7 @@ const NEUTRINO = NT = {
 				eff(nt) {
 					var nb4neutrinos = Math.pow(nt[0].add(1).log10(),2)+Math.pow(nt[1].add(1).log10(),2)+Math.pow(nt[2].add(1).log10(),2)
 					var nb4 = Math.log10(nb4neutrinos*(bigRipped()||mod.p3ep?1:0.07)+1)/4+1
-					if (!bigRipped()) nb4 = Math.min(Math.sqrt(nb4), 1.3)
+					if (!bigRipped()) nb4 = Math.sqrt(nb4)
 					return Math.min(nb4, 2)
 				},
 				effDesc: e => `Raise Infinite Time by <b>^${shorten(e)}</b>.`,
@@ -179,7 +179,7 @@ const NEUTRINO = NT = {
 				eff(nt) {
 					nt = nt[0].add(1).log10()+nt[1].add(1).log10()+nt[2].add(1).log10()
 					let r = Math.log2(Math.max(nt / 70, 1)) / 150
-					if (r > 0.008) r = (r + 0.016) / 3
+					if (r > 0.007) r = (r + 0.007) / 2
 					return r
 				},
 				effDesc: e => `TS232 regains <b>${shorten(e*100)}%</b> power.`,
@@ -191,10 +191,10 @@ const NEUTRINO = NT = {
 				},
 				effDesc: e => `2nd Infinite Time softcap starts <b>^${shorten(e)}</b> later.`,
 			}, {
-				cost: E(1e100),
+				cost: E(1e42),
 				eff(nt) {
 					nt = nt[0].add(1).log10()+nt[1].add(1).log10()+nt[2].add(1).log10()
-					return Math.min(Math.log10(nt / 400 + 1) / 2, 1)
+					return Math.min(Math.log10(Math.max(nt / 150, 1)) / 2, 1)
 				},
 				effDesc: e => `<b>^${shorten(e)}</b> of Replicated Galaxy strength shares to Galaxies.`,
 			}

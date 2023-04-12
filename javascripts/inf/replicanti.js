@@ -212,16 +212,17 @@ function getTotalRG() {
 }
 
 function getReplGalPower() {
+	let str = getReplGalEff()
+	if (hasNB(12)) str = Math.pow(str, 1 - NT.eff("boost", 12))
+
 	let extra = 0
 	if (player.timestudy.studies.includes(133)) extra += player.replicanti.galaxies * 0.5
 	if (player.timestudy.studies.includes(132)) extra += player.replicanti.galaxies * 0.4
 	extra += tmp.rep.extra // extraReplGalaxies is a constant
 
 	let r = player.replicanti.galaxies
-	let eff = getReplGalEff()
-	if (hasNB(12)) eff = Math.pow(eff, 1 - NT.eff("boost", 12))
-	if (hasMasteryStudy("t342")) r = (r + extra) * eff
-	else r += Math.min(player.replicanti.galaxies, player.replicanti.gal) * (eff - 1) + extra
+	if (hasMasteryStudy("t342")) r = (r + extra) * str
+	else r += Math.min(player.replicanti.galaxies, player.replicanti.gal) * (str - 1) + extra
 	return r
 }
 
