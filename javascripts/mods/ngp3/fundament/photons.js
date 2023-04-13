@@ -73,8 +73,15 @@ let PHOTON = {
 			resName: "Spectral Particles",
 			res: _ => ghSave.ghostParticles,
 
-			req: i => E(1e3).pow(i).mul(1e19),
-			bulk: r => Math.floor(r.max(1).div(1e19).log(1e3)) + 1,
+			req(i) {
+				if (i > 6) i = i * 2 - 6
+				return E(1e3).pow(i).mul(1e19)
+			},
+			bulk(r) {
+				let i = r.max(1).div(1e19).log(1e3)
+				if (i > 6) i = (i + 6) / 2
+				return Math.floor(i) + 1
+			}
 		}, {
 			resName: "Photons",
 			res: _ => ghSave.photons.amt,
@@ -102,7 +109,7 @@ let PHOTON = {
 		{
 			name: "red",
 			start: 1,
-			eff: a => E_pow(tmp.gal.ts || 1, -Math.min(Math.sqrt(a) / 20, 0.5)),
+			eff: a => E_pow(tmp.gal.ts || 1, -Math.min(Math.sqrt(a) / 20, 0.2)),
 			desc: e => `Multiply per-ten multiplier by ${shorten(e)}x. (based on tickspeed reduction)`
 		}, {
 			name: "orange",
@@ -180,7 +187,7 @@ let PHOTON = {
 		el("ph_prod").textContent = "(+" + shortenMoney(PHOTON.photonGain()) + "/s)"
 		el("ph_lighten").textContent = getFullExpansion(ghSave.photons.lighten)
 		el("ph_lighten_eff").textContent = "+" + getFullExpansion(ghSave.photons.lighten) + " cap"
-		el("ph_lighten_req").textContent = "Requires " + getFullExpansion(ghSave.photons.lighten * 2 + 15) + " Emissions"
+		el("ph_lighten_req").textContent = "Requires " + getFullExpansion(ghSave.photons.lighten * 2 + 14) + " Emissions"
 
 		for (const [i, emission] of Object.entries(PHOTON.emissionData)) {
 			el("ph_shop_req_" + i).textContent = `${shorten(emission.req(ghSave.photons.emission[i] || 0))} ${emission.resName}`

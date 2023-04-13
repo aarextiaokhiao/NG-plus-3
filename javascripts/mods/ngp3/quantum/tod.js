@@ -235,12 +235,6 @@ function getTreeUpgradeLevel(upg) {
 	return todSave.upgrades[upg] || 0
 }
 
-function getEffectiveTreeUpgLevel(upg){
-	if (!tmp.qu.tree_str) return 0
-	lvl = getTreeUpgradeLevel(upg) * tmp.qu.tree_str
-	return lvl
-}
-
 function getTotalNumOfToDUpgrades(){
 	let power = 0
 	for (var upg = 1; upg <= 8; upg++) power += getTreeUpgradeLevel(upg)
@@ -248,7 +242,7 @@ function getTotalNumOfToDUpgrades(){
 }
 
 function getTreeUpgradeEffect(upg) {
-	let lvl = getEffectiveTreeUpgLevel(upg)
+	let lvl = getTreeUpgradeLevel(upg) * tmp.qu.tree_str
 	if (upg == 1) return Math.floor(lvl * 30)
 	if (upg == 2) return lvl * 0.25
 	if (upg == 3) return pow2(Math.sqrt(Math.max(lvl, 0) * 2))

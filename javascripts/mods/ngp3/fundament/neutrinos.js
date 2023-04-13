@@ -191,10 +191,10 @@ const NEUTRINO = NT = {
 				},
 				effDesc: e => `2nd Infinite Time softcap starts <b>^${shorten(e)}</b> later.`,
 			}, {
-				cost: E(1e42),
+				cost: E(1e40),
 				eff(nt) {
 					nt = nt[0].add(1).log10()+nt[1].add(1).log10()+nt[2].add(1).log10()
-					return Math.min(Math.log10(Math.max(nt / 150, 1)) / 2, 1)
+					return Math.min(Math.log10(Math.max(nt / 150, 1)), 1)
 				},
 				effDesc: e => `<b>^${shorten(e)}</b> of Replicated Galaxy strength shares to Galaxies.`,
 			}
