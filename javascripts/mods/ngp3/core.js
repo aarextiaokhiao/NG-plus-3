@@ -1,6 +1,6 @@
 //VERSION: 2.31
 let ngp3_ver = 2.31
-let ngp3_build = 20230412
+let ngp3_build = 20230414
 function doNGP3Updates() {
 	if (!aarMod.ngp3_build) aarMod.ngp3_build = 0
 	if (aarMod.ngp3_build < 20221230) quSave.multPower = 0
@@ -50,6 +50,7 @@ function doNGP3Updates() {
 		delete ghSave.photons.plusOne
 		ghSave.photons.offset = [0,0,0,0,0,0,0]
 	}
+	if (aarMod.ngp3_build < 20230414 && ghSave?.lab) ghSave.lab.wz_capacitors = WEAK_FORCE.setup()
 	aarMod.newGame3PlusVersion = ngp3_ver
 	aarMod.ngp3_build = ngp3_build
 }

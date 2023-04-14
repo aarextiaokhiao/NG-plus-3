@@ -45,7 +45,7 @@ const BOSONIC_LAB = LAB = {
 	/* BOSONS */
 	prod() {
 		let r = E(0.01)
-		if (hasBond("0;1")) r = r.mul(bondEff("0;1"))
+		r = r.mul(bondEff("0;1"))
 		if (isCapacitorsActive()) r = r.mul(capacitorEff(0))
 		if (isCapacitorsActive() && r.gt(1)) r = r.pow(capacitorEff(1))
 		return r
@@ -274,12 +274,8 @@ const BL_HYPOTHESES = {
 	},
 }
 
-function hasBond(i) {
-	return tmp.funda?.lab?.bond[i]
-}
-
 function bondEff(i, def = 1) {
-	return tmp.funda?.lab?.bond_eff[i] || def
+	return tmp.funda?.lab?.bond_eff?.[i] || def
 }
 
 const WEAK_FORCE = {
@@ -309,10 +305,12 @@ const WEAK_FORCE = {
 	/* BOSONS */
 	amt: {
 		w() {
-			return 5
+			let r = bondEff("0;2", 0)
+			return r
 		},
 		z() {
-			return 0
+			let r = bondEff("1;2", 0)
+			return r
 		}
 	},
 
@@ -336,8 +334,8 @@ const WEAK_FORCE = {
 	},
 	put(i, type) {
 		let data = blSave.wz_capacitors
-		if (type == "plus" && tmp.funda.lab.bosons.w) data[i].p++
-		if (type == "minus" && tmp.funda.lab.bosons.w) data[i].m++
+		if (type == "plus" && tmp.funda.lab.bosons.w >= 1 && data[i].p + data[i].m < 5) data[i].p++
+		if (type == "minus" && tmp.funda.lab.bosons.w >= 1 && data[i].p + data[i].m < 5) data[i].m++
 		if (type == "putout") {
 			data[i].p = Math.max(data[i].p - 1, 0)
 			data[i].m = Math.max(data[i].m - 1, 0)
@@ -348,15 +346,16 @@ const WEAK_FORCE = {
 	/* HTML */
 	setupTab() {
 		let html = ""
-		for (var i in this.capacitors) html += `<td  id='wz_capacitor_div_${i}' style='text-align: center'>
-			<button class='wz_capacitor' onclick='WEAK_FORCE.put(${i}, "plus")'>
-				<b id='wz_capacitor_amt_${i}'>0/0</b><br>
-				<span id='wz_capacitor_eff_${i}'></span>
-			</button><br>
-			<button class='storebtn' onclick='WEAK_FORCE.put(${i}, "minus")'>+1 W-</button><br>
-			<button class='storebtn' onclick='WEAK_FORCE.put(${i}, "putout")'>-1</button><br>
-			<button class='storebtn' onclick='WEAK_FORCE.put(${i}, "clear")'>Clear</button>
+		for (var i in this.capacitors) html += `<td id='wz_capacitor_div_${i}' style='text-align: center; width: 200px'>
+			<div class='wz_capacitor'>
+				<button class='can plus' id='wz_capacitor_plus_${i}' onclick='WEAK_FORCE.put(${i}, "plus")'></button>
+				<button class='can minus' id='wz_capacitor_minus_${i}' onclick='WEAK_FORCE.put(${i}, "minus")'></button>
+			</div>
+			<span id='wz_capacitor_eff_${i}'></span><br><br>
+
+			<button class='storebtn' onclick='WEAK_FORCE.put(${i}, "putout")'>Putout</button><br>
 		</td>`
+		//<button class='storebtn' onclick='WEAK_FORCE.put(${i}, "clear")'>Clear</button>
 		el("wz_capacitors").innerHTML = html
 	},
 	update() {
@@ -368,9 +367,15 @@ const WEAK_FORCE = {
 		el("wz_deactive").style.display = !isCapacitorsActive() ? "" : "none"
 		for (var [i, d] of Object.entries(this.capacitors)) {
 			el("wz_capacitor_div_"+i).style.display = d.unl() ? "" : "none"
+			if (!d.unl()) return
 
 			let amts = blSave.wz_capacitors[i]
-			el("wz_capacitor_amt_"+i).innerHTML = amts.p + "/" + (amts.p + amts.m)
+			let maxed = amts.p + amts.m >= 5
+			el("wz_capacitor_plus_"+i).className = "plus " + (maxed ? "unavailablebtn" : "can")
+			el("wz_capacitor_plus_"+i).innerHTML = amts.p + "+"
+			el("wz_capacitor_minus_"+i).className = "minus " + (maxed ? "unavailablebtn" : "can")
+			el("wz_capacitor_minus_"+i).innerHTML = amts.m + "-"
+
 			el("wz_capacitor_eff_"+i).innerHTML = d.disp(data_tmp.capacitors[i])
 		}
 	},

@@ -2420,24 +2420,42 @@ td.lEp {
 }
 
 .wz_capacitor {
-	background: linear-gradient(#310, #103);
-	border: 3px solid #b50;
-	box-shadow: inset 0 0 24px 0 #b50;
-	color: #f50;
+	position: relative;
+	margin: auto;
 
-	width: 150px;
 	height: 150px;
-	border-radius: 200px;
+	width: 150px;
 
 	cursor: pointer;
 	transition-duration: 0.2s
 }
-.wz_capacitor:hover {
+.wz_capacitor button {
+	position: absolute;
+	top: 0;
+	height: 150px;
+	width: 75px;
+	font-size: 35px;
+
+	cursor: pointer;
+	transition-duration: 0.2s
+}
+.wz_capacitor button.plus {
+	left: 0;
+	border-radius: 75px 0 0 75px
+}
+.wz_capacitor button.minus {
+	border-radius: 0 75px 75px 0;
+	left: 75px
+}
+.wz_capacitor button.can {
+	background: linear-gradient(#310, #103);
+	border: 3px solid #b50;
+	box-shadow: inset 0 0 24px 0 #b50;
+	color: #f50;
+}
+.wz_capacitor button.can:hover {
 	border: 5px solid #f50;
 	box-shadow: inset 0 0 36px 0 #f50
-}
-.wz_capacitor b {
-	font-size: 16px
 }
 
 .qu_upg.hb {
