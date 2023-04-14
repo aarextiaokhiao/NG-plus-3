@@ -2319,7 +2319,6 @@ td.lEp {
 	color: #330;
 	cursor: pointer
 }
-
 #light_table td {
 	width: 210px;
 	height: 150px;
@@ -2329,7 +2328,7 @@ td.lEp {
 	text-align: center;
 }
 
-.bltabbtn {
+.bosonic_btn {
 	background: repeating-linear-gradient(black, transparent), linear-gradient(#710, #307);
 	background-size: 25% 25%, 100% 100%;
 	box-shadow: inset 0 0 6px 0 #b50;
@@ -2339,216 +2338,15 @@ td.lEp {
 	font-weight: bold;
 	border-radius: 4px;
 	transition-duration: 0.2s;
-	animation: bltab 4s linear infinite
+	animation: bosonic_btn 4s linear infinite
 }
-
-.bltabbtn:hover {
+.bosonic_btn:hover {
 	box-shadow: inset 0 0 24px 0 #b50;
 	color: #f50;
 	text-shadow: 0 0 6px #f50;
 	cursor: pointer
 }
-
-#bRunes {
-	width:100%
-}
-
-#bRunes td {
-	text-align:center;
-	font-size:25px
-}
-
-.bRune {
-	background: white;
-	height: 1em;
-	width: 1em;
-	box-shadow: 0px 0px 12px white;
-	display: inline-block
-}
-
-.bRune.Infinite {
-	background: #b67f33;
-	box-shadow: 0px 0px 12px #b67f33
-}
-
-.bRune.Eternal {
-	background: #b341e0;
-	box-shadow: 0px 0px 12px #b341e0
-}
-
-.bRune.Quantum {
-	background: #32c832;
-	box-shadow: 0px 0px 12px #32c832
-}
-
-.bRune.Spectre {
-	background: #e900ff;
-	box-shadow: 0px 0px 12px #6a00ff
-}
-
-.bRune.Ethereal {
-	background: #3f6fff;
-	box-shadow: 0px 0px 12px #002fbf
-}
-
-.bRune.Newtonian {
-	background: #26f4c1;
-	box-shadow: 0px 0px 12px #26f4c1
-}
-
-.bRune.Seventh {
-	background: #6a6ca3;
-	box-shadow: 0px 0px 12px #6a6ca3
-}
-
-.bRune.Eighth {
-	background: #d10fed;
-	box-shadow: 0px 0px 12px #d10fed
-}
-
-.bRune.Ninth {
-	background: #3a4e1d;
-	box-shadow: 0px 0px 12px #3a4e1d
-}
-
-.bRune.Tenth {
-	background: #f6d779;
-	box-shadow: 0px 0px 12px #f6d779
-}
-
-.bRune.Eleventh {
-	background: #d52d50;
-	box-shadow: 0px 0px 12px #d52d50
-}
-
-.bRune.Twelfth {
-	background: #f453e4;
-	box-shadow: 0px 0px 12px #f453e4
-}
-
-.chosenbtn {
-    width: 120px;
-	height: 25px;
-	background: #3A7F42;
-	border: 1px solid #127A20;
-	border-radius: 4px;
-	font-size: 13px;
-	font-weight: bold;
-	transition-duration: 0.2s
-}
-
-.qu_upg.bl {
-	background: repeating-linear-gradient(#620d65, transparent 50%, #620d65 100%), repeating-linear-gradient(90deg, transparent, #c73415 50%, transparent 100%), black;
-	background-size: 200% 200%;
-	border: 1px solid transparent;
-	color: white;
-	text-shadow: 0px 0px 3px black, 0px 0px 6px white;
-	animation: bl 5s linear infinite;
-    width: 210px;
-    height: 110px;
-}
-
-.qu_upg.bl:hover {
-	box-shadow: inset 0px 0px 24px #38cbea;
-	border-color: #38cbea;
-	cursor: pointer;
-}
-
-.qu_upg_bought.bl {
-	background: repeating-linear-gradient(#9df29a, transparent 50%, #9df29a 100%), repeating-linear-gradient(90deg, transparent, #38cbea 50%, transparent 100%), black;
-	background-size: 200% 200%;
-	border: 1px solid transparent;
-	color: black;
-	text-shadow: 0px 0px 3px black, 0px 0px 6px white;
-	animation: bl 5s linear infinite;
-    width: 210px;
-    height: 110px;
-}
-
-.unavailablebtn.bllocked {
-    width: 210px;
-    height: 110px;
-}
-
-#wQk {
-	position: relative;
-	left: calc(50% - 120px);
-	height: 240px;
-	width: 240px;
-	border-radius: 120px !important;
-	font-size: 120px;
-	margin-top: 24px;
-	margin-bottom: 24px;
-	transition-duration: 0.2s
-}
-
-.up {
-	background: #620d65;
-	box-shadow: 0px 0px 12px #620d65
-}
-
-.down {
-	background: #9df29a;
-	box-shadow: 0px 0px 12px #9df29a
-}
-
-.zero {
-	background: repeating-linear-gradient(#620d65, transparent 50%, #620d65 100%), repeating-linear-gradient(90deg, transparent, #9df29a 50%, transparent 100%), black;
-	background-size: 200% 200%;
-	box-shadow: 0px 0px 12px white;
-	animation: bl 5s linear infinite
-}
-
-#wQkSymbol {
-	position: absolute;
-	color: white
-}
-
-.up #wQkSymbol {
-	transform: translate(-50%, 15%)
-}
-
-.down #wQkSymbol {
-	transform: translate(-50%, 12%)
-}
-
-.zero #wQkSymbol {
-	transform: translate(-50%, 15%)
-}
-
-#zNe {
-	position: relative;
-	left: calc(50% - 120px);
-	height: 240px;
-	width: 240px;
-	background: #bfbfbf;
-	box-shadow: 0px 0px 12px #7f7f7f;
-	border-radius: 120px !important;
-	font-size: 120px;
-	margin-top: 24px;
-	margin-bottom: 24px;
-	transition-duration: 0.2s
-}
-
-#zNeSymbol {
-	position: absolute;
-	color: #3f3f3f;
-	text-shadow: 0px 0px 3px #3f3f3f, 0px 0px 6px #3f3f3f
-}
-
-.positron #zNeSymbol {
-	transform: translate(-50%, 10%)
-}
-
-.mu #zNeSymbol {
-	transform: translate(-50%, 0%)
-}
-
-.tau #zNeSymbol {
-	transform: translate(-50%, 0%)
-}
-
-@keyframes bltab { 
+@keyframes bosonic_btn { 
 	0%{
 		background-position: 0 0, 0 0
 	}
@@ -2557,13 +2355,89 @@ td.lEp {
 	}
 }
 
-@keyframes bl { 
-	0%{
-		background-position: 0% 0%
-	}
-	100%{
-		background-position: 200% 200%
-	}
+.hypo {
+	height: 1em;
+	width: 1em;
+	display: inline-block
+}
+.hypo.hypo0 {
+	background: #b67f33;
+	box-shadow: 0px 0px 12px #b67f33
+}
+.hypo.hypo1 {
+	background: #b341e0;
+	box-shadow: 0px 0px 12px #b341e0
+}
+.hypo.hypo2 {
+	background: #32c832;
+	box-shadow: 0px 0px 12px #32c832
+}
+.hypo.hypo3 {
+	background: #e900ff;
+	box-shadow: 0px 0px 12px #6a00ff
+}
+.hypo.hypo4 {
+	background: #3f6fff;
+	box-shadow: 0px 0px 12px #002fbf
+}
+.hypo.hypo5 {
+	background: #26f4c1;
+	box-shadow: 0px 0px 12px #26f4c1
+}
+.hypo.hypo6 {
+	background: #6a6ca3;
+	box-shadow: 0px 0px 12px #6a6ca3
+}
+
+.hypo_btn {
+	width: 48px;
+	height: 48px;
+	border: none;
+	border-radius: 6px;
+	background: #0001;
+
+	cursor: pointer;
+	transition-duration: 0.2s;
+}
+.hypo_btn:hover {
+	background: #0003
+}
+.hypo_btn.chosen {
+	background: #0f03
+}
+.hypo_btn .hypo {
+	padding: auto;
+	font-size: 20px
+}
+
+#hypotheses {
+	font-size: 14px;
+	margin: auto
+}
+#hypo_field td {
+	margin: auto;
+	padding: 0;
+}
+
+.wz_capacitor {
+	background: linear-gradient(#310, #103);
+	border: 3px solid #b50;
+	box-shadow: inset 0 0 24px 0 #b50;
+	color: #f50;
+
+	width: 150px;
+	height: 150px;
+	border-radius: 200px;
+
+	cursor: pointer;
+	transition-duration: 0.2s
+}
+.wz_capacitor:hover {
+	border: 5px solid #f50;
+	box-shadow: inset 0 0 36px 0 #f50
+}
+.wz_capacitor b {
+	font-size: 16px
 }
 
 .qu_upg.hb {

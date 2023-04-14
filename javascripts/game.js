@@ -1149,7 +1149,7 @@ function updateHotkeys() {
 	if (hasAch("ng3p51")) html += ", B for Big Rip, F to fundament"
 	html += "."
 	if (mod.rs) html += "<br>You can hold shift while buying time studies to buy all up until that point, see each study's number, and save study trees."
-	if (BOSONIC_LAB.started() && ghSave.lab_real.signed) html += "<br><b onclick='BOSONIC_LAB.findKey()'>Hotkeys</b> do not work while holding control."
+	if (BL_JOKE.started() && ghSave.lab_real.signed) html += "<br><b onclick='BL_JOKE.findKey()'>Hotkeys</b> do not work while holding control."
 	else html += "<br>Hotkeys do not work while holding control."
 	el("hotkeysDesc").innerHTML = html
 }
@@ -2245,6 +2245,7 @@ function gameLoop(diff) {
 	if (mod.ngp3) {
 		ngp3DilationUpdating()
 		if (ghostified) {
+			if (LAB.unlocked()) LAB.calc(diff) // Bosonic Lab
 			if (PHOTON.unlocked()) PHOTON.calc(diff) // Photons
 			automatorTick(diff)
 		}

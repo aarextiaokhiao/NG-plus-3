@@ -100,7 +100,7 @@
 			<button id="tab_qu" style="font-size: 20px; display: none" class="quantumbtn" onclick='showTab("quantumtab")'>Quantum</button>
 			<button id="tab_ant" style="font-size: 20px" class="antbtn" onclick='showTab("duplicants")'>Duplicants</button>
 			<button id="tab_fund" style="font-size: 20px" class="ghostifybtn" onclick='showTab("ghostify")'>Fundament</button>
-			<button id="tab_bl" style="font-size: 20px" class="bltabbtn" onclick='showTab("labreal")'>???</button>
+			<button id="tab_bl" style="font-size: 20px" class="bosonic_btn" onclick='showTab("bosonic_lab")'>???</button>
 		</div>
 		<div style="position:absolute; left: 0; right: 0; margin-left: auto; margin-right: auto; width: 360px; top: 19px">
 			<button class="infinitybtn" id="bigcrunch" style="font-size: 50px; width: 360px; height: 100px;" onclick="bigCrunch()">Big Crunch</button>
@@ -256,6 +256,8 @@
 					</tr><tr>
 						<td><button onclick="showOptions('notationmenu')" id="notation" onclick="" class="storebtn" style="color:black; width: 200px; height: 55px; font-size:10px"></button></td>
 						<td><button onclick="showVisibilityMenu()" class="storebtn" style="color:black; width: 200px; height: 55px; font-size: 15px">Show/hide stuff</button></td>
+						<td><button id="tabsSave" onclick="toggleTabsSave()" class="storebtn" style="color:black; width: 200px; height: 55px; font-size: 15px"></button></td>
+					</tr><tr>
 						<td><button id="netQuarkTop" onclick="updateNetTop(true)" class="storebtn" style="color:black; width: 200px; height: 55px"></button></td>
 					</tr>
 				</table>
@@ -266,14 +268,11 @@
 				<table>
 					<tr>
 						<td><button id="confirmations" onclick="showConfirmations()" class="storebtn" style="color:black; width: 200px; height: 55px; font-size: 15px">Confirmations</button></td>
-						<td><button id="tabsSave" onclick="toggleTabsSave()" class="storebtn" style="color:black; width: 200px; height: 55px; font-size: 15px"></button></td>
-					</tr><tr>
 						<td><button id="retry" onclick="toggleChallengeRetry()" class="storebtn" style="color:black; width: 200px; height: 55px; font-size:120%"></button></td>
-						<td><button id="toggleLogRateChange" onclick="toggleLogRateChange()" class="storebtn" style="color:black; width: 200px; height: 55px"></button></td>
 						<td><button id="performanceTicks" onclick="togglePerformanceTicks()" class="storebtn" style="color:black; width: 200px; height: 55px"></button></td>
 					</tr><tr>
+						<td><button id="toggleLogRateChange" onclick="toggleLogRateChange()" class="storebtn" style="color:black; width: 200px; height: 55px"></button></td>
 						<td><button id="maxHighestTD" onclick="maxHighestTD()" class="storebtn" style="color:black; width: 200px; height: 55px"></button></td>
-						<td></td>
 						<td></td>
 					</tr>
 				</table>
@@ -416,7 +415,7 @@
 				<div id="eterchallengetime14"></div>
 				<br>
 				<div id="eterchallengetimesum"></div>
-				<button class="qu_upg storebtn" id="bl_portion_1" onclick='BOSONIC_LAB.find(1)' style='opacity: 0.1'>You agree that you will remain hidden in eternity.</button>
+				<button class="qu_upg storebtn" id="bl_portion_1" onclick='BL_JOKE.find(1)' style='opacity: 0.1'>You agree that you will remain hidden in eternity.</button>
 			</div><div id="stats_qu" class="statstab" >
 				<h1>Quantum</h1>
 				<div id="quantumed"></div>
@@ -3057,7 +3056,7 @@
 					</tr>
 				</table>
 				<div style="height: 60px;"></div>
-				<button class="qu_upg storebtn" id="bl_portion_2" onclick='BOSONIC_LAB.find(2)' style='opacity: 0.1'>You agree that your interior knowledge is shared to ours.</button>
+				<button class="qu_upg storebtn" id="bl_portion_2" onclick='BL_JOKE.find(2)' style='opacity: 0.1'>You agree that your interior knowledge is shared to ours.</button>
 			</div>
 			<div class="eternitytab" id="ers_timestudies" style="font-size: 15px">
 				<button class="storebtn" onclick="exportStudyTree()" style="width:150px; height: 40px; font-size: 10px; margin: auto">Export spec</button>
@@ -3895,7 +3894,7 @@
 					<td><button id='positronupg3' onclick='buyPositronUpg(3)'></button></td>
 					<td><button id='positronupg4' onclick='buyPositronUpg(4)'></button></td>
 				</tr></table>
-				<button class="qu_upg storebtn" id="bl_portion_3" onclick='BOSONIC_LAB.find(3)' style='opacity: 0.1'>You agree that you are willing to sacrifice yourself.</button>
+				<button class="qu_upg storebtn" id="bl_portion_3" onclick='BL_JOKE.find(3)' style='opacity: 0.1'>You agree that you are willing to sacrifice yourself.</button>
 			</div>
 			<div class='quantumtab' id='tod'>
 				<span id="todspeed"></span>
@@ -4022,6 +4021,7 @@
 					<td><button class="secondarytabbtn" onclick="showGhostifyTab('bravemilestones')">Brave Milestones</button></td>
 				</tr>
 			</table>
+			<b id='bl_req'>Get 15 Light Emissions to unlock Bosonic Lab.</b>
 			<div id="neutrinos" class="ghostifytab">
 				<div id="neutrinosGain"></div>
 				<table class='qtable'>
@@ -4078,7 +4078,7 @@
 						</tr>
 					</table>
 					<i style="opacity: 0.1">You were too spectral. Tributes to Ghostify!</i><br>
-					<button class="qu_upg storebtn" id="bl_portion_4" onclick='BOSONIC_LAB.find(4)' style='opacity: 0.1'>You agree to research what lies beyond physics.</button>
+					<button class="qu_upg storebtn" id="bl_portion_4" onclick='BL_JOKE.find(4)' style='opacity: 0.1'>You agree to research what lies beyond physics.</button>
 				</div>
 			</div><div id="automaticghosts" class="ghostifytab">
 				<span id="quantumWorth2">0</span>
@@ -4124,13 +4124,65 @@
 				</table>
 			</div>
 		</div>
-		<div class="tab" id="labreal">
-			By agreeing, you have readed all 5 portions hidden from the game, and become a ghost scientist for the rest of life.<br>
-			<b class='red'>Violating the terms of service will end the contract early.</b>
-			<br><br>
-			<button class="qu_upg storebtn" onclick="BOSONIC_LAB.sign()">Sign the contract</button>
-			<button class="qu_upg unavailablebtn" id='bl_unl' onclick="BOSONIC_LAB.unlock()"><b>Unlock Bosonic Lab</b></button>
-			<!-- <button class="qu_upg hb">Unlock Higgs</b></button> -->
+		<div class="tab" id="bosonic_lab">
+			<div id="bl_header">
+				<span id="bl_amt" style="font-size:25px"></span> Bosons<br>
+				<span id="bl_best" style="font-size:15px"></span><br>
+				<span id="bl_prod"></span><br>
+				<table class="table" align="center" style="margin: auto">
+					<tr>
+						<td><button class="secondarytabbtn" onclick='showBLTab("hypotheses")'>Hypotheses</button></td>
+						<td><button class="secondarytabbtn" onclick='showBLTab("weak_force")'>Weak Force</button></td>
+						<!-- <td><button class="secondarytabbtn" onclick='showBLTab("higgs")'>Higgs</button></td> -->
+						<td><button class="secondarytabbtn" onclick='showBLTab("bl_milestones")'>Milestones</button></td>
+					</tr>
+				</table>
+			</div>
+			<div class="bl_tab" id="hypotheses" style='display: none'>
+				<button class='storebtn' style='width: 120px; height: 36px' onclick="BL_HYPOTHESES.clear()">Clear</button>
+				<button class='storebtn' style='width: 120px; height: 36px' onclick="BL_HYPOTHESES.exportField()">Export</button>
+				<button class='unavailablebtn' style='width: 120px; height: 36px'>Import (soon)</button><br>
+
+				<div id='hypo_choice'></div><br>
+
+				<table id="hypo_field" style="margin: auto"></table><br>
+
+				<h2>Bonds</h2>
+				<div id="hypo_bonds">
+					<!-- <span class="hypo hypo1"></span><span class="hypo hypo2"></span>: [effect] -->
+				</div>
+			</div>
+			<div class="bl_tab" id="weak_force">
+				<table style="margin: 0 auto">
+					<td style='width: 240px; text-align: center'>
+						<span id="wz_w" style='font-size: 24px'>0</span>
+						W Bosons
+					</td><td style='width: 240px; text-align: center'>
+						<span id="wz_z" style='font-size: 24px'>0</span>
+						Z0 Bosons
+					</td><td style='width: 240px; text-align: center'>
+						<span id="wz_hc" style='font-size: 24px'>0</span>
+						Hypercharge
+					</td>
+				</table>
+				<table id="wz_capacitors" style='margin: auto'></table>
+				<b class='red' id="wz_deactive">Get at least 1 Hypercharge to activate all boosts below.</b>
+			</div>
+			<div class="bl_tab" id="higgs">
+				<span id="hb" style="font-size:25px">0</span> Higgs
+				<br>
+				<button class="qu_upg hb">Reset Bosonic Lab for +1 Higgs.<br>(??? Bosons)</button>
+			</div>
+			<div class="bl_tab" id="bl_milestones">
+				<table id="bl_milestone_table" style='margin: auto'></table>
+			</div>
+			<div class="bl_tab" id="lab_real">
+				By agreeing, you have readed all 5 portions hidden from the game, and become a ghost scientist for the rest of life.<br>
+				<b class='red'>Violating the terms of service will end the contract early.</b>
+				<br><br>
+				<button class="qu_upg storebtn" onclick="BL_JOKE.sign()">Sign the contract</button>
+				<button class="qu_upg unavailablebtn" id='bl_unl' onclick="BL_JOKE.unlock()"><b>Unlock Bosonic Lab</b><br>(Requires 15 Light Emissions)</button>
+			</div>
 		</div>
 
 		<!-- FOOTER -->
@@ -4216,7 +4268,7 @@
 			<b>Others</b><br>
 			<button class="storebtn longbtn" id='rsBtn' onclick="toggle_mod('rs')">Respecced: OFF</button>
 			<button class="storebtn longbtn" id='aauBtn' onclick="toggle_mod('aau')" ach-tooltip="Start with all achievements unlocked.">AAU: OFF</button><br>
-			<button class="qu_upg storebtn" id="bl_portion_5" onclick='BOSONIC_LAB.find(5)' style='opacity: 0.1'>You agree to explore other places.</button>
+			<button class="qu_upg storebtn" id="bl_portion_5" onclick='BL_JOKE.find(5)' style='opacity: 0.1'>You agree to explore other places.</button>
 		</div>
 	</div>
 	<div class="popup loadmenu" id="presetsmenu" style="overflow-y:hidden">

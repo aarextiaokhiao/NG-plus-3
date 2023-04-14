@@ -190,8 +190,7 @@ function updateBRU14Temp() {
 	}
 	var ret = Math.min(brSave.spaceShards.div(3e18).add(1).log10()/3,0.4)
 	var val = Math.sqrt(brSave.spaceShards.div(3e15).add(1).log10()*ret+1)
-	if (val > 12) val = 10 + Math.log10(4 + 8 * val)
-	tmp.qu.bru[14] = val //BRU14
+	tmp.qu.bru[14] = Math.min(val, 5) //BRU14
 }
 
 function updateBRU15Temp() {

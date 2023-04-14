@@ -11,7 +11,7 @@ function setupFundament() {
 		neutrinos: NT.setup(),
 		automatorGhosts: setupAutomaticGhostsData(),
 		photons: PHOTON.setup(),
-		lab_real: BOSONIC_LAB.setup()
+		lab: LAB.setup()
 	}
 }
 
@@ -26,12 +26,13 @@ function loadFundament() {
 
 	if (!ghSave) return
 	ghSave = deepUndefinedAndDecimal(ghSave, setupFundament())
-	blSave = ghSave?.bl
+	blSave = ghSave?.lab
 
 	ghSave.times = nP(ghSave.times)
 	updateBraveMilestones()
 	updateAutoGhosts(true)
 	updatePhotonUnlocks()
+	delete BL_HYPOTHESES.hypo_chosen
 }
 
 function unlockFundament() {
@@ -265,6 +266,7 @@ function denyGhostify() {
 function updateGhostifyTempStuff() {
 	if (!ghostified) return
 	tmp.funda = {}
+	LAB.temp()
 	PHOTON.temp()
 	NT.temp()
 }
@@ -393,4 +395,6 @@ function updateGhostifyTabs() {
 	if (isTabShown("neutrinos")) NT.update()
 	if (isTabShown("gphtab")) PHOTON.update()
 	if (isTabShown("automaticghosts")) updateAutomatorHTML()
+
+	el("bl_req").style.display = PHOTON.unlocked() && !LAB.unlocked() && !BL_JOKE.started() ? "" : "none"
 }

@@ -393,7 +393,7 @@ function updateTabDisplay() {
 	if (isTabShown("quantumtab")) updateQuantumTabs()
 	if (isTabShown("duplicants")) updateDuplicantsTab()
 	if (isTabShown("ghostify")) updateGhostifyTabs()
-	//if (isTabShown("bltab")) updateBosonicLabTab()
+	if (isTabShown("bosonic_lab")) LAB.update()
 }
 
 function replicantiDisplay() {
@@ -659,7 +659,7 @@ function updateHeaders() {
 
 	//Side-Tabs
 	el("challengesbtn").style.display = chal ? "inline-block" : "none"
-	//el("tab_bl").style.display = funda && ghSave.wzb.unl ? "inline-block" : "none"
+	el("tab_bl").style.display = BL_JOKE.started() || LAB.unlocked() ? "inline-block" : "none"
 }
 
 function updateResetTierButtons(){
@@ -722,6 +722,7 @@ function resetTabs() {
 	showQuantumTab(tabs?.quantumtab || 'uquarks')
 	showAntTab(tabs?.anttab || 'antcore')
 	showGhostifyTab(tabs?.ghostifytab || 'neutrinos')
+	showBLTab(tabs?.bltab || (ghSave?.lab_real ? "lab_real" : "hypotheses"))
 	onTabSwitch()
 }
 

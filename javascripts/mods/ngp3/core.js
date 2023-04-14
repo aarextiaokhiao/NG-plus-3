@@ -393,17 +393,17 @@ var ngp3Features = {
 	},
 	bl: {
 		name: "Bosonic Lab",
-		threshold: () => "Enlighten your Lights",
+		threshold: () => "Get " + getFullExpansion(15) + " Light Emissions",
 		next: "hb",
 		tab() {
-			showTab("bltab")
+			showTab("bosonic_lab")
 		}
 	},
 	hb: {
 		name: "Higgs",
 		threshold: () => "???",
 		tab() {
-			showTab("bltab")
+			showTab("bosonic_lab")
 		}
 	}
 }
@@ -525,7 +525,7 @@ function doPerSecondNGP3Stuff(){
 	el('toggleallmetadims').style.display=speedrunMilestonesReached>7?"":"none"
 	el('metaboostAuto').style.display=speedrunMilestonesReached>14?"":"none"
 	updateBreakEternity()
-	BOSONIC_LAB.updateHTML()
+	BL_JOKE.updateHTML()
 	if (!mod.ngp3) return
 
 	//Automators
@@ -625,7 +625,7 @@ function ngP3AchieveCheck() {
 	if (masteryStudies.bought >= 48) giveAchievement("The Theory of Ultimate Studies")
 	if (ghSave.photons.lighten) giveAchievement("Here comes the light")
 
-	//if (ghSave.wzb.unl) giveAchievement("Even Ghostlier than before")
+	if (LAB.unlocked()) giveAchievement("Even Ghostlier than before")
 	if (nG(getEternitied(), Number.MAX_VALUE)) giveAchievement("Everlasting Eternities")
 
 	//if (ghSave.hb.higgs >= 1) giveAchievement("The Holy Particle")
@@ -645,6 +645,7 @@ function doNGP3UnlockStuff() {
 
 	if (ghostified) {
 		if (!PHOTON.unlocked() && PHOTON.req()) PHOTON.unlock()
+		if (!LAB.unlocked() && LAB.req() && !BL_JOKE.started()) LAB.unlock()
 	}
 	if (quantumed) {
 		let MAbool = player.meta.bestAntimatter.lt(getQuantumReq())
@@ -728,6 +729,7 @@ function setupNGP3HTMLAndData() {
 	setupAutomatorHTML()
 	NT.setupTab()
 	PHOTON.setupTab()
+	LAB.setupTab()
 
 	//META
 	setupBadges()

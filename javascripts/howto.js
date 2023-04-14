@@ -393,7 +393,7 @@ let HOW_TO = [
 		You can also spend Neutrinos for upgrades.`
 	}, {
 		mod: _ => ngp3,
-		req: _ => ghSave?.photons.unl,
+		req: _ => ghSave?.photons?.unl,
 
 		title: "Photons",
 		layer: "fundament",
@@ -406,7 +406,7 @@ let HOW_TO = [
 		The multiplier can be exchanged through Lights, by taking one from any Light and putting into another.`
 	}, {
 		mod: _ => ngp3,
-		req: _ => ghSave?.wzb.unl,
+		req: _ => ghSave?.wzb?.unl,
 
 		title: "Bosonic Lab",
 		tab: "bl",
@@ -424,7 +424,7 @@ let HOW_TO = [
 		- Z0 = -1 Hypercharge`
 	}, {
 		mod: _ => ngp3,
-		req: _ => ghSave?.hb.unl,
+		req: _ => ghSave?.hb?.unl,
 
 		title: "Higgs Field",
 		tab: "bl",

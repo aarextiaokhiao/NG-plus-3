@@ -186,7 +186,7 @@ let PHOTON = {
 		el("ph_amt").textContent = shortenMoney(ghSave.photons.amt)
 		el("ph_prod").textContent = "(+" + shortenMoney(PHOTON.photonGain()) + "/s)"
 		el("ph_lighten").textContent = getFullExpansion(ghSave.photons.lighten)
-		el("ph_lighten_eff").textContent = "+" + getFullExpansion(ghSave.photons.lighten) + " cap"
+		el("ph_lighten_eff").textContent = "+" + getFullExpansion(ghSave.photons.lighten * 3) + " cap"
 		el("ph_lighten_req").textContent = "Requires " + getFullExpansion(ghSave.photons.lighten * 2 + 14) + " Emissions"
 
 		for (const [i, emission] of Object.entries(PHOTON.emissionData)) {
