@@ -393,7 +393,7 @@ function updateTabDisplay() {
 	if (isTabShown("quantumtab")) updateQuantumTabs()
 	if (isTabShown("duplicants")) updateDuplicantsTab()
 	if (isTabShown("ghostify")) updateGhostifyTabs()
-	if (isTabShown("bosonic_lab")) LAB.update()
+	if (isTabShown("bosonic_lab") && !BL_JOKE.started()) LAB.update()
 }
 
 function replicantiDisplay() {

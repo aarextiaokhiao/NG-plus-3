@@ -2416,7 +2416,7 @@ td.lEp {
 }
 #hypo_field td {
 	margin: auto;
-	padding: 0;
+	padding: 0
 }
 
 .wz_capacitor {
@@ -2424,7 +2424,7 @@ td.lEp {
 	margin: auto;
 
 	height: 150px;
-	width: 150px;
+	width: 0;
 
 	cursor: pointer;
 	transition-duration: 0.2s
@@ -2440,12 +2440,12 @@ td.lEp {
 	transition-duration: 0.2s
 }
 .wz_capacitor button.plus {
-	left: 0;
+	right: 0;
 	border-radius: 75px 0 0 75px
 }
 .wz_capacitor button.minus {
 	border-radius: 0 75px 75px 0;
-	left: 75px
+	left: 0;
 }
 .wz_capacitor button.can {
 	background: linear-gradient(#310, #103);

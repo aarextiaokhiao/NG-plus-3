@@ -120,9 +120,6 @@ const BOSONIC_LAB = LAB = {
 		el("bl_milestone_table").innerHTML = html
 	},
 	update() {
-		if (BL_JOKE.started()) return
-		//AF2023 joke.
-
 		el("bl_amt").textContent = shorten(blSave.bosons) + " / " + shorten(this.cap())
 		el("bl_best").textContent = "(" + shorten(blSave.best_bosons) + " best)"
 		el("bl_prod").textContent = shorten(this.prod()) + "/s"
