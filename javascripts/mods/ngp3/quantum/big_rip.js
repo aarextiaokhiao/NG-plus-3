@@ -190,7 +190,7 @@ function updateBRU14Temp() {
 	}
 	var ret = Math.min(brSave.spaceShards.div(3e18).add(1).log10()/3,0.4)
 	var val = Math.sqrt(brSave.spaceShards.div(3e15).add(1).log10()*ret+1)
-	tmp.qu.bru[14] = Math.min(val, 5) //BRU14
+	tmp.qu.bru[14] = Math.min(val, 15) //BRU14
 }
 
 function updateBRU15Temp() {
@@ -288,7 +288,8 @@ function updateBreakEternityUpgrade1Temp(){
 function updateBreakEternityUpgrade2Temp(){
 	var ep = player.eternityPoints
 	var log = ep.div("1e1290").add(1).log10()
-	tmp.qu.beu[2] = Math.pow(Math.log10(log + 1) * 1.6 + 1, player.currentEternityChall == "eterc10" ? 1 : 2)
+	var ret = Math.pow(Math.log10(log + 1) * 1.6 + 1, player.currentEternityChall == "eterc10" ? 1 : 2)
+	tmp.qu.beu[2] = Math.min(ret, 80)
 }
 
 function updateBreakEternityUpgrade3Temp(){

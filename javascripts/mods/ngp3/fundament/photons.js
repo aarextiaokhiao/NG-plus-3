@@ -73,15 +73,8 @@ let PHOTON = {
 			resName: "Spectral Particles",
 			res: _ => ghSave.ghostParticles,
 
-			req(i) {
-				if (i > 6) i = i * 2 - 6
-				return E(1e3).pow(i).mul(1e19)
-			},
-			bulk(r) {
-				let i = r.max(1).div(1e19).log(1e3)
-				if (i > 6) i = (i + 6) / 2
-				return Math.floor(i) + 1
-			}
+			req: i => E(1e3).pow(i).mul(1e19),
+			bulk: r => Math.floor(r.max(1).div(1e19).log(1e3)) + 1,
 		}, {
 			resName: "Photons",
 			res: _ => ghSave.photons.amt,
@@ -92,7 +85,9 @@ let PHOTON = {
 	],
 
 	//Feature - Lights
-	lightCap: _ => 5 + ghSave.photons.lighten * 3,
+	lightCap() {
+		return 5+this.enlightenEff()
+	},
 	release() {
 		ghSave.photons.light = []
 
@@ -109,7 +104,7 @@ let PHOTON = {
 		{
 			name: "red",
 			start: 1,
-			eff: a => E_pow(tmp.gal.ts || 1, -Math.min(Math.sqrt(a) / 20, 0.2)),
+			eff: a => E_pow(tmp.gal.ts || 1, -Math.min(Math.sqrt(a) / 20, 0.3)),
 			desc: e => `Multiply per-ten multiplier by ${shorten(e)}x. (based on tickspeed reduction)`
 		}, {
 			name: "orange",
@@ -124,7 +119,10 @@ let PHOTON = {
 		}, {
 			name: "green",
 			start: 6,
-			eff: a => 1+a/1.5e3,
+			eff(a) {
+				if (a > 5) a = Math.log10(a * 2) + 4
+				return 1+a/1.5e3
+			},
 			desc: e => `Gain ${shorten((e-1)*100)}% more Neutrinos per Big Rip galaxy.`
 		}, {
 			name: "blue",
@@ -158,6 +156,10 @@ let PHOTON = {
 		let gain = Math.floor(Math.floor((PHOTON.totalEmissions() - 14) / 2)) + 1
 		ghSave.photons.lighten = Math.max(gain, lighten)
 	},
+	enlightenEff() {
+		let r = ghSave.photons.lighten
+		return Math.ceil(r * 2.5)
+	},
 
 	/* HTML */
 	setupTab() {
@@ -186,7 +188,7 @@ let PHOTON = {
 		el("ph_amt").textContent = shortenMoney(ghSave.photons.amt)
 		el("ph_prod").textContent = "(+" + shortenMoney(PHOTON.photonGain()) + "/s)"
 		el("ph_lighten").textContent = getFullExpansion(ghSave.photons.lighten)
-		el("ph_lighten_eff").textContent = "+" + getFullExpansion(ghSave.photons.lighten * 3) + " cap"
+		el("ph_lighten_eff").textContent = "+" + getFullExpansion(PHOTON.enlightenEff()) + " cap"
 		el("ph_lighten_req").textContent = "Requires " + getFullExpansion(ghSave.photons.lighten * 2 + 14) + " Emissions"
 
 		for (const [i, emission] of Object.entries(PHOTON.emissionData)) {
