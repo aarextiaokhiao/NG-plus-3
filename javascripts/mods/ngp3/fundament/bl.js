@@ -25,7 +25,7 @@ const BOSONIC_LAB = LAB = {
 		}
 	},
 	calc(dt) {
-		blSave.bosons = blSave.bosons.add(this.prod().mul(dt)).min(this.cap())
+		blSave.bosons = blSave.bosons.add(this.prod().mul(dt))
 		blSave.best_bosons = blSave.best_bosons.max(blSave.bosons)
 	},
 	temp() {
@@ -43,62 +43,88 @@ const BOSONIC_LAB = LAB = {
 	},
 
 	/* BOSONS */
+	// Goal: 2.5M cap + 200/s Boson production + x10 production from other sources
+	// 2.5M seconds ~ 28 days!
 	prod() {
-		let r = E(0.01)
+		let r = E(0)
 		r = r.mul(bondEff("0;1"))
 		if (isCapacitorsActive()) r = r.mul(capacitorEff(0))
 		if (isCapacitorsActive() && r.gt(1)) r = r.pow(capacitorEff(1))
 		return r
 	},
-	cap() {
-		return ghSave.ghostParticles.pow(.05).div(100)
-	},
 	milestones: [
 		{
-			req: E(1),
-			desc: "Boost something.",
-			eff: b => 1,
-			effDesc: e => `(by ${shorten(e)}x)`,
-		}, {
-			req: E(2),
-			desc: "Boost something."
-		}, {
-			req: E(5),
-			desc: "Boost something."
-		}, {
+			//QOL
 			req: E(10),
-			desc: "Boost something.",
+			desc: "[QOL] Bank ^0.9 of Replicantis on exiting Big Rips."
+		}, {
+			req: E(30),
+			desc: "Bosons boost Photons.",
 			eff: b => 1,
 			effDesc: e => `(by ${shorten(e)}x)`,
 		}, {
-			req: E(20),
-			desc: "Boost something."
+			req: E(60),
+			desc: "Bosons strengthen 1st Tree Upgrade.",
+			eff: b => 1,
+			effDesc: e => `(by ${shorten(e)}x)`,
 		}, {
-			req: E(50),
-			desc: "Boost something."
-		}, {
+			//QOL
 			req: E(100),
-			desc: "Boost something.",
+			desc: "[QOL] Preon charge production boosts pilon energy instead."
+		}, {
+			req: E(120),
+			desc: "Eternities boost Space Shards more.",
+		}, {
+			req: E(240),
+			desc: "Galaxy strength scales Positrons softcap later.",
 			eff: b => 1,
 			effDesc: e => `(by ${shorten(e)}x)`,
 		}, {
-			req: E(200),
-			desc: "Boost something."
+			req: E(480),
+			desc: "Replicated Galaxies add Intergalactic.",
+			eff: b => 0,
+			effDesc: e => `(by +${shorten(e)})`,
 		}, {
-			req: E(500),
-			desc: "Boost something."
+			req: E(960),
+			desc: "Galaxy strength raises galaxy bonus to replicantis."
 		}, {
+			//QOL
 			req: E(1e3),
-			desc: "Boost something.",
+			desc: "[QOL] Enable Time Dimensions in Eternity Challenge 10, but can't upgrade."
+		}, {
+			req: E(1920),
+			desc: "Elementary Particles boost Bosons.",
 			eff: b => 1,
 			effDesc: e => `(by ${shorten(e)}x)`,
 		}, {
-			req: E(2e3),
-			desc: "Boost something."
+			req: E(3840),
+			desc: "Per-bought Time Dimensions work in Big Rip, but reduced."
 		}, {
-			unl: _ => false,
-			req: E(5e3),
-			desc: "Boost something."
+			req: E(7680),
+			desc: "Bosons increase Neutrino multiplier base.",
+			eff: b => 0,
+			effDesc: e => `(by +${shorten(e)}x)`,
+		}, {
+			req: E(15360),
+			desc: "Replicantis boost Emperor Dimensions."
+		}, {
+			req: E(30720),
+			desc: "Bosons multiply Radioactive Decays boost to Tree Upgrades."
+		}, {
+			req: E(61440),
+			desc: "Galaxy strength boosts Intergalactic."
+		}, {
+			req: E(1e5),
+			desc: "Eternities boost Dilated Time more."
+		}, {
+			req: E(2e5),
+			desc: "Replicanti Absorb speeds up Replicantis."
+		}, {
+			req: E(5e5),
+			desc: "Enlightenments boost Bosons."
+		}, {
+			req: E(1e6),
+			desc: "Scaling Remote Galaxies later also scales Distant Galaxies."
 		}
 	],
 
@@ -120,7 +146,7 @@ const BOSONIC_LAB = LAB = {
 		el("bl_milestone_table").innerHTML = html
 	},
 	update() {
-		el("bl_amt").textContent = shorten(blSave.bosons) + " / " + shorten(this.cap())
+		el("bl_amt").textContent = shorten(blSave.bosons)
 		el("bl_best").textContent = "(" + shorten(blSave.best_bosons) + " best)"
 		el("bl_prod").textContent = shorten(this.prod()) + "/s"
 
