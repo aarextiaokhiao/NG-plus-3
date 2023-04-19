@@ -1,6 +1,133 @@
-var quantumChallenges = {
-	costs:[0, 16750, 19100, 21500,  24050,  25900,  28900, 31300, 33600],
-	goals:[0, 6.65e9, 7.68e10, 4.525e10, 5.325e10, 1.344e10, 5.61e8, 6.254e10, 2.925e10]
+const QC = QUANTUM_CHALLENGE = {
+	1: {
+		cost: 16750,
+		goal: pow10(6.65e9),
+		desc: "Normal Dimensions 3-8 don't produce anything.",
+
+		reward: "Add 0.25x to positron multiplier for each Quantum Challenge completion, and First & Second Dimensions boost dilated time production.",
+		reward_eff(comps) {
+			if (comps == 0) return E(1)
+			let base = getDimensionFinalMultiplier(1).mul(getDimensionFinalMultiplier(2)).max(1).log10()
+			let exp = 0.225 + comps * .025
+			return pow10(Math.pow(base, exp) / 200)
+		},
+		reward_eff_disp: e => shorten(e) + "x"
+	},
+	2: {
+		cost: 19100,
+		goal: pow10(7.68e10),
+		desc: "Galaxies do nothing.",
+
+		reward: "Gain more Tachyonic Galaxies for each threshold.",
+		reward_eff(comps) {
+			if (comps == 0) return 1
+			return 1.2 + comps * 0.2
+		},
+		reward_eff_disp: e => shortenDimensions(e * 100 - 100) + "%"
+	},
+	3: {
+		cost: 21500,
+		goal: pow10(4.525e10),
+		desc: "Meta-Antimatter boosts Infinity Dimensions instead.",
+
+		reward: "Infinity Power boosts Meta Dimensions at greatly reduced rate.",
+		reward_eff(comps) {
+			if (comps == 0) return 1
+			let ipow = player.infinityPower.plus(1).log10()
+			let log = Math.sqrt(ipow / 2e8) 
+			if (comps >= 2) log += Math.pow(ipow / 1e9, 4/9 + comps/9)
+
+			log = softcap(log, "qc3reward")
+			return pow10(log)
+		},
+		reward_eff_disp: e => shorten(e) + "x"
+	},
+	4: {
+		cost: 24050,
+		goal: pow10(5.325e10),
+		desc: "Automatic Big Crunch Challenge is applied in Normal - Meta Dimensions. Meta-Dimension Boosts scale slower, but nullify buffs.",
+
+		reward: "All even Meta Dimensions boost all odd Meta Dimensions.",
+		reward_eff(comps) {
+			if (comps == 0) return 1
+			let mult = player.meta[2].amount.mul(player.meta[4].amount).mul(player.meta[6].amount).mul(player.meta[8].amount).max(1)
+			if (comps <= 1) return E_pow(10 * comps, Math.sqrt(mult.log10()) / 10)
+			return mult.pow(comps / 150)
+		},
+		reward_eff_disp: e => shorten(e) + "x"
+	},
+	5: {
+		cost: 25900,
+		goal: pow10(1.344e10),
+		desc: "Dimension Supersonic scales instantly and faster. Replicated Galaxies and Tachyonic Galaxies also scale faster. Multiplier per ten dimensions is 1x.",
+
+		reward: "Dimension Boosts boost the multiplier per ten Dimensions.",
+		reward_eff(comps) {
+			if (comps == 0) return 0
+			return Math.log10(1 + player.resets) * Math.pow(comps, 0.4)
+		},
+		reward_eff_disp: e => getDimensionPowerMultiplier("linear").toFixed(2) + "x"
+	},
+	6: {
+		cost: 28900,
+		goal: pow10(5.61e8),
+		desc: "You are stuck in Infinity Challenges 3 and 7. You can't gain Dimension Boosts. However, per-10 Meta Dimension effects are stronger.",
+
+		reward: "Achievement bonus boosts Meta Dimensions.",
+		reward_eff(comps) {
+			if (comps == 0) return 1
+			return player.achPow.pow(comps * 2 - 1)
+		},
+		reward_eff_disp: e => shorten(e) + "x"
+	},
+	7: {
+		cost: 31300,
+		goal: pow10(6.254e10),
+		desc: "Dimensions and Tickspeed upgrades scale really fast. Per-10 multipliers and meta-antimatter effect do nothing.",
+
+		reward: "Free tickspeed upgrades scale slower.",
+		reward_eff(comps) {
+			if (comps == 0) return 1
+			return Math.pow(0.975, comps)
+		},
+		reward_eff_disp: e => shortenDimensions(100 - e * 100) + "%"
+	},
+	8: {
+		cost: 33600,
+		goal: pow10(2.925e10),
+		desc: "Disable Infinity and Time Dimensions, and Meta-Dimension Boosts do nothing.",
+
+		reward: "Gain extra Replicated Galaxies faster after 100.",
+		reward_eff(comps) {
+			if (comps == 0) return 1
+			return comps + 2
+		},
+		reward_eff_disp: e => e + "x"
+	}
+}
+
+function setupQCHTML() {
+	let table = ""
+	for (let qc = 1; qc <= 8; qc++) {
+		let data = QC[qc]
+		table += `<td>
+			<div class="quantumchallengediv" id="qc${qc}div">
+				<span>${data.desc}</span>
+				<br><br>
+
+				<div class="outer">
+					<button id="qc${qc}" class="challengesbtn" onclick="selectQC(${qc})">Start</button>
+					<br>
+					<span id="qc${qc}cost"></span><br>
+					<span id="qc${qc}goal"></span><br>
+					Reward: ${data.reward}<br>
+					Currently: <span id="qc${qc}reward"></span>
+				</div>
+			</div>
+		</td>`
+		if (qc % 2 == 0) table += "</tr><tr>"
+	}
+	el("qc_table").innerHTML = `<tr>${table}</tr>`
 }
 
 function updateQuantumChallenges() {
@@ -11,19 +138,11 @@ function updateQuantumChallenges() {
 		el(property + "div").style.display = (qc < 2 || QCIntensity(qc - 1)) ? "inline-block" : "none"
 		el(property).textContent = pcFocus ? "Choose" : inQC(qc) ? "Running" : QCIntensity(qc) ? "Completed" : "Start"
 		el(property).className = pcFocus ? "challengesbtn" : inQC(qc) ? "onchallengebtn" : QCIntensity(qc) ? "completedchallengesbtn" : "challengesbtn"
-		el(property + "cost").textContent = isQCFree() ? "" : "Req: " + getFullExpansion(quantumChallenges.costs[qc]) + " Positrons"
+		el(property + "cost").textContent = isQCFree() ? "" : "Req: " + getFullExpansion(QC[qc].cost) + " Positrons"
 		el(property + "goal").textContent = "Goal: " + shortenCosts(getQCGoal(qc)) + " antimatter"
 	}
 
-	updateQCDisplaysSpecifics()
 	updatePairedChallenges()
-}
-
-function updateQCDisplaysSpecifics(){
-	el("qc2reward").textContent = Math.round(tmp.qu.chal.reward[2] * 100 - 100)
-	el("qc7desc").textContent = "Dimensions and Tickspeed scale at " + shorten(Number.MAX_VALUE) + "x. Per-10 Dimension multipliers and meta-antimatter boost to dimension boosts do nothing."
-	el("qc7reward").textContent = (100 - tmp.qu.chal.reward[7] * 100).toFixed(2)
-	el("qc8reward").textContent = tmp.qu.chal.reward[8]
 }
 
 function inQC(num) {
@@ -55,8 +174,8 @@ function getQCIdGoal(qcs, bigRip) {
 	if (qcs.includes(3) && qcs.includes(6)) mult *= 3
 
 	let r = 0
-	if (!qcs[0] || !qcs[1]) r = quantumChallenges.goals[qcs[0] || qcs[1]] * mult
-	else r = quantumChallenges.goals[qcs[0]] * quantumChallenges.goals[qcs[1]] / 1e11 * mult * mult
+	if (!qcs[0] || !qcs[1]) r = getQCGoal(qcs[0] || qcs[1]).log10() * mult
+	else r = getQCGoal(qcs[0]).log10() * getQCGoal(qcs[1]).log10() / 1e11 * mult * mult
 	return pow10(r)
 }
 
@@ -65,7 +184,7 @@ function getQCGoal(num, bigRip) {
 
 	if (num == undefined) return getQCIdGoal(tmp.qu.chal.in, bigRipped())
 	if (num > 8) return getQCIdGoal(quSave.pairedChallenges.order[num - 8], bigRip)
-	if (num <= 8) return getQCIdGoal([num], bigRip)
+	if (num <= 8) return QC[num].goal
 }
 
 function QCIntensity(num) {
@@ -86,56 +205,9 @@ function updateQCTimes() {
 	setAndMaybeShow("qctimesum", tempcounter > 1, '"The sum of your completed Quantum Challenge time records is "+timeDisplayShort(' + temp + ', false, 3)')
 }
 
-let qcRewards = {
-	effects: {
-		1: function(comps) {
-			if (comps == 0) return E(1)
-			let base = getDimensionFinalMultiplier(1).mul(getDimensionFinalMultiplier(2)).max(1).log10()
-			let exp = 0.225 + comps * .025
-			return pow10(Math.pow(base, exp) / 200)
-		},
-		2: function(comps) {
-			if (comps == 0) return 1
-			return 1.2 + comps * 0.2
-		},
-		3: function(comps) {
-			if (comps == 0) return 1
-			let ipow = player.infinityPower.plus(1).log10()
-			let log = Math.sqrt(ipow / 2e8) 
-			if (comps >= 2) log += Math.pow(ipow / 1e9, 4/9 + comps/9)
-
-			log = softcap(log, "qc3reward")
-			return pow10(log)
-		},
-		4: function(comps) {
-			if (comps == 0) return 1
-			let mult = player.meta[2].amount.mul(player.meta[4].amount).mul(player.meta[6].amount).mul(player.meta[8].amount).max(1)
-			if (comps <= 1) return E_pow(10 * comps, Math.sqrt(mult.log10()) / 10)
-			return mult.pow(comps / 150)
-			
-		},
-		5: function(comps) {
-			if (comps == 0) return 0
-			return Math.log10(1 + player.resets) * Math.pow(comps, 0.4)
-		},
-		6: function(comps) {
-			if (comps == 0) return 1
-			return player.achPow.pow(comps * 2 - 1)
-		},
-		7: function(comps) {
-			if (comps == 0) return 1
-			return Math.pow(0.975, comps)
-		},
-		8: function(comps) {
-			if (comps == 0) return 1
-			return comps + 2
-		}
-	}
-}
-
 function updateQCRewardsTemp() {
 	tmp.qu.chal.reward = {}
-	for (var c = 1; c <= 8; c++) tmp.qu.chal.reward[c] = qcRewards.effects[c](QCIntensity(c))
+	for (var c = 1; c <= 8; c++) tmp.qu.chal.reward[c] = QC[c].reward_eff(QCIntensity(c))
 }
 
 function isQCFree() {
@@ -150,7 +222,7 @@ function getQCIdCost(qcs) {
 	if (isQCFree()) return 0
 
 	let r = 0
-	for (var qc of qcs) r += quantumChallenges.costs[qc]
+	for (var qc of qcs) r += QC[qc].cost
 	return r
 }
 
@@ -190,7 +262,7 @@ function updatePairedChallenges() {
 		el(property+"cost").textContent = isQCFree() ? "" : "Req: " + (sc2 ? getFullExpansion(getQCCost(pc + 8)) : "???") + " Positrons"
 		el(property+"goal").textContent = "Goal: " + (sc2 ? shortenCosts(getQCGoal(pc + 8)) : "???") + " antimatter"
 		el(property).textContent = pcFocus == pc ? "Cancel" : (quSave.pairedChallenges.order[pc] ? quSave.pairedChallenges.order[pc].length < 2 : true) ? "Assign" : quSave.pairedChallenges.completed >= pc ? "Completed" : quSave.pairedChallenges.completed + 1 < pc ? "Locked" : quSave.pairedChallenges.current == pc ? "Running" : "Start"
-		el(property).className = pcFocus == pc || (quSave.pairedChallenges.order[pc] ? quSave.pairedChallenges.order[pc].length < 2 : true) ? "challengesbtn" : quSave.pairedChallenges.completed >= pc ? "completedchallengesbtn" : quSave.pairedChallenges.completed + 1 <pc ? "lockedchallengesbtn" : quSave.pairedChallenges.current == pc ? "onchallengebtn" : "challengesbtn"
+		el(property).className = pcFocus == pc ? "onchallengebtn" : (quSave.pairedChallenges.order[pc] ? quSave.pairedChallenges.order[pc].length < 2 : true) ? "challengesbtn" : quSave.pairedChallenges.completed >= pc ? "completedchallengesbtn" : quSave.pairedChallenges.completed + 1 <pc ? "lockedchallengesbtn" : quSave.pairedChallenges.current == pc ? "onchallengebtn" : "challengesbtn"
 
 		var sc1t = Math.min(sc1, sc2)
 		var sc2t = Math.max(sc1, sc2)

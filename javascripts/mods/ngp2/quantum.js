@@ -105,7 +105,7 @@ function getEPtoQKMult(){
 
 function getNGP3p1totalQKMult(){
 	let log = 0
-	if (hasGluonUpg("rg5")) log += 1
+	if (hasGluonUpg("rg", 5)) log += 1
 	if (hasAch("ng3p16")) log += getEPtoQKMult()
 	if (hasAch("ng3p33")) log += Math.log10(getQCtoQKEffect())
 	if (hasAch("ng3p53")) log += brSave && brSave.spaceShards.plus(1).log10()
@@ -326,6 +326,9 @@ function doQuantum(force, auto, qc = {}) {
 			brSave.bestThisRun = E(0)
 			if (brokeEternity()) beSave.did = true
 		} else {
+			brSave.banked_replicanti = E(1)
+			if (hasBLMilestone(0)) brSave.banked_replicanti = player.replicanti.amount.pow(0.9)
+
 			if (!hasRipUpg(1)) {
 				player.infmultbuyer = true
 				for (var d=0;d<8;d++) player.infDimBuyers[d] = true
@@ -394,7 +397,10 @@ function doQuantum(force, auto, qc = {}) {
 	el("ghostifybtn").style.display = "none"
 
 	//Post-Quantum
-	if (bigRip) for (var u = 0; u < brSave.upgrades.length; u++) tweakBigRip(brSave.upgrades[u])
+	if (bigRip) {
+		for (var u = 0; u < brSave.upgrades.length; u++) tweakBigRip(brSave.upgrades[u])
+		player.replicanti.amount = E(brSave.banked_replicanti || 1)
+	}
 	if (ghostified) ghSave.neutrinos.generationGain = ghSave.neutrinos.generationGain % 3 + 1
 }
 
@@ -497,7 +503,7 @@ RESETS.qu = {
 		player.masterystudies = bigRip && !hasRipUpg(12) ? ["d7", "d8", "d9", "d10", "d11", "d12", "d13", "d14"] : speedrunMilestonesReached >= 16 && isRewardEnabled(11) ? player.masterystudies : []
 		player.respecMastery = false
 
-		ipMultPower = hasGluonUpg("gb3") ? 2.3 : hasMasteryStudy("t241") ? 2.2 : 2
+		ipMultPower = hasGluonUpg("gb", 3) ? 2.3 : hasMasteryStudy("t241") ? 2.2 : 2
 		quSave.electrons.amount = 0
 		quSave.electrons.sacGals = 0
 		if (speedrunMilestonesReached < 25 && player.quantum.autoOptions.sacrifice) toggleAutoQuantumContent('sacrifice')

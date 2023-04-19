@@ -1320,7 +1320,7 @@ function eternity(force, auto, dil, presetLoad) {
 	player.eternityChallGoal = E(Number.MAX_VALUE)
 	if (player.currentEternityChall !== "" && player.infinityPoints.lt(player.eternityChallGoal)) return false
 	if (player.currentEternityChall == "eterc6" && ECComps("eterc6") < 5 && player.dimensionMultDecrease < 4) player.dimensionMultDecrease = Math.max(parseFloat((player.dimensionMultDecrease - 0.2).toFixed(1)),2)
-	if (!hasGluonUpg("gb4")) if ((player.currentEternityChall == "eterc11" || (player.currentEternityChall == "eterc12" && ghostified)) && ECComps("eterc11") < 5) player.tickSpeedMultDecrease = Math.max(parseFloat((player.tickSpeedMultDecrease - 0.07).toFixed(2)), 1.65)
+	if (!hasGluonUpg("gb", 4)) if ((player.currentEternityChall == "eterc11" || (player.currentEternityChall == "eterc12" && ghostified)) && ECComps("eterc11") < 5) player.tickSpeedMultDecrease = Math.max(parseFloat((player.tickSpeedMultDecrease - 0.07).toFixed(2)), 1.65)
 	updateEternityChallenges()
 
 	//Dilation
@@ -2102,10 +2102,7 @@ function challengeOverallDisplayUpdating(){
 	if (isTabShown("eternitychallenges")) ECRewardDisplayUpdating()
 	if (isTabShown("quantumchallenges")) {
 		el("qcDisclaimer").innerHTML = (isQCFree() ? "" : "Spend Positrons to start Quantum Challenges.<br>You have " + getFullExpansion(Math.round(quSave.electrons.amount)) + " Positrons.<br>") + "<b class='red'>Positrons are disabled in Quantum Challenges!</b>"
-		for (var c=1;c<7;c++) {
-			if (c==5) el("qc5reward").textContent = getDimensionPowerMultiplier("linear").toFixed(2)
-			else if (c!=2) el("qc"+c+"reward").textContent = shorten(tmp.qu.chal.reward[c])
-		}
+		for (var c = 1; c <= 8; c++) el("qc" + c + "reward").textContent = QC[c].reward_eff_disp(tmp.qu.chal.reward[c])
 	}
 	if (isTabShown("bigrip")) updateBigRipTab()
 }

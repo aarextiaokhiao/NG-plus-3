@@ -46,11 +46,6 @@ var automators = {
 		req: 6.5,
 		pow: 0.5,
 	},
-	12: {
-		title: "Radioactive Decay",
-		req: 7,
-		pow: 0.5,
-	},
 	13: {
 		title: "Big Rip",
 		html: `Rip in: <input id="autoGhost13t" onchange="changeAutoGhost('13t')"/>s<br>
@@ -83,8 +78,13 @@ var automators = {
 		req: 13,
 		pow: 1.5,
 	},
+	12: {
+		title: "Radioactive Decay",
+		req: 15,
+		pow: 2,
+	},
 }
-const automatorOrder = [1,5,6,7,18,8,9,10,11,12,13,14,15,16,2]
+const automatorOrder = [1,5,6,7,18,8,9,10,11,13,14,15,16,2,12]
 
 function setupAutomaticGhostsData() {
 	var data = {power: 0, ghosts: 3}
@@ -132,7 +132,7 @@ function loadAutoGhost(id) {
 	let data = ghSave.automatorGhosts
 	el("autoGhost" + id).className = "autoBuyerDiv " + (data[id].on ? "on" : "")
 	el("isAutoGhostOn" + id).textContent = data[id].on ? "Vacate" : "Hire"
-	el("isAutoGhostOn" + id).className = "storebtn " + (data[id].on ? "chosenbtn" : "antbtn")
+	el("isAutoGhostOn" + id).className = "storebtn " + (data[id].on ? "chosen" : "antbtn")
 }
 
 function toggleAutoGhost(id) {

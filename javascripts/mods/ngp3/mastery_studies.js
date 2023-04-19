@@ -512,10 +512,7 @@ function buyingDilStudyRip(){
 function buyingDilationStudy(id){
 	if (id == 7) buyingD7Changes()
 	if (id == 8) buyingDilStudyQC()
-	if (id == 9) {
-		buyingDilStudyPC()
-		updateGluonsTabOnUpdate()
-	}
+	if (id == 9) buyingDilStudyPC()
 	if (id == 10) buyingDilStudyReplicant()
 	if (id == 11) buyingDilStudyED()
 	if (id == 12) buyingDilStudyNanofield()
@@ -550,7 +547,7 @@ function buyMasteryStudy(type, id, quick=false) {
 			masteryStudies.costMult *= getMasteryStudyCostMult(id)
 			masteryStudies.latestBoughtRow = Math.max(masteryStudies.latestBoughtRow, Math.floor(id / 10))
 		}
-		if (id == 241 && !hasGluonUpg("gb3")) {
+		if (id == 241 && !hasGluonUpg("gb", 3)) {
 			var otherMults = 1
 			if (hasAch("r85")) otherMults *= 4
 			if (hasAch("r93")) otherMults *= 4

@@ -3,7 +3,7 @@ const BOSONIC_LAB = LAB = {
 	/* CORE */
 	//Unlock
 	req: _ => PHOTON.totalEmissions() >= 15,
-	unlocked: _ => ghSave?.lab.unl,
+	unlocked: _ => blSave?.unl,
 	unlock() {
 		blSave.unl = true
 		ngp3_feature_notify("bl")
@@ -33,8 +33,8 @@ const BOSONIC_LAB = LAB = {
 		let data = {}
 		tmp.funda.lab = data
 
-		WEAK_FORCE.temp()
 		BL_HYPOTHESES.temp()
+		WEAK_FORCE.temp()
 
 		data.ms = {}
 		for (var [i, d] of Object.entries(this.milestones)) {
@@ -43,88 +43,106 @@ const BOSONIC_LAB = LAB = {
 	},
 
 	/* BOSONS */
-	// Goal: 2.5M cap + 200/s Boson production + x10 production from other sources
-	// 2.5M seconds ~ 28 days!
+	// Goal: 10M Bosons (100/s Boson production + x10 from Milestones)
 	prod() {
-		let r = E(0)
-		r = r.mul(bondEff("0;1"))
+		return E(0)
+		//Bosonic Milestones aren't implemented
+
+		let r = E(bondEff("0;1", 0))
+		if (bondEff("1;3") >= 5) r = r.mul(2)
 		if (isCapacitorsActive()) r = r.mul(capacitorEff(0))
-		if (isCapacitorsActive() && r.gt(1)) r = r.pow(capacitorEff(1))
+		if (isCapacitorsActive()) r = r.mul(capacitorEff(1))
+		if (isCapacitorsActive() && r.gt(1)) r = r.pow(capacitorEff(2))
 		return r
 	},
 	milestones: [
 		{
 			//QOL
-			req: E(10),
+			req: E(100),
 			desc: "[QOL] Bank ^0.9 of Replicantis on exiting Big Rips."
 		}, {
-			req: E(30),
-			desc: "Bosons boost Photons.",
-			eff: b => 1,
-			effDesc: e => `(by ${shorten(e)}x)`,
+			req: E(200),
+			desc: "Replicanti Absorb speeds up Replicantis.",
+			eff: b => Math.max((tmp.rep.absorb || 1) / 5, 1),
+			effDesc: e => shorten(e) + "x",
 		}, {
-			req: E(60),
+			req: E(500),
 			desc: "Bosons strengthen 1st Tree Upgrade.",
-			eff: b => 1,
-			effDesc: e => `(by ${shorten(e)}x)`,
-		}, {
-			//QOL
-			req: E(100),
-			desc: "[QOL] Preon charge production boosts pilon energy instead."
-		}, {
-			req: E(120),
-			desc: "Eternities boost Space Shards more.",
-		}, {
-			req: E(240),
-			desc: "Galaxy strength scales Positrons softcap later.",
-			eff: b => 1,
-			effDesc: e => `(by ${shorten(e)}x)`,
-		}, {
-			req: E(480),
-			desc: "Replicated Galaxies add Intergalactic.",
-			eff: b => 0,
-			effDesc: e => `(by +${shorten(e)})`,
-		}, {
-			req: E(960),
-			desc: "Galaxy strength raises galaxy bonus to replicantis."
+			eff: b => Math.log10(b.max(1).log10() + 10),
+			effDesc: e => shorten(e) + "x",
 		}, {
 			//QOL
 			req: E(1e3),
+			desc: "[QOL] Preon charge production boosts pilon energy instead."
+		}, {
+			req: E(1.5e3),
+			desc: "Eternities boost Space Shards more.",
+		}, {
+			req: E(2e3),
+			desc: "Replicated Galaxies add Intergalactic outside of Big Rips.",
+			eff: b => getTotalRG(),
+			effDesc: e => "+" + shortenDimensions(e)
+		}, {
+			req: E(5e3),
+			desc: "Galaxy strength boosts Intergalactic outside of Big Rips.",
+			eff: b => Math.pow(Math.max(tmp.gal.str / 20, 1), 0.6),
+			effDesc: e => shorten(e) + "x"
+		}, {
+			//QOL
+			req: E(1e4),
 			desc: "[QOL] Enable Time Dimensions in Eternity Challenge 10, but can't upgrade."
 		}, {
-			req: E(1920),
-			desc: "Elementary Particles boost Bosons.",
-			eff: b => 1,
-			effDesc: e => `(by ${shorten(e)}x)`,
+			req: E(1.5e4),
+			desc: "Replicanti efficiency boosts Time Dimensions more."
 		}, {
-			req: E(3840),
-			desc: "Per-bought Time Dimensions work in Big Rip, but reduced."
+			req: E(2e4),
+			desc: "Per-bought Time Dimensions works in Big Rip, but reduced."
 		}, {
-			req: E(7680),
+			req: E(5e4),
 			desc: "Bosons increase Neutrino multiplier base.",
-			eff: b => 0,
-			effDesc: e => `(by +${shorten(e)}x)`,
+			eff: b => Math.log10(b.max(1).log10() + 1),
+			effDesc: e => "+" + shorten(e) + "x",
 		}, {
-			req: E(15360),
-			desc: "Replicantis boost Emperor Dimensions."
-		}, {
-			req: E(30720),
-			desc: "Bosons multiply Radioactive Decays boost to Tree Upgrades."
-		}, {
-			req: E(61440),
-			desc: "Galaxy strength boosts Intergalactic."
-		}, {
+			//QOL
 			req: E(1e5),
-			desc: "Eternities boost Dilated Time more."
+			desc: "[QOL] Replicantis replicate 5x faster up to the point based on Replicate Slowdown.",
+			eff: b => pow10((tmp.rep.speeds?.exp || 1) * 1e3),
+			effDesc: e => "Up to " + shortenDimensions(e)
+		}, {
+			req: E(1.5e5),
+			desc: "Elementary Particles boost Bosons.",
+			eff: b => ghSave.ghostParticles.max(1).log10() / 50 + 1,
+			effDesc: e => shorten(e) + "x"
 		}, {
 			req: E(2e5),
-			desc: "Replicanti Absorb speeds up Replicantis."
+			desc: "Replicantis boost Emperor Dimensions.",
+			eff: b => pow10(Math.pow(tmp.rep.eff.log10(), 3/4) / 5e3),
+			effDesc: e => shorten(e) + "x",
 		}, {
 			req: E(5e5),
-			desc: "Enlightenments boost Bosons."
+			desc: "Bosons multiply Radioactive Decays boost to Tree Upgrades.",
+			eff: b => Math.log10(b.max(1).log10() + 1) + 1,
+			effDesc: e => shorten(e) + "x",
 		}, {
+			//QOL
 			req: E(1e6),
-			desc: "Scaling Remote Galaxies later also scales Distant Galaxies."
+			desc: "[QOL] Bosons add Automator Potency."
+		}, {
+			req: E(1.5e6),
+			desc: "Scaling Remote Galaxies later also scales Distant Galaxies.",
+			eff: b => getRemoteScalingStart() / 500,
+			effDesc: e => "+" + shortenDimensions(e),
+		},{
+			req: E(2e6),
+			desc: "Eternities boost Dilated Time more."
+		}, {
+			req: E(5e6),
+			desc: "Bosons boost Photons.",
+		}, {
+			req: E(1e7),
+			desc: "Enlightenments boost Bosons.",
+			eff: b => ghSave.photons.lighten / 2 + 1,
+			effDesc: e => shorten(e) + "x"
 		}
 	],
 
@@ -137,7 +155,7 @@ const BOSONIC_LAB = LAB = {
 		for (var [i, d] of Object.entries(this.milestones)) {
 			html += `<tr id='bl_milestone_div_${i}'>
 				<td><b id='bl_milestone_req_${i}'></b></td>
-				<td><button class="milestonerewardlocked" id='bl_milestone_${i}'>
+				<td><button class="milestonerewardlocked" id='bl_milestone_${i}' style='font-size: 10.5px'>
 					${d.desc}<br>
 					${d.effDesc ? `Currently: <span id='bl_milestone_eff_${i}'></span>` : ""}
 				</button></td>
@@ -147,7 +165,7 @@ const BOSONIC_LAB = LAB = {
 	},
 	update() {
 		el("bl_amt").textContent = shorten(blSave.bosons)
-		el("bl_best").textContent = "(" + shorten(blSave.best_bosons) + " best)"
+		el("bl_best").textContent = "" //"(" + shorten(blSave.best_bosons) + " best)"
 		el("bl_prod").textContent = shorten(this.prod()) + "/s"
 
 		if (isTabShown("hypotheses")) BL_HYPOTHESES.update()
@@ -191,9 +209,8 @@ const BL_HYPOTHESES = {
 			this.recordBond(y+";"+x, (y+1)+";"+x)
 		}
 
-		let str = this.hypo_str()
 		tmp.funda.lab.bond_eff = {}
-		for (let [i, a] of Object.entries(tmp.funda.lab.bond)) tmp.funda.lab.bond_eff[i] = this.bond_eff[i].eff(a * str)
+		for (let [i, a] of Object.entries(tmp.funda.lab.bond)) tmp.funda.lab.bond_eff[i] = this.bond_eff[i].eff(a)
 	},
 
 	/* HYPOTHESES */
@@ -212,14 +229,9 @@ const BL_HYPOTHESES = {
 			unl: _ => true,
 		}, {
 			name: "Spectral",
-			unl: _ => false,
+			unl: _ => blSave.best_bosons.gte(1e3),
 		}
 	],
-	hypo_str() {
-		let r = 1
-		if (isCapacitorsActive()) r = capacitorEff(2)
-		return r
-	},
 
 	/* FIELD */
 	clear() {
@@ -246,16 +258,28 @@ const BL_HYPOTHESES = {
 	},
 	bond_eff: {
 		["0;1"]: {
-			eff: x => x/10+1,
-			disp: e => `Boost Bosons by <b>${shorten(e)}x</b>`,
+			eff: x => x/40,
+			disp: e => `Generate <b>${shorten(e)}/s</b> Bosons.`,
 		},
 		["0;2"]: {
-			eff: x => Math.floor(x/2),
+			eff: x => Math.floor(x/5),
 			disp: e => `Add W Bosons by <b>+${e}</b>`,
 		},
 		["1;2"]: {
 			eff: x => Math.floor(x/10),
 			disp: e => `Add Z0 Bosons by <b>+${e}</b>`,
+		},
+		["0;3"]: {
+			eff: x => Math.cbrt(x/4+1),
+			disp: e => `Strengthen W-Z Capacitors by <b>${shorten(e)}x</b>`,
+		},
+		["1;3"]: {
+			eff: x => x,
+			disp: e => `At 3 levels, double Bosons. <b>(${e}/3)</b>`,
+		},
+		["2;3"]: {
+			eff: x => x,
+			disp: e => `At 5 levels, double Z0 Bosons. <b>(${e}/5)</b>`,
 		}
 	},
 
@@ -321,8 +345,9 @@ const WEAK_FORCE = {
 		}
 
 		let eff = {}
+		let str = bondEff("0;3")
 		tmp.funda.lab.capacitors = eff
-		for (var [i, d] of Object.entries(this.capacitors)) eff[i] = d.eff(blSave.wz_capacitors[i].p)
+		for (var [i, d] of Object.entries(this.capacitors)) eff[i] = d.eff(blSave.wz_capacitors[i].p * str)
 	},
 
 	/* BOSONS */
@@ -333,6 +358,7 @@ const WEAK_FORCE = {
 		},
 		z() {
 			let r = bondEff("1;2", 0)
+			if (bondEff("2;3") >= 5) r *= 2
 			return r
 		}
 	},
@@ -340,11 +366,15 @@ const WEAK_FORCE = {
 	/* CAPACIATORS */
 	capacitors: [
 		{
+			eff: x => Math.sqrt(x + 1),
+			disp: e => `Boost Bosons by <b>${shorten(e)}x</b>.`,
+			unl: _ => true,
+		}, {
 			eff: x => blSave.bosons.add(1).log10() * Math.sqrt(x) + 1,
 			disp: e => `Bosons boost itself by <b>${shorten(e)}x</b>.`,
 			unl: _ => true,
 		}, {
-			eff: x => Math.sqrt(x/10+1),
+			eff: x => Math.sqrt(x + 1),
 			disp: e => `Raise Bosons by <b>^${shorten(e)}</b>.`,
 			unl: _ => true,
 		}, {
@@ -405,7 +435,7 @@ const WEAK_FORCE = {
 }
 
 function isCapacitorsActive() {
-	return tmp.funda.lab.bosons.hc > 0
+	return tmp.funda.lab.bosons?.hc > 0
 }
 
 function capacitorEff(i, def = 1) {

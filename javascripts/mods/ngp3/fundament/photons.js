@@ -104,7 +104,7 @@ let PHOTON = {
 		{
 			name: "red",
 			start: 1,
-			eff: a => E_pow(tmp.gal.ts || 1, -Math.min(Math.sqrt(a) / 20, 0.3)),
+			eff: a => E_pow(tmp.gal.ts || 1, -Math.min(Math.sqrt(a) / 20, 0.2)),
 			desc: e => `Multiply per-ten multiplier by ${shorten(e)}x. (based on tickspeed reduction)`
 		}, {
 			name: "orange",
@@ -114,7 +114,7 @@ let PHOTON = {
 		}, {
 			name: "yellow",
 			start: 4,
-			eff: a => Math.min(Math.cbrt(a / 10 + 1) - 1, 1),
+			eff: a => Math.log2(a + 1) / 20,
 			desc: e => `Discharged Galaxies work, but as ${(e*100).toFixed(1)}% effective.`
 		}, {
 			name: "green",
@@ -145,6 +145,7 @@ let PHOTON = {
 		return tmp.funda?.photon?.eff[x] ?? def
 	},
 	trade(x) {
+		ghSave.photons.offset_click = x
 		ghSave.photons.offset[x] += tmp.funda.photon.leftover ? .125 : -.125
 		ghSave.photons.offset[x] = Math.max(ghSave.photons.offset[x], -.25)
 		PHOTON.temp()
@@ -199,6 +200,7 @@ let PHOTON = {
 			el("ph_light_amt_" + i).textContent = shorten(ghSave.photons.light[i] || 0) + " / " + shorten(PHOTON.lightCap(i))
 			el("ph_light_eff_" + i).textContent = light.desc(PHOTON.eff(i))
 			el("ph_light_trade_" + i).textContent = tmp.funda.photon.leftover ? "Absorb" : "Exchange"
+			el("ph_light_trade_" + i).className = tmp.funda.photon.leftover && ghSave.photons.offset_click == i ? "chosen" : tmp.funda.photon.leftover || ghSave.photons.offset[i] > -.25 ? "storebtn" : "unavailablebtn"
 
 			el("ph_light_div_" + i).style.display = ghSave.photons.light[i] ? "" : "none"
 			el("ph_light_req_" + i).style.display = ghSave.photons.light[i] ? "none" : ""

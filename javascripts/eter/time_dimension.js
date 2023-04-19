@@ -7,6 +7,7 @@ function getBreakEternityTDMult(tier){
 	if (isBreakUpgActive(4) && tier > 3 && tier < 7) ret = ret.mul(tmp.qu.beu[4])
 	if (hasRipUpg(13)) ret = ret.mul(player.replicanti.amount.max(1).pow(1e-6))
 	if (tier == 7 && hasRipUpg(16)) ret = ret.mul(tmp.qu.bru[16])
+	if (hasBLMilestone(9)) ret = ret.mul(player["timeDimension"+tier].power.pow(0.01))
 	if (ret.lt(0)) ret = E(0)
 	return dilates(ret)
 }
@@ -29,6 +30,7 @@ function calcNGM2atleastTDPreVPostDilMultiplier(tier){
 	if (player.eternityUpgrades.includes(4)) ret2 = ret2.mul(player.achPow)
 	if (player.eternityUpgrades.includes(5)) ret2 = ret2.mul(Math.max(player.timestudy.theorem, 1))
 	if (player.eternityUpgrades.includes(6)) ret2 = ret2.mul((player.totalTimePlayed + ngPlus) / 10 / 60 / 60 / 24)
+	if (hasGSacUpg(43)) ret = ret.mul(galMults.u43())
 	return ret2
 }
 
@@ -62,7 +64,7 @@ function getTimeDimensionPower(tier) {
 
 	if (ECComps("eterc10") !== 0) ret = ret.mul(getECReward(10))
 	if (hasAch("r128")) ret = ret.mul(Math.max(player.timestudy.studies.length, 1))
-	if (hasGSacUpg(43)) ret = ret.mul(galMults.u43())
+	if (player.dilation.upgrades.includes(5)) ret = ret.mul(tmp.rep.eff.pow(hasBLMilestone(8) ? .5 : .1))
 
 	ret = dilates(ret, 2)
 	if (inNGM(2)) ret = ret.mul(ret2)

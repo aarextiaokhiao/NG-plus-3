@@ -136,7 +136,6 @@ function buyQuantumFood() {
 		quSave.gluons.br = quSave.gluons.br.sub(quSave.replicants.quantumFoodCost)
 		quSave.replicants.quantumFood++
 		quSave.replicants.quantumFoodCost = quSave.replicants.quantumFoodCost.mul(5)
-		updateGluonsTabOnUpdate("spend")
 	}
 }
 
@@ -147,7 +146,6 @@ function reduceHatchSpeed() {
 		quSave.gluons.br = quSave.gluons.br.sub(quSave.replicants.hatchSpeedCost)
 		quSave.replicants.hatchSpeed = quSave.replicants.hatchSpeed / 1.1
 		quSave.replicants.hatchSpeedCost = quSave.replicants.hatchSpeedCost.mul(10)
-		updateGluonsTabOnUpdate("spend")
 	}
 }
 
@@ -244,7 +242,6 @@ function buyMaxQuantumFood() {
 	subtractGluons(toSpend)
 	quSave.replicants.quantumFood += toBuy
 	quSave.replicants.quantumFoodCost = quSave.replicants.quantumFoodCost.mul(E_pow(5, toBuy))
-	updateGluonsTabOnUpdate("spend")
 }
 
 function canFeedReplicant(tier, auto) {
@@ -344,7 +341,6 @@ function maxReduceHatchSpeed() {
 	subtractGluons(toSpend)
 	quSave.replicants.hatchSpeed /= Math.pow(1.1, toBuy)
 	quSave.replicants.hatchSpeedCost = quSave.replicants.hatchSpeedCost.mul(pow10(toBuy))
-	updateGluonsTabOnUpdate()
 }
 
 function replicantReset(bulk = false) {
@@ -369,7 +365,6 @@ function breakLimit() {
 			quSave.replicants.limitDim++
 		}
 		if (quSave.replicants.limit % 10 > 0) quSave.replicants.limitCost = quSave.replicants.limitCost.mul(200)
-		updateGluonsTabOnUpdate("spend")
 	}
 }
 
@@ -401,7 +396,6 @@ function maxBuyLimit() {
 		min = quSave.gluons.rg.min(quSave.gluons.gb).min(quSave.gluons.br)
 		if (!min.gte(quSave.replicants.limitCost) && isLimitUpgAffordable()) break
 	}
-	updateGluonsTabOnUpdate()
 }
 
 //UPDATES

@@ -294,7 +294,7 @@ function setR14Tooltip(){
 	onlywar.setAttribute('ach-tooltip', "Reach "+shortenMoney(E('1e40000'))+" EP." + (onlywarReward.length ? " Reward: " + wordizeList(onlywarReward, true) + "." : ""))
 	thecap.setAttribute('ach-tooltip', "Get "+shortenDimensions(1e12)+" eternities. Reward: Eternity Upgrade 2 uses a better formula.")
 	neverenough.setAttribute('ach-tooltip', "Reach "+shortenCosts(E("1e100000"))+" replicanti." + (neverenoughReward.length ? " Reward: " + wordizeList(neverenoughReward, true) + "." : ""))
-	harmony.setAttribute('ach-tooltip', mod.ngpp ? "Have at least 700 normal, replicanti, and free dilated galaxies. Reward: Galaxies are 0.1% stronger." : "Get the same amount (at least 300) of normal, replicanti, and free galaxies.")
+	harmony.setAttribute('ach-tooltip', mod.ngpp ? "Have at least 700 normal, replicanti, and tachyonic galaxies. Reward: Galaxies are 0.1% stronger." : "Get the same amount (at least 300) of normal, replicated, and tachyonic galaxies.")
 }
 
 function setR15Tooltip(){

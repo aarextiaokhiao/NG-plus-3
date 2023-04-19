@@ -1,6 +1,6 @@
 //VERSION: 2.31
 let ngp3_ver = 2.31
-let ngp3_build = 20230417
+let ngp3_build = 20230418
 function doNGP3Updates() {
 	if (!aarMod.ngp3_build) aarMod.ngp3_build = 0
 	if (aarMod.ngp3_build < 20221230) quSave.multPower = 0
@@ -30,18 +30,13 @@ function doNGP3Updates() {
 	}
 	if (aarMod.ngp3_build < 20230215) player.dilation.freeGalaxies = 0
 	if (aarMod.ngp3_build < 20230215 && E(ghSave?.ghostParticles).gte(1e20)) {
-		ghSave.ghostParticles = E(1e20)
-		ghSave.multPower = 1
-		ghSave.neutrinos.electron = E(0)
-		ghSave.neutrinos.mu = E(0)
-		ghSave.neutrinos.tau = E(0)
-		ghSave.neutrinos.multPower = 1
-		ghSave.neutrinos.boosts = 9
-		ghSave.neutrinos.upgrades = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
-		beSave.upgrades = [1, 2, 3, 4, 5, 6]
-
 		alert("Due to massive balancing changes, you will be pushed back to e20 Spectral Particles!")
-		doReset("qu")
+
+		resetGHPandNeutrinos()
+		ghSave.neutrinos.upgrades = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+		ghSave.neutrinos.boosts = 9
+		beSave.upgrades = [1, 2, 3, 4, 5, 6]
+		ghSave.ghostParticles = E(1e20)
 	}
 	if (aarMod.ngp3_build < 20230331 && ghSave) {
 		delete ghSave.wzb
@@ -50,7 +45,17 @@ function doNGP3Updates() {
 		delete ghSave.photons.plusOne
 		ghSave.photons.offset = [0,0,0,0,0,0,0]
 	}
-	if (aarMod.ngp3_build < 20230414 && ghSave?.lab) ghSave.lab.wz_capacitors = WEAK_FORCE.setup()
+	if (aarMod.ngp3_build < 20230414 && blSave) blSave.wz_capacitors = WEAK_FORCE.setup()
+	/*if (aarMod.ngp3_build < 20230419 && E(ghSave?.ghostParticles).gte(1e40)) {
+		alert("Due to massive balancing changes, you will be pushed back to e40 Spectral Particles!")
+
+		resetGHPandNeutrinos()
+		ghSave.photons.emissions = []
+		ghSave.photons.lighten = []
+		ghSave.ghostParticles = E(1e40)
+		blSave.bosons = E(0)
+		blSave.best_bosons = E(0)
+	}*/
 	aarMod.newGame3PlusVersion = ngp3_ver
 	aarMod.ngp3_build = ngp3_build
 }
@@ -64,7 +69,7 @@ var quantumTabs = {
 	tabIds: ["uquarks", "gluons", "positrons", "duplicants", "tod"],
 	update: {
 		uquarks: updateQuarksTab,
-		gluons: updateGluonsTab,
+		gluons: _ => GLUON.update(),
 		positrons: updatePositronsTab,
 		tod: updateTreeOfDecayTab
 	}
@@ -460,9 +465,9 @@ function intergalacticDisplay() {
 		if (hasNanoReward("dil_exp")) nanopart = getNanorewardEff("dil_exp")
 		el("intergalacticLabel").innerHTML = 
 			'Intergalactic ' + 
-			'(' + getFullExpansion(player.galaxies) + ')' +
+			'(' + getFullExpansion(Math.floor(tmp.qu.intergal.gal)) + ')' +
 			(player.dilation.active || inNGM(2) ? ": (estimated)" : ": ") +
-			shorten(dilates(tmp.qu.intergal).pow(player.dilation.active ? nanopart : 1)) + 
+			shorten(dilates(tmp.qu.intergal.eff).pow(player.dilation.active ? nanopart : 1)) + 
 			'x to Eighth Dimensions'
 	} else el("intergalacticLabel").parentElement.style.display = "none"
 }
@@ -549,7 +554,6 @@ function doPerSecondNGP3Stuff(){
 	updateMasteryStudyTextDisplay()
 	updateAssortOptions()
 	updateQuantumWorth()
-	updateQCDisplaysSpecifics()
 	updatePostBM14Display()
 }
 
@@ -722,6 +726,8 @@ function updateNetTop(toggle) {
 //Setup
 function setupNGP3HTMLAndData() {
 	setupMasteryStudiesHTML()
+	GLUON.setupTab()
+	setupQCHTML()
 	setupPCTable()
 	setupEmpDimensionHTML()
 	setupNanofieldHTML()

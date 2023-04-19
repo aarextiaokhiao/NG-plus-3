@@ -159,12 +159,15 @@ strong { color: #0072e5 }
 .autoBuyerDiv {
     border-color: #727272
 }
-#blackHoleTabbtn button, #blackholeunlock.storebtn, #blackholediv table .storebtn, #tab_ant, #replicantReset.storebtn, #edtabbtn button, #edtabbtn_dim button {
+#blackHoleTabbtn button, #blackholeunlock.storebtn, #blackholediv table .storebtn, .antbtn, #replicantReset.storebtn, #edtabbtn button {
 	border: 2px solid #333333 !important;
 	text-shadow: none
 }
-#blackHoleTabbtn button:hover, #blackholeunlock.storebtn:hover, #blackholediv table .storebtn:hover, #tab_ant:hover, #replicantReset.storebtn:hover, #edtabbtn button:hover, #edtabbtn_dim button:hover { background-color: #333333 !important; }
-#darkMatter, #darkMatterPerSecond, #darkMatterDT, #nextDiscounts, #darkMatterMult, #blackholePowAmount, #DilMultAmount, #InfAndReplMultAmount, #replicantAmount, #workerReplAmount, #babyReplAmount, #workerProgress, #hatchProgress, #growupProgress, #replicantAmountED, #normalReplicantsNanofield { 
+#blackHoleTabbtn button:hover, #blackholeunlock.storebtn:hover, #blackholediv table .storebtn:hover, .antbtn:hover, #replicantReset.storebtn:hover, #edtabbtn button:hover {
+	background-color: #333333 !important;
+	box-shadow: none
+}
+#blackholePowAmount, #DilMultAmount, #InfAndReplMultAmount, #replicantAmount, #workerReplAmount, #babyReplAmount, #workerProgress, #hatchProgress, #growupProgress, #replicantAmountED { 
 	color: #333333 !important;
 	text-shadow: 0px 0px 3px #333333, 0px 0px 4.5px #e5e5e5
 }
@@ -566,29 +569,13 @@ strong { color: #0072e5 }
 	background-color: #bfaf5f !important;
 	color: #191919 !important
 }
-.qu_upg.gph {
-	border-color: #bfaf5f !important;
-	color: #191919 !important;
-	text-shadow: 0px 0px 3px #191919, 0px 0px 6px #bfaf5f
-}
-.qu_upg.gph:hover {
-	color: #e5e5e5 !important;
-	text-shadow: 0px 0px 3px #e5e5e5, 0px 0px 6px #191919;
-}
-.dmAmount {
-	color: black !important;
-	text-shadow: 0 0 6px #ffff00 !important;
-}
-.gphAmount {
-	color: #bfaf5f
-}
 .ghr {
 	color: #ccc8b7
 }
 .orange {
 	color: #e57200
 }
-.yellow, #hbUnspent, #bosonicFactorEffect {
+.yellow {
 	color: #e5e500
 }
 .indigo {
@@ -600,74 +587,26 @@ strong { color: #0072e5 }
 .uv {
 	color: #ac00e5
 }
-.qu_upg.bl {
+.bosonic_btn {
 	background: repeating-linear-gradient(#620d65, transparent 50%, #620d65 100%), repeating-linear-gradient(90deg, transparent, #c73415 50%, transparent 100%), #191919 !important;
 	background-size: 200% 200% !important;
-	border: 2px solid transparent !important;
+	border: 2px solid #b70b !important;
 	color: #e5e5e5 !important;
-	text-shadow: 0px 0px 3px #191919, 0px 0px 6px #e5e5e5;
 	animation: bl 5s linear infinite
 }
-.qu_upg.bl:hover {
-	box-shadow: inset 0px 0px 24px #38cbea;
-	border-color: #38cbea !important
+.bosonic_btn:hover {
+    border-color: #b70 !important;
 }
-#bWatt, #bSpeed, #bTotalSpeed, #bAM, #bAMProduction, #bAMEffect, #bBt, #bBtProduction, #odSpeed, #zb, #zbSpeed {
-	color: #c73415
+.hypo_btn {
+	border: 1px solid #fff7 !important;
+	background: #e5e5e51f
 }
-.chosenbtn {
-    border-color: #191919 !important;
+.hypo_btn:hover {
+	background: #e5e5e57f
+}
+.chosen {
     background-color: #00e500 !important;
     color: #191919 !important
-}
-.bRune {
-	background: #e5e5e5;
-	box-shadow: 0px 0px 12px #e5e5e5
-}
-.bRune.Infinite {
-	background: #e2bd00;
-	box-shadow: 0px 0px 12px #e2bd00
-}
-.bRune.Eternal {
-	background: #7100e2;
-	box-shadow: 0px 0px 12px #7100e2
-}
-.bRune.Quantum {
-	background: #009900;
-	box-shadow: 0px 0px 12px #009900
-}
-.bRune.Ethereal {
-	box-shadow: 0px 0px 12px #3964e5
-}
-.qu_upg_bought.bl {
-	background: repeating-linear-gradient(#9df29a, transparent 50%, #9df29a 100%), repeating-linear-gradient(90deg, transparent, #38cbea 50%, transparent 100%), #191919 !important;
-	background-size: 200% 200% !important;
-	border: 1px solid transparent !important;
-	color: #191919 !important;
-	text-shadow: 0px 0px 3px #191919, 0px 0px 6px #e5e5e5;
-}
-#ap, #apProduction, #apLoss {
-	color: #e55be5 !important
-}
-#wpb, #wbTime, #wbOscillate, #wbProduction {
-	color: #7b267e;
-}
-#wnb {
-	color: #9df29a
-}
-.zero {
-	background: repeating-linear-gradient(#620d65, transparent 50%, #620d65 100%), repeating-linear-gradient(90deg, transparent, #9df29a 50%, transparent 100%), #191919;
-	background-size: 200% 200%;
-	box-shadow: 0px 0px 12px #e5e5e5
-}
-.down #wQkSymbol {
-	transform: translate(-50%, 15%)
-}
-.mu #zNeSymbol {
-	transform: translate(-50%, 10%)
-}
-.tau #zNeSymbol {
-	transform: translate(-50%, 10%)
 }
 .qu_upg.hb {
 	background: radial-gradient(#e5e500, transparent 50%, transparent 100%), radial-gradient(#727200, #727200, transparent 60%, transparent 100%), linear-gradient(transparent, #727200 50%, transparent 100%), radial-gradient(#3f3f00, #191919 50%, #3f3f00 100%);

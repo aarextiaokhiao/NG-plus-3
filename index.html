@@ -1964,128 +1964,7 @@
 			<div id="quantumchallenges" class="challengeTab">
 				<div id='qcDisclaimer'></div>
 				<div id='positronsAmount2'></div>
-				<table class="table" style="margin: 0 auto">
-					<tr>
-						<td>
-							<div class="quantumchallengediv" id="qc1div">
-								<span>Normal Dimensions 3-8 don't produce anything.</span>
-								<br>
-								<br>
-								<div class="outer">
-									<button id="qc1" class="challengesbtn" onclick="selectQC(1)">Start</button>
-									<br>
-									<span id="qc1cost"></span><br>
-									<span id="qc1goal"></span><br>
-									Reward: Add 0.25x to positron gain multiplier for each Quantum Challenge completed, and First & Second Dimensions boost dilated time production. Currently: <span id="qc1reward"></span>x
-								</div>
-							</div>
-						</td>
-						<td>
-							<div class="quantumchallengediv" id="qc2div">
-								<span>Galaxies do nothing.</span>
-								<br>
-								<br>
-								<div class="outer">
-									<button id="qc2" class="challengesbtn" onclick="selectQC(2)">Start</button>
-									<br>
-									<span id="qc2cost"></span><br>
-									<span id="qc2goal"></span><br>
-									Reward: Gain more Tachyonic Galaxies for each threshold. Currently: <span id="qc2reward"></span>%
-								</div>
-							</div>
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<div class="quantumchallengediv" id="qc3div">
-								<span>Meta-Antimatter boosts Infinity Dimensions instead.</span>
-								<br>
-								<br>
-								<div class="outer">
-									<button id="qc3" class="challengesbtn" onclick="selectQC(3)">Start</button>
-									<br>
-									<span id="qc3cost"></span><br>
-									<span id="qc3goal"></span><br>
-									Reward: Infinity Power boosts Meta Dimensions at greatly reduced rate. Currently: <span id="qc3reward"></span>x
-								</div>
-							</div>
-						</td>
-						<td>
-							<div class="quantumchallengediv" id="qc4div">
-								<span>Automatic Big Crunch Challenge apply to Normal, Infinity, Time and Meta Dimensions. Meta-Dimension Boosts scale slower, but nullify buffs.</span>
-								<br>
-								<br>
-								<div class="outer">
-									<button id="qc4" class="challengesbtn" onclick="selectQC(4)">Start</button>
-									<br>
-									<span id="qc4cost"></span><br>
-									<span id="qc4goal"></span><br>
-									Reward: All even Meta Dimensions boost all odd Meta Dimensions. Currently: <span id="qc4reward"></span>x
-								</div>
-							</div>
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<div class="quantumchallengediv" id="qc5div" style="height:160px">
-								<span>Dimension Supersonic scales instantly and faster. Replicated Galaxies and Free Galaxies also scale faster. Multiplier per ten dimensions is 1x.</span>
-								<br>
-								<br>
-								<div class="outer">
-									<button id="qc5" class="challengesbtn" onclick="selectQC(5)">Start</button>
-									<br>
-									<span id="qc5cost"></span><br>
-									<span id="qc5goal"></span><br>
-									Reward: Dimension Boosts boost the multiplier per ten Dimensions. Currently: <span id="qc5reward"></span>x
-								</div>
-							</div>
-						</td>
-						<td>
-							<div class="quantumchallengediv" id="qc6div" style="height:160px">
-								<span>You are stuck in Infinity Challenges 3 and 7. You can't gain dimension boosts. However, per-10 Meta Dimension multipliers are stronger.</span>
-								<br>
-								<br>
-								<div class="outer">
-									<button id="qc6" class="challengesbtn" onclick="selectQC(6)">Start</button>
-									<br>
-									<span id="qc6cost"></span><br>
-									<span id="qc6goal"></span><br>
-									Reward: Your achievement bonus boosts Meta Dimensions. Currently: <span id="qc6reward"></span>x
-								</div>
-							</div>
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<div class="quantumchallengediv" id="qc7div">
-								<span id="qc7desc"></span>
-								<br>
-								<br>
-								<div class="outer">
-									<button id="qc7" class="challengesbtn" onclick="selectQC(7)">Start</button>
-									<br>
-									<span id="qc7cost"></span><br>
-									<span id="qc7goal"></span><br>
-									Reward: The free tickspeed upgrade threshold increases slower. Currently: <span id="qc7reward"></span>% slower
-								</div>
-							</div>
-						</td>
-						<td>
-							<div class="quantumchallengediv" id="qc8div">
-								<span>Disable Infinity and Time Dimensions, and Meta-Dimension Boosts do nothing.</span>
-								<br>
-								<br>
-								<div class="outer">
-									<button id="qc8" class="challengesbtn" onclick="selectQC(8)">Start</button>
-									<br>
-									<span id="qc8cost"></span><br>
-									<span id="qc8goal"></span><br>
-									Reward: You gain extra Replicated Galaxies faster after 100. Currently: <span id="qc8reward"></span>x faster
-								</div>
-							</div>
-						</td>
-					</tr>
-				</table>
+				<table class="table" id="qc_table" style='margin: 0 auto'></table>
 				<div id="pChalls">
 					<button class="storebtn" onclick="respecPC()" style="width:150px; height: 40px; font-size: 10px; border-width: 1px; margin: auto">Respec</button>
 					<button class="storebtn" onclick="exportData(getPCStr())" style="width:150px; height: 40px; font-size: 10px; border-width: 1px; margin: auto">Export</button>
@@ -2167,33 +2046,33 @@
 				<b class='red'>Upgrades only work in Big Rips. Upgrades starting at 3rd nullify 1st upgrade.</b>
 				<table class="table" align="center" style="margin: auto">
 					<tr>
-						<td><button class='gluonupgrade unavailablebtn' id="bigripupg1" onclick='buyBigRipUpg(1)'>Infinity Points boost Normal Dimensions.<br>Currently: <span id="bigripupg1current">1.00</span>x<br>Cost: <span id="bigripupg1cost"></span> Space Shards</button></td>
-						<td><button class='gluonupgrade unavailablebtn' id="bigripupg2" onclick='buyBigRipUpg(2)'>Start with all ECs and 100,000 Eternities.<br>Cost: <span id="bigripupg2cost"></span> Space Shards</button></td>
-						<td><button class='gluonupgrade unavailablebtn' id="bigripupg3" onclick='buyBigRipUpg(3)'>Gain 5 Time Theorems.<br>Cost: <span id="bigripupg3cost"></span> Space Shards</button></td>
-						<td><button class='gluonupgrade unavailablebtn' id="bigripupg4" onclick='buyBigRipUpg(4)'>Replicantis replicate 10x faster, and boost Infinity Dimensions.<br>Cost: <span id="bigripupg4cost"></span> Space Shards</button></td>
+						<td><button id="bigripupg1" onclick='buyBigRipUpg(1)'>Infinity Points boost Normal Dimensions.<br>Currently: <span id="bigripupg1current">1.00</span>x<br>Cost: <span id="bigripupg1cost"></span> Space Shards</button></td>
+						<td><button id="bigripupg2" onclick='buyBigRipUpg(2)'>Start with all ECs and 100,000 Eternities.<br>Cost: <span id="bigripupg2cost"></span> Space Shards</button></td>
+						<td><button id="bigripupg3" onclick='buyBigRipUpg(3)'>Gain 5 Time Theorems.<br>Cost: <span id="bigripupg3cost"></span> Space Shards</button></td>
+						<td><button id="bigripupg4" onclick='buyBigRipUpg(4)'>Replicantis replicate 10x faster, and boost Infinity Dimensions.<br>Cost: <span id="bigripupg4cost"></span> Space Shards</button></td>
 					</tr>
 					<tr>
-						<td><button class='gluonupgrade unavailablebtn' id="bigripupg5" onclick='buyBigRipUpg(5)'>Gain 20 Time Theorems.<br>Cost: <span id="bigripupg5cost"></span> Space Shards</button></td>
-						<td><button class='gluonupgrade unavailablebtn' id="bigripupg6" onclick='buyBigRipUpg(6)'>Space Shards boost Eternity Point gain.<br>Cost: <span id="bigripupg6cost"></span> Space Shards</button></td>
-						<td><button class='gluonupgrade unavailablebtn' id="bigripupg7" onclick='buyBigRipUpg(7)'>Start with Time Study 192.<br>Cost: <span id="bigripupg7cost"></span> Space Shards</button></td>
-						<td><button class='gluonupgrade unavailablebtn' id="bigripupg8" onclick='buyBigRipUpg(8)'>Replicated Galaxies boost Eternity Points.<br>Currently: <span id="bigripupg8current"></span><br>Cost: <span id="bigripupg8cost"></span> Space Shards</button></td>
+						<td><button id="bigripupg5" onclick='buyBigRipUpg(5)'>Gain 20 Time Theorems.<br>Cost: <span id="bigripupg5cost"></span> Space Shards</button></td>
+						<td><button id="bigripupg6" onclick='buyBigRipUpg(6)'>Space Shards boost Eternity Point gain.<br>Cost: <span id="bigripupg6cost"></span> Space Shards</button></td>
+						<td><button id="bigripupg7" onclick='buyBigRipUpg(7)'>Start with Time Study 192.<br>Cost: <span id="bigripupg7cost"></span> Space Shards</button></td>
+						<td><button id="bigripupg8" onclick='buyBigRipUpg(8)'>Replicated Galaxies boost Eternity Points.<br>Currently: <span id="bigripupg8current"></span><br>Cost: <span id="bigripupg8cost"></span> Space Shards</button></td>
 					</tr>
 					<tr>
-						<td><button class='gluonupgrade unavailablebtn' id="bigripupg9" onclick='buyBigRipUpg(9)'>Gain 1,350 Time Theorems, but reset study tree and nullify few upgrades.<br>Cost: <span id="bigripupg9cost"></span> Space Shards</button></td>
-						<td><button class='gluonupgrade unavailablebtn' id="bigripupg10" onclick='buyBigRipUpg(10)'>Start with Time Dilation, but activate 9th Big Rip upgrade.<br>Cost: <span id="bigripupg10cost"></span> Space Shards</button></td>
-						<td><button class='gluonupgrade unavailablebtn' id="bigripupg11" style='font-size: 10px' onclick='buyBigRipUpg(11)'>Start with Tachyon Particles, but reset the study tree and nullify upgrade 4.<br>(Some boosts only work)<br>Cost: <span id="bigripupg11cost"></span> Space Shards</button></td>
-						<td><button class='gluonupgrade unavailablebtn' id="bigripupg12" onclick='buyBigRipUpg(12)'>Keep all your studies, eternity upgrades, and dilation upgrades.<br>Cost: <span id="bigripupg12cost"></span> Space Shards</button></td>
+						<td><button id="bigripupg9" onclick='buyBigRipUpg(9)'>Gain 1,350 Time Theorems, but reset study tree and nullify few upgrades.<br>Cost: <span id="bigripupg9cost"></span> Space Shards</button></td>
+						<td><button id="bigripupg10" onclick='buyBigRipUpg(10)'>Start with Time Dilation, but activate 9th Big Rip upgrade.<br>Cost: <span id="bigripupg10cost"></span> Space Shards</button></td>
+						<td><button id="bigripupg11" style='font-size: 10px' onclick='buyBigRipUpg(11)'>Start with Tachyon Particles, but reset the study tree and nullify upgrade 4.<br>(Some boosts only work)<br>Cost: <span id="bigripupg11cost"></span> Space Shards</button></td>
+						<td><button id="bigripupg12" onclick='buyBigRipUpg(12)'>Keep all your studies, eternity upgrades, and dilation upgrades.<br>Cost: <span id="bigripupg12cost"></span> Space Shards</button></td>
 					</tr>
 					<tr>
-						<td><button class='gluonupgrade unavailablebtn' id="bigripupg13" onclick='buyBigRipUpg(13)'>Replicantis boost Time Dimensions at a greatly reduced rate.<br>Cost: <span id="bigripupg13cost"></span> Space Shards</button></td>
-						<td><button class='gluonupgrade unavailablebtn' id="bigripupg14" style='font-size: 10px' onclick='buyBigRipUpg(14)'>Outside of Dilation, Space Shards strengthen TS101.<br>Currently: ^<span id="bigripupg14current">1.00</span><br>Cost: <span id="bigripupg14cost"></span> Space Shards</button></td>
-						<td><button class='gluonupgrade unavailablebtn' id="bigripupg15" style='font-size: 10px' onclick='buyBigRipUpg(15)'>Eternity Points make Distant Antimatter Galaxies scaling start later.<br>Currently: +<span id="bigripupg15current">0</span><br>Cost: <span id="bigripupg15cost"></span> Space Shards</button></td>
-						<td><button class='gluonupgrade unavailablebtn' id="bigripupg16" onclick='buyBigRipUpg(16)'>Dilated time boosts Seventh Time Dimension.<br>Currently: <span id="bigripupg16current">1.00</span>x<br>Cost: <span id="bigripupg16cost"></span> Space Shards</button></td>
+						<td><button id="bigripupg13" onclick='buyBigRipUpg(13)'>Replicantis boost Time Dimensions at a greatly reduced rate.<br>Cost: <span id="bigripupg13cost"></span> Space Shards</button></td>
+						<td><button id="bigripupg14" style='font-size: 10px' onclick='buyBigRipUpg(14)'>Outside of Dilation, Space Shards strengthen TS101.<br>Currently: ^<span id="bigripupg14current">1.00</span><br>Cost: <span id="bigripupg14cost"></span> Space Shards</button></td>
+						<td><button id="bigripupg15" style='font-size: 10px' onclick='buyBigRipUpg(15)'>Eternity Points make Distant Antimatter Galaxies scaling start later.<br>Currently: +<span id="bigripupg15current">0</span><br>Cost: <span id="bigripupg15cost"></span> Space Shards</button></td>
+						<td><button id="bigripupg16" onclick='buyBigRipUpg(16)'>Dilated time boosts Seventh Time Dimension.<br>Currently: <span id="bigripupg16current">1.00</span>x<br>Cost: <span id="bigripupg16cost"></span> Space Shards</button></td>
 					</tr>
 					<tr>
 						<td></td>
-						<td><button class='gluonupgrade unavailablebtn' id="bigripupg17" onclick='buyBigRipUpg(17)'>Reactivate the first upgrade, and raise it by ^<span id="bigripupg17current">3</span>.<br>Cost: <span id="bigripupg17cost"></span> Space Shards</button></td>
-						<td><button class='gluonupgrade unavailablebtn' id="bigripupg18" onclick='buyBigRipUpg(18)'>Keep Tachyon Particles.<br>Cost: <span id="bigripupg18cost"></span> Space Shards</button></td>
+						<td><button id="bigripupg17" onclick='buyBigRipUpg(17)'>Reactivate the first upgrade, and raise it by ^<span id="bigripupg17current">3</span>.<br>Cost: <span id="bigripupg17cost"></span> Space Shards</button></td>
+						<td><button id="bigripupg18" onclick='buyBigRipUpg(18)'>Keep Tachyon Particles.<br>Cost: <span id="bigripupg18cost"></span> Space Shards</button></td>
 					</tr>
 				</table>
 			</div>
@@ -3776,63 +3655,7 @@
 				<button class="storebtn" onclick='maxQuarkMult()' style='width:190px'>Max</button>
 			</div>
 			<div class='quantumtab' id='gluons'>
-				<table id='gluonupgrades'><tr>
-					<td class="rqC">
-						<span id="rg" style="font-size:35px">0</span> red-green gluons<br>
-						(next quantum: <span id='rgnext'>0</span> red, +<span id='rggain'>0</span>)
-						<table>
-							<tr>
-								<td><button id='rgupg1' onclick='buyGluonUpg("rg",1)'>Remote Antimatter Galaxy cost scaling is approximately 2x slower.<br>Cost: 1 RG gluons</button></td>
-								<td><button id='rgupg2' onclick='buyGluonUpg("rg",2)'>Galaxies are more effective based on your Tachyonic Galaxies.<br><span id='rgupg2current'></span><br>Cost: 2 RG gluons</button></td>
-							</tr><tr>
-								<td><button id='rgupg3' onclick='buyGluonUpg("rg",3)'>Dimension Boosts boost 1st Meta Dimensions.<br><span id='rgupg3current'></span><br>Cost: 4 RG gluons</button></td>
-								<td><button id='rgupg4' onclick='buyGluonUpg("rg",4)'>Galaxies are 50% stronger, but positrons are 30% weaker and disable Time Study 232.<br>Cost: 100 RG gluons</button></td>
-							</tr><tr id='rgupg3row'>
-								<td><button id='rgupg5' onclick='buyGluonUpg("rg",5)'>Gain 10x more Quarks.<br>Cost: <span id='rgupg5cost'></span> RG gluons</button></td>
-								<td><button id='rgupg6' onclick='buyGluonUpg("rg",6)'>Distant Antimatter Galaxies scale 13.2% slower.<br>Cost: <span id='rgupg6cost'></span> RG gluons</button></td>
-							</tr><tr>
-								<td id='rgupg7col'><button id='rgupg7' onclick='buyGluonUpg("rg",7)'>Slow down the Remote Antimatter Galaxy scaling by 10%.<br>Cost: <span id='rgupg7cost'></span> RG gluons</button></td>
-								<td id='rgupg8col'><button id='rgupg8' onclick='buyGluonUpg("rg",8)'>RG gluons increase preon half-life.<br><span id='rgupg8current'></span><br>Cost: <span id='rgupg8cost'></span> RG gluons</button></td>
-							</tr>
-						</table>
-					</td><td class="gqC">
-						<span id="gb" style="font-size:35px">0</span> green-blue gluons<br>
-						(next quantum: <span id='gbnext'>0</span> green, +<span id='gbgain'>0</span>)
-						<table>
-							<tr>
-								<td><button id='gbupg1' onclick='buyGluonUpg("gb",1)'>You gain replicanti faster based on your tickspeed reduction multiplier.<br><span id='gbupg1current'></span><br>Cost: 1 GB gluons</button></td>
-								<td><button id='gbupg2' onclick='buyGluonUpg("gb",2)'>Replicate interval scaling is 2x slower.<br>Cost: 2 GB gluons</button></td>
-							</tr><tr>
-								<td><button id='gbupg3' onclick='buyGluonUpg("gb",3)'>The IP mult multiplies IP gain by 2.3x per upgrade.<br>Cost: 4 GB gluons</button></td>
-								<td><button id='gbupg4' onclick='buyGluonUpg("gb",4)'>Massively decrease the tickspeed cost multiplier increase to 1.25x.<br>Cost: 100 GB gluons</button></td>
-							</tr><tr id='gbupg3row'>
-								<td><button id='gbupg5' onclick='buyGluonUpg("gb",5)'>Positron Upgrades scale 0.3 levels lower.<br>Cost: <span id='gbupg5cost'></span> GB gluons</button></td>
-								<td><button id='gbupg6' onclick='buyGluonUpg("gb",6)'>Infinity Power scales Distant Antimatter Galaxies slower.<br><span id='gbupg6current'></span><br>Cost: <span id='gbupg6cost'></span> GB gluons</button></td>
-							</tr><tr>
-								<td id='gbupg7col'><button id='gbupg7' onclick='buyGluonUpg("gb",7)'>Infinity Points scale Remote Antimatter Galaxies slower.<br><span id='gbupg7current'></span><br>Cost: <span id='gbupg7cost'></span> GB gluons</button></td>
-								<td id='gbupg8col'><button id='gbupg8' onclick='buyGluonUpg("gb",8)'>GB gluons increase preon half-life.<br><span id='gbupg8current'></span><br>Cost: <span id='gbupg8cost'></span> GB gluons</button></td>
-							</tr>
-						</table>
-					</td><td class="bqC">
-						<span id="br" style="font-size:35px">0</span> blue-red gluons<br>
-						(next quantum: <span id='brnext'>0</span> blue, +<span id='brgain'>0</span>)
-						<table>
-							<tr>
-								<td><button id='brupg1' onclick='buyGluonUpg("br",1)'>You gain more tachyon particles based on your dilated time.<br><span id='brupg1current'></span><br>Cost: 1 BR gluons</button></td>
-								<td><button id='brupg2' onclick='buyGluonUpg("br",2)'>Sacrifice boosts dilated time production.<br><span id='brupg2current'></span><br><span id='brupg1current'></span>Cost: 2 BR gluons</button></td>
-							</tr><tr>
-								<td><button id='brupg3' onclick='buyGluonUpg("br",3)'>Tachyon particles slightly boost dilated time production.<br>Cost: 4 BR gluons</button></td>
-								<td><button id='brupg4' onclick='buyGluonUpg("br",4)'>Multiplier per ten dimensions boosts Meta Dimensions.<br><span id='brupg4current'></span><br>Cost: 100 BR gluons</button></td>
-							</tr><tr id='brupg3row'>
-								<td><button id='brupg5' onclick='buyGluonUpg("br",5)'>Meta Dimensions produce 3x faster.<br>Cost: <span id='brupg5cost'></span> BR gluons</button></td>
-								<td><button id='brupg6' onclick='buyGluonUpg("br",6)' style='font-size:8.5px'>Meta-Dimension Boosts slow down the Distant Antimatter Galaxy cost scaling.<br><span id='brupg6current'></span><br>Cost: <span id='brupg6cost'></span> BR gluons</button></td>
-							</tr><tr>
-								<td id='brupg7col'><button id='brupg7' onclick='buyGluonUpg("br",7)'>Eternity Points slow down the Remote Antimatter Galaxy scaling.<br><span id='brupg7current'></span><br>Cost: <span id='brupg7cost'></span> BR gluons</button></td>
-								<td id='brupg8col'><button id='brupg8' onclick='buyGluonUpg("br",8)'>BR gluons increase preon half-life.<br><span id='brupg8current'></span><br>Cost: <span id='brupg8cost'></span> BR gluons</button></td>
-							</tr>
-						</table>
-					</td>
-				</tr></table>
+				<table id='gluonupgrades'></table>
 			</div>
 			<div id="speedruns" class="quantumtab">
 				<div>Get your best quantum time faster than the requirement for a reward!</div>
@@ -3995,13 +3818,13 @@
 				</table>
 			</div><div class='anttab' id='nanofield'>
 				You have <span id="quarksNanofield"></span> pilons.<br>
-				<table class="qtable"><tr><td>
+				<table class="qtable"><tr><td id="quarkChargeDiv">
 					<span id="quarkCharge" style="font-size:25px"></span> Nanocharge<br>
 					<button class="antbtn" id="produceQuarkCharge" onclick="startProduceQuarkCharge()"></button><br>
 					(<span id="quarkChargeRate"></span> charge/s, -<span id="quarkLoss"></span> pilons/s)
 				</td><td>
 					<span id="preonEnergy" style="font-size:25px"></span> Nanoenergy (<span id="quarkEnergyRate"></span>/s)<br>
-				</td><td>
+				</td><td id="quarkAntienergyDiv">
 					<span id="quarkAntienergy" style="font-size:25px"></span> anti-Nanoenergy (<span id="quarkAntienergyRate"></span>/s)<br>
 					Stops producing at <span id="quarkChargeProductionCap" style="font-size:25px"></span>
 				</td></tr></table>
@@ -4174,6 +3997,7 @@
 				<button class="qu_upg hb">Reset Bosonic Lab for +1 Higgs.<br>(??? Bosons)</button>
 			</div>
 			<div class="bl_tab" id="bl_milestones">
+				<b class='red'>Not implemented. Boson production is forced to be at 0/s!</b>
 				<table id="bl_milestone_table" style='margin: auto'></table>
 			</div>
 			<div class="bl_tab" id="lab_real">
@@ -4212,7 +4036,7 @@
 			<br><br><hr>
 
 			<b>(NG+3 v2.31: Ghostify Respecced)</b><br>
-			<b class="red">(Beta: 4/17/23 Build)</b><br>
+			<b class="red">(Beta: 4/18/23 Build)</b><br>
 			By <a href="https://aarextiaokhiao.github.io/">Aarex</a>, pg132, and usavictor.
 			<br><br>
 
@@ -4476,7 +4300,8 @@
 
 	<script type="text/javascript" src="javascripts/mods/ngp3/mastery_studies.js"></script>
 	<script type="text/javascript" src="javascripts/mods/ngp3/quantum/quantum_speedruns.js"></script>
-	<script type="text/javascript" src="javascripts/mods/ngp3/quantum/quarks_gluons.js"></script>
+	<script type="text/javascript" src="javascripts/mods/ngp3/quantum/quarks.js"></script>
+	<script type="text/javascript" src="javascripts/mods/ngp3/quantum/gluons.js"></script>
 	<script type="text/javascript" src="javascripts/mods/ngp3/quantum/quantum_challenges.js"></script>
 	<script type="text/javascript" src="javascripts/mods/ngp3/quantum/tod.js"></script>
 	<script type="text/javascript" src="javascripts/mods/ngp3/quantum/big_rip.js"></script>

@@ -42,7 +42,10 @@ function getSpaceShardsGain() {
 		if (isBreakUpgActive(3)) ret = ret.mul(tmp.qu.beu[3])
 		if (isBreakUpgActive(6)) ret = ret.mul(tmp.qu.beu[6])
 	}
-	if (hasNU(9)) ret = ret.mul(Decimal.max(getEternitied(), 1).pow(0.1))
+	if (hasNU(9)) {
+		if (hasBLMilestone(4)) ret = ret.mul(pow10(Math.pow(Decimal.max(getEternitied(), 1).log10(), 4/3) / 40))
+		else ret = ret.mul(Decimal.max(getEternitied(), 1).pow(0.1))
+	}
 
 	if (isNaN(ret.e)) return E(0)
 	return ret.floor()

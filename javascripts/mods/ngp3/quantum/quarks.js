@@ -49,7 +49,6 @@ function increaseQuarkMult(toAdd) {
 		quSave.autobuyer.limit = Decimal.mul(quSave.autobuyer.limit, pow2(toAdd))
 		el("priorityquantum").value = formatValue("Scientific", quSave.autobuyer.limit, 2, 0)
 	}
-	updateGluonsTab("spend")
 }
 
 //Quark Assertment Machine
@@ -129,7 +128,7 @@ function updateAssortPercentage() {
 	el("assort_percentage").value = percentage
 	for (var i = 0; i < assortDefaultPercentages.length; i++) {
 		var percentage2 = assortDefaultPercentages[i]
-		el("assort_percentage_" + percentage2).className = percentage2 == percentage ? "chosenbtn" : "storebtn"
+		el("assort_percentage_" + percentage2).className = percentage2 == percentage ? "chosen" : "storebtn"
 	}
 }
 
@@ -247,98 +246,6 @@ function updateColorPowers(log) {
 	tmp.qu.color_eff.b = pow10(bLog)
 }
 
-//Gluons
-function getGluonGains() {
-	var qk = quSave.usedQuarks
-	var types = ["rg", "gb", "br"]
-	var gains = {}
-	for (let color of types) gains[color] = qk[color[0]].min(qk[color[1]])
-	return gains
-}
-
-function convertAQToGluons() {
-	var qk = quSave.usedQuarks
-	var gl = quSave.gluons
-	var types = ["rg", "gb", "br"]
-	var gains = getGluonGains()
-	for (var color of types) {
-		gl[color] = gl[color].add(d[c]).round()
-		qk[color[0]] = qk[color[0]].sub(d[c]).round()
-	}
-
-	updateQuarkDisplay()
-	updateQuarksTabOnUpdate()
-	updateGluonsTabOnUpdate()
-}
-
-function checkGluonRounding(){
-	if (!quantumed) return
-	if (hasBraveMilestone(8)) return
-	if (quSave.gluons.rg.lte(100)) quSave.gluons.rg = quSave.gluons.rg.round()
-	if (quSave.gluons.gb.lte(100)) quSave.gluons.gb = quSave.gluons.gb.round()
-	if (quSave.gluons.br.lte(100)) quSave.gluons.br = quSave.gluons.br.round()
-	if (quSave.quarks.lte(100)) quSave.quarks = quSave.quarks.round()
-}
-
-function subtractGluons(toSpend = 0) {
-	quSave.gluons.rg = quSave.gluons.rg.sub(quSave.gluons.rg.min(toSpend))
-	quSave.gluons.gb = quSave.gluons.gb.sub(quSave.gluons.gb.min(toSpend))
-	quSave.gluons.br = quSave.gluons.br.sub(quSave.gluons.br.min(toSpend))
-}
-
-const GUCosts = [null, 1, 2, 4, 100, 7e15, 4e19, 3e28, "1e570"]
-function buyGluonUpg(color, id) {
-	var name = color + id
-	if (hasGluonUpg(name) || quSave.gluons[color].plus(0.001).lt(GUCosts[id])) return
-	quSave.upgrades.push(name)
-	quSave.gluons[color] = quSave.gluons[color].sub(GUCosts[id])
-	updateGluonsTab("spend")
-	if (name == "gb3") {
-		var otherMults = 1
-		if (hasAch("r85")) otherMults *= 4
-		if (hasAch("r93")) otherMults *= 4
-		var old = getIPMultPower()
-		ipMultPower = 2.3
-		player.infMult = player.infMult.div(otherMults).pow(Math.log10(getIPMultPower()) / Math.log10(old)).mul(otherMults)
-	}
-	if (name == "rg4") updatePositronsEffect()
-	if (name == "gb4") player.tickSpeedMultDecrease = 1.25
-	updateQuantumWorth()
-	updateGluonsTabOnUpdate()
-}
-
-function hasGluonUpg(id) {
-	return quSave?.upgrades.includes(id)
-}
-
-function getGB1Effect() {
-	return Decimal.div(1, tmp.gal.ts).log10() / 100 + 1
-}
-
-function getBR1Effect() {
-	return Math.sqrt(player.dilation.dilatedTime.add(10).log10()) / 2
-}
-
-function getRG3Effect() {
-	if (!hasAch("ng3p24")) return player.resets
-
-	let exp = Math.sqrt(player.meta.resets)
-	if (exp > 36) exp = 6 * Math.sqrt(exp)
-	return E_pow(player.resets, exp)
-}
-
-function getGB6Effect() {
-	return Math.min(1 + Math.pow(player.infinityPower.plus(1).log10(), 0.25) / 2810, 2.5)
-}
-
-function getBR6Effect() {
-	return Math.min(1 + player.meta.resets / 340, 2.5)
-}
-
-function getGU8Effect(type) {
-	return Math.max(quSave.gluons[type].add(1).log10() / 100 - 4, 1)
-}
-
 //Display
 function updateQuarksTab(tab) {
 	el("redPower").textContent=shortenMoney(quSave.colorPowers.r)
@@ -367,27 +274,6 @@ function updateQuarksTab(tab) {
 	`
 }
 
-function updateGluonsTab() {
-	el("gbupg1current").textContent = "Currently: " + shortenMoney(getGB1Effect()) + "x"
-	el("brupg1current").textContent = "Currently: " + shortenMoney(getBR1Effect()) + "x"
-	el("rgupg2current").textContent = "Currently: " + (Math.pow(player.dilation.freeGalaxies / 5e3 + 1, 0.25) * 100 - 100).toFixed(1) + "%"
-	el("brupg2current").textContent = "Currently: " + shortenMoney(E_pow(2.2, Math.pow(tmp.sacPow.log10() / 1e6, 0.25))) + "x"
-	el("rgupg3current").textContent = "Currently: " + shorten(getRG3Effect()) + "x"
-	el("brupg4current").textContent = "Currently: " + shortenMoney(E_pow(getDimensionPowerMultiplier(hasNU(13) && "no-rg4"), 0.0003).max(1)) + "x"
-	if (hasMasteryStudy("d9")) {
-		el("gbupg6current").textContent = "Currently: " + (100-100/getGB6Effect()).toFixed(1) + "%"
-		el("brupg6current").textContent = "Currently: " + (100-100/getBR6Effect()).toFixed(1) + "%"
-		el("gbupg7current").textContent = "Currently: " + (100-100/(1 + Math.log10(1+player.infinityPoints.max(1).log10())/100)).toFixed(1) + "%"
-		el("brupg7current").textContent = "Currently: " + (100-100/(1 + Math.log10(1+player.eternityPoints.max(1).log10())/80)).toFixed(1) + "%"
-	}
-	if (hasMasteryStudy("d13")) {
-		el("rgupg8current").textContent = "Currently: " + shorten(getGU8Effect("rg")) + "x"
-		el("gbupg8current").textContent = "Currently: " + shorten(getGU8Effect("gb")) + "x"
-		el("brupg8current").textContent = "Currently: " + shorten(getGU8Effect("br")) + "x"
-	}
-	if (hasBraveMilestone(8)) updateGluonsTabOnUpdate("display")
-}
-
 //Display: On load
 function updateQuarksTabOnUpdate(mode) {
 	var colors = ['r','g','b']
@@ -409,49 +295,9 @@ function updateQuarksTabOnUpdate(mode) {
 	el("greenAssort").className = canAssign ? "storebtn" : "unavailablebtn"
 	el("blueAssort").className = canAssign ? "storebtn" : "unavailablebtn"
 
-	var uq = quSave.usedQuarks
-	var gl = quSave.gluons
-	var gains = getGluonGains()
-	for (var [pair, amt] of Object.entries(gains)) {
-		el(pair + "gain").textContent = shortenDimensions(amt)
-		el(pair + "next").textContent = shortenDimensions(uq[pair[0]].sub(amt))
-	}
 	el("assignAllButton").className = canAssign ? "storebtn" : "unavailablebtn"
 	el("bluePowerMDEffect").style.display = hasMasteryStudy("t383") ? "" : "none"
 	if (hasMasteryStudy("d13")) el("redQuarksToD").textContent = shortenDimensions(quSave.usedQuarks.r)
-}
-
-function updateGluonsTabOnUpdate(mode) {
-	if (!mod.ngp3) return
-	else if (!quSave.gluons.rg) {
-		quSave.gluons = {
-			rg: E(0),
-			gb: E(0),
-			br: E(0)
-		}
-	}
-	if (!hasBraveMilestone(8)) mode = undefined
-	var names = ["rg","gb","br"]
-	var sevenUpgrades = hasMasteryStudy("d9")
-	var eightUpgrades = hasMasteryStudy("d13")
-	for (c = 0; c < 3; c++) {
-		if (mode == undefined) {
-			el(names[c] + "upg3row").style.display = sevenUpgrades ? "" : "none"
-			el(names[c] + "upg7col").style.display = sevenUpgrades ? "" : "none"
-			el(names[c] + "upg8col").style.display = eightUpgrades ? "" : "none"
-		}
-		if (mode == undefined || mode == "display") {
-			var name = names[c]
-			el(name).textContent = shortenDimensions(quSave.gluons[name])
-			for (u = 1; u <= (eightUpgrades ? 8 : sevenUpgrades ? 7 : 4); u++) {
-				var upg = name + "upg" + u
-				if (u > 4) el(upg + "cost").textContent = shortenMoney(E(GUCosts[u]))
-				if (hasGluonUpg(name + u)) el(upg).className="qu_upg_bought condensed "+name
-				else if (quSave.gluons[name].lt(GUCosts[u])) el(upg).className="qu_upg condensed unavailablebtn"
-				else el(upg).className="qu_upg condensed "+name
-			}
-		}
-	}
 }
 
 //Quarks animation

@@ -658,7 +658,7 @@ newdim:hover {
     transition-duration: .5s;
 }
 
-.onchallengebtn, .chosenbtn {
+.onchallengebtn, .chosen {
     background: linear-gradient(#131, #131);
     filter: none !important;
     color: #7f7 !important;
@@ -1236,7 +1236,7 @@ td .timestudybought.pos_study {
     text-shadow: 0 0 5px #000;
     animation: none !important;
 }
-.qu_upg.chosenbtn {
+.qu_upg.chosen {
     font-size: 12px;
 }
 
@@ -1300,30 +1300,51 @@ td .timestudybought.pos_study {
     box-shadow: inset 0 0 15px #fff3, 0 0 8px #fff7;
 }
 
-.qu_upg.bl {
-    background: 
-        linear-gradient(#6164, #0000 50%, #6164 100%), 
-        linear-gradient(90deg, #0000, #c314 50%, #0000 100%),
-        linear-gradient(#222, #000) !important;
-    color: #fff !important;
-    border: 1px solid #fff !important;
-    box-shadow: inset 0 0 15px #0003;
-    text-shadow: 0 0 5px #fff2;
-    animation: none !important;
+.antbtn {
+    background: linear-gradient(#446, #112) !important;
+    color: #aac !important;
+    border: 1px solid #779 !important;
 }
-.qu_upg.bl:hover {
-    box-shadow: inset 0 0 15px #fff3, 0 0 8px #fff7;
+.antbtn:hover {
+    box-shadow: 0 0 8px #aab7;
 }
-.qu_upg_bought.bl {
-    background: 
-        linear-gradient(#6164, #0000 50%, #6164 100%), 
-        linear-gradient(90deg, #0000, #c314 50%, #0000 100%),
-        linear-gradient(#222, #444) !important;
-    color: #fff !important;
-    border: 1px solid #fff !important;
-    box-shadow: inset 0 0 15px #fff5, 0 0 8px #fff7;
-    text-shadow: 0 0 2px #aaa7;
-    animation: none !important;
+.nfReward {
+    background: linear-gradient(#446, #112) !important;
+    color: #aac !important;
+    border: 1px solid #779 !important;
+    box-shadow: inset 0 0 15px #aab5, 0 0 8px #aab7;
+    animation: none;
+    filter: none !important;
+}
+.nfRewardlocked {
+    background: linear-gradient(#111, #111) !important;
+    color: #aab7 !important;
+    border: 1px solid #aab !important;
+    filter: none !important;
+}
+
+/*=============
+  B O S O N I C
+============= */
+.hypo_btn {
+	background: #fff1
+}
+.hypo_btn:hover {
+	background: #fff3
+}
+
+.bosonic_btn, .wz_capacitor button.can {
+	background: linear-gradient(#710, #307);
+	background-size: 100%;
+	text-shadow: 0 0 6px #f50;
+	color: #db7;
+	border: 1px solid #b50 !important;
+}
+.wz_capacitor button.plus {
+	border-radius: 75px 0 0 75px !important
+}
+.wz_capacitor button.minus {
+	border-radius: 0 75px 75px 0 !important;
 }
 
 .qu_upg.hb {
@@ -1339,33 +1360,6 @@ td .timestudybought.pos_study {
 .qu_upg.hb:hover {
     text-shadow: 0 0 5px #000, 0 0 5px #000;
     box-shadow: inset 0 0 15px #fff3, 0 0 8px #fff7;
-}
-
-.antbtn {
-    background: linear-gradient(#445, #222) !important;
-    color: #aab !important;
-    border: 1px solid #aab !important;
-    animation: none;
-}
-.antbtn:hover {
-    box-shadow: 0 0 8px #aab7;
-}
-.chosenbtn2 {
-    filter: none !important;
-}
-.nfReward {
-    background: linear-gradient(#555, #667) !important;
-    color: #aab !important;
-    border: 1px solid #aab !important;
-    box-shadow: inset 0 0 15px #aab5, 0 0 8px #aab7;
-    animation: none;
-    filter: none !important;
-}
-.nfRewardlocked {
-    background: linear-gradient(#111, #111) !important;
-    color: #aab7 !important;
-    border: 1px solid #aab !important;
-    filter: none !important;
 }
 
 /*===============================
@@ -1450,39 +1444,6 @@ td .timestudybought.pos_study {
     opacity: .1;
     position: absolute;
     transform: rotate(-20deg);
-}
-
-.interrealitybtn {
-    background: linear-gradient(#000b, #000f), linear-gradient(90deg, #0f0, #39f) !important;
-    animation: irAnim 15s linear infinite alternate !important;
-    text-shadow: none !important;
-    box-shadow: inset 0 0 5px #7fc3;
-}
-.interrealitybtn:hover {
-    box-shadow: inset 0 0 5px #7fc3, 0 0 8px #7fc7;
-}
-#irTabBtn {
-    position: relative;
-    overflow: hidden;
-}
-#irTabBtn::before {
-    content: "δ";
-    top: -60px; left: 0; right: 0;
-    font-size: 6em;
-    font-weight: 100;
-    opacity: .1;
-    position: absolute;
-    transform: rotate(-20deg);
-}
-@keyframes irAnim {
-    from {
-        color: #7f7;
-        border: 1px solid #474;
-    }
-    to {
-        color: #7af;
-        border: 1px solid #357;
-    }
 }
 
 .quantumbtn {

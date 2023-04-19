@@ -344,7 +344,7 @@ function respecTimeStudies(ecComp, load) {
 			if (d) respecedMS.push(player.masterystudies[id])
 		}
 		if (player.masterystudies.length > respecedMS.length) quSave.wasted = false
-		if (!hasGluonUpg("gb3")) ipMultPower = 2
+		if (!hasGluonUpg("gb", 3)) ipMultPower = 2
 		player.masterystudies = respecedMS
 		respecUnbuyableTimeStudies()
 		updateMasteryStudyCosts()
@@ -498,7 +498,7 @@ let tsMults = {
 	232() {
 		let pow = 0.001
 		if (!bigRipped()) {
-			if (hasGluonUpg("rg4")) pow = 0
+			if (hasGluonUpg("rg", 4)) pow = 0
 			if (hasNB(10)) pow = Math.max(NT.eff("boost", 10) * 0.001, pow)
 		}
 		return Math.pow(1 + player.galaxies * pow, 0.2)

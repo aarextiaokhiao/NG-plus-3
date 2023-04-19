@@ -17,8 +17,8 @@ function setupToDHTML() {
 	for (var c = 0; c < 1; c++) {
 		var color = (["red", "green", "blue"])[c]
 		var shorthand = (["r", "g", "b"])[c]
-		var branchUpgrades = ["Gain <span id='" + color + "UpgPow1'></span>x preons, but preons decay <span id='" + color + "UpgSpeed1'></span>x faster.",
-				"Boost preons.",
+		var branchUpgrades = ["Double preonic spin, but preons decay 2x faster.",
+				"Boost free preons.",
 				"Preons decay <span id='" + color + "UpgEffDesc'>4x</span> slower."] //might need to change this to just "slower" once we have 1000+ upgrade 3's
 
 		var html = '<span class="' + color + '" id="' + color + 'QuarksToD" style="font-size: 35px">0</span> ' + color + ' quarks<br>'
@@ -45,7 +45,7 @@ function setupToDHTML() {
 			<td></td>`
 		html += `</tr></tr>
 			<td></td>
-			<td><button class='qu_upg unavailablebtn' id='${shorthand}RadioactiveDecay' onclick='radioactiveDecay("${shorthand}")'>Reset to tier up.<br><span id='${shorthand}RDReq'></span><br>Radioactive Decays: <span id='${shorthand}RDLvl'></span></button></td>`
+			<td><button class='qu_upg unavailablebtn' id='${shorthand}RadioactiveDecay' onclick='radioactiveDecay("${shorthand}")'>Sacrifice to tier up.<br><span id='${shorthand}RDReq'></span><br>Radioactive Decays: <span id='${shorthand}RDLvl'></span></button></td>`
 		html += "</tr></table>"
 		el(color + "Branch").innerHTML = html
 	}
@@ -70,11 +70,6 @@ function updateTreeOfDecayTab(){
 		el(color + "QuarksDecayTime").innerHTML = timeDisplayShort(Decimal.div(10, rate).mul(branch.quarks.gt(linear) ? branch.quarks.div(linear).log(2) + 1 : branch.quarks.div(linear)))
 		let ret = getQuarkSpinProduction(shorthand)
 		el(color + "QuarkSpinProduction").innerHTML = "(+" + shortenMoney(ret) + "/s)"
-
-		let decays = getRadioactiveDecays(shorthand)
-		let power = Math.floor(getBU1Power(shorthand) / 120 + 1)			
-		el(color + "UpgPow1").innerHTML = decays || power > 1 ? shorten(pow2((1 + decays * .1) / power)) : 2
-		el(color + "UpgSpeed1").innerHTML = decays > 2 || power > 1 ? shorten(pow2(Math.max(.8 + decays * .1, 1) / power)) : 2
 
 		let lvl = getBranchUpgLevel(shorthand, 3)
 		let s = getBranchUpg3SoftcapStart()
@@ -173,9 +168,9 @@ function getBranchSpeedText(){
 
 function getGluonBranchSpeed() {
 	let x = E(1)
-	if (hasGluonUpg("rg8")) x = x.mul(getGU8Effect("rg"))
-	if (hasGluonUpg("gb8")) x = x.mul(getGU8Effect("gb"))
-	if (hasGluonUpg("br8")) x = x.mul(getGU8Effect("br"))
+	if (hasGluonUpg("rg", 8)) x = x.mul(gluonEff("rg", 8))
+	if (hasGluonUpg("gb", 8)) x = x.mul(gluonEff("gb", 8))
+	if (hasGluonUpg("br", 8)) x = x.mul(gluonEff("br", 8))
 	return x
 }
 
@@ -438,11 +433,7 @@ function radioactiveDecay(shorthand) {
 	let data = todSave[shorthand]
 	if (!data.quarks.gte(pow10(Math.pow(2, 50)))) return
 	data.quarks = E(0)
-	data.upgrades = {}
-	if (hasBraveMilestone(4)) data.upgrades[1] = 5
 	data.decays = data.decays === undefined ? 1 : data.decays + 1
-	let sum = 0
-	for (var c = 0; c < 1; c++) sum += getRadioactiveDecays((['r', 'g', 'b'])[c])
 	updateTODStuff()
 }
 
@@ -501,6 +492,7 @@ function getRDPower(branch) {
 
 function getBU1Power(branch) {
 	let x = getBranchUpgLevel(branch, 1)
+	if (hasBLMilestone(2)) x *= blEff(2)
 	let s = Math.floor(Math.sqrt(0.25 + 2 * x / 120) - 0.5)
 	return s * 120 + (x - s * (s + 1) * 60) / (s + 1)
 }
@@ -516,7 +508,7 @@ function getBranchUpg3SoftcapStart(){
 }
 
 function getBranchUpgMult(branch, upg) {
-	if (upg == 1) return pow2(getBU1Power(branch) * (getRadioactiveDecays(branch) / 10 + 1))
+	if (upg == 1) return pow2(getBU1Power(branch))
 	else if (upg == 2) return pow2(getBU2Power(branch))
 	else if (upg == 3) {
 		l = getBranchUpgLevel(branch, 3)

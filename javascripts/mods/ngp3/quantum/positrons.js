@@ -54,7 +54,7 @@ function getPositronBoost(mod) {
 	if (hasNU(13)) ss += NT.eff("upg", 13, 0)
 	if (r > ss) r = Math.sqrt((r - ss + ss_speed) * ss_speed) + ss - ss_speed
 
-	if (hasGluonUpg("rg4") && mod != "no-rg4") r *= 0.7
+	if (hasGluonUpg("rg", 4) && mod != "no-rg4") r *= 0.7
 	if (isDecayOn() && mod != "noTree") r *= getTreeUpgradeEffect(4)
 	return r + 1
 }
@@ -76,7 +76,7 @@ function getPositronUpgRes(u) {
 
 function getPositronUpgCost(u) {
 	var amt = quSave.electrons.rebuyables[u-1]
-	if (hasGluonUpg("gb5")) amt -= 0.3
+	if (hasGluonUpg("gb", 5)) amt -= 0.3
 	amt = Math.max(amt, 0)
 
 	var base = amt * Math.max(amt - 1, 1) + 1

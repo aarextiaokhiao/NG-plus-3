@@ -53,8 +53,16 @@ function updateIntergalacticTemp() {
 	if (!hasAch("ng3p27")) return
 
 	var gal = player.galaxies
+	if (!bigRipped()) {
+		if (hasBLMilestone(5)) gal += blEff(5, 0)
+		if (hasBLMilestone(6)) gal *= blEff(6)
+	}
+
 	var exp = Math.min(Math.sqrt(Math.log10(Math.max(gal, 1))) * 2, 2.5)
-	tmp.qu.intergal = pow10(Math.pow(gal, exp))
+	tmp.qu.intergal = {
+		gal: gal,
+		eff: pow10(Math.pow(gal, exp))
+	}
 }
 
 function updateMatterSpeed() {

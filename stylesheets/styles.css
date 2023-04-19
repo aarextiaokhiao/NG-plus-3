@@ -211,7 +211,7 @@ button b, button span {
 	color: white
 }
 
-.storebtn, .newdim {
+.storebtn, .newdim, .chosen {
     color: black;
     background: #F2F2F2;
     font-weight: bold;
@@ -225,7 +225,7 @@ button b, button span {
     vertical-align: top;
 }
 
-.storebtn:hover, .newdim:hover {
+.storebtn:hover, .newdim:hover, .chosen {
     color: #FFF;
     background: #5AC467;
 }
@@ -2076,15 +2076,15 @@ td.lEp {
 .antbtn {
 	background: black;
 	border-style: solid;
-	border-color: #4c4c4c;
+	border-color: #555;
 	border-radius: 4px;
 	color: #779;
 	text-shadow: 0px 0px 1px #4c4c4c, 0px 0px 2px #4c4c4c, 0px 0px 3px #4c4c4c;
 	font-weight: bold;
 	transition-duration: 0.2s
 }
-.antbtn:hover {
-	background: #333;
+.antbtn:hover, .antbtn.hover {
+	box-shadow: inset 0 0 24px #779;
 	cursor: pointer
 }
 #replicants .qtable td { vertical-align:0 }
@@ -2362,7 +2362,7 @@ td.lEp {
 }
 .hypo.hypo0 {
 	background: #b67f33;
-	box-shadow: 0px 0px 12px #b67f33
+	box-shadow: 0px 0px 12px #b67f33;
 }
 .hypo.hypo1 {
 	background: #b341e0;

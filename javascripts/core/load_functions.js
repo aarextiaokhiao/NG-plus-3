@@ -1276,7 +1276,7 @@ function doNGSPUpdatingVersion(){
 function doInitInfMultStuff(){
 	ipMultPower=2
 	if (hasMasteryStudy("t241")) ipMultPower=2.2
-	if (hasGluonUpg("gb3")) ipMultPower=2.3
+	if (hasGluonUpg("gb", 3)) ipMultPower=2.3
 	if (mod.ngep) ipMultCostIncrease=4
 	else ipMultCostIncrease=10
 	el("infiMult").innerHTML = "You gain " + ipMultPower + "x more IP.<br>Currently: "+shortenDimensions(getIPMult()) +"x<br>Cost: "+shortenCosts(player.infMultCost)+" IP"
@@ -1558,7 +1558,6 @@ function updateNGp3DisplayStuff(){
 	updatePositrons()
 	updateAutoQuantumMode()
 	updateColorCharge()
-	updateGluonsTabOnUpdate()
 }
 
 function setSomeQuantumAutomationDisplay(){

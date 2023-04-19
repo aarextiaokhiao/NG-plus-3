@@ -249,7 +249,7 @@ function getReplSpeed() {
 		if (x > 200) exp += x / 10 - 20
 	}
 	inc = inc + 1
-	if (hasGluonUpg("gb2")) exp *= 2
+	if (hasGluonUpg("gb", 2)) exp *= 2
 	exp *= PHOTON.eff(4)
 	return {inc: inc, exp: exp}
 }
@@ -264,7 +264,7 @@ function getReplicantiInterval() {
 	if (hasTimeStudy(62)) interval /= tsMults[62]()
 	if (player.replicanti.amount.gt(Number.MAX_VALUE)||hasTimeStudy(133)) interval *= 10
 	if (hasTimeStudy(213)) interval /= tsMults[213]()
-	if (hasGluonUpg("gb1")) interval /= getGB1Effect()
+	if (hasGluonUpg("gb", 1)) interval /= gluonEff("gb", 1)
 	if (player.replicanti.amount.lt(Number.MAX_VALUE) && hasAch("r134")) interval /= 2
 	if (isBigRipUpgradeActive(4)) interval /= 10
 
@@ -277,7 +277,12 @@ function getReplicantiInterval() {
 
 function getReplicantiFinalInterval() {
 	let speed = tmp.rep.speeds
-	let x = tmp.rep.absorb > 0 ? 10 / speed.exp : tmp.rep.interval.div(tmp.rep.dupRate)
+	let x = tmp.rep.interval.div(tmp.rep.dupRate)
+	if (tmp.rep.absorb > 0) {
+		x = 10 / speed.exp
+		if (hasBLMilestone(1)) x /= blEff(1)
+	}
+
 	if (player.replicanti.amount.gt(Number.MAX_VALUE)) x = mod.rs ? Math.pow(hasAch("r107") ? Math.max(player.replicanti.amount.log(2)/1024,1) : 1, -.25) * x.toNumber() : E_pow(speed.inc, Math.max(player.replicanti.amount.log10() / speed.exp - 1, 0)).mul(x)
 	return x
 }

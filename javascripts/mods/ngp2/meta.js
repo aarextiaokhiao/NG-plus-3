@@ -35,7 +35,7 @@ function getMetaDimensionMultiplier(tier) {
 	ret = ret.mul(tmp.mdgm) //Global multiplier of all Meta Dimensions
 
 	//Quantum upgrades
-	if (tier == 1 && hasGluonUpg("rg3")) ret = ret.mul(getRG3Effect())
+	if (tier == 1 && hasGluonUpg("rg", 3)) ret = ret.mul(gluonEff("rg", 3))
 
 	//QC Rewards:
 	if (tier % 2 > 0) ret = ret.mul(tmp.qu.chal.reward[4])
@@ -65,8 +65,8 @@ function getMetaDimensionGlobalMultiplier() {
 		if (hasMasteryStudy("t393") && !dev.testZone) ret = ret.mul(getMTSMult(393))
 
 		//Quantum Upgrades
-		if (hasGluonUpg("br4")) ret = ret.mul(E_pow(getDimensionPowerMultiplier(), 0.0003).max(1))
-		if (hasGluonUpg("br5")) ret = ret.mul(3)
+		if (hasGluonUpg("br", 4)) ret = ret.mul(gluonEff("br", 4))
+		if (hasGluonUpg("br", 5)) ret = ret.mul(3)
 
 		//QC Rewards
 		ret = ret.mul(tmp.qu.chal.reward[3])

@@ -28,7 +28,7 @@ function getDilatedTimeGainPerSecond(){
 }
 
 function getDTGainExp(){
-	let exp = hasGluonUpg("br3") ? 1.1 : 1
+	let exp = hasGluonUpg("br", 3) ? 1.1 : 1
 	return exp
 }
 
@@ -51,7 +51,7 @@ function getDTMultNGP3() {
 		if (hasMasteryStudy("t341")) gain = gain.mul(getMTSMult(341))
 
 		gain = gain.mul(tmp.qu.color_eff.b)
-		if (hasGluonUpg("br2")) gain = gain.mul(E_pow(2.2, Math.pow(tmp.sacPow.max(1).log10() / 1e6, 0.25)))
+		if (hasGluonUpg("br", 2)) gain = gain.mul(gluonEff("br", 2))
 		gain = gain.mul(tmp.qu.chal.reward[1])
 		if (hasNanoReward("dil_gal_gain")) gain = E(getNanorewardEff("dil_gal_gain")).pow(player.replicanti.galaxies).mul(gain)
 		gain = gain.mul(getReplDilBonus())
@@ -96,7 +96,7 @@ function getDilPower() {
 	if (mod.ngp3) {
 		if (hasAch("ng3p11")) ret = ret.mul(Math.max(getTotalRG() / 125, 1))
 		if (hasMasteryStudy("t264")) ret = ret.mul(getMTSMult(264))
-		if (hasGluonUpg("br1")) ret = ret.mul(getBR1Effect())
+		if (hasGluonUpg("br", 1)) ret = ret.mul(gluonEff("br", 1))
 	}
 	return ret
 }

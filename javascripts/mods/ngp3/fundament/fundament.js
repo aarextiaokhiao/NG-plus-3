@@ -145,7 +145,6 @@ RESETS.funda = {
 
 		updateQuantumWorth("quick")
 		updateColorCharge()
-		updateGluonsTabOnUpdate("prestige")
 	},
 	resetPositrons(bm) {
 		if (bm >= 3) return
@@ -180,7 +179,6 @@ RESETS.funda = {
 			quSave.replicants.limitCost = E_pow(200, quSave.replicants.limitDim * 9).mul(1e49)
 			quSave.replicants.quantumFoodCost = E_pow(5, quSave.replicants.limitDim * 30).mul(2e46)
 		}
-		updateEmperorDimensions()
 
 		nfSave.rewards = bm >= 13 ? 5 : 0
 	},
@@ -397,4 +395,17 @@ function updateGhostifyTabs() {
 	if (isTabShown("automaticghosts")) updateAutomatorHTML()
 
 	el("bl_req").style.display = PHOTON.unlocked() && !LAB.unlocked() && !BL_JOKE.started() ? "" : "none"
+}
+
+//Sublayers
+function resetGHPandNeutrinos() {
+	ghSave.ghostParticles = E(0)
+	ghSave.multPower = 1
+	ghSave.neutrinos.electron = E(0)
+	ghSave.neutrinos.mu = E(0)
+	ghSave.neutrinos.tau = E(0)
+	ghSave.neutrinos.multPower = 1
+
+	resetPowers()
+	doReset("funda")
 }

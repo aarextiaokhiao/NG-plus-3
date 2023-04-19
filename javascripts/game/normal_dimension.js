@@ -141,7 +141,7 @@ function getDimensionFinalMultiplier(tier) {
 	
 	if (player.currentEternityChall == "eterc10") mult = mult.mul(ec10bonus)
 
-	if (tier == 8 && hasAch("ng3p27")) mult = mult.mul(tmp.qu.intergal)
+	if (tier == 8 && hasAch("ng3p27")) mult = mult.mul(tmp.qu.intergal.eff)
 	
 	if (mult.gt(10)) mult = dilates(mult.max(1), 2)
 	mult = mult.mul(getAfterDefaultDilationLayerAchBonus(tier))

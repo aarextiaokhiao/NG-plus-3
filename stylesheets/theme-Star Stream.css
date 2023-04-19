@@ -96,7 +96,7 @@ button {
 }
 
 .completedchallengesbtn,
-.chosenbtn {
+.chosen {
     border-color: #090 !important;
     background-color: #5f0 !important;
     color:black !important;
@@ -665,7 +665,6 @@ strong { color: #0072e5 }
     font-weight: 500 !important;
 }
 
-#quantum.storebtn,
 .quantumbtn {
     border-color: #009900 !important;
     background:linear-gradient(#003300, #00cc00) !important;
@@ -803,6 +802,14 @@ strong { color: #0072e5 }
     animation:none;
 }
 
+.antbtn {
+    border-color: #777 !important;
+    background:linear-gradient(#333, #999) !important;
+    color: #ddd !important;
+    text-shadow: 0px 0px 5px #000, 0px 0px 9px #999 !important;
+    transition: 0.2s;
+}
+
 #quantumFoodAmount,
 #quantumFoodAmountED {
     color: #b7e5b7 !important;
@@ -821,7 +828,7 @@ strong { color: #0072e5 }
     animation: none
 }
 
-.nanofieldreward { 
+.nfReward { 
     background-color: #999999 !important;
     border: 1px solid #999999 !important;
     color:#000 !important;
@@ -898,7 +905,7 @@ strong { color: #0072e5 }
     color: #fff !important
 }
 
-.bigrip, .bigrip {
+.bigrip {
     background: linear-gradient(#9ff, #9f9) !important;
     border: 3px solid white !important;
     color: #000 !important;
@@ -1032,8 +1039,10 @@ strong { color: #0072e5 }
     color: #ac00e5
 }
 
-.qu_upg_bought.bl {
-    color: #191919 !important
+.bosonic_btn {
+	border: 2px solid #b50 !important;
+    color: #fec !important;
+	box-shadow: none
 }
 
 .qu_upg.hb:hover {

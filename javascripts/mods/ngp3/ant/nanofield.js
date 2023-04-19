@@ -5,16 +5,24 @@ let NF = {
 }
 
 function updateNanoverseTab() {
-	el("quarksNanofield").textContent = shortenDimensions(quSave.replicants.quarks)		
-	el("quarkCharge").textContent = shortenMoney(nfSave.charge)
-	el("quarkChargeRate").textContent = shortenDimensions(getQuarkChargeProduction())
-	el("quarkLoss").textContent = shortenDimensions(getQuarkLossProduction())
 	el("preonEnergy").textContent = shortenMoney(nfSave.energy)
-	el("quarkEnergyRate").textContent = shortenMoney(getQuarkEnergyProduction())
-	el("quarkAntienergy").textContent = shortenMoney(nfSave.antienergy)
-	el("quarkAntienergyRate").textContent = shortenMoney(getQuarkAntienergyProduction())
-	el("quarkChargeProductionCap").textContent = shortenMoney(getQuarkChargeProductionCap())
+
+	let noCharge = hasBLMilestone(3)
+	el("quarkChargeDiv").style.display = noCharge ? "none" : ""
+	el("quarkAntienergyDiv").style.display = noCharge ? "none" : ""
+	if (!noCharge) {
+		el("quarksNanofield").textContent = shortenDimensions(quSave.replicants.quarks)		
+		el("quarkCharge").textContent = shortenMoney(nfSave.charge)
+		el("quarkChargeRate").textContent = shortenDimensions(getQuarkChargeProduction())
+		el("quarkLoss").textContent = shortenDimensions(getQuarkLossProduction())
+		el("quarkEnergyRate").textContent = shortenMoney(getQuarkEnergyProduction())
+		el("quarkAntienergy").textContent = shortenMoney(nfSave.antienergy)
+		el("quarkAntienergyRate").textContent = shortenMoney(getQuarkAntienergyProduction())
+		el("quarkChargeProductionCap").textContent = shortenMoney(getQuarkChargeProductionCap())
+	}
+
 	el("produceQuarkCharge").innerHTML = (nfSave.producingCharge ? "Stop" : "Start") + " production of nanocharge." + (nfSave.producingCharge ? "" : "<br>(You won't gain pilons on production)")
+	el("produceQuarkCharge").className = "antbtn " + (nfSave.producingCharge ? "hover" : "")
 
 	var amt = nfSave.rewards
 	el("nanorewards").textContent = getFullExpansion(amt)
@@ -44,14 +52,15 @@ function startProduceQuarkCharge() {
 }
 
 function getQuarkLossProduction() {
-	let ret = getQuarkChargeProduction(true)
+	let ret = getQuarkChargeProduction()
 	ret = ret.pow(2).mul(4e25)
 	if (hasNU(3)) ret = ret.div(10)
 	return ret
 }
 
 function getQuarkEnergyProduction() {
-	let ret = nfSave.charge.mul(5).sqrt()
+	let ret = hasBLMilestone(3) ? getQuarkChargeProduction() : nfSave.charge
+	ret = ret.mul(5).sqrt()
 	if (hasNanoReward("pilon_energy")) ret = ret.mul(tmp.qu.nf.eff.pilon_energy)
 	if (hasMasteryStudy("t411")) ret = ret.mul(getMTSMult(411))
 	return ret
@@ -283,15 +292,18 @@ function setupNanofieldHTML() {
 }
 
 function nanofieldUpdating(diff){
-	var AErate = getQuarkAntienergyProduction()
-	var toAddAE = AErate.mul(diff).min(getQuarkChargeProductionCap().sub(nfSave.antienergy))
-	if (nfSave.producingCharge) nanofieldProducingChargeUpdating(diff)
-	if (toAddAE.gt(0)) {
-		nfSave.antienergy = nfSave.antienergy.add(toAddAE).min(getQuarkChargeProductionCap())
-		nfSave.energy = nfSave.energy.add(toAddAE.div(AErate).mul(getQuarkEnergyProduction()))
-
-		updateNextPreonEnergyThreshold()
+	if (hasBLMilestone(3)) {
+		nfSave.energy = nfSave.energy.add(getQuarkEnergyProduction().mul(diff))
+	} else {
+		var AErate = getQuarkAntienergyProduction()
+		var toAddAE = AErate.mul(diff).min(getQuarkChargeProductionCap().sub(nfSave.antienergy))
+		if (nfSave.producingCharge) nanofieldProducingChargeUpdating(diff)
+		if (toAddAE.gt(0)) {
+			nfSave.antienergy = nfSave.antienergy.add(toAddAE).min(getQuarkChargeProductionCap())
+			nfSave.energy = nfSave.energy.add(toAddAE.div(AErate).mul(getQuarkEnergyProduction()))
+		}
 	}
+	updateNextPreonEnergyThreshold()
 }
 
 function nanofieldProducingChargeUpdating(diff){

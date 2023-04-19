@@ -47,9 +47,9 @@ function getGalaxyRequirement(offset = 0, display) {
 		let distantStart = getDistantScalingStart()
 		if (total >= distantStart) {
 			let speed = 1
-			if (hasGluonUpg("rg6")) speed *= 0.867
-			if (hasGluonUpg("gb6")) speed /= getGB6Effect()
-			if (hasGluonUpg("br6")) speed /= getBR6Effect()
+			if (hasGluonUpg("rg", 6)) speed *= 0.867
+			if (hasGluonUpg("gb", 6)) speed /= gluonEff("gb", 6)
+			if (hasGluonUpg("br", 6)) speed /= gluonEff("br", 6)
 			if (hasNB(6)) speed /= NT.eff("boost", 6)
 			if (hasAch("ng3p98")) speed *= 0.9
 			amount += getDistantAdd(total-distantStart+1)*speed
@@ -63,10 +63,10 @@ function getGalaxyRequirement(offset = 0, display) {
 		let remoteStart = getRemoteScalingStart()
 		if (total >= remoteStart && !hasNU(6)) {
 			let speed2 = 1
-			if (hasGluonUpg("rg7")) speed2 *= 0.9
-			if (hasGluonUpg("gb7")) speed2 /= 1+Math.log10(1+player.infinityPoints.max(1).log10())/100
-			if (hasGluonUpg("br7")) speed2 /= 1+Math.log10(1+player.eternityPoints.max(1).log10())/80
-			amount *= Math.pow(1 + (hasGluonUpg("rg1") ? 1 : 2) / (inNGM(4) ? 10 : 1e3), (total - remoteStart + 1) * speed2)
+			if (hasGluonUpg("rg", 7)) speed2 *= 0.9
+			if (hasGluonUpg("gb", 7)) speed2 /= gluonEff("gb", 7)
+			if (hasGluonUpg("br", 7)) speed2 /= gluonEff("br", 7)
+			amount *= Math.pow(1 + (hasGluonUpg("rg", 1) ? 1 : 2) / (inNGM(4) ? 10 : 1e3), (total - remoteStart + 1) * speed2)
 			scaling = Math.max(scaling, 3)
 		}
 	}
@@ -168,8 +168,8 @@ function getGalaxyEff(bi) {
 	if (mod.udsp && player.dilation.active) eff *= exDilationBenefit() + 1
 	if (mod.ngp3) {
 		eff *= tmp.qu.color_eff.r
-		if (hasGluonUpg("rg2")) eff *= Math.pow(player.dilation.freeGalaxies / 5e3 + 1, 0.25)
-		if (hasGluonUpg("rg4")) eff *= 1.5
+		if (hasGluonUpg("rg", 2)) eff *= gluonEff("rg", 2)
+		if (hasGluonUpg("rg", 4)) eff *= 1.5
 		if (tmp.qu.be) eff *= 0.4
 		if (hasNB(12)) eff *= Math.pow(getReplGalEff(), NT.eff("boost", 12))
 	}
