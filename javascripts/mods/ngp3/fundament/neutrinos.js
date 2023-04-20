@@ -66,7 +66,7 @@ const NEUTRINO = NT = {
 		},
 
 		gain() { 
-			let r = E_pow(5, ghSave.neutrinos.multPower - 1)
+			let r = E_pow(getNeutrinoMultBase(), ghSave.neutrinos.multPower - 1)
 			r = E_pow(PHOTON.eff(3), brSave.bestGals).mul(r)
 			if (mod.p3ep) r = r.mul(pow10(player.galaxies / 1e5))
 			return r
@@ -194,9 +194,11 @@ const NEUTRINO = NT = {
 				cost: E(1e40),
 				eff(nt) {
 					nt = nt[0].add(1).log10()+nt[1].add(1).log10()+nt[2].add(1).log10()
-					return Math.min(Math.log10(Math.max(nt / 150, 1)), 1)
+					let r = Math.log10(Math.max(nt / 150, 1))
+					if (r > 0.2) r = r / 2 + 0.1
+					return Math.min(r, 1)
 				},
-				effDesc: e => `<b>^${shorten(e)}</b> of Replicated Galaxy strength shares to Galaxies.`,
+				effDesc: e => `<b>^${e.toFixed(2)}</b> of Replicated Galaxy strength shares to Galaxies.`,
 			}
 		]
 	},
@@ -366,7 +368,8 @@ const NEUTRINO = NT = {
 		)
 
 		el("neutrinoMultUpg").className = "qu_upg " + (ghSave.ghostParticles.gte(getNeutrinoMultCost()) ? "storebtn" : "unavailablebtn")
-		el("neutrinoMult").textContent = shortenDimensions(E_pow(5, ghSave.neutrinos.multPower - 1))
+		el("neutrinoMultBase").textContent = shorten(getNeutrinoMultBase())
+		el("neutrinoMult").textContent = shortenDimensions(E_pow(getNeutrinoMultBase(), ghSave.neutrinos.multPower - 1))
 		el("neutrinoMultUpgCost").textContent = shortenDimensions(getNeutrinoMultCost())
 		el("ghpMultUpg").className = "qu_upg " + (NT_RES.total().gte(getGHPMultCost()) ? "storebtn" : "unavailablebtn")
 		el("ghpMult").textContent = shortenDimensions(getGHPBaseMult())
@@ -397,6 +400,12 @@ function buyNeutrinoMult(max) {
 
 	el("neutrinoMult").textContent=shortenDimensions(E_pow(5, ghSave.neutrinos.multPower - 1))
 	el("neutrinoMultUpgCost").textContent=shortenDimensions(getNeutrinoMultCost())
+}
+
+function getNeutrinoMultBase() {
+	let r = 5
+	if (hasBLMilestone(10)) r *= blEff(10)
+	return r
 }
 
 function maxNeutrinoMult() {

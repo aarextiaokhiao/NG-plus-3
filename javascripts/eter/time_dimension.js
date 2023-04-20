@@ -64,7 +64,7 @@ function getTimeDimensionPower(tier) {
 
 	if (ECComps("eterc10") !== 0) ret = ret.mul(getECReward(10))
 	if (hasAch("r128")) ret = ret.mul(Math.max(player.timestudy.studies.length, 1))
-	if (player.dilation.upgrades.includes(5)) ret = ret.mul(tmp.rep.eff.pow(hasBLMilestone(8) ? .5 : .1))
+	if (player.dilation.upgrades.includes(5)) ret = ret.mul(tmp.rep.eff.pow(hasBLMilestone(8) ? .3 : .1))
 
 	ret = dilates(ret, 2)
 	if (inNGM(2)) ret = ret.mul(ret2)

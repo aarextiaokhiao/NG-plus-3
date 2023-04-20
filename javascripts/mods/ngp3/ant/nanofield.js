@@ -5,17 +5,17 @@ let NF = {
 }
 
 function updateNanoverseTab() {
+	el("quarksNanofield").textContent = shortenDimensions(quSave.replicants.quarks)		
 	el("preonEnergy").textContent = shortenMoney(nfSave.energy)
+	el("quarkEnergyRate").textContent = shortenMoney(getQuarkEnergyProduction())
 
 	let noCharge = hasBLMilestone(3)
 	el("quarkChargeDiv").style.display = noCharge ? "none" : ""
 	el("quarkAntienergyDiv").style.display = noCharge ? "none" : ""
 	if (!noCharge) {
-		el("quarksNanofield").textContent = shortenDimensions(quSave.replicants.quarks)		
 		el("quarkCharge").textContent = shortenMoney(nfSave.charge)
 		el("quarkChargeRate").textContent = shortenDimensions(getQuarkChargeProduction())
 		el("quarkLoss").textContent = shortenDimensions(getQuarkLossProduction())
-		el("quarkEnergyRate").textContent = shortenMoney(getQuarkEnergyProduction())
 		el("quarkAntienergy").textContent = shortenMoney(nfSave.antienergy)
 		el("quarkAntienergyRate").textContent = shortenMoney(getQuarkAntienergyProduction())
 		el("quarkChargeProductionCap").textContent = shortenMoney(getQuarkChargeProductionCap())

@@ -518,15 +518,6 @@ input {
     animation: studyGlowIn 7s infinite;
 }
 
-.greedbtn {
-    background-color: #f2d729 !important;
-    color: black !important;
-}
-
-.greedbtn:hover {
-    background-color: #9E913A !important;
-}
-
 .eternitychallengestudybought {
     background: #490066 !important;
 }

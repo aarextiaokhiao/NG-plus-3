@@ -592,9 +592,8 @@ strong { color: #0072e5 }
 	background-size: 200% 200% !important;
 	border: 2px solid #b70b !important;
 	color: #e5e5e5 !important;
-	animation: bl 5s linear infinite
 }
-.bosonic_btn:hover {
+.bosonic_btn:hover, .milestonereward.bl, .milestonerewardlocked.bl {
     border-color: #b70 !important;
 }
 .hypo_btn {

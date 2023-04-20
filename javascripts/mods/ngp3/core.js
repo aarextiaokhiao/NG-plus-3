@@ -1,6 +1,6 @@
 //VERSION: 2.31
 let ngp3_ver = 2.31
-let ngp3_build = 20230418
+let ngp3_build = 20230419
 function doNGP3Updates() {
 	if (!aarMod.ngp3_build) aarMod.ngp3_build = 0
 	if (aarMod.ngp3_build < 20221230) quSave.multPower = 0
@@ -46,7 +46,7 @@ function doNGP3Updates() {
 		ghSave.photons.offset = [0,0,0,0,0,0,0]
 	}
 	if (aarMod.ngp3_build < 20230414 && blSave) blSave.wz_capacitors = WEAK_FORCE.setup()
-	/*if (aarMod.ngp3_build < 20230419 && E(ghSave?.ghostParticles).gte(1e40)) {
+	/*if (aarMod.ngp3_build < 20230420 && E(ghSave?.ghostParticles).gte(1e40)) {
 		alert("Due to massive balancing changes, you will be pushed back to e40 Spectral Particles!")
 
 		resetGHPandNeutrinos()

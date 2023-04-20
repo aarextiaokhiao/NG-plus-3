@@ -20,7 +20,11 @@ function getReplMult(next) {
 	}
 	let replmult = Decimal.max(player.replicanti.amount.log(2), 1).pow(exp)
 	if (hasTimeStudy(21)) replmult = replmult.plus(E_pow(player.replicanti.amount, 0.032))
-	if (hasTimeStudy(102)) replmult = replmult.mul(E_pow(5, player.replicanti.galaxies))
+	if (hasTimeStudy(102)) {
+		let gal = player.replicanti.galaxies
+		if (hasBLMilestone(17)) gal *= blEff(17)
+		replmult = replmult.mul(E_pow(5, gal))
+	}
 	return replmult;
 }
 
@@ -278,12 +282,15 @@ function getReplicantiInterval() {
 function getReplicantiFinalInterval() {
 	let speed = tmp.rep.speeds
 	let x = tmp.rep.interval.div(tmp.rep.dupRate)
+
 	if (tmp.rep.absorb > 0) {
 		x = 10 / speed.exp
 		if (hasBLMilestone(1)) x /= blEff(1)
 	}
+	if (hasBLMilestone(11) && player.replicanti.amount.lt(blEff(11))) x /= 10
 
 	if (player.replicanti.amount.gt(Number.MAX_VALUE)) x = mod.rs ? Math.pow(hasAch("r107") ? Math.max(player.replicanti.amount.log(2)/1024,1) : 1, -.25) * x.toNumber() : E_pow(speed.inc, Math.max(player.replicanti.amount.log10() / speed.exp - 1, 0)).mul(x)
+
 	return x
 }
 

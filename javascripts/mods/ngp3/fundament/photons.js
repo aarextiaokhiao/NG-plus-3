@@ -45,6 +45,7 @@ let PHOTON = {
 	photonGain() {
 		let r = E(player.dilation.bestTPOverGhostifies.max(1).log10() / 200).pow(10)
 		if (hasNanoReward("photon")) r = r.mul(getNanorewardEff("photon"))
+		if (hasBLMilestone(18)) r = r.mul(blEff(18))
 		return r
 	},
 

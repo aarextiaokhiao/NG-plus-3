@@ -1039,10 +1039,22 @@ strong { color: #0072e5 }
     color: #ac00e5
 }
 
-.bosonic_btn {
+.bosonic_btn, .wz_capacitor button.can {
 	border: 2px solid #b50 !important;
     color: #fec !important;
 	box-shadow: none
+}
+
+.wz_capacitor button.plus {
+	border-radius: 75px 0 0 75px !important
+}
+
+.wz_capacitor button.minus {
+	border-radius: 0 75px 75px 0 !important;
+}
+
+#bl_amt, #bl_best, #wz_w, #wz_z, #wz_hc:not(.red) {
+	color: #f30
 }
 
 .qu_upg.hb:hover {

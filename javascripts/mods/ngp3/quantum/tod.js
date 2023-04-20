@@ -468,7 +468,10 @@ function getTreeUpgradeEfficiencyText(){
 	if (!shiftDown) return "Tree upgrade efficiency: "+(tmp.qu.tree_str * 100).toFixed(1)+"%"
 
 	let text = ""
-	if (todSave.r.decays) text += "Radioactive Decays: +" + (todSave.r.decays / 5).toFixed(1) + "x, "
+	if (todSave.r.decays) {
+		text += "Radioactive Decays: +" + (todSave.r.decays / 5).toFixed(1) + "x, "
+		if (hasBLMilestone(14)) text += "Bosonic Milestone 15: " + shorten(blEff(14)) + "x to prior, "
+	}
 	if (hasNB(7)) text += "Neutrino Boost 7: +" + shorten(NT.eff("boost", 7)) + "x, "
 	if (hasAch("ng3p62")) text += "'Finite Time' Reward: +0.1x, "
 
@@ -477,11 +480,11 @@ function getTreeUpgradeEfficiencyText(){
 }
 
 function getTreeUpgradeEfficiency(mod) {
-	let r = 1
-	r += (todSave.r.decays || 0) / 5
+	let r = (todSave.r.decays || 0) / 5
+	if (hasBLMilestone(14)) r *= blEff(14)
 	if (hasNB(7) && mod != "noNB") r += NT.eff("boost", 7, 0)
 	if (hasAch("ng3p62")) r += 0.1
-	return r
+	return r + 1
 }
 
 function getRDPower(branch) {

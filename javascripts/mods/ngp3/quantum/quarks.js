@@ -228,7 +228,6 @@ function updateColorPowers(log) {
 		if (hasNB(5)) sc_exp += NT.eff("boost", 5, 0) / 2
 		if (sc_exp < 1) red = Math.pow(red / 2.3, sc_exp) * 2.3
 	}
-	if (red > 5) red = Math.log10(red * 2) + 4
 	tmp.qu.color_eff.r = red
 
 	//Green

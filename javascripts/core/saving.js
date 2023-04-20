@@ -107,17 +107,9 @@ function changeSaveDesc(saveId, placement) {
 		var isSaveGhostified = temp?.ghostify?.times > 0
 		var isSaveQuantumed = temp?.quantum?.times > 0
 		if (isSaveGhostified) {
-			if (temp.achievements.includes("ng3p101")) {
-				var data=temp.ghostify
-				msg+="Higgs: "+shortenDimensions(E(data.hb.higgs))+", Gravitons: "+shorten(E(data.gravitons.amount))
-			} else if (temp.achievements.includes("ng3p91")) {
-				var data=temp.ghostify.hb
-				msg+="Bosons: "+shorten(E(temp.ghostify.bl.am))+", Higgs: "+shortenDimensions(E(data.higgs))
-			} else if (temp.achievements.includes("ng3p81")) {
-				var data=temp.ghostify.wzb
-				msg+="Bosons: "+shorten(E(temp.ghostify.bl.am))+", W+ Bosons: "+shortenDimensions(E(data.wpb))+", W- Bosons: "+shortenDimensions(E(data.wnb))+", Z Bosons: "+shortenDimensions(E(data.zb))
+			if (temp.achievements.includes("ng3p81")) {
+				msg+="Spectral Particles: "+shortenDimensions(E(temp.ghostify.ghostParticles))+", Bosons: "+shorten(E(temp.ghostify.lab.best_bosons))
 			} else if (temp.achievements.includes("ng3p71")) {
-				//var data=temp.ghostify.photons
 				msg+="Spectral Particles: "+shortenDimensions(E(temp.ghostify.ghostParticles))+", Enlightenments: "+getFullExpansion(temp.ghostify.photons.lighten)
 			} else msg+="Spectral Particles: "+shortenDimensions(E(temp.ghostify.ghostParticles))+", Neutrinos: "+shortenDimensions(Decimal.add(temp.ghostify.neutrinos.electron, temp.ghostify.neutrinos.mu).add(temp.ghostify.neutrinos.tau).round())
 		} else if (isSaveQuantumed) {

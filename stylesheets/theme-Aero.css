@@ -530,80 +530,13 @@ option {
     color: #fff !important;
     text-shadow: 0 0 5px #fff4;
 }
-#gph {
+#ph_emission {
     color: #7f7 !important;
     animation: ghostifytext 15s linear infinite;
 }
-#ghr {
+#ph_amt {
     text-shadow: 2px -2px 2px #a4f4, -2px 2px 2px #f474 !important;
     animation: ghostifytext 15s linear infinite;
-}
-#dm {
-    color: #070710 !important;
-    text-shadow: 0 0 5px #99c, 0 0 5px #99c;
-}
-#bWatt, #bSpeed, #bTotalSpeed {
-    color: #aa3 !important;
-    animation: ghostifytext 15s linear infinite;
-}
-#bAM, #bAMProduction {
-    animation: ghostifytext 15s linear infinite, antiGlow 25s linear infinite;
-}
-#bBt, #bBtProduction, #odSpeed {
-    color: #aa3;
-    animation: antiGlow 25s linear infinite;
-}
-#wpb, #wbTime, #wbOscillate {
-    animation: ghostifytext 15s linear infinite;
-    text-shadow: 0 0 5px #f0f !important;
-}
-#wnb {
-    animation: ghostifytext 15s linear infinite;
-    text-shadow: 0 0 5px #0f0 !important;
-}
-#wbProduction {
-    animation: ghostifytext 15s linear infinite, wbGlow 15s linear infinite alternate;
-}
-@keyframes wbGlow {
-    from {
-        text-shadow: 0 0 5px #f0f;
-    }
-    to {
-        text-shadow: 0 0 5px #0f0;
-    }
-}
-#zb, #zbSpeed {
-    animation: ghostifytext 15s linear infinite;
-    text-shadow: 0 0 5px #aaa !important;
-}
-#ap, #apProduction {
-    color: #222 !important;
-    text-shadow: 0 0 5px #ccc;
-}
-.bRune {
-    width: .8em;
-    height: .8em;
-    border-radius: 20%;
-}
-.bRune.Infinite {
-    background: #fa7;
-    box-shadow: inset 0 0 .5em #210;
-    border: 1px solid #fa7;
-}
-.bRune.Eternal {
-    background: #caf;
-    box-shadow: inset 0 0 .5em #102;
-    border: 1px solid #caf;
-}
-.bRune.Quantum {
-    background: #7f7;
-    box-shadow: inset 0 0 .5em #020;
-    border: 1px solid #7f7;
-}
-.bRune.Spectre {
-    background: linear-gradient(#a4f, #f47);
-    box-shadow: inset 0 0 .5em #202;
-    border: 1px solid #a4f;
 }
 
 /*===============
@@ -1056,19 +989,6 @@ td .timestudybought.pos_study {
     filter: none !important;
 }
 
-.qMs_toggle_on {
-    background: linear-gradient(#cdb, #9b7) !important;
-    color: #570;
-    border: 1px solid #9b7;
-    box-shadow: inset 0 0 25px #9f75, 0 0 8px #9f77;
-}
-.qMs_toggle_off {
-    background: linear-gradient(#dbb, #b77) !important;
-    color: #700;
-    border: 1px solid #b77;
-    box-shadow: inset 0 0 25px #f795, 0 0 8px #f797;
-}
-
 .qu_upg.storebtn {
     background: linear-gradient(#342, #121) !important;
     color: #9f7 !important;
@@ -1079,15 +999,13 @@ td .timestudybought.pos_study {
 .qu_upg.storebtn:hover {
     box-shadow: inset 0 0 5px #9f73, 0 0 8px #f9f7;
 }
-.qu_upg.unavailablebtn, .qu_upg.unavailablebtn:hover,
-.qMs_locked, .qMs_locked:hover {
+.qu_upg.unavailablebtn, .qu_upg.unavailablebtn:hover {
     background: linear-gradient(#010, #010) !important;
     color: #9f77 !important;
     border: 1px solid #9f7 !important;
     filter: none !important;
 }
-.qu_upg_bought,
-.qMs_reward {
+.qu_upg_bought {
     background: linear-gradient(#231, #363) !important;
     color: #9f7;
     border: 1px solid #9f7;
@@ -1326,6 +1244,30 @@ td .timestudybought.pos_study {
 /*=============
   B O S O N I C
 ============= */
+.hypo {
+    border-radius: 20%;
+}
+.hypo.hypo0 {
+    background: #fa7;
+    box-shadow: inset 0 0 .5em #210;
+    border: 1px solid #fa7;
+}
+.hypo.hypo1 {
+    background: #caf;
+    box-shadow: inset 0 0 .5em #102;
+    border: 1px solid #caf;
+}
+.hypo.hypo2 {
+    background: #7f7;
+    box-shadow: inset 0 0 .5em #020;
+    border: 1px solid #7f7;
+}
+.hypo.hypo3 {
+    background: linear-gradient(#a4f, #f47);
+    box-shadow: inset 0 0 .5em #202;
+    border: 1px solid #a4f;
+}
+
 .hypo_btn {
 	background: #fff1
 }
@@ -1333,18 +1275,29 @@ td .timestudybought.pos_study {
 	background: #fff3
 }
 
-.bosonic_btn, .wz_capacitor button.can {
-	background: linear-gradient(#710, #307);
+.bosonic_btn, .wz_capacitor button.can, .milestonereward.bl {
+	background: linear-gradient(#710, #307) !important;
 	background-size: 100%;
 	text-shadow: 0 0 6px #f50;
-	color: #db7;
+	color: #db7 !important;
 	border: 1px solid #b50 !important;
 }
+#bl_amt, #bl_best {
+    animation: ghostifytext 15s linear infinite, antiGlow 25s linear infinite;
+}
+
 .wz_capacitor button.plus {
 	border-radius: 75px 0 0 75px !important
 }
 .wz_capacitor button.minus {
 	border-radius: 0 75px 75px 0 !important;
+}
+#wz_w, #wz_z {
+    animation: ghostifytext 15s linear infinite, wbGlow 15s linear infinite alternate;
+}
+#wz_hc:not(.red) {
+    color: #222 !important;
+    text-shadow: 0 0 5px #ccc;
 }
 
 .qu_upg.hb {

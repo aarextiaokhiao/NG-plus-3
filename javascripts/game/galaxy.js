@@ -95,6 +95,7 @@ function getDistantScalingStart() {
 	if (hasTimeStudy(223)) n += 7
 	if (hasTimeStudy(224)) n += Math.floor(player.resets/2000)
 	if (bigRipped() && hasRipUpg(15)) n += tmp.qu.bru[15]
+	if (hasBLMilestone(16)) n += blEff(16, 0)
 
 	return Math.max(n, 0)
 }

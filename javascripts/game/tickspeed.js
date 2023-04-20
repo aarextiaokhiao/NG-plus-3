@@ -211,7 +211,9 @@ function buyMaxTickSpeed() {
 }
 
 function getTickspeed() {
-	return player.tickspeed
+	let r = player.tickspeed
+	if (tmp.qu.be && player.currentEternityChall == "eterc10") r = r.max(pow10(-3e8))
+	return r
 }
 
 function updateTickspeed() {

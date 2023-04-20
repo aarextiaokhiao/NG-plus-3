@@ -53,6 +53,8 @@ const BOSONIC_LAB = LAB = {
 		if (isCapacitorsActive()) r = r.mul(capacitorEff(0))
 		if (isCapacitorsActive()) r = r.mul(capacitorEff(1))
 		if (isCapacitorsActive() && r.gt(1)) r = r.pow(capacitorEff(2))
+		if (hasBLMilestone(12)) r = r.mul(blEff(12))
+		if (hasBLMilestone(19)) r = r.mul(blEff(19))
 		return r
 	},
 	milestones: [
@@ -90,7 +92,7 @@ const BOSONIC_LAB = LAB = {
 		}, {
 			//QOL
 			req: E(1e4),
-			desc: "[QOL] Enable Time Dimensions in Eternity Challenge 10, but can't upgrade."
+			desc: "[Not implemented] Enable Time Dimensions in Eternity Challenge 10, but can't upgrade."
 		}, {
 			req: E(1.5e4),
 			desc: "Replicanti efficiency boosts Time Dimensions more."
@@ -99,48 +101,54 @@ const BOSONIC_LAB = LAB = {
 			desc: "Per-bought Time Dimensions works in Big Rip, but reduced."
 		}, {
 			req: E(5e4),
-			desc: "Bosons increase Neutrino multiplier base.",
-			eff: b => Math.log10(b.max(1).log10() + 1),
-			effDesc: e => "+" + shorten(e) + "x",
+			desc: "Bosonic Matter multiplies Neutrino multiplier base.",
+			eff: b => Math.log10(b.max(1).log10() + 10),
+			effDesc: e => shorten(e) + "x"
 		}, {
 			//QOL
 			req: E(1e5),
-			desc: "[QOL] Replicantis replicate 5x faster up to the point based on Replicate Slowdown.",
-			eff: b => pow10((tmp.rep.speeds?.exp || 1) * 1e3),
+			desc: "[QOL] Replicantis are faster up to the point based on Replicate Slowdown.",
+			eff: b => pow10((tmp.rep.speeds?.exp || 1) * 2e3),
 			effDesc: e => "Up to " + shortenDimensions(e)
 		}, {
 			req: E(1.5e5),
-			desc: "Elementary Particles boost Bosons.",
+			desc: "Elementary Particles boost Bosonic Matter.",
 			eff: b => ghSave.ghostParticles.max(1).log10() / 50 + 1,
 			effDesc: e => shorten(e) + "x"
 		}, {
 			req: E(2e5),
 			desc: "Replicantis boost Emperor Dimensions.",
-			eff: b => pow10(Math.pow(tmp.rep.eff.log10(), 3/4) / 5e3),
-			effDesc: e => shorten(e) + "x",
+			eff: b => pow10(Math.pow(tmp.rep.eff.log10(), 3/4) / 2e4),
+			effDesc: e => shorten(e) + "x"
 		}, {
 			req: E(5e5),
-			desc: "Bosons multiply Radioactive Decays boost to Tree Upgrades.",
-			eff: b => Math.log10(b.max(1).log10() + 1) + 1,
-			effDesc: e => shorten(e) + "x",
+			desc: "Bosonic Matter strengthens Radioactive Decays boost to Tree Upgrades.",
+			eff: b => Math.min(Math.log10(b.max(1).log10() + 1) + 1, 2.5),
+			effDesc: e => shorten(e) + "x"
 		}, {
 			//QOL
 			req: E(1e6),
-			desc: "[QOL] Bosons add Automator Potency."
+			desc: "[QOL] Bosonic Matter adds Automator Potency.",
+			eff: b => Math.log2(b.max(1).log10() + 1),
+			effDesc: e => "+" + shorten(e)
 		}, {
 			req: E(1.5e6),
 			desc: "Scaling Remote Galaxies later also scales Distant Galaxies.",
-			eff: b => getRemoteScalingStart() / 500,
+			eff: b => getRemoteScalingStart() / 100,
 			effDesc: e => "+" + shortenDimensions(e),
-		},{
+		}, {
 			req: E(2e6),
-			desc: "Eternities boost Dilated Time more."
+			desc: "Galaxy strength raises galaxy bonus to replicantis.",
+			eff: b => Math.max(tmp.gal.str / 3, 1),
+			effDesc: e => "^" + shorten(e)
 		}, {
 			req: E(5e6),
-			desc: "Bosons boost Photons.",
+			desc: "Bosonic Matter boosts Photons.",
+			eff: b => b.max(1).log10() + 1,
+			effDesc: e => shorten(e) + "x",
 		}, {
 			req: E(1e7),
-			desc: "Enlightenments boost Bosons.",
+			desc: "Enlightenments boost Bosonic Matter.",
 			eff: b => ghSave.photons.lighten / 2 + 1,
 			effDesc: e => shorten(e) + "x"
 		}
@@ -153,15 +161,16 @@ const BOSONIC_LAB = LAB = {
 
 		let html = ""
 		for (var [i, d] of Object.entries(this.milestones)) {
-			html += `<tr id='bl_milestone_div_${i}'>
-				<td><b id='bl_milestone_req_${i}'></b></td>
-				<td><button class="milestonerewardlocked" id='bl_milestone_${i}' style='font-size: 10.5px'>
-					${d.desc}<br>
-					${d.effDesc ? `Currently: <span id='bl_milestone_eff_${i}'></span>` : ""}
-				</button></td>
-			</tr>`
+			html += `<td id='bl_milestone_div_${i}'>
+				<h2 id='bl_milestone_req_${i}'></h2>
+				<button class="milestonerewardlocked" id='bl_milestone_${i}'>
+					${d.desc}
+					${d.effDesc ? `<hr style='margin: 3px'>Currently: <span id='bl_milestone_eff_${i}'></span>` : ""}
+				</button>
+			</td>`
+			if (i % 3 == 2) html += "</tr><tr>"
 		}
-		el("bl_milestone_table").innerHTML = html
+		el("bl_milestone_table").innerHTML = "<tr>" + html + "</tr>"
 	},
 	update() {
 		el("bl_amt").textContent = shorten(blSave.bosons)
@@ -176,8 +185,8 @@ const BOSONIC_LAB = LAB = {
 				el("bl_milestone_div_"+i).style.display = unl ? "" : "none"
 				if (!unl) continue
 
-				el("bl_milestone_"+i).className = hasBLMilestone(i) ? "milestonereward bosonic_btn" : "milestonerewardlocked"
-				el("bl_milestone_req_"+i).innerHTML = shortenDimensions(d.req) + " Bosons"
+				el("bl_milestone_"+i).className = (hasBLMilestone(i) ? "milestonereward" : "milestonerewardlocked") + " bl"
+				el("bl_milestone_req_"+i).innerHTML = shiftDown ? "#" + (parseInt(i) + 1) : shortenDimensions(d.req) + " bM"
 				if (d.effDesc) el("bl_milestone_eff_"+i).innerHTML = d.effDesc(tmp.funda.lab.ms[i])
 			}
 		}
@@ -259,7 +268,7 @@ const BL_HYPOTHESES = {
 	bond_eff: {
 		["0;1"]: {
 			eff: x => x/40,
-			disp: e => `Generate <b>${shorten(e)}/s</b> Bosons.`,
+			disp: e => `Generate <b>${shorten(e)}/s</b> Bosonic Matter.`,
 		},
 		["0;2"]: {
 			eff: x => Math.floor(x/5),
@@ -275,7 +284,7 @@ const BL_HYPOTHESES = {
 		},
 		["1;3"]: {
 			eff: x => x,
-			disp: e => `At 3 levels, double Bosons. <b>(${e}/3)</b>`,
+			disp: e => `At 3 levels, double Bosonic Matter. <b>(${e}/3)</b>`,
 		},
 		["2;3"]: {
 			eff: x => x,
@@ -367,15 +376,15 @@ const WEAK_FORCE = {
 	capacitors: [
 		{
 			eff: x => Math.sqrt(x + 1),
-			disp: e => `Boost Bosons by <b>${shorten(e)}x</b>.`,
+			disp: e => `Boost Bosonic Matter by <b>${shorten(e)}x</b>.`,
 			unl: _ => true,
 		}, {
 			eff: x => blSave.bosons.add(1).log10() * Math.sqrt(x) + 1,
-			disp: e => `Bosons boost itself by <b>${shorten(e)}x</b>.`,
+			disp: e => `Bosonic Matter synergizes itself by <b>${shorten(e)}x</b>.`,
 			unl: _ => true,
 		}, {
 			eff: x => Math.sqrt(x + 1),
-			disp: e => `Raise Bosons by <b>^${shorten(e)}</b>.`,
+			disp: e => `Raise Bosonic Matter by <b>^${shorten(e)}</b> before milestones.`,
 			unl: _ => true,
 		}, {
 			eff: x => Math.log10(x+10),
