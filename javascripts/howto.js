@@ -406,7 +406,7 @@ let HOW_TO = [
 		The multiplier can be exchanged through Lights, by taking one from any Light and putting into another.`
 	}, {
 		mod: _ => ngp3,
-		req: _ => ghSave?.wzb?.unl,
+		req: _ => ghSave?.lab?.unl,
 
 		title: "Bosonic Lab",
 		tab: "bl",
@@ -415,31 +415,38 @@ let HOW_TO = [
 		There's a 4x4 grid where each unique bond of Hypotheses has its unique boost.
 		<br><br>
 		<b>Bosonic Milestones</b><br>
-		At a specific amount of Bosons, you'll unlock Bosonic Milestones. Best Bosons strengthen those milestones.
+		At a specific amount of Bosonic Matter, you'll unlock Bosonic Milestones. Best Bosonic Matter strengthens those milestones.
 		<br><br>
 		<b>W & Z Bosons</b><br>
 		There are 3 Capaciators, fillable with W Bosons. Hypercharge must be 0 or less to activate boosts dependent on W+ Bosons.<br>
 		- W+ = +1 Hypercharge if assigned<br>
 		- W- = -1 Hypercharge if assigned<br>
 		- Z0 = -1 Hypercharge`
-	}, {
+	/*}, {
 		mod: _ => ngp3,
 		req: _ => ghSave?.hb?.unl,
 
 		title: "Higgs Field",
 		tab: "bl",
 		layer: "fundament",
-		desc: `At ??? Bosons, you can prestige Bosons and W & Bosons for Higgs.
+		desc: `At ??? Bosonic Matter, you can prestige Bosonic Matter and W & Z Bosons for Higgs.
 		<br><br>
 		Higgs gives Higgs Dimensions (dependent on amount), which produce Higgs Mass in return.<br>
-		Higgs Mass provide Higgs Boosts depending on which you choosed.<br>
+		Higgs Mass provide Higgs Boosts, depending on what you choose. Those boosts only boost prior Bosonic Lab content.<br>
 		There is a size limit for Higgs Boosts on a Higgs Dimension.`
-	/*}, {
+	}, {
 		mod: _ => ngp3,
-		req: _ => ghSave?.hb.unl,
+		req: _ => ghSave?.gw?.unl,
 
 		title: "Gravity Well",
 		tab: "bl",
+		layer: "fundament",
+		desc: `???`
+	}, {
+		mod: _ => ngp3,
+		req: _ => ghSave?.bd.unl,
+
+		title: "Break Dilation",
 		layer: "fundament",
 		desc: `???`
 	}, {
