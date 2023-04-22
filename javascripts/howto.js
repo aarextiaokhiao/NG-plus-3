@@ -399,7 +399,7 @@ let HOW_TO = [
 		layer: "fundament",
 		desc: `Best Tachyon Particles produce Photons. Photons reset on Fundament.
 		<br><br>
-		Your Spectral Particles, Neutrinos, Photons give Light Emissions.<br>
+		Your Spectral Particles, Neutrinos, and Photons give Light Emissions.<br>
 		Every Light is dependent on Emissions, but has a fixed limit.<br>
 		Enlightenments require Emissions to gain, in which increase those limits.
 		<br><br>
