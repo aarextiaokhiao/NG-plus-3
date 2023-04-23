@@ -366,7 +366,7 @@ let HOW_TO = [
 		layer: "quantum",
 		desc: `Once you unlock this feature by buying a mastery study, you can big rip the universe. To do this, you must have one of your paired challenges assigned to be QC6+QC8, which is the hardest paired challenge to complete. When you big rip, You start a new quantum inside PC6+8, with only your quantum mechanics working (from quarks and gluons on), but nothing before that (it all comes back upon exiting the big rip). At any time, you can exit the big rip to gain an amount of space shards based on your best antimatter amount while big ripped. You can spend space shards to buy various upgrades that make big rips easier, either by giving a boost that only applies in big rips, or letting you keep something inside big rips.
 		<br><br>
-		There is also a mini-feature called Break Eternity, unlocks at e1,215 EP. While eternity is broken, time dimensions will now work in big rips, as will galaxies (though galaxy costs scale much faster in big rips). When you eternity, you gain eternal matter based on your time shards. You can spend this eternal matter to buy 7 new big-rip-exclusive upgrades (one of which is repeatable).`
+		There is also a mini-feature called Break Eternity, unlocks at e1,215 EP. While eternity is broken, time dimensions will work in big rips, as well as galaxies (though galaxy costs scale much faster in big rips). When you eternity, you gain eternal matter based on your time shards. You can spend Eternal Matter to buy 7 new big-rip-exclusive upgrades (one of which is repeatable).`
 	}, {
 		mod: _ => ngp3,
 		req: _ => ghSave?.times,
