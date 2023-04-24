@@ -1314,13 +1314,14 @@ function eternity(force, auto, dil, presetLoad) {
 		updateLastTenEternities
 	}
 
-	//Challenges
-	var forceRespec = doCheckECCompletionStuff()
-	player.currentEternityChall = ""
-	player.eternityChallGoal = E(Number.MAX_VALUE)
+	//Challenges - Fixed by valence  
 	if (player.currentEternityChall !== "" && player.infinityPoints.lt(player.eternityChallGoal)) return false
 	if (player.currentEternityChall == "eterc6" && ECComps("eterc6") < 5 && player.dimensionMultDecrease < 4) player.dimensionMultDecrease = Math.max(parseFloat((player.dimensionMultDecrease - 0.2).toFixed(1)),2)
 	if (!hasGluonUpg("gb", 4)) if ((player.currentEternityChall == "eterc11" || (player.currentEternityChall == "eterc12" && ghostified)) && ECComps("eterc11") < 5) player.tickSpeedMultDecrease = Math.max(parseFloat((player.tickSpeedMultDecrease - 0.07).toFixed(2)), 1.65)
+	
+	var forceRespec = doCheckECCompletionStuff()
+	player.currentEternityChall = ""
+	player.eternityChallGoal = E(Number.MAX_VALUE)
 	updateEternityChallenges()
 
 	//Dilation
@@ -1669,12 +1670,14 @@ function checkMatter(diff) {
 }
 
 function passiveIPupdating(diff){
-	if (player.infinityUpgrades.includes("passiveGen")) player.partInfinityPoint += diff / player.bestInfinityTime * 10
+	if (player.infinityUpgrades.includes("passiveGen") && player.bestInfinityTime < 9999999999) player.partInfinityPoint += diff / player.bestInfinityTime * 10
 	else player.partInfinityPoint = 0
-	if (player.bestInfinityTime == 9999999999) player.partInfinityPoint = 0
+
 	let x = Math.floor(player.partInfinityPoint / 10)
-	player.partInfinityPoint -= x * 10
-	player.infinityPoints = player.infinityPoints.plus(getIPMult().mul(x));
+	if (x > 0) {
+		player.partInfinityPoint -= x * 10
+		player.infinityPoints = player.infinityPoints.plus(getIPMult().mul(x))
+	}
 
 	IPonCrunchPassiveGain(diff)
 	infUpgPassiveIPGain(diff)
@@ -1684,9 +1687,9 @@ function passiveInfinitiesUpdating(diff){
 	if (typeof(player.infinitied) != "number") return 
 	if (player.infinityUpgrades.includes("infinitiedGeneration") && player.currentEternityChall !== "eterc4") player.partInfinitied += diff / player.bestInfinityTime;
 	if (player.partInfinitied >= 1/2) {
-		let x = Math.floor(player.partInfinitied*2)
+		let x = Math.floor(player.partInfinitied * 2)
 		player.partInfinitied -= x/2
-		player.infinitied += x;
+		player.infinitied += x
 	}
 }
 
@@ -1967,56 +1970,56 @@ function currentChallengeProgress(){
 	var p = Math.min((Decimal.log10(player.money.plus(1)) / Decimal.log10(player.challengeTarget) * 100), 100).toFixed(2) + "%"
 	el("progressbar").style.width = p
 	el("progresspercent").textContent = p
-	el("progresspercent").setAttribute('ach-tooltip',"Percentage to challenge goal")
+	el("progress").setAttribute('ach-tooltip',"Percentage to challenge goal")
 }
 
 function preBreakProgess(){
 	var p = Math.min((Decimal.log10(player.money.plus(1)) / Decimal.log10(Number.MAX_VALUE) * 100), 100).toFixed(2) + "%"
 	el("progressbar").style.width = p
 	el("progresspercent").textContent = p
-	el("progresspercent").setAttribute('ach-tooltip',"Percentage to Infinity")
+	el("progress").setAttribute('ach-tooltip',"Percentage to Infinity")
 }
 
 function infDimProgress(){
 	var p = Math.min(player.money.e / getNewInfReq().money.e * 100, 100).toFixed(2) + "%"
 	el("progressbar").style.width = p
 	el("progresspercent").textContent = p
-	el("progresspercent").setAttribute('ach-tooltip',"Percentage to next dimension unlock")
+	el("progress").setAttribute('ach-tooltip',"Percentage to next dimension unlock")
 }
 
 function currentEChallengeProgress(){
 	var p = Math.min(Decimal.log10(player.infinityPoints.plus(1)) / player.eternityChallGoal.log10() * 100, 100).toFixed(2) + "%"
 	el("progressbar").style.width = p
 	el("progresspercent").textContent = p
-	el("progresspercent").setAttribute('ach-tooltip',"Percentage to Eternity Challenge goal")
+	el("progress").setAttribute('ach-tooltip',"Percentage to Eternity Challenge goal")
 }
 
 function preEternityProgress(){
 	var p = Math.min(Decimal.log10(player.infinityPoints.plus(1)) / Decimal.log10(Number.MAX_VALUE)	* 100, 100).toFixed(2) + "%"
 	el("progressbar").style.width = p
 	el("progresspercent").textContent = p
-	el("progresspercent").setAttribute('ach-tooltip',"Percentage to Eternity")
+	el("progress").setAttribute('ach-tooltip',"Percentage to Eternity")
 }
 
 function r128Progress(){
 	var p = (Decimal.log10(player.infinityPoints.plus(1)) / 220).toFixed(2) + "%"
 	el("progressbar").style.width = p
 	el("progresspercent").textContent = p
-	el("progresspercent").setAttribute('ach-tooltip','Percentage to "What do I have to do to get rid of you"') 
+	el("progress").setAttribute('ach-tooltip','Percentage to "What do I have to do to get rid of you"') 
 }
 
 function r138Progress(){
 	var p = Math.min(Decimal.log10(player.infinityPoints.plus(1)) / 200, 100).toFixed(2) + "%"
 	el("progressbar").style.width = p
 	el("progresspercent").textContent = p
-	el("progresspercent").setAttribute('ach-tooltip','Percentage to "That is what I have to do to get rid of you."')
+	el("progress").setAttribute('ach-tooltip','Percentage to "That is what I have to do to get rid of you."')
 }
 
 function gainTPProgress(){
 	var p = (getDilGain().log10() / player.dilation.totalTachyonParticles.log10()).toFixed(2) + "%"
 	el("progressbar").style.width = p
 	el("progresspercent").textContent = p
-	el("progresspercent").setAttribute('ach-tooltip','Percentage to the requirement for tachyon particle gain')
+	el("progress").setAttribute('ach-tooltip','Percentage to the requirement for tachyon particle gain')
 }
 
 function ngpp13Progress(){
@@ -2026,7 +2029,7 @@ function ngpp13Progress(){
 	var percentage = Math.min(gepLog / goal * 100, 100).toFixed(2) + "%"
 	el("progressbar").style.width = percentage
 	el("progresspercent").textContent = percentage
-	el("progresspercent").setAttribute('ach-tooltip','Percentage to "In the grim darkness of the far endgame"')
+	el("progress").setAttribute('ach-tooltip','Percentage to "In the grim darkness of the far endgame"')
 }
 
 function r127Progress(){
@@ -2036,7 +2039,7 @@ function r127Progress(){
 	var percentage = Math.min(gepLog / goal * 100, 100).toFixed(2) + "%"
 	el("progressbar").style.width = percentage
 	el("progresspercent").textContent = percentage
-	el("progresspercent").setAttribute('ach-tooltip','Percentage to "But I wanted another prestige layer..."')
+	el("progress").setAttribute('ach-tooltip','Percentage to "But I wanted another prestige layer..."')
 }
 
 function preQuantumNormalProgress(){
@@ -2050,7 +2053,7 @@ function preQuantumNormalProgress(){
 		var percentage = Math.min(gepLog / goal * 100, 100).toFixed(2) + "%"
 		el("progressbar").style.width = percentage
 		el("progresspercent").textContent = percentage
-		el("progresspercent").setAttribute('ach-tooltip',"Percentage to "+shortenDimensions(pow2(goal))+" EP gain")
+		el("progress").setAttribute('ach-tooltip',"Percentage to "+shortenDimensions(pow2(goal))+" EP gain")
 	}
 }
 
@@ -2186,7 +2189,7 @@ function passiveQuantumLevelStuff(diff){
 	if (bigRipped()) brSave.spaceShards = brSave && brSave.spaceShards.add(getSpaceShardsGain().mul(diff / 100))
 	if (!bigRipped()) {
 		quSave.quarks = quSave.quarks.add(quarkGain().sqrt().mul(diff))
-		var p = ["rg", "gb", "br"]
+		var p = GLUON.mixes
 		for (var i = 0; i < 3; i++) {
 			var r = quSave.usedQuarks[p[i][0]].min(quSave.usedQuarks[p[i][1]]).div(100)
 			quSave.gluons[p[i]] = quSave.gluons[p[i]].add(r.mul(diff))

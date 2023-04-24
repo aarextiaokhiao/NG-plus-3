@@ -202,12 +202,12 @@ function doQuantumProgress() {
 		var percentage = Math.min(player.meta.antimatter.max(1).log10() / quantumReq.log10() * 100, 100).toFixed(2) + "%"
 		el("progressbar").style.width = percentage
 		el("progresspercent").textContent = percentage
-		el("progresspercent").setAttribute('ach-tooltip', (mod.ngp3 ? "Meta-antimatter p" : "P") + 'ercentage to quantum')
+		el("progress").setAttribute('ach-tooltip', (mod.ngp3 ? "Meta-antimatter p" : "P") + 'ercentage to quantum')
 	} else if (id == 2) {
 		var percentage = Math.min(player.money.max(1).log(getQCGoal()) * 100, 100).toFixed(2) + "%"
 		el("progressbar").style.width = percentage
 		el("progresspercent").textContent = percentage
-		el("progresspercent").setAttribute('ach-tooltip','Percentage to Quantum Challenge goal')
+		el("progress").setAttribute('ach-tooltip','Percentage to Quantum Challenge goal')
 	} else if (id == 3) {
 		var gqkLog = gqk.log2()
 		var goal = Math.pow(2, Math.ceil(Math.log10(gqkLog) / Math.log10(2)))
@@ -216,30 +216,30 @@ function doQuantumProgress() {
 		if (goal > 512 && !quSave.reachedInfQK) percentage = Math.min(quSave.quarks.add(gqk).log2() / goal * 100, 100).toFixed(2) + "%"
 		el("progressbar").style.width = percentage
 		el("progresspercent").textContent = percentage
-		if (goal > 512 && !quSave.reachedInfQK) el("progresspercent").setAttribute('ach-tooltip', "Percentage to new QoL features (" + shorten(Number.MAX_VALUE) + " QK)")
-		else el("progresspercent").setAttribute('ach-tooltip', "Percentage to " + shortenDimensions(pow2(goal)) + " QK gain")
+		if (goal > 512 && !quSave.reachedInfQK) el("progress").setAttribute('ach-tooltip', "Percentage to new QoL features (" + shorten(Number.MAX_VALUE) + " QK)")
+		else el("progress").setAttribute('ach-tooltip', "Percentage to " + shortenDimensions(pow2(goal)) + " QK gain")
 	} else if (id == 4) {
 		var percentage = Math.min(player.eternityPoints.max(1).log10() / 12.15, 100).toFixed(2) + "%"
 		el("progressbar").style.width = percentage
 		el("progresspercent").textContent = percentage
-		el("progresspercent").setAttribute('ach-tooltip','Eternity Points percentage to Break Eternity')
+		el("progress").setAttribute('ach-tooltip','Eternity Points percentage to Break Eternity')
 	} else if (id == 5) {
 		var percentage = Math.min(brSave.bestThisRun.max(1).log(getQCGoal()) * 100, 100).toFixed(2) + "%"
 		el("progressbar").style.width = percentage
 		el("progresspercent").textContent = percentage
-		el("progresspercent").setAttribute('ach-tooltip','Percentage to Ghostify')
+		el("progress").setAttribute('ach-tooltip','Percentage to Ghostify')
 	} else if (id == 6) {
 		var ggLog = gg.log2()
 		var goal = Math.pow(2, Math.ceil(Math.log10(ggLog) / Math.log10(2)))
 		var percentage = Math.min(ggLog / goal * 100, 100).toFixed(2) + "%"
 		el("progressbar").style.width = percentage
 		el("progresspercent").textContent = percentage
-		el("progresspercent").setAttribute('ach-tooltip', "Percentage to " + shortenDimensions(pow2(goal)) + " GHP gain")
+		el("progress").setAttribute('ach-tooltip', "Percentage to " + shortenDimensions(pow2(goal)) + " GHP gain")
 	} else if (id == 7) {
 		var percentage = Math.min(brSave.bestThisRun.max(1).log10() / 6000e4, 100).toFixed(2) + "%"
 		el("progressbar").style.width = percentage
 		el("progresspercent").textContent = percentage
-		el("progresspercent").setAttribute('ach-tooltip', "Percentage to Photons")
+		el("progress").setAttribute('ach-tooltip', "Percentage to Photons")
 	}
 }
 

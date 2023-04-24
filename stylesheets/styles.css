@@ -861,7 +861,6 @@ button b, button span {
     bottom: 35px;
     position: fixed;
     z-index: 1;
-    pointer-events: none;
 }
 
 #progressbar {
@@ -873,10 +872,6 @@ button b, button span {
     border-radius: 5px;
     text-align: center;
     transition-duration: 0.1s;
-}
-
-#progresspercent {
-    pointer-events: all !important;
 }
 
 .quantumProgress { background: #0a640a !important }

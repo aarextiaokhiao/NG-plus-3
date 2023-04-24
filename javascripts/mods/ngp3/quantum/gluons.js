@@ -174,20 +174,18 @@ function gluonEff(mix, i) {
 
 function getGluonGains() {
 	var qk = quSave.usedQuarks
-	var types = ["rg", "gb", "br"]
 	var gains = {}
-	for (let color of types) gains[color] = qk[color[0]].min(qk[color[1]])
+	for (let mix of GLUON.mixes) gains[mix] = qk[mix[0]].min(qk[mix[1]])
 	return gains
 }
 
 function convertAQToGluons() {
 	var qk = quSave.usedQuarks
 	var gl = quSave.gluons
-	var types = ["rg", "gb", "br"]
 	var gains = getGluonGains()
-	for (var color of types) {
-		gl[color] = gl[color].add(d[c]).round()
-		qk[color[0]] = qk[color[0]].sub(d[c]).round()
+	for (var mix of GLUON.mixes) {
+		gl[mix] = gl[mix].add(gains[mix]).round()
+		qk[mix[0]] = qk[mix[0]].sub(gains[mix]).round()
 	}
 	updateQuarkDisplay()
 }
@@ -195,9 +193,9 @@ function convertAQToGluons() {
 function checkGluonRounding(){
 	if (!quantumed) return
 	if (hasBraveMilestone(8)) return
-	if (quSave.gluons.rg.lte(100)) quSave.gluons.rg = quSave.gluons.rg.round()
-	if (quSave.gluons.gb.lte(100)) quSave.gluons.gb = quSave.gluons.gb.round()
-	if (quSave.gluons.br.lte(100)) quSave.gluons.br = quSave.gluons.br.round()
+	for (var mix of GLUON.mixes) {
+		if (quSave.gluons[mix].lt(100)) quSave.gluons[mix] = quSave.gluons[mix].round()
+	}
 	if (quSave.quarks.lte(100)) quSave.quarks = quSave.quarks.round()
 }
 

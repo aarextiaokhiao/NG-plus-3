@@ -727,7 +727,7 @@ function resetTabs() {
 }
 
 function onTabSwitch() {
-	el("progress").style.display = aarMod.progressBar ? "block" : "none"
+	el("progress").style.display = aarMod.progressBar && isTabShown("dimensions") ? "block" : "none"
 
 	let study_tree = isTabShown("eternitystore") && (isTabShown('timestudies') || isTabShown('masterystudies'))
 	el("TTbuttons").style.display = study_tree ? "block" : "none"
