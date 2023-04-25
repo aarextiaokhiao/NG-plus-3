@@ -39,12 +39,12 @@ function doBigCrunch(auto) {
 	updateLastTenRuns()
 	checkYoDawg()
 
-	//Challenges
-	checkChallengesOnCrunch()
-
 	//Achievements
 	checkOnCrunchAchievements()
 	checkSecondSetOnCrunchAchievements()
+
+	//Challenges
+	checkChallengesOnCrunch()
 
 	//Others
 	if (player.replicanti.unl && !hasAch("r95")) player.replicanti.amount = E(1)
@@ -232,7 +232,7 @@ function updateLastTenRuns() {
 	} else el("averagerun").innerHTML = ""
 }
 
-function checkOnCrunchAchievements(){
+function checkOnCrunchAchievements() {
 	if (player.thisInfinityTime <= 72000) giveAchievement("That's fast!");
 	if (player.thisInfinityTime <= 6000) giveAchievement("That's faster!")
 	if (player.thisInfinityTime <= 600) giveAchievement("Forever isn't that long")
@@ -372,7 +372,7 @@ function startNormalChallenge(x) {
 
 function inNC(x, n) {
 	if (inNGM(4)) return x==0 ? !player.galacticSacrifice.chall : player.galacticSacrifice.chall == x
-	else return player.currentChallenge == x==0 ? "" : "challenge"+x
+	return player.currentChallenge == (x==0 ? "" : "challenge" + x)
 }
 
 function getTotalNormalChallenges() {

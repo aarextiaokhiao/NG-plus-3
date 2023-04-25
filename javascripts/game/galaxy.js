@@ -6,6 +6,7 @@ function galaxyReset(bulk) {
 
 	player.galaxies += bulk
 	if (player.sacrificed == 0 && bulk) giveAchievement("I don't believe in Gods");
+	if (player.options.notation == "Cancer") player.spreadingCancer += bulk
 	if (mod.ngp3 && bulk) {
 		if (quSave.autoOptions.sacrifice) sacrificeGalaxy()
 		if (hasNB(1)) NT.onGalaxy(bulk)

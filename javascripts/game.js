@@ -836,7 +836,7 @@ for (var i of Object.keys(autoBuyers)) autoBuyerKeys.push(i)
 function updateAutobuyers() {
 	var intervalUnits = player.infinityUpgrades.includes("autoBuyerUpgrade") ? 1/2000 : 1/1000
 	var maxedAutobuy
-	var e100autobuy
+	var bulkMin = 1/0
 
 	for (let [i, key] of Object.entries(autoBuyerKeys)) {
 		i = parseInt(i) + 1
@@ -881,7 +881,7 @@ function updateAutobuyers() {
 				el("ab_" + key + "_upg").innerHTML = shortenDimensions(ret.bulk*2)+"x bulk purchase<br>Cost: " + shortenDimensions(ret.cost) + currencyEnd
 				el("ab_" + key + "_upg").style.display = ""
 			}
-			if (ret.bulk >= 1e100) e100autobuy++
+			if (i <= 8) bulkMin = Math.min(bulkMin, ret.bulk)
 		}
 	}
 
@@ -901,7 +901,8 @@ function updateAutobuyers() {
 
 	if (maxedAutobuy >= 9) giveAchievement("Age of Automation");
 	if (maxedAutobuy >= getTotalNormalChallenges() + 1) giveAchievement("Definitely not worth it");
-	if (e100autobuy >= 8) giveAchievement("Professional bodybuilder");
+	if (bulkMin >= 512) giveAchievement("Bulked up");
+	if (bulkMin >= 1e100) giveAchievement("Professional bodybuilder");
 
 	el("autoBuyerEter").style.display = getEternitied() >= 100 ? "inline-block" : "none"
 	player.eternityBuyer.isOn = el("eternityison").checked

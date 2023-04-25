@@ -205,11 +205,11 @@ function subtractGluons(toSpend = 0) {
 	quSave.gluons.br = quSave.gluons.br.sub(quSave.gluons.br.min(toSpend))
 }
 
-function buyGluonUpg(color, id) {
-	var name = color + id
-	if (hasGluonUpg(name) || quSave.gluons[color].plus(0.001).lt(GLUON.upg_costs[id])) return
+function buyGluonUpg(color, i) {
+	var name = color + i
+	if (hasGluonUpg(color, i) || quSave.gluons[color].plus(0.001).lt(GLUON.upg_costs[i-1])) return
 	quSave.upgrades.push(name)
-	quSave.gluons[color] = quSave.gluons[color].sub(GLUON.upg_costs[id])
+	quSave.gluons[color] = quSave.gluons[color].sub(GLUON.upg_costs[i-1])
 	if (name == "gb3") {
 		var otherMults = 1
 		if (hasAch("r85")) otherMults *= 4

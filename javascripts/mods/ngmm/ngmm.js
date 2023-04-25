@@ -142,7 +142,7 @@ function galacticSacrifice(auto, force, chall) {
 			if (inNC(2) && player.galacticSacrifice.time <= 1800) giveAchievement("Many Deaths")
 			if (inNC(11) && player.galacticSacrifice.time <= 1800) giveAchievement("Gift from the Gods")
 			if (inNC(5) && player.galacticSacrifice.time <= 1800) giveAchievement("Is this hell?")
-			if (inNC(3) && player.galacticSacrifice.time <= 100 ) giveAchievement("You did this again just for the achievement right?");
+			if (inNC(3) && player.galacticSacrifice.time <= 100) giveAchievement("You did this again just for the achievement right?");
 			if (player.firstAmount == 1 && player.resets == 0 && player.galaxies == 0 && inNC(12)) giveAchievement("ERROR 909: Dimension not found")
 		}
 		if (!chall && (force || !player.options.retryChallenge)) delete player.galacticSacrifice.chall
