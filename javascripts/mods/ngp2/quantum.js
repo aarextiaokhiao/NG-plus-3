@@ -368,7 +368,7 @@ function doQuantum(force, auto, qc = {}) {
 	// Quantum Challenges
 	if (hasMasteryStudy("d8")) {
 		if (!force && inAnyQC()) {
-			for (let qc of qcs) quSave.challenges[qc] = Math.max(intensity, quSave.challenges[qc])
+			for (let qc of qcs) quSave.challenges[qc] = Math.max(intensity, quSave.challenges[qc] || 0)
 			if (intensity == 1) {
 				quSave.challengeRecords[qc[0]] = Math.min(quSave.challengeRecords[qc[0]] || 1/0, quSave.time)
 				if (player.dilation.times == 0) quSave.qcsNoDil["qc" + qc[0]] = 1
