@@ -419,12 +419,6 @@ strong { color: #0072e5 }
     border-color: #e2bd00 !important;
     color: #e5e5e5 !important
 }
-.ndcompleted {
-    background-color: #191919 !important;
-    border-color: #72e572 !important;
-    color: #e5e5e5 !important;
-	animation: none
-}
 #dilstudy10.dilationupg, #dilstudy11.dilationupg { border: 2px solid #333333 !important }
 #dilstudy10.dilationupg:hover, #dilstudy10.dilationupgbought, #dilstudy11.dilationupg:hover, #dilstudy11.dilationupgbought { background-color: #333333 !important }
 #quantumFoodAmount, #quantumFoodAmountED { color: #b7e5b7 !important }

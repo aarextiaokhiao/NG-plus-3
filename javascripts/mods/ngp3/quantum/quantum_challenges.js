@@ -340,36 +340,31 @@ function importPC() {
 
 var ranking=0
 function updatePCCompletions() {
-	el("pccompletionsbtn").style.display = "none"
+	el("stats_pc").style.display = "none"
 	if (!mod.ngp3) return
+
 	var r = 0
-	tmp.qu.chal.pc_comp = {} // PC Completion counters
+	tmp.qu.chal.pc_comp = 0 // PC Completion counters
 	for (var c1 = 2; c1 < 9; c1++) for (var c2 = 1; c2 < c1; c2++) {
 		var rankingPart = 0
 		if (quSave.pairedChallenges.completions[c2 * 10 + c1]) {
 			rankingPart = 5 - quSave.pairedChallenges.completions[c2 * 10 + c1]
-			tmp.qu.chal.pc_comp.normal = (tmp.qu.chal.pc_comp.normal || 0) + 1
+			tmp.qu.chal.pc_comp++
 		} else if (c2 * 10 + c1 == 68 && ghostified) {
 			rankingPart = 0.5
-			tmp.qu.chal.pc_comp.normal = (tmp.qu.chal.pc_comp.normal || 0) + 1
-		}
-		if (quSave.qcsNoDil["pc" + (c2 * 10 + c1)]) {
-			rankingPart += 5 - quSave.qcsNoDil["pc" + ( c2 * 10 + c1)]
-			tmp.qu.chal.pc_comp.noDil = (tmp.qu.chal.pc_comp.noDil || 0) + 1
+			tmp.qu.chal.pc_comp++
 		}
 		r += Math.sqrt(rankingPart)
 	}
-	r *= 100 / 56
+
 	tmp.qu.chal.rank = r // its global
 	updatePCTable()
 
-	if (r) el("pccompletionsbtn").style.display = "inline-block"
+	if (r) el("stats_pc").style.display = "inline-block"
 
 	el("bpc68").textContent = "You've made " + shortenMoney(quSave.pairedChallenges.pc68best) + " in Paired Challenge combinations 6 and 8."
-	el("upcc").textContent = "You've completed " + (tmp.qu.chal.pc_comp.normal || 0) + " / 28 unique Paired Challenges."
-	el("udcc").textContent = "(" + (tmp.qu.chal.pc_comp.noDil || 0) + " combinations without dilation runs)"
+	el("upcc").textContent = "You've completed " + (tmp.qu.chal.pc_comp) + " / 28 unique Paired Challenges."
 	el("pccranking").textContent = r.toFixed(1)
-	el("pccrankingMax").textContent = Math.sqrt(2e4).toFixed(1)
 }
 
 function setupPCTable() {
@@ -400,9 +395,8 @@ function updatePCTable() {
 			var comp = quSave.pairedChallenges.completions[pcid]
 			if (comp !== undefined) {
 				el(divid).textContent = "PC" + comp
-				el(divid).className = (quSave.qcsNoDil["pc" + pcid] ? "nd" : "pc" + comp) + "completed"
+				el(divid).className = "pc" + comp + "completed"
 				var achTooltip = 'Fastest time: ' + (quSave.pairedChallenges.fastest[pcid] ? timeDisplayShort(quSave.pairedChallenges.fastest[pcid]) : "N/A")
-				if (quSave.qcsNoDil["pc" + pcid]) achTooltip += ", No dilation: PC" + quSave.qcsNoDil["pc" + pcid]
 				el(divid).setAttribute('ach-tooltip', achTooltip)
 				if (divid=="pc38") giveAchievement("Hardly marked")
 				if (divid=="pc68") giveAchievement("Big Rip isn't enough")
@@ -419,13 +413,8 @@ function updatePCTable() {
 		} else { // r == c
 			var divid = "qcC" + r
 			el(divid).textContent = "QC"+r
-			if (quSave.qcsNoDil["qc" + r]) {
-				el(divid).className = "ndcompleted"
-				el(divid).setAttribute('ach-tooltip', "No dilation achieved!")
-			} else {
-				el(divid).className = "pc1completed"
-				el(divid).removeAttribute('ach-tooltip')
-			}
+			el(divid).className = "pc1completed"
+			el(divid).removeAttribute('ach-tooltip')
 		}
 	}
 }

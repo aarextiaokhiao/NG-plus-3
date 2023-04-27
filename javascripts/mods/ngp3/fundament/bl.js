@@ -92,7 +92,7 @@ const BOSONIC_LAB = LAB = {
 		}, {
 			//QOL
 			req: E(1e4),
-			desc: "[Not implemented] Enable Time Dimensions in Eternity Challenge 10, but can't upgrade."
+			desc: "[QOL] Net Quarks give more Automator Potency."
 		}, {
 			req: E(1.5e4),
 			desc: "Replicanti efficiency boosts Time Dimensions more."

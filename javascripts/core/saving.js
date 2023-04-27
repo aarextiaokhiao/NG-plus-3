@@ -1058,7 +1058,6 @@ function doNGPlusThreeNewPlayer() {
 	quSave.nonMAGoalReached = []
 	quSave.challengeRecords = {}
 	quSave.pairedChallenges = getBrandNewPCData()
-	quSave.qcsNoDil = {}
 	player.dilation.bestTP = 0
 	player.old = false
 	quSave.autoOptions = {}

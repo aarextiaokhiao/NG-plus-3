@@ -357,7 +357,6 @@ function doQuantum(force, auto, qc = {}) {
 
 			quSave.pairedChallenges.completions[pcid] = Math.min(quSave.pairedChallenges.completions[pcid] || 1/0, quSave.pairedChallenges.current)
 			quSave.pairedChallenges.fastest[pcid] = quSave.pairedChallenges.fastest[pcid] = Math.min(quSave.pairedChallenges.fastest[pcid] || 1/0, oldTime)
-			if (dilTimes == 0) quSave.qcsNoDil["pc" + pcid] = Math.min(quSave.qcsNoDil["pc" + pcid] || 1/0, quSave.pairedChallenges.current)
 		}
 		if (inQC(6) && inQC(8) && !bigRipped()) quSave.pairedChallenges.pc68best = player.money.max(quSave.pairedChallenges.pc68best)
 
@@ -368,10 +367,9 @@ function doQuantum(force, auto, qc = {}) {
 	// Quantum Challenges
 	if (hasMasteryStudy("d8")) {
 		if (!force && inAnyQC()) {
-			for (let qc of qcs) quSave.challenges[qc] = Math.max(intensity, quSave.challenges[qc] || 0)
-			if (intensity == 1) {
-				quSave.challengeRecords[qc[0]] = Math.min(quSave.challengeRecords[qc[0]] || 1/0, quSave.time)
-				if (player.dilation.times == 0) quSave.qcsNoDil["qc" + qc[0]] = 1
+			for (let qc of qcs) {
+				quSave.challenges[qc] = Math.max(intensity, quSave.challenges[qc] || 0)
+				quSave.challengeRecords[qc] = Math.min(quSave.challengeRecords[qc] || 1/0, quSave.time)
 			}
 		}
 

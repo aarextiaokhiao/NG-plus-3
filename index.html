@@ -291,7 +291,6 @@
 				<button class="secondarytabbtn infinitybtn" onclick="showStatsTab('stats_inf')" id="stats_tab_inf">Infinity</button>
 				<button class="secondarytabbtn eternitybtn" onclick="showStatsTab('stats_eter')" id="stats_tab_eter">Eternity</button>
 				<button class="secondarytabbtn quantumbtn" onclick="showStatsTab('stats_qu')" id="stats_tab_qu">Quantum</button>
-				<button class="secondarytabbtn quantumbtn" onclick="showStatsTab('pccompletions')" id="pccompletionsbtn" style="display:none">Paired Challenges</button>
 				<button class="secondarytabbtn ghostifybtn" onclick="showStatsTab('stats_fund')" id="stats_tab_fund">Fundament</button>
 			</div><br>
 			<div id="stats" class="statstab">
@@ -455,6 +454,16 @@
 				<div id="qctime8"></div>
 				<br>
 				<div id="qctimesum"></div>
+				<br>
+				<div id="stats_pc">
+					<h2>Paired Challenge Overview</h2>
+					<table id="pccompletionstable"></table>
+					<br>
+
+					<span id="bpc68"></span><br>
+					<span id="upcc"></span><br>
+					Your ranking is <span id="pccranking"></span> / 56.
+				</div>
 			</div><div id="stats_fund" class="statstab" >
 				<h1>Fundament</h1>
 				<div id="ghostified"></div>
@@ -474,20 +483,6 @@
 				<div id="ghostifyrun10"></div>
 				<br>
 				<div id="averageGhostifyRun"></div>
-			</div>
-			<div id="challengetimes" class="statstab"></div>
-			<div id="infchallengetimes" class="statstab"></div>
-			<div id="eterchallengetimes" class="statstab"></div>
-			<div id="qctimes" class="statstab"></div>
-			<div id="pccompletions" class="statstab">
-				<br>
-				<h1>Lowest PC completions</h1>
-				<table id="pccompletionstable"></table>
-				<h1>Others</h1>
-				<span id="bpc68"></span><br>
-				<span id="upcc"></span><br>
-				<span id="udcc"></span><br><br>
-				Your ranking is <span id="pccranking"></span> / <span id="pccrankingMax"></span>.
 			</div>
 		</div>
 		<div id="achievements" class="tab">
@@ -4035,7 +4030,7 @@
 			<br><br><hr>
 
 			<b>(NG+3 v2.31: Ghostify Respecced)</b><br>
-			<b class="red">(Beta: 4/19/23 Build)</b><br>
+			<b class="red">(Beta: 4/26/23 Build)</b><br>
 			By <a href="https://aarextiaokhiao.github.io/">Aarex</a>, pg132, and usavictor.
 			<br><br>
 

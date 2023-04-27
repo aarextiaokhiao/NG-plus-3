@@ -175,7 +175,9 @@ function isAutoGhostActive(id) {
 }
 
 function getAutoCharge() {
-	let r = Math.max(Math.log10(quantumWorth.add(1).log10() / 150) / Math.log10(2), 0)
+	let r = Math.max(Math.log2(quantumWorth.add(1).log10() / 150), 0)
+	if (hasBLMilestone(7)) r = Math.max(Math.pow(quantumWorth.add(1).log10() / 1e3 + 1, 8/9) - 1, r)
+
 	r += Math.max(brSave.spaceShards.add(1).log10() / 15 - 0.5, 0)
 	if (hasAch("ng3p78")) r += ghSave.ghostParticles.add(1).log10() / 100
 	if (hasBLMilestone(15)) r += blEff(15, 0)

@@ -1,11 +1,10 @@
 //VERSION: 2.31
 let ngp3_ver = 2.31
-let ngp3_build = 20230419
+let ngp3_build = 20230426
 function doNGP3Updates() {
 	if (!aarMod.ngp3_build) aarMod.ngp3_build = 0
 	if (aarMod.ngp3_build < 20221230) quSave.multPower = 0
 	if (aarMod.ngp3_build < 20230201) {
-		if (!quSave.qcsNoDil) quSave.qcsNoDil = {}
 		delete ghSave?.ghostlyPhotons
 		delete aarMod.leNoConf
 	}
@@ -598,7 +597,7 @@ function ngP3AchieveCheck() {
 	if (nfSave.rewards >= 21 && noTree) giveAchievement("But I don't want to grind!")
 	if (player.replicanti.amount.log10() >= (mod.udp ? 268435456 : 36e6)) giveAchievement("Will it be enough?")
 	if (player.options.secrets && player.options.secrets.ghostlyNews && !player.options.newsHidden) giveAchievement("Two tickers")
-	if (tmp.qu.chal.pc_comp.normal >= 24) giveAchievement("The Challenging Day")
+	if (tmp.qu.chal.pc_comp >= 24) giveAchievement("The Challenging Day")
 	if (speedrunMilestonesReached >= 24) giveAchievement("And the winner is...")
 	if (speedrunMilestonesReached >= 28) giveAchievement("Special Relativity")
 	if (hasMasteryStudy("d13")) giveAchievement("Do protons decay?")

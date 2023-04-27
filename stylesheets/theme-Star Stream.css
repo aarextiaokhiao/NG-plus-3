@@ -793,15 +793,6 @@ strong { color: #0072e5 }
     border-radius: 0px !important
 }
 
-.ndcompleted {
-    border-color: #99ffff !important;
-    background:linear-gradient(#00ffff, #0090ff) !important;
-    text-shadow: 0px 0px 5px #000, 0px 0px 9px #0f0 !important;
-    color: #fff !important;
-    border-radius: 0px !important;
-    animation:none;
-}
-
 .antbtn {
     border-color: #777 !important;
     background:linear-gradient(#333, #999) !important;
