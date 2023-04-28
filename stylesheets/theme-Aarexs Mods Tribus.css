@@ -41,7 +41,7 @@ button:hover {
 	box-shadow: inset 0 0 24px #bfff00;
 	color: #ffff7f !important
 }
-.storebtn div, .storebtn b, .storebtn span, .storebtn p {
+.storebtn * {
 	color: #ffff7f !important
 }
 
@@ -52,7 +52,12 @@ button:hover {
 	transform: scale(1) !important;
 	background: linear-gradient(#3f2f2f, transparent), rgba(31, 31, 31, 0.4) !important;
 	border-color: transparent !important;
-	box-shadow: 0 0 6px rgba(0, 0, 0, 0.5);
+	color: #ffbfbf !important
+}
+.unavailablebtn *,
+.infinistorebtnlocked *,
+.newdimlocked *,
+.eternityupbtnlocked * {
 	color: #ffbfbf !important
 }
 
@@ -72,11 +77,11 @@ button:hover {
 }
 
 .chosen {
-	background: rgba(191, 255, 191, 0.5) !important;
-	border: 2px solid !important;
-	border-color: transparent !important;
-	box-shadow: inset 0px 0px 12px rgba(0, 255, 0, 0.5);
-	color: #7fff7f !important
+	transform: scale(1) !important;
+	background: linear-gradient(#2f7f2f, transparent), rgba(31, 31, 31, 0.4) !important;
+	border: 0px solid;
+	border-radius: 3px;
+	color: #bfffbf !important
 }
 .chosen div, .chosen b {
 	color: #7fff7f !important
@@ -89,15 +94,13 @@ button:hover {
 /* Challenges */
 .challengediv {
 	background: rgba(0, 127, 255, 0.5) !important;
-	border-color: transparent !important;
-	box-shadow: 0 0 6px #007fff;
+	border-color: transparent #007fff transparent #007fff !important;
 	color: #7fbfff !important
 }
 
 .infchallengediv {
 	background: rgba(255, 223, 0, 0.5) !important;
-	border-color: transparent !important;
-	box-shadow: 0 0 6px #ffdf00;
+	border-color: transparent #ffdf00 transparent #ffdf00 !important;
 	color: #ffdf7f !important
 }
 .infchallengediv div, .infchallengediv span {
@@ -106,8 +109,7 @@ button:hover {
 
 .eterchallengediv {
 	background: rgba(191, 0, 255, 0.5) !important;
-	border-color: transparent !important;
-	box-shadow: 0 0 6px #bf00ff;
+	border-color: transparent #bf00ff transparent #bf00ff !important;
 	color: #df7fff !important
 }
 .eterchallengediv div, .eterchallengediv span {
@@ -116,108 +118,107 @@ button:hover {
 
 .quantumchallengediv {
 	background: rgba(127, 255, 0, 0.5) !important;
-	border-color: transparent !important;
+	border-color: transparent #7fff00 transparent #7fff00 !important;
 	color: #bfff7f !important
 }
 .quantumchallengediv div, .quantumchallengediv span {
 	color: #bfff7f !important
 }
 
-
 .challengesbtn {
-	background: rgba(0, 255, 191, 0.75) !important;
-	border-radius: 6px;
-	border-color: transparent !important;
-	box-shadow: 0 0 6px #00ffbf;
-	color: #7fffbf !important
+	background: rgba(191, 255, 127, 0.3) !important;
+	border: 0px solid;
+	border-radius: 3px;
+	box-shadow: inset 0 0 24px #bfff00;
+	color: #ffff7f !important
 }
-
 .lockedchallengesbtn {
 	transform: scale(1) !important;
 	background: linear-gradient(#3f2f2f, transparent), rgba(31, 31, 31, 0.4) !important;
-	border-radius: 6px;
-	border-color: transparent !important;
-	box-shadow: 0 0 6px rgba(0, 0, 0, 0.5);
+	border: 0px solid;
+	border-radius: 3px;
 	color: #ffbfbf !important
 }
-
 .onchallengebtn {
-	background: rgba(255, 255, 0, 0.75) !important;
-	border-radius: 6px;
-	border-color: transparent !important;
-	box-shadow: 0 0 6px #ffff00;
+	transform: scale(1) !important;
+	background: linear-gradient(#2f7f2f, transparent), rgba(31, 31, 31, 0.4) !important;
+	border: 0px solid;
+	border-radius: 3px;
+	color: #bfffbf !important
+}
+.completedchallengesbtn {
+	background: #00bf00 !important;
+	border: 0px solid;
+	border-radius: 3px;
+	box-shadow: inset 0 0 24px #bfff00;
 	color: #ffff7f !important
 }
 
-.completedchallengesbtn {
-	background: rgba(0, 255, 0, 0.75) !important;
-	border-radius: 6px;
-	border-color: transparent !important;
-	box-shadow: 0 0 6px #00ff00;
-	color: #9fff7f !important
-}
-
 /* Galaxy */
-.galaxybtn, #gSacrifice.storebtn {
-	background: rgba(0, 63, 255, 0.25) linear-gradient(transparent, #005f7f, transparent) !important;
-	border: 2px solid !important;
-	border-color: transparent transparent #003fff transparent !important;
-	text-shadow: 1px 2px 1px rgba(0, 191, 255, 0.25);
-	box-shadow: 0px 3px 3px rgba(0, 63, 255, 0.25), inset 0px 0px 12px rgba(127, 159, 255, 0.5);
-	color: #7f9fff !important
+.galaxybtn, .galaxyupgbtn {
+	background: rgba(0, 79, 255, 0.5) !important;
+	border-color: #004fff transparent #004fff transparent !important;
+	box-shadow: 0px 0px 24px #004fff7f;
+	color: #7fc7ff !important
+}
+#galTable .infinistorebtnbought {
+	transform: scale(1) !important;
+	background: rgba(0, 79, 255, 0.75) !important;
+	border-color: transparent !important;
+	color: #7fc7ff !important
+}
+.galaxyupgbtn *,
+#galTable .infinistorebtnbought * {
+	color: #7fc7ff !important
 }
 
 /* Infinity */
-.infinitybtn, #idtabbtn button,
+.infinitybtn,
+#infTabs .secondarytabbtn,
 .infinistorebtn1, .infinistorebtn2, .infinistorebtn3, .infinistorebtn4, .infinimultbtn,
 .newdim {
-	background: rgba(255, 223, 0, 0.75) linear-gradient(transparent, #ffbf00, transparent) !important;
-	border-color: transparent transparent #ffbf00 transparent !important;
-	box-shadow: 0 0 120px #ffdf00;
-	color: #ffef7f !important
+	background: rgba(255, 191, 0, 0.5) !important;
+	border-color: #ffbf00 transparent #ffbf00 transparent !important;
+	box-shadow: 0px 0px 24px #ffbf007f;
+	color: #ffdf7f !important
+}
+.infinitybtn div, .infinitybtn b {
+	color: #ffdf7f !important
 }
 
 .infinistorebtnbought {
 	transform: scale(1) !important;
-	background: rgba(255, 223, 0, 0.5) !important;
+	background: rgba(255, 191, 0, 0.75) !important;
 	border-color: transparent !important;
 	color: #ffdf7f !important
 }
 
-.infinitybtn div, .infinitybtn b, #infinity div {
-	color: #ffdf7f !important;
-	text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5)
-}
-
 #infinityPoints1, #infinityPoints2, #infinitydimensions div, #infinitydimensions td, #replicantidiv {
 	color: #ffdf7f !important;
-	text-shadow: 0 0 12px #ffdf00 !important
 }
 #infPowAmount, #infDimMultAmount,
 #replicantiamount, #replicantimult {
 	font-weight: bold;
 	color: #ff9f00 !important;
-	text-shadow: 0 0 12px #ff9f00 !important;
 }
 
 /* Eternity */
 .eternitybtn,
-#tdtabbtn button, .eternityupbtn,
+#eterTabs .secondarytabbtn,
+.eternityupbtn,
 #eterctabbtn {
-	background: rgba(191, 0, 255, 0.75) linear-gradient(transparent, #df00ff, transparent) !important;
-	border-color: transparent transparent #df00ff transparent !important;
-	box-shadow: 0 0 120px #bf00ff;
+	background: rgba(191, 0, 255, 0.5) !important;
+	border-color: #bf00ff transparent #bf00ff transparent !important;
+	box-shadow: 0px 0px 24px #bf00ff7f;
 	color: #df7fff !important
 }
 .eternitybtn div, .eternitybtn b {
-	color: #df7fff !important;
-	text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5)
+	color: #df7fff !important
 }
 
 #eternityPoints2,
 #eternitystore div, #timedimensions div, #timedimensions td {
-	color: #df7fff !important;
-	text-shadow: 0 0 12px #df00ff !important
+	color: #df7fff !important
 }
 #timeShardAmount, #tickThreshold {
 	font-weight: bold;
@@ -227,30 +228,30 @@ button:hover {
 
 .eternityupbtnbought, .milestonereward {
 	transform: scale(1) !important;
-	background: #cf1fdf !important;
+	background: rgba(191, 0, 255, 0.75) !important;
 	border-color: transparent !important;
 	color: #df7fff !important
 }
 
-.timetheorembtn, .timestudy,
-.timestudy.timedimstudy {
-	background: rgba(191, 0, 255, 0.75) linear-gradient(transparent, #df00ff, transparent) !important;
-	border-color: transparent transparent #df00ff transparent !important;
-	box-shadow: 0 0 120px #bf00ff;
+.timestudy {
+	background: rgba(191, 0, 255, 0.5) !important;
+	border-color: transparent !important;
+	box-shadow: inset 0px 0px 60px #bf00ff;
 	color: #df7fff !important
 }
 .timetheorembtnlocked, .timestudylocked, .milestonerewardlocked {
 	transform: scale(1) !important;
-	background: linear-gradient(#3f2f2f, #1f1f1f) !important;
+	background: linear-gradient(#3f2f2f, transparent), rgba(31, 31, 31, 0.4) !important;
 	border-color: transparent !important;
-	box-shadow: 0 0 6px rgba(0, 0, 0, 0.5);
 	color: #ffbfbf !important
 }
-.timestudybought,
-.timestudybought.timedimstudy {
+.timestudybought {
 	transform: scale(1) !important;
-	background: #cf1fdf !important;
+	background: rgba(191, 0, 255, 0.75) !important;
 	border-color: transparent !important;
+	color: #df7fff !important
+}
+.timestudy *, .timestudybought * {
 	color: #df7fff !important
 }
 
@@ -280,21 +281,20 @@ button:hover {
 
 /* Meta */
 #mdtabbtn button {
-	background: rgba(0, 255, 191, 0.75) linear-gradient(transparent, #00bfff, transparent) !important;
-	border-color: transparent transparent #00bfff transparent !important;
-	box-shadow: 0 0 120px #00bfff;
-	color: #7fdfff !important
+	background: rgba(0, 255, 255, 0.5) !important;
+	border-color: #00ffff transparent #00ffff transparent !important;
+	box-shadow: 0px 0px 24px #00ffff7f;
+	color: #7fffff !important
 }
 
 /* Quantum */
 .quantumbtn,
-#qctabbtn {
-	background: rgba(0, 255, 0, 0.75) linear-gradient(transparent, #00ffbf, transparent) !important;
-	border-color: transparent transparent #00ff7f transparent !important;
-	box-shadow: 0 0 120px #00ffbf;
-	color: #7fffbf !important
+#quTabs .secondarytabbtn {
+	background: rgba(63, 255, 0, 0.5) !important;
+	border-color: #3fff00 transparent #3fff00 transparent !important;
+	box-shadow: 0px 0px 24px #3fff007f;
+	color: #9fff7f !important
 }
-
 .quantumbtn div, .quantumbtn b {
 	color: #bfff7f !important
 }
@@ -312,9 +312,57 @@ button:hover {
 	color: #3f3fff
 }
 
-/* Fluctuate */
-.fluctuatebtn {
-	box-shadow: 60px 0 120px #ffbf00, -60px 0 120px #ff00bf !important
+.antbtn,
+#antTabs .secondarytabbtn {
+    background: linear-gradient(#446, #112) !important;
+    border: 2px solid;
+    border-color: #779 transparent #779 transparent !important;
+    color: #aac !important;
+	text-shadow: none;
+}
+
+.bigrip {
+    background: linear-gradient(#030, #230) !important;
+	border-color: #bfff00 transparent #bfff00 transparent !important;
+	box-shadow: 0px 0px 24px #bfff007f;
+	color: #dfff7f !important
+}
+.bigrip * {
+	color: #dfff7f !important
+}
+
+/* Fundament */
+.ghostifybtn,
+#fundaTabs .secondarytabbtn {
+	background: linear-gradient(#1f007f, #3f007f) !important;
+	box-shadow: 0px 0px 24px #7f00ff;
+	animation: ghostifytext 4s linear infinite
+}
+.ghostifybtn:hover,
+#fundaTabs .secondarytabbtn:hover {
+	box-shadow: 0px 0px 24px #bf00ff;
+	cursor: pointer
+}
+@keyframes ghostifytext { 
+	0%{
+		border-color: #7f00ff transparent #7f00ff transparent;
+		color: #7f7fff
+	}
+	50% {
+		border-color: #3f00ff transparent #3f00ff transparent;
+		color: #9f7fff
+	}
+	100% {
+		border-color: #7f00ff transparent #7f00ff transparent;
+		color: #7f7fff
+	}
+}
+
+.hypo_btn {
+	background: #fff1
+}
+.hypo_btn:hover {
+	background: #fff3
 }
 
 /* Fixes */

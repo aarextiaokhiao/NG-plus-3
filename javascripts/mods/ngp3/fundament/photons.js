@@ -201,7 +201,7 @@ let PHOTON = {
 			el("ph_light_amt_" + i).textContent = shorten(ghSave.photons.light[i] || 0) + " / " + shorten(PHOTON.lightCap(i))
 			el("ph_light_eff_" + i).textContent = light.desc(PHOTON.eff(i))
 			el("ph_light_trade_" + i).textContent = tmp.funda.photon.leftover ? "Absorb" : "Exchange"
-			el("ph_light_trade_" + i).className = tmp.funda.photon.leftover && ghSave.photons.offset_click == i ? "chosen" : tmp.funda.photon.leftover || ghSave.photons.offset[i] > -.25 ? "storebtn" : "unavailablebtn"
+			el("ph_light_trade_" + i).className = tmp.funda.photon.leftover && ghSave.photons.offset_click == i ? "chosen" : tmp.funda.photon.leftover || ghSave.photons.offset[i] > -.25 ? "storebtn photon" : "unavailablebtn"
 
 			el("ph_light_div_" + i).style.display = ghSave.photons.light[i] ? "" : "none"
 			el("ph_light_req_" + i).style.display = ghSave.photons.light[i] ? "none" : ""

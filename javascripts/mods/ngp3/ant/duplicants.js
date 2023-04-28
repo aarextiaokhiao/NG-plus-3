@@ -487,7 +487,6 @@ function getPilonEffect() {
 	if (hasMasteryStudy("t412")) exp = .5
 
 	let ret = Math.pow(quSave.replicants.quarks.add(1).log10(), exp) * 0.8
-	if (ret > 100) ret = Math.pow(ret * 10, 2/3)
 	return ret
 }
 

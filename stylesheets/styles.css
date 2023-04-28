@@ -2209,6 +2209,7 @@ td.lEp {
 	background: linear-gradient(#0c0033, #2e0033);
 	box-shadow: inset 0px 0px 24px 0px black;
 	border: 2px solid transparent;
+	font-weight: bold;
 	border-radius: 10px;
 	transition-duration: 0.2s;
 	animation: ghostifytext 4s linear infinite

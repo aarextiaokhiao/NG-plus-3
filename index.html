@@ -2187,12 +2187,12 @@
 			<div id='vanillaInfinityPoints'>
 				<div id="infinityPoints1" style="color: black; font-size: 15px; width: 40%; margin: 0 auto"></div><br>
 			</div>
-			<tr>
-				<td><button class="secondarytabbtn" onclick="showInftab('preinf')">Upgrades</button><td>
-				<td><button id="autobuyersbtn" class="secondarytabbtn" onclick="showInftab('autobuyers')">Autobuyers</button><td>
-				<td><button id="postinfbtn" class="secondarytabbtn" onclick="showInftab('postinf')" >Break Infinity</button><td>
-				<td><button id="replicantitabbtn" class="secondarytabbtn" onclick="showInftab('replicantis')">Replicantis</button><td>
-			</tr>
+			<table id="infTabs" align="center" style="margin: auto">
+				<td><button class="secondarytabbtn" onclick="showInftab('preinf')">Upgrades</button></td>
+				<td><button id="autobuyersbtn" class="secondarytabbtn" onclick="showInftab('autobuyers')">Autobuyers</button></td>
+				<td><button id="postinfbtn" class="secondarytabbtn" onclick="showInftab('postinf')" >Break Infinity</button></td>
+				<td><button id="replicantitabbtn" class="secondarytabbtn" onclick="showInftab('replicantis')">Replicantis</button></td>
+			</table>
 			<div id="preinf" class="inftab">
 			<br>
 			<table id="preinfupgrades" class="table" style="margin: 0 auto"></table>
@@ -2703,7 +2703,7 @@
 			</div>
 		</div>
 		</div><div id="eternitystore" class="tab" style="font-size: 15px; margin: 0 auto; display: none" align="center">
-			<table class="table" align="center" style="margin: auto">
+			<table id="eterTabs" align="center" style="margin: auto">
 				<tr>
 					<td><button class="secondarytabbtn" onclick="showEternityTab('timestudies')">Time Studies</button></td>
 					<td id="masterystudyunlock"><button class="secondarytabbtn" onclick="showEternityTab('masterystudies')">Mastery Studies</button></td>
@@ -3569,7 +3569,7 @@
 				</div>
 			</div>
 		</div><div class='tab' id='quantumtab'>
-			<table class="table" align="center" style="margin: auto">
+			<table id="quTabs" align="center" style="margin: auto">
 				<tr>
 					<td><button class="secondarytabbtn" onclick="showQuantumTab('uquarks')">Anti-Quarks</button></td>
 					<td><button class="secondarytabbtn" onclick="showQuantumTab('gluons')">Gluons</button></td>
@@ -3831,7 +3831,7 @@
 			</div>
 		</div>
 		<div class='tab' id='ghostify'>
-			<table class="table" align="center" style="margin: auto">
+			<table id="fundaTabs" align="center" style="margin: auto">
 				<tr>
 					<td><button class="secondarytabbtn" onclick="showGhostifyTab('neutrinos')">Neutrinos</button></td>
 					<td id="gphtabbtn"><button class="secondarytabbtn" onclick="showGhostifyTab('gphtab')">Photons</button></td>
@@ -4030,7 +4030,7 @@
 			<br><br><hr>
 
 			<b>(NG+3 v2.31: Ghostify Respecced)</b><br>
-			<b class="red">(Beta: 4/26/23 Build)</b><br>
+			<b class="red">(Beta: 4/27/23 Build)</b><br>
 			By <a href="https://aarextiaokhiao.github.io/">Aarex</a>, pg132, and usavictor.
 			<br><br>
 
