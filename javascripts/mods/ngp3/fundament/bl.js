@@ -30,10 +30,10 @@ const BOSONIC_LAB = LAB = {
 	},
 	temp() {
 		if (!this.unlocked()) return
-		let data = {}
+		let data = tmp.funda.lab || {}
 		tmp.funda.lab = data
 
-		BL_HYPOTHESES.temp()
+		if (tmp.funda.lab.bond == undefined) BL_HYPOTHESES.temp()
 		WEAK_FORCE.temp()
 
 		data.ms = {}
@@ -245,16 +245,55 @@ const BL_HYPOTHESES = {
 	/* FIELD */
 	clear() {
 		blSave.hypo_field = {}
+		BL_HYPOTHESES.temp()
 	},
 	exportField() {
 		let str = ""
 		for (var [i, d] of Object.entries(blSave.hypo_field)) str+=","+i+";"+d
 		exportData("[FIELD" + str + "]")
 	},
+	importField(str) {
+		if (!str) str = prompt("Insert your preset here. Your field will be overwritten on import!")
+		if (str.slice(0,6) == "[FIELD" && str[str.length - 1] == "]") {
+			let list = str.slice(6, str.length - 1).split(",").slice(1)
+			let newField = {}
+
+			while (list.length) {
+				let entry = list.pop().split(";")
+				let check = entry.length == 3
+				if (!check) {
+					$.notify("[X] Invalid hypothesis format!")
+					continue
+				}
+
+				check = (entry[0] >= 0 && entry[0] < 5) &&
+					(entry[1] >= 0 && entry[1] < 5)
+				if (!check) {
+					$.notify("[X] Invalid hypothesis position!")
+					continue
+				}
+
+				let unl = BL_HYPOTHESES.hypo_types[entry[2]]?.unl
+				check = unl && unl()
+
+				if (!check) {
+					$.notify("[X] Invalid hypothesis kind! It might be invalid or locked!")
+					continue
+				}
+
+				newField[entry[0]+";"+entry[1]] = entry[2]
+			}
+			blSave.hypo_field = newField
+			BL_HYPOTHESES.temp()
+		} else {
+			$.notify("[X] Invalid preset type!")
+		}
+	},
 
 	place(x) {
 		if (blSave.hypo_field[x] === BL_HYPOTHESES.hypo_chosen) delete blSave.hypo_field[x]
 		else blSave.hypo_field[x] = BL_HYPOTHESES.hypo_chosen
+		BL_HYPOTHESES.temp()
 	},
 	recordBond(a, b) {
 		let field = blSave.hypo_field
@@ -265,6 +304,7 @@ const BL_HYPOTHESES = {
 		let id = Math.min(field[a], field[b]) + ";" + Math.max(field[b], field[a])
 		tmp.funda.lab.bond[id] = (tmp.funda.lab.bond[id] || 0) + 1
 	},
+
 	bond_eff: {
 		["0;1"]: {
 			eff: x => x/40,

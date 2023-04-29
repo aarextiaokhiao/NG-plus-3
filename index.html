@@ -3959,13 +3959,13 @@
 			<div class="bl_tab" id="hypotheses" style='display: none'>
 				<button class='storebtn' style='width: 120px; height: 36px' onclick="BL_HYPOTHESES.clear()">Clear</button>
 				<button class='storebtn' style='width: 120px; height: 36px' onclick="BL_HYPOTHESES.exportField()">Export</button>
-				<button class='unavailablebtn' style='width: 120px; height: 36px'>Import (soon)</button><br>
+				<button class='storebtn' style='width: 120px; height: 36px' onclick="BL_HYPOTHESES.importField()">Import</button><br>
 
 				<div id='hypo_choice'></div><br>
-
 				<table id="hypo_field" style="margin: auto"></table><br>
 
 				<h2>Bonds</h2>
+				<button class='unavailablebtn' id='hypo_bond_visibility' style='width: 150px; height: 36px'>Show all (soon)</button>
 				<div id="hypo_bonds">
 					<!-- <span class="hypo hypo1"></span><span class="hypo hypo2"></span>: [effect] -->
 				</div>
@@ -4030,7 +4030,7 @@
 			<br><br><hr>
 
 			<b>(NG+3 v2.31: Ghostify Respecced)</b><br>
-			<b class="red">(Beta: 4/27/23 Build)</b><br>
+			<b class="red">(Beta: 4/28/23 Build)</b><br>
 			By <a href="https://aarextiaokhiao.github.io/">Aarex</a>, pg132, and usavictor.
 			<br><br>
 

@@ -263,7 +263,7 @@ function denyGhostify() {
 
 function updateGhostifyTempStuff() {
 	if (!ghostified) return
-	tmp.funda = {}
+	if (tmp.funda == undefined) tmp.funda = {}
 	LAB.temp()
 	PHOTON.temp()
 	NT.temp()

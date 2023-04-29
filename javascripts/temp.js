@@ -95,6 +95,7 @@ function updateReplicantiTemp() {
 	if (hasTimeStudy(101)) data.nd = player.replicanti.amount.max(1)
 	if (bigRipped() && !player.dilation.active && hasRipUpg(14)) data.nd = data.nd.pow(tmp.qu.bru[14])
 
+	data.gal_str = getReplGalEff()
 	updateExtraReplGalaxies()
 }
 
@@ -133,7 +134,7 @@ function resetPowers() {
 	mult18 = E(1)
 	tmp.sacPow = E(1)
 	tmp.gal = { str: 1 }
-	tmp.rep = { extra: 0, eff: E(1) }
+	tmp.rep = { extra: 0, eff: E(1), gal_str: 1 }
 	tmp.qu.color_eff = { r: 1, g: 1, b: 1 }
 	tmp.qu.chal.reward = {}
 	tmp.qu.ant = {}
