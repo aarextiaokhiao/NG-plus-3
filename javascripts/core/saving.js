@@ -411,7 +411,6 @@ function rename_save(id) {
 		var temp_save = get_save(id)
 		if (!temp_save.aarexModifications) temp_save.aarexModifications={
 			dilationConf: false,
-			offlineProgress: true,
 			autoSave: true,
 			progressBar: true,
 			logRateChange: false,
@@ -419,7 +418,7 @@ function rename_save(id) {
 			popUpId: 0,
 			tabsSave: {on: false},
 			breakInfinity: false
-				}
+		}
 		temp_save.aarexModifications.save_name = save_name
 	}
 	set_save(id, temp_save)
@@ -508,9 +507,9 @@ function getAutoSaveInterval() {
 	return aarMod.autoSaveInterval || 30
 }
 
-function toggleOfflineProgress() {
-	aarMod.offlineProgress = !aarMod.offlineProgress
-	el("offlineProgress").textContent = "Offline progress: O"+(aarMod.offlineProgress?"N":"FF")
+function adjustOfflineProgress() {
+	aarMod.offline = parseInt(el("offlineSlider").value)
+	el("offlineInterval").textContent = "Offline progress: " + (aarMod.offline ? (aarMod.offline * 100) + " ticks" : "OFF")
 };
 
 //Player Creation
@@ -797,7 +796,6 @@ function updateNewPlayer(mode, preset) {
 			}
 		},
 		aarexModifications: {
-			offlineProgress: true,
 			autoSave: true,
 			progressBar: true,
 			eternityChallRecords: {},

@@ -143,7 +143,7 @@ let PHOTON = {
 		}
 	],
 	eff(x, def = 1) {
-		return tmp.funda?.photon?.eff[x] ?? def
+		return tmp.funda.photon?.eff[x] ?? def
 	},
 	trade(x) {
 		ghSave.photons.offset_click = x

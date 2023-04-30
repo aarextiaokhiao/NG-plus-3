@@ -187,7 +187,6 @@ function convertAQToGluons() {
 		gl[mix] = gl[mix].add(gains[mix]).round()
 		qk[mix[0]] = qk[mix[0]].sub(gains[mix]).round()
 	}
-	updateQuarkDisplay()
 }
 
 function checkGluonRounding(){

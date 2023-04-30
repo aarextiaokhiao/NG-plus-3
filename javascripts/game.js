@@ -1557,7 +1557,7 @@ function updateOrderGoals(){
 }
 
 let autoSaveSeconds=0
-function updatePerSecond() {
+function updatePerSecond(quick) {
 	runAutoSave()
 	if (!player) return
 
@@ -1570,23 +1570,34 @@ function updatePerSecond() {
 	metaAchMultLabelUpdate()
 
 	// AB Stuff
-	ABTypeDisplay()
-	dimboostABTypeDisplay()
-	IDABDisplayCorrection()
-	replicantiAutoDisplay()
 	replicantiAutoTick()
 	idAutoTick()
 	doAutoEterTick()
 	dilationStuffABTick()
-	updateNGpp17Reward()
-	updateNGpp16Reward()
 	DimBoostBulkDisplay()
 
-	// Button Displays
-	infPoints2Display()
-	eterPoints2Display()
+	// Quick
+	doPerSecondNGP3Stuff(quick)
+	if (quick) return
+
+	// Displays
+	ABTypeDisplay()
+	dimboostABTypeDisplay()
+	IDABDisplayCorrection()
+	replicantiAutoDisplay()
+	updateNGpp17Reward()
+	updateNGpp16Reward()
+
+	// More Displays
+	updateHeaders()
 	updateResetTierButtons()
 	primaryStatsDisplayResetLayers()
+	updateGalaxyUpgradesDisplay()
+	updateNGM2RewardDisplay()
+	infPoints2Display()
+	bankedInfinityDisplay()
+	eterPoints2Display()
+	updateTimeStudyButtons(false, true)
 	updateAnimationBtns()
 	showHideConfirmations()
 
@@ -1598,14 +1609,8 @@ function updatePerSecond() {
  	failedEC12Check()
 
 	// Other 
-	updateHeaders()
 	fixInfinityTimes()
 	updateOrderGoals()
-	bankedInfinityDisplay()
-	doPerSecondNGP3Stuff()
-	updateNGM2RewardDisplay()
-	updateGalaxyUpgradesDisplay()
-	updateTimeStudyButtons(false, true)
 	updateHotkeys()
 	updateConvertSave(eligibleConvert())
 
@@ -2179,7 +2184,7 @@ function ngp3DilationUpdating(){
 	if (mod.ngp3) player.dilation.best = player.dilation.best.max(player.money)
 }
 
-function passiveQuantumLevelStuff(diff){
+function passiveQuantumLevelStuff(diff) {
 	if (bigRipped() && hasAch("ng3p107")) {
 		ghSave.ghostParticles = ghSave.ghostParticles.add(getGHPGain().mul(diff))
 		let ngain = getNeutrinoGain()
@@ -2187,6 +2192,7 @@ function passiveQuantumLevelStuff(diff){
 		ghSave.neutrinos.mu = ghSave.neutrinos.mu.add(ngain.mul(diff))
 		ghSave.neutrinos.tau = ghSave.neutrinos.tau.add(ngain.mul(diff))
 	}
+
 	if (bigRipped()) brSave.spaceShards = brSave && brSave.spaceShards.add(getSpaceShardsGain().mul(diff / 100))
 	if (!bigRipped()) {
 		quSave.quarks = quSave.quarks.add(quarkGain().sqrt().mul(diff))
@@ -2197,8 +2203,8 @@ function passiveQuantumLevelStuff(diff){
 		}
 		if (hasBraveMilestone(15)) quSave.quarks=quSave.quarks.add(quarkGain().mul(diff / 100))
 	}
-	if (tmp.qu.be && hasBraveMilestone(16)) beSave.eternalMatter=beSave.eternalMatter.add(getEMGain().mul(diff / 100))
-	updateQuarkDisplay()
+	if (tmp.qu.be && hasBraveMilestone(16)) beSave.eternalMatter = beSave.eternalMatter.add(getEMGain().mul(diff / 100))
+
 	updateQuantumWorth("quick")
 }
 
@@ -2225,7 +2231,7 @@ function infUpgPassiveIPGain(diff){
 	if (diff > player.autoTime && !player.break) player.infinityPoints = player.infinityPoints.plus(player.autoIP.div(player.autoTime).mul(diff))
 }
 
-function gameLoop(diff) {
+function gameLoop(diff, quick) {
 	//Game
 	updateTemp()
 
@@ -2253,9 +2259,6 @@ function gameLoop(diff) {
 		if (hasBraveMilestone(8)) passiveQuantumLevelStuff(diff)
 		if (quantumed) quantumOverallUpdating(diff)
 		if (hasAch("ng3p72")) player.eternities = nMx(player.eternities, gainEternitiedStat())
-
-		doQuantumButtonDisplayUpdating(diff)
-		doGhostifyButtonDisplayUpdating(diff)
 	}
 	if (mod.ngpp) metaDimsUpdating(diff)
 
@@ -2287,10 +2290,12 @@ function gameLoop(diff) {
 	checkMarathon2()
 
 	//Put here due to peak update.
+	if (quick) return
 	doEternityButtonDisplayUpdating(diff)
 	if (mod.ngp3) {
 		doQuantumButtonDisplayUpdating(diff)
 		doGhostifyButtonDisplayUpdating(diff)
+		if (hasBraveMilestone(8)) updateQuarkDisplay()
 	}
 }
 
@@ -2329,76 +2334,155 @@ function updateDisplays() {
 	if (el("loadmenu").style.display == "block") changeSaveDesc(meta.save.current, savePlacement)
 }
 
-function simulateTime(seconds, real, id) {
+function simulateTime(seconds, amt, id) {
 	//the game is simulated at a 50ms update rate, with a max of 1000 ticks
 	//warning: do not call this function with real unless you know what you're doing
-	var ticks = seconds * 20;
-	var bonusDiff = 0;
-	var playerStart = Object.assign({}, player);
-	var storage = {}
-	if (player.blackhole !== undefined) storage.bp = player.blackhole.power
-	if (mod.ngpp) storage.ma = player.meta.antimatter
-	if (mod.ngp3) {
-		storage.dt = player.dilation.dilatedTime
-		storage.ec = quSave.electrons.amount
-		storage.nr = quSave.replicants.amount
-		//storage.bAm = ghSave.bl.am
+	var ticksAmt = Math.min(seconds * 5, amt ?? 1e3)
+	var ticks = seconds / ticksAmt
+	var storageStart = recordSimulationAmount()
+
+	for (let ticksDone = 0; ticksDone < ticksAmt; ticksDone++) {
+		gameLoop(ticks * 200, true)
+		if (ticksDone % 10 == 0) updatePerSecond(true)
+		autoBuyerTick()
 	}
-	if (ticks > 1000 && !real) {
-		bonusDiff = (ticks - 1000) / 20;
-		ticks = 1000;
+
+	var storageEnd = recordSimulationAmount()
+
+	//Show pop-up
+	var nothing = true
+	var popupString = ""
+	for (var [i, x] of Object.entries(storageEnd)) {
+		if (x.lte(storageStart[i])) continue
+		nothing = false
+		popupString += `<b style='color: ${simulateParts[i].color}'>${simulateParts[i].name}</b> → ${shortenDimensions(x)}<br>`
 	}
-	let ticksDone = 0
-	for (ticksDone=0; ticksDone<ticks; ticksDone++) {
-		gameLoop(50+bonusDiff)
-		autoBuyerTick();
-	}
-	closeToolTip()
-	var popupString = "While you were away"
-	if (player.money.gt(playerStart.money)) popupString+= ",<br> your antimatter increased "+shortenMoney(player.money.log10() - (playerStart.money).log10())+" orders of magnitude"
-	if (player.infinityPower.gt(playerStart.infinityPower) && !quantumed) popupString+= ",<br> infinity power increased "+shortenMoney(player.infinityPower.log10() - (Decimal.max(playerStart.infinityPower, 1)).log10())+" orders of magnitude"
-	if (player.timeShards.gt(playerStart.timeShards) && !quantumed) popupString+= ",<br> time shards increased "+shortenMoney(player.timeShards.log10() - (Decimal.max(playerStart.timeShards, 1)).log10())+" orders of magnitude"
-	if (storage.dt) if (player.dilation.dilatedTime.gt(storage.dt)) popupString+= ",<br> dilated time increased "+shortenMoney(player.dilation.dilatedTime.log10() - (Decimal.max(storage.dt, 1)).log10())+" orders of magnitude"
-	if (storage.bp) if (player.blackhole.power.gt(storage.bp)) popupString+= ",<br> black hole power increased "+shortenMoney(player.blackhole.power.log10() - (Decimal.max(storage.bp, 1)).log10())+" orders of magnitude"
-	if (storage.ma) if (player.meta.antimatter.gt(storage.ma)) popupString+= ",<br> meta-antimatter increased "+shortenMoney(player.meta.antimatter.log10() - (Decimal.max(storage.ma, 1)).log10())+" orders of magnitude"
-	if (storage.dt) {
-		if (quSave.electrons.amount>storage.ec) popupString+= ",<br> positrons increased by "+getFullExpansion(Math.round(quSave.electrons.amount-storage.ec))
-		if (quSave.replicants.amount.gt(storage.nr)) popupString+= ",<br> normal duplicants increased "+shortenMoney(quSave.replicants.amount.log10() - (Decimal.max(storage.nr, 1)).log10())+" orders of magnitude"
-		//if (ghSave.bl.am.gt(storage.ma)) popupString+= ",<br> Bosons increased "+shortenMoney(ghSave.bl.am.log10() - (Decimal.max(storage.bAm, 1)).log10())+" orders of magnitude"
-	}
-	if (player.infinitied > playerStart.infinitied || player.eternities > playerStart.eternities) popupString+= ","
-	else popupString+= "."
-	if (player.infinitied > playerStart.infinitied) popupString+= "<br>you infinitied "+getFullExpansion(player.infinitied-playerStart.infinitied)+" times."
-	if (player.eternities > playerStart.eternities) popupString+= " <br>you eternitied "+getFullExpansion(player.eternities-playerStart.eternities)+" times."
-	if (popupString.length == 20) {
-		popupString = popupString.slice(0, -1);
-		popupString+= "... Nothing happened."
+
+	if (nothing) {
+		popupString = "Nothing happened."
 		if (id == "lair") popupString+= "<br><br>I told you so."
 		giveAchievement("While you were away... Nothing happened.")
 	}
+
+	closeToolTip()
 	el("offlineprogress").style.display = "block"
-	el("offlinePopup").innerHTML = popupString
+	el("offlinetime").innerHTML = `(You've gone offline for ${timeDisplayShort(seconds * 10)})`
+	el("offlinetext").innerHTML = popupString
+}
+
+let simulateParts = {
+	am: {
+		amt: _ => player.money,
+		name: "Antimatter",
+		color: "red"
+	},
+	ip: {
+		amt: _ => player.infinityPower,
+		name: "Infinity Power",
+		color: "gold"
+	},
+	rep: {
+		amt: _ => player.replicanti.amount,
+		name: "Replicantis",
+		color: "orange"
+	},
+	ts: {
+		amt: _ => player.timeShards,
+		name: "Time Shards",
+		color: "#b7f"
+	},
+	tt: {
+		amt: _ => player.timestudy.theorem,
+		name: "Time Theorems",
+		color: "#b7f"
+	},
+	dt: {
+		amt: _ => player.dilation.dilatedTime,
+		name: "Dilated Time",
+		color: "#7b7"
+	},
+	bh: {
+		amt: _ => player.blackhole?.power,
+		name: "Black Hole Power",
+		color: "black"
+	},
+	ma: {
+		amt: _ => player.meta?.antimatter,
+		name: "Meta-Antimatter",
+		color: "cyan"
+	},
+	pos: {
+		amt: _ => quSave?.electrons.amount,
+		name: "Positrons",
+		color: "gold"
+	},
+	ant: {
+		amt: _ => quSave?.replicants.amount,
+		name: "Duplicants",
+		color: "grey"
+	},
+	nr: {
+		amt: _ => nfSave?.rewards,
+		name: "Nanorewards",
+		color: "grey"
+	},
+	ps: {
+		amt: _ => todSave?.r.spin,
+		name: "Preonic Spin",
+		color: "brown"
+	},
+	rd: {
+		amt: _ => todSave?.r.decays,
+		name: "Radioactive Decays",
+		color: "brown"
+	},
+	le: {
+		amt: _ => PHOTON.unlocked() && PHOTON.totalEmissions(),
+		name: "Light Emissions",
+		color: "#b97"
+	},
+	bm: {
+		amt: _ => blSave?.bosons,
+		name: "Bosonic Matter",
+		color: "#f70"
+	},
+	inf: {
+		amt: _ => player.infinities,
+		name: "Infinities",
+		color: "gold"
+	},
+	eter: {
+		amt: _ => player.eternities,
+		name: "Eternities",
+		color: "#b7f"
+	}
+}
+
+function recordSimulationAmount() {
+	let ret = {}
+	for (var [i, x] of Object.entries(simulateParts)) ret[i] = E(x.amt() ?? 0)
+	return ret
 }
 
 var tickWait = 0
 var tickWaitStart = 0
 function startInterval() {
 	gameLoopIntervalId = setInterval(function() {
-	if (aarMod.performanceTicks && new Date().getTime() - tickWaitStart < tickWait) return
-	tickWait = 1/0
+		if (aarMod.performanceTicks && new Date().getTime() - tickWaitStart < tickWait) return
+		tickWait = 1/0
 
-	var tickStart = new Date().getTime()
-	try {
-		gameLoop()
-		updateDisplays()
-	} catch (e) {
-		console.error(e)
-	}
-	var tickEnd = new Date().getTime()
-	var tickDiff = tickEnd - tickStart
+		var tickStart = new Date().getTime()
+		try {
+			gameLoop()
+			updateDisplays()
+		} catch (e) {
+			console.error(e)
+		}
+		var tickEnd = new Date().getTime()
+		var tickDiff = tickEnd - tickStart
 
-	tickWait = tickDiff * (aarMod.performanceTicks * 2)
-	tickWaitStart = tickEnd
+		tickWait = tickDiff * (aarMod.performanceTicks * 2)
+		tickWaitStart = tickEnd
 	}, player.options.updateRate);
 }
 
@@ -2642,7 +2726,7 @@ function isEterBuyerOn() {
 	return (player.eternityBuyer.dilMode != "upgrades" && !player.eternityBuyer.slowStopped) || (player.eternityBuyer.dilMode == "upgrades" && player.eternityBuyer.tpUpgraded)
 }
 
-function showInftab(tabName) {
+function showInfTab(tabName) {
 	showTab(tabName, "inftab")
 }
 

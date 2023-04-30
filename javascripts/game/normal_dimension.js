@@ -1,49 +1,48 @@
-function getR84or73Mult(){
+function getR84or73Mult() {
 	var mult = E(1)
 	if (hasAch("r84")) mult = player.money.pow(inNGM(2)?0.0002:0.00004).plus(1);
 	else if (hasAch("r73")) mult = player.money.pow(inNGM(2)?0.0001:0.00002).plus(1);
 	
 	var log = mult.log10()
-	if (log > 1e12) log = 1e12 * Math.pow(log / 1e12, .5)
-	
 	if (log < 0) log = 0
+
 	return pow10(log)
 }
 
 function getNormalDimensionVanillaAchievementBonus(tier){
 	var mult = E(1)
 	if (tier == 1) {
-		if (hasAch("r28")) mult = mult.mul(1.1);
-		if (hasAch("r31")) mult = mult.mul(1.05);
-		if (hasAch("r71")) mult = mult.mul(inNGM(2) ? 909 : 3);
-		if (hasAch("r68")) mult = mult.mul(inNGM(2) ? 5 : 1.5);
-		if (inNGM(2)) if (hasAch("r64")) mult = mult.mul(1e6);
+		if (hasAch("r28")) mult = mult.mul(1.1)
+		if (hasAch("r31")) mult = mult.mul(1.05)
+		if (hasAch("r71")) mult = mult.mul(inNGM(2) ? 909 : 3)
+		if (hasAch("r68")) mult = mult.mul(inNGM(2) ? 5 : 1.5)
+		if (inNGM(2)) if (hasAch("r64")) mult = mult.mul(1e6)
 	}
-	if (tier == 8 && hasAch("r23")) mult = mult.mul(1.1);
-	else if (hasAch("r34")) mult = mult.mul(inNGM(2) ? 2 : 1.02);
-	if (tier <= 4 && hasAch("r43")) mult = mult.mul(1.25);
-	if (inNGM(2) && hasAch("r31")) mult = mult.mul(productAllTotalBought1());
-	if (hasAch("r48")) mult = mult.mul(1.1);
-	if (hasAch("r72")) mult = mult.mul(inNGM(2) ? 10 : 1.1); // tbd
-	if (inOnlyNGM(2) && hasAch("r46")) mult = mult.mul(productAllDims1());
-	if (hasAch("r74") && player.currentChallenge != "") mult = mult.mul(inNGM(2) ? 40 : 1.4);
-	if (hasAch("r77")) mult = mult.mul(1 + tier / (inNGM(2) ? 10 : 100));
+	if (tier == 8 && hasAch("r23")) mult = mult.mul(1.1)
+	else if (hasAch("r34")) mult = mult.mul(inNGM(2) ? 2 : 1.02)
+	if (tier <= 4 && hasAch("r43")) mult = mult.mul(1.25)
+	if (inNGM(2) && hasAch("r31")) mult = mult.mul(productAllTotalBought1())
+	if (hasAch("r48")) mult = mult.mul(1.1)
+	if (hasAch("r72")) mult = mult.mul(inNGM(2) ? 10 : 1.1)
+	if (inOnlyNGM(2) && hasAch("r46")) mult = mult.mul(productAllDims1())
+	if (hasAch("r74") && player.currentChallenge != "") mult = mult.mul(inNGM(2) ? 40 : 1.4)
+	if (hasAch("r77")) mult = mult.mul(1 + tier / (inNGM(2) ? 10 : 100))
 	if (mod.rs && hasAch("r98")) mult = mult.mul(player.infinityDimension8.amount.max(1))
 	mult = mult.mul(getR84or73Mult())
 	if (inNGM(2)) return mult
 
-	if (hasAch("r56") && player.thisInfinityTime < 1800) mult = mult.mul(3600 / (player.thisInfinityTime + 1800));
-	if (hasAch("r78") && player.thisInfinityTime < 3) mult = mult.mul(3.3 / (player.thisInfinityTime + 0.3));
+	if (hasAch("r56") && player.thisInfinityTime < 1800) mult = mult.mul(3600 / (player.thisInfinityTime + 1800))
+	if (hasAch("r78") && player.thisInfinityTime < 3) mult = mult.mul(3.3 / (player.thisInfinityTime + 0.3))
 	if (hasAch("r65") && player.currentChallenge != "" && player.thisInfinityTime < 1800) mult = mult.mul(Math.max(2400 / (player.thisInfinityTime + 600), 1))
 	if (hasAch("r91") && player.thisInfinityTime < 50) mult = mult.mul(Math.max(301 - player.thisInfinityTime * 6, 1))
-	if (hasAch("r92") && player.thisInfinityTime < 600) mult = mult.mul(Math.max(101 - player.thisInfinityTime / 6, 1));
+	if (hasAch("r92") && player.thisInfinityTime < 600) mult = mult.mul(Math.max(101 - player.thisInfinityTime / 6, 1))
 	return mult
 }
 
 function getNormalDimensionVanillaTimeStudyBonus(tier){
 	var mult = E(1)
-	if (hasTimeStudy(71) && tier !== 8) mult = mult.mul(tmp.sacPow.pow(0.25).min("1e210000"));
-	if (hasTimeStudy(91)) mult = mult.mul(pow10(Math.min(player.thisEternity, 18000) / 60));
+	if (hasTimeStudy(71) && tier !== 8) mult = mult.mul(tmp.sacPow.pow(0.25).min("1e210000"))
+	if (hasTimeStudy(91)) mult = mult.mul(pow10(Math.min(player.thisEternity, 18000) / 60))
 
 	let useHigherNDReplMult = hasMasteryStudy("t323") && !player.dilation.active
 	if (!useHigherNDReplMult) mult = mult.mul(tmp.rep.nd || 1)

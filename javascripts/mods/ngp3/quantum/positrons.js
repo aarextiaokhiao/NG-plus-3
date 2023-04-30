@@ -9,6 +9,7 @@ function updatePositronsTab() {
 	el("positronsGain").textContent = getFullExpansion(Math.floor(Math.max(player.galaxies-quSave.electrons.sacGals, 0) * getPositronGainFinalMult()))
 	for (var u = 1; u <= 4; u++) el("positronupg" + u).className = canBuyPositronUpg(u) ? "storebtn positron" : "unavailablebtn"
 
+	updatePositrons()
 	updatePositronsEffect()
 }
 

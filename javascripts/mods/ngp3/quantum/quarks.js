@@ -66,7 +66,7 @@ function assignQuark(color) {
 
 	quSave.usedQuarks[color] = quSave.usedQuarks[color].add(usedQuarks).round()
 	quSave.quarks = quSave.quarks.sub(usedQuarks)
-	updateQuarkDisplay()
+
 	if (!mult.eq(1)) updateQuantumWorth()
 	updateColorCharge()
 	if (ghSave?.another > 0) ghSave.another--

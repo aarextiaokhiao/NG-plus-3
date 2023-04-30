@@ -153,16 +153,17 @@ function getIDCost(tier) {
 
 function getIDCostMult(tier) {
 	let ret = infCostMults[tier]
-	if (ECComps("eterc12")) ret = Math.pow(ret,getECReward(12))
-	if (inNGM(2)) return ret
+	if (ECComps("eterc12")) ret = Math.pow(ret, getECReward(12))
+	if (!inNGM(2)) return ret
+
+	let cap = .1
 	if (player.infinityUpgrades.includes("postinfi53")) ret /= 50
 	if (hasGSacUpg(42)) ret /= 1 + 5 * Math.log10(player.eternityPoints.plus(1).log10() + 1)
-	let cap = .1
 	if (player.achPow.gte(E_pow(5,11.9)) && tier > 1) {
 		cap = .02
-		ret /= Math.max(1, Math.log(player.totalmoney.log10())/10-.5)
+		ret /= Math.max(1, Math.log(player.totalmoney.log10()) / 10 - .5)
 	}
-	return Math.max(ret,Math.pow(infCostMults[tier],cap))
+	return Math.max(ret, Math.pow(infCostMults[tier], cap))
 }
 
 function getInfBuy10Mult(tier) {

@@ -11,54 +11,51 @@
 }
 
 * {
-	color: #7fdfff;
-	font-family: Helvetica !important
+	color: #bdf;
+    font-family: Helvetica, Arial, sans-serif !important;
 }
 
 button {
-	border-color: transparent;
-	border: 3px solid;
-	border-radius: 3px !important;
+	border: none !important;
+	border-bottom: 2px solid !important;
 	transition-duration: 0.5s
 }
 button:hover {
 	transform: scale(1.05)
 }
 
-.tabbtn {
-	background: rgba(0, 191, 255, 0.3) !important;
-	border-color: transparent transparent #00bfff transparent !important;
-	color: #7fffff !important
+.tabbtn, .tabbtn:hover {
+	background: rgba(0, 191, 255, 0.3);
+	color: #7fffff
 }
-.secondarytabbtn {
-	background: rgba(255, 0, 0, 0.3) !important;
-	border-color: transparent transparent #ff0000 transparent !important;
-	color: #ff7f7f !important
+.secondarytabbtn, .secondarytabbtn:hover {
+	background: rgba(255, 0, 0, 0.3);
+	color: #ff7f7f
 }
 .storebtn {
 	background: rgba(191, 255, 127, 0.3) !important;
-	border-color: transparent transparent #bfff00 transparent !important;
 	box-shadow: inset 0 0 24px #bfff00;
 	color: #ffff7f !important
 }
 .storebtn * {
-	color: #ffff7f !important
+	color: #ffff7f
 }
 
 .unavailablebtn,
 .infinistorebtnlocked,
 .newdimlocked,
-.eternityupbtnlocked {
+.eternityupbtnlocked,
+.dilationupglocked {
 	transform: scale(1) !important;
 	background: linear-gradient(#3f2f2f, transparent), rgba(31, 31, 31, 0.4) !important;
-	border-color: transparent !important;
-	color: #ffbfbf !important
+	color: #bf7f7f !important
 }
 .unavailablebtn *,
 .infinistorebtnlocked *,
 .newdimlocked *,
-.eternityupbtnlocked * {
-	color: #ffbfbf !important
+.eternityupbtnlocked *,
+.dilationupglocked * {
+	color: #bf7f7f
 }
 
 .popup {
@@ -71,7 +68,6 @@ button:hover {
 }
 .popup .storebtn {
 	background: rgba(127, 191, 255, 0.3) !important;
-	border-color: transparent transparent #0000ff transparent !important;
 	box-shadow: inset 0 0 24px #0000ff;
 	color: #bfbfff !important
 }
@@ -79,8 +75,6 @@ button:hover {
 .chosen {
 	transform: scale(1) !important;
 	background: linear-gradient(#2f7f2f, transparent), rgba(31, 31, 31, 0.4) !important;
-	border: 0px solid;
-	border-radius: 3px;
 	color: #bfffbf !important
 }
 .chosen div, .chosen b {
@@ -127,29 +121,22 @@ button:hover {
 
 .challengesbtn {
 	background: rgba(191, 255, 127, 0.3) !important;
-	border: 0px solid;
-	border-radius: 3px;
 	box-shadow: inset 0 0 24px #bfff00;
 	color: #ffff7f !important
 }
 .lockedchallengesbtn {
 	transform: scale(1) !important;
 	background: linear-gradient(#3f2f2f, transparent), rgba(31, 31, 31, 0.4) !important;
-	border: 0px solid;
-	border-radius: 3px;
 	color: #ffbfbf !important
 }
 .onchallengebtn {
 	transform: scale(1) !important;
 	background: linear-gradient(#2f7f2f, transparent), rgba(31, 31, 31, 0.4) !important;
-	border: 0px solid;
-	border-radius: 3px;
 	color: #bfffbf !important
 }
 .completedchallengesbtn {
 	background: #00bf00 !important;
-	border: 0px solid;
-	border-radius: 3px;
+	border-bottom: none !important;
 	box-shadow: inset 0 0 24px #bfff00;
 	color: #ffff7f !important
 }
@@ -157,7 +144,6 @@ button:hover {
 /* Galaxy */
 .galaxybtn, .galaxyupgbtn {
 	background: rgba(0, 79, 255, 0.5) !important;
-	border-color: #004fff transparent #004fff transparent !important;
 	box-shadow: 0px 0px 24px #004fff7f;
 	color: #7fc7ff !important
 }
@@ -178,8 +164,8 @@ button:hover {
 .infinistorebtn1, .infinistorebtn2, .infinistorebtn3, .infinistorebtn4, .infinimultbtn,
 .newdim {
 	background: rgba(255, 191, 0, 0.5) !important;
-	border-color: #ffbf00 transparent #ffbf00 transparent !important;
-	box-shadow: 0px 0px 24px #ffbf007f;
+	border-top: 2px solid !important;
+	box-shadow: 0px 0px 24px #ffbf00bf;
 	color: #ffdf7f !important
 }
 .infinitybtn div, .infinitybtn b {
@@ -189,11 +175,11 @@ button:hover {
 .infinistorebtnbought {
 	transform: scale(1) !important;
 	background: rgba(255, 191, 0, 0.75) !important;
-	border-color: transparent !important;
+	border-bottom: none !important;
 	color: #ffdf7f !important
 }
 
-#infinityPoints1, #infinityPoints2, #infinitydimensions div, #infinitydimensions td, #replicantidiv {
+#infinityPoints1, #infinityPoints2, .IPAmount {
 	color: #ffdf7f !important;
 }
 #infPowAmount, #infDimMultAmount,
@@ -208,28 +194,24 @@ button:hover {
 .eternityupbtn,
 #eterctabbtn {
 	background: rgba(191, 0, 255, 0.5) !important;
-	border-color: #bf00ff transparent #bf00ff transparent !important;
-	box-shadow: 0px 0px 24px #bf00ff7f;
+	border-top: 2px solid !important;
+	box-shadow: 0px 0px 24px #bf00ffbf;
 	color: #df7fff !important
 }
-.eternitybtn div, .eternitybtn b {
+.eternitybtn *, .eternityupbtn * {
 	color: #df7fff !important
 }
 
-#eternityPoints2,
-#eternitystore div, #timedimensions div, #timedimensions td {
-	color: #df7fff !important
-}
+#eternityPoints2, .EPAmount2,
 #timeShardAmount, #tickThreshold {
 	font-weight: bold;
-	color: #bf00ff !important;
-	text-shadow: 0 0 12px #bf00ff !important;
+	color: #bf00ff !important
 }
 
 .eternityupbtnbought, .milestonereward {
 	transform: scale(1) !important;
 	background: rgba(191, 0, 255, 0.75) !important;
-	border-color: transparent !important;
+	border-bottom: none !important;
 	color: #df7fff !important
 }
 
@@ -257,13 +239,13 @@ button:hover {
 
 /* Dilation */
 .dilationbtn, .dilationupg {
-	background: rgba(63, 255, 0, 0.75) linear-gradient(transparent, #00df00, transparent) !important;
-	border-color: transparent transparent #00ff00 transparent !important;
+	background: rgba(63, 191, 0, 0.75) !important;
+	border-color: #00ff00 !important;
 	box-shadow: 0 0 120px #00df00;
 	color: #7fff7f !important
 }
-.dilationbtn div, .dilationbtn span, .dilationbtn b {
-	color: #7fff7f !important
+.dilationbtn *, .dilationupg * {
+	color: #7fff7f
 }
 .dilationupgbought {
 	transform: scale(1) !important;
@@ -271,19 +253,14 @@ button:hover {
 	border-color: transparent !important;
 	color: #7fff7f !important
 }
-.dilationupglocked {
-	transform: scale(1) !important;
-	background: linear-gradient(#3f2f2f, #1f1f1f) !important;
-	border-color: transparent !important;
-	box-shadow: 0 0 6px rgba(0, 0, 0, 0.5);
-	color: #ffbfbf !important
+#tachyonParticleAmount, #dilatedTimeAmount, #dilatedTimePerSecond, #galaxyThreshold, #dilatedGalaxies {
+	color: #bfff7f !important
 }
 
 /* Meta */
 #mdtabbtn button {
 	background: rgba(0, 255, 255, 0.5) !important;
-	border-color: #00ffff transparent #00ffff transparent !important;
-	box-shadow: 0px 0px 24px #00ffff7f;
+	border-color: #00ffff !important;
 	color: #7fffff !important
 }
 
@@ -291,11 +268,11 @@ button:hover {
 .quantumbtn,
 #quTabs .secondarytabbtn {
 	background: rgba(63, 255, 0, 0.5) !important;
-	border-color: #3fff00 transparent #3fff00 transparent !important;
-	box-shadow: 0px 0px 24px #3fff007f;
+	border-top: 2px solid !important;
+	box-shadow: 0px 0px 24px #3fff00bf;
 	color: #9fff7f !important
 }
-.quantumbtn div, .quantumbtn b {
+.quantumbtn * {
 	color: #bfff7f !important
 }
 
@@ -305,25 +282,47 @@ button:hover {
 .lime {
 	color: #9fff3f
 }
-.green {
+.green, #quarks, .QKAmount, .SSAmount {
 	color: #3fff3f
 }
 .blue {
 	color: #3f3fff
 }
 
+.qu_upg, .qu_upg_bought {
+	animation: none !important;
+}
+.qu_upg_bought {
+	border-bottom: none !important;
+	box-shadow: 0 0 24px green
+}
+.rg {
+	background: linear-gradient(#f007, #0f03), radial-gradient(#0f07, transparent) !important;
+	color: #ffb !important
+}
+.gb {
+	background: linear-gradient(#0f07, #00f3), radial-gradient(#00f7, transparent) !important;
+	color: #bff !important
+}
+.br {
+	background: linear-gradient(#00f7, #f003), radial-gradient(#f007, transparent) !important;
+	color: #fbf !important
+}
+
+.positron {
+	background: rgba(255, 255, 0, 0.5) !important;
+	color: #ffff7f !important
+}
+
 .antbtn,
 #antTabs .secondarytabbtn {
     background: linear-gradient(#446, #112) !important;
-    border: 2px solid;
-    border-color: #779 transparent #779 transparent !important;
     color: #aac !important;
 	text-shadow: none;
 }
 
 .bigrip {
     background: linear-gradient(#030, #230) !important;
-	border-color: #bfff00 transparent #bfff00 transparent !important;
 	box-shadow: 0px 0px 24px #bfff007f;
 	color: #dfff7f !important
 }
@@ -335,6 +334,7 @@ button:hover {
 .ghostifybtn,
 #fundaTabs .secondarytabbtn {
 	background: linear-gradient(#1f007f, #3f007f) !important;
+	border-top: 2px solid !important;
 	box-shadow: 0px 0px 24px #7f00ff;
 	animation: ghostifytext 4s linear infinite
 }
@@ -343,22 +343,27 @@ button:hover {
 	box-shadow: 0px 0px 24px #bf00ff;
 	cursor: pointer
 }
+#ghostparticles, #GHPAmount {
+	animation: ghostifytext 4s linear infinite
+}
 @keyframes ghostifytext { 
 	0%{
-		border-color: #7f00ff transparent #7f00ff transparent;
-		color: #7f7fff
+		color: #bf7fff
 	}
 	50% {
-		border-color: #3f00ff transparent #3f00ff transparent;
-		color: #9f7fff
+		color: #9f3fff
 	}
 	100% {
-		border-color: #7f00ff transparent #7f00ff transparent;
-		color: #7f7fff
+		color: #bf7fff
 	}
 }
 
+.autoBuyerDiv.on {
+	background: linear-gradient(#0f07, transparent)
+}
+
 .hypo_btn {
+	border-bottom: 0 solid !important;
 	background: #fff1
 }
 .hypo_btn:hover {
@@ -366,13 +371,6 @@ button:hover {
 }
 
 /* Fixes */
-.optionstab td .storebtn {
-	background: rgba(191, 255, 127, 0.3) !important;
-	border-color: transparent transparent #bfff00 transparent !important;
-	box-shadow: inset 0 0 36px #bfff00;
-	color: #ffff7f !important
-}
-
 .presPos1.newdimlocked, .presPos4.newdimlocked {
 	transform: scale(1) translate(50%, 0) !important;
 }

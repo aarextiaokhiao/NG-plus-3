@@ -464,7 +464,6 @@ function getMasteryStudyCostMult(id) {
 function buyingD7Changes(){
 	showTab("quantumtab")
 	showQuantumTab("positrons")
-	updatePositrons()
 }
 
 function buyingDilStudyQC(){

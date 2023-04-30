@@ -33,7 +33,7 @@ const BOSONIC_LAB = LAB = {
 		let data = tmp.funda.lab || {}
 		tmp.funda.lab = data
 
-		if (tmp.funda.lab.bond == undefined) BL_HYPOTHESES.temp()
+		if (data.bond == undefined) BL_HYPOTHESES.temp()
 		WEAK_FORCE.temp()
 
 		data.ms = {}
@@ -46,7 +46,6 @@ const BOSONIC_LAB = LAB = {
 	// Goal: 10M Bosons (100/s Boson production + x10 from Milestones)
 	prod() {
 		return E(0)
-		//Bosonic Milestones aren't implemented
 
 		let r = E(bondEff("0;1", 0))
 		if (bondEff("1;3") >= 5) r = r.mul(2)
@@ -199,7 +198,7 @@ function hasBLMilestone(i) {
 }
 
 function blEff(i, def) {
-	return tmp.funda?.lab?.ms[i] || def
+	return tmp.funda.lab?.ms[i] || def
 }
 
 function showBLTab(x) {
@@ -311,11 +310,11 @@ const BL_HYPOTHESES = {
 			disp: e => `Generate <b>${shorten(e)}/s</b> Bosonic Matter.`,
 		},
 		["0;2"]: {
-			eff: x => Math.floor(x/5),
+			eff: x => Math.floor(x/4),
 			disp: e => `Add W Bosons by <b>+${e}</b>`,
 		},
 		["1;2"]: {
-			eff: x => Math.floor(x/10),
+			eff: x => Math.floor(x/8),
 			disp: e => `Add Z0 Bosons by <b>+${e}</b>`,
 		},
 		["0;3"]: {
@@ -328,7 +327,7 @@ const BL_HYPOTHESES = {
 		},
 		["2;3"]: {
 			eff: x => x,
-			disp: e => `At 5 levels, double Z0 Bosons. <b>(${e}/5)</b>`,
+			disp: e => `At 4 levels, double Z0 Bosons. <b>(${e}/4)</b>`,
 		}
 	},
 
@@ -371,7 +370,7 @@ const BL_HYPOTHESES = {
 }
 
 function bondEff(i, def = 1) {
-	return tmp.funda?.lab?.bond_eff?.[i] || def
+	return tmp.funda.lab?.bond_eff[i] ?? def
 }
 
 const WEAK_FORCE = {
@@ -407,7 +406,7 @@ const WEAK_FORCE = {
 		},
 		z() {
 			let r = bondEff("1;2", 0)
-			if (bondEff("2;3") >= 5) r *= 2
+			if (bondEff("2;3") >= 4) r *= 2
 			return r
 		}
 	},

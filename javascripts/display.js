@@ -717,13 +717,12 @@ function resetTabs() {
 	showAchTab(tabs?.achtab || 'normalachievements')
 	showChallengesTab(tabs?.challengeTab || 'normalchallenges')
 	showAutoTab(tabs?.autotab || 'autobuyers')
-	showInftab(tabs?.inftab || 'preinf')
+	showInfTab(tabs?.inftab || 'preinf')
 	showEternityTab(tabs?.eternitytab || 'timestudies')
 	showQuantumTab(tabs?.quantumtab || 'uquarks')
 	showAntTab(tabs?.anttab || 'antcore')
 	showGhostifyTab(tabs?.ghostifytab || 'neutrinos')
 	showBLTab(tabs?.bltab || (ghSave?.lab_real ? "lab_real" : "hypotheses"))
-	onTabSwitch()
 }
 
 function onTabSwitch() {

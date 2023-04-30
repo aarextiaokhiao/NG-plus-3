@@ -36,7 +36,7 @@ const NEUTRINO = NT = {
 		NT_RES.addType(NT_RES.types[ghSave.neutrinos.generationGain - 1], NT_RES.gain().mul(bulk))
 	},
 	eff(type, x, def = 1) {
-		return tmp.funda?.neutrino[type][x] ?? def
+		return tmp.funda.neutrino?.[type][x] ?? def
 	},
 
 	/* FEATURES */

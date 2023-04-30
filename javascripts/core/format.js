@@ -950,7 +950,6 @@ function onNotationChange() {
 		updateLastTenGhostifies()
 		updateQuarksTabOnUpdate()
 		updateQuantumWorth("notation")
-		updatePositrons()
 		updateBankedEter()
 		updateQuantumChallenges()
 		updateTODStuff()

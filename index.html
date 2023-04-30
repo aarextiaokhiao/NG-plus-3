@@ -232,7 +232,7 @@
 						<td colspan=3><hr></td>
 					</tr><tr>
 						<td><div class="storebtn" id="autoSaveIntDiv" style="color:black; width: 198px; height: 55px; font-size:130%; text-align: center;"><b id="autoSaveInterval">Auto-save interval: 30s</b><input id="autoSaveIntervalSlider" style="width: 170px;" type="range" min="15" max="120" value="30" class="slider" oninput="changeAutoSaveInterval()"></div></td>
-						<td><div><button id="offlineProgress" onclick='toggleOfflineProgress()' class="storebtn" style="color:black; width: 200px; height: 55px; font-size: 15px"></button></div></td>
+						<td><div class="storebtn" style="color:black; width: 198px; height: 55px; font-size:130%; text-align: center;"><b id="offlineInterval"></b><input id="offlineSlider" style="width: 170px;" type="range" min="0" max="10" class="slider" oninput="adjustOfflineProgress()"></div></td>
 						<td><div><button id="rename" class="storebtn" onclick='rename_save()' style="color:black; width: 200px; height: 55px; font-size: 20px">Rename</button></div></td>
 						<td></td>
 					</tr><tr>
@@ -4030,7 +4030,7 @@
 			<br><br><hr>
 
 			<b>(NG+3 v2.31: Ghostify Respecced)</b><br>
-			<b class="red">(Beta: 4/28/23 Build)</b><br>
+			<b class="red">(Beta: 4/29/23 Build)</b><br>
 			By <a href="https://aarextiaokhiao.github.io/">Aarex</a>, pg132, and usavictor.
 			<br><br>
 
@@ -4040,7 +4040,11 @@
 		<button class="storebtn" style="font-size: 15px" onclick="closeToolTip()" style="display: inline">Close</button>
 	</div>
 	<div class="popup" id="offlineprogress" style="width: 450px; height: 200px;">
-		<div id="offlinePopup" style="height: 150px"></div>
+		<div style="height: 160px; overflow-y: auto">
+			<b style='font-size: 18px'>While you are away...</b><br>
+			<b id="offlinetime"></b>
+			<div id="offlinetext"></div>
+		</div><br>
 		<button class="storebtn" style="font-size: 15px" onclick="closeToolTip()" style="display: inline">Okay</button>
 	</div>
 

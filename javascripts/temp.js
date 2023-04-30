@@ -139,9 +139,9 @@ function resetPowers() {
 	tmp.qu.chal.reward = {}
 	tmp.qu.ant = {}
 	delete tmp.qu.intergal
-	delete tmp.funda
-
 	setupNanoRewardTemp()
+
+	tmp.funda = {}
 	updateTemp()
 }
 

@@ -1,6 +1,6 @@
 //VERSION: 2.31
 let ngp3_ver = 2.31
-let ngp3_build = 20230428
+let ngp3_build = 20230429
 function doNGP3Updates() {
 	if (!aarMod.ngp3_build) aarMod.ngp3_build = 0
 	if (aarMod.ngp3_build < 20221230) quSave.multPower = 0
@@ -519,18 +519,20 @@ function updateNGP3Temp() {
 	}
 }
 
-function doPerSecondNGP3Stuff(){
-	updateQuantumTabDisplays()
-	updateQuarkDisplay()
-	updateNetTop()
-	el("autoBuyerQuantum").style.display = speedrunMilestonesReached >= 23 ? "" : "none"
-	el('toggleautoquantummode').style.display = quSave?.reachedInfQK ? "" : "none"
-	el('dilationmode').style.display=speedrunMilestonesReached>4?"":"none"
-	el('rebuyupgmax').style.display=speedrunMilestonesReached<26?"":"none"
-	el('toggleallmetadims').style.display=speedrunMilestonesReached>7?"":"none"
-	el('metaboostAuto').style.display=speedrunMilestonesReached>14?"":"none"
-	updateBreakEternity()
-	BL_JOKE.updateHTML()
+function doPerSecondNGP3Stuff(quick) {
+	if (!quick) {
+		updateQuantumTabDisplays()
+		updateQuarkDisplay()
+		updateNetTop()
+		el("autoBuyerQuantum").style.display = speedrunMilestonesReached >= 23 ? "" : "none"
+		el('toggleautoquantummode').style.display = quSave?.reachedInfQK ? "" : "none"
+		el('dilationmode').style.display=speedrunMilestonesReached>4?"":"none"
+		el('rebuyupgmax').style.display=speedrunMilestonesReached<26?"":"none"
+		el('toggleallmetadims').style.display=speedrunMilestonesReached>7?"":"none"
+		el('metaboostAuto').style.display=speedrunMilestonesReached>14?"":"none"
+		updateBreakEternity()
+		BL_JOKE.updateHTML()
+	}
 	if (!mod.ngp3) return
 
 	//Automators
@@ -547,6 +549,7 @@ function doPerSecondNGP3Stuff(){
 	ngP3AchieveCheck()
 	doNGP3UnlockStuff()	
 
+	if (quick) return
 	notifyGhostifyMilestones()
 	notifyQuantumMilestones()
 

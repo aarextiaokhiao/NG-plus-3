@@ -391,7 +391,7 @@ function setAarexModIfUndefined(){
 	}
 
 	if (aarMod.dilationConf === undefined) aarMod.dilationConf = true
-	if (aarMod.offlineProgress === undefined)	aarMod.offlineProgress = true
+	if (aarMod.offline === undefined) aarMod.offline = 10
 	if (aarMod.autoSave === undefined) aarMod.autoSave = true
 	if (aarMod.progressBar === undefined) aarMod.progressBar = true
 	if (aarMod.logRateChange === undefined) aarMod.logRateChange = false
@@ -411,6 +411,7 @@ function setAarexModIfUndefined(){
 		delete player.masterystudies
 		delete aarMod.newGame3PlusVersion
 	}
+	delete aarMod.offlineProgress
 }
 
 function setSomeEterEraStuff() {
@@ -432,7 +433,8 @@ function setSomeEterEraStuff() {
 
 function setSaveStuffHTML(){
 	el("save_name").textContent = "You are currently playing in " + (aarMod.save_name ? aarMod.save_name : "Save #" + savePlacement)
-	el("offlineProgress").textContent = "Offline progress: O"+(aarMod.offlineProgress?"N":"FF")
+	el("offlineSlider").value = aarMod.offline
+	el("offlineInterval").textContent = "Offline progress: " + (aarMod.offline ? (aarMod.offline * 100) + " ticks" : "OFF")
 	el("autoSave").textContent = "Auto save: " + (aarMod.autoSave ? "ON" : "OFF")
 	el("autoSaveInterval").textContent = "Auto-save interval: " + getAutoSaveInterval() + "s"
 	el("autoSaveIntervalSlider").value = getAutoSaveInterval()
@@ -1555,7 +1557,6 @@ function updateNGp3DisplayStuff(){
 	el('autoReset').textContent="Auto: O"+(quSave.autoOptions.replicantiReset?"N":"FF")
 
 	updateAssortPercentage()
-	updatePositrons()
 	updateAutoQuantumMode()
 	updateColorCharge()
 }
@@ -1632,7 +1633,6 @@ function onLoad(noOffline) {
 	updateVersionsONLOAD()
 	mult18 = E(1)
 	resetPowers()
-	updateInQCs()
 	if (mod.ngp3) doNGp3Init()
 
 	for (var s = 0; s < (mod.rs ? 4 : 3); s++) toggleCrunchMode(true)
@@ -1701,9 +1701,9 @@ function onLoad(noOffline) {
 		notifyId2 = ghSave?.milestones || 0
 	}
 
-	if (aarMod.offlineProgress && !noOffline) {
+	if (aarMod.offline && !noOffline) {
 		let diff = new Date().getTime() - player.lastUpdate
-		if (diff > 1000*1000) simulateTime(diff/1000)
+		if (diff >= 0) simulateTime(diff / 1000, aarMod.offline * 100)
 	} else player.lastUpdate = new Date().getTime()
 
 	el("newsbtn").textContent=(player.options.newsHidden?"Show":"Hide")+" news ticker"

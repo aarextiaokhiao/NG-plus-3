@@ -27,6 +27,10 @@ button b, button span {
 	pointer-events: none;
 }
 
+.tab {
+	display: none
+}
+
 .small {
     margin: 1px;
     width: 120px;

@@ -38,7 +38,7 @@ function quantum(auto, force, qc, bigRip = false) {
 			if (!speedrunMilestonesReached) {
 				showDimTab("antimatterdimensions")
 				showChallengesTab("challenges")
-				showInftab("preinf")
+				showInfTab("preinf")
 				showEternityTab("timestudies")
 				showTab("dimensions")
 			}
