@@ -1,7 +1,7 @@
 function getR84or73Mult() {
 	var mult = E(1)
-	if (hasAch("r84")) mult = player.money.pow(inNGM(2)?0.0002:0.00004).plus(1);
-	else if (hasAch("r73")) mult = player.money.pow(inNGM(2)?0.0001:0.00002).plus(1);
+	if (hasAch("r84")) mult = player.money.pow(inNGM(2)?0.0002:0.00004).add(1);
+	else if (hasAch("r73")) mult = player.money.pow(inNGM(2)?0.0001:0.00002).add(1);
 	
 	var log = mult.log10()
 	if (log < 0) log = 0
@@ -79,7 +79,7 @@ function getAfterDefaultDilationLayerAchBonus(tier){
 	if (hasGSacUpg(42) && inNGM(4)) mult = mult.mul(galMults.u12())
 	if (hasGSacUpg(45) && inNGM(4)) {
 		var e = hasGSacUpg(46) ? galMults["u46"]() : 1
-		mult = mult.mul(Math.pow(player["timeDimension" + tier].amount.plus(10).log10(), e))
+		mult = mult.mul(Math.pow(player["timeDimension" + tier].amount.add(10).log10(), e))
 	}
 	return mult
 }
@@ -517,7 +517,7 @@ function getDimensionProductionPerSecond(tier) {
 	if (tier == 1 && (inNC(3) || player.currentChallenge == "postc1")) ret = ret.mul(player.chall3Pow)
 	if (inNGM(3)) ret = ret.div(10)
 	if (inNGM(4)) ret = ret.div(100)
-	if (tier == 1 && (inNC(7) || player.currentChallenge == "postcngm3_3" || inQC(4))) ret = ret.plus(getDimensionProductionPerSecond(2))
+	if (tier == 1 && (inNC(7) || player.currentChallenge == "postcngm3_3" || inQC(4))) ret = ret.add(getDimensionProductionPerSecond(2))
 	let tick = dilates(Decimal.div(1e3,getTickspeed()),"tick")
 	if (player.dilation.active && hasNanoReward("dil_exp")) tick = tick.pow(getNanorewardEff("dil_exp"))
 	ret = ret.mul(tick)

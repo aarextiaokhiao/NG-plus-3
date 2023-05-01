@@ -21,7 +21,7 @@ function updatePilonDisplay(){
 }
 
 function getGrowupRatePerMinute(){
-	return tmp.qu.ant.workers.plus(quSave.replicants.amount).mul(0.3)
+	return tmp.qu.ant.workers.add(quSave.replicants.amount).mul(0.3)
 }
 
 function growupRateUpdating(){
@@ -166,7 +166,7 @@ function getEmperorDimensionMultiplier(dim) {
 
 	let ret = tmp.qu.ant.global_mult //Global multiplier of all Emperor Dimensions
 	if (dim == 8) ret = ret.mul(E_pow(1.1, quSave.emperorDimensions[8].perm - 8).max(1))
-	if (dim == 1 && hasAch("ng3p54")) ret = ret.mul(Math.pow(todSave.r.spin.plus(10).log10(), 3))
+	if (dim == 1 && hasAch("ng3p54")) ret = ret.mul(Math.pow(todSave.r.spin.add(10).log10(), 3))
 	if (hasNU(7) && dim % 2 == 1) ret = ret.mul(NT.eff("upg", 7))
 	ret = ret.pow(PHOTON.eff(5))
 	return ret

@@ -19,7 +19,7 @@ function getReplMult(next) {
 		if (hasAch('r108')) exp *= 1.09;
 	}
 	let replmult = Decimal.max(player.replicanti.amount.log(2), 1).pow(exp)
-	if (hasTimeStudy(21)) replmult = replmult.plus(E_pow(player.replicanti.amount, 0.032))
+	if (hasTimeStudy(21)) replmult = replmult.add(E_pow(player.replicanti.amount, 0.032))
 	if (hasTimeStudy(102)) {
 		let gal = player.replicanti.galaxies
 		if (hasBLMilestone(17)) gal *= blEff(17)
@@ -302,7 +302,7 @@ function runRandomReplicanti(chance){
 	var temp = player.replicanti.amount
 	if (typeof(chance) == "object") chance = chance.toNumber()
 	for (var i = 0; temp.gt(i); i++) {
-		if (chance > Math.random()) player.replicanti.amount = player.replicanti.amount.plus(1)
+		if (chance > Math.random()) player.replicanti.amount = player.replicanti.amount.add(1)
 		if (i >= 99) return
 	}
 }
@@ -319,7 +319,7 @@ function notContinuousReplicantiUpdating() {
 			if (chance < 1) {
 				let counter = 0
 				for (var i=0; i<100; i++) if (chance > Math.random()) counter++;
-				player.replicanti.amount = temp.mul(counter).plus(player.replicanti.amount)
+				player.replicanti.amount = temp.mul(counter).add(player.replicanti.amount)
 				counter = 0
 			} else player.replicanti.amount = player.replicanti.amount.mul(2)
 			if (!hasTimeStudy(192)) player.replicanti.amount = player.replicanti.amount.min(getReplicantiLimit())

@@ -14,7 +14,7 @@ function getDilationMetaDimensionMultiplier() {
 	if (hasNanoReward("dt_to_ma_exp")) pow *= getNanorewardEff("dt_to_ma_exp")
 
 	if (mod.udp && !aarMod.nguepV) {
-		let l = quSave.colorPowers.b.plus(10).log10()
+		let l = quSave.colorPowers.b.add(10).log10()
 		let x = 3 - Math.log10(l + 1)
 		if (aarMod.ngumuV) {
 			if (x < 2) x = 2 - 2 * (2 - x) / (5 - x)
@@ -24,7 +24,7 @@ function getDilationMetaDimensionMultiplier() {
 		}
 		pow /= x
 	}
-	let ret = player.dilation.dilatedTime.div(div).pow(pow).plus(1)
+	let ret = player.dilation.dilatedTime.div(div).pow(pow).add(1)
 	return ret
 }
 
@@ -41,9 +41,9 @@ function getMetaDimensionMultiplier(tier) {
 	if (tier % 2 > 0) ret = ret.mul(tmp.qu.chal.reward[4])
 	
 	//Achievements:
-	if (tier == 8 && hasAch("ng3p22")) ret = ret.mul(1 + Math.pow(player.meta[1].amount.plus(1).log10() / 10, 2))
-	if (tier == 1 && hasAch("ng3p31")) ret = ret.mul(player.meta.antimatter.plus(1).pow(.001))
-	if (tier == 1 && hasAch("ng3p17")) ret = ret.mul(Math.max(1,Math.log10(player.totalmoney.plus(10).log10())))
+	if (tier == 8 && hasAch("ng3p22")) ret = ret.mul(1 + Math.pow(player.meta[1].amount.add(1).log10() / 10, 2))
+	if (tier == 1 && hasAch("ng3p31")) ret = ret.mul(player.meta.antimatter.add(1).pow(.001))
+	if (tier == 1 && hasAch("ng3p17")) ret = ret.mul(Math.max(1,Math.log10(player.totalmoney.add(10).log10())))
 	
 	ret = dilates(dilates(ret.max(1), 2), "meta")
 	return ret
@@ -73,8 +73,8 @@ function getMetaDimensionGlobalMultiplier() {
 		ret = ret.mul(tmp.qu.chal.reward[6])
 
 		//Achievement Rewards
-		if (hasAch("ng3p13")) ret = ret.mul(Math.pow(Decimal.plus(quantumWorth, 10).log10(), 2))
-		if (hasAch("ng3p57")) ret = ret.mul(1 + player.timeShards.plus(1).log10() / 1e3)
+		if (hasAch("ng3p13")) ret = ret.mul(Math.pow(Decimal.add(quantumWorth, 10).log10(), 2))
+		if (hasAch("ng3p57")) ret = ret.mul(1 + player.timeShards.add(1).log10() / 1e3)
 	}
 	
 	return ret
@@ -204,7 +204,7 @@ function metaBuyOneDimension(tier) {
 	if (!canBuyMetaDimension(tier)) return false;
 	if (!canAffordMetaDimension(cost)) return false;
 	player.meta.antimatter = player.meta.antimatter.minus(cost);
-	player.meta[tier].amount = player.meta[tier].amount.plus(1);
+	player.meta[tier].amount = player.meta[tier].amount.add(1);
 	player.meta[tier].bought++;
 	if (player.meta[tier].bought % 10 < 1) {
 		player.meta[tier].cost = getMetaCost(tier, player.meta[tier].bought/10)
@@ -237,7 +237,7 @@ function metaBuyManyDimension(tier) {
 		return false;
 	}
 	player.meta.antimatter = player.meta.antimatter.minus(cost);
-	player.meta[tier].amount = player.meta[tier].amount.plus(10 - dimMetaBought(tier));
+	player.meta[tier].amount = player.meta[tier].amount.add(10 - dimMetaBought(tier));
 	player.meta[tier].bought += 10 - dimMetaBought(tier)
 	player.meta[tier].cost = getMetaCost(tier, player.meta[tier].bought / 10)
 	if (tier > 7) giveAchievement("And still no ninth dimension...")
@@ -323,7 +323,7 @@ function setupMetaDimensions() {
 function getMetaDimensionProduction(tier) {
 	let ret = player.meta[tier].amount.floor()
 	if (inQC(4)) {
-		if (tier == 1) ret = ret.plus(player.meta[2].amount.floor().pow(1.3))
+		if (tier == 1) ret = ret.add(player.meta[2].amount.floor().pow(1.3))
 		else if (tier == 4) ret = ret.pow(1.5)
 	}
 	return ret.mul(getMetaDimensionMultiplier(tier));
@@ -447,11 +447,11 @@ function getMetaUnlCost() {
 function metaDimsUpdating(diff){
 	var step = inQC(4) ? 2 : 1
 	for (let tier = 1 ; tier < 9; tier++) {
-		if (tier < 9 - step) player.meta[tier].amount = player.meta[tier].amount.plus(getMetaDimensionProduction(tier+step).mul(diff / 10))
+		if (tier < 9 - step) player.meta[tier].amount = player.meta[tier].amount.add(getMetaDimensionProduction(tier+step).mul(diff / 10))
 	}
 
-	player.meta.antimatter = player.meta.antimatter.plus(getMetaDimensionProduction(1).mul(diff))
-	if (inQC(4)) player.meta.antimatter = player.meta.antimatter.plus(getMetaDimensionProduction(2).mul(diff))
+	player.meta.antimatter = player.meta.antimatter.add(getMetaDimensionProduction(1).mul(diff))
+	if (inQC(4)) player.meta.antimatter = player.meta.antimatter.add(getMetaDimensionProduction(2).mul(diff))
 	player.meta.bestAntimatter = player.meta.bestAntimatter.max(player.meta.antimatter)
 	if (mod.ngp3) {
 		player.meta.bestOverQuantums = player.meta.bestOverQuantums.max(player.meta.antimatter)

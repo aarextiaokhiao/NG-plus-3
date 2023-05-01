@@ -63,7 +63,7 @@ const GLUON = {
 				disp: "Positron Upgrades scale 0.3 levels lower."
 			}, {
 				disp: "Infinity Power scales Distant Antimatter Galaxies slower.",
-				eff: _ => Math.min(1 + Math.pow(player.infinityPower.plus(1).log10(), 0.25) / 2810, 2.5),
+				eff: _ => Math.min(1 + Math.pow(player.infinityPower.add(1).log10(), 0.25) / 2810, 2.5),
 				eff_desc: e => "/" + shorten(e)
 			}, {
 				disp: "Infinity Points scale Remote Antimatter Galaxies slower.",
@@ -206,7 +206,7 @@ function subtractGluons(toSpend = 0) {
 
 function buyGluonUpg(color, i) {
 	var name = color + i
-	if (hasGluonUpg(color, i) || quSave.gluons[color].plus(0.001).lt(GLUON.upg_costs[i-1])) return
+	if (hasGluonUpg(color, i) || quSave.gluons[color].add(0.001).lt(GLUON.upg_costs[i-1])) return
 	quSave.upgrades.push(name)
 	quSave.gluons[color] = quSave.gluons[color].sub(GLUON.upg_costs[i-1])
 	if (name == "gb3") {

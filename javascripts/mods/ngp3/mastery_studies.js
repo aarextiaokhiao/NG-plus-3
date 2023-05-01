@@ -520,13 +520,13 @@ function buyingDilationStudy(id){
 }
 
 function buyingDilationStudyFirstTime(id){
-	if (id == 7) ngp3_feature_notify("el")
+	if (id == 7) ngp3_feature_notify("pos")
 	if (id == 8) ngp3_feature_notify("qc")
 	if (id == 9) ngp3_feature_notify("pc")
-	if (id == 10) ngp3_feature_notify("du")
+	if (id == 10) ngp3_feature_notify("ant")
 	if (id == 11) ngp3_feature_notify("ed")
 	if (id == 12) ngp3_feature_notify("nf")
-	if (id == 13) ngp3_feature_notify("tod")
+	if (id == 13) ngp3_feature_notify("decay")
 	if (id == 14) ngp3_feature_notify("br")
 }
 

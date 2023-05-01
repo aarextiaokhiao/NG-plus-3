@@ -126,8 +126,8 @@ function getAchievementMult(){
 function getUnspentBonus() {
 	x = player.infinityPoints
 	if (!x) return E(1)
-	if (inNGM(2)) return x.pow(Math.max(Math.min(Math.pow(x.max(1).log(10), 1 / 3) * 3, 8), 1)).plus(1);
-	else return x.dividedBy(2).pow(1.5).plus(1)
+	if (inNGM(2)) return x.pow(Math.max(Math.min(Math.pow(x.max(1).log(10), 1 / 3) * 3, 8), 1)).add(1);
+	else return x.dividedBy(2).pow(1.5).add(1)
 }
 
 function resetPowers() {
@@ -138,6 +138,7 @@ function resetPowers() {
 	tmp.qu.color_eff = { r: 1, g: 1, b: 1 }
 	tmp.qu.chal.reward = {}
 	tmp.qu.ant = {}
+	tmp.ngp3_progress = 0
 	delete tmp.qu.intergal
 	setupNanoRewardTemp()
 
@@ -147,10 +148,10 @@ function resetPowers() {
 
 function updatePowers() {
 	var expMult = inNGM(2) ? 2 : 0.5
-	if (inNGM(4)) expMult += player.money.plus(10).div(10).log10() / 1e4
+	if (inNGM(4)) expMult += player.money.add(10).div(10).log10() / 1e4
 
-	totalMult = E_pow(player.totalmoney.plus(10).log10(), expMult)
-	currentMult = E_pow(player.money.plus(10).log10(), expMult)
+	totalMult = E_pow(player.totalmoney.add(10).log10(), expMult)
+	currentMult = E_pow(player.money.add(10).log10(), expMult)
 	infinitiedMult = getInfinitiedMult()
 	achievementMult = getAchievementMult()
 	unspentBonus = getUnspentBonus()

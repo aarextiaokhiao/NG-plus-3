@@ -293,17 +293,17 @@ function dov1tov5(){
 			if (player.dimensionMultDecrease == 9) {
 				player.dimensionMultDecrease = 10
 				player.dimensionMultDecreaseCost = 1e8
-				player.infinityPoints = player.infinityPoints.plus(1e8)
+				player.infinityPoints = player.infinityPoints.add(1e8)
 			}
 			if (player.dimensionMultDecrease == 8) {
 				player.dimensionMultDecrease = 10
 				player.dimensionMultDecreaseCost = 1e8
-				player.infinityPoints = player.infinityPoints.plus(2.1e9)
+				player.infinityPoints = player.infinityPoints.add(2.1e9)
 			}
 			if (player.dimensionMultDecrease == 7) {
 				player.dimensionMultDecrease = 10
 				player.dimensionMultDecreaseCost = 1e8
-				player.infinityPoints = player.infinityPoints.plus(4.21e10)
+				player.infinityPoints = player.infinityPoints.add(4.21e10)
 			}
 		}
 		player.version = 2

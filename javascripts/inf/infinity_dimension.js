@@ -64,7 +64,7 @@ function DimensionProduction(tier) {
 	if (tier == 9) return getTimeDimensionProduction(1).pow(ECComps("eterc7") * 0.2).max(1).minus(1)
 	var dim = player["infinityDimension" + tier]
 	var ret = dim.amount
-	if (inQC(4) && tier == 1) ret = ret.plus(player.infinityDimension2.amount.floor())
+	if (inQC(4) && tier == 1) ret = ret.add(player.infinityDimension2.amount.floor())
 	if (inNGM(3) && player.currentChallenge == "postc2") return E(0)
 	if (player.currentEternityChall == "eterc11") return ret
 	if (player.currentEternityChall == "eterc7") ret = dilates(ret.dividedBy(player.tickspeed.dividedBy(1000)))
@@ -76,7 +76,7 @@ function DimensionProduction(tier) {
 
 function getTotalIDEUMult(){
 	var mult = E(1)
-	if (player.eternityUpgrades.includes(1)) mult = mult.mul(player.eternityPoints.plus(1))
+	if (player.eternityUpgrades.includes(1)) mult = mult.mul(player.eternityPoints.add(1))
 	if (player.eternityUpgrades.includes(2)) mult = mult.mul(getEU2Mult())
 	if (player.eternityUpgrades.includes(3)) mult = mult.mul(getEU3Mult())
 	return mult
@@ -158,7 +158,7 @@ function getIDCostMult(tier) {
 
 	let cap = .1
 	if (player.infinityUpgrades.includes("postinfi53")) ret /= 50
-	if (hasGSacUpg(42)) ret /= 1 + 5 * Math.log10(player.eternityPoints.plus(1).log10() + 1)
+	if (hasGSacUpg(42)) ret /= 1 + 5 * Math.log10(player.eternityPoints.add(1).log10() + 1)
 	if (player.achPow.gte(E_pow(5,11.9)) && tier > 1) {
 		cap = .02
 		ret /= Math.max(1, Math.log(player.totalmoney.log10()) / 10 - .5)
@@ -184,7 +184,7 @@ function buyManyInfinityDimension(tier, max) {
 	var toBuy = max ? Math.floor(player.infinityPoints.div(cost).log10() / Math.log10(costMult) + 1) : 1
 	dim.cost = dim.cost.mul(E_pow(costMult, toBuy))
 	if (player.infinityPoints.lt(pow10(1e9))) player.infinityPoints = player.infinityPoints.sub(getIDCost(tier).div(costMult))
-	dim.amount = dim.amount.plus(10 * toBuy)
+	dim.amount = dim.amount.add(10 * toBuy)
 	dim.power = dim.power.mul(E_pow(getInfBuy10Mult(tier), toBuy))
 	dim.baseAmount += 10 * toBuy
 
@@ -289,7 +289,7 @@ function getEU2Mult() {
 }
 
 function getEU3Mult() {
-	if (mod.rs) return player.timeShards.div(1e12).plus(1)
+	if (mod.rs) return player.timeShards.div(1e12).add(1)
 	return pow2(300 / Math.max(infchallengeTimes, 6.1))
 }
 

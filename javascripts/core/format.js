@@ -613,13 +613,13 @@ function bin_log (n) {
 	}
 	let r = Math.floor(n.log(2));
 	let x = Decimal_BI.pow(2, r);
-	return Decimal_BI.plus(r, n.div(x).sub(1));
+	return Decimal_BI.add(r, n.div(x).sub(1));
 }
 
 function bin_inv (n) {
 	let x = Decimal_BI.pow(2, Math.ceil(n.log(2)));
 	let diff = x.sub(n);
-	return Decimal_BI.div(1, x).plus(diff.div(x.pow(2)).mul(2));
+	return Decimal_BI.div(1, x).add(diff.div(x.pow(2)).mul(2));
 }
 
 let iroha_zero = '日';

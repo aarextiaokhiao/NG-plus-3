@@ -114,15 +114,15 @@ dev.testTDCosts = function() {
 }
 
 dev.giveQuantumStuff = function(n){
-	quSave.usedQuarks.r = quSave.usedQuarks.r.plus(pow10(n+1))
-	quSave.usedQuarks.b = quSave.usedQuarks.b.plus(pow10(n+1))
-	quSave.usedQuarks.g = quSave.usedQuarks.g.plus(pow10(n+1))
-	quSave.gluons.rg = quSave.gluons.rg.plus(pow10(n))
-	quSave.gluons.gb = quSave.gluons.gb.plus(pow10(n))
-	quSave.gluons.br = quSave.gluons.br.plus(pow10(n))
-	quSave.colorPowers.r = quSave.colorPowers.r.plus(pow10(n+2))
-	quSave.colorPowers.b = quSave.colorPowers.b.plus(pow10(n+2))
-	quSave.colorPowers.g = quSave.colorPowers.g.plus(pow10(n+2))
+	quSave.usedQuarks.r = quSave.usedQuarks.r.add(pow10(n+1))
+	quSave.usedQuarks.b = quSave.usedQuarks.b.add(pow10(n+1))
+	quSave.usedQuarks.g = quSave.usedQuarks.g.add(pow10(n+1))
+	quSave.gluons.rg = quSave.gluons.rg.add(pow10(n))
+	quSave.gluons.gb = quSave.gluons.gb.add(pow10(n))
+	quSave.gluons.br = quSave.gluons.br.add(pow10(n))
+	quSave.colorPowers.r = quSave.colorPowers.r.add(pow10(n+2))
+	quSave.colorPowers.b = quSave.colorPowers.b.add(pow10(n+2))
+	quSave.colorPowers.g = quSave.colorPowers.g.add(pow10(n+2))
 }
 
 dev.addReward = function(){
@@ -134,13 +134,13 @@ dev.setReward = function(n){
 }
 
 dev.addSpin = function(n){
-	todSave.r.spin = todSave.r.spin.plus(pow10(n))
-	todSave.b.spin = todSave.b.spin.plus(pow10(n))
-	todSave.g.spin = todSave.g.spin.plus(pow10(n))
+	todSave.r.spin = todSave.r.spin.add(pow10(n))
+	todSave.b.spin = todSave.b.spin.add(pow10(n))
+	todSave.g.spin = todSave.g.spin.add(pow10(n))
 }
 
 dev.addGHP = function(n){
-	ghSave.ghostParticles = ghSave.ghostParticles.plus(pow10(n))
+	ghSave.ghostParticles = ghSave.ghostParticles.add(pow10(n))
 }
 
 dev.setNeut = function(n){
@@ -150,9 +150,9 @@ dev.setNeut = function(n){
 }
 
 dev.addNeut = function(n){
-	ghSave.neutrinos.electron = ghSave.neutrinos.electron.plus(pow10(n))
-	ghSave.neutrinos.mu = ghSave.neutrinos.mu.plus(pow10(n))
-	ghSave.neutrinos.tau = ghSave.neutrinos.tau.plus(pow10(n))
+	ghSave.neutrinos.electron = ghSave.neutrinos.electron.add(pow10(n))
+	ghSave.neutrinos.mu = ghSave.neutrinos.mu.add(pow10(n))
+	ghSave.neutrinos.tau = ghSave.neutrinos.tau.add(pow10(n))
 }
 
 dev.giveNeutrinos = function(n){
@@ -173,5 +173,14 @@ dev.enterTestZone = function() {
 	- No Decay.
 	*/
 	dev.testZone = !dev.testZone
+	doReset("funda")
+}
+
+dev.enterTestZone2 = function() {
+	/* 
+	Test the Fundament Challenge:
+	- No Infinity Points.
+	*/
+	dev.testZone2 = !dev.testZone2
 	doReset("funda")
 }

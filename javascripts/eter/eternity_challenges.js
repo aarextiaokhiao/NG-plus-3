@@ -218,16 +218,16 @@ function getECReward(x) {
 	if (x == 4) return player.infinityPoints.max(1).pow((m2 ? .4 : 0.003) + c * (m2 ? .2 : 0.002)).min(m2 ? 1/0 : 1e200)
 	if (x == 5) return c * 5
 	if (x == 8) {
-		let x = Math.log10(player.infinityPower.plus(1).log10() + 1)
+		let x = Math.log10(player.infinityPower.add(1).log10() + 1)
 		if (x > 0) x=Math.pow(x, (m2 ? 0.05 : 0.03) * c)
 		return Math.max(x, 1)
 	}
 	if (x == 9) {
 		let r=player.timeShards
 		if (r.gt(0)) r = r.pow(c / (m2 ? 2 : 10))
-		if (m2) return r.plus(1).min("1e10000")
-		if (!mod.ngep) return r.plus(1).min("1e400")
-		if (r.lt("1e400")) return r.plus(1)
+		if (m2) return r.add(1).min("1e10000")
+		if (!mod.ngep) return r.add(1).min("1e400")
+		if (r.lt("1e400")) return r.add(1)
 		let log = Math.sqrt(r.log10() * 400)
 		return pow10(Math.min(50000, log))	
 	}

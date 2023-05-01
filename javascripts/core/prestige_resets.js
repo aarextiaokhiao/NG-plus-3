@@ -125,7 +125,7 @@ let RESETS = {
 			player.autoTime = 1e300
 			updateLastTenRuns()
 
-			player.infinityPoints = E(hasAch("r104") ? 2e25 : 0);
+			player.infinityPoints = E(hasAch("r104") && !dev.testZone2 ? 2e25 : 0);
 			playerInfinityUpgradesOnEternity()
 			player.infMult = E(1)
 			player.infMultCost = E(100)

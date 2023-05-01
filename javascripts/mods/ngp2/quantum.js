@@ -108,7 +108,7 @@ function getNGP3p1totalQKMult(){
 	if (hasGluonUpg("rg", 5)) log += 1
 	if (hasAch("ng3p16")) log += getEPtoQKMult()
 	if (hasAch("ng3p33")) log += Math.log10(getQCtoQKEffect())
-	if (hasAch("ng3p53")) log += brSave && brSave.spaceShards.plus(1).log10()
+	if (hasAch("ng3p53")) log += brSave && brSave.spaceShards.add(1).log10()
 	if (hasAch("ng3p65")) log += getRadioactiveDecays('r') * 3
 	if (hasAch("ng3p93")) log += Math.log10(500)
 	return log
@@ -162,8 +162,8 @@ function updateLastTenQuantums() {
 			}
 			msg += " and gave " + shortenDimensions(quSave.last10[i][1]) +" anti-Quarks. "+ tempstring
 			el("quantumrun"+(i+1)).textContent = msg
-			tempTime = tempTime.plus(quSave.last10[i][0])
-			tempQK = tempQK.plus(quSave.last10[i][1])
+			tempTime = tempTime.add(quSave.last10[i][0])
+			tempQK = tempQK.add(quSave.last10[i][1])
 			bestQk = quSave.last10[i][1].max(bestQk)
 			listed++
 		} else el("quantumrun" + (i + 1)).textContent = ""
@@ -177,70 +177,6 @@ function updateLastTenQuantums() {
 		if (qkpm < 1) tempstring = "(" + shorten(qkpm * 60) + " aQ/hour"
 		el("averageQuantumRun").textContent = "Average time of the last " + listed + " Quantums: "+ timeDisplayShort(tempTime, false, 3) + " | Average aQ gain: " + shortenDimensions(tempQK) + " aQ. " + tempstring
 	} else el("averageQuantumRun").textContent = ""
-}
-
-//v2.9014
-function doQuantumProgress() {
-	var quantumReq = getQuantumReq()
-	var id = 1
-	if (quantumed && mod.ngp3) {
-		if (bigRipped()) {
-			var gg = getGHPGain()
-			if (player.meta.antimatter.lt(quantumReq)) id = 1
-			else if (!beSave.unlocked) id = 4
-			else if (!ghostified || player.money.lt(getQCGoal()) || Decimal.lt(gg, 2)) id = 5
-			else if (!PHOTON.unlocked()) id = 7
-			else id = 6
-		} else if (notInQC()) {
-			var gqk = quarkGain()
-			if (player.meta.antimatter.gte(quantumReq) && Decimal.gt(gqk, 1)) id = 3
-		} else if (player.money.lt(pow10(getQCGoal())) || player.meta.antimatter.gte(quantumReq)) id = 2
-	}
-	var className = id > 4 ? "ghostifyProgress" : "quantumProgress"
-	if (el("progressbar").className != className) el("progressbar").className = className
-	if (id == 1) {
-		var percentage = Math.min(player.meta.antimatter.max(1).log10() / quantumReq.log10() * 100, 100).toFixed(2) + "%"
-		el("progressbar").style.width = percentage
-		el("progresspercent").textContent = percentage
-		el("progress").setAttribute('ach-tooltip', (mod.ngp3 ? "Meta-antimatter p" : "P") + 'ercentage to quantum')
-	} else if (id == 2) {
-		var percentage = Math.min(player.money.max(1).log(getQCGoal()) * 100, 100).toFixed(2) + "%"
-		el("progressbar").style.width = percentage
-		el("progresspercent").textContent = percentage
-		el("progress").setAttribute('ach-tooltip','Percentage to Quantum Challenge goal')
-	} else if (id == 3) {
-		var gqkLog = gqk.log2()
-		var goal = Math.pow(2, Math.ceil(Math.log10(gqkLog) / Math.log10(2)))
-		if (!quSave.reachedInfQK) goal = Math.min(goal, 1024)
-		var percentage = Math.min(gqkLog / goal * 100, 100).toFixed(2) + "%"
-		if (goal > 512 && !quSave.reachedInfQK) percentage = Math.min(quSave.quarks.add(gqk).log2() / goal * 100, 100).toFixed(2) + "%"
-		el("progressbar").style.width = percentage
-		el("progresspercent").textContent = percentage
-		if (goal > 512 && !quSave.reachedInfQK) el("progress").setAttribute('ach-tooltip', "Percentage to new QoL features (" + shorten(Number.MAX_VALUE) + " QK)")
-		else el("progress").setAttribute('ach-tooltip', "Percentage to " + shortenDimensions(pow2(goal)) + " QK gain")
-	} else if (id == 4) {
-		var percentage = Math.min(player.eternityPoints.max(1).log10() / 12.15, 100).toFixed(2) + "%"
-		el("progressbar").style.width = percentage
-		el("progresspercent").textContent = percentage
-		el("progress").setAttribute('ach-tooltip','Eternity Points percentage to Break Eternity')
-	} else if (id == 5) {
-		var percentage = Math.min(brSave.bestThisRun.max(1).log(getQCGoal()) * 100, 100).toFixed(2) + "%"
-		el("progressbar").style.width = percentage
-		el("progresspercent").textContent = percentage
-		el("progress").setAttribute('ach-tooltip','Percentage to Ghostify')
-	} else if (id == 6) {
-		var ggLog = gg.log2()
-		var goal = Math.pow(2, Math.ceil(Math.log10(ggLog) / Math.log10(2)))
-		var percentage = Math.min(ggLog / goal * 100, 100).toFixed(2) + "%"
-		el("progressbar").style.width = percentage
-		el("progresspercent").textContent = percentage
-		el("progress").setAttribute('ach-tooltip', "Percentage to " + shortenDimensions(pow2(goal)) + " GHP gain")
-	} else if (id == 7) {
-		var percentage = Math.min(brSave.bestThisRun.max(1).log10() / 6000e4, 100).toFixed(2) + "%"
-		el("progressbar").style.width = percentage
-		el("progresspercent").textContent = percentage
-		el("progress").setAttribute('ach-tooltip', "Percentage to Photons")
-	}
 }
 
 //v2.90142

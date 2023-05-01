@@ -47,7 +47,7 @@ function doNGM4TDMultiplier(tier, ret){
 	if (hasGSacUpg(15)) ret = ret.mul(galMults.u15())
 	if (hasGSacUpg(44) && inNGM(4)) {
 		var e = hasGSacUpg(46) ? galMults["u46"]() : 1
-		ret = ret.mul(E_pow(player[dimTiers[tier]+"Amount"].plus(10).log10(), e * Math.pow(11 - tier, 2)))
+		ret = ret.mul(E_pow(player[dimTiers[tier]+"Amount"].add(10).log10(), e * Math.pow(11 - tier, 2)))
 	}
 	if (hasGSacUpg(31)) ret = ret.pow(galMults.u31())
 	return ret

@@ -159,7 +159,7 @@ function doWeakerPowerReductionSoftcapNumber(num,start,exp){
 
 function doWeakerPowerReductionSoftcapDecimal(num,start,exp){
 	if (num.lt(start) || num.lt(1)) return num
-	return start.mul( num.div(start).pow(exp).minus(1).div(exp).plus(1) )
+	return start.mul( num.div(start).pow(exp).minus(1).div(exp).add(1) )
 }
 
 function doStrongerPowerReductionSoftcapNumber(num,start,exp){

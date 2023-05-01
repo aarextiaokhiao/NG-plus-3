@@ -19,12 +19,13 @@ function bigCrunch(auto) {
 function doBigCrunch(auto) {
 	//Infinity
 	var add = getIPMult()
-	if (player.break && player.currentChallenge == "") add = gainedInfinityPoints()
+	if (dev.testZone2) add = E(0)
+	else if (player.break && player.currentChallenge == "") add = getIPGain()
 	else if (hasTimeStudy(51)) add = add.mul(1e15)
-	player.infinityPoints = player.infinityPoints.plus(add)
+	player.infinityPoints = player.infinityPoints.add(add)
 
 	if (auto && autoS) {
-		if (gainedInfinityPoints().dividedBy(player.thisInfinityTime).gt(player.autoIP) && !player.break) player.autoIP = gainedInfinityPoints().dividedBy(player.thisInfinityTime);
+		if (getIPGain().dividedBy(player.thisInfinityTime).gt(player.autoIP) && !player.break) player.autoIP = getIPGain().dividedBy(player.thisInfinityTime);
 		if (player.thisInfinityTime < player.autoTime) player.autoTime = player.thisInfinityTime;
 	}
 	auto = autoS; //only allow autoing if prev crunch was auto
@@ -90,15 +91,15 @@ function checkChallengesOnCrunch() {
 	updateChallengeTimes()
 }
 
-function getInfinityPointGain(){
-	return gainedInfinityPoints()
+function getInfinityPointGain() {
+	return getIPGain()
 }
 
-function getIPGain(){
-	return gainedInfinityPoints()
+function gainedInfinityPoints() {
+	return getIPGain()
 }
 
-function gainedInfinityPoints(next) {
+function getIPGain(next) {
 	let div = 308;
 	if (hasTimeStudy(111)) div = 285;
 	else if (hasAch("r103")) div = 307.8;
@@ -133,15 +134,15 @@ function getIPMult() {
 		if (hasAch("r51")) {
 			let galaxies = Math.max((player.galaxies + player.replicanti.galaxies + player.dilation.freeGalaxies), 0) // just in case
 			if (galaxies < 5) mult = mult.mul(Math.max(galaxies, 1))
-			else if (galaxies < 50) mult = mult.mul(E_pow(galaxies + 5, 0.5).plus(2))
-			else mult = mult.mul(E_pow(galaxies, 0.3).plus(7))
+			else if (galaxies < 50) mult = mult.mul(E_pow(galaxies + 5, 0.5).add(2))
+			else mult = mult.mul(E_pow(galaxies, 0.3).add(7))
 		}
 	}
 	return mult;
 }
 
 function IPonCrunchPassiveGain(diff){
-	if (hasTimeStudy(181)) player.infinityPoints = player.infinityPoints.plus(gainedInfinityPoints().mul(diff / 100))
+	if (hasTimeStudy(181) && !dev.testZone2) player.infinityPoints = player.infinityPoints.add(getIPGain().mul(diff / 100))
 }
 
 function doCrunchInfinitiesGain(){
@@ -212,8 +213,8 @@ function updateLastTenRuns() {
 			}
 			msg += " and gave " + shortenDimensions(player.lastTenRuns[i][1]) +" IP. "+ tempstring
 			el("run"+(i+1)).textContent = msg
-			tempTime = tempTime.plus(player.lastTenRuns[i][0])
-			tempIP = tempIP.plus(player.lastTenRuns[i][1])
+			tempTime = tempTime.add(player.lastTenRuns[i][0])
+			tempIP = tempIP.add(player.lastTenRuns[i][1])
 			listed++
 		} else el("run"+(i+1)).textContent = ""
 	}
@@ -245,9 +246,9 @@ function checkOnCrunchAchievements() {
 	if (inNC(5) && player.thisInfinityTime <= 1800) giveAchievement("Is this hell?")
 	if (inNC(3) && player.thisInfinityTime <= 100) giveAchievement("You did this again just for the achievement right?");
 	if (player.firstAmount == 1 && player.resets == 0 && player.galaxies == 0 && inNC(12)) giveAchievement("ERROR 909: Dimension not found")
-	if (gainedInfinityPoints().gte(1e150)) giveAchievement("All your IP are belong to us")
-	if (gainedInfinityPoints().gte(1e200) && player.thisInfinityTime <= 20) giveAchievement("Ludicrous Speed")
-	if (gainedInfinityPoints().gte(1e250) && player.thisInfinityTime <= 200) giveAchievement("I brake for nobody")
+	if (getIPGain().gte(1e150)) giveAchievement("All your IP are belong to us")
+	if (getIPGain().gte(1e200) && player.thisInfinityTime <= 20) giveAchievement("Ludicrous Speed")
+	if (getIPGain().gte(1e250) && player.thisInfinityTime <= 200) giveAchievement("I brake for nobody")
 
 	if (player.currentChallenge == "postc5" && player.thisInfinityTime <= 100) giveAchievement("Hevipelle did nothing wrong")
 	if (inNGM(3) && player.thisInfinityTime <= 100 && player.currentChallenge == "postc7") giveAchievement("Hevipelle did nothing wrong")
@@ -324,14 +325,14 @@ function updateChallenges() {
 		el("challenge7").textContent = "Trapped in"
 	}
 
-	if (inQC(6)) for (i=2;i<9;i++) if (i<3||i>5) {
-		el("postc"+i).className = "onchallengebtn";
-		el("postc"+i).textContent = "Trapped in"
-	}
-
 	if (isIC3Trapped()) {
 		el("postc3").className = "onchallengebtn";
 		el("postc3").textContent = "Trapped in"
+	}
+
+	if (inQC(6)) {
+		el("postc7").className = "onchallengebtn";
+		el("postc7").textContent = "Trapped in"
 	}
 
 	if (player.postChallUnlocked > 0 || Object.keys(player.eternityChalls).length > 0 || player.eternityChallUnlocked !== 0 || quantumed) el("challTabButtons").style.display = "table"
@@ -435,7 +436,7 @@ function updateWorstChallengeBonus() {
 	var timeeff = Math.max(33e-6, worstChallengeTime * 0.1)
 	var base = inNGM(4) ? 3e4 : 3e3
 	var eff = Decimal.max(Math.pow(base / timeeff, exp), 1)
-	if (inNGM(4)) eff = eff.mul(E_pow(eff.plus(10).log10(), 5)) 
+	if (inNGM(4)) eff = eff.mul(E_pow(eff.add(10).log10(), 5)) 
 	worstChallengeBonus = eff
 }
 

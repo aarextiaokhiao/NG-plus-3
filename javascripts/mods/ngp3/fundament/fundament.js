@@ -362,8 +362,8 @@ function updateLastTenGhostifies() {
 			if (qkpm<1) tempstring = shorten(qkpm*60) + " SP/hour"
 			var msg = "The Fundament " + (i+1) + " ago took " + timeDisplayShort(ghSave.last10[i][0], false, 3) + " and gave " + shortenDimensions(ghSave.last10[i][1]) +" SP. "+ tempstring
 			el("ghostifyrun"+(i+1)).textContent = msg
-			tempTime = tempTime.plus(ghSave.last10[i][0])
-			tempGHP = tempGHP.plus(ghSave.last10[i][1])
+			tempTime = tempTime.add(ghSave.last10[i][0])
+			tempGHP = tempGHP.add(ghSave.last10[i][1])
 			bestGHP = ghSave.last10[i][1].max(bestGHP)
 			listed++
 		} else el("ghostifyrun"+(i+1)).textContent = ""

@@ -79,7 +79,7 @@ function getTimeDimensionProduction(tier) {
 	var dim = player["timeDimension" + tier]
 	if (player.currentEternityChall == "eterc11") return dim.amount
 	var ret = dim.amount
-	if (inQC(4) && tier == 1) ret = ret.plus(player.timeDimension2.amount.floor())
+	if (inQC(4) && tier == 1) ret = ret.add(player.timeDimension2.amount.floor())
 	ret = ret.mul(getTimeDimensionPower(tier))
 	if (inNGM(4)&&(inNC(2)||player.currentChallenge=="postc1")) ret = ret.mul(player.chall2Pow)
 	if (player.currentEternityChall == "eterc7") ret = dilates(ret.dividedBy(player.tickspeed.dividedBy(1000)))
@@ -185,7 +185,7 @@ function buyTimeDimension(tier, am) {
 	if (getOrSubResourceTD(tier).lt(dim.cost)) return false
 
 	getOrSubResourceTD(tier, dim.cost)
-	dim.amount = dim.amount.plus(1);
+	dim.amount = dim.amount.add(1);
 	dim.bought += 1
 	if (inNGM(4)) {
 		dim.cost = dim.cost.mul(timeDimCostMults[1][tier])
@@ -252,7 +252,7 @@ function buyMaxTimeDimension(tier, bulk) {
 		player.eternityPoints = newEP
 		if (isNaN(newEP.e)) player.eternityPoints = E(0)
 	}
-	dim.amount = dim.amount.plus(toBuy);
+	dim.amount = dim.amount.add(toBuy);
 	dim.bought += toBuy
 	if (inNGM(4)) {
 		dim.power = E(getDimensionPowerMultiplier()).sqrt().mul(dim.power)

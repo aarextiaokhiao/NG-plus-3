@@ -130,7 +130,7 @@ function feedBlackHole(i, bulk) {
 	if (i == 1) {
 		let cost = pow10(player.blackhole.upgrades.dilatedTime + (mod.udsp ? 18 : 20))
 		if (bulk) {
-			let toBuy = Math.floor(player.dilation.dilatedTime.div(cost).mul(9).plus(1).log10())
+			let toBuy = Math.floor(player.dilation.dilatedTime.div(cost).mul(9).add(1).log10())
 			let toSpend = pow10(toBuy).sub(1).div(9).mul(cost)
 			player.dilation.dilatedTime = player.dilation.dilatedTime.minus(player.dilation.dilatedTime.min(toSpend))
 			player.blackhole.upgrades.dilatedTime += toBuy
@@ -142,7 +142,7 @@ function feedBlackHole(i, bulk) {
 	} else if (i == 2) {
 		let cost = pow2(player.blackhole.upgrades.bankedInfinities).mul(5e9).round()
 		if (bulk) {
-			let toBuy = Math.floor(Decimal.div(player.infinitiedBank, cost).plus(1).log(2))
+			let toBuy = Math.floor(Decimal.div(player.infinitiedBank, cost).add(1).log(2))
 			let toSpend = pow10(1e3 * toBuy - 1).mul(cost).round()
 			player.infinitiedBank = nS(player.infinitiedBank, nMn(player.infinitiedBank, toBuy))
 			player.blackhole.upgrades.bankedInfinities += toBuy
@@ -178,7 +178,7 @@ function buyBlackholeDimension(tier) {
 	if (player.eternityPoints.lt(dim.cost)) return false
 
 	player.eternityPoints = player.eternityPoints.minus(dim.cost)
-	dim.amount = dim.amount.plus(1);
+	dim.amount = dim.amount.add(1);
 	dim.bought += 1
 	dim.cost = E_pow(blackholeDimCostMults[tier], dim.bought).mul(blackholeDimStartCosts[tier]);
 	dim.power = dim.power.mul(blackholeDimPowers[tier])
@@ -229,7 +229,7 @@ function buyMaxBlackholeDimensions(){
 			let diff = e - dim.cost.log10()
 			let buying = Math.ceil(diff/blackholeDimCostMults[i].log10())
 			player.eternityPoints = player.eternityPoints.minus(player.eternityPoints.min(E_pow(blackholeDimCostMults[i], buying - 1).mul(dim.cost)))
-			dim.amount = dim.amount.plus(buying)
+			dim.amount = dim.amount.add(buying)
 			dim.bought += buying	
 			dim.cost = E_pow(blackholeDimCostMults[i], dim.bought).mul(blackholeDimStartCosts[i])
 			dim.power = dim.power.mul(E_pow(blackholeDimPowers[i], buying))
@@ -320,7 +320,7 @@ function exDilationBenefit() {
 }
 
 function exDilationUpgradeStrength(x, add = 0) {
-	let ret = Decimal.plus(player.exdilation.spent[x] || 0,add)
+	let ret = Decimal.add(player.exdilation.spent[x] || 0,add)
 	if (mod.udsp) {
 		ret = ret.add(1).log10() * 2
 		if (ret > 1) ret = Math.sqrt(ret)
@@ -337,7 +337,7 @@ function reverseDilation() {
 	if (!canReverseDilation()) return;
 	if (player.options.exdilationconfirm && !confirm(`Reversing dilation resets Time Dilation and Black Hole power in exchange for ex-dilation, which reduces dilation penalty and strengthens repeatable upgrades. Are you sure?`)) return
 
-	player.exdilation.unspent = player.exdilation.unspent.plus(getExDilationGain())
+	player.exdilation.unspent = player.exdilation.unspent.add(getExDilationGain())
 	player.exdilation.times++
 
 	resetDilation()
@@ -353,7 +353,7 @@ function toggleExdilaConf() {
 }
 
 function boostDilationUpgrade(x) {
-	player.exdilation.spent[x] = Decimal.plus(player.exdilation.spent[x] || 0, player.exdilation.unspent).round();
+	player.exdilation.spent[x] = Decimal.add(player.exdilation.spent[x] || 0, player.exdilation.unspent).round();
 	player.exdilation.unspent = E(0);
 }
 

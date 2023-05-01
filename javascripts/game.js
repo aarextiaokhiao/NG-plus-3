@@ -579,7 +579,7 @@ function updateMilestones() {
 function infMultAutoToggle() {
 	if (getEternitied()<1) {
 		if (canBuyIPMult()) {
-			var toBuy = Math.max(Math.floor(player.infinityPoints.div(player.infMultCost).mul(ipMultCostIncrease - 1).plus(1).log(ipMultCostIncrease)), 1)
+			var toBuy = Math.max(Math.floor(player.infinityPoints.div(player.infMultCost).mul(ipMultCostIncrease - 1).add(1).log(ipMultCostIncrease)), 1)
 			var toSpend = E_pow(ipMultCostIncrease, toBuy).sub(1).div(ipMultCostIncrease - 1).mul(player.infMultCost).round()
 			if (toSpend.gt(player.infinityPoints)) player.infinityPoints = E(0)
 			else player.infinityPoints = player.infinityPoints.sub(toSpend)
@@ -603,7 +603,7 @@ function toggleDilaConf() {
 }
 
 function gainedEternityPoints() {
-	var ret = E_pow(5, player.infinityPoints.plus(gainedInfinityPoints()).e / (hasAch("ng3p23") ? 307.8 : 308) - 0.7).mul(player.epmult)
+	var ret = E_pow(5, player.infinityPoints.add(getIPGain()).e / (hasAch("ng3p23") ? 307.8 : 308) - 0.7).mul(player.epmult)
 	if (mod.ngep) ret = ret.mul(10)
 	if (hasTimeStudy(61)) ret = ret.mul(tsMults[61]())
 	if (hasTimeStudy(121)) ret = ret.mul(((253 - averageEp.dividedBy(player.epmult).dividedBy(10).min(248).max(3))/5)) //x300 if tryhard, ~x60 if not
@@ -757,7 +757,7 @@ function sacrifice(auto = false) {
 	var maxPower = inNGM(2) ? "1e8888" : Number.MAX_VALUE
 	if (inNC(11) && (tmp.sacPow.gte(maxPower) || player.chall11Pow.gte(maxPower))) return false
 	if (!auto) floatText("D8", "x" + shortenMoney(sacGain))
-	player.sacrificed = player.sacrificed.plus(player.firstAmount);
+	player.sacrificed = player.sacrificed.add(player.firstAmount);
 	if (!inNC(11)) {
 		if ((inNC(7) || player.currentChallenge == "postcngm3_3") && !hasAch("r118")) clearDimensions(6);
 		else if (!hasAch("r118")) clearDimensions(7);
@@ -1192,8 +1192,8 @@ function updateLastTenEternities() {
 			}
 			msg += " and gave " + shortenDimensions(player.lastTenEternities[i][1]) + " " + unit + ". " + tempstring
 			el("eternityrun"+(i+1)).textContent = msg
-			tempTime = tempTime.plus(player.lastTenEternities[i][0])
-			tempEP = tempEP.plus(player.lastTenEternities[i][1])
+			tempTime = tempTime.add(player.lastTenEternities[i][0])
+			tempEP = tempEP.add(player.lastTenEternities[i][1])
 			bestEp = player.lastTenEternities[i][1].max(bestEp)
 			listed++
 		} else el("eternityrun"+(i+1)).textContent = ""
@@ -1298,7 +1298,7 @@ function eternity(force, auto, dil, presetLoad) {
 		updateBankedEter()
 
 		//Eternity 
-		player.eternityPoints = player.eternityPoints.plus(gainedEternityPoints())
+		player.eternityPoints = player.eternityPoints.add(gainedEternityPoints())
 
 		//Records
 		if (player.thisEternity < player.bestEternity && !force) player.bestEternity = player.thisEternity
@@ -1645,7 +1645,7 @@ function updateEPminpeak(diff, type) {
 		var gainedPoints = getEMGain()
 		var oldPoints = beSave.eternalMatter
 	}
-	var newPoints = oldPoints.plus(gainedPoints)
+	var newPoints = oldPoints.add(gainedPoints)
 	var newLog = Math.max(newPoints.log10(),0)
 	var minutes = player.thisEternity / 600
 	if (newLog > 1000 && EPminpeakType == 'normal' && isSmartPeakActivated) {
@@ -1680,9 +1680,9 @@ function passiveIPupdating(diff){
 	else player.partInfinityPoint = 0
 
 	let x = Math.floor(player.partInfinityPoint / 10)
-	if (x > 0) {
+	if (x > 0 && !dev.testZone2) {
 		player.partInfinityPoint -= x * 10
-		player.infinityPoints = player.infinityPoints.plus(getIPMult().mul(x))
+		player.infinityPoints = player.infinityPoints.add(getIPMult().mul(x))
 	}
 
 	IPonCrunchPassiveGain(diff)
@@ -1716,13 +1716,13 @@ function preInfinityUpdating(diff){
 	let offset = inNC(7) || player.currentChallenge == "postcngm3_3" || inQC(4) ? 2 : 1
 	for (let tier = getNormalDimensions() - offset; tier > 0; --tier) {
 		var name = dimTiers[tier];
-		player[name + 'Amount'] = player[name + 'Amount'].plus(getDimensionProductionPerSecond(tier + offset).mul(diff / 10));
+		player[name + 'Amount'] = player[name + 'Amount'].add(getDimensionProductionPerSecond(tier + offset).mul(diff / 10));
 	}
 	if (player.dontWant && player.firstAmount.gt(0)) player.dontWant = false
 
 	var tempa = getDimensionProductionPerSecond(1).mul(diff)
-	player.money = player.money.plus(tempa)	
-	player.totalmoney = player.totalmoney.plus(tempa)
+	player.money = player.money.add(tempa)	
+	player.totalmoney = player.totalmoney.add(tempa)
 	if (bigRipped()) brSave.totalAntimatter = brSave.totalAntimatter.add(tempa)
 }
 
@@ -1758,20 +1758,20 @@ function infinityTimeBlackHoleDimUpdating(diff){
 	var step = inQC(4) ? 2 : 1
 	var stepT = inNC(7) && inNGM(4) ? 2 : step
 	for (let tier = 1 ; tier < 9; tier++) {
-		if (tier < 9 - step) player["infinityDimension"+tier].amount = player["infinityDimension"+tier].amount.plus(DimensionProduction(tier+step).mul(diff / 10))
-		if (tier < 9 - stepT) player["timeDimension"+tier].amount = player["timeDimension"+tier].amount.plus(getTimeDimensionProduction(tier+stepT).mul(diff / 10))
-		if (mod.ngud) if (isBHDimUnlocked(tier+step)) player["blackholeDimension"+tier].amount = player["blackholeDimension"+tier].amount.plus(getBlackholeDimensionProduction(tier+step).mul(diff / 10))
+		if (tier < 9 - step) player["infinityDimension"+tier].amount = player["infinityDimension"+tier].amount.add(DimensionProduction(tier+step).mul(diff / 10))
+		if (tier < 9 - stepT) player["timeDimension"+tier].amount = player["timeDimension"+tier].amount.add(getTimeDimensionProduction(tier+stepT).mul(diff / 10))
+		if (mod.ngud) if (isBHDimUnlocked(tier+step)) player["blackholeDimension"+tier].amount = player["blackholeDimension"+tier].amount.add(getBlackholeDimensionProduction(tier+step).mul(diff / 10))
 	}
 }
 
 function otherDimsUpdating(diff){
-	if (player.currentEternityChall !== "eterc7") player.infinityPower = player.infinityPower.plus(DimensionProduction(1).mul(diff))
-	 	else if (!inNC(4) && player.currentChallenge !== "postc1") player.seventhAmount = player.seventhAmount.plus(DimensionProduction(1).mul(diff))
+	if (player.currentEternityChall !== "eterc7") player.infinityPower = player.infinityPower.add(DimensionProduction(1).mul(diff))
+	 	else if (!inNC(4) && player.currentChallenge !== "postc1") player.seventhAmount = player.seventhAmount.add(DimensionProduction(1).mul(diff))
 
-	 	if (player.currentEternityChall == "eterc7") player.infinityDimension8.amount = player.infinityDimension8.amount.plus(getTimeDimensionProduction(1).mul(diff))
+	 	if (player.currentEternityChall == "eterc7") player.infinityDimension8.amount = player.infinityDimension8.amount.add(getTimeDimensionProduction(1).mul(diff))
 	 	else {
-		if (ECComps("eterc7") > 0) player.infinityDimension8.amount = player.infinityDimension8.amount.plus(DimensionProduction(9).mul(diff))
-		player.timeShards = player.timeShards.plus(getTimeDimensionProduction(1).mul(diff)).max(getTimeDimensionProduction(1).mul(0))
+		if (ECComps("eterc7") > 0) player.infinityDimension8.amount = player.infinityDimension8.amount.add(DimensionProduction(9).mul(diff))
+		player.timeShards = player.timeShards.add(getTimeDimensionProduction(1).mul(diff)).max(getTimeDimensionProduction(1).mul(0))
 	}
 }
 
@@ -1784,12 +1784,12 @@ function bigCrunchButtonUpdating(){
 	} else if (player.break && player.currentChallenge == "") {
 		if (player.money.gte(Number.MAX_VALUE)) {
 			el("postInfinityButton").style.display = ""
-			var currentIPmin = gainedInfinityPoints().dividedBy(player.thisInfinityTime/600)
+			var currentIPmin = getIPGain().dividedBy(player.thisInfinityTime/600)
 			if (currentIPmin.gt(IPminpeak)) IPminpeak = currentIPmin
-			if (IPminpeak.log10() > 1e6) el("postInfinityButton").innerHTML = "Big Crunch"
+			if (IPminpeak.log10() > 1e6 || dev.testZone2) el("postInfinityButton").innerHTML = "Big Crunch"
 			else {
 				var IPminpart = IPminpeak.log10() > 1e4 ? "" : "<br>" + shortenDimensions(currentIPmin) + " IP/min" + "<br>Peaked at " + shortenDimensions(IPminpeak) + " IP/min"
-				el("postInfinityButton").innerHTML = "<b>" + (IPminpeak.log10() > 1e4 ? "Gain " : "Big Crunch for ") + shortenDimensions(gainedInfinityPoints()) + " Infinity Points.</b>" + IPminpart
+				el("postInfinityButton").innerHTML = "<b>" + (IPminpeak.log10() > 1e4 ? "Gain " : "Big Crunch for ") + shortenDimensions(getIPGain()) + " Infinity Points.</b>" + IPminpart
 			}
 		}
 	}
@@ -1818,11 +1818,11 @@ function nextICUnlockUpdating(){
 }
 
 function passiveIPperMUpdating(diff){
-	player.infinityPoints = player.infinityPoints.plus(bestRunIppm.mul(player.offlineProd/100).mul(diff/600))
+	if (!dev.testZone2) player.infinityPoints = player.infinityPoints.add(bestRunIppm.mul(player.offlineProd/100).mul(diff/600))
 }
 
 function giveBlackHolePowerUpdating(diff){
-	if (mod.ngud) player.blackhole.power = player.blackhole.power.plus(getBlackholeDimensionProduction(1).mul(diff))
+	if (mod.ngud) player.blackhole.power = player.blackhole.power.add(getBlackholeDimensionProduction(1).mul(diff))
 }
 
 function freeTickspeedUpdating(){
@@ -1973,14 +1973,14 @@ function DimBoostBulkDisplay(){
 }
 
 function currentChallengeProgress(){
-	var p = Math.min((Decimal.log10(player.money.plus(1)) / Decimal.log10(player.challengeTarget) * 100), 100).toFixed(2) + "%"
+	var p = Math.min((Decimal.log10(player.money.add(1)) / Decimal.log10(player.challengeTarget) * 100), 100).toFixed(2) + "%"
 	el("progressbar").style.width = p
 	el("progresspercent").textContent = p
 	el("progress").setAttribute('ach-tooltip',"Percentage to challenge goal")
 }
 
 function preBreakProgess(){
-	var p = Math.min((Decimal.log10(player.money.plus(1)) / Decimal.log10(Number.MAX_VALUE) * 100), 100).toFixed(2) + "%"
+	var p = Math.min((Decimal.log10(player.money.add(1)) / Decimal.log10(Number.MAX_VALUE) * 100), 100).toFixed(2) + "%"
 	el("progressbar").style.width = p
 	el("progresspercent").textContent = p
 	el("progress").setAttribute('ach-tooltip',"Percentage to Infinity")
@@ -1994,28 +1994,28 @@ function infDimProgress(){
 }
 
 function currentEChallengeProgress(){
-	var p = Math.min(Decimal.log10(player.infinityPoints.plus(1)) / player.eternityChallGoal.log10() * 100, 100).toFixed(2) + "%"
+	var p = Math.min(Decimal.log10(player.infinityPoints.add(1)) / player.eternityChallGoal.log10() * 100, 100).toFixed(2) + "%"
 	el("progressbar").style.width = p
 	el("progresspercent").textContent = p
 	el("progress").setAttribute('ach-tooltip',"Percentage to Eternity Challenge goal")
 }
 
 function preEternityProgress(){
-	var p = Math.min(Decimal.log10(player.infinityPoints.plus(1)) / Decimal.log10(Number.MAX_VALUE)	* 100, 100).toFixed(2) + "%"
+	var p = Math.min(Decimal.log10(player.infinityPoints.add(1)) / Decimal.log10(Number.MAX_VALUE)	* 100, 100).toFixed(2) + "%"
 	el("progressbar").style.width = p
 	el("progresspercent").textContent = p
 	el("progress").setAttribute('ach-tooltip',"Percentage to Eternity")
 }
 
 function r128Progress(){
-	var p = (Decimal.log10(player.infinityPoints.plus(1)) / 220).toFixed(2) + "%"
+	var p = (Decimal.log10(player.infinityPoints.add(1)) / 220).toFixed(2) + "%"
 	el("progressbar").style.width = p
 	el("progresspercent").textContent = p
 	el("progress").setAttribute('ach-tooltip','Percentage to "What do I have to do to get rid of you"') 
 }
 
 function r138Progress(){
-	var p = Math.min(Decimal.log10(player.infinityPoints.plus(1)) / 200, 100).toFixed(2) + "%"
+	var p = Math.min(Decimal.log10(player.infinityPoints.add(1)) / 200, 100).toFixed(2) + "%"
 	el("progressbar").style.width = p
 	el("progresspercent").textContent = p
 	el("progress").setAttribute('ach-tooltip','Percentage to "That is what I have to do to get rid of you."')
@@ -2168,7 +2168,7 @@ function d8SacDisplay(){
 
 function EPonEternityPassiveGain(diff){
 	if (hasMasteryStudy("t291")) {
-		player.eternityPoints = player.eternityPoints.plus(gainedEternityPoints().mul(diff / 100))
+		player.eternityPoints = player.eternityPoints.add(gainedEternityPoints().mul(diff / 100))
 	}
 }
 
@@ -2228,7 +2228,7 @@ function fixInfinityTimes(){
 }
 
 function infUpgPassiveIPGain(diff){
-	if (diff > player.autoTime && !player.break) player.infinityPoints = player.infinityPoints.plus(player.autoIP.div(player.autoTime).mul(diff))
+	if (diff > player.autoTime && !player.break && !dev.testZone2) player.infinityPoints = player.infinityPoints.add(player.autoIP.div(player.autoTime).mul(diff))
 }
 
 function gameLoop(diff, quick) {
@@ -2269,7 +2269,7 @@ function gameLoop(diff, quick) {
 	freeTickspeedUpdating()
 	TTpassiveGain(diff)
 	if (hasDilStudy(1)) {
-		player.dilation.dilatedTime = player.dilation.dilatedTime.plus(getDilTimeGainPerSecond().mul(diff))
+		player.dilation.dilatedTime = player.dilation.dilatedTime.add(getDilTimeGainPerSecond().mul(diff))
 		gainDilationGalaxies()
 	}
 
@@ -2638,9 +2638,9 @@ function autoBuyerTick() {
 	if (player.autobuyers[11]%1 !== 0) {
 		if (player.autobuyers[11].ticks*100 >= player.autobuyers[11].interval && player.money !== undefined && player.money.gte(player.currentChallenge == "" ? Number.MAX_VALUE : player.challengeTarget)) {
 			if (player.autobuyers[11].isOn) {
-				if ((!player.autobuyers[11].requireIPPeak || IPminpeak.gt(gainedInfinityPoints().div(player.thisInfinityTime/600))) && player.autobuyers[11].priority) {
+				if ((!player.autobuyers[11].requireIPPeak || IPminpeak.gt(getIPGain().div(player.thisInfinityTime/600))) && player.autobuyers[11].priority) {
 					if (player.autoCrunchMode == "amount") {
-						if (!player.break || player.currentChallenge != "" || gainedInfinityPoints().gte(player.autobuyers[11].priority)) {
+						if (!player.break || player.currentChallenge != "" || getIPGain().gte(player.autobuyers[11].priority)) {
 							autoS = false;
 							bigCrunch(true)
 						}
@@ -2655,7 +2655,7 @@ function autoBuyerTick() {
 							bigCrunch(true)
 						}
 					} else {
-						if (!player.break || player.currentChallenge != "" || gainedInfinityPoints().gte(player.lastTenRuns[0][1].mul(player.autobuyers[11].priority))) {
+						if (!player.break || player.currentChallenge != "" || getIPGain().gte(player.lastTenRuns[0][1].mul(player.autobuyers[11].priority))) {
 							autoS = false;
 							bigCrunch(true)
 						}

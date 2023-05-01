@@ -33,7 +33,7 @@ const QC = QUANTUM_CHALLENGE = {
 		reward: "Infinity Power boosts Meta Dimensions at greatly reduced rate.",
 		reward_eff(comps) {
 			if (comps == 0) return 1
-			let ipow = player.infinityPower.plus(1).log10()
+			let ipow = player.infinityPower.add(1).log10()
 			let log = Math.sqrt(ipow / 2e8) 
 			if (comps >= 2) log += Math.pow(ipow / 1e9, 4/9 + comps/9)
 
@@ -357,7 +357,7 @@ function updatePCCompletions() {
 		r += Math.sqrt(rankingPart)
 	}
 
-	tmp.qu.chal.rank = r // its global
+	tmp.qu.chal.pc_rank = r // its global
 	updatePCTable()
 
 	if (r) el("stats_pc").style.display = "inline-block"
@@ -398,6 +398,7 @@ function updatePCTable() {
 				el(divid).className = "pc" + comp + "completed"
 				var achTooltip = 'Fastest time: ' + (quSave.pairedChallenges.fastest[pcid] ? timeDisplayShort(quSave.pairedChallenges.fastest[pcid]) : "N/A")
 				el(divid).setAttribute('ach-tooltip', achTooltip)
+
 				if (divid=="pc38") giveAchievement("Hardly marked")
 				if (divid=="pc68") giveAchievement("Big Rip isn't enough")
 			} else if (pcid == 68 && ghostified) {

@@ -99,7 +99,7 @@ function getGSDimboostExp(galaxies){
 
 function getD8Exp(){
 	let exp = 1
-	let logBestAM = player.totalmoney.plus(10).log10()
+	let logBestAM = player.totalmoney.add(10).log10()
 	if (hasAch("r124")) {
 		let div = 30
 		if (player.currentEternityChall == "") div += 12
@@ -122,7 +122,7 @@ function galacticSacrifice(auto, force, chall) {
 	if (player.options.gSacrificeConfirmation && !auto && !force) if (!confirm("Galactic Sacrifice will act like a Galaxy reset, but will remove all your Galaxies in exchange for Galaxy Points to buy powerful upgrades. It will take a lot of time to recover initially. Are you sure you want to do this?")) return
 	if (player.options.challConf && chall) if (!confirm("You will Galactic Sacrifice without gaining anything. You need to Galactic Sacrifice with special conditions to complete this challenge. Some Galaxy Points gain multipliers won't work in this challenge.")) return
 	if (!force) {
-		player.galacticSacrifice.galaxyPoints = player.galacticSacrifice.galaxyPoints.plus(getGSAmount())
+		player.galacticSacrifice.galaxyPoints = player.galacticSacrifice.galaxyPoints.add(getGSAmount())
 		player.galacticSacrifice.times++
 	}
 	if (chall) {
@@ -547,7 +547,7 @@ let galMults = {
 		if (inNGM(4) && hasGSacUpg(42)) {
 			m = hasGSacUpg(46) ? 10 : 4
 			r = E_pow(r, Math.min(m, Math.pow(r, 1/3)))
-			if (hasGSacUpg(46)) r = E_pow(r, Math.log10(10 + r)).plus(1e20)
+			if (hasGSacUpg(46)) r = E_pow(r, Math.log10(10 + r)).add(1e20)
 		}
 		r = Decimal.add(r, 0)
 		if (r.gt(1e25)) r = r.div(1e25).pow(.5).mul(1e25)
@@ -585,7 +585,7 @@ let galMults = {
 			if (y > 5e5) y = Math.sqrt(5e5*y)
 			x = pow10(y)
 		}
-		return x.plus(1).pow(exp)
+		return x.add(1).pow(exp)
 	},
 	u23() {
 		let x = player.galacticSacrifice.galaxyPoints.max(1).log10() * .75 + 1
@@ -623,7 +623,7 @@ let galMults = {
 		return r
 	},
 	u46() {
-		var r = Math.pow(player.galacticSacrifice.galaxyPoints.plus(10).log10(), .2) - 1
+		var r = Math.pow(player.galacticSacrifice.galaxyPoints.add(10).log10(), .2) - 1
 		if (r < 1) return 1
 		if (r > 2) return 2
 		return r
@@ -769,7 +769,7 @@ function passiveGPGen(diff){
 	var mult = 1
 	if (inNGM(4)){
 		if (hasAch("r43")){
-			mult = Math.pow(player.galacticSacrifice.galaxyPoints.plus(1e20).log10() / 10, 2) /2
+			mult = Math.pow(player.galacticSacrifice.galaxyPoints.add(1e20).log10() / 10, 2) /2
 		}
 		if (mult > 100) mult = 100
 	}
