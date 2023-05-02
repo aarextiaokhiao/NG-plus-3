@@ -25,13 +25,6 @@ let RESETS = {
 				player.costMultipliers[d - 1] = E(costMults[d - 1])
 			}
 			player.totalBoughtDims = resetTotalBought()
-
-			//IC2 Headstart
-			if (player.currentChallenge == "postc2") {
-				player.eightAmount = E(1)
-				player.eightBought = 1
-				player.resets = 4
-			}
 		},
 		startingTickspeed() {
 			player.tickspeed = E(mod.ngep ? 500 : 1000)

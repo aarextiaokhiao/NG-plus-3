@@ -21,7 +21,7 @@ function getDimensionBoostPower(next, focusOn) {
 	return E(ret)
 }
 
-function dimBoost(bulk) {
+function dimBoost(bulk = 1) {
 	if (tmp.ri) return
 
 	player.resets += bulk;
@@ -165,16 +165,16 @@ el("softReset").onclick = function () {
 };
 
 function skipResets() {
-	if (inNC(0)) {
-		var upToWhat = 0
-		for (var s = 1; s < 4; s++) if (player.infinityUpgrades.includes("skipReset" + s)) upToWhat = s
-		if (player.infinityUpgrades.includes("skipResetGalaxy")) {
-			upToWhat = 4 
-			if (player.galaxies < 1) player.galaxies = 1
-		}
-		if (player.resets < upToWhat) player.resets = upToWhat
-		if (player.tickspeedBoosts < upToWhat * 4) player.tickspeedBoosts = upToWhat * 4
+	if (!inNC(0)) return
+
+	var upToWhat = 0
+	for (var s = 1; s < 4; s++) if (player.infinityUpgrades.includes("skipReset" + s)) upToWhat = s
+	if (player.infinityUpgrades.includes("skipResetGalaxy")) {
+		upToWhat = 4 
+		if (player.galaxies < 1) player.galaxies = 1
 	}
+	if (player.resets < upToWhat) player.resets = upToWhat
+	if (player.tickspeedBoosts < upToWhat * 4) player.tickspeedBoosts = upToWhat * 4
 }
 
 function getTotalResets() {

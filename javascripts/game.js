@@ -749,34 +749,27 @@ function calcTotalSacrificeBoost(next) {
 	return ret
 }
 
-function sacrifice(auto = false) {
-	if (player.eightAmount == 0) return false;
+function sacrifice(auto) {
+	if (getAmount(8) == 0) return false
 	if (player.resets < 5) return false
 	if (player.currentEternityChall == "eterc3") return false
-	var sacGain = calcSacrificeBoost()
-	var maxPower = inNGM(2) ? "1e8888" : Number.MAX_VALUE
-	if (inNC(11) && (tmp.sacPow.gte(maxPower) || player.chall11Pow.gte(maxPower))) return false
-	if (!auto) floatText("D8", "x" + shortenMoney(sacGain))
-	player.sacrificed = player.sacrificed.add(player.firstAmount);
-	if (!inNC(11)) {
-		if ((inNC(7) || player.currentChallenge == "postcngm3_3") && !hasAch("r118")) clearDimensions(6);
-		else if (!hasAch("r118")) clearDimensions(7);
-	} else {
-		player.chall11Pow = player.chall11Pow.mul(sacGain)
-		if (!hasAch("r118")) resetDimensions();
-		player.money = E(100)
-	}
-}
 
-el("sacrifice").onclick = function () {
-	if (player.eightAmount.eq(0)) return false
-	if (!el("confirmation").checked) {
-		if (!confirm("Dimensional Sacrifice will remove all of your First to Seventh Dimensions (with the cost and multiplier unchanged) for a boost to the Eighth Dimension. It will take time to regain production.")) {
-			return false;
-		}
+	if (!auto && player.options.sacrificeConfirmation && confirm("Dimensional Sacrifice will remove all of your First to Seventh Dimensions (with the cost and multiplier unchanged) for a boost to the Eighth Dimension. It will take time to regain production.")) return
+
+	var sacGain = calcSacrificeBoost()
+	var maxPower = inNGM(2) ? pow10(8888) : Number.MAX_VALUE
+	if (inNC(11) && (tmp.sacPow.gte(maxPower) || player.chall11Pow.gte(maxPower))) return false
+
+	if (!auto) floatText("D8", "x" + shortenMoney(sacGain))
+	player.sacrificed = player.sacrificed.add(player.firstAmount)
+	if (inNC(11)) {
+		player.chall11Pow = player.chall11Pow.mul(sacGain)
+		if (!hasAch("r118")) resetDimensions()
+		player.money = E(100)
+	} else {
+		if ((inNC(7) || player.currentChallenge == "postcngm3_3") && !hasAch("r118")) clearDimensions(6)
+		else if (!hasAch("r118")) clearDimensions(7)
 	}
-	auto = false;
-	return sacrifice();
 }
 
 var ndAutobuyersUsed = 0
@@ -1627,7 +1620,6 @@ function updatePerSecond(quick) {
 	checkGluonRounding()
 }
 
-var postC2Count = 0;
 var IPminpeak = E(0)
 var EPminpeakType = 'normal'
 var EPminpeak = E(0)
@@ -1690,10 +1682,11 @@ function passiveIPupdating(diff){
 }
 
 function passiveInfinitiesUpdating(diff){
-	if (typeof(player.infinitied) != "number") return 
-	if (player.infinityUpgrades.includes("infinitiedGeneration") && player.currentEternityChall !== "eterc4") player.partInfinitied += diff / player.bestInfinityTime;
-	if (player.partInfinitied >= 1/2) {
-		let x = Math.floor(player.partInfinitied * 2)
+	if (typeof(player.infinitied) != "number") return
+
+	if (player.infinityUpgrades.includes("infinitiedGeneration") && player.currentEternityChall != "eterc4") player.partInfinitied += diff / player.bestInfinityTime
+	let x = Math.floor(player.partInfinitied * 2)
+	if (x > 0) {
 		player.partInfinitied -= x/2
 		player.infinitied += x
 	}
@@ -1703,11 +1696,11 @@ function incrementTimesUpdating(diffStat){
 	player.totalTimePlayed += diffStat
 	if (ghSave) ghSave.time += diffStat
 	if (quSave) quSave.time += diffStat
+
 	if (player.currentEternityChall == "eterc12") diffStat /= 1e3
 	player.thisEternity += diffStat
-	 	player.thisInfinityTime += diffStat
+	player.thisInfinityTime += diffStat
 	if (inNGM(2)) player.galacticSacrifice.time += diffStat
-	failsafeDilateTime = false
 }
 
 function preInfinityUpdating(diff){
@@ -1727,19 +1720,20 @@ function preInfinityUpdating(diff){
 }
 
 function chall2PowerUpdating(diff){
-	player.chall2Pow = Math.min(player.chall2Pow + diff / 1800, 1);
-	if (player.currentChallenge == "postc2") {
-		postC2Count++;
-		if (postC2Count >= 8 || diff > 80) {
-			sacrifice();
-			postC2Count = 0;
-		}
-	}
+	player.chall2Pow = Math.min(player.chall2Pow + diff / 1800, 1)
 }
 
+let postC2Count = 0
 function normalChallPowerUpdating(diff){
+	if (player.currentChallenge == "postc2") {
+		postC2Count += diff
+		if (postC2Count >= 0.4) {
+			sacrifice(true)
+			postC2Count = 0
+		}
+	}
 	if (player.currentChallenge == "postc8") player.postC8Mult = player.postC8Mult.mul(Math.pow(0.000000046416, diff))
-	if (inNC(3) || player.matter.gte(1)) player.chall3Pow = player.chall3Pow.mul(E_pow(1.00038, diff)).min(1e200);
+	if (inNC(3) || player.matter.gte(1)) player.chall3Pow = player.chall3Pow.mul(E_pow(1.00038, diff)).min(1e200)
 
 	chall2PowerUpdating(diff)
 	checkMatter(diff)
@@ -2342,7 +2336,7 @@ function simulateTime(seconds, amt, id) {
 	var storageStart = recordSimulationAmount()
 
 	for (let ticksDone = 0; ticksDone < ticksAmt; ticksDone++) {
-		gameLoop(ticks * 200, true)
+		gameLoop(ticks * 1e3, true)
 		if (ticksDone % 10 == 0) updatePerSecond(true)
 		autoBuyerTick()
 	}

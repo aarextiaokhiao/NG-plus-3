@@ -1512,7 +1512,7 @@ function setOtherChallDisplay(){
 	
 	el("ic1desc").textContent="All the previous challenges (except for the Tickspeed challenge"+(inNGM(2)?',':" and")+" Automatic Big Crunch challenge"+(inNGM(2)?", and Automatic Galactic Sacrifice challenge":"")+") are applied at once."
 	el("ic1reward").textContent="Reward: Get "+(inNGM(2)?2:1.3)+"x on all Infinity Dimensions for each Infinity Challenge completed."
-	el("ic2desc").textContent=(!inNGM(3)?"":"Infinity Dimensions are disabled, but Sacrifice is way stronger. ")+"You automatically sacrifice every 8 ticks once you have the 8th Dimension."
+	el("ic2desc").textContent=(!inNGM(3)?"":"Infinity Dimensions are disabled, but Sacrifice is way stronger. ")+"You automatically sacrifice every 0.4 seconds."
 	el("ic4desc").textContent=!inNGM(3)?"Only the latest bought Normal Dimension's production is normal, all other Normal Dimensions produce less.":"All Normal Dimension multipliers are square rooted without the dilation penalty."
 	el("ic5desc").textContent=!inNGM(3)?"When buying Normal Dimensions 1-4, everything with costs smaller or equal increases. When buying Normal Dimensions 5-8, everything with costs bigger or equal increases. When buying tickspeed, everything with the same cost increases.":"You can't get tickspeed upgrades and galaxies. Tickspeed Boosts boost tickspeed instead."
 	el("ic7desc").textContent="You can't get Antimatter Galaxies, but the Dimension Boost multiplier "+(inNGM(2)?"is cubed":"is increased to 10x")+"."
@@ -1703,7 +1703,7 @@ function onLoad(noOffline) {
 
 	if (aarMod.offline && !noOffline) {
 		let diff = new Date().getTime() - player.lastUpdate
-		if (diff >= 0) simulateTime(diff / 1000, aarMod.offline * 100)
+		if (diff >= 1e3) simulateTime(diff / 1000, aarMod.offline * 100)
 	} else player.lastUpdate = new Date().getTime()
 
 	el("newsbtn").textContent=(player.options.newsHidden?"Show":"Hide")+" news ticker"
