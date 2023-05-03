@@ -401,9 +401,9 @@ let HOW_TO = [
 		<br><br>
 		Your Spectral Particles, Neutrinos, and Photons give Light Emissions.<br>
 		Every Light is dependent on Emissions, but has a fixed limit.<br>
-		Enlightenments require Emissions to gain, in which increase those limits.
+		Enlightenments require Emissions to gain, in which increase limits of all Lights.
 		<br><br>
-		The multiplier can be exchanged through Lights, by taking one from any Light and putting into another.`
+		Light multiplier can be exchanged within any Light, but can't go below 75%.`
 	}, {
 		mod: _ => ngp3,
 		req: _ => ghSave?.lab?.unl,
