@@ -2061,7 +2061,7 @@ function progressBarUpdating(){
 	if (!aarMod.progressBar) return
 
 	el("progressbar").className=""
-	if (isTabShown("metadimensions")) doQuantumProgress() 
+	if (isTabShown("metadimensions")) doNGP3ProgressBar() 
 	else if (player.currentChallenge !== "") {
 		currentChallengeProgress()
 	} else if (!player.break) {
@@ -2078,7 +2078,7 @@ function progressBarUpdating(){
 		r138Progress()
 	} else if (player.dilation.active && player.dilation.totalTachyonParticles.gte(getDilGain())) {
 		gainTPProgress()
-	} else if ((inAnyQC() || gainedEternityPoints().gte(pow2(1048576))) && mod.ngpp) doQuantumProgress()
+	} else if ((inAnyQC() || gainedEternityPoints().gte(pow2(1048576))) && mod.ngpp) doNGP3ProgressBar()
 	else preQuantumNormalProgress()
 }
 

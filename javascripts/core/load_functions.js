@@ -1399,7 +1399,7 @@ function setOptionsDisplaysStuff1(){
 	updatePerformanceTicks()
 	dimDescEnd = (aarMod.logRateChange?" OoM":"%")+"/s)"
 
-	el("maxHighestTD").parentElement.parentElement.style.display = inNGM(4) ? "" : "none"
+	el("maxHighestTD").style.display = inNGM(4) ? "" : "none"
 	el("maxHighestTD").textContent = "Max only highest Time Dimensions: O"+(aarMod.maxHighestTD?"N":"FF")
 
 	el("infmultbuyer").style.display = getEternitied()>0||mod.ngp3?"inline-block":"none"

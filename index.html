@@ -242,7 +242,7 @@
 					</tr><tr>
 						<td colspan=3><br><hr></td>
 					</tr><tr>
-						<td></td>
+						<td><div><button class="unavailablebtn" style="color:black; width: 200px; height: 55px; font-size: 20px">Rediscover (soon)</button></div></td>
 						<td><div><button id="reset" onclick="reset_game()" class="storebtn" style="color:black; width: 200px; height: 55px; font-size: 20px">RESET THE GAME</button></div></td>
 						<td></td>
 					</tr>
@@ -273,7 +273,7 @@
 					</tr><tr>
 						<td><button id="toggleLogRateChange" onclick="toggleLogRateChange()" class="storebtn" style="color:black; width: 200px; height: 55px"></button></td>
 						<td><button id="maxHighestTD" onclick="maxHighestTD()" class="storebtn" style="color:black; width: 200px; height: 55px"></button></td>
-						<td></td>
+						<td><button class="unavailablebtn" style="color:black; width: 200px; height: 55px">Show all presets (soon)</button></td>
 					</tr>
 				</table>
 			</div><div class='optionstab' id='secrets' style='display:none'>
@@ -310,6 +310,11 @@
 				</div>
 				<div id="totalTime">You have played for </div>
 				<div id="infoScale"></div>
+				<br><br>
+				<!--<table id="ngp3_progress_div">
+					<h2>Progression</h2>
+					<table id="ngp3_progress"></table>
+				</table>-->
 			</div><div id="stats_inf" class="statstab" >
 				<h1>Infinity</h1>
 				<div id="infinitied">You have infinitied x times.</div>
@@ -3965,7 +3970,7 @@
 				<table id="hypo_field" style="margin: auto"></table><br>
 
 				<h2>Bonds</h2>
-				<button class='unavailablebtn' id='hypo_bond_visibility' style='width: 150px; height: 36px'>Show all (soon)</button>
+				<i style='opacity: 0.5'>Shift down to show all bond effects.</i>
 				<div id="hypo_bonds">
 					<!-- <span class="hypo hypo1"></span><span class="hypo hypo2"></span>: [effect] -->
 				</div>
@@ -4030,7 +4035,7 @@
 			<br><br><hr>
 
 			<b>(NG+3 v2.31: Ghostify Respecced)</b><br>
-			<b class="red">(Beta: 4/30/23 Build)</b><br>
+			<b class="red">(Beta: 5/3/23 Build)</b><br>
 			By <a href="https://aarextiaokhiao.github.io/">Aarex</a>, pg132, and usavictor.
 			<br><br>
 
@@ -4273,7 +4278,9 @@
 	<script type="text/javascript" src="javascripts/ach/ach-tooltips.js"></script>
 
 	<script type="text/javascript" src="javascripts/meta/meta.js"></script>
+	<script type="text/javascript" src="javascripts/meta/presets.js"></script>
 	<script type="text/javascript" src="javascripts/meta/badges.js"></script>
+	<!-- <script type="text/javascript" src="javascripts/meta/rediscovery.js"></script> -->
 
 	<!-- GAME -->
 	<script type="text/javascript" src="javascripts/game/autobuyer.js"></script>
@@ -4313,6 +4320,7 @@
 	<script type="text/javascript" src="javascripts/mods/ngp3/fundament/neutrinos.js"></script>
 	<script type="text/javascript" src="javascripts/mods/ngp3/fundament/photons.js"></script>
 	<script type="text/javascript" src="javascripts/mods/ngp3/fundament/bl.js"></script>
+	<script type="text/javascript" src="javascripts/mods/ngp3/progress.js"></script>
 	<script type="text/javascript" src="javascripts/mods/ngp3/core.js"></script>
 
 	<script type="text/javascript" src="javascripts/mods/ngmm/ngmm.js"></script>

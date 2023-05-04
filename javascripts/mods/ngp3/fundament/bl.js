@@ -361,9 +361,23 @@ const BL_HYPOTHESES = {
 		}
 
 		let bonds = ""
-		for (let [i, a] of Object.entries(tmp.funda.lab.bond_eff)) {
+		let shown = Object.keys(tmp.funda.lab.bond_eff)
+		if (shiftDown) {
+			let unlocked = []
+			for (var [i, d] of Object.entries(this.hypo_types)) {
+				if (!d.unl()) continue
+				for (var j of unlocked) {
+					if (shown.includes(j+";"+i)) continue
+					shown.push(j+";"+i)
+				}
+				unlocked.push(i)
+			}
+		}
+		for (let i of shown) {
 			let split = i.split(";")
-			bonds += `<span class="hypo hypo${split[0]}"></span><span class="hypo hypo${split[1]}"></span> ${this.bond_eff[i].disp(a)}<br>`
+			let has = tmp.funda.lab.bond_eff[i] !== undefined
+			let eff = tmp.funda.lab.bond_eff[i] ?? this.bond_eff[i].eff(0)
+			bonds += `<span class="hypo hypo${split[0]}"></span><span class="hypo hypo${split[1]}"></span> <span ${has ? '' : 'style="opacity: 0.2"'}>${this.bond_eff[i].disp(eff)}</span><br>`
 		}
 		el("hypo_bonds").innerHTML = bonds
 	},
