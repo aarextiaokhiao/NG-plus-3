@@ -45,7 +45,8 @@ button:hover {
 .infinistorebtnlocked,
 .newdimlocked,
 .eternityupbtnlocked,
-.dilationupglocked {
+.dilationupglocked,
+.bigripoff {
 	transform: scale(1) !important;
 	background: linear-gradient(#3f2f2f, transparent), rgba(31, 31, 31, 0.4) !important;
 	color: #bf7f7f !important
@@ -54,7 +55,8 @@ button:hover {
 .infinistorebtnlocked *,
 .newdimlocked *,
 .eternityupbtnlocked *,
-.dilationupglocked * {
+.dilationupglocked *,
+.bigripoff * {
 	color: #bf7f7f
 }
 
