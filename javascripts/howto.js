@@ -415,7 +415,7 @@ let HOW_TO = [
 		There's a 4x4 grid where each unique bond of Hypotheses has its unique boost.
 		<br><br>
 		<b>Bosonic Milestones</b><br>
-		At a specific amount of Bosonic Matter, you'll unlock Bosonic Milestones. Best Bosonic Matter strengthens those milestones.
+		At a specific amount of best Bosonic Matter, you'll unlock a Bosonic Milestone. Best Bosonic Matter strengthens some milestones.
 		<br><br>
 		<b>W & Z Bosons</b><br>
 		There are 3 Capaciators, fillable with W Bosons. Hypercharge must be 0 or less to activate boosts dependent on W+ Bosons.<br>
