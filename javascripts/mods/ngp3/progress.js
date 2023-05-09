@@ -147,7 +147,7 @@ const NGP3_FEATURES = {
 			showEternityTab('eternityupgrades')
 		},
 
-		met: _ => beSave.unlocked,
+		met: _ => beSave?.unlocked,
 		req: _ => E("1e100"),
 		req_res: _ => bigRipped() ? player.eternityPoints : 0,
 		req_log: true,
