@@ -292,7 +292,7 @@ function doQuantum(force, auto, qc = {}) {
 			if (quSave.pairedChallenges.current == 4) giveAchievement("Twice in a row")
 
 			quSave.pairedChallenges.completions[pcid] = Math.min(quSave.pairedChallenges.completions[pcid] || 1/0, quSave.pairedChallenges.current)
-			quSave.pairedChallenges.fastest[pcid] = quSave.pairedChallenges.fastest[pcid] = Math.min(quSave.pairedChallenges.fastest[pcid] || 1/0, oldTime)
+			quSave.pairedChallenges.fastest[pcid] = Math.min(quSave.pairedChallenges.fastest[pcid] || 1/0, oldTime)
 		}
 		if (inQC(6) && inQC(8) && !bigRipped()) quSave.pairedChallenges.pc68best = player.money.max(quSave.pairedChallenges.pc68best)
 
@@ -448,6 +448,9 @@ RESETS.qu = {
 		QKminpeak = E(0)
 		QKminpeakValue = E(0)
 		el("metaAntimatterEffectType").textContent = inQC(3) ? "multiplier on all Infinity Dimensions" : "extra multiplier per Dimension Boost"
+
+		quSave.notrelative = true
+		if (player.timestudy.theorem == 0 && !player.dilation.upgrades.includes(10)) quSave.wasted = true
 
 		if (!auto) {
 			updateMilestones()

@@ -54,6 +54,8 @@ function doNGP3Updates() {
 		ghSave.ghostParticles = E(1e40)
 		blSave.bosons = E(0)
 		blSave.best_bosons = E(0)
+
+		delete quSave.qcsNoDil
 	}*/
 	aarMod.newGame3PlusVersion = ngp3_ver
 	aarMod.ngp3_build = ngp3_build

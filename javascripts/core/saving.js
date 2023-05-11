@@ -1089,8 +1089,6 @@ function doNGPlusThreeNewPlayer() {
 		g: 1,
 		b: 1
 	}
-	quSave.notrelative = false
-	quSave.wasted = false
 	quSave.tod = {
 		r: {
 			quarks: 0,

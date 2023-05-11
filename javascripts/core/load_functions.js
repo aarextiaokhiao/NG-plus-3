@@ -855,8 +855,6 @@ function doQuantumUpdates(){
 			g: 1,
 			b: 1
 		}
-		quSave.notrelative = false
-		quSave.wasted = false
 	}
 	if (aarMod.newGame3PlusVersion < 1.9997) {
 		player.dilation.times = 0

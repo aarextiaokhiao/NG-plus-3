@@ -319,10 +319,10 @@ function respecTimeStudies(ecComp, load) {
 			for (var i = 0; i < all.length; i++) {
 				if (hasTimeStudy(all[i]) && (!bru7activated || all[i] !== 192)) {
 					player.timestudy.theorem += studyCosts[i]
-					gotAch=false
+					gotAch = false
 				}
 			}
-			if (mod.ngp3 && player.timestudy.studies.length>1) quSave.wasted = false
+			if (mod.ngp3 && player.timestudy.studies.length) delete quSave.wasted
 			player.timestudy.studies = bru7activated ? [192] : []
 			var ECCosts = [null, 30, 35, 40, 70, 130, 85, 115, 115, 415, 550, 1, 1]
 			player.timestudy.theorem += ECCosts[player.eternityChallUnlocked]
@@ -343,7 +343,7 @@ function respecTimeStudies(ecComp, load) {
 			var d = player.masterystudies[id].split("d")[1]
 			if (d) respecedMS.push(player.masterystudies[id])
 		}
-		if (player.masterystudies.length > respecedMS.length) quSave.wasted = false
+		if (player.masterystudies.length > respecedMS.length) delete quSave.wasted
 		if (!hasGluonUpg("gb", 3)) ipMultPower = 2
 		player.masterystudies = respecedMS
 		respecUnbuyableTimeStudies()
