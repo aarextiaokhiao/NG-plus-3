@@ -1207,6 +1207,7 @@ function addEternityTime(array) {
 		player.lastTenEternities[i] = player.lastTenEternities[i-1]
 	}
 	player.lastTenEternities[0] = array
+	updateLastTenEternities()
 }
 
 function addTime(array) {
@@ -1305,7 +1306,6 @@ function eternity(force, auto, dil, presetLoad) {
 			array = [player.thisEternity, getEMGain(), "b"]
 		}
 		addEternityTime(array)
-		updateLastTenEternities()
 	}
 
 	//Challenges - Fixed by valence  

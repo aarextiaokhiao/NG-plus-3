@@ -349,12 +349,12 @@ function doPerSecondNGP3Stuff(quick) {
 		updateQuantumTabDisplays()
 		updateQuarkDisplay()
 		updateNetTop()
-		el("autoBuyerQuantum").style.display = speedrunMilestonesReached >= 23 ? "" : "none"
 		el('toggleautoquantummode').style.display = quSave?.reachedInfQK ? "" : "none"
-		el('dilationmode').style.display=speedrunMilestonesReached>4?"":"none"
-		el('rebuyupgmax').style.display=speedrunMilestonesReached<26?"":"none"
-		el('toggleallmetadims').style.display=speedrunMilestonesReached>7?"":"none"
-		el('metaboostAuto').style.display=speedrunMilestonesReached>14?"":"none"
+		el('dilationmode').style.display=speedrunMilestonesReached > 4?"":"none"
+		el('rebuyupgmax').style.display=speedrunMilestonesReached < 26?"":"none"
+		el('toggleallmetadims').style.display=speedrunMilestonesReached > 7?"":"none"
+		el('metaboostAuto').style.display=speedrunMilestonesReached > 14?"":"none"
+		el("autoBuyerQuantum").style.display = speedrunMilestonesReached >= 23 ? "" : "none"
 		updateBreakEternity()
 		BL_JOKE.updateHTML()
 	}
