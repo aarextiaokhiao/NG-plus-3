@@ -6,7 +6,7 @@
 body {
 	font-family: Typewriter;
 	text-align: center;
-	color: #bfdfff;
+	color: #79f;
 	text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.125);
 }
 
@@ -17,17 +17,17 @@ body {
 	height: 100%;
 	width: 100%;
 	z-index: -1;
-	background: radial-gradient(ellipse at top, #00000f, #00003f);
+	background: radial-gradient(#000f17, transparent), radial-gradient(farthest-corner at 100% 0%, #001f2f, #000000)
 }
 
 h1 {
 	font-size: 72px;
-	background: radial-gradient(ellipse at top, #00f7, #0073);
-	box-shadow: 0 6px 6px #007fff;
-	color: #bfdfff
+	background: transparent;
+	box-shadow: 0 6px 6px #7bf;
+	color: #bdf
 }
 
-#aarMod {
+#link {
 	position: absolute;
 	width: 480px;
 	left: calc(50% - 240px);
@@ -41,20 +41,17 @@ h1 {
 
 h1, h2 {
 	margin-top: 0;
-	margin-bottom: 3px
+	margin-bottom: 3px;
+	color: #7bf
 }
 
 a {
-	color: #33f
+	color: #eff
 }
 
 .hr {
 	height: 2px;
 	width: 100%;
-	background: radial-gradient(ellipse at top, #00f7, #00f3);
+	background: radial-gradient(ellipse at top, #37f, transparent);
 	margin: 6px
-}
-
-.warning {
-	color: red
 }

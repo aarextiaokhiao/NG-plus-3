@@ -61,17 +61,16 @@ button:hover {
 }
 
 .popup {
-	background: linear-gradient(90deg, #07fb, #00fb) !important;
-	border-color: transparent #00f transparent #00f;
-	color: white !transparent;
+	background: linear-gradient(90deg, #7bfb, #77fb) !important;
+	border-color: transparent #7bf transparent #7bf;
 }
-.popup div, .popup span, .popup b {
-	color: white !transparent;
+.popup * {
+	color: #037;
 }
 .popup .storebtn {
-	background: rgba(127, 191, 255, 0.3) !important;
-	box-shadow: inset 0 0 24px #0000ff;
-	color: #bfbfff !important
+	background: rgba(0, 127, 255, 0.3) !important;
+	box-shadow: inset 0 0 24px #05b;
+	color: #bdf !important
 }
 
 .chosen {
@@ -214,6 +213,16 @@ button:hover {
 	transform: scale(1) !important;
 	background: rgba(191, 0, 255, 0.75) !important;
 	border-bottom: none !important;
+	color: #df7fff !important
+}
+
+#theorembuybackground {
+	background: rgba(191, 0, 255, 0.5) !important;
+	border: 0 solid;
+	box-shadow: inset 0px 0px 60px #bf00ff
+}
+#timetheorems, #timetheorems * {
+	font-weight: bold;
 	color: #df7fff !important
 }
 

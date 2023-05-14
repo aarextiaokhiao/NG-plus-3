@@ -14,80 +14,40 @@ function updateToDSpeedDisplay(){
 }
 
 function setupToDHTML() {
-	for (var c = 0; c < 1; c++) {
-		var color = (["red", "green", "blue"])[c]
-		var shorthand = (["r", "g", "b"])[c]
-		var branchUpgrades = ["Double preonic spin, but preons decay 2x faster.",
-				"Boost free preons.",
-				"Preons decay <span id='" + color + "UpgEffDesc'>4x</span> slower."] //might need to change this to just "slower" once we have 1000+ upgrade 3's
-
-		var html = '<span class="' + color + '" id="' + color + 'QuarksToD" style="font-size: 35px">0</span> ' + color + ' quarks<br>'
-		html += "<span class='" + color + "' id='" + color + "UnstableQuarks' style='font-size: 20px'>0</span> " + " <span id='" + shorthand + "UQName'></span> preons<br>"
-		html += "<span id='" + color + "QuarksDecayRate'></span> "
-		html += "(Duration: <span id='" + color + "QuarksDecayTime'></span>)<br>"
-		html += '<button class="storebtn" id="' + color + 'UnstableGain" style="width: 210px; height: 80px" onclick="unstableQuarks(\'' + shorthand + '\')"></button><br>'
-		html += '<span class="' + color + '" id="' + color + 'QuarkSpin" style="font-size: 25px">0.0</span> ' + ' preonic spin '
-		html += '<span class="' + color + '" id="' + color + 'QuarkSpinProduction" style="font-size: 15px">+0/s</span>'
-		el("todRow").innerHTML = html
-		el("todRow").className = shorthand + "qC"
-		
-		html = "<table class='table' align='center' style='margin: auto'><tr>"
-		for (var u = 1; u <= 3; u++) {
-			html += "<td style='vertical-align: 0'><button class='qu_upg unavailablebtn' id='" + color + "upg" + u + "' onclick='buyBranchUpg(\"" + shorthand + "\", " + u + ")' style='font-size:10px'>" + branchUpgrades[u - 1] + "<br>" 
-			html += "Currently: <span id='" + color + "upg" + u + "current'>1</span><br><span id='" + color + "upg" + u + "cost'>?</span></button>"
-		}
-		html += `</tr></tr>
-			<td></td>
-			<td>
-				<button class='storebtn' style='width: 190px' onclick='maxBranchUpg("${shorthand}")'>Max all upgrades</button><br>
-				<button class='storebtn' style='width: 190px; font-size:10px' onclick='maxBranchUpg("${shorthand}", true)'>Max 2nd and 3rd upgrades</button>
-			</td>
-			<td></td>`
-		html += `</tr></tr>
-			<td></td>
-			<td><button class='qu_upg unavailablebtn' id='${shorthand}RadioactiveDecay' onclick='radioactiveDecay("${shorthand}")'>Sacrifice to tier up.<br><span id='${shorthand}RDReq'></span><br>Radioactive Decays: <span id='${shorthand}RDLvl'></span></button></td>`
-		html += "</tr></table>"
-		el(color + "Branch").innerHTML = html
+	var branchUpgrades = ["Double preonic spin, but preons decay 2x faster.",
+			"Boost free preons.",
+			"Preons decay 4x slower."]
+	html = "<table class='table' align='center' style='margin: auto'><tr>"
+	for (var u = 1; u <= 3; u++) {
+		html += "<td style='vertical-align: 0'><button class='qu_upg unavailablebtn' id='redupg" + u + "' onclick='buyBranchUpg(\"r\", " + u + ")' style='font-size:10px'>" + branchUpgrades[u - 1] + "<br>" 
+		html += "Currently: <span id='redupg" + u + "current'>1</span><br><span id='redupg" + u + "cost'>?</span></button>"
 	}
+	el("branchUpgs").innerHTML = html
 }
 
 function updateTreeOfDecayTab(){
-	var branchNum
-	var colors = ["red", "green", "blue"]
-	var shorthands = ["r", "g", "b"]
-	for (var c = 0; c < 1; c++) {
-		var color = colors[c]
-		var shorthand = shorthands[c]
-		var branch = todSave[shorthand]
-		var name = getUQName(shorthand) + " preons"
-		var rate = getDecayRate(shorthand)
-		var linear = pow2(getRDPower(shorthand))
-		el(color + "UnstableGain").className = quSave.usedQuarks[shorthand].gt(0) && getUnstableGain(shorthand).gt(branch.quarks) ? "storebtn" : "unavailablebtn"
-		el(color + "UnstableGain").innerHTML = "Gain " + shortenMoney(getUnstableGain(shorthand)) + " " + name + (hasBraveMilestone(4) ? "." : ", but lose all your " + color + " quarks.")
-		el(color + "QuarkSpin").innerHTML = shortenMoney(branch.spin)
-		el(color + "UnstableQuarks").innerHTML = shortenMoney(branch.quarks)
-		el(color + "QuarksDecayRate").innerHTML = branch.quarks.lt(linear) && rate.lt(1) ? "(-" + shorten(linear.mul(rate)) + " " + name + "/s)" : "(Half-life: " + timeDisplayShort(Decimal.div(10,rate), true, 2) + (linear.eq(1) ? "" : " until " + shorten(linear)) + ")"
-		el(color + "QuarksDecayTime").innerHTML = timeDisplayShort(Decimal.div(10, rate).mul(branch.quarks.gt(linear) ? branch.quarks.div(linear).log(2) + 1 : branch.quarks.div(linear)))
-		let ret = getQuarkSpinProduction(shorthand)
-		el(color + "QuarkSpinProduction").innerHTML = "(+" + shortenMoney(ret) + "/s)"
+	//Branch
+	var branch = todSave.r
+	var name = getUQName("r") + " preons"
+	var rate = getDecayRate("r")
+	var linear = pow2(getRDPower("r"))
+	el("redUnstableGain").className = quSave.usedQuarks.r.gt(0) && getUnstableGain("r").gt(branch.quarks) ? "storebtn" : "unavailablebtn"
+	el("redUnstableGain").innerHTML = "Gain " + shortenMoney(getUnstableGain("r")) + " " + name + (hasBraveMilestone(4) ? "." : ", but lose all your red quarks.")
+	el("redQuarkSpin").innerHTML = shortenMoney(branch.spin)
+	el("redUnstableQuarks").innerHTML = shortenMoney(branch.quarks)
+	el("redQuarksDecayRate").innerHTML = branch.quarks.lt(linear) && rate.lt(1) ? "-" + shorten(linear.mul(rate)) + " " + name + "/s" : "Half-life: " + timeDisplayShort(Decimal.div(10,rate), true, 2) + (linear.eq(1) ? "" : " until " + shorten(linear))
+	el("redQuarksDecayTime").innerHTML = timeDisplayShort(Decimal.div(10, rate).mul(branch.quarks.gt(linear) ? branch.quarks.div(linear).log(2) + 1 : branch.quarks.div(linear)))
+	let ret = getQuarkSpinProduction("r")
+	el("redQuarkSpinProduction").innerHTML = "(+" + shortenMoney(ret) + "/s)"
 
-		let lvl = getBranchUpgLevel(shorthand, 3)
-		let s = getBranchUpg3SoftcapStart()
-		if (lvl >= s) eff = E_pow(4, (Math.sqrt((lvl + 1) / s) - Math.sqrt(lvl / s)) * s).toFixed(2)
-		else eff = "4"
-		el(color + "UpgEffDesc").innerHTML = " " + eff + "x"
+	for (var u = 1; u <= 3; u++) updateBranchUpgrade("r", u)
 
-		for (var u = 1; u <= 3; u++) {
-			updateBranchUpgrade(shorthand, u)
-			el(color + "upg" + u).className = "qu_upg " + (branch.spin.lt(getBranchUpgCost(shorthand, u)) ? "unavailablebtn" : shorthand)
-		}
-
-		document.getElementById(shorthand+"RadioactiveDecay").style.display = ghostified ? "" : "none"
-		if (ghostified) {
-			document.getElementById(shorthand+"RDReq").innerHTML = "(requires "+shorten(Decimal.pow(10, Math.pow(2, 50))) + " of " + color + " " + getUQName(shorthand) + " preons)"
-			document.getElementById(shorthand+"RDLvl").textContent = getFullExpansion(getRadioactiveDecays(shorthand))
-		}
-	} //for loop
+	//Tree
+	document.getElementById("rRadioactiveDecay").style.display = ghostified ? "" : "none"
+	if (ghostified) {
+		document.getElementById("rRDReq").innerHTML = "(requires "+shorten(Decimal.pow(10, Math.pow(2, 50))) + " of red " + getUQName("r") + " preons)"
+		document.getElementById("rRDLvl").textContent = getFullExpansion(getRadioactiveDecays("r"))
+	}
 
 	var start = getLogTotalSpin() > 200 ? "" : "Cost: "
 	for (var u = 1; u <= 8; u++) {
@@ -113,6 +73,7 @@ function updateBranchUpgrade(b, u) {
 
 	el(clr + "upg" + u + "current").innerHTML = u == 2 ? eff + "n^" + eff : eff + "x"
 	el(clr + "upg" + u + "cost").innerHTML = start + shortenMoney(getBranchUpgCost(b, u)) + " preonic spin"
+	el(clr + "upg" + u).className = "qu_upg " + (bData.spin.lt(getBranchUpgCost(b, u)) ? "unavailablebtn" : b)
 }
 
 function updateTODStuff() {
@@ -506,19 +467,10 @@ function getBU2Power(branch) {
 	return x
 }
 
-function getBranchUpg3SoftcapStart(){
-	return 1000 //maybe later on we can have things buff this
-}
-
 function getBranchUpgMult(branch, upg) {
 	if (upg == 1) return pow2(getBU1Power(branch))
 	else if (upg == 2) return pow2(getBU2Power(branch))
-	else if (upg == 3) {
-		l = getBranchUpgLevel(branch, 3)
-		let s = getBranchUpg3SoftcapStart()
-		if (l > s) l = s * Math.sqrt(l / s)
-		return E_pow(4, l)
-	}
+	else if (upg == 3) return E_pow(4, getBranchUpgLevel(branch, 3))
 } 
 
 function treeOfDecayUpdating(diff){
