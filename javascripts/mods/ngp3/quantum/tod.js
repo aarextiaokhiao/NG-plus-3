@@ -31,14 +31,16 @@ function updateTreeOfDecayTab(){
 	var name = getUQName("r") + " preons"
 	var rate = getDecayRate("r")
 	var linear = pow2(getRDPower("r"))
-	el("redUnstableGain").className = quSave.usedQuarks.r.gt(0) && getUnstableGain("r").gt(branch.quarks) ? "storebtn" : "unavailablebtn"
-	el("redUnstableGain").innerHTML = "Gain " + shortenMoney(getUnstableGain("r")) + " " + name + (hasBraveMilestone(4) ? "." : ", but lose all your red quarks.")
-	el("redQuarkSpin").innerHTML = shortenMoney(branch.spin)
-	el("redUnstableQuarks").innerHTML = shortenMoney(branch.quarks)
-	el("redQuarksDecayRate").innerHTML = branch.quarks.lt(linear) && rate.lt(1) ? "-" + shorten(linear.mul(rate)) + " " + name + "/s" : "Half-life: " + timeDisplayShort(Decimal.div(10,rate), true, 2) + (linear.eq(1) ? "" : " until " + shorten(linear))
-	el("redQuarksDecayTime").innerHTML = timeDisplayShort(Decimal.div(10, rate).mul(branch.quarks.gt(linear) ? branch.quarks.div(linear).log(2) + 1 : branch.quarks.div(linear)))
-	let ret = getQuarkSpinProduction("r")
-	el("redQuarkSpinProduction").innerHTML = "(+" + shortenMoney(ret) + "/s)"
+	el("decay_btn").className = canUnstableQuarks() ? "storebtn" : "unavailablebtn"
+	el("decay_btn").innerHTML = shortenDimensions(quSave.usedQuarks[todSave.chosen]) + " " + COLORS[todSave.chosen] + " quarks →<br>" + shortenMoney(getUnstableGain()) + " " + name
+
+	el("decay_preons").innerHTML = shortenMoney(branch.quarks)
+	el("decay_preons_name").innerHTML = name
+	el("decay_rate").innerHTML = branch.quarks.lt(linear) && rate.lt(1) ? "-" + shorten(linear.mul(rate)) + " " + name + "/s" : "Half-life: " + timeDisplayShort(Decimal.div(10,rate), true, 2) + (linear.eq(1) ? "" : " until " + shorten(linear))
+	el("decay_time").innerHTML = timeDisplayShort(Decimal.div(10, rate).mul(branch.quarks.gt(linear) ? branch.quarks.div(linear).log(2) + 1 : branch.quarks.div(linear)))
+
+	el("decay_spin").innerHTML = shortenMoney(branch.spin)
+	el("decay_spin_prod").innerHTML = "(+" + shortenMoney(getQuarkSpinProduction("r")) + "/s)"
 
 	for (var u = 1; u <= 3; u++) updateBranchUpgrade("r", u)
 
@@ -64,7 +66,7 @@ function updateTreeOfDecayTab(){
 }
 
 function updateBranchUpgrade(b, u) {
-	var clr = {r: "red", g: "green", b: "blue"}[b]
+	var clr = COLORS[b]
 	var bData = todSave[b]
 	var eff = shortenDimensions(getBranchUpgMult(b, u))
 
@@ -79,39 +81,40 @@ function updateBranchUpgrade(b, u) {
 function updateTODStuff() {
 	if (!mod.ngp3 || !hasMasteryStudy("d13")) return
 
-	var colors = ["red", "green", "blue"]
-	var shorthands = ["r", "g", "b"]
-	for (var c = 0; c < 1; c++) {
-		var color = colors[c]
-		var shorthand = shorthands[c]
-		var name = getUQName(shorthand)
-		el(shorthand + "UQName").innerHTML = name
+	var name = getUQName("r")
+	el("decay_preons_name").innerHTML = name
 
-		if (ghostified) {
-			el(shorthand+"RadioactiveDecay").parentElement.parentElement.style.display = ""
-			el(shorthand+"RDReq").innerHTML = "(requires "+shorten(pow10(Math.pow(2, 50))) + " of " + name + " preons)"
-			el(shorthand+"RDLvl").innerHTML = getFullExpansion(getRadioactiveDecays(shorthand))
-		} else el(shorthand+"RadioactiveDecay").parentElement.parentElement.style.display = "none"
-	}
+	if (ghostified) {
+		el("rRadioactiveDecay").parentElement.parentElement.style.display = ""
+		el("rRDReq").innerHTML = "(requires "+shorten(pow10(Math.pow(2, 50))) + " of " + name + " preons)"
+		el("rRDLvl").innerHTML = getFullExpansion(getRadioactiveDecays("r"))
+	} else el("rRadioactiveDecay").parentElement.parentElement.style.display = "none"
 }
 
-function getUnstableGain(branch) {
-	let ret = quSave.usedQuarks[branch].div("1e420").add(1).log10()
-	if (ret < 2) ret = Math.max(quSave.usedQuarks[branch].div("1e300").div(99).log10() / 60, 0)
+function getUnstableGain() {
+	let color = todSave.chosen
+	let ret = quSave.usedQuarks[color].div("1e420").add(1).log10()
+	if (ret < 2) ret = Math.max(quSave.usedQuarks[color].div("1e300").div(99).log10() / 60, 0)
 
-	let power = getBranchUpgLevel(branch, 2) - getRDPower(branch)
+	let power = getBranchUpgLevel("r", 2) - getRDPower("r")
 	ret = pow2(power).mul(ret)
 
 	if (ret.gt(1)) ret = E_pow(ret, Math.pow(2, power + 1))
-	return ret.mul(pow2(getRDPower(branch) + 1)).min(pow10(Math.pow(2, 51)))
+	return ret.mul(pow2(getRDPower("r") + 1)).min(pow10(Math.pow(2, 51)))
 }
 
-function unstableQuarks(branch) {
-	if (quSave.usedQuarks[branch].eq(0) || getUnstableGain(branch).lte(todSave[branch].quarks)) return
-	todSave[branch].quarks = todSave[branch].quarks.max(getUnstableGain(branch))
-	if (!hasBraveMilestone(4)) quSave.usedQuarks[branch] = E(0)
+function canUnstableQuarks() {
+	return getUnstableGain().gt(todSave.r.quarks)
+}
+
+function unstableQuarks() {
+	if (!canUnstableQuarks()) return
+
+	todSave.r.quarks = todSave.r.quarks.max(getUnstableGain())
+	if (!hasBraveMilestone(4)) quSave.usedQuarks[todSave.chosen] = E(0)
+
 	if (ghSave.reference > 0) ghSave.reference--
-	if (player.unstableThisGhostify) player.unstableThisGhostify ++
+	if (player.unstableThisGhostify) player.unstableThisGhostify++
 	else player.unstableThisGhostify = 10
 }
 
@@ -329,7 +332,6 @@ function getUQName(shorthand) {
 
 function maxTreeUpg() {
 	var update = false
-	var colors = ["r", "g", "b"]
 	var todData = todSave
 	for (var u = 1; u <= 8; u++) {
 		var cost = getTreeUpgradeCost(u)
@@ -366,7 +368,6 @@ function maxTreeUpg() {
 }
 
 function maxBranchUpg(branch, weak) {
-	var colors = {r: "red", g: "green", b: "blue"}
 	var bData = todSave[branch]
 	for (var u = (weak ? 2 : 1); u < 4; u++) {
 		var oldLvl = getBranchUpgLevel(branch, u)
@@ -474,20 +475,16 @@ function getBranchUpgMult(branch, upg) {
 } 
 
 function treeOfDecayUpdating(diff){
-	var colorShorthands=["r","g","b"]
-	for (var c = 0; c < 1; c++) {
-		var shorthand = colorShorthands[c]
-		var branch = todSave[shorthand]
-		var decayRate = getDecayRate(shorthand)
-		var decayPower = getRDPower(shorthand)
-				
-		var mult = pow2(decayPower)
-		var power = Decimal.div(branch.quarks.gt(mult)?branch.quarks.div(mult).log(2)+1:branch.quarks.div(mult),decayRate)
-		var decayed = power.min(diff)
-		power = power.sub(decayed).mul(decayRate)
+	var branch = todSave.r
+	var decayRate = getDecayRate("r")
+	var decayPower = getRDPower("r")
+			
+	var mult = pow2(decayPower)
+	var power = Decimal.div(branch.quarks.gt(mult)?branch.quarks.div(mult).log(2)+1:branch.quarks.div(mult),decayRate)
+	var decayed = power.min(diff)
+	power = power.sub(decayed).mul(decayRate)
 
-		var sProd = getQuarkSpinProduction(shorthand)
-		branch.quarks = power.gt(1) ? pow2(power-1).mul(mult) : power.mul(mult)	
-		branch.spin = branch.spin.add(sProd.mul(hasBraveMilestone(4) && isAutoGhostActive(1) && getUnstableGain("r").gt(0) ? diff : decayed))	
-	}
+	var sProd = getQuarkSpinProduction("r")
+	branch.quarks = power.gt(1) ? pow2(power-1).mul(mult) : power.mul(mult)	
+	branch.spin = branch.spin.add(sProd.mul(hasBraveMilestone(4) && isAutoGhostActive(1) && getUnstableGain("r").gt(0) ? diff : decayed))	
 }

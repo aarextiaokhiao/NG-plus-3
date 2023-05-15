@@ -1,3 +1,10 @@
+const COLORS = {
+	r: "red",
+	g: "green",
+	b: "blue",
+}
+const QUARK_COLORS = ["r","g","b"]
+
 //Net Quarks
 var quantumWorth
 function updateQuantumWorth(mode) {
@@ -168,9 +175,6 @@ function updateAssortOptions() {
 colorCharge = {
 	normal: {}
 }
-colorShorthands = {r:'red',
-	g:'green',
-	b:'blue'}
 
 function updateColorCharge() {
 	if (!mod.ngp3) return
@@ -296,7 +300,6 @@ function updateQuarksTabOnUpdate(mode) {
 
 	el("assignAllButton").className = canAssign ? "storebtn" : "unavailablebtn"
 	el("bluePowerMDEffect").style.display = hasMasteryStudy("t383") ? "" : "none"
-	if (hasMasteryStudy("d13")) el("redQuarksToD").textContent = shortenDimensions(quSave.usedQuarks.r)
 }
 
 //Quarks animation

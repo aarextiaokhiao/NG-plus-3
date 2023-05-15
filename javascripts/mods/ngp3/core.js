@@ -1,6 +1,6 @@
 //VERSION: 2.31
 let ngp3_ver = 2.31
-let ngp3_build = 20230513
+let ngp3_build = 20230514
 function doNGP3Updates() {
 	if (!aarMod.ngp3_build) aarMod.ngp3_build = 0
 	if (aarMod.ngp3_build < 20221230) quSave.multPower = 0
@@ -45,6 +45,7 @@ function doNGP3Updates() {
 		ghSave.photons.offset = [0,0,0,0,0,0,0]
 	}
 	if (aarMod.ngp3_build < 20230414 && blSave) blSave.wz_capacitors = WEAK_FORCE.setup()
+	if (aarMod.ngp3_build < 20230514 && todSave) todSave.chosen = "r"
 	/*if (aarMod.ngp3_build < 20230420 && E(ghSave?.ghostParticles).gte(1e40)) {
 		alert("Due to massive balancing changes, you will be pushed back to e40 Spectral Particles!")
 
@@ -511,10 +512,8 @@ function postBoostMilestone() {
 }
 
 function quantumOverallUpdating(diff){
-	var colorShorthands=["r","g","b"]
-
 	//Color Powers
-	for (var c of colorShorthands) quSave.colorPowers[c]=quSave.colorPowers[c].add(getColorPowerProduction(c).mul(diff))
+	for (var c of QUARK_COLORS) quSave.colorPowers[c]=quSave.colorPowers[c].add(getColorPowerProduction(c).mul(diff))
 
 	if (hasMasteryStudy("d7")) quSave.electrons.amount = getPositronGainFinalMult() * quSave.electrons.sacGals
 	if (hasMasteryStudy("d10")) replicantOverallUpdating(diff)

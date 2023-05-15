@@ -3724,15 +3724,20 @@
 				<table style="margin: auto">
 					<tr>
 						<td class="rqC" style="width: 50%; text-align: center">
-							<span class="red" id="redQuarksToD" style="font-size: 35px">0</span> red quarks<br>
-							<span class='red' id='redUnstableQuarks' style='font-size: 20px'>0</span> <span id='rUQName'></span> preons<br>
+							<button class="storebtn" onclick="todSave.chosen = 'r'">Red</button>
+							<button class="storebtn" onclick="todSave.chosen = 'g'">Green</button>
+							<button class="storebtn" onclick="todSave.chosen = 'b'">Blue</button>
+							<br>
+							<button class="storebtn" id="decay_btn" style="width: 210px; height: 80px" onclick="unstableQuarks('r')"></button>
+							<br><br><hr>
 
-							(<span id='redQuarksDecayRate'></span>,  
-							duration: <span id='redQuarksDecayTime'></span>)<br>
+							<span class='red' id='decay_preons' style='font-size: 20px'>0</span> <span id='decay_preons_name'></span><br>
 
-							<button class="storebtn" id="redUnstableGain" style="width: 210px; height: 80px" onclick="unstableQuarks('r')"></button><br>
-							<span class="red" id="redQuarkSpin" style="font-size: 25px">0.0</span> preonic spin 
-							<span class="red" id="redQuarkSpinProduction" style="font-size: 15px">+0/s</span>
+							(<span id='decay_rate'></span>,  
+							duration: <span id='decay_time'></span>)<br>
+
+							<span class="red" id="decay_spin" style="font-size: 25px">0.0</span> preonic spin 
+							<span class="red" id="decay_spin_prod" style="font-size: 15px">+0/s</span>
 						</td>
 						<td style="width: 50%; text-align: center">
 							<table class="table" align="center" style="margin: auto">
@@ -4061,7 +4066,7 @@
 			<br><br><hr>
 
 			<b>(NG+3 v2.31: Ghostify Respecced)</b><br>
-			<b class="red">(Beta: 5/13/23 Build)</b><br>
+			<b class="red">(Beta: 5/14/23 Build)</b><br>
 			By <a href="https://aarextiaokhiao.github.io/">Aarex</a>, pg132, and usavictor.
 			<br><br>
 

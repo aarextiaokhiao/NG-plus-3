@@ -858,15 +858,7 @@ function doQuantumUpdates(){
 	}
 	if (aarMod.newGame3PlusVersion < 1.9997) {
 		player.dilation.times = 0
-		quSave.tod = {
-			r: {
-				quarks: 0,
-				spin: 0,
-				upgrades: {}
-			},
-			upgrades: {}
-		}
-		todSave = quSave.tod
+		quSave.tod = todSave = getBrandNewTodData()
 		if (nfSave.rewards>16) {
 			var newMS=[]
 			for (var m=0;m<player.masterystudies.length;m++) {

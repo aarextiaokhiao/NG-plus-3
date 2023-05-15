@@ -1,11 +1,6 @@
 //Gluons
 const GLUON = {
 	mixes: ["rg", "gb", "br"],
-	names: {
-		r: "red",
-		g: "green",
-		b: "blue",
-	},
 
 	//Upgrades
 	upg_costs: [1, 2, 4, 100, 7e15, 4e19, 3e28, E("1e570")],
@@ -116,7 +111,7 @@ const GLUON = {
 	setupTab() {
 		let html = ""
 		for (var mix of this.mixes) {
-			let bond = this.names[mix[0]] + "-" + this.names[mix[1]]
+			let bond = COLORS[mix[0]] + "-" + COLORS[mix[1]]
 
 			let mix_table = ``
 			for (var i = 1; i <= this.upg_len; i++) {
@@ -133,7 +128,7 @@ const GLUON = {
 
 			html += `<td class='${mix[0]}qC'>
 				<span id="${mix}" style="font-size:35px">0</span> ${bond} gluons<br>
-				(next quantum: <span id='${mix}_next'>0</span> ${this.names[mix[0]]}, +<span id='${mix}_gain'>0</span>)
+				(next quantum: <span id='${mix}_next'>0</span> ${COLORS[mix[0]]}, +<span id='${mix}_gain'>0</span>)
 				<table><tr>${mix_table}</tr></table>
 			</td>`
 		}

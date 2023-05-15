@@ -952,16 +952,7 @@ function getBrandNewTodData(){
 			spin: 0,
 			upgrades: {}
 		},
-		g: {
-			quarks: 0,
-			spin: 0,
-			upgrades: {}
-		},
-		b: {
-			quarks: 0,
-			spin: 0,
-			upgrades: {}
-		},
+		chosen: "r",
 		upgrades: {}
 	}
 }
@@ -1089,14 +1080,7 @@ function doNGPlusThreeNewPlayer() {
 		g: 1,
 		b: 1
 	}
-	quSave.tod = {
-		r: {
-			quarks: 0,
-			spin: 0,
-			upgrades: {}
-		},
-		upgrades: {}
-	}
+	quSave.tod = getBrandNewTodData()
 	quSave.bigRip = getBrandNewBigRipData()
 	quSave.breakEternity = {
 		unlocked: false,
