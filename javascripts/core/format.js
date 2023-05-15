@@ -952,7 +952,6 @@ function onNotationChange() {
 		updateQuantumWorth("notation")
 		updateBankedEter()
 		updateQuantumChallenges()
-		updateTODStuff()
 	}
 	el("achmultlabel").textContent = "Current achievement multiplier on each Dimension: " + shortenMoney(player.achPow) + "x"
 	if (hasAch("ng3p18") || hasAch("ng3p37")) {

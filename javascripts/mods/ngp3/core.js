@@ -453,7 +453,7 @@ function ngP3AchieveCheck() {
 	if (bigRipped() && player.eternityPoints.e >= 1e5) giveAchievement("Underchallenged")
 	if (nG(getInfinitied(), Number.MAX_VALUE)) giveAchievement("Meta-Infinity confirmed?")
 	if (todSave.r.quarks.gte(pow10(1e12)) && !brSave.times) giveAchievement("Weak Decay")	
-	if (getRadioactiveDecays('r')) giveAchievement("Radioactive Decaying to the max!")
+	if (getRadioactiveDecays() >= 1) giveAchievement("Radioactive Decaying to the max!")
 	if (ghSave.best <= 30) giveAchievement("Running through Big Rips")
 	if (masteryStudies.bought >= 48) giveAchievement("The Theory of Ultimate Studies")
 	if (ghSave.photons.lighten) giveAchievement("Here comes the light")
@@ -464,7 +464,7 @@ function ngP3AchieveCheck() {
 	//if (ghSave.hb.higgs >= 1) giveAchievement("The Holy Particle")
 	//if (ghSave.ghostlyPhotons.enpowerments >= 25) giveAchievement("Bright as the Anti-Sun") -- will be back
 	if (quSave.quarks.log10() >= 40000) giveAchievement("Are these another...")
-	if (ghSave.reference && getRadioactiveDecays("r") >= 2) giveAchievement("... references to EC8?")
+	if (ghSave.reference && getRadioactiveDecays() >= 2) giveAchievement("... references to EC8?")
 	if (ghSave.times >= Math.pow(Number.MAX_VALUE, 1/4)) giveAchievement("The Ghostliest Side")
 	if (player.money.log10() >= 1e18) giveAchievement("Meta-Quintillion")
 	if (player.unstableThisGhostify <= 10 && getTwoDecaysBool()) giveAchievement("... references to EC8?")

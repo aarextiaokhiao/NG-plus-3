@@ -613,7 +613,7 @@ function updateGhostlyNewsArray() {
 	["Ghosts have dominated some universes!", true, "gn27"],
 	["Boo! Kee-hee-hee!", "Math.random() <= 0.001", "gn28"],
 	["An anti-pilon ghost is discovered. He is evil to Nanofield. Don't ever observe him or else he will take over your Nanofield.", "hasAch('ng3p81')", "gn29"],
-	["Ghosts found a ghostly kind of Radioactive Decays!", "Math.max(Math.max(getRadioactiveDecays('r'), getRadioactiveDecays('g')), getRadioactiveDecays('b')) > 4", "gn30"],
+	["Ghosts found a ghostly kind of Radioactive Decays!", "getRadioactiveDecays() >= 1", "gn30"],
 	["Ghosts discovered that some particles, including bosons, are ghostly!", true, "gn31"],
 	["Ghosts don't know how to write more news. They decided to stop it for today.", true, "gn32"],
 	["The Anti-Preonius is getting closer. He will destroy your Nanofield. Stay away from him.", "hasBU(13)", "gn33"],

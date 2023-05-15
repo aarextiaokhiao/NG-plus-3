@@ -375,8 +375,6 @@ function giveAchievement(name, noUpdate) {
 			if (!hasAch("ng3p6" + i)) player.achievements.push("ng3p6" + i)
 		}
 	}
-	if (name == "... references to EC8?") updateTODStuff()
-	if (name == "Not-so-very-challenging") updateQuantumChallenges()
 	if (name == "Meta-Quintillion") beatNGP3()
 	if (!noUpdate) {
 		if (name == "A sound financial decision") localStorage.setItem(btoa("dsAM_asfd"),"")

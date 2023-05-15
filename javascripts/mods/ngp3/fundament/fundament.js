@@ -188,7 +188,6 @@ RESETS.funda = {
 		todSave.r.upgrades = { 1: bm >= 4 ? 5 : 0 }
 		todSave.r.decays = hasAch("ng3p86") ? Math.floor(todSave.r.decays * .75) : 0
 		todSave.upgrades = {}
-		updateTODStuff()
 	},
 	resetRip(bm) {
 		if (bigRipped()) switchAB(false)

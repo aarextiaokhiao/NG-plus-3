@@ -500,7 +500,6 @@ function buyingDilStudyNanofield(){
 function buyingDilStudyToD(){
 	showTab("quantumtab")
 	showQuantumTab("tod")
-	updateTODStuff()
 }
 
 function buyingDilStudyRip(){

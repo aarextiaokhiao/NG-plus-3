@@ -109,7 +109,7 @@ function getNGP3p1totalQKMult(){
 	if (hasAch("ng3p16")) log += getEPtoQKMult()
 	if (hasAch("ng3p33")) log += Math.log10(getQCtoQKEffect())
 	if (hasAch("ng3p53")) log += brSave && brSave.spaceShards.add(1).log10()
-	if (hasAch("ng3p65")) log += getRadioactiveDecays('r') * 3
+	if (hasAch("ng3p65")) log += getRadioactiveDecays() * 3
 	if (hasAch("ng3p93")) log += Math.log10(500)
 	return log
 }

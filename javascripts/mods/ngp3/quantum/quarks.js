@@ -279,25 +279,22 @@ function updateQuarksTab(tab) {
 
 //Display: On load
 function updateQuarksTabOnUpdate(mode) {
-	var colors = ['r','g','b']
 	if (colorCharge.normal.charge.eq(0)) el("colorCharge").innerHTML='neutral charge'
 	else {
 		var color = colorShorthands[colorCharge.normal.color]
 		el("colorCharge").innerHTML='<span class="'+color+'">'+color+'</span> charge of <span class="'+color+'" style="font-size:35px">' + shortenDimensions(colorCharge.normal.charge) + "</span>"
 	}
-	for (c = 0; c < 3; c++) el(colors[c]+"PowerRate").textContent="+"+shorten(getColorPowerProduction(colors[c]))+"/s"
-
-	el("redQuarks").textContent = shortenDimensions(quSave.usedQuarks.r)
-	el("greenQuarks").textContent = shortenDimensions(quSave.usedQuarks.g)
-	el("blueQuarks").textContent = shortenDimensions(quSave.usedQuarks.b)
 
 	var assortAmount = getAssortAmount()
 	var canAssign = assortAmount.gt(0)
-	el("assort_amount").textContent = shortenDimensions(assortAmount)
-	el("redAssort").className = canAssign ? "storebtn" : "unavailablebtn"
-	el("greenAssort").className = canAssign ? "storebtn" : "unavailablebtn"
-	el("blueAssort").className = canAssign ? "storebtn" : "unavailablebtn"
+	for (var c of QUARK_COLORS) {
+		var color = COLORS[c]
+		el(c+"PowerRate").textContent="+"+shorten(getColorPowerProduction(c))+"/s"
+		el(color+"Quarks").textContent = shortenDimensions(quSave.usedQuarks[c])
+		el(color+"Assort").className = canAssign ? "storebtn" : "unavailablebtn"
+	}
 
+	el("assort_amount").textContent = shortenDimensions(assortAmount)
 	el("assignAllButton").className = canAssign ? "storebtn" : "unavailablebtn"
 	el("bluePowerMDEffect").style.display = hasMasteryStudy("t383") ? "" : "none"
 }
