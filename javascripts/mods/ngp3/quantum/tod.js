@@ -83,9 +83,9 @@ function updateBranchUpgrade(u) {
 }
 
 function getUnstableGain() {
-	let color = todSave.chosen
-	let ret = quSave.usedQuarks[color].div("1e420").add(1).log10()
-	if (ret < 2) ret = Math.max(quSave.usedQuarks[color].div("1e300").div(99).log10() / 60, 0)
+	let qk = quSave.usedQuarks[todSave.chosen]
+	let ret = qk.div("1e420").add(1).log10()
+	if (ret < 2) ret = Math.max(qk.div("1e300").div(99).log10() / 60, 0)
 
 	let power = getBranchUpgLevel(2) - getRDPower()
 	ret = pow2(power).mul(ret)
@@ -216,8 +216,8 @@ function getTreeUpgradeEffectDesc(upg) {
 }
 
 var branchUpgCostScales = [[300, 15, 2], [50, 8, 1], [4e7, 7, 1]]
-function getBranchUpgCost(branch, upg) {
-	var lvl = getBranchUpgLevel(upg)
+function getBranchUpgCost(branch, upg, lvl) {
+	var lvl = lvl || getBranchUpgLevel(upg)
 	var scale = branchUpgCostScales[upg-1]
 	return pow2(lvl * upg + Math.max(lvl - scale[1], 0) * scale[2]).mul(scale[0])
 }
@@ -360,25 +360,15 @@ function maxTreeUpg() {
 
 function maxBranchUpg(branch, weak) {
 	var bData = todSave[branch]
-	for (var u = (weak ? 2 : 1); u < 4; u++) {
-		var oldLvl = getBranchUpgLevel(u)
-		var scaleStart = branchUpgCostScales[u - 1][1]
-		var cost = getBranchUpgCost(branch, u)
-		if (bData.spin.gte(cost) && oldLvl < scaleStart) {
-			var costMult = Math.pow(2, u)
-			var toAdd = Math.min(Math.floor(bData.spin.div(cost).mul(costMult - 1).add(1).log(costMult)),scaleStart - oldLvl)
-			bData.spin = bData.spin.sub(E_pow(costMult, toAdd).sub(1).div(costMult).mul(cost).min(bData.spin))
-			if (bData.upgrades[u] === undefined) bData.upgrades[u] = 0
-			bData.upgrades[u] += toAdd
-			cost = getBranchUpgCost(branch, u)
-		}
-		if (bData.spin.gte(cost) && bData.upgrades[u] >= scaleStart) {
-			var costMult = Math.pow(2, u + Math.max(3 - u, 1))
-			var toAdd = Math.floor(bData.spin.div(cost).mul(costMult-1).add(1).log(costMult))
-			bData.spin = bData.spin.sub(E_pow(costMult, toAdd).sub(1).div(costMult).mul(cost).min(bData.spin))
-			if (bData.upgrades[u] === undefined) bData.upgrades[u] = 0
-			bData.upgrades[u] += toAdd
-		}
+	for (var u = (weak ? 2 : 1); u <= 3; u++) {
+		var scales = branchUpgCostScales[u - 1]
+		var ret = bData.spin.div(scales[0]).log(2) / u
+		if (ret > scales[1]) ret = scales[1] + (ret - scales[1]) / (u + scales[2]) * u
+		ret = Math.floor(ret) + 1
+
+		if (getBranchUpgLevel(u) >= ret) continue
+		bData.spin = bData.spin.sub(getBranchUpgCost(branch, u, ret - 1))
+		bData.upgrades[u] = ret
 	}
 }
 

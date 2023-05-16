@@ -281,7 +281,7 @@ function updateQuarksTab(tab) {
 function updateQuarksTabOnUpdate(mode) {
 	if (colorCharge.normal.charge.eq(0)) el("colorCharge").innerHTML='neutral charge'
 	else {
-		var color = colorShorthands[colorCharge.normal.color]
+		var color = COLORS[colorCharge.normal.color]
 		el("colorCharge").innerHTML='<span class="'+color+'">'+color+'</span> charge of <span class="'+color+'" style="font-size:35px">' + shortenDimensions(colorCharge.normal.charge) + "</span>"
 	}
 
