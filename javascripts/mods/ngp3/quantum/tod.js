@@ -14,7 +14,7 @@ function updateToDSpeedDisplay(){
 }
 
 function setupToDHTML() {
-	const branchUpgrades = ["Double preonic spin, but preons decay 2x faster.", "Boost free preons.", "Preons decay 4x slower."]
+	const branchUpgrades = ["Speed up Decay by 2x.", "Boost free preons.", "Preons decay 4x slower."]
 	let html = ""
 	for (var [u, b] of Object.entries(branchUpgrades)) {
 		let i = parseInt(u) + 1
@@ -34,7 +34,7 @@ function updateTreeOfDecayTab(){
 	var branch = todSave.r
 	var name = getUQName("r") + " preons"
 	var rate = getDecayRate("r")
-	var linear = pow2(getRDPower("r"))
+	var linear = pow2(getRDNerf("r"))
 	el("decay_btn").className = canUnstableQuarks() ? "storebtn" : "unavailablebtn"
 	el("decay_btn").innerHTML = shortenDimensions(quSave.usedQuarks[todSave.chosen]) + " " + COLORS[todSave.chosen] + " quarks →<br>" + shortenMoney(getUnstableGain()) + " " + name
 
@@ -72,12 +72,12 @@ function updateTreeOfDecayTab(){
 
 function updateBranchUpgrade(u) {
 	var bData = todSave.r
-	var eff = shortenDimensions(getBranchUpgMult(u))
+	var eff = getBranchUpgMult(u)
 
 	var extra = bData.spin.log10() > 200
 	var start = extra ? "" : "Cost: "
 
-	el("redupg" + u + "current").innerHTML = eff + "x" + (u == 2 ? ", ^" + eff : "")
+	el("redupg" + u + "current").innerHTML = u == 2 ? shortenDimensions(eff.mult) + "x, ^" + shortenDimensions(eff.exp) : shortenDimensions(eff) + "x"
 	el("redupg" + u + "cost").innerHTML = start + shortenMoney(getBranchUpgCost("red", u)) + " preonic spin"
 	el("redupg" + u).className = "qu_upg " + (bData.spin.lt(getBranchUpgCost("red", u)) ? "unavailablebtn" : "r")
 }
@@ -87,11 +87,11 @@ function getUnstableGain() {
 	let ret = qk.div("1e420").add(1).log10()
 	if (ret < 2) ret = Math.max(qk.div("1e300").div(99).log10() / 60, 0)
 
-	let power = getBranchUpgLevel(2) - getRDPower()
-	ret = pow2(power).mul(ret)
+	let bu2 = getBranchUpgMult(2)
+	ret = bu2.mult.mul(ret)
 
-	if (ret.gt(1)) ret = E_pow(ret, Math.pow(2, power + 1))
-	return ret.mul(pow2(getRDPower() + 1)).min(pow10(Math.pow(2, 51)))
+	if (ret.gt(1)) ret = ret.pow(bu2.exp.toNumber() * 2)
+	return ret.min(pow10(Math.pow(2, 51)))
 }
 
 function canUnstableQuarks() {
@@ -111,12 +111,13 @@ function unstableQuarks() {
 
 function getBranchSpeedText(){
 	let text = ""
+	if (getBranchUpgMult(1).gt(1)) text += "Branch Upgrade 1: " + shorten(getBranchUpgMult(1)) + "x, "
 	if (hasMasteryStudy("t431") && getMTSMult(431).gt(1)) text += "Mastery Study 431: " + shorten(getMTSMult(431)) + "x, "
 	if (E(getTreeUpgradeEffect(3)).gt(1)) text += "Tree Upgrade 3: " + shorten(getTreeUpgradeEffect(3)) + "x, "
 	if (E(getTreeUpgradeEffect(5)).gt(1)) text += "Tree Upgrade 5: " + shorten(getTreeUpgradeEffect(5)) + "x, "
 	if (hasNU(4)) text += "Neutrino Upgrade 4: " + shorten(NT.eff("upg", 4)) + "x, "
-	if (hasNanoReward("decay_exp")) text += "7th Nanobenefit: ^" + shorten(getNanorewardEff("decay_exp")) + ", "
 	if (hasAch("ng3p48") && player.meta.resets) text += "'Are you currently dying?' reward: " + shorten(Math.sqrt(player.meta.resets + 1)) + "x, "
+	if (hasNanoReward("decay_exp")) text += "7th Nanobenefit: ^" + shorten(getNanorewardEff("decay_exp")) + ", "
 	if (text == "") return "No multipliers currently"
 	return text.slice(0, text.length-2)
 }
@@ -130,25 +131,25 @@ function getGluonBranchSpeed() {
 }
 
 function getBranchSpeed() {
-	let x = E(1)
+	let x = getBranchUpgMult(1)
 	if (hasMasteryStudy("t431")) x = x.mul(getMTSMult(431))
 	x = x.mul(getTreeUpgradeEffect(3))
 	x = x.mul(getTreeUpgradeEffect(5))
 	if (hasNU(4)) x = x.mul(NT.eff("upg", 4))
-	if (hasNanoReward("decay_exp")) x = x.pow(getNanorewardEff("decay_exp"))
 	if (hasAch("ng3p48")) x = x.mul(Math.sqrt(player.meta.resets + 1))
+	if (hasNanoReward("decay_exp")) x = x.pow(getNanorewardEff("decay_exp"))
 	return x
 }
 
 function getDecayRate(branch) {
-	let ret = pow2(getBU1Power() * Math.max((getRadioactiveDecays() - 8) / 10, 1)).div(getBranchUpgMult(3)).div(pow2(Math.max(0, getRDPower() - 4)))
-	ret = ret.mul(getBranchSpeed())
-	ret = ret.div(getGluonBranchSpeed())
-	return ret.min(Math.pow(2, 40))
+	return getBranchSpeed().div(5)
+		.div(getBranchUpgMult(3))
+		.div(pow2(Math.max(0, getRDNerf() - 4)))
+		.div(getGluonBranchSpeed())
 }
 
 function getQuarkSpinProduction(branch) {
-	let ret = getBranchUpgMult(1).mul(getBranchSpeed())
+	let ret = getBranchSpeed()
 	if (hasNU(3)) ret = ret.mul(NT.eff("upg", 3))
 	if (hasNU(12)) ret = ret.mul(NT.eff("upg", 12).normal)
 	if (hasAch("ng3p74")) ret = ret.mul(1 + (todSave[branch].decays || 0))
@@ -406,7 +407,7 @@ function getTreeUpgradeEfficiency(mod) {
 	return r + 1
 }
 
-function getRDPower() {
+function getRDNerf() {
 	let x = getRadioactiveDecays()
 	let y = Math.max(x - 5, 0)
 	return x * 25 + (Math.pow(y, 2) + y) * 1.25
@@ -427,14 +428,20 @@ function getBU2Power() {
 
 function getBranchUpgMult(upg) {
 	if (upg == 1) return pow2(getBU1Power())
-	else if (upg == 2) return pow2(getBU2Power())
+	else if (upg == 2) {
+		let pow = getBU2Power()
+		return {
+			mult: pow2(pow),
+			exp: pow2(pow - getRDNerf()).max(1),
+		}
+	}
 	else if (upg == 3) return E_pow(4, getBranchUpgLevel(3))
 } 
 
 function treeOfDecayUpdating(diff){
 	var branch = todSave.r
 	var decayRate = getDecayRate("r")
-	var decayPower = getRDPower("r")
+	var decayPower = getRDNerf("r")
 			
 	var mult = pow2(decayPower)
 	var power = Decimal.div(branch.quarks.gt(mult)?branch.quarks.div(mult).log(2)+1:branch.quarks.div(mult),decayRate)

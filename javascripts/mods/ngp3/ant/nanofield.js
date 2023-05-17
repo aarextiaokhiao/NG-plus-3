@@ -111,7 +111,7 @@ var nanoRewards = {
 			return pow2(x)
 		},
 		decay_exp: function(x) {
-			return Math.log10(Math.max(x * 2 + 6, 10))
+			return Math.min(Math.log10(Math.max(x + 8, 10)), 2)
 		},
 		photon: function(x) {
 			return Math.pow(x + 1, 1.5)
