@@ -667,7 +667,7 @@ function updatePerformanceTicks() {
 			startInterval()
 		}
 	}
-	el("performanceTicks").textContent = "Performance ticks: " + ["OFF", "LOW", "MEDIUM", "HIGH"][(aarMod.performanceTicks || 0) + 0]
+	el("performanceTicks").textContent = "Throttlence: " + ["OFF", "LOW", "MEDIUM", "HIGH"][aarMod.performanceTicks || 0]
 }
 
 function togglePerformanceTicks() {
