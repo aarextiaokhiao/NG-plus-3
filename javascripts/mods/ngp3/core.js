@@ -566,4 +566,5 @@ function setupNGP3HTMLAndData() {
 
 	//META
 	setupBadges()
+	REDISCOVER.setup()
 }

@@ -242,7 +242,7 @@
 					</tr><tr>
 						<td colspan=3><br><hr></td>
 					</tr><tr>
-						<td><div><button class="unavailablebtn" style="color:black; width: 200px; height: 55px; font-size: 20px">Rediscover (soon)</button></div></td>
+						<td><div><button class="storebtn" onclick='REDISCOVER.open()' style="color:black; width: 200px; height: 55px; font-size: 20px">Rediscover (soon)</button></div></td>
 						<td><div><button id="reset" onclick="reset_game()" class="storebtn" style="color:black; width: 200px; height: 55px; font-size: 20px">RESET THE GAME</button></div></td>
 						<td></td>
 					</tr>
@@ -4249,6 +4249,21 @@
 			</div>
 		</p>
 	</div>
+	<div class="popup loadmenu" id="rediscover_menu">
+		<button class="closebtn storebtn" onclick="closeToolTip()">&times;</button>
+		<p style='display:inline'>
+			<button class='unavailablebtn'>Restart</button>
+			<button class='unavailablebtn'>Continue</button>
+			<button class='unavailablebtn'>Marathon</button><br>
+
+			<b>Click a segment to start a Rediscovery.</b><br>
+			<b class='red'>Any Rediscovery runs in session will be wiped on starting!</b><br>
+
+			<div class="scrollablemenu">
+				<table id='rediscover_sections'></table>
+			</div>
+		</p>
+	</div>
 	<div id="TTbuttons" style="display:none;">
 		<button class="timetheorembtn" onclick="toggleAutoTT()" id="theoremmax" style="margin-left:-276px; width:130px; height: 30px; font-size: 0.75rem; bottom: 77px;">Buy max Theorems</button>
 		<button class="timetheorembtn" onclick="openStudyPresets()" id="presetsbtn" style="margin-left:146px; width:130px; height: 30px; font-size: 0.75rem; bottom: 77px;">Presets</button>
@@ -4312,7 +4327,7 @@
 	<script type="text/javascript" src="javascripts/meta/meta.js"></script>
 	<script type="text/javascript" src="javascripts/meta/presets.js"></script>
 	<script type="text/javascript" src="javascripts/meta/badges.js"></script>
-	<!-- <script type="text/javascript" src="javascripts/meta/rediscovery.js"></script> -->
+	<script type="text/javascript" src="javascripts/meta/rediscover.js"></script>
 
 	<!-- GAME -->
 	<script type="text/javascript" src="javascripts/game/autobuyer.js"></script>
