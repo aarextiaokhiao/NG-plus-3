@@ -44,6 +44,16 @@ const REDISCOVER = {
 			},
 		}
 	],
+	start(x) {
+		save_game()
+		meta.save.rediscover = x
+		load_game(true)
+
+		$.notify("Rediscovery started!")
+	},
+	exit() {
+		change_save(meta.save.current)
+	},
 
 	open() {
 		closeToolTip()

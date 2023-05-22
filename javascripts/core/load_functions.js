@@ -1623,6 +1623,7 @@ function onLoad(noOffline) {
 	updateVersionsONLOAD()
 	mult18 = E(1)
 	resetPowers()
+	closeToolTip()
 	if (mod.ngp3) doNGp3Init()
 
 	for (var s = 0; s < (mod.rs ? 4 : 3); s++) toggleCrunchMode(true)
@@ -1708,7 +1709,6 @@ function onLoad(noOffline) {
 		updateNGModeMessage()
 		inflationCheck = false
 		infiniteCheck = false
-		closeToolTip()
 		showNextModeMessage()
 	} else showNextModeMessage()
 }
@@ -2151,5 +2151,6 @@ function migrateOldSaves() {
 			}
 		}
 	}
+	if (!meta.save.saveOrder.includes(meta.save.current)) meta.save.current = meta.save.saveOrder[0]
 	meta.save.version = meta.ver
 }

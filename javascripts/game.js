@@ -2771,11 +2771,10 @@ function initGame() {
 	migrateOldSaves()
 	setupBugfixData()
 	setupHTMLAndData()
-	updateNewPlayer(meta.started ? "meta.started" : "")
 	saveMeta()
 
 	//Load a save.
-	load_game(false, true)
+	load_game(false, "start")
 
 	//Show one tab during init or they'll all start hidden
 	let tabsSave = aarMod.tabsSave

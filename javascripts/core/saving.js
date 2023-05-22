@@ -8,7 +8,7 @@ el("save").onclick = function () {
 var noSave=false
 function save_game(silent) {
 	if (!game_loaded || noSave || infiniteDetected) return
-	set_save(meta.save.current, player);
+	set_save(getCurrentSaveId(), player);
 	$.notify("Game saved", "info")
 }
 
@@ -25,57 +25,61 @@ function runAutoSave(){
 }
 
 //Loading
+function getCurrentSaveId() {
+	if (meta.save.rediscover !== undefined) return "rediscover"
+	return meta.save.current
+}
+
 var savePlacement
-function load_game(noOffline, init) {
-	if (!meta.save.saveOrder.includes(meta.save.current)) meta.save.current = meta.save.saveOrder[0]
-	var dimensionSave = get_save(meta.save.current)
-	infiniteDetected = false
-	if (dimensionSave!=null) {
-		if (dimensionSave.quantum !== undefined) if (dimensionSave.quantum.timeFluxPower !== undefined) dimensionSave = get_save(meta.save.current + "_af2019")
-		player = dimensionSave
+function load_game(reload, type, preset) {
+	clearInterval(gameLoopIntervalId)
+	updateNewPlayer(type, preset)
+
+	let curr = getCurrentSaveId()
+	let save = get_save(curr)
+	if (save != null) {
+		if (save?.quantum?.timeFluxPower !== undefined) save = get_save(curr + "_af2019")
+
+		infiniteDetected = false
+		if (!infiniteCheck) player = save
+		if (infiniteCheck2) infiniteCheck2 = false
 		if (detectInfinite()) infiniteCheck=true
 	}
-	savePlacement=1
+
+	savePlacement = 0
 	while (meta.save.saveOrder[savePlacement - 1] != meta.save.current) savePlacement++
-	if (infiniteCheck) exportInfiniteSave()
-	if (infiniteCheck || infiniteCheck2 || dimensionSave?.aarMod?.ngp3Build) {
-		updateNewPlayer("reset")
-		infiniteCheck2 = false
-	}
-	onLoad(noOffline)
+
+	onLoad(reload)
 	startInterval()
 }
 
 var loadedSaves=0
-var onLoading=false
+var onLoading
 var latestRow
 var loadSavesIntervalId
-var occupied=false
 function load_saves() {
 	closeToolTip()
 	el("loadmenu").style.display = "block"
 	changeSaveDesc(meta.save.current, savePlacement)
 	clearInterval(loadSavesIntervalId)
 	occupied = false
+
 	loadSavesIntervalId = setInterval(function(){
-		if (occupied) return
-		else occupied = true
+		if (onLoading) return
 		if (loadedSaves == meta.save.saveOrder.length) {
 			clearInterval(loadSavesIntervalId)
 			return
-		} else if (!onLoading) {
-			latestRow = el("saves").insertRow(loadedSaves)
-			onLoading = true
 		}
+
+		onLoading = true
 		try {
 			var id = meta.save.saveOrder[loadedSaves]
-			latestRow.innerHTML = getSaveLayout(id)
-			changeSaveDesc(id, loadedSaves+1)
+			el("saves").insertRow(loadedSaves).innerHTML = getSaveLayout(id)
 			loadedSaves++
+			changeSaveDesc(id, loadedSaves)
 			onLoading = false
 		} catch (_) {}
-		occupied=false
-	}, 0)
+	}, 10)
 }
 
 function getSaveLayout(id) {
@@ -93,9 +97,8 @@ function getSaveLayout(id) {
 	</span>`
 }
 
-function changeSaveDesc(saveId, placement) {
+function changeSaveDesc(saveId, placement, exit) {
 	var element = el("save_" + saveId + "_desc")
-
 	if (element == undefined) return
 
 	try {
@@ -161,7 +164,7 @@ function changeSaveDesc(saveId, placement) {
 			else msg+="Antimatter: "+shortenMoney(E(temp.money))+", Dimension Shifts/Boosts: "+temp.resets+((temp.tickspeedBoosts != undefined ? (temp.resets > 0 || temp.tickspeedBoosts > 0 || temp.galaxies > 0 || temp.infinitied > 0 || temp.eternities != 0 || isSaveQuantumed) : false)?", Tickspeed boosts: "+getFullExpansion(temp.tickspeedBoosts):"")+", Galaxies: "+temp.galaxies
 		}
 
-		el("save_"+saveId+"_title").textContent = (temp?.aarexModifications?.save_name || "Save #"+placement) + (isSaveCurrent ? " (selected)" : "")
+		el("save_"+saveId+"_title").textContent = (temp?.aarexModifications?.save_name || "Save #"+placement) + (isSaveCurrent && !exit ? " (selected)" : "")
 	} catch (_) {
 		var msg = "New game"
 	}
@@ -169,8 +172,6 @@ function changeSaveDesc(saveId, placement) {
 }
 
 function reload() {
-	clearInterval(gameLoopIntervalId)
-	closeToolTip()
 	load_game(true)
 }
 
@@ -180,27 +181,16 @@ function verify_save(obj) {
 }
 
 function change_save(id) {
-	if (!game_loaded) {
-		meta.save.current=id
-		saveMeta()
-		document.location.reload(true)
-		return
-	}
-	save_game(true)
-	clearInterval(gameLoopIntervalId)
-	var oldId=meta.save.current
-	meta.save.current=id
-	changeSaveDesc(oldId, savePlacement)
-	updateNewPlayer()
-	infiniteCheck2 = false
-	closeToolTip()
-	load_game(shiftDown)
-	savePlacement=1
-	while (meta.save.saveOrder[savePlacement-1]!=id) savePlacement++
-	changeSaveDesc(meta.save.current, savePlacement)
+	if (game_loaded) save_game(true)
+	changeSaveDesc(meta.save.current, savePlacement, true)
 
-	$.notify("Save #"+savePlacement+" loaded", "info")
+	delete meta.save.rediscover
+	meta.save.current = id
 	saveMeta()
+	if (game_loaded) {
+		load_game(shiftDown)
+		$.notify("Save #"+savePlacement+" loaded", "info")
+	} else document.location.reload()
 }
 
 function export_save(id) {
@@ -217,12 +207,12 @@ function export_save(id) {
 
 //Credits to MrRedShark77 from https://github.com/MrRedShark77/incremental-mass-rewritten/blob/main/js/saves.js
 function export_file() {
-		let file = new Blob([btoa(JSON.stringify(player, function(k, v) { return (v === Infinity) ? "Infinity" : v }))], {type: "text/plain"})
-		window.URL = window.URL || window.webkitURL;
-		let a = document.createElement("a")
-		a.href = window.URL.createObjectURL(file)
-		a.download = "NG+3 v2.31 Beta - "+new Date().toGMTString()+".txt"
-		a.click()
+	let file = new Blob([btoa(JSON.stringify(player, function(k, v) { return (v === Infinity) ? "Infinity" : v }))], {type: "text/plain"})
+	window.URL = window.URL || window.webkitURL;
+	let a = document.createElement("a")
+	a.href = window.URL.createObjectURL(file)
+	a.download = "NG+3 v2.31 Beta - "+new Date().toGMTString()+".txt"
+	a.click()
 }
 
 function exportData(encoded, success) {
@@ -314,7 +304,7 @@ function import_save(type) {
 			player = decoded_save_data;
 			if (detectInfinite()) infiniteDetected=true
 			if (!game_loaded) {
-				set_save(meta.save.current, player)
+				set_save(getCurrentSaveId(), player)
 				document.location.reload(true)
 				return
 			}
@@ -373,10 +363,11 @@ function move(id,offset) {
 }
 
 function delete_save(saveId) {
-	if (meta.save.saveOrder.length<2) {
+	if (meta.save.saveOrder.length == 1) {
 		reset_game()
 		return
 	} else if (!confirm("Do you really want to erase this save? All game data in this save will be deleted!")) return
+
 	var alreadyDeleted=false
 	var newSaveOrder=[]
 	for (orderId=0;orderId<meta.save.saveOrder.length;orderId++) {
@@ -389,11 +380,10 @@ function delete_save(saveId) {
 			loadedSaves--
 		} else newSaveOrder.push(meta.save.saveOrder[orderId])
 	}
-	meta.save.saveOrder=newSaveOrder
-	if (meta.save.current==saveId) {
-		change_save(meta.save.saveOrder[0])
-		el("loadmenu").style.display="block"
-	} else saveMeta()
+	meta.save.saveOrder = newSaveOrder
+
+	if (meta.save.current==saveId) change_save(meta.save.saveOrder[0])
+	else saveMeta()
 	$.notify("Save deleted", "info")
 }
 
@@ -462,32 +452,16 @@ function new_save() {
 }
 
 function new_game(type) {
+	changeSaveDesc(meta.save.current, savePlacement, true)
 	save_game(true)
-	clearInterval(gameLoopIntervalId)
-	updateNewPlayer(type ? "quick" : "new", type)
-	infiniteCheck2 = false
 
-	var oldId = meta.save.current
-	meta.save.current=1
+	meta.save.current = 1
 	while (meta.save.saveOrder.includes(meta.save.current)) meta.save.current++
 	meta.save.saveOrder.push(meta.save.current)
 	saveMeta()
 
-	changeSaveDesc(oldId, savePlacement)
-	latestRow = el("saves").insertRow(loadedSaves)
-	latestRow.innerHTML = getSaveLayout(meta.save.current)
-	loadedSaves++
-	changeSaveDesc(meta.save.current, loadedSaves)
-	savePlacement = loadedSaves
-
-	onLoad()
-	startInterval()
-	
 	$.notify("Save created", "info")
-	saveMeta()
-
-	closeToolTip()
-	show_mods()
+	load_game(true, type ? "quick" : "new", type)
 }
 
 //Saving Options
@@ -517,7 +491,7 @@ var player
 function updateNewPlayer(mode, preset) {
 	if (mode == "quick") mod = modPresets[preset]
 	else if (mode == "new") mod = modChosen
-	else if (mode == "meta.started") mod = modPresets.ngp3
+	else if (mode == "start") mod = modPresets.ngp3
 	else if (mode != "reset") mod = {}
 
 	player = {

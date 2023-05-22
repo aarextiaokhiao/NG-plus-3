@@ -6,7 +6,6 @@ function initiateMetaSave() {
 	meta.save = localStorage.getItem(metaSaveId)
 	if (meta.save == null) {
 		meta.save = {presetsOrder: []}
-		meta.started = true
 	} else {
 		meta.save = JSON.parse(atob(meta.save))
 	}
