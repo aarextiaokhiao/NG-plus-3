@@ -432,7 +432,7 @@ function setSomeEterEraStuff() {
 }
 
 function setSaveStuffHTML(){
-	el("save_name").textContent = "You are currently playing in " + (aarMod.save_name ? aarMod.save_name : "Save #" + savePlacement)
+	el("save_name").textContent = "You are currently playing in " + (aarMod.save_name ? aarMod.save_name : "Save #" + (savePlacement+1))
 	el("offlineSlider").value = aarMod.offline
 	el("offlineInterval").textContent = "Offline progress: " + (aarMod.offline ? (aarMod.offline * 100) + " ticks" : "OFF")
 	el("autoSave").textContent = "Auto save: " + (aarMod.autoSave ? "ON" : "OFF")

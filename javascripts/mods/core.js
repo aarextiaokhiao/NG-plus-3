@@ -6,7 +6,7 @@ function show_mods(type) {
 	el("advModsTab").style.display = modsShown === 'adv' ? "" : "none"
 
 	el("newSaveBtn").style.display = modsShown ? (modsShown === 'adv' ? "" : "none") : ""
-	el("newAdvSaveBtn").style.display = "none" //modsShown === "basic" ? "" : "none"
+	el("newAdvSaveBtn").style.display = modsShown === "basic" ? "" : "none"
 	el("newImportBtn").style.display = modsShown ? "none" : ""
 	el("cancelNewSaveBtn").style.display = modsShown ? "" : "none"
 }
@@ -25,7 +25,7 @@ var modPresets = {
 	vanilla: {},
 	ngp3: {ngpp: 2, ngp: 1},
 	grand_run: {ngpp: 2},
-	ngm5: {ngmm: 4},
+	ngm4: {ngmm: 3},
 	udsp: {ngpp: 2, ngp: 1, ngud: 3},
 }
 var modFullNames = {

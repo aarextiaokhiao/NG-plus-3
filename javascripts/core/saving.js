@@ -47,7 +47,8 @@ function load_game(reload, type, preset) {
 	}
 
 	savePlacement = 0
-	while (meta.save.saveOrder[savePlacement - 1] != meta.save.current) savePlacement++
+	while (meta.save.saveOrder[savePlacement] != meta.save.current) savePlacement++
+	if (meta.save.rediscover != undefined) savePlacement = -1
 
 	onLoad(reload)
 	startInterval()
@@ -60,9 +61,7 @@ var loadSavesIntervalId
 function load_saves() {
 	closeToolTip()
 	el("loadmenu").style.display = "block"
-	changeSaveDesc(meta.save.current, savePlacement)
 	clearInterval(loadSavesIntervalId)
-	occupied = false
 
 	loadSavesIntervalId = setInterval(function(){
 		if (onLoading) return
@@ -73,102 +72,103 @@ function load_saves() {
 
 		onLoading = true
 		try {
-			var id = meta.save.saveOrder[loadedSaves]
-			el("saves").insertRow(loadedSaves).innerHTML = getSaveLayout(id)
-			loadedSaves++
-			changeSaveDesc(id, loadedSaves)
+			setupSaveDisp()
 			onLoading = false
 		} catch (_) {}
 	}, 10)
 }
 
-function getSaveLayout(id) {
-	return `<b id='save_${id}_title'>Save #${loadedSaves+1}</b>
-	<div id='save_${id}_desc'></div>
-	<button class='storebtn' onclick='overwrite_save(${id})'>Save</button>
-	<button class='storebtn' onclick='change_save(${id})'>Load</button>
-	<button class='storebtn' onclick='rename_save(${id})'>Rename</button>
-	<button class='storebtn' onclick='export_save(${id})'>Export</button>
-	<button class='storebtn' onclick='import_save(${id})'>Overwrite</button>
-	<span class='metaOpts'>
-		<button class='storebtn' onclick='move(${id}, -1)'>⭡</button>
-		<button class='storebtn' onclick='move(${id}, 1)'>⭣</button>
-		<button class='storebtn' onclick='delete_save(${id})'>X</button>
-	</span>`
+function setupSaveDisp() {
+	let i = loadedSaves
+	el("saves").insertRow(i).innerHTML = `<b id='save_${i}_title'></b>
+		<div id='save_${i}_desc'></div>
+		<button class='storebtn' onclick='change_save_placement(${i})'>Load</button>
+		<button class='storebtn' onclick='rename_save(${i})'>Rename</button>
+		<button class='storebtn' onclick='export_save(${i})'>Export</button>
+		<button class='storebtn' onclick='import_save(${i})'>Import</button>
+		<button class='storebtn' onclick='overwrite_save(${i})'>Overwrite</button>
+		<span class='metaOpts'>
+			<button class='storebtn' onclick='swap_save(${i}, ${i-1})'>⭡</button>
+			<button class='storebtn' onclick='swap_save(${i}, ${i+1})'>⭣</button>
+			<button class='storebtn' onclick='delete_save(${i})'>X</button>
+		</span>`
+	loadedSaves++
+	changeSaveDesc(i)
 }
 
-function changeSaveDesc(saveId, placement, exit) {
-	var element = el("save_" + saveId + "_desc")
+function changeSaveDesc(i, exit) {
+	let element = el("save_" + i + "_desc")
 	if (element == undefined) return
 
-	try {
-		var isSaveCurrent = meta.save.current == saveId
-		var temp = isSaveCurrent ? player : get_save(saveId)
-		if (temp.aarexModifications == null) temp.aarexModifications = {}
-		var msg = modAbbs(checkMods(temp)) + "<br>"
+	let isCurrent = savePlacement == i
+	let data = isCurrent ? player : get_save(meta.save.saveOrder[i])
+	el("save_"+i+"_title").textContent = (data?.aarexModifications?.save_name || "Save #" + (i + 1)) + (isCurrent && !exit ? " (selected)" : "")
 
-		var isSaveGhostified = temp?.ghostify?.times > 0
-		var isSaveQuantumed = temp?.quantum?.times > 0
+	try {
+		if (data.aarexModifications == null) data.aarexModifications = {}
+		let msg = modAbbs(checkMods(data)) + "<br>"
+
+		var isSaveGhostified = data?.ghostify?.times > 0
+		var isSaveQuantumed = data?.quantum?.times > 0
 		if (isSaveGhostified) {
-			if (temp.achievements.includes("ng3p81")) {
-				msg+="Spectral Particles: "+shortenDimensions(E(temp.ghostify.ghostParticles))+", Bosons: "+shorten(E(temp.ghostify.lab.best_bosons))
-			} else if (temp.achievements.includes("ng3p71")) {
-				msg+="Spectral Particles: "+shortenDimensions(E(temp.ghostify.ghostParticles))+", Enlightenments: "+getFullExpansion(temp.ghostify.photons.lighten)
-			} else msg+="Spectral Particles: "+shortenDimensions(E(temp.ghostify.ghostParticles))+", Neutrinos: "+shortenDimensions(Decimal.add(temp.ghostify.neutrinos.electron, temp.ghostify.neutrinos.mu).add(temp.ghostify.neutrinos.tau).round())
+			if (data.achievements.includes("ng3p81")) {
+				msg+="Spectral Particles: "+shortenDimensions(E(data.ghostify.ghostParticles))+", Bosons: "+shorten(E(data.ghostify.lab.best_bosons))
+			} else if (data.achievements.includes("ng3p71")) {
+				msg+="Spectral Particles: "+shortenDimensions(E(data.ghostify.ghostParticles))+", Enlightenments: "+getFullExpansion(data.ghostify.photons.lighten)
+			} else msg+="Spectral Particles: "+shortenDimensions(E(data.ghostify.ghostParticles))+", Neutrinos: "+shortenDimensions(Decimal.add(data.ghostify.neutrinos.electron, data.ghostify.neutrinos.mu).add(data.ghostify.neutrinos.tau).round())
 		} else if (isSaveQuantumed) {
-			if (!temp.masterystudies) msg+="Endgame of NG++"
-			else if (temp.masterystudies.includes('d14')) msg+="Total antimatter in Big Rips: "+shortenDimensions(E(temp.quantum.bigRip.totalAntimatter))+", Space Shards: "+shortenDimensions(E(temp.quantum.bigRip.spaceShards))+(temp.achievements.includes("ng3p55")?", Eternal Matter: "+shortenDimensions(E(temp.quantum.breakEternity.eternalMatter)):"")
+			if (!data.masterystudies) msg+="Endgame of NG++"
+			else if (data.masterystudies.includes('d14')) msg+="Total antimatter in Big Rips: "+shortenDimensions(E(data.quantum.bigRip.totalAntimatter))+", Space Shards: "+shortenDimensions(E(data.quantum.bigRip.spaceShards))+(data.achievements.includes("ng3p55")?", Eternal Matter: "+shortenDimensions(E(data.quantum.breakEternity.eternalMatter)):"")
 			else {
-				msg+="Quarks: "+shortenDimensions(Decimal.add(temp.quantum.quarks,temp.quantum.usedQuarks.r).add(temp.quantum.usedQuarks.g).add(temp.quantum.usedQuarks.b))
-				if (temp.masterystudies.includes('d13')) msg+=", Preonic Spins: "+shortenDimensions(E(temp.quantum.tod.r.spin))
-				else if (temp.masterystudies.includes('d12')) msg+=", Nanocharge: "+shortenDimensions(E(temp.quantum.nanofield.charge))+", Nanorewards: "+getFullExpansion(temp.quantum.nanofield.rewards)
-				else if (temp.masterystudies.includes('d10')) msg+=", Duplicants: "+shortenDimensions(getTotalDuplicants(temp))+", Worker duplicants: "+shortenDimensions(getTotalWorkers(temp))
-				else if (temp.masterystudies.includes('d9')) msg+=", Paired challenges: "+temp.quantum.pairedChallenges.completed
-				else if (temp.masterystudies.includes('d8')) {
+				msg+="Quarks: "+shortenDimensions(Decimal.add(data.quantum.quarks,data.quantum.usedQuarks.r).add(data.quantum.usedQuarks.g).add(data.quantum.usedQuarks.b))
+				if (data.masterystudies.includes('d13')) msg+=", Preonic Spins: "+shortenDimensions(E(data.quantum.tod.r.spin))
+				else if (data.masterystudies.includes('d12')) msg+=", Nanocharge: "+shortenDimensions(E(data.quantum.nanofield.charge))+", Nanorewards: "+getFullExpansion(data.quantum.nanofield.rewards)
+				else if (data.masterystudies.includes('d10')) msg+=", Duplicants: "+shortenDimensions(getTotalDuplicants(data))+", Worker duplicants: "+shortenDimensions(getTotalWorkers(data))
+				else if (data.masterystudies.includes('d9')) msg+=", Paired challenges: "+data.quantum.pairedChallenges.completed
+				else if (data.masterystudies.includes('d8')) {
 					var completions=0
-					if (typeof(temp.quantum.challenges)=="number") completions=temp.quantum.challenges
-					else for (c=1;c<9;c++) if (temp.quantum.challenges[c]) completions++
+					if (typeof(data.quantum.challenges)=="number") completions=data.quantum.challenges
+					else for (c=1;c<9;c++) if (data.quantum.challenges[c]) completions++
 					msg+=", Challenge completions: "+completions
 				} else {
-					if (temp.quantum.gluons.rg) msg+=", Gluons: "+shortenDimensions(Decimal.add(temp.quantum.gluons.rg,temp.quantum.gluons.gb).add(temp.quantum.gluons.br))
-					if (temp.masterystudies.includes('d7')) msg+=", Positrons: "+shortenDimensions(temp.quantum.positrons.amount)
-					msg+=", Best quantum: "+timeDisplayShort(temp.quantum.best)
+					if (data.quantum.gluons.rg) msg+=", Gluons: "+shortenDimensions(Decimal.add(data.quantum.gluons.rg,data.quantum.gluons.gb).add(data.quantum.gluons.br))
+					if (data.masterystudies.includes('d7')) msg+=", Positrons: "+shortenDimensions(data.quantum.positrons.amount)
+					msg+=", Best quantum: "+timeDisplayShort(data.quantum.best)
 				}
 			}
-		} else if (temp.exdilation==undefined?false:temp.blackhole.unl) {
-			var tempstart="Eternity Points: "+shortenDimensions(E(temp.eternityPoints))
-			var tempend=", Black hole power: "+shortenMoney(E(temp.blackhole.power))
-			if (temp.exdilation.times > 0) msg+=tempstart+tempend+", Ex-dilation: "+shortenDimensions(E(temp.exdilation.unspent))
-			else msg+=tempstart+", Dilated time: "+shortenMoney(E(temp.dilation.dilatedTime))+", Banked infinities: "+getFullExpansion(temp.infinitiedBank)+", Replicanti: "+shortenMoney(E(temp.replicanti.amount))+tempend
-		} else if (temp.dilation?temp.dilation.studies.includes(1):false) {
-			var temp2="Tachyon particles: "+shortenMoney(E(temp.dilation.totalTachyonParticles))+", Dilated time: "+shortenMoney(E(temp.dilation.dilatedTime))
-			if (temp.dilation.studies.includes(6)) temp2+=", Best meta-antimatter: "+shortenMoney(E(temp.meta.bestAntimatter))+", Meta-dimension shifts/boosts: "+temp.meta.resets
-			else if (!temp.dilation.studies.includes(5)) temp2="Time Theorems: "+shortenMoney(getTotalTT(temp))+", "+temp2
-			else if (!temp.dilation.upgrades.includes(10)) temp2="Eternity Points: "+shortenDimensions(temp.eternityPoints)+", "+temp2
-			msg+=temp2
+		} else if (data.exdilation==undefined?false:data.blackhole.unl) {
+			var datastart="Eternity Points: "+shortenDimensions(E(data.eternityPoints))
+			var dataend=", Black hole power: "+shortenMoney(E(data.blackhole.power))
+			if (data.exdilation.times > 0) msg+=datastart+dataend+", Ex-dilation: "+shortenDimensions(E(data.exdilation.unspent))
+			else msg+=datastart+", Dilated time: "+shortenMoney(E(data.dilation.dilatedTime))+", Banked infinities: "+getFullExpansion(data.infinitiedBank)+", Replicanti: "+shortenMoney(E(data.replicanti.amount))+dataend
+		} else if (data.dilation?data.dilation.studies.includes(1):false) {
+			var data2="Tachyon particles: "+shortenMoney(E(data.dilation.totalTachyonParticles))+", Dilated time: "+shortenMoney(E(data.dilation.dilatedTime))
+			if (data.dilation.studies.includes(6)) data2+=", Best meta-antimatter: "+shortenMoney(E(data.meta.bestAntimatter))+", Meta-dimension shifts/boosts: "+data.meta.resets
+			else if (!data.dilation.studies.includes(5)) data2="Time Theorems: "+shortenMoney(getTotalTT(data))+", "+data2
+			else if (!data.dilation.upgrades.includes(10)) data2="Eternity Points: "+shortenDimensions(data.eternityPoints)+", "+data2
+			msg+=data2
 		} else {
-			var totalChallengeCompletions=(temp.aarexModifications.newGameMinusVersion?-6:0)
-			for (ec=1;ec<13;ec++) totalChallengeCompletions+=(temp.eternityChalls['eterc'+ec]?temp.eternityChalls['eterc'+ec]:0)
+			var totalChallengeCompletions=(data.aarexModifications.newGameMinusVersion?-6:0)
+			for (ec=1;ec<13;ec++) totalChallengeCompletions+=(data.eternityChalls['eterc'+ec]?data.eternityChalls['eterc'+ec]:0)
 			if (totalChallengeCompletions>0) {
-				msg+="Time Theorems: "+getFullExpansion(getTotalTT(temp))+", Challenge completions: "+totalChallengeCompletions
-			} else if (temp.eternities>(temp.aarexModifications.newGameMinusVersion?-20:0)) msg+="Eternity Points: "+shortenDimensions(E(temp.eternityPoints))+", Eternities: "+temp.eternities.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")+", Time Theorems: "+getTotalTT(temp)
-			else if (temp.achievements.includes("r51")) {
-				msg+="Antimatter: "+shortenMoney(E(temp.money))+", Infinity Points: "+shortenDimensions(E(temp.infinityPoints))
-				if (temp.postChallUnlocked>0&&!temp.replicanti.unlocked) {
+				msg+="Time Theorems: "+getFullExpansion(getTotalTT(data))+", Challenge completions: "+totalChallengeCompletions
+			} else if (data.eternities>(data.aarexModifications.newGameMinusVersion?-20:0)) msg+="Eternity Points: "+shortenDimensions(E(data.eternityPoints))+", Eternities: "+data.eternities.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")+", Time Theorems: "+getTotalTT(data)
+			else if (data.achievements.includes("r51")) {
+				msg+="Antimatter: "+shortenMoney(E(data.money))+", Infinity Points: "+shortenDimensions(E(data.infinityPoints))
+				if (data.postChallUnlocked>0&&!data.replicanti.unlocked) {
 					var totalChallengeCompletions=0
-					for (ic=1;ic<13;ic++) totalChallengeCompletions+=temp.challenges.includes("postc"+ic)?1:0
+					for (ic=1;ic<13;ic++) totalChallengeCompletions+=data.challenges.includes("postc"+ic)?1:0
 					msg+=", Challenge completions: "+totalChallengeCompletions
 				}
-			} else if (temp.infinitied>(temp.aarexModifications.newGameMinusVersion?990:temp.aarexModifications.newGamePlusVersion?1:0)) msg+="Infinity Points: "+shortenDimensions(E(temp.infinityPoints))+", Infinities: "+temp.infinitied.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")+", Challenge completions: "+temp.challenges.length
-			else if (temp?.galacticSacrifice?.times) msg+="Antimatter: "+shortenMoney(E(temp.money))+", Galaxy points: "+shortenDimensions(E(temp.galacticSacrifice.galaxyPoints))
-			else msg+="Antimatter: "+shortenMoney(E(temp.money))+", Dimension Shifts/Boosts: "+temp.resets+((temp.tickspeedBoosts != undefined ? (temp.resets > 0 || temp.tickspeedBoosts > 0 || temp.galaxies > 0 || temp.infinitied > 0 || temp.eternities != 0 || isSaveQuantumed) : false)?", Tickspeed boosts: "+getFullExpansion(temp.tickspeedBoosts):"")+", Galaxies: "+temp.galaxies
+			} else if (data.infinitied>(data.aarexModifications.newGameMinusVersion?990:data.aarexModifications.newGamePlusVersion?1:0)) msg+="Infinity Points: "+shortenDimensions(E(data.infinityPoints))+", Infinities: "+data.infinitied.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")+", Challenge completions: "+data.challenges.length
+			else if (data?.galacticSacrifice?.times) msg+="Antimatter: "+shortenMoney(E(data.money))+", Galaxy points: "+shortenDimensions(E(data.galacticSacrifice.galaxyPoints))
+			else msg+="Antimatter: "+shortenMoney(E(data.money))+", Dimension Shifts/Boosts: "+data.resets+((data.tickspeedBoosts != undefined ? (data.resets > 0 || data.tickspeedBoosts > 0 || data.galaxies > 0 || data.infinitied > 0 || data.eternities != 0 || isSaveQuantumed) : false)?", Tickspeed boosts: "+getFullExpansion(data.tickspeedBoosts):"")+", Galaxies: "+data.galaxies
 		}
-
-		el("save_"+saveId+"_title").textContent = (temp?.aarexModifications?.save_name || "Save #"+placement) + (isSaveCurrent && !exit ? " (selected)" : "")
-	} catch (_) {
-		var msg = "New game"
+		element.innerHTML = msg
+	} catch (e) {
+		console.error(e)
+		element.innerHTML = "New game"
 	}
-	element.innerHTML = msg
 }
 
 function reload() {
@@ -182,27 +182,27 @@ function verify_save(obj) {
 
 function change_save(id) {
 	if (game_loaded) save_game(true)
-	changeSaveDesc(meta.save.current, savePlacement, true)
+	changeSaveDesc(savePlacement, true)
 
 	delete meta.save.rediscover
 	meta.save.current = id
-	saveMeta()
+	meta.mustSave = true
 	if (game_loaded) {
 		load_game(shiftDown)
-		$.notify("Save #"+savePlacement+" loaded", "info")
+		$.notify("Save #" + (savePlacement + 1) + " loaded", "info")
 	} else document.location.reload()
 }
 
-function export_save(id) {
-	var placement=1
-	if (!id) id = meta.save.current
-	while (meta.save.saveOrder[placement-1] != id) placement++
+function change_save_placement(i) {
+	change_save(meta.save.saveOrder[i])
+}
 
+function export_save(i = savePlacement) {
 	let data
-	if (id == meta.save.current) data = btoa(JSON.stringify(player, function(k, v) { return (v === Infinity) ? "Infinity" : v }))
-	else data = localStorage.getItem(btoa(savePrefix + id))
+	if (i == savePlacement) data = btoa(JSON.stringify(player, function(k, v) { return (v === Infinity) ? "Infinity" : v }))
+	else data = localStorage.getItem(btoa(savePrefix + meta.save.order[i]))
 
-	exportData(data, "Exported save #"+placement+" to clipboard")
+	exportData(data, "Exported save #" + (i + 1) + " to clipboard")
 }
 
 //Credits to MrRedShark77 from https://github.com/MrRedShark77/incremental-mass-rewritten/blob/main/js/saves.js
@@ -237,14 +237,9 @@ function exportData(encoded, success) {
 };
 
 var onImport = false
-function import_save(type) {
-	if (type=="current") type=meta.save.current
-	else if (type!="new") {
-		var placement=1
-		while (meta.save.saveOrder[placement-1]!=type) placement++
-	}
+function import_save(i = savePlacement) {
 	onImport = true
-	var save_data = prompt("Input your save. "+(type=="new"?"":"("+(type==meta.save.current?"your current save file":"save #"+placement)+" will be overwritten!)"));
+	var save_data = prompt("Input your save. " + (i == "new" ? "" : "("+(i==savePlacement?"your current save file":"save #"+(i+1))+" will be overwritten!)"));
 	onImport = false
 
 	if (save_data.split("AntimatterDimensions")[1] && save_data.split("EndOf")[1]) {
@@ -298,108 +293,91 @@ function import_save(type) {
 			$.notify("Reality or NG+Reality aren't supported in this mod!", "error")
 			return
 		}
-		if (type==meta.save.current) {
+		if (i == savePlacement) {
 			clearInterval(gameLoopIntervalId)
 			infiniteCheck2 = false
 			player = decoded_save_data;
-			if (detectInfinite()) infiniteDetected=true
+			if (detectInfinite()) infiniteDetected = true
 			if (!game_loaded) {
 				set_save(getCurrentSaveId(), player)
 				document.location.reload(true)
 				return
 			}
 			onLoad()
+
 			if (infiniteDetected) {
 				if (el("welcome").style.display != "flex") el("welcome").style.display = "flex"
 				el("welcomeMessage").innerHTML = "Because you imported a save that has an Infinite bug in it, saving is disabled. Most functionality is disabled to prevent further damage. It is highly recommended that you report this occurrence to the #bugs_and_glitches channel on the Discord server, so the bug can be looked into and fixed. It is not recommended to modify the save as it may result in undesirable effects, and will be hard reset after you switch saves or refresh the game."
 			}
 			startInterval()
-		} else if (type === "new") {
-			var newSaveId=1
-			while (meta.save.saveOrder.includes(newSaveId)) newSaveId++
-			meta.save.saveOrder.push(newSaveId)
-			localStorage.setItem(btoa(savePrefix+newSaveId),save_data)
-			if (!game_loaded) {
-				meta.save.current=newSaveId
-				saveMeta()
-				document.location.reload(true)
-				return
-			}
-			latestRow=el("saves").insertRow(loadedSaves)
-			latestRow.innerHTML=getSaveLayout(newSaveId)
-			loadedSaves++
-			changeSaveDesc(newSaveId, loadedSaves)
-			saveMeta()
+		} else if (i == "new") {
+			var new_id=1
+			while (meta.save.saveOrder.includes(new_id)) new_id++
+			meta.save.saveOrder.push(new_id)
+			set_save(new_id, decoded_save_data)
+
+			setupSaveDisp()
+			meta.mustSave = true
 		} else {
-			set_save(type, decoded_save_data)
-			if (!game_loaded) {
-				meta.save.current=type
-				saveMeta()
-				document.location.reload(true)
-				return
-			}
-			changeSaveDesc(type, placement)
-			$.notify("Save #"+placement+" imported", "info")
+			set_save(meta.save.order[i], decoded_save_data)
+			changeSaveDesc(i)
 		}
 	}
 }
 
-function move(id,offset) {
-	placement=0
-	while (meta.save.saveOrder[placement]!=id) placement++
-	if (offset<0) {
-		if (placement<-offset) return
-	} else if (placement>meta.save.saveOrder.length-offset-1) return
-	var temp=meta.save.saveOrder[placement]
-	if (temp==meta.save.current) savePlacement+=offset
-	if (meta.save.saveOrder[placement+offset]==meta.save.current) savePlacement-=offset
-	meta.save.saveOrder[placement]=meta.save.saveOrder[placement+offset]
-	meta.save.saveOrder[placement+offset]=temp
-	el("saves").rows[placement].innerHTML=getSaveLayout(meta.save.saveOrder[placement])
-	el("saves").rows[placement+offset].innerHTML=getSaveLayout(id)
-	changeSaveDesc(meta.save.saveOrder[placement], placement+1)
-	changeSaveDesc(id, placement+offset+1)
-	saveMeta()
+function swap_save(i, j) {
+	let order = meta.save.saveOrder
+	if (j < 0 || j >= order.length) return
+
+	let save = order[i]
+	let other = order[j]
+	order[i] = other
+	order[j] = save
+	meta.mustSave = true
+
+	if (savePlacement == j) savePlacement = i
+	else if (savePlacement == i) savePlacement = j
+	changeSaveDesc(i)
+	changeSaveDesc(j)
 }
 
-function delete_save(saveId) {
+function delete_save(i) {
+	if (meta.save.rediscover != undefined) {
+		$.notify("Can't delete a save during Rediscovery is on!")
+		return
+	}
 	if (meta.save.saveOrder.length == 1) {
 		reset_game()
 		return
-	} else if (!confirm("Do you really want to erase this save? All game data in this save will be deleted!")) return
-
-	var alreadyDeleted=false
-	var newSaveOrder=[]
-	for (orderId=0;orderId<meta.save.saveOrder.length;orderId++) {
-		if (alreadyDeleted) changeSaveDesc(meta.save.saveOrder[orderId], orderId)
-		if (meta.save.saveOrder[orderId]==saveId) {
-			localStorage.removeItem(btoa(savePrefix+saveId))
-			alreadyDeleted=true
-			el("saves").deleteRow(orderId)
-			if (savePlacement>orderId+1) savePlacement--
-			loadedSaves--
-		} else newSaveOrder.push(meta.save.saveOrder[orderId])
 	}
-	meta.save.saveOrder = newSaveOrder
 
-	if (meta.save.current==saveId) change_save(meta.save.saveOrder[0])
-	else saveMeta()
+	if (!confirm("Do you really want to erase this save? All game data in this save will be deleted!")) return
+
+	let order = meta.save.saveOrder
+	let new_order = []
+	for (let j in order) if (j != i) new_order.push(order[j])
+	meta.save.saveOrder = new_order
+
+	if (savePlacement == i) change_save_placement(0)
+	saveMeta()
+
+	for (let j = i; j < new_order.length; j++) changeSaveDesc(j)
+	loadedSaves--
+	el("saves").deleteRow(loadedSaves)
+
 	$.notify("Save deleted", "info")
 }
 
-function rename_save(id) {
-	if (meta.save.current != id && id !== undefined) {
-		var placement=1
-		while (meta.save.saveOrder[placement-1]!=id) placement++
-	}
-	var save_name = prompt("Input the new name of "+((meta.save.current == id || id === undefined) ? "your current save" : "save #" + placement)+". It's recommended to put the name of the mod as your save name. Leave blank to reset the save's name.")
-	if (save_name === null) return
-	if (meta.save.current == id || id === undefined) {
+function rename_save(i = savePlacement) {
+	var save_name = prompt("Input the new name of " + (i == savePlacement ? "your current save" : "save #" + (i + 1))+". It's recommended to put the name of the mod as your save name. Leave blank to reset the save's name.")
+
+	if (i == savePlacement) {
 		aarMod.save_name = save_name
-		el("save_name").textContent = "You are currently playing in " + (aarMod.save_name ? aarMod.save_name : "Save #" + savePlacement)
+		el("save_name").textContent = "You are currently playing in " + (save_name ? save_name : "Save #" + (i + 1))
 	} else {
-		var temp_save = get_save(id)
-		if (!temp_save.aarexModifications) temp_save.aarexModifications={
+		var saveId = meta.save.saveOrder[i]
+		var data = get_save(saveId)
+		if (!data.aarexModifications) data.aarexModifications = {
 			dilationConf: false,
 			autoSave: true,
 			progressBar: true,
@@ -409,25 +387,22 @@ function rename_save(id) {
 			tabsSave: {on: false},
 			breakInfinity: false
 		}
-		temp_save.aarexModifications.save_name = save_name
+		data.aarexModifications.save_name = save_name
+		set_save(saveId, data)
+		changeSaveDesc(i)
 	}
-	set_save(id, temp_save)
-	placement=1
-	while (meta.save.saveOrder[placement-1]!=id) placement++
-	changeSaveDesc(id, placement)
-	$.notify("Save #"+placement+" renamed", "info")
+
+	$.notify("Save renamed", "info")
 }
 
-function overwrite_save(id) {
-	if (id == meta.save.current) {
-		save_game()
-		return
+function overwrite_save(i) {
+	if (savePlacement == i) save_game()
+	else {
+		if (!confirm("Are you really sure you want to overwrite save #"+(i+1)+"? All progress in the current save will be overwritten with the new save!")) return
+		set_save(meta.save.saveOrder[i], player)
+		changeSaveDesc(i)
+		$.notify("Save overwritten", "info")
 	}
-	var placement=1
-	while (meta.save.saveOrder[placement-1]!=id) placement++
-	if (!confirm("Are you really sure you want to overwrite save #"+placement+"? All progress in the current save will be overwritten with the new save!")) return
-	set_save(id, player)
-	$.notify("Save overwritten", "info")
 }
 
 function reset_game() {
@@ -452,15 +427,16 @@ function new_save() {
 }
 
 function new_game(type) {
-	changeSaveDesc(meta.save.current, savePlacement, true)
+	changeSaveDesc(savePlacement, true)
 	save_game(true)
 
 	meta.save.current = 1
 	while (meta.save.saveOrder.includes(meta.save.current)) meta.save.current++
 	meta.save.saveOrder.push(meta.save.current)
-	saveMeta()
+	meta.mustSave = true
 
 	$.notify("Save created", "info")
+	set_save(meta.save.current)
 	load_game(true, type ? "quick" : "new", type)
 }
 

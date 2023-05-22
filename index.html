@@ -15,7 +15,7 @@
 		If this loading screen appears for longer than expected, consider doing the following below.<br>
 		<button class="storebtn" style="font-size: 15px" onclick="document.location.reload(true)">Reload</button>
 		<button class="storebtn" style="font-size: 15px" onclick="export_save()">Export</button>
-		<button class="storebtn" style="font-size: 15px" onclick="import_save('new')">Import</button><br>
+		<button class="storebtn" style="font-size: 15px" onclick="import_save()">Import</button><br>
 		<button class="storebtn" style="font-size: 15px" onclick="load_saves()">Load</button>
 		<button class="storebtn" style="font-size: 15px" onclick="reset_game()">Reset</button><br>
 		You may want to check the console for errors (press F12 to view them). If there are any errors, the game won't load. Please hard reset (Ctrl+F5) when a new patch is applied to fix the errors.
@@ -223,7 +223,7 @@
 					<tr>
 						<td><div><button id="save" class="storebtn" style="color:black; width: 200px; height: 55px; font-size: 20px">Save</button></div></td>
 						<td><div><button id="exportbtn" class="storebtn" onclick='export_save()' style="color:black; width: 200px; height: 55px; font-size: 20px">Export</button></div></td>
-						<td><div><button id="importbtn" class="storebtn" onclick='import_save("current")' style="color:black; width: 200px; height: 55px; font-size: 20px">Import</button></div></td>
+						<td><div><button id="importbtn" class="storebtn" onclick='import_save()' style="color:black; width: 200px; height: 55px; font-size: 20px">Import</button></div></td>
 					</tr><tr>
 						<td><div><button id="autoSave" onclick='toggleAutoSave()' class="storebtn" style="color:black; width: 200px; height: 55px; font-size: 20px"></button></div></td>
 						<td><div><button id="exportybtn" class="storebtn" onclick='export_file()' style="color:black; width: 200px; height: 55px; font-size: 20px">Download</button></div></td>
@@ -4099,14 +4099,11 @@
 			</table>
 		</div>
 		<div id="modsTab" style="height:320px;overflow-y:auto;display:none">
-			<button class="storebtn" style="width: 360px; font-size: 15px" onclick="new_game('ngp3')" style="display: inline">New Game Plus 3 (Recommended)</button><br>
-			Selecting a mod is currently bugged right now. Be patient!
-			<!-- 
 			<button class="storebtn" style="width: 360px; font-size: 15px" onclick="new_game('vanilla')" style="display: inline">Vanilla (NG=)</button><br>
+			<button class="storebtn" style="width: 360px; font-size: 15px" onclick="new_game('ngp3')" style="display: inline">New Game Plus 3 (Recommended)</button><br>
 			<button class="storebtn" style="width: 360px; font-size: 15px" onclick="new_game('grand_run')" style="display: inline">Grand Run (NG= → NG+3)</button><br>
-			<button class="storebtn" style="width: 360px; font-size: 15px" onclick="new_game('ngm5')" style="display: inline">New Game Minus 5 (Recommended)</button><br>
+			<button class="storebtn" style="width: 360px; font-size: 15px" onclick="new_game('ngm4')" style="display: inline">New Game Minus 4 (Recommended)</button><br>
 			<button class="storebtn" style="width: 360px; font-size: 15px" onclick="new_game('udsp')" style="display: inline">NG Update Semiprime (NGUdS')</button>
-			-->
 		</div>
 		<div id="advModsTab" style="height: 320px; overflow-y: auto; display: none">
 			Select a mod first before you start your new journey.<br>

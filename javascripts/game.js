@@ -2325,7 +2325,7 @@ function updateDisplays() {
 	else msg = "You have " + msg + "."
 	el("eternityPoints2").innerHTML = msg
 
-	if (el("loadmenu").style.display == "block") changeSaveDesc(meta.save.current, savePlacement)
+	if (el("loadmenu").style.display == "block") changeSaveDesc(savePlacement)
 }
 
 function simulateTime(seconds, amt, id) {

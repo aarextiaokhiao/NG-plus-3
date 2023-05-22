@@ -45,11 +45,14 @@ const REDISCOVER = {
 		}
 	],
 	start(x) {
-		save_game()
+		save_game(true)
 		meta.save.rediscover = x
-		load_game(true)
+		set_save("rediscover")
+		load_game(true, "start")
 
+		meta.mustSave = true
 		$.notify("Rediscovery started!")
+		el("welcomeMessage").innerHTML = "Welcome to Rediscovery! On the bottom-right, you'll see statistics about this Rediscovery. Get the goal to win!"
 	},
 	exit() {
 		change_save(meta.save.current)
