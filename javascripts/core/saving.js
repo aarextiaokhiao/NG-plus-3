@@ -8,8 +8,8 @@ el("save").onclick = function () {
 var noSave=false
 function save_game(silent) {
 	if (!game_loaded || noSave || infiniteDetected) return
-	set_save(getCurrentSaveId(), player);
-	$.notify("Game saved", "info")
+	set_save(meta.save.current, player);
+	if (!silent) $.notify("Game saved", "info")
 }
 
 function runAutoSave(){
@@ -25,17 +25,13 @@ function runAutoSave(){
 }
 
 //Loading
-function getCurrentSaveId() {
-	if (meta.save.rediscover !== undefined) return "rediscover"
-	return meta.save.current
-}
 
 var savePlacement
 function load_game(reload, type, preset) {
 	clearInterval(gameLoopIntervalId)
 	updateNewPlayer(type, preset)
 
-	let curr = getCurrentSaveId()
+	let curr = meta.save.current
 	let save = get_save(curr)
 	if (save != null) {
 		if (save?.quantum?.timeFluxPower !== undefined) save = get_save(curr + "_af2019")
@@ -46,9 +42,11 @@ function load_game(reload, type, preset) {
 		if (detectInfinite()) infiniteCheck=true
 	}
 
-	savePlacement = 0
-	while (meta.save.saveOrder[savePlacement] != meta.save.current) savePlacement++
-	if (meta.save.rediscover != undefined) savePlacement = -1
+	savePlacement = -1
+	if (typeof(meta.save.current) == "number") {
+		savePlacement = 0
+		while (meta.save.saveOrder[savePlacement] != meta.save.current) savePlacement++
+	}
 
 	onLoad(reload)
 	startInterval()
@@ -184,7 +182,6 @@ function change_save(id) {
 	if (game_loaded) save_game(true)
 	changeSaveDesc(savePlacement, true)
 
-	delete meta.save.rediscover
 	meta.save.current = id
 	meta.mustSave = true
 	if (game_loaded) {
@@ -299,7 +296,7 @@ function import_save(i = savePlacement) {
 			player = decoded_save_data;
 			if (detectInfinite()) infiniteDetected = true
 			if (!game_loaded) {
-				set_save(getCurrentSaveId(), player)
+				set_save(meta.save.current, player)
 				document.location.reload(true)
 				return
 			}
@@ -342,7 +339,7 @@ function swap_save(i, j) {
 }
 
 function delete_save(i) {
-	if (meta.save.rediscover != undefined) {
+	if (REDISCOVER.in()) {
 		$.notify("Can't delete a save during Rediscovery is on!")
 		return
 	}
@@ -383,7 +380,6 @@ function rename_save(i = savePlacement) {
 			progressBar: true,
 			logRateChange: false,
 			eternityChallRecords: {},
-			popUpId: 0,
 			tabsSave: {on: false},
 			breakInfinity: false
 		}
@@ -749,7 +745,6 @@ function updateNewPlayer(mode, preset) {
 			autoSave: true,
 			progressBar: true,
 			eternityChallRecords: {},
-			popUpId: 0,
 			tabsSave: {}
 		}
 	}

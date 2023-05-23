@@ -1080,17 +1080,19 @@ button b, button span {
     background: #232028;
     font-weight: bold;
     border: 1px solid #691fa5;
-    width: 170px;
-    height: 70px;
     transition-duration: 0.2s;
     cursor: pointer;
     border-radius: 4px;
     font-size: 0.85rem;
+}
+
+#TTbuttons .timetheorembtn {
     position: fixed;
     left: 50%;
-
     bottom: 5px;
     z-index: 1;
+    width: 170px;
+    height: 70px;
 }
 
 .timetheorembtn:hover {
@@ -1737,6 +1739,36 @@ br {
 }
 
 /* NG+3 */
+#rediscover_stats {
+	position: fixed;
+	right: 0;
+	bottom: 0;
+	font-size: 10px;
+	text-align: right
+}
+
+#preset_buttons {
+	background: #E0E0E0;
+	border: 2px solid black;
+	border-radius: 6px;
+
+	position: fixed;
+	right: 0;
+	bottom: 0;
+    z-index: 1;
+
+	width: 240px;
+	height: 75px;
+
+	font-size: 10px;
+	text-align: center
+}
+
+#preset_buttons .timetheorembtn {
+	width: 80px;
+	height: 30px;
+}
+
 .timestudybought.mastery {
     background: #b7d;
     border-color: #307;

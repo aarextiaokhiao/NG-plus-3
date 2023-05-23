@@ -1607,8 +1607,9 @@ function updatePerSecond(quick) {
 	updateHotkeys()
 	updateConvertSave(eligibleConvert())
 
-	// Badges
+	// Meta
 	obtainBadges()
+	REDISCOVER.update()
 	if (meta.mustSave) {
 		updateBadges()
 		saveMeta()
@@ -2291,6 +2292,7 @@ function gameLoop(diff, quick) {
 		doGhostifyButtonDisplayUpdating(diff)
 		if (hasBraveMilestone(8)) updateQuarkDisplay()
 	}
+	if (PRESET_DIAL.dial) el("preset_dial_info").innerHTML = `${shiftDown ? 'Save' : 'Load'} a dial preset (${PRESET_DATA[PRESET_DIAL.dial].name})`
 }
 
 function updateDisplays() {

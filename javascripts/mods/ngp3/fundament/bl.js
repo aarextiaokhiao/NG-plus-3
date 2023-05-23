@@ -247,46 +247,10 @@ const BL_HYPOTHESES = {
 		BL_HYPOTHESES.temp()
 	},
 	exportField() {
-		let str = ""
-		for (var [i, d] of Object.entries(blSave.hypo_field)) str+=","+i+";"+d
-		exportData("[FIELD" + str + "]")
+		exportData(PRESET_DATA.bl.get())
 	},
-	importField(str) {
-		if (!str) str = prompt("Insert your preset here. Your field will be overwritten on import!")
-		if (str.slice(0,6) == "[FIELD" && str[str.length - 1] == "]") {
-			let list = str.slice(6, str.length - 1).split(",").slice(1)
-			let newField = {}
-
-			while (list.length) {
-				let entry = list.pop().split(";")
-				let check = entry.length == 3
-				if (!check) {
-					$.notify("[X] Invalid hypothesis format!")
-					continue
-				}
-
-				check = (entry[0] >= 0 && entry[0] < 5) &&
-					(entry[1] >= 0 && entry[1] < 5)
-				if (!check) {
-					$.notify("[X] Invalid hypothesis position!")
-					continue
-				}
-
-				let unl = BL_HYPOTHESES.hypo_types[entry[2]]?.unl
-				check = unl && unl()
-
-				if (!check) {
-					$.notify("[X] Invalid hypothesis kind! It might be invalid or locked!")
-					continue
-				}
-
-				newField[entry[0]+";"+entry[1]] = entry[2]
-			}
-			blSave.hypo_field = newField
-			BL_HYPOTHESES.temp()
-		} else {
-			$.notify("[X] Invalid preset type!")
-		}
+	importField() {
+		PRESET_DATA.bl.load(prompt("Insert your preset here. Your field will be overwritten on import!"))
 	},
 
 	place(x) {
@@ -381,6 +345,56 @@ const BL_HYPOTHESES = {
 		}
 		el("hypo_bonds").innerHTML = bonds
 	},
+}
+
+PRESET_DATA.bl = {
+	name: "Hypotheses",
+	in: _ => isTabShown("bosonic_lab") && isTabShown("hypotheses"),
+	unl: _ => LAB.unlocked(),
+
+	get() {
+		let str = ""
+		for (var [i, d] of Object.entries(blSave.hypo_field)) str+=","+i+";"+d
+		return "[FIELD" + str + "]"
+	},
+
+	options: [],
+	load(str, options) {
+		if (str.slice(0,6) == "[FIELD" && str[str.length - 1] == "]") {
+			let list = str.slice(6, str.length - 1).split(",").slice(1)
+			let newField = {}
+
+			while (list.length) {
+				let entry = list.pop().split(";")
+				let check = entry.length == 3
+				if (!check) {
+					$.notify("[X] Invalid hypothesis format!")
+					continue
+				}
+
+				check = (entry[0] >= 0 && entry[0] < 5) &&
+					(entry[1] >= 0 && entry[1] < 5)
+				if (!check) {
+					$.notify("[X] Invalid hypothesis position!")
+					continue
+				}
+
+				let unl = BL_HYPOTHESES.hypo_types[entry[2]]?.unl
+				check = unl && unl()
+
+				if (!check) {
+					$.notify("[X] Invalid hypothesis kind! It might be invalid or locked!")
+					continue
+				}
+
+				newField[entry[0]+";"+entry[1]] = entry[2]
+			}
+			blSave.hypo_field = newField
+			BL_HYPOTHESES.temp()
+		} else {
+			$.notify("[X] Invalid preset type!")
+		}
+	}
 }
 
 function bondEff(i, def = 1) {

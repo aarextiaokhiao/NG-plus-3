@@ -396,9 +396,9 @@ function setAarexModIfUndefined(){
 	if (aarMod.progressBar === undefined) aarMod.progressBar = true
 	if (aarMod.logRateChange === undefined) aarMod.logRateChange = false
 	if (aarMod.eternityChallRecords === undefined) aarMod.eternityChallRecords = {}
-	if (aarMod.popUpId === undefined) aarMod.popUpId = 0
 
-	if (aarMod.tabsSave === undefined) aarMod.tabsSave = {on: false}
+	if (aarMod.tabsSave === undefined) aarMod.tabsSave = {}
+	if (aarMod.presets === undefined) aarMod.presets = {}
 	if (aarMod.noFooter == undefined) aarMod.noFooter = player.options.theme == "Aarex's Modifications" || player.options.theme == "Aarex's Mods II"
 
 	if (mod.ngp3 && aarMod.newGame3PlusVersion === undefined) {
@@ -2151,6 +2151,5 @@ function migrateOldSaves() {
 			}
 		}
 	}
-	if (!meta.save.saveOrder.includes(meta.save.current)) meta.save.current = meta.save.saveOrder[0]
 	meta.save.version = meta.ver
 }

@@ -229,22 +229,18 @@
 						<td><div><button id="exportybtn" class="storebtn" onclick='export_file()' style="color:black; width: 200px; height: 55px; font-size: 20px">Download</button></div></td>
 						<td><div><button id="load" class="storebtn" onclick='load_saves()' style="color:black; width: 200px; height: 55px; font-size: 20px">Load</button></div></td>
 					</tr><tr>
-						<td colspan=3><hr></td>
-					</tr><tr>
 						<td><div class="storebtn" id="autoSaveIntDiv" style="color:black; width: 198px; height: 55px; font-size:130%; text-align: center;"><b id="autoSaveInterval">Auto-save interval: 30s</b><input id="autoSaveIntervalSlider" style="width: 170px;" type="range" min="15" max="120" value="30" class="slider" oninput="changeAutoSaveInterval()"></div></td>
 						<td><div class="storebtn" style="color:black; width: 198px; height: 55px; font-size:130%; text-align: center;"><b id="offlineInterval"></b><input id="offlineSlider" style="width: 170px;" type="range" min="0" max="10" class="slider" oninput="adjustOfflineProgress()"></div></td>
 						<td><div><button id="rename" class="storebtn" onclick='rename_save()' style="color:black; width: 200px; height: 55px; font-size: 20px">Rename</button></div></td>
-						<td></td>
-					</tr><tr>
-						<td><div><button id="convertSave" onclick="convertSave(convert)" class="storebtn" style="color:black; width: 200px; height: 55px; font-size: 20px"></button></div></td>
-						<td><div><button id="bugExport" onclick="bugExport()" class="storebtn" style="color:black; width:200px; height:55px; font-size:12px; display:none">Export "Infinite" bug save<br><b>(WARNING: This disappears when you reload the game!)</button></b></div></td>
-						<td><div><button onclick='reload()' class="storebtn" id="reload" style="color:black; width: 200px; height: 55px; font-size: 8px"><p style="font-size: 20px">Rollback</p>(to last save point)</button></div></td>
 					</tr><tr>
 						<td colspan=3><br><hr></td>
 					</tr><tr>
-						<td><div><button class="storebtn" onclick='REDISCOVER.open()' style="color:black; width: 200px; height: 55px; font-size: 20px">Rediscover (soon)</button></div></td>
+						<td><div><button class="storebtn" id='rediscover_btn' onclick='REDISCOVER.open()' style="color:black; width: 200px; height: 55px">Rediscover</button></div></td>
+						<td><div><button onclick='reload()' class="storebtn" id="reload" style="color:black; width: 200px; height: 55px; font-size: 8px"><p style="font-size: 20px">Rollback</p>(to last save point)</button></div></td>
 						<td><div><button id="reset" onclick="reset_game()" class="storebtn" style="color:black; width: 200px; height: 55px; font-size: 20px">RESET THE GAME</button></div></td>
-						<td></td>
+					</tr><tr>
+						<td><div><button id="convertSave" onclick="convertSave(convert)" class="storebtn" style="color:black; width: 200px; height: 55px; font-size: 20px"></button></div></td>
+						<td><div><button id="bugExport" onclick="bugExport()" class="storebtn" style="color:black; width:200px; height:55px; font-size:12px; display:none">Export "Infinite" bug save<br><b>(WARNING: This disappears when you reload the game!)</button></b></div></td>
 					</tr>
 				</table>
 			</div><div class='optionstab' id='displayoptions' style='display:none'>
@@ -273,7 +269,7 @@
 					</tr><tr>
 						<td><button id="toggleLogRateChange" onclick="toggleLogRateChange()" class="storebtn" style="color:black; width: 200px; height: 55px"></button></td>
 						<td><button id="maxHighestTD" onclick="maxHighestTD()" class="storebtn" style="color:black; width: 200px; height: 55px"></button></td>
-						<td><button class="unavailablebtn" style="color:black; width: 200px; height: 55px">Show all presets (soon)</button></td>
+						<td><button class="storebtn" onclick="PRESET.open()" style="color:black; width: 200px; height: 55px">Show all presets</button></td>
 					</tr>
 				</table>
 			</div><div class='optionstab' id='secrets' style='display:none'>
@@ -1967,7 +1963,7 @@
 				<table class="table" id="qc_table" style='margin: 0 auto'></table>
 				<div id="pChalls">
 					<button class="storebtn" onclick="respecPC()" style="width:150px; height: 40px; font-size: 10px; border-width: 1px; margin: auto">Respec</button>
-					<button class="storebtn" onclick="exportData(getPCStr())" style="width:150px; height: 40px; font-size: 10px; border-width: 1px; margin: auto">Export</button>
+					<button class="storebtn" onclick="exportData(PRESET_DATA.pc.get())" style="width:150px; height: 40px; font-size: 10px; border-width: 1px; margin: auto">Export</button>
 					<button class="storebtn" onclick="importPC()" style="width:150px; height: 40px; font-size: 10px; border-width: 1px; margin: auto">Import</button><br>
 					<b class="warning">Assigning will bring you into Quantum Challenges tab.</b><br>
 					<table class="table" style="margin: 0 auto">
@@ -4051,6 +4047,7 @@
 			<!-- <a href="http://aarextiaokhiao.github.io/" target="_newtab">Aarex's Hub</a> -->
 		</div>
 	</div>
+	<div id='rediscover_stats'></div>
 
 	<!-- POPUPS -->
 	<div class="popup" id="challfail">
@@ -4067,7 +4064,7 @@
 			<br><br><hr>
 
 			<b>(NG+3 v2.31: Ghostify Respecced)</b><br>
-			<b class="red">(Beta: 5/16/23 Build)</b><br>
+			<b class="red">(Beta: 5/22/23 Build)</b><br>
 			By <a href="https://aarextiaokhiao.github.io/">Aarex</a>, pg132, and usavictor.
 			<br><br>
 
@@ -4091,22 +4088,22 @@
 		<button id="newSaveBtn" class="storebtn" style="font-size: 15px" onclick="new_save()">New</button>
 		<button id="newImportBtn" class="storebtn" style="font-size: 15px" onclick="import_save('new')">Import</button>
 		<button id="cancelNewSaveBtn" class="storebtn" style="font-size: 15px; display: none" onclick="show_mods()">Saves</button>
-		<button id="newAdvSaveBtn" class="storebtn" style="font-size: 15px; display: none" onclick="show_mods('adv')" >Others</button>
+		<button class="storebtn" style="font-size: 15px" onclick="REDISCOVER.open()">Rediscover</button>
 		<br>
 		<div id="savesTab" style="height:320px;overflow-y:auto">
 			To load without offline progress, load while holding shift.<br><br>
-			<table id='saves'>
-			</table>
+			<table id='saves'></table>
 		</div>
 		<div id="modsTab" style="height:320px;overflow-y:auto;display:none">
 			<button class="storebtn" style="width: 360px; font-size: 15px" onclick="new_game('vanilla')" style="display: inline">Vanilla (NG=)</button><br>
 			<button class="storebtn" style="width: 360px; font-size: 15px" onclick="new_game('ngp3')" style="display: inline">New Game Plus 3 (Recommended)</button><br>
 			<button class="storebtn" style="width: 360px; font-size: 15px" onclick="new_game('grand_run')" style="display: inline">Grand Run (NG= → NG+3)</button><br>
 			<button class="storebtn" style="width: 360px; font-size: 15px" onclick="new_game('ngm4')" style="display: inline">New Game Minus 4 (Recommended)</button><br>
-			<button class="storebtn" style="width: 360px; font-size: 15px" onclick="new_game('udsp')" style="display: inline">NG Update Semiprime (NGUdS')</button>
+			<button class="storebtn" style="width: 360px; font-size: 15px" onclick="new_game('udsp')" style="display: inline">NG Update Semiprime (NGUdS')</button><hr>
+			<button class="storebtn" style="width: 360px; font-size: 15px" onclick="show_mods('adv')" style="display: inline">More</button>
 		</div>
 		<div id="advModsTab" style="height: 320px; overflow-y: auto; display: none">
-			Select a mod first before you start your new journey.<br>
+			Select a mod for your journey. Click 'New' to begin.<br>
 			<button class="storebtn" onclick="reset_mods()">Reset Mods</button>
 			<br><br>
 			<b>Expansion</b><br>
@@ -4128,16 +4125,6 @@
 			<button class="storebtn longbtn" id='rsBtn' onclick="toggle_mod('rs')">Respecced: OFF</button>
 			<button class="storebtn longbtn" id='aauBtn' onclick="toggle_mod('aau')" ach-tooltip="Start with all achievements unlocked.">AAU: OFF</button><br>
 			<button class="qu_upg storebtn" id="bl_portion_5" onclick='BL_JOKE.find(5)' style='opacity: 0.1'>You agree to explore other places.</button>
-		</div>
-	</div>
-	<div class="popup loadmenu" id="presetsmenu" style="overflow-y:hidden">
-		<button class="closebtn storebtn" onclick="closeToolTip()">&times;</button>
-		<button class="storebtn" style="font-size: 15px" onclick="new_preset()" style="display: inline">New preset</button>
-		<button class="storebtn" style="font-size: 15px" onclick="new_preset(true)" style="display: inline">Import</button>
-		<button class="storebtn" id="toggle_preset_reset" style="width: 240px; font-size: 15px" onclick="toggle_preset_reset()" style="display: inline">Force respec: OFF</button>
-		<div style="height: 270px; overflow-y: auto">
-			<table id='presets'>
-			</table>
 		</div>
 	</div>
 	<div class="popup optionmenu" id="animationoptions">
@@ -4252,26 +4239,48 @@
 	<div class="popup loadmenu" id="rediscover_menu">
 		<button class="closebtn storebtn" onclick="closeToolTip()">&times;</button>
 		<p style='display:inline'>
-			<button class='unavailablebtn'>Restart</button>
-			<button class='unavailablebtn'>Continue</button>
-			<button class='unavailablebtn'>Marathon</button><br>
-
-			<b>Click a segment to start a Rediscovery.</b><br>
-			<b class='red'>Any Rediscovery runs in session will be wiped on starting!</b><br>
-
+			<div id='rediscover_options'>
+				<button class='storebtn' onclick='REDISCOVER.restart()'>Restart</button>
+				<button class='storebtn' onclick='REDISCOVER.continue()'>Continue</button>
+				<button class='storebtn' onclick='REDISCOVER.exit()'>Exit</button><br>
+			</div>
+			<b id='rediscover_info'></b><br>
 			<div class="scrollablemenu">
 				<table id='rediscover_sections'></table>
 			</div>
 		</p>
 	</div>
+	<div class="popup loadmenu" id="preset_menu" style='height: 350px'>
+		<button class="closebtn storebtn" onclick="closeToolTip()">&times;</button>
+		<div>
+			<button class='storebtn' onclick="PRESET.open('global', true)">Global</button>
+			<button class='storebtn' onclick="PRESET.open('global', false)">Local</button>
+			|
+			<button class='storebtn' onclick="PRESET.new()">New</button>
+			<button class='storebtn' onclick="PRESET.new(true)">Import</button>
+		</div>
+		<div id='preset_types'></div>
+		<div class="scrollablemenu">
+			<table id='preset_list'></table>
+		</div>
+	</div>
 	<div id="TTbuttons" style="display:none;">
 		<button class="timetheorembtn" onclick="toggleAutoTT()" id="theoremmax" style="margin-left:-276px; width:130px; height: 30px; font-size: 0.75rem; bottom: 77px;">Buy max Theorems</button>
-		<button class="timetheorembtn" onclick="openStudyPresets()" id="presetsbtn" style="margin-left:146px; width:130px; height: 30px; font-size: 0.75rem; bottom: 77px;">Presets</button>
 		<button class="timetheorembtn" onclick="buyWithAntimatter()" id="theoremam" style="margin-left: -276px">Buy Time Theorems <br>Cost: 1e20000 antimatter</button>
 		<button class="timetheorembtn" onclick="buyWithIP()" id="theoremip" style="margin-left: -86px">Buy Time Theorems <br>Cost: 1 IP</button>
 		<button class="timetheorembtnlocked" onclick="buyWithEP()" id="theoremep" style="margin-left: 106px">Buy Time Theorems <br>Cost: 1 EP</button>
 		<div id="theorembuybackground"></div>
 		<p id="timetheorems" style="position: fixed;">You have 0 Time Theorems.</p>
+	</div>
+	<div id="preset_buttons" style="display:none;">
+		<p id="preset_dial_info"></p>
+		<div style='position: relative'>
+			<button class="timetheorembtn" style='position: absolute; left: 0px' onclick="PRESET_DIAL.click(1)">1</button>
+			<button class="timetheorembtn" style='position: absolute; left: 80px' onclick="PRESET_DIAL.click(2)">2</button>
+			<button class="timetheorembtn" style='position: absolute; left: 160px' onclick="PRESET_DIAL.click(3)">3</button>
+			<br><br>
+			<button class="timetheorembtn" onclick="PRESET_DIAL.open()">Presets</button>
+		</div>
 	</div>
 	<div id="progress" style="display:none">
 		<div id="progressbar"><span id="progresspercent">0%</span></div>

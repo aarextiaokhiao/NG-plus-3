@@ -240,7 +240,6 @@ function selectQC(x) {
 
 function doReachAMGoalStuff(chall){
 	if (el("welcome").style.display != "flex") el("welcome").style.display = "flex"
-	else aarMod.popUpId = ""
 	el("welcomeMessage").innerHTML = "You reached the antimatter goal (" + shorten(getQCGoal()) + "), but you didn't reach the meta-antimatter goal yet! Get " + shorten(getQuantumReq()) + " meta-antimatter" + (bigRipped() ? " and then you can fundament!" : " and then go Quantum to complete your challenge!")
 	quSave.nonMAGoalReached.push(chall)
 }
@@ -311,31 +310,41 @@ function respecPC(force) {
 	if (!force) updateQuantumChallenges()
 }
 
-function getPCStr() {
-	let order = quSave.pairedChallenges.order
-	let str = ""
-	for (var pc = 1; pc <= 4; pc++) {
-		str += order?.[pc]?.[0] ?? 0
-		str += order?.[pc]?.[1] ?? 0
-		str += "+"
-	}
-	return str
-}
-
 function importPC() {
 	let str = prompt("This will force a Quantum and respec your Paired Challenges!")
 	if (str == "") return
+	PRESET_DATA.pc.load(str)
+}
 
-	let check = {}
-	str = str.split("+")
-	for (var pc = 1; pc <= 4; pc++) {
-		if (str[pc-1][0] == str[pc-1][1]) return
-		check[pc] = [str[pc-1][0], str[pc-1][1]]
+PRESET_DATA.pc = {
+	name: "Paired Challenges",
+	in: _ => isTabShown("challenges") && isTabShown("quantumchallenges") && hasMasteryStudy("d9"),
+	unl: _ => hasMasteryStudy("d9"),
+
+	get() {
+		let order = quSave.pairedChallenges.order
+		let str = ""
+		for (var pc = 1; pc <= 4; pc++) {
+			str += order?.[pc]?.[0] ?? 0
+			str += order?.[pc]?.[1] ?? 0
+			str += "+"
+		}
+		return str
+	},
+
+	options: [],
+	load(str, options) {
+		let check = {}
+		str = str.split("+")
+		for (var pc = 1; pc <= 4; pc++) {
+			if (str[pc-1][0] == str[pc-1][1]) return
+			check[pc] = [str[pc-1][0], str[pc-1][1]]
+		}
+
+		respecPC(true)
+		quSave.pairedChallenges.order = check
+		updateQuantumChallenges()
 	}
-
-	respecPC(true)
-	quSave.pairedChallenges.order = check
-	updateQuantumChallenges()
 }
 
 var ranking=0

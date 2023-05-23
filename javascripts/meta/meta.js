@@ -4,18 +4,17 @@ const meta = {
 
 function initiateMetaSave() {
 	meta.save = localStorage.getItem(metaSaveId)
-	if (meta.save == null) {
-		meta.save = {presetsOrder: []}
-	} else {
-		meta.save = JSON.parse(atob(meta.save))
-	}
-	if (meta.save.current == undefined) {
-		meta.save.current = 1
-		meta.save.saveOrder = [1]
-		meta.save.alert = true
-	}
-	if (!meta.save.presetsOrder_ers) meta.save.presetsOrder_ers = []
-	if (!meta.save.badges) meta.save.badges = {}
+	if (meta.save == null) meta.save = {}
+	else meta.save = JSON.parse(atob(meta.save))
+
+	meta.save = deepUndefinedAndDecimal(meta.save, {
+		current: 1,
+		saveOrder: [1],
+
+		presets: {},
+		badges: {},
+		rediscover: { best: {} },
+	})
 }
 
 function saveMeta() {

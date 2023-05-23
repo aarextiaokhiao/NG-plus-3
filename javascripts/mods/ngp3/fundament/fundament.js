@@ -39,7 +39,6 @@ function unlockFundament() {
 	player.ghostify = setupFundament()
 	loadFundament()
 	if (el("welcome").style.display != "flex") el("welcome").style.display = "flex"
-	else aarMod.popUpId = ""
 	el("welcomeMessage").innerHTML = "You are finally able to complete PC6+8 in Big Rip! However, because of the unstability of this universe, the only way to go further is to fundament. This allows to unlock new stuff in exchange for everything that you have."
 }
 

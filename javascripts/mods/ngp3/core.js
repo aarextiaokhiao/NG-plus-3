@@ -1,6 +1,6 @@
 //VERSION: 2.31
 let ngp3_ver = 2.31
-let ngp3_build = 20230516
+let ngp3_build = 20230522
 function doNGP3Updates() {
 	if (!aarMod.ngp3_build) aarMod.ngp3_build = 0
 	if (aarMod.ngp3_build < 20221230) quSave.multPower = 0
@@ -503,7 +503,6 @@ function doNGP3UnlockStuff() {
 function doQuantumUnlockStuff(){
 	quSave.reached = true
 	if (el("welcome").style.display != "flex") el("welcome").style.display = "flex"
-	else aarMod.popUpId = ""
 	el("welcomeMessage").innerHTML = "Congratulations! You reached " + shorten(getQuantumReq()) + " MA and completed EC14 for the first time! This allows you to go Quantum (the 5th layer), giving you a quark in exchange for everything up to this point, which can be used to get more powerful upgrades. This allows you to get gigantic numbers!"
 }
 
@@ -566,5 +565,6 @@ function setupNGP3HTMLAndData() {
 
 	//META
 	setupBadges()
+	PRESET.setup()
 	REDISCOVER.setup()
 }

@@ -728,7 +728,7 @@ function resetTabs() {
 function onTabSwitch() {
 	el("progress").style.display = aarMod.progressBar && isTabShown("dimensions") ? "block" : "none"
 
-	let study_tree = isTabShown("eternitystore") && (isTabShown('timestudies') || isTabShown('masterystudies'))
+	let study_tree = isTabShown("eternitystore") && (isTabShown('timestudies') || isTabShown('ers_timestudies') || isTabShown('masterystudies'))
 	el("TTbuttons").style.display = study_tree ? "block" : "none"
 	if (study_tree) resizeCanvas()
 
@@ -747,6 +747,7 @@ function onTabSwitch() {
 	if (oldEmpty != isEmptiness) updateHeaders()
 
 	showHideFooter()
+	PRESET_DIAL.detect()
 }
 
 function setTabPlacements() {
