@@ -235,6 +235,11 @@ function exportData(encoded, success) {
 
 var onImport = false
 function import_save(i = savePlacement) {
+	if (i == -1) {
+		$.notify("Disabled during Rediscovery. Cheaters shall not win.")
+		return
+	}
+
 	onImport = true
 	var save_data = prompt("Input your save. " + (i == "new" ? "" : "("+(i==savePlacement?"your current save file":"save #"+(i+1))+" will be overwritten!)"));
 	onImport = false
