@@ -158,7 +158,6 @@ RESETS.funda = {
 			quSave.pairedChallenges.order = {}
 			quSave.pairedChallenges.completed = 0
 		}
-		updateInQCs()
 		updateQuantumChallenges()
 		updateQuantumTabDisplays()
 		updatePCCompletions()

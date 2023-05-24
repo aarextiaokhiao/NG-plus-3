@@ -174,8 +174,8 @@ function getQCIdGoal(qcs, bigRip) {
 	if (qcs.includes(3) && qcs.includes(6)) mult *= 3
 
 	let r = 0
-	if (!qcs[0] || !qcs[1]) r = getQCGoal(qcs[0] || qcs[1]).log10() * mult
-	else r = getQCGoal(qcs[0]).log10() * getQCGoal(qcs[1]).log10() / 1e11 * mult * mult
+	if (!qcs[0] || !qcs[1]) r = QC[qcs[0] || qcs[1]].goal * mult
+	else r = QC[qcs[0]].goal.log10() * QC[qcs[1]].goal.log10() / 1e11 * mult * mult
 	return pow10(r)
 }
 
@@ -335,10 +335,16 @@ PRESET_DATA.pc = {
 	options: [],
 	load(str, options) {
 		let check = {}
+		let has = []
 		str = str.split("+")
 		for (var pc = 1; pc <= 4; pc++) {
-			if (str[pc-1][0] == str[pc-1][1]) return
 			check[pc] = [str[pc-1][0], str[pc-1][1]]
+			for (var qc of check[pc]) {
+				if (parseInt(qc) != qc) return
+				if (qc == 0 || qc == 9) return
+				if (has.includes(qc)) return
+				has.push(qc)
+			}
 		}
 
 		respecPC(true)

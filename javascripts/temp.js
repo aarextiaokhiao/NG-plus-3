@@ -143,6 +143,7 @@ function resetPowers() {
 	setupNanoRewardTemp()
 
 	tmp.funda = {}
+	updateInQCs()
 	updateTemp()
 }
 

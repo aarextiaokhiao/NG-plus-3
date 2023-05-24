@@ -310,7 +310,6 @@ function doQuantum(force, auto, qc = {}) {
 		}
 
 		quSave.challenge = qc.qc || []
-		updateInQCs()
 		updateQCTimes()
 		updateQuantumChallenges()
 	}
