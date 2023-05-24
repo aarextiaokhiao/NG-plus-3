@@ -245,9 +245,7 @@ function automatorTick(diff) {
 
 function automatorPerSec() {
 	if (!isAutoGhostsSafe) return
-	if (isAutoGhostActive(18)) {
-		for (var i = 1; i <= 4; i++) while (buyPositronUpg(i, true)) {}
-	}
+	if (isAutoGhostActive(18)) maxPositronUpg()
 	if (isAutoGhostActive(16)) {
 		maxNeutrinoMult()
 		maxGHPMult()

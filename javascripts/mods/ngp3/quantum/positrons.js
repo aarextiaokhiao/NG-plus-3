@@ -102,3 +102,7 @@ function buyPositronUpg(u, quick) {
 function canBuyPositronUpg(id) {
 	return getPositronUpgRes(id).gte(getPositronUpgCost(id))
 }
+
+function maxPositronUpg() {
+	for (var i = 1; i <= 4; i++) while (buyPositronUpg(i, true)) {}
+}

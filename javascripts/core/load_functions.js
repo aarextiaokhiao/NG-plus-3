@@ -1624,6 +1624,8 @@ function onLoad(noOffline) {
 	mult18 = E(1)
 	resetPowers()
 	closeToolTip()
+	delete PRESET.reload
+	delete PRESET.loc.preset
 	if (mod.ngp3) doNGp3Init()
 
 	for (var s = 0; s < (mod.rs ? 4 : 3); s++) toggleCrunchMode(true)

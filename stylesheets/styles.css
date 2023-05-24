@@ -1769,6 +1769,13 @@ br {
 	height: 30px;
 }
 
+#preset_bulk_str {
+	width: 450px;
+	max-width: 600px;
+	height: 200px;
+	max-height: 250px;
+}
+
 .timestudybought.mastery {
     background: #b7d;
     border-color: #307;
@@ -2137,6 +2144,11 @@ td.lEp {
 	font-size: 12px;
     font-weight: bold;
 	transition-duration: 0.2s
+}
+#decay_btn, #decay_radio {
+	width: 210px;
+	height: 80px;
+	font-size: 12px
 }
 .qu_upg.r {
 	background-color: #1f0000 !important;

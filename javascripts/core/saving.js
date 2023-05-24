@@ -25,7 +25,6 @@ function runAutoSave(){
 }
 
 //Loading
-
 var savePlacement
 function load_game(reload, type, preset) {
 	clearInterval(gameLoopIntervalId)
@@ -204,11 +203,15 @@ function export_save(i = savePlacement) {
 
 //Credits to MrRedShark77 from https://github.com/MrRedShark77/incremental-mass-rewritten/blob/main/js/saves.js
 function export_file() {
-	let file = new Blob([btoa(JSON.stringify(player, function(k, v) { return (v === Infinity) ? "Infinity" : v }))], {type: "text/plain"})
+	downloadData(btoa(JSON.stringify(player, function(k, v) { return (v === Infinity) ? "Infinity" : v })), "NG+3 v2.31 Beta - "+new Date().toGMTString()+".txt")
+}
+
+function downloadData(str, url) {
+	let file = new Blob([str], {type: "text/plain"})
 	window.URL = window.URL || window.webkitURL;
 	let a = document.createElement("a")
 	a.href = window.URL.createObjectURL(file)
-	a.download = "NG+3 v2.31 Beta - "+new Date().toGMTString()+".txt"
+	a.download = url
 	a.click()
 }
 
@@ -361,6 +364,7 @@ function delete_save(i) {
 	meta.save.saveOrder = new_order
 
 	if (savePlacement == i) change_save_placement(0)
+	if (savePlacement > i) savePlacement--
 	saveMeta()
 
 	for (let j = i; j < new_order.length; j++) changeSaveDesc(j)

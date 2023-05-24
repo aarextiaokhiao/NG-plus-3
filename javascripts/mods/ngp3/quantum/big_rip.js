@@ -330,7 +330,7 @@ function updateBreakEternityUpgrade6Temp(){
 	var log2 = em.div(1e45).add(1).log10()
 
 	var exp = Math.pow(log1, 1/3) / 1.7
-	exp += isBreakUpgActive(10) ? Math.pow(log2, 4/3) / 50 : Math.pow(log2, 1/3) * 2
+	exp += isBreakUpgActive(10) ? Math.pow(log2, 4/3) / 30 : Math.pow(log2, 1/3) * 2
 
 	tmp.qu.beu[6] = pow10(exp)
 }
@@ -338,14 +338,6 @@ function updateBreakEternityUpgrade6Temp(){
 function updateBreakEternityUpgrade8Temp(){
 	var x = Math.min(Math.max(player.dilation.tachyonParticles.max(1).log10() / 100 - 1.75, 1), 2)
 	tmp.qu.beu[8] = x
-}
-
-function updateBreakEternityUpgrade9Temp(){
-	tmp.qu.beu[9] = 1
-}
-
-function updateBreakEternityUpgrade10Temp(){
-	tmp.qu.beu[10] = 1
 }
 
 function updateBreakEternityUpgradesTemp() {
@@ -356,8 +348,6 @@ function updateBreakEternityUpgradesTemp() {
 	updateBreakEternityUpgrade5Temp()
 	updateBreakEternityUpgrade6Temp()
 	updateBreakEternityUpgrade8Temp()
-	updateBreakEternityUpgrade9Temp()
-	updateBreakEternityUpgrade10Temp()
 
 	//Upgrade 7: EP Mult
 	tmp.qu.beu[7] = E_pow(1e9, beSave.epMultPower * Math.pow(Math.max(beSave.epMultPower / 400, 1), 3))

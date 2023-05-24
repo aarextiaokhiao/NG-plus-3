@@ -1,7 +1,7 @@
 let PRESET_DATA = {
 	ts: {
 		name: "Time Studies",
-		unl: _ => !mod.rs,
+		unl: _ => (getEternitied() > 0 || quantumed) && !mod.rs,
 		in: _ => isTabShown("eternitystore") && (isTabShown('timestudies') || isTabShown('masterystudies')),
 
 		get: _ => getStudyTreeStr(),
@@ -21,7 +21,7 @@ let PRESET_DATA = {
 	},
 	ts_er: {
 		name: "Studies [Respecced]",
-		unl: _ => mod.rs,
+		unl: _ => getEternitied() > 0 && mod.rs,
 		in: _ => isTabShown("eternitystore") && isTabShown('ers_timestudies'),
 
 		get: _ => getStudyTreeStr(),
@@ -46,24 +46,32 @@ let PRESET = {
 	},
 
 	open(toChange, val) {
-		if (toChange && PRESET.loc[toChange] != val) {
-			PRESET.loc[toChange] = val
-			delete PRESET.reload
+		if (toChange && this.loc[toChange] != val) {
+			this.loc[toChange] = val
+			delete this.reload
 		}
+
 		closeToolTip()
 		el("preset_menu").style.display = "block"
+		el('preset_options').style.display = this.loc.preset ? "" : "none"
+		el('preset_global_btn').className = "storebtn" + (this.loc.global ? " chosen" : "")
+		el('preset_local_btn').className = "storebtn" + (!this.loc.global ? " chosen" : "")
+		for (let [i, data] of Object.entries(PRESET_DATA)) {
+			el(`preset_${i}_open`).style.display = data.unl() ? "" : "none"
+			el(`preset_${i}_open`).className = "storebtn longbtn" + (this.loc.preset == i ? " chosen" : "")
+		}
 
-		if (PRESET.reload) return
-		PRESET.reload = true
-		PRESET.player = this.data(this.loc)
-		PRESET.loaded = 0
-		PRESET.loading = false
-		clearInterval(PRESET.interval)
-
-		for (let [i, data] of Object.entries(PRESET_DATA)) el(`preset_${i}_open`).style.display = data.unl() ? "" : "none"
-
+		if (this.reload) return
+		this.reload = true
+		clearInterval(this.interval)
 		el("preset_list").innerHTML = ""
-		PRESET.interval = setInterval(function() {
+
+		if (!this.loc.preset) return
+		this.player = this.data(this.loc)
+		this.loaded = 0
+		this.loading = false
+
+		this.interval = setInterval(function() {
 			if (PRESET.loading) return
 			if (PRESET.loaded == PRESET.player.main.length) {
 				clearInterval(PRESET.interval)
@@ -74,14 +82,11 @@ let PRESET = {
 			PRESET.loading = false
 		}, 10)
 	},
-	loc: {
-		global: false,
-		preset: "ts",
-	},
+	loc: {},
 
 	setup() {
 		let html = ""
-		for (let [i, data] of Object.entries(PRESET_DATA)) html += `<button class='storebtn longbtn' id='preset_${i}_open' onclick="PRESET.open('preset', '${i}')">${data.name}</button>`
+		for (let [i, data] of Object.entries(PRESET_DATA)) html += `<button id='preset_${i}_open' onclick="PRESET.open('preset', '${i}')">${data.name}</button>`
 		el("preset_types").innerHTML = html
 	},
 	layout() {
@@ -125,17 +130,17 @@ let PRESET = {
 	new(onImport) {
 		let str = onImport ? prompt() : PRESET_DATA[PRESET.loc.preset].get()
 		PRESET.player.main.push({ str: str })
-		PRESET.save(i, true)
+		PRESET.save()
 
 		$.notify(`Preset created`, "info")
 		PRESET.layout()
 	},
-	save(i, silent) {
+	save(i) {
 		let data = (PRESET.loc.global ? meta.save : aarMod).presets
 		data[PRESET.loc.preset] = PRESET.player
 		if (PRESET.loc.global) meta.mustSave = true
 
-		if (silent) return
+		if (i == undefined) return
 		$.notify(`Preset #${i+1} changed and saved`, "info")
 		PRESET.update(i)
 	},
@@ -158,13 +163,13 @@ let PRESET = {
 		PRESET.player.main[j] = p1
 		PRESET.update(i)
 		PRESET.update(j)
-		PRESET.save(null, true)
+		PRESET.save()
 	},
 	delete(i) {
 		let newData = []
 		for (var j = 0; j < PRESET.player.main.length; j++) if (i != j) newData.push(PRESET.player.main[j])
 		PRESET.player.main = newData
-		PRESET.save(null, true)
+		PRESET.save()
 
 		delete PRESET.reload
 		PRESET.open()
@@ -186,13 +191,72 @@ let PRESET_DIAL = {
 	save(i) {
 		let data = PRESET.data({ preset: PRESET_DIAL.dial })
 		data.dial[i] = PRESET_DATA[PRESET_DIAL.dial].get()
+
 		aarMod.presets[PRESET_DIAL.dial] = data
-		$.notify("Preset #" + i + " saved", "info")
+		if (PRESET.loc.preset == PRESET_DIAL.dial && !PRESET.loc.global) PRESET.player = data
+
+		$.notify("Dial preset #" + i + " saved", "info")
 	},
 	load(i) {
 		PRESET_DATA[PRESET_DIAL.dial].load(PRESET.data({ preset: PRESET_DIAL.dial }).dial[i] || "")
-		$.notify("Preset #" + i + " loaded", "info")
+		$.notify("Dial preset #" + i + " loaded", "info")
 	}
+}
+
+let PRESET_BULK = {
+	open() {
+		closeToolTip()
+		el("preset_bulk").style.display = "block"
+		el("preset_bulk_str").value = `${PRESET_BULK.get()}`
+	},
+	close(save) {
+		if (save) {
+			PRESET.player = this.parse()
+			PRESET.save()
+			delete PRESET.reload
+		}
+		PRESET.open()
+	},
+	download() {
+		downloadData(el("preset_bulk_str").value, `NG+3 v2.31 Beta - ${PRESET_DATA[PRESET.loc.preset].name} Presets - ${new Date().toGMTString()}.txt`)
+	},
+
+	get() {
+		let data = PRESET.player
+		let value = ``
+
+		value = `-- MAIN --\n`
+		for (let main of data.main) {
+			value += `"${main.title||''}" / "${main.str}"`
+			for (let [i, opt] of Object.entries(PRESET_OPTION_NAMES)) if (main[i]) value += ` / ${opt}`
+			value += `\n`
+		}
+
+		value += `-- DIAL --\n`
+		for (let [i, dial] of Object.entries(data.dial)) value += `${i} / "${dial}"\n`
+		return value
+	},
+	parse() {
+		let data = { main: [], dial: {} }
+		let mode = ""
+		let lines = el("preset_bulk_str").value.split("\n")
+		for (let line of lines) {
+			if (line == "") continue
+			if (line == "-- MAIN --") mode = "main"
+			if (line == "-- DIAL --") mode = "dial"
+
+			let split = line.split(` / `).map(x => x[0] == `"` ? x.slice(1, x.length - 1) : x)
+			if (split.length == 1) continue
+
+			if (mode == "main") {
+				let json = { title: split[0], str: split[1] }
+				for (let [i, opt] of Object.entries(PRESET_OPTION_NAMES)) if (split.includes(opt)) json[i] = true
+				data.main.push(json)
+			}
+			if (mode == "dial") data.dial[split[0]] = split[1]
+		}
+		return data
+	},
 }
 
 /*

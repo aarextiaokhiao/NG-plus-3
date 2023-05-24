@@ -894,8 +894,8 @@ function updateAutobuyers() {
 
 	if (maxedAutobuy >= 9) giveAchievement("Age of Automation");
 	if (maxedAutobuy >= getTotalNormalChallenges() + 1) giveAchievement("Definitely not worth it");
-	if (bulkMin >= 512) giveAchievement("Bulked up");
-	if (bulkMin >= 1e100) giveAchievement("Professional bodybuilder");
+	if (maxedAutobuy && bulkMin >= 512) giveAchievement("Bulked up");
+	if (maxedAutobuy && bulkMin >= 1e100) giveAchievement("Professional bodybuilder");
 
 	el("autoBuyerEter").style.display = getEternitied() >= 100 ? "inline-block" : "none"
 	player.eternityBuyer.isOn = el("eternityison").checked
@@ -2843,7 +2843,8 @@ window.onfocus = function() {
 }
 
 window.addEventListener('keydown', function(event) {
-	if (!player.options.hotkeys || controlDown === true || document.activeElement.type === "text" || document.activeElement.type === "number" || onImport) return false
+	if (!player.options.hotkeys || controlDown === true || document.activeElement.type === "text" || document.activeElement.type === "textarea" || document.activeElement.type === "number" || onImport) return false
+
 	const key = event.keyCode;
 	if (key >= 49 && key <= 56) {
 		if (shiftDown) buyOneDimension(key-48)

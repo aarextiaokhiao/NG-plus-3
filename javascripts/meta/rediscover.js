@@ -107,7 +107,7 @@ const REDISCOVER = {
 		if (meta.save.rediscover.in != undefined) REDISCOVER.start(meta.save.rediscover.in)
 	},
 	exit() {
-		if (meta.save.rediscover.in != undefined) change_save(meta.save.saveOrder[0])
+		if (meta.save.rediscover.in != undefined) change_save_placement(0)
 	},
 
 	open() {

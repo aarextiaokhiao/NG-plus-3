@@ -51,7 +51,7 @@ function updateTreeOfDecayTab(){
 
 	document.getElementById("decay_radio").style.display = ghostified ? "" : "none"
 	if (ghostified) {
-		document.getElementById("decay_radio_req").innerHTML = "(requires "+shorten(pow10(Math.pow(2, 50))) + " of red " + getUQName("r") + " preons)"
+		document.getElementById("decay_radio_req").innerHTML = "(requires "+shorten(pow10(Math.pow(2, 50))) + " " + getUQName("r") + " preons)"
 		document.getElementById("decay_radio_lvl").textContent = getFullExpansion(getRadioactiveDecays())
 	}
 
