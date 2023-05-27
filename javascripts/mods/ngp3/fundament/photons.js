@@ -80,8 +80,8 @@ let PHOTON = {
 			resName: "Photons",
 			res: _ => ghSave.photons.amt,
 
-			req: i => E(3).pow(Math.pow(i, mod.p3ep ? 0.75 : 1)).mul(1e5),
-			bulk: r => Math.floor(Math.pow(r.max(1).div(1e5).log(3), 1 / (mod.p3ep ? 0.75 : 1))) + 1,
+			req: i => E(5).pow(Math.pow(i, mod.p3ep ? 0.75 : 1)).mul(1e5),
+			bulk: r => Math.floor(Math.pow(r.max(1).div(1e5).log(5), 1 / (mod.p3ep ? 0.75 : 1))) + 1,
 		}
 	],
 
