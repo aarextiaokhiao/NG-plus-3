@@ -412,7 +412,7 @@ let HOW_TO = [
 		tab: "bl",
 		layer: "fundament",
 		desc: `<b>Hypotheses</b><br>
-		There's a 4x4 grid where each unique bond of Hypotheses has its unique boost.
+		There's a 4x4 grid where each bond of Hypotheses has its unique boost.
 		<br><br>
 		<b>Bosonic Milestones</b><br>
 		At a specific amount of best Bosonic Matter, you'll unlock a Bosonic Milestone. Best Bosonic Matter strengthens some milestones.
