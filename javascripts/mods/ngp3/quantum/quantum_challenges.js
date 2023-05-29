@@ -174,7 +174,7 @@ function getQCIdGoal(qcs, bigRip) {
 	if (qcs.includes(3) && qcs.includes(6)) mult *= 3
 
 	let r = 0
-	if (!qcs[0] || !qcs[1]) r = QC[qcs[0] || qcs[1]].goal * mult
+	if (!qcs[0] || !qcs[1]) r = QC[qcs[0] || qcs[1]].goal.log10() * mult
 	else r = QC[qcs[0]].goal.log10() * QC[qcs[1]].goal.log10() / 1e11 * mult * mult
 	return pow10(r)
 }
