@@ -418,8 +418,8 @@ let HOW_TO = [
 		At a specific amount of best Bosonic Matter, you'll unlock a Bosonic Milestone. Best Bosonic Matter strengthens some milestones.
 		<br><br>
 		<b>W & Z Bosons</b><br>
-		There are 3 Capaciators, fillable with W Bosons. Hypercharge must be 0 or less to activate boosts dependent on W+ Bosons.<br>
-		- W+ = +1 Hypercharge if assigned<br>
+		There are 3 Capaciators fillable with W Bosons. Hypercharge must be 0 or less to activate boosts.<br>
+		- W+ = +1 Hypercharge if assigned, powers up Capaciators.<br>
 		- W- = -1 Hypercharge if assigned<br>
 		- Z0 = -1 Hypercharge`
 	/*}, {
