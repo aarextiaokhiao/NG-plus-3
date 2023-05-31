@@ -156,7 +156,7 @@ const NEUTRINO = NT = {
 					let nb7 = (Math.pow(Math.log10(nb7neutrinos + 10), nb7exp) - 1) * 5
 					return nb7
 				},
-				effDesc: e => `Strengthen Tree Upgrades by <b>+${shorten(e*100)}%</b>.`,
+				effDesc: e => `Strengthen Tree Upgrades by <b>${shorten(e*100-1)}%</b>.`,
 			}, {
 				cost: E(1e9),
 				eff(nt) {
@@ -165,7 +165,7 @@ const NEUTRINO = NT = {
 					var nb8 = Math.pow(neutrinos / 30 + 1, exp)
 					return Math.min(nb8, 6)
 				},
-				effDesc: e => `Strengthen Big Rip Upgrade 1 by <b>${shorten(e)}x</b>.`,
+				effDesc: e => `Strengthen Big Rip Upgrade 1 by <b>${shorten(e*100-1)}%</b>.`,
 			}, {
 				cost: E(2e15),
 				eff(nt) {
@@ -173,7 +173,7 @@ const NEUTRINO = NT = {
 					nb9 = pow10(Math.pow(nb9 / 50, 2/3)).mul(nb9)
 					return nb9
 				},
-				effDesc: e => `Strengthen IC3 multiplier base by <b>${shorten(e)}x</b>.`,
+				effDesc: e => `Increase IC3 multiplier base by <b>${shorten(e)}x</b>.`,
 			}, {
 				cost: E(1e19),
 				eff(nt) {
@@ -194,11 +194,9 @@ const NEUTRINO = NT = {
 				cost: E(1/0),
 				eff(nt) {
 					nt = nt[0].add(1).log10()+nt[1].add(1).log10()+nt[2].add(1).log10()
-					let r = Math.log10(Math.max(nt / 150, 1))
-					if (r > 0.2) r = r / 2 + 0.1
-					return Math.min(r, 1)
+					return 1
 				},
-				effDesc: e => `<b>^${e.toFixed(2)}</b> of Replicated Galaxy strength shares to Galaxies.`,
+				effDesc: e => `Placeholder.`,
 			}
 		]
 	},
@@ -275,11 +273,11 @@ const NEUTRINO = NT = {
 			}, {
 				unl: _ => ghSave.times >= 8,
 				cost: E(1e12),
-				desc: `Banked eternities are counted in Quantum Challenges.`
+				desc: `Enable Banked Eternities in Quantum Challenges.`
 			}, {
 				unl: _ => ghSave.times >= 9,
 				cost: E(1e16),
-				desc: `Reactivate and uncap Big Rip upgrade 8.`
+				desc: `Reactivate and uncap Big Rip Upgrade 8.`
 			}, {
 				unl: _ => ghSave.times >= 10,
 				cost: E(1e20),

@@ -131,7 +131,7 @@ var nanoRewards = {
 			return "dilated time gives ^" + x.toFixed(3) + " boost to Meta Dimensions"
 		},
 		dil_exp: function(x) {
-			return "in dilation, raise Normal Dimension multipliers and Tickspeed by ^" + x.toFixed(2)
+			return "in dilation, raise Normal Dimensions and Tickspeed by ^" + x.toFixed(2)
 		},
 		md_boost: function(x) {
 			return "Meta-Dimension Boost gives a " + x.toFixed(2) + "x boost"
