@@ -63,7 +63,7 @@ const BOSONIC_LAB = LAB = {
 			desc: "[QOL] Bank ^0.9 of Replicantis on exiting Big Rips."
 		}, {
 			req: E(200),
-			desc: "Replicanti Absorb speeds up Replicantis.",
+			desc: "Replicanti Absorb speeds up Replicanti.",
 			eff: b => Math.max((tmp.rep.absorb || 1) / 5, 1),
 			effDesc: e => shorten(e) + "x",
 		}, {
@@ -137,7 +137,7 @@ const BOSONIC_LAB = LAB = {
 			effDesc: e => "+" + shortenDimensions(e),
 		}, {
 			req: E(2e6),
-			desc: "Galaxy strength raises galaxy bonus to replicantis.",
+			desc: "Galaxy strength raises Replicated Galaxy bonus to replicantis.",
 			eff: b => Math.max(tmp.gal.str / 3, 1),
 			effDesc: e => "^" + shorten(e)
 		}, {
