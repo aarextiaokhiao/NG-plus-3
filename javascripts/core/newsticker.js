@@ -702,8 +702,8 @@ function nextGhostlyNewsTickerMsg() {
 
 function updateGhostlyNews(toggle) {
 	if (toggle) player.options.secrets.ghostlyNews = !player.options.secrets.ghostlyNews
-	el("ghostlyNewsTicker").style.height = (player.options.secrets?.ghostlyNews ? 24 : 0)+"px"
-	el("ghostlyNewsTickerBlock").style.height = (player.options.secrets?.ghostlyNews ? 16 : 0)+"px"
+	el("ghostlyNewsTicker").style.height = (player.options.secrets?.ghostlyNews ? 24 : 0) + "px"
+	el("ghostlyNewsTickerBlock").style.height = (player.options.secrets?.ghostlyNews ? 16 : 0) + "px"
 	el("ghostlynewsbtn").textContent = (player.options.secrets?.ghostlyNews ? "Hide" : "Show") + " ghostly news ticker"
 }
 

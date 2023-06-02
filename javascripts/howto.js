@@ -273,6 +273,13 @@ let HOW_TO = [
 		<br> 
 		Dilation Upgrades are upgrades that are purchasable with Dilated Time. Some upgrades improve the amount of Dilated Time you gain or reset your free galaxies but decrease the threshold required to get to them. In addition, there is also a TT generator as one of the Dilation upgrades. The first row of dilation upgrades is purchasable as many times as possible, but the rest cannot. `
 	}, {
+		mod: _ => player.aarexModifications?.nguspV,
+		req: _ => player.blackhole.unl,
+
+		title: "Black Hole",
+		layer: "eternity",
+		desc: `On spending e4K EP, you can convert your resources to Remnants which will be used later on. Your Black Hole generates hunger. Feeding with Remnants not only reduces hunger, but also unlocks various boosts based on power, which is a reward.`
+	}, {
 		mod: _ => player.meta !== undefined,
 		req: _ => player.dilation.studies.includes(6),
 
@@ -285,7 +292,7 @@ let HOW_TO = [
 
 		title: "Mastery Studies",
 		layer: "eternity",
-		desc: `Mastery Studies are a new type of Time & Dilation Studies, but the cost will rise for each purchase. Respeccing will reset costs of all Mastery Stuides.`
+		desc: `Mastery Studies are a new type of Time & Dilation Studies, but the cost will rise for each purchase. Respeccing will reset costs of all Mastery Studies.`
 	}, {
 		mod: _ => ngp3,
 		req: _ => player.quantum?.times,

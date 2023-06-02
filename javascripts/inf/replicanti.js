@@ -244,9 +244,10 @@ function replicantiGalaxyAutoToggle() {
 function getReplSpeed() {
 	let inc = .2
 	let exp = 308
-	if (player.dilation.upgrades.includes('ngpp1') && (!mod.udsp || aarMod.nguepV)) {
+	if (player.dilation.upgrades.includes('ngpp1')) {
 		let expDiv = 10
 		if (mod.ngp3) expDiv = 9
+		if (mod.udsp) expDiv = 20
 		let x = 1 + player.dilation.dilatedTime.max(1).log10() / expDiv
 		inc /= Math.min(x, 200)
 		if (x > 200) exp += x / 10 - 20
@@ -272,8 +273,7 @@ function getReplicantiInterval() {
 	if (isBigRipUpgradeActive(4)) interval /= 10
 
 	interval = E(interval).mul(player.replicanti.interval)
-	if (mod.ngud) interval = interval.div(getBlackholePowerEffect().pow(1/3))
-	if (player.dilation.upgrades.includes('ngpp1') && mod.udsp && !aarMod.nguepV) interval = interval.div(player.dilation.dilatedTime.max(1).pow(0.05))
+	if (mod.ngud && !mod.udsp) interval = interval.div(getBlackholePowerEffect().pow(1/3))
 	if (hasMasteryStudy("t332")) interval = interval.div(getMTSMult(332))
 	return interval
 }

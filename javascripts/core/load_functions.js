@@ -392,7 +392,6 @@ function setAarexModIfUndefined(){
 
 	if (aarMod.dilationConf === undefined) aarMod.dilationConf = true
 	if (aarMod.offline === undefined) aarMod.offline = 10
-	if (aarMod.autoSave === undefined) aarMod.autoSave = true
 	if (aarMod.progressBar === undefined) aarMod.progressBar = true
 	if (aarMod.logRateChange === undefined) aarMod.logRateChange = false
 	if (aarMod.eternityChallRecords === undefined) aarMod.eternityChallRecords = {}
@@ -435,9 +434,8 @@ function setSaveStuffHTML(){
 	el("save_name").textContent = "You are currently playing in " + (aarMod.save_name ? aarMod.save_name : "Save #" + (savePlacement+1))
 	el("offlineSlider").value = aarMod.offline
 	el("offlineInterval").textContent = "Offline progress: " + (aarMod.offline ? (aarMod.offline * 100) + " ticks" : "OFF")
-	el("autoSave").textContent = "Auto save: " + (aarMod.autoSave ? "ON" : "OFF")
-	el("autoSaveInterval").textContent = "Auto-save interval: " + getAutoSaveInterval() + "s"
-	el("autoSaveIntervalSlider").value = getAutoSaveInterval()
+
+	changeAutoSaveInterval()
 }
 
 function setSomeEterEraStuff2(){
@@ -1254,15 +1252,11 @@ function doNGM4v0tov2111(){
 }
 
 function doNGSPUpdatingVersion(){
-	if (mod.udsp) {
-		if (player.blackholeDimension5 === undefined) for (var d=5;d<9;d++) player["blackholeDimension"+d] = {
-			cost: blackholeDimStartCosts[d],
-			amount: 0,
-			power: 1,
-			bought: 0
-		}
-		if (player.dilation.autoUpgrades === undefined) player.dilation.autoUpgrades = []
-	}
+	if (!mod.udsp) return
+
+	for (var d = 1; d <= 8; d++) delete player["blackholeDimension"+d]
+	if (player.dilation.autoUpgrades === undefined) player.dilation.autoUpgrades = []
+	aarMod.nguspV = 2
 }
 
 function doInitInfMultStuff(){
@@ -1555,9 +1549,6 @@ function setSomeQuantumAutomationDisplay(){
 	var suffix = "NG" + (mod.ngpp ? "pp" : "ud")
 	el("uhDiv" + suffix).appendChild(el("Universal harmony"))
 	el("feDiv" + suffix).appendChild(el("In the grim darkness of the far endgame"))
-	el("dil14desc").textContent = mod.udsp ? "The TP multiplier upgrade is more powerful." : "Increase the exponent of the TP formula."
-	el("dil52").style["font-size"] = mod.udsp ? "10px" : "9px"
-	el("dil52formula").style.display = mod.udsp ? "none" : ""
 	el("exDilationDesc").innerHTML = mod.udsp ? 'making galaxies <span id="exDilationBenefit" style="font-size:25px; color: black">0</span>% stronger in dilation.' : 'making dilation <span id="exDilationBenefit" style="font-size:25px; color: black">0</span>% less severe.'
 	el("metaAntimatterEffectType").textContent=inQC(3) ? "multiplier on all Infinity Dimensions" : "extra multiplier per Dimension Boost"
 	if (mod.ngpp) {

@@ -12,15 +12,13 @@ function save_game(silent) {
 	if (!silent) $.notify("Game saved", "info")
 }
 
-function runAutoSave(){
-	if (!player) return
+function runAutoSave() {
 	if (!aarMod) return
-	if (aarMod.autoSave) {
-		autoSaveSeconds++
-		if (autoSaveSeconds >= getAutoSaveInterval()) {
-			save_game()
-			autoSaveSeconds=0
-		}
+
+	autoSaveSeconds++
+	if (autoSaveSeconds >= getAutoSaveInterval()) {
+		save_game()
+		autoSaveSeconds=0
 	}
 }
 
@@ -133,7 +131,7 @@ function changeSaveDesc(i, exit) {
 					msg+=", Best quantum: "+timeDisplayShort(data.quantum.best)
 				}
 			}
-		} else if (data.exdilation==undefined?false:data.blackhole.unl) {
+		} else if (data.exdilation && data.blackhole.unl) {
 			var datastart="Eternity Points: "+shortenDimensions(E(data.eternityPoints))
 			var dataend=", Black hole power: "+shortenMoney(E(data.blackhole.power))
 			if (data.exdilation.times > 0) msg+=datastart+dataend+", Ex-dilation: "+shortenDimensions(E(data.exdilation.unspent))
@@ -219,9 +217,9 @@ function exportData(encoded, success) {
 	let output = el('output');
 	let parent = output.parentElement;
 
-	parent.style.display = "";
+	parent.style.display = ""
 	output.value = encoded
-	output.onblur = function() { parent.style.display = "none";}
+	output.onblur = _ => parent.style.display = "none"
 	output.focus();
 	output.select();
 	
@@ -385,7 +383,6 @@ function rename_save(i = savePlacement) {
 		var data = get_save(saveId)
 		if (!data.aarexModifications) data.aarexModifications = {
 			dilationConf: false,
-			autoSave: true,
 			progressBar: true,
 			logRateChange: false,
 			eternityChallRecords: {},
@@ -446,19 +443,16 @@ function new_game(type) {
 }
 
 //Saving Options
-function toggleAutoSave() {
-	aarMod.autoSave = !aarMod.autoSave
-	el("autoSave").textContent = "Auto save: " + (aarMod.autoSave ? "ON" : "OFF")
-	autoSaveSeconds = 0
-}
+function changeAutoSaveInterval(update) {
+	if (update) aarMod.autoSaveInterval = el("autoSaveIntervalSlider").value
 
-function changeAutoSaveInterval() {
-	aarMod.autoSaveInterval = el("autoSaveIntervalSlider").value
-	el("autoSaveInterval").textContent = "Auto-save interval: " + aarMod.autoSaveInterval + "s"
-	autoSaveSeconds = 0
+	let autoInt = getAutoSaveInterval()
+	el("autoSaveInterval").textContent = "Auto-save: " + (autoInt < 1/0 ? autoInt + "s" : "OFF")
+	el("autoSaveIntervalSlider").value = autoInt == 1/0 ? 14 : autoInt
 }
 
 function getAutoSaveInterval() {
+	if (aarMod.autoSaveInterval == 14) return 1/0
 	return aarMod.autoSaveInterval || 30
 }
 
@@ -751,7 +745,6 @@ function updateNewPlayer(mode, preset) {
 			}
 		},
 		aarexModifications: {
-			autoSave: true,
 			progressBar: true,
 			eternityChallRecords: {},
 			tabsSave: {}
@@ -1128,14 +1121,8 @@ function doNGPlusFourPlayer(){
 	aarMod.ngp4V = 1
 }
 
-function doNGUDSemiprimePlayer(){
-	for (var d = 5; d < 9; d++) player["blackholeDimension" + d] = {
-		cost: blackholeDimStartCosts[d],
-		amount: 0,
-		power: 1,
-		bought: 0
-	}
-	aarMod.nguspV = 1
+function doNGUDSemiprimePlayer() {
+	aarMod.nguspV = 0
 }
 
 function doNGMinusFourPlayer(){

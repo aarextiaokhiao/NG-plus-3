@@ -419,7 +419,7 @@ function replicantiDisplay() {
 		let replGalCostPortion = player.infinityPoints.lt(pow10(1e9)) ? "<br>+1 Cost: " + shortenCosts(getRGCost()) + " IP" : ""
 		el("replicantimax").innerHTML = replGalName + ": " + getFullExpansion(player.replicanti.gal) + (replGalOver > 1 ? "+" + getFullExpansion(replGalOver) : "") + replGalCostPortion
 		el("replicantireset").innerHTML = (hasAch("ng3p67") ? "Get " : hasAch("ngpp16") ? "Divide replicanti by " + shorten(Number.MAX_VALUE) + " for" : "Reset replicanti amount for") + " 1 galaxy.<br>" + getFullExpansion(player.replicanti.galaxies) + getExtraReplGalaxyDisp() + " Replicated Galax" + (getTotalRG() == 1 ? "y" : "ies") + " created."
-		el("replicantiapprox").innerHTML = mod.ngp3 && player.dilation.upgrades.includes("ngpp1") && hasTimeStudy(192) && player.replicanti.amount.gte(Number.MAX_VALUE) && (!mod.udsp || aarMod.nguepV) ? 
+		el("replicantiapprox").innerHTML = mod.ngp3 && player.dilation.upgrades.includes("ngpp1") && hasTimeStudy(192) && player.replicanti.amount.gte(Number.MAX_VALUE) ? 
 			"Replicanti increases by " + (tmp.rep.est < Math.log10(2) ? "x2.00 per " + timeDisplayShort(Math.log10(2) / tmp.rep.est * 10) : shorten(pow10(tmp.rep.est.toNumber())) + "x per second") + ".<br>" +
 			"Replicanti Slowdown: " + tmp.rep.speeds.inc.toFixed(3) + "x slower per " + shorten(pow10(tmp.rep.speeds.exp)) + "x.<br>" +
 			"(10x slower per " + shorten(pow10(tmp.rep.speeds.exp / Math.log10(tmp.rep.speeds.inc))) + "x)<br>" +
@@ -463,7 +463,7 @@ function initialTimeStudyDisplay(){
 	el("193desc").textContent = "Currently: " + shortenMoney(E_pow(1.03, Decimal.min(1e7, getEternitied())).min("1e13000")) + "x"
 	el("212desc").textContent = "Currently: " + ((tsMults[212]() - 1) * 100).toFixed(2) + "%"
 	el("214desc").textContent = "Currently: " + shortenMoney(((tmp.sacPow.pow(8)).min("1e46000").mul(tmp.sacPow.pow(1.1)).div(tmp.sacPow)).max(1).min(E("1e125000"))) + "x"
-	el("metaCost").textContent = shortenCosts(getMetaUnlCost());
+	el("metaCost").textContent = shortenCosts(1e24);
 }
 
 function eternityChallengeUnlockDisplay(){
@@ -761,6 +761,13 @@ function setTabPlacements() {
 
 		el(auto ? "automation" : "ghostify").appendChild(el("automaticghosts"))
 		el("automaticghosts").className = auto ? "autotab" : "ghostifytab"
+	}
+
+	//Semiprime
+	let udsp = mod.udsp
+	if (tmp.tab.udsp != udsp) { 
+		tmp.tab.udsp = udsp
+		el(udsp ? "bh_udsp_feed" : "bh_feed").appendChild(el("bh_feed_div"))
 	}
 }
 

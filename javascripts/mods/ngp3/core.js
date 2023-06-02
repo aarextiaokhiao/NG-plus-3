@@ -1,6 +1,6 @@
 //VERSION: 2.31
 let ngp3_ver = 2.31
-let ngp3_build = 20230526
+let ngp3_build = 20230601
 function doNGP3Updates() {
 	if (!aarMod.ngp3_build) aarMod.ngp3_build = 0
 	if (aarMod.ngp3_build < 20221230) quSave.multPower = 0
@@ -95,16 +95,15 @@ function toggleAutoTT() {
 const MAX_DIL_UPG_PRIORITIES = [4, 3, 1, 2]
 function doAutoMetaTick() {
 	if (!mod.ngp3) return
+
 	if (player.autoEterOptions.rebuyupg && speedrunMilestonesReached > 6) {
 		if (speedrunMilestonesReached > 25) maxAllDilUpgs()
 		else for (var i = 0; i < MAX_DIL_UPG_PRIORITIES.length; i++) {
 			var id = "r" + MAX_DIL_UPG_PRIORITIES[i]
-			if (isDilUpgUnlocked(id)) buyDilationUpgrade(id, false, true)
+			buyDilationUpgrade(id)
 		}
 	}
-	for (var d = 1; d <= 8; d++) {
-		if (player.autoEterOptions["md" + d] && speedrunMilestonesReached >= 6 + d) buyMaxMetaDimension(d)
-	}
+	for (var d = 1; d <= 8; d++) if (player.autoEterOptions["md" + d] && speedrunMilestonesReached >= 6 + d) buyMaxMetaDimension(d)
 	if (player.autoEterOptions.metaboost && speedrunMilestonesReached > 14) metaBoost()
 }
 
@@ -170,34 +169,24 @@ function fillAll() {
 //v1.99872
 function maxAllDilUpgs() {
 	let update
-	for (var i = 0; i < MAX_DIL_UPG_PRIORITIES.length; i++) {
-		var id = "r" + MAX_DIL_UPG_PRIORITIES[i]
-		if (isDilUpgUnlocked(id)) {
-			if (id == "r1") {	
-				var cost = pow10(player.dilation.rebuyables[1] + 5)
-				if (player.dilation.dilatedTime.gte(cost)) {
-					var toBuy = Math.floor(player.dilation.dilatedTime.div(cost).mul(9).add(1).log10())
-					var toSpend = pow10(toBuy).sub(1).div(9).mul(cost)
-					player.dilation.dilatedTime = player.dilation.dilatedTime.sub(player.dilation.dilatedTime.min(cost))
-					player.dilation.rebuyables[1] += toBuy
-					update = true
-				}
-			} else if (id == "r2") {
-				if (canBuyGalaxyThresholdUpg()) {
-					if (speedrunMilestonesReached > 21) {
-						var cost = pow10(player.dilation.rebuyables[2] * 2 + 6)
-						if (player.dilation.dilatedTime.gte(cost)) {
-							var toBuy = Math.min(Math.floor(player.dilation.dilatedTime.div(cost).mul(99).add(1).log(100)), 60 - player.dilation.rebuyables[2])
-							var toSpend = E_pow(100,toBuy).sub(1).div(99).mul(cost)
-							player.dilation.dilatedTime = player.dilation.dilatedTime.sub(player.dilation.dilatedTime.min(cost))
-							player.dilation.rebuyables[2] += toBuy
-							resetDilationGalaxies()
-							update=true
-						}
-					} else if (buyDilationUpgrade("r2", true, true)) update = true
-				}
-			} else while (buyDilationUpgrade(id, true, true)) update = true
+	for (let i of MAX_DIL_UPG_PRIORITIES) {
+		let id = "r" + i
+		if (!isDilUpgUnlocked(id)) continue
+
+		let amt = player.dilation.rebuyables[i] || 0
+		let start = Math.floor(getRebuyableDilUpgScaleStart(i))
+		if ((i != 2 || speedrunMilestonesReached >= 22) && amt < start) {
+			let cost = getRebuyableDilUpgCost(i)
+			let scale = DIL_UPG_COSTS[id][1]
+			if (player.dilation.dilatedTime.lt(cost)) continue
+
+			let toBuy = Math.min(Math.floor(player.dilation.dilatedTime.div(cost).mul(scale - 1).add(1).log(scale)), start - amt)
+			let toSpend = E_pow(scale, toBuy).sub(1).div(scale - 1).mul(cost)
+			player.dilation.dilatedTime = player.dilation.dilatedTime.sub(player.dilation.dilatedTime.min(cost))
+			player.dilation.rebuyables[i] += toBuy
+			update = true
 		}
+		while (buyDilationUpgrade(id, true)) update = true
 	}
 	if (update) updateDilationUpgradeButtons()
 }

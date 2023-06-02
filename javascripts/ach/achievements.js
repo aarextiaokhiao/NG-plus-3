@@ -350,7 +350,7 @@ function giveAchievement(name, noUpdate) {
 		for (i = 1; i <= 8; i++) el("td" + i + 'Auto').style.visibility = "visible"
 		el('togglealltimedims').style.display = ""
 		el('epmultAuto').style.display = ""
-		if (mod.udp) el("blackholeAuto").style.display = ""
+		if (mod.udp || mod.udsp) el("blackholeAuto").style.display = ""
 	}
 	if (name == "It will never be enough") el('replicantibulkmodetoggle').style.display="inline-block"
 	if (name == "Stop blocking me!") el('autoReset').style.display = ""

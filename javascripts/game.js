@@ -134,6 +134,8 @@ function setupHTMLAndData() {
 	setupInfUpgHTMLandData()
 	setupDilationUpgradeList()
 	setupMetaDimensions()
+	setupBlackHole()
+	setupBlackHoleUDSP()
 	setupNGP3HTMLAndData()
 }
 
@@ -1551,7 +1553,6 @@ function updateOrderGoals(){
 
 let autoSaveSeconds=0
 function updatePerSecond(quick) {
-	runAutoSave()
 	if (!player) return
 
 	// Achieve:
@@ -1602,6 +1603,7 @@ function updatePerSecond(quick) {
  	failedEC12Check()
 
 	// Other 
+	runAutoSave()
 	fixInfinityTimes()
 	updateOrderGoals()
 	updateHotkeys()
@@ -1817,7 +1819,7 @@ function passiveIPperMUpdating(diff){
 }
 
 function giveBlackHolePowerUpdating(diff){
-	if (mod.ngud) player.blackhole.power = player.blackhole.power.add(getBlackholeDimensionProduction(1).mul(diff))
+	if (isBHDimUnlocked(1)) player.blackhole.power = player.blackhole.power.add(getBlackholeDimensionProduction(1).mul(diff))
 }
 
 function freeTickspeedUpdating(){
@@ -2255,6 +2257,7 @@ function gameLoop(diff, quick) {
 		if (quantumed) quantumOverallUpdating(diff)
 		if (hasAch("ng3p72")) player.eternities = nMx(player.eternities, gainEternitiedStat())
 	}
+	if (mod.udsp && player.blackhole.unl) calcBlackHoleUDSP(diff)
 	if (mod.ngpp) metaDimsUpdating(diff)
 
 	infinityTimeBlackHoleDimUpdating(diff) //production of those dims
@@ -2400,6 +2403,11 @@ let simulateParts = {
 	bh: {
 		amt: _ => player.blackhole?.power,
 		name: "Black Hole Power",
+		color: "black"
+	},
+	bhh: {
+		amt: _ => player.blackhole?.hunger,
+		name: "Black Hole Hunger",
 		color: "black"
 	},
 	ma: {

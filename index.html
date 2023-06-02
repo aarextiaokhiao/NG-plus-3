@@ -23,15 +23,16 @@
 	<script type="text/javascript" src="javascripts/stuck.js"></script>
 
 	<!-- CONTAINER -->
-	<div style="display:none;position:fixed;left:0;top:0"><textarea id="output" style="color:black; width: 200px; height: 55px;"></textarea></div>
-	<div id='ghostlyNewsTicker'><span id='ghostlyNewsTickerText'></span></div>
-	<div id="snow" style="display: none; "></div>
+	<div style="position: fixed; bottom: 100%; display: none"><textarea id="output"></textarea></div>
+	<div id="snow" style="display: none"></div>
 	<div id="bg" style="display: none"></div>
-	<div id="container" class="container" style="color:#4F5957; text-align:center; font-size: 11px; display:none">
-		<div id='ghostlyNewsTickerBlock'></div>
+	<div id="container" style="color:#4F5957; text-align:center; font-size: 11px; display:none">
 		<div id='game' style='display:none'>
 			<div id='news'>.</div>
 		</div>
+		<div id='ghostlyNewsTicker'><span id='ghostlyNewsTickerText'></span></div>
+		<div id='ghostlyNewsTickerBlock'></div>
+
 		<div id="pres_header">
 			<div id="layer_galSac">
 				<div id="galaxyPoints2">You have <span class='GPAmount'>0</span> Galaxy points.</div>
@@ -225,11 +226,10 @@
 						<td><div><button id="exportbtn" class="storebtn" onclick='export_save()' style="color:black; width: 200px; height: 55px; font-size: 20px">Export</button></div></td>
 						<td><div><button id="importbtn" class="storebtn" onclick='import_save()' style="color:black; width: 200px; height: 55px; font-size: 20px">Import</button></div></td>
 					</tr><tr>
-						<td><div><button id="autoSave" onclick='toggleAutoSave()' class="storebtn" style="color:black; width: 200px; height: 55px; font-size: 20px"></button></div></td>
+						<td><div class="storebtn" id="autoSaveIntDiv" style="color:black; width: 198px; height: 55px; font-size:130%; text-align: center;"><b id="autoSaveInterval">Auto-save interval: 30s</b><input id="autoSaveIntervalSlider" style="width: 170px;" type="range" min="14" max="120" value="30" class="slider" oninput="changeAutoSaveInterval(true)"></div></td>
 						<td><div><button id="exportybtn" class="storebtn" onclick='export_file()' style="color:black; width: 200px; height: 55px; font-size: 20px">Download</button></div></td>
 						<td><div><button id="load" class="storebtn" onclick='load_saves()' style="color:black; width: 200px; height: 55px; font-size: 20px">Load</button></div></td>
 					</tr><tr>
-						<td><div class="storebtn" id="autoSaveIntDiv" style="color:black; width: 198px; height: 55px; font-size:130%; text-align: center;"><b id="autoSaveInterval">Auto-save interval: 30s</b><input id="autoSaveIntervalSlider" style="width: 170px;" type="range" min="15" max="120" value="30" class="slider" oninput="changeAutoSaveInterval()"></div></td>
 						<td><div class="storebtn" style="color:black; width: 198px; height: 55px; font-size:130%; text-align: center;"><b id="offlineInterval"></b><input id="offlineSlider" style="width: 170px;" type="range" min="0" max="10" class="slider" oninput="adjustOfflineProgress()"></div></td>
 						<td><div><button id="rename" class="storebtn" onclick='rename_save()' style="color:black; width: 200px; height: 55px; font-size: 20px">Rename</button></div></td>
 					</tr><tr>
@@ -2922,7 +2922,7 @@
 				</table>
 				<table class="table" id="studytable">
 					<tr>
-						<td><button class="timestudylocked" id="dilstudy6" onclick="buyDilationStudy(6, getMetaUnlCost())">Unlock Meta Dimensions<span>Cost: <span id="metaCost" style="display: inline;">1e24</span> Time Theorems</button></td>
+						<td><button class="timestudylocked" id="dilstudy6" onclick="buyDilationStudy(6, 1e24)">Unlock Meta Dimensions<span>Cost: <span id="metaCost" style="display: inline;">1e24</span> Time Theorems</button></td>
 					</tr>
 				</table>
 				<table class="table" id="studytable">
@@ -3403,13 +3403,13 @@
 				<button id="distribEx" style="width:180px; height: 30px; font-size: 12px" onclick="distribEx()" class="storebtn">Distribute ex-dilation</button>
 				<table><tr>
 					<td>
-						<button id="dil11" onclick="buyDilationUpgrade(11)">Double dilated time production.<br><span id="dil11cost"></span></button>
+						<button id="dil11" onclick="buyDilationUpgrade('r1')">Double dilated time.<br><span id="dil11cost"></span></button>
 					</td><td>
-						<button id="dil12" onclick="buyDilationUpgrade(12)">Decrease the galaxy threshold multiplier, but reset Tachyonic Galaxies and dilated time.<br><span id="dil12cost"></span></button>
+						<button id="dil12" onclick="buyDilationUpgrade('r2')">Tachyonic Galaxies scale slower, but reset Dilated Time and Tachyonic Galaxies.<br><span id="dil12cost"></span></button>
 					</td><td>
-						<button id="dil13" onclick="buyDilationUpgrade(13)"><span id="dil13desc"></span><br><span id="dil13cost"></span></button>
+						<button id="dil13" onclick="buyDilationUpgrade('r3')">Triple Tachyon Particles.<br><span id="dil13cost"></span></button>
 					</td><td>
-						<button id="dil14" onclick="buyDilationUpgrade(14)"><span id="dil14desc"></span><br><span id="dil14cost"></span></button>
+						<button id="dil14" onclick="buyDilationUpgrade('r4')">Antimatter gives more Tachyon Particles.<br><span id="dil14cost"></span></button>
 					</td>
 				</tr><tr id="xdrow">
 					<td>
@@ -3424,150 +3424,78 @@
 				</tr></table>
 				<table><tr>
 					<td>
-						<button id="dil21" onclick="buyDilationUpgrade(21)">Gain twice as many Tachyonic Galaxies.<br><span id="dil21cost"></span></button>
+						<button id="dil21" onclick="buyDilationUpgrade(4)">Gain twice as many Tachyonic Galaxies.<br><span id="dil21cost"></span></button>
 					</td><td>
-						<button id="dil22" onclick="buyDilationUpgrade(22)">Time Dimensions are affected by replicanti multiplier ^ 0.1.<br><span id="dil22cost"></span></button>
+						<button id="dil22" onclick="buyDilationUpgrade(5)">Time Dimensions are affected by replicanti multiplier ^ 0.1.<br><span id="dil22cost"></span></button>
 					</td><td>
-						<button id="dil23" onclick="buyDilationUpgrade(23)">Normal Dimensions gain a multiplier based on Dilated Time, unaffected by Time Dilation.<br><span id="dil23cost"></span></button>
+						<button id="dil23" onclick="buyDilationUpgrade(6)">Normal Dimensions gain a multiplier based on Dilated Time, unaffected by Time Dilation.<br><span id="dil23cost"></span></button>
 					</td><td>
-						<button id="dil24" onclick="buyDilationUpgrade(24)">Replicanti increases faster based on Dilated Time.<br><span id="dil24cost"></span></button>
+						<button id="dil24" onclick="buyDilationUpgrade('ngpp1')">Replicanti increases faster based on Dilated Time.<br><span id="dil24cost"></span></button>
 					</td>
 				</tr></table>
 				<table><tr>
 					<td>
-						<button id="dil31" onclick="buyDilationUpgrade(31)">Gain a multiplier to IP based on dilated time.<br><span id="dil31desc"></span><br><span id="dil31cost"></span></button>
+						<button id="dil31" onclick="buyDilationUpgrade(7)">Gain a multiplier to IP based on dilated time.<br><span id="dil31desc"></span><br><span id="dil31cost"></span></button>
 					</td><td>
-						<button id="dil32" onclick="buyDilationUpgrade(32)">Unlock the ability to pick all the study paths from the first split.<br><span id="dil32cost"></span></button>
+						<button id="dil32" onclick="buyDilationUpgrade(8)">Unlock the ability to pick all the study paths from the first split.<br><span id="dil32cost"></span></button>
 					</td><td>
-						<button id="dil33" onclick="buyDilationUpgrade(33)">Reduce the dilation penalty. (^1.05 after reduction)<br><span id="dil33cost"></span></button>
+						<button id="dil33" onclick="buyDilationUpgrade(9)">Reduce the dilation penalty. (^1.05 after reduction)<br><span id="dil33cost"></span></button>
 					</td><td>
-						<button id="dil34" onclick="buyDilationUpgrade(34)">Eternities and dilated time power up each other.<br><span id="dil34cost"></span></button>
+						<button id="dil34" onclick="buyDilationUpgrade('ngpp2')">Eternities and dilated time power up each other.<br><span id="dil34cost"></span></button>
 					</td>
 				</tr></table>
 				<table><tr>
 					<td>
-						<button id="dil51" onclick="buyDilationUpgrade(51)" style='font-size:10px'>Meta Dimensions gain a multiplier based on tickspeed.<br>(1+log(1+log(x)))<br><span id="dil51desc"></span><br><span id="dil51cost"></span></button>
+						<button id="dil51" onclick="buyDilationUpgrade('ngpp3')" style='font-size:10px'>Meta Dimensions gain a multiplier based on tickspeed.<br>(1+log(1+log(x)))<br><span id="dil51desc"></span><br><span id="dil51cost"></span></button>
 					</td><td>
-						<button id="dil52" onclick="buyDilationUpgrade(52)" style='font-size:10px'>Meta-dimension shifts, boosts, and per-ten upgrades are boosted by dilated time.<span id="dil52formula"> (log(log(x))+1)</span><br><span id="dil52desc"></span><br><span id="dil52cost"></span></button>
+						<button id="dil52" onclick="buyDilationUpgrade('ngpp4')" style='font-size:10px'>Meta-dimension shifts, boosts, and per-ten upgrades are boosted by dilated time.<br><span id="dil52desc"></span><br><span id="dil52cost"></span></button>
 					</td><td>
-						<button id="dil53" onclick="buyDilationUpgrade(53)">The meta-antimatter effect on dimension boosts is stronger.<br>(^8 → ^9)<br><span id="dil53cost"></span></button>
+						<button id="dil53" onclick="buyDilationUpgrade('ngpp5')">The meta-antimatter effect on dimension boosts is stronger.<br>(^8 → ^9)<br><span id="dil53cost"></span></button>
 					</td><td>
-						<button id="dil54" onclick="buyDilationUpgrade(54)" style='font-size:10px'>Dilated time production is boosted based on best meta-antimatter.<br><span id="dil54formula"></span><br><span id="dil54desc"></span><br><span id="dil54cost"></span></button>
+						<button id="dil54" onclick="buyDilationUpgrade('ngpp6')" style='font-size:10px'>Dilated time production is boosted based on best meta-antimatter.<br><span id="dil54formula"></span><br><span id="dil54desc"></span><br><span id="dil54cost"></span></button>
 					</td>
 				</tr></table>
 				<table><tr>
 					<td>
-						<button id="dil41" onclick="buyDilationUpgrade(41)">Generate time theorems based on tachyon particles.<br><span id="dil41desc"></span><br><span id="dil41cost"></span></button>
+						<button id="dil41" onclick="buyDilationUpgrade(10)">Generate time theorems based on tachyon particles.<br><span id="dil41desc"></span><br><span id="dil41cost"></span></button>
 					</td><td>
-						<button id="dil42" onclick="buyDilationUpgrade(42)">Gain 5% more Tachyon particles for each <span id="dil42oom"></span>x replicanti.<br><span id="dil42desc"></span><br><span id="dil42cost"></span></button>
+						<button id="dil42" onclick="buyDilationUpgrade('ngud1')">Gain 5% more Tachyon particles for each <span id="dil42oom"></span>x replicanti.<br><span id="dil42desc"></span><br><span id="dil42cost"></span></button>
 					</td><td>
-						<button id="dil43" onclick="buyDilationUpgrade(43)">Eternities and dilated time boost each other by ^0.1.<br><span id="dil43cost"></span></button>
-					</td><td>
-						<button id="dil44" onclick="buyDilationUpgrade(44)">Boost the ex-dilation gain.<br><span id="dil44cost"></span></button>
-					</td><td>
-						<button id="dil45" onclick="buyDilationUpgrade(45)" style='font-size:10px'>Buff the black hole upgrade effect based on your Eternity points.<br><span id="dil45desc"></span><br><span id="dil45cost"></span></button>
-					</td>
-				</tr></table>
-				<table><tr>
-					<td>
-						<button id="dil61" onclick="buyDilationUpgrade(61)" style='font-size:10px'>You gain more dilated time based on your meta-antimatter.<br><span id="dil61desc"></span><br><span id="dil61cost"></span></button>
+						<button id="dil43" onclick="buyDilationUpgrade('ngud2')">Eternities and dilated time boost each other by ^0.1.<br><span id="dil43cost"></span></button>
 					</td>
 				</tr></table>
 			</div>
 			<div class="eternitytab" id="blackhole" style="font-size: 11px">
 				<br>
 				<button class="storebtn" id="blackholeunlock" onclick="unlockBlackhole()" style="width:200px; height: 80px">Unlock the black hole<br>Cost: 1e4000 EP</button>
-				<div id="blackholediv">
+				<div id="blackholediv" style='display: none'>
 					<div>
 						<p>You have <span id="blackholePowAmount" style="font-size:35px; color: black">0</span> black hole power, translated to <span id="DilMultAmount" style="font-size:35px; color: black">0</span>x multiplier on Dilated Time gain, and <span id="InfAndReplMultAmount" style="font-size:35px; color: black">0</span>x multiplier on banked Infinity gain and Replicanti speed.</p>
 					</div>
 					<div id="blackholePowPerSec">You are getting 0 black hole power per second.</div>
 					<br>
-					<table class="table" style="margin: 0 auto">
-						<tr>
-							<td>
-								<button id="blackholeDil" class="eternityupbtn" onclick="feedBlackHole(1)">Feed the black hole with dilated time<br>Cost: xx dilated time</button>
-							</td>
-							<td>
-								<button id="blackholeInf" class="eternityupbtn" onclick="feedBlackHole(2)">Feed the black hole with banked infinities<br>Cost: xx banked infinities</button>
-							</td>
-							<td>
-								<button id="blackholeRepl" class="eternityupbtn" onclick="feedBlackHole(3)">Feed the black hole with replicanti<br>Cost: xx replicanti</button>
-							</td>
-						</tr>
-					</table>
-					<div><button id="blackholeMax" class="storebtn" onclick="feedBlackholeMax()" style="height: 25px; width: 190px; font-size:10px; margin-top: -3px;">Max all upgrades</button></div>
-					<div><button id="blackholeAuto" class="storebtn" onclick="toggleAutoEter('blackhole')" style="height: 25px; width: 190px; font-size:10px; margin-top: 3px;"></button></div>
+					<div id="bh_feed">
+						<div id="bh_feed_div">
+							<table class='table' id="bh_feed_table"></table>
+							<button id="blackholeMax" class="storebtn" onclick="feedBlackholeMax()" style="height: 25px; width: 190px; font-size:10px; margin-top: -3px;">Max all</button><br>
+							<button id="blackholeAuto" class="storebtn" onclick="toggleAutoEter('blackhole')" style="height: 25px; width: 190px; font-size:10px; margin-top: 3px;"></button>
+						</div>
+					</div>
 					<button id="maxBlackholeDimensions" class="storebtn" style="font-size: 12px; width: 230px;" onclick="buyMaxBlackholeDimensions()">Max all black hole dimensions</Button>
-					<table class="table">
-						<tr style="font-size: 17px" id="blackholeRow1">
-							<td id="blackholeD1" width="43%">
-								First Black Hole Dimension x1
-							</td>
-							<td>
-								<div id="blackholeAmount1">0 (0)</div>
-							</td>
-							<td align="right" width="10%">
-								<button id="blackholeMax1" style="color:black; width:195px; height:30px" class="storebtn" align="right" onclick="buyBlackholeDimension(1)">Cost: 1e4000 EP</button>
-							</td>
-						</tr>
-						<tr style="font-size: 17px" id="blackholeRow2">
-							<td id="blackholeD2" width="43%">
-								Second Black Hole Dimension x1
-							</td>
-							<td>
-								<div id="blackholeAmount2">0 (0)</div>
-							</td>
-							<td align="right" width="10%">
-								<button id="blackholeMax2" style="color:black; width:195px; height:30px" class="storebtn" align="right" onclick="buyBlackholeDimension(2)">Cost: 1e8000 EP</button>
-							</td>
-						</tr>
-						<tr style="font-size: 17px" id="blackholeRow3">
-							<td id="blackholeD3" width="43%">
-								Third Black Hole Dimension x1
-							</td>
-							<td>
-								<div id="blackholeAmount3">0 (0)</div>
-							</td>
-							<td align="right" width="10%">
-								<button id="blackholeMax3" style="color:black; width:195px; height:30px" class="storebtn" align="right" onclick="buyBlackholeDimension(3)">Cost: 1e12000 EP</button>
-							</td>
-						</tr>
-						<tr style="font-size: 17px" id="blackholeRow4">
-							<td id="blackholeD4" width="43%">
-								Fourth Black Hole Dimension x1
-							</td>
-							<td>
-								<div id="blackholeAmount4">0 (0)</div>
-							</td>
-							<td align="right" width="10%">
-								<button id="blackholeMax4" style="color:black; width:195px; height:30px" class="storebtn" align="right" onclick="buyBlackholeDimension(4)">Cost: 1e20000 EP</button>
-							</td>
-						</tr>
-						<tr style="font-size: 17px" id="blackholeRow5">
-							<td id="blackholeD5" width="43%"></td>
-							<td><div id="blackholeAmount5"></div></td>
-							<td align="right" width="10%"><button id="blackholeMax5" style="color:black; width:195px; height:30px" class="storebtn" align="right" onclick="buyBlackholeDimension(5)"></button></td>
-						</tr>
-						<tr style="font-size: 17px" id="blackholeRow6">
-							<td id="blackholeD6" width="43%"></td>
-							<td><div id="blackholeAmount6"></div></td>
-							<td align="right" width="10%"><button id="blackholeMax6" style="color:black; width:195px; height:30px" class="storebtn" align="right" onclick="buyBlackholeDimension(6)"></button></td>
-						</tr>
-						<tr style="font-size: 17px" id="blackholeRow7">
-							<td id="blackholeD7" width="43%"></td>
-							<td><div id="blackholeAmount7"></div></td>
-							<td align="right" width="10%"><button id="blackholeMax7" style="color:black; width:195px; height:30px" class="storebtn" align="right" onclick="buyBlackholeDimension(7)"></button></td>
-						</tr>
-						<tr style="font-size: 17px" id="blackholeRow8">
-							<td id="blackholeD8" width="43%"></td>
-							<td><div id="blackholeAmount8"></div></td>
-							<td align="right" width="10%"><button id="blackholeMax8" style="color:black; width:195px; height:30px" class="storebtn" align="right" onclick="buyBlackholeDimension(8)"></button></td>
-						</tr>
-					  </table>
-					  <br>
-					  <canvas id="blackHoleCanvas" width="400" height="400" style="user-select: none;"></canvas>
+					<table class="table" id='bhDimTable'></table>
 				</div>
+				<div id="bh_udsp" style='display: none'>
+					<span id="bh_udsp_dm" style="font-size: 35px"></span> Black Hole Power
+					<table id="bh_udsp_eff"></table>
+					<b>Hunger</b>: <span id="bh_udsp_hu"></span>
+					<br><br><hr>
+
+					<span id="bh_udsp_re" style="font-size: 25px"></span> Remnants<br>
+					<button class='dilationupgrebuyable' onclick="BH_UDSP.feed.use()">Feed Black Hole with Remnants</button>
+					<button class='dilationupgrebuyable' onclick="BH_UDSP.remnant.reduce()">Spend exdilation to reduce costs</button>
+					<div id="bh_udsp_feed"></div>
+				</div>
+				<canvas id="blackHoleCanvas" width="400" height="400" style="user-select: none;"></canvas>
 			</div>
 		</div><div class='tab' id='quantumtab'>
 			<table id="quTabs" align="center" style="margin: auto">
@@ -4061,7 +3989,7 @@
 			<br><br><hr>
 
 			<b>(NG+3 v2.31: Ghostify Respecced)</b><br>
-			<b class="red">(Beta: 5/26/23 Build)</b><br>
+			<b class="red">(Beta: 6/1/23 Build)</b><br>
 			By <a href="https://aarextiaokhiao.github.io/">Aarex</a>, pg132, and usavictor.
 			<br><br>
 
@@ -4077,6 +4005,24 @@
 			<div id="offlinetext"></div>
 		</div><br>
 		<button class="storebtn" style="font-size: 15px" onclick="closeToolTip()" style="display: inline">Okay</button>
+	</div>
+	<div id="TTbuttons" style="display:none;">
+		<button class="timetheorembtn" onclick="toggleAutoTT()" id="theoremmax" style="margin-left:-276px; width:130px; height: 30px; font-size: 0.75rem; bottom: 77px;">Buy max Theorems</button>
+		<button class="timetheorembtn" onclick="buyWithAntimatter()" id="theoremam" style="margin-left: -276px">Buy Time Theorems <br>Cost: 1e20000 antimatter</button>
+		<button class="timetheorembtn" onclick="buyWithIP()" id="theoremip" style="margin-left: -86px">Buy Time Theorems <br>Cost: 1 IP</button>
+		<button class="timetheorembtnlocked" onclick="buyWithEP()" id="theoremep" style="margin-left: 106px">Buy Time Theorems <br>Cost: 1 EP</button>
+		<div id="theorembuybackground"></div>
+		<p id="timetheorems" style="position: fixed;">You have 0 Time Theorems.</p>
+	</div>
+	<div id="preset_buttons" style="display:none;">
+		<p id="preset_dial_info"></p>
+		<div style='position: relative'>
+			<button class="timetheorembtn" style='position: absolute; left: 0px' onclick="PRESET_DIAL.click(1)">1</button>
+			<button class="timetheorembtn" style='position: absolute; left: 80px' onclick="PRESET_DIAL.click(2)">2</button>
+			<button class="timetheorembtn" style='position: absolute; left: 160px' onclick="PRESET_DIAL.click(3)">3</button>
+			<br><br>
+			<button class="timetheorembtn" onclick="PRESET_DIAL.open()">Presets</button>
+		</div>
 	</div>
 
 	<!-- OPTIONS -->
@@ -4271,24 +4217,8 @@
 		<button class='storebtn' onclick="PRESET_BULK.download()">Download</button>
 		<button class='storebtn' onclick="PRESET_BULK.close()">Cancel</button>
 	</div>
-	<div id="TTbuttons" style="display:none;">
-		<button class="timetheorembtn" onclick="toggleAutoTT()" id="theoremmax" style="margin-left:-276px; width:130px; height: 30px; font-size: 0.75rem; bottom: 77px;">Buy max Theorems</button>
-		<button class="timetheorembtn" onclick="buyWithAntimatter()" id="theoremam" style="margin-left: -276px">Buy Time Theorems <br>Cost: 1e20000 antimatter</button>
-		<button class="timetheorembtn" onclick="buyWithIP()" id="theoremip" style="margin-left: -86px">Buy Time Theorems <br>Cost: 1 IP</button>
-		<button class="timetheorembtnlocked" onclick="buyWithEP()" id="theoremep" style="margin-left: 106px">Buy Time Theorems <br>Cost: 1 EP</button>
-		<div id="theorembuybackground"></div>
-		<p id="timetheorems" style="position: fixed;">You have 0 Time Theorems.</p>
-	</div>
-	<div id="preset_buttons" style="display:none;">
-		<p id="preset_dial_info"></p>
-		<div style='position: relative'>
-			<button class="timetheorembtn" style='position: absolute; left: 0px' onclick="PRESET_DIAL.click(1)">1</button>
-			<button class="timetheorembtn" style='position: absolute; left: 80px' onclick="PRESET_DIAL.click(2)">2</button>
-			<button class="timetheorembtn" style='position: absolute; left: 160px' onclick="PRESET_DIAL.click(3)">3</button>
-			<br><br>
-			<button class="timetheorembtn" onclick="PRESET_DIAL.open()">Presets</button>
-		</div>
-	</div>
+
+	<!-- OTHERS -->
 	<div id="progress" style="display:none">
 		<div id="progressbar"><span id="progresspercent">0%</span></div>
 	</div>
@@ -4390,9 +4320,9 @@
 	<script type="text/javascript" src="javascripts/mods/ngmm/ngmmm.js"></script>
 	<script type="text/javascript" src="javascripts/mods/ngmm/ngm4.js"></script>
 
-	<script type="text/javascript" src="javascripts/mods/ngud/ngud.js"></script>
-	<script type="text/javascript" src="javascripts/mods/ngud/ngudp.js"></script>
-	<script type="text/javascript" src="javascripts/mods/ngud/ngusp.js"></script>
+	<script type="text/javascript" src="javascripts/mods/ngud/update.js"></script>
+	<script type="text/javascript" src="javascripts/mods/ngud/prime.js"></script>
+	<script type="text/javascript" src="javascripts/mods/ngud/semiprime.js"></script>
 
 	<script type="text/javascript" src="javascripts/mods/ers.js"></script>
 	<script type="text/javascript" src="javascripts/mods/convert.js"></script>

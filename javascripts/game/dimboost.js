@@ -137,7 +137,6 @@ function getSupersonicStart() {
 	if (inQC(5)) return 0
 	if (inNGM(2)) return 1/0
 	let r = 56e4
-	if (mod.udsp && !aarMod.nguepV) r = 1e5
 	if (hasMasteryStudy("t331")) r += 24e4
 	return r
 }

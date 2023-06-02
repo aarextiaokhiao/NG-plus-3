@@ -334,10 +334,6 @@ function getExtraDimensionBoostPower() {
 	let r = getExtraDimensionBoostPowerUse()
 	r = E_pow(r, getExtraDimensionBoostPowerExponent(r)).max(1)
 	if (!inQC(3)) r = r.add(1)
-	if (mod.udsp) {
-		let l = r.log(2)
-		if (l > 1024) r = pow2(Math.pow(l * 32, 2/3))
-	}
 	return r
 }
 
@@ -378,7 +374,7 @@ function updateOverallMetaDimensionsStuff(){
 	el("metaAntimatterAmount").textContent = shortenMoney(player.meta.antimatter)
 	el("metaAntimatterBest").textContent = shortenMoney(player.meta.bestAntimatter)
 	el("bestAntimatterQuantum").textContent = quantumed ? "Your best" + (ghostified ? "" : "-ever") + " meta-antimatter" + (ghostified ? " in this Fundament" : "") + " was " + shortenMoney(player.meta.bestOverQuantums) + "." : ""
-	el("bestAntimatterTranslation").innerHTML = (mod.ngp3 && !mod.udsp && player.currentEternityChall != "eterc14" && (inQC(3) || nfSave.rewards >= 2) && !inQC(7)) ? 'Raised to the power of <span id="metaAntimatterPower" style="font-size:35px; color: black">'+formatValue(player.options.notation, getExtraDimensionBoostPowerExponent(getExtraDimensionBoostPowerUse()), 2, 1)+'</span>, t' : "T"
+	el("bestAntimatterTranslation").innerHTML = (mod.ngp3 && player.currentEternityChall != "eterc14" && (inQC(3) || nfSave.rewards >= 2) && !inQC(7)) ? 'Raised to the power of <span id="metaAntimatterPower" style="font-size:35px; color: black">'+formatValue(player.options.notation, getExtraDimensionBoostPowerExponent(getExtraDimensionBoostPowerUse()), 2, 1)+'</span>, t' : "T"
 	setAndMaybeShow("bestMAOverGhostifies", ghostified, '"Your best-ever meta-antimatter was " + shortenMoney(player.meta.bestOverGhostifies) + "."')
 	el("metaAntimatterEffect").textContent = shortenMoney(getExtraDimensionBoostPower())
 	el("metaAntimatterPerSec").textContent = 'You are getting ' + shortenDimensions(getMetaDimensionProduction(1)) + ' meta-antimatter per second.'
@@ -434,14 +430,8 @@ function getDil15Bonus() {
 		x = NT.eff("boost", 3)
 		max = 1/0
 	}
-	if (mod.udsp) x *= Math.min(Math.max(player.dilation.dilatedTime.max(1).log10() / 10 - 6.25, 2), max)
-	else x *= Math.min(Math.log10(player.dilation.dilatedTime.max(1e10).log(10)) + 1, max)
+	x *= Math.min(Math.log10(player.dilation.dilatedTime.max(1e10).log(10)) + 1, max)
 	return x
-}
-
-function getMetaUnlCost() {
-	if (mod.udsp) return 1e21
-	return 1e24
 }
 
 function metaDimsUpdating(diff){
