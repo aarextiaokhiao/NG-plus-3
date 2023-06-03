@@ -3462,6 +3462,10 @@
 						<button id="dil42" onclick="buyDilationUpgrade('ngud1')">Gain 5% more Tachyon particles for each <span id="dil42oom"></span>x replicanti.<br><span id="dil42desc"></span><br><span id="dil42cost"></span></button>
 					</td><td>
 						<button id="dil43" onclick="buyDilationUpgrade('ngud2')">Eternities and dilated time boost each other by ^0.1.<br><span id="dil43cost"></span></button>
+					</td><td>
+						<button id="dil44" onclick="buyDilationUpgrade('udsp1')">Dilated time increases hunger cap.<br><span id="dil44cost"></span></button>
+					</td><td>
+						<button id="dil45" onclick="buyDilationUpgrade('udsp2')">Hunger cap speeds up black hole hunger.<br><span id="dil45cost"></span></button>
 					</td>
 				</tr></table>
 			</div>
@@ -3477,8 +3481,9 @@
 					<div id="bh_feed">
 						<div id="bh_feed_div">
 							<table class='table' id="bh_feed_table"></table>
-							<button id="blackholeMax" class="storebtn" onclick="feedBlackholeMax()" style="height: 25px; width: 190px; font-size:10px; margin-top: -3px;">Max all</button><br>
-							<button id="blackholeAuto" class="storebtn" onclick="toggleAutoEter('blackhole')" style="height: 25px; width: 190px; font-size:10px; margin-top: 3px;"></button>
+							<button id="blackholeMax" class="storebtn" onclick="feedBlackholeMax()" style="height: 25px; width: 190px; font-size:10px">Max all</button><br>
+							<button id="blackholeAuto" class="storebtn" onclick="toggleAutoEter('blackhole')" style="height: 25px; width: 190px; font-size:10px"></button><br>
+							<button id="blackholeSac" class="storebtn" onclick="BH_UDSP.remnant.reduce()" style="height: 25px; width: 190px; font-size:10px">Assign ex-dilation for sale</button>
 						</div>
 					</div>
 					<button id="maxBlackholeDimensions" class="storebtn" style="font-size: 12px; width: 230px;" onclick="buyMaxBlackholeDimensions()">Max all black hole dimensions</Button>
@@ -3487,12 +3492,11 @@
 				<div id="bh_udsp" style='display: none'>
 					<span id="bh_udsp_dm" style="font-size: 35px"></span> Black Hole Power
 					<table id="bh_udsp_eff"></table>
+					<button class='eternityupbtn' onclick="BH_UDSP.feed.use()">Feed Black Hole with Remnants</button><br>
 					<b>Hunger</b>: <span id="bh_udsp_hu"></span>
 					<br><br><hr>
 
 					<span id="bh_udsp_re" style="font-size: 25px"></span> Remnants<br>
-					<button class='dilationupgrebuyable' onclick="BH_UDSP.feed.use()">Feed Black Hole with Remnants</button>
-					<button class='dilationupgrebuyable' onclick="BH_UDSP.remnant.reduce()">Spend exdilation to reduce costs</button>
 					<div id="bh_udsp_feed"></div>
 				</div>
 				<canvas id="blackHoleCanvas" width="400" height="400" style="user-select: none;"></canvas>
@@ -3989,7 +3993,7 @@
 			<br><br><hr>
 
 			<b>(NG+3 v2.31: Ghostify Respecced)</b><br>
-			<b class="red">(Beta: 6/1/23 Build)</b><br>
+			<b class="red">(Beta: 6/2/23 Build)</b><br>
 			By <a href="https://aarextiaokhiao.github.io/">Aarex</a>, pg132, and usavictor.
 			<br><br>
 

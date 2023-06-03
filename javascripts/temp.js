@@ -20,7 +20,7 @@ function updateTemp() {
 
 	tmp.sacPow = calcTotalSacrificeBoost()
 	updateNGP3Temp()
-	updateBlackHoleUDSPTemp()
+	BH_UDSP.temp()
 
 	if (mod.ngpp) tmp.mdgm = getMetaDimensionGlobalMultiplier() //Update global multiplier of all Meta Dimensions
 	tmp.mptb = getMPTBase()

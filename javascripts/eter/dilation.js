@@ -12,6 +12,7 @@ function getBaseDTProduction() {
 
 	if (player.dilation.upgrades.includes('ngpp6')) gain = gain.mul(getDil17Bonus())
 	if (mod.ngp3) gain = gain.mul(getDTMultNGP3())
+	if (hasBlackHoleEff(1)) gain = gain.mul(getBlackHoleEff(1))
 	if (mod.p3ep && hasAch("r138") && gain.lt(1e100)) gain = gain.mul(3).min(1e100)
 
 	return gain
@@ -158,21 +159,18 @@ function updateBestTachyonParticles() {
 }
 
 function dilates(x, m) {
-	let e = 1
+	let e = dilationPowerStrength()
 	let y = x
 	let a = false
 	if (player.dilation.active && m != 2 && (m != "meta" || !hasAch("ng3p63") || inAnyQC())) {
 		e *= dilationPowerStrength()
 		if (mod.ngmu) e = 0.9 + Math.min((player.dilation.dilatedTime.add(1).log10()) / 1000, 0.05)
-		if (mod.ngud && !mod.udp) e += exDilationBenefit() * (1-e)
+		if (mod.ngud && !mod.udsp) e += exDilationBenefit() * (1 - e)
 		if (player.dilation.upgrades.includes(9)) e *= 1.05
 		if (player.dilation.rebuyables[5]) e += 0.0025 * (1 - 1 / Math.pow(player.dilation.rebuyables[5] + 1 , 1 / 3))
 		a = true
 	}
-	if (inNGM(2) && m != 1) {
-		e *= dilationPowerStrength()
-		a = true
-	}
+	if (inNGM(2) && m != 1) a = true
 	if (a) {
 		if (m != "tick") x = x.max(1)
 		else if (!inNGM(2)) x = x.mul(1e3)
@@ -184,9 +182,7 @@ function dilates(x, m) {
 }
 
 function dilationPowerStrength() {
-	let pow = 0.75
-	if (inNGM(4)) pow = 0.7
-	return pow;
+	return inNGM(4) ? 0.75 : 0.7
 }
 
 /**
@@ -223,18 +219,8 @@ const DIL_UPG_COSTS = {
 	ngpp4: 1e60,
 	ngpp5: 1e80,
 	ngpp6: 1e100,
-	ngmm1: 5e16,
-	ngmm2: 1e19,
-	ngmm3: 1e20,
-	ngmm4: 1e25,
-	ngmm5: 1/0,
-	ngmm6: 1/0,
-	ngmm7: 1/0,
-	ngmm8: 1/0,
-	ngmm9: 1/0,
-	ngmm10: 1/0,
-	ngmm11: 1/0,
-	ngmm12: 1/0
+	udsp1: 1e30,
+	udsp2: 1e75
 }
 
 const DIL_UPG_OLD_POS_IDS = {
@@ -260,7 +246,7 @@ const DIL_UPG_POS_IDS = {
 	21: 4,       22: 5,        23: 6,       24: "ngpp1",
 	31: 7,       32: 8,        33: 9,       34: "ngpp2",
 	51: "ngpp3", 52: "ngpp4",  53: "ngpp5", 54: "ngpp6",
-	41: 10,      42: "ngud1",  43: "ngud2"
+	41: 10,      42: "ngud1",  43: "ngud2", 44: "udsp1", 45: "udsp2"
 }
 
 const DIL_UPG_ID_POS = {}
@@ -290,6 +276,7 @@ function isDilUpgUnlocked(id) {
 	}
 	if (id == "ngud1") return mod.ngud
 	if (id == "ngud2") return mod.ngud && !mod.udsp
+	if (id.split("udsp")[1]) return mod.udsp
 	return true
 }
 

@@ -135,7 +135,7 @@ function setupHTMLAndData() {
 	setupDilationUpgradeList()
 	setupMetaDimensions()
 	setupBlackHole()
-	setupBlackHoleUDSP()
+	BH_UDSP.setup()
 	setupNGP3HTMLAndData()
 }
 
@@ -1392,7 +1392,8 @@ function gainBankedInf() {
 	let frac = 0.05
 	if (hasTimeStudy(191)) ret = nM(numerator, frac)
 	if (hasAch("r131")) ret = nA(nM(numerator, frac), ret)
-	if (mod.ngud) ret = nM(ret, getBlackholePowerEffect().pow(1/3))
+	if (mod.ngud && !mod.udsp) ret = nM(ret, getBlackholePowerEffect().pow(1/3))
+	if (hasBlackHoleEff(4)) ret = nM(ret, getBlackHoleEff(4))
 	return ret
 }
 
@@ -2257,7 +2258,7 @@ function gameLoop(diff, quick) {
 		if (quantumed) quantumOverallUpdating(diff)
 		if (hasAch("ng3p72")) player.eternities = nMx(player.eternities, gainEternitiedStat())
 	}
-	if (mod.udsp && player.blackhole.unl) calcBlackHoleUDSP(diff)
+	if (mod.udsp && player.blackhole.unl) BH_UDSP.calc(diff)
 	if (mod.ngpp) metaDimsUpdating(diff)
 
 	infinityTimeBlackHoleDimUpdating(diff) //production of those dims

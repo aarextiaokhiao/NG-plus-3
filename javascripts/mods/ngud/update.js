@@ -104,7 +104,9 @@ let BH_FEED = {
 
 function feedBlackHoleCost(i) {
 	let scale = BH_FEED[i].cost
-	return E_pow(scale[1], player.blackhole.upgrades[i]).mul(scale[0])
+	let lvl = player.blackhole.upgrades[i]
+	if (i == "replicanti" && lvl > 100 && mod.udsp) lvl *= lvl / 100
+	return E_pow(scale[1], lvl).mul(scale[0])
 }
 
 function canFeedBlackHole(i) {
@@ -120,6 +122,10 @@ function feedBlackHole(i, bulk) {
 
 	let toBuy = bulk ? Math.floor(E(data.res()).div(cost).log(scale) + 1) : 1
 	let toSpend = E(scale).pow(toBuy - 1).mul(cost)
+	if (i == "replicanti" && bulk) {
+		toBuy = 1
+		toSpend = cost
+	}
 	data.sub(toSpend.min(data.res()))
 
 	player.blackhole.upgrades[i] += toBuy
@@ -161,7 +167,7 @@ function updateBlackhole() {
 	}
 
 	updateBHFeed()
-	updateBlackHoleUDSP()
+	BH_UDSP.update()
 	if (mod.udsp) return
 
 	drawBlackhole()
@@ -287,18 +293,19 @@ function updateExdilationStats() {
 }
 
 function getExDilationGain() {
-	let exp = 2
-	if (mod.udsp && !aarMod.nguepV) exp = 0.1
-	return E_pow(Math.max(1, (player.eternityPoints.log10() - 9900) / 100), exp * player.dilation.dilatedTime.log(1e15) - 4).floor();
+	if (mod.udsp) {
+		let r = player.dilation.dilatedTime.max(1).log10() / 20 + 1
+		if (hasBlackHoleEff(2)) r *= getBlackHoleEff(2)
+		if (hasBlackHoleEff(5)) r = E_pow(r, getBlackHoleEff(5))
+		return r
+	} else {
+		return E_pow(Math.max(1, (player.eternityPoints.log10() - 9900) / 100), 2 * player.dilation.dilatedTime.log(1e15) - 4).floor();
+	}
 }
 
 function exDilationBenefit() {
 	let ret = player.exdilation.unspent
-	if (mod.udsp) {
-		ret = ret.add(1).log10()
-		if (ret > 1) ret = Math.sqrt(ret)
-		return ret
-	}
+	if (mod.udsp) return ret.add(1).log10() / 15
 	ret = Math.max(ret.log10()+1,0)/10
 	if (ret > .3) {
 		ret = .8 - Math.pow(Math.E, 2 * (.3 - ret)) / 2;
@@ -312,7 +319,11 @@ function exDilationUpgradeStrength(x, add = 0) {
 		ret = Math.max(ret.log10() + 1, 0) / 10
 		if (ret > .3) ret = .8 - Math.pow(Math.E, 2 * (.3 - ret)) / 2
 		ret = 1 + ret / 2
-	} else ret = ret.add(1)
+	} else {
+		ret = ret.add(1)
+		if (hasBlackHoleEff(5)) ret = ret.mul(getBlackHoleEff(5))
+		ret = ret.pow(5)
+	}
 
 	return ret
 }
@@ -325,7 +336,7 @@ function reverseDilation() {
 	player.exdilation.times++
 
 	resetDilation()
-	resetBlackholeDimensions()
+	if (!mod.udsp) resetBlackholeDimensions()
 	eternity(true)
 
 	giveAchievement('Time is absolute')

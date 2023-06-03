@@ -248,6 +248,7 @@ function getReplSpeed() {
 		let expDiv = 10
 		if (mod.ngp3) expDiv = 9
 		if (mod.udsp) expDiv = 20
+		if (hasBlackHoleEff(0)) expDiv /= getBlackHoleEff(0)
 		let x = 1 + player.dilation.dilatedTime.max(1).log10() / expDiv
 		inc /= Math.min(x, 200)
 		if (x > 200) exp += x / 10 - 20
