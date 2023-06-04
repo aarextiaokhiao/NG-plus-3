@@ -143,7 +143,7 @@ var nanoRewards = {
 			return "produce nanocharge " + shorten(x) + "x faster"
 		},
 		per_10_power: function(x) {
-			return "before Positrons, add " + shorten(x) + "x to multiplier per ten Dimensions"
+			return "before Positrons, add " + shorten(x) + "x to multiplier per 10 Dimensions"
 		},
 		pilon_energy: function(x) {
 			return "produce nanoenergy " + shorten(x) + "x faster"
