@@ -21,9 +21,9 @@ function updatePositrons() {
 
 	for (var u = 1; u <= 4; u++) {
 		var cost = getPositronUpgCost(u)
-		el("positronupg" + u).innerHTML = "+" + (getPositronGainMult() / 4).toFixed(2) + "x Positrons<br>" +
-			"Level: " + getFullExpansion(quSave.electrons.rebuyables[u-1]) + "<br>" +
-			"Requires: " + ((u == 4 ? getFullExpansion : shortenCosts)(cost)) + " " + [null, "Time Theorems", "dilated time", "meta-antimatter", "Meta-Dimension Boosts"][u]
+		el("positronupg" + u).innerHTML = "+" + (getPositronGainMult() / 4).toFixed(2) + "x Positrons " +
+			"(" + getFullExpansion(quSave.electrons.rebuyables[u-1]) + ")<br>" +
+			"Requires: " + ((u == 4 ? getFullExpansion : shortenCosts)(cost)) + " " + [null, "Time Theorems", "dilated time", "meta-Antimatter", "meta-Dimension Boosts"][u]
 	}
 }
 
