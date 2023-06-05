@@ -163,9 +163,8 @@ function dilates(x, m) {
 	let y = x
 	let a = false
 	if (player.dilation.active && m != 2 && (m != "meta" || !hasAch("ng3p63") || inAnyQC())) {
-		e *= dilationPowerStrength()
 		if (mod.ngmu) e = 0.9 + Math.min((player.dilation.dilatedTime.add(1).log10()) / 1000, 0.05)
-		if (mod.ngud && !mod.udsp) e += exDilationBenefit() * (1 - e)
+		if (mod.ngud == 1) e += exDilationBenefit() * (1 - e)
 		if (player.dilation.upgrades.includes(9)) e *= 1.05
 		if (player.dilation.rebuyables[5]) e += 0.0025 * (1 - 1 / Math.pow(player.dilation.rebuyables[5] + 1 , 1 / 3))
 		a = true
@@ -182,7 +181,7 @@ function dilates(x, m) {
 }
 
 function dilationPowerStrength() {
-	return inNGM(4) ? 0.75 : 0.7
+	return inNGM(4) ? 0.7 : 0.75
 }
 
 /**
