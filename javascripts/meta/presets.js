@@ -38,11 +38,10 @@ let PRESET_OPTION_NAMES = {
 }
 
 let PRESET = {
-	data(loc) {
-		return (loc.global ? meta.save : aarMod).presets?.[loc.preset] ?? {
-			main: [],
-			dial: {}
-		}
+	get(loc) {
+		let d = (loc.global ? meta.save : aarMod).presets?.[loc.preset] ?? { main: [] }
+		if (!d.dial?.length) d.dial = []
+		return d
 	},
 
 	open(toChange, val) {
@@ -67,13 +66,13 @@ let PRESET = {
 		el("preset_list").innerHTML = ""
 
 		if (!this.loc.preset) return
-		this.player = this.data(this.loc)
+		this.data = this.get(this.loc)
 		this.loaded = 0
 		this.loading = false
 
 		this.interval = setInterval(function() {
 			if (PRESET.loading) return
-			if (PRESET.loaded == PRESET.player.main.length) {
+			if (PRESET.loaded == PRESET.data.main.length) {
 				clearInterval(PRESET.interval)
 				return
 			}
@@ -112,24 +111,24 @@ let PRESET = {
 	},
 	update(i) {
 		let options = PRESET_DATA[PRESET.loc.preset].options
-		let data = PRESET.player.main[i]
+		let data = PRESET.data.main[i]
 		el(`preset_${i}_title`).innerHTML = data.title || `${PRESET_DATA[PRESET.loc.preset].name} Preset #${i+1}`
 		el(`preset_${i}_data`).value = data.str
 		for (let opt of options) el(`preset_${i}_${opt}`).innerHTML = PRESET_OPTION_NAMES[opt] + ": " + (data[opt] ? "ON" : "OFF")
 	},
 
 	change(i, overwrite) {
-		PRESET.player.main[i].str = overwrite ? PRESET_DATA[PRESET.loc.preset].get() : el(`preset_${i}_data`).value
+		PRESET.data.main[i].str = overwrite ? PRESET_DATA[PRESET.loc.preset].get() : el(`preset_${i}_data`).value
 		PRESET.save(i)
 	},
 	toggle(i, opt) {
-		PRESET.player.main[i][opt] = !PRESET.player.main[i][opt]
+		PRESET.data.main[i][opt] = !PRESET.data.main[i][opt]
 		PRESET.save(i)
 	},
 
 	new(onImport) {
 		let str = onImport ? prompt() : PRESET_DATA[PRESET.loc.preset].get()
-		PRESET.player.main.push({ str: str })
+		PRESET.data.main.push({ str: str })
 		PRESET.save()
 
 		$.notify(`Preset created`, "info")
@@ -137,7 +136,7 @@ let PRESET = {
 	},
 	save(i) {
 		let data = (PRESET.loc.global ? meta.save : aarMod).presets
-		data[PRESET.loc.preset] = PRESET.player
+		data[PRESET.loc.preset] = PRESET.data
 		if (PRESET.loc.global) meta.mustSave = true
 
 		if (i == undefined) return
@@ -145,30 +144,30 @@ let PRESET = {
 		PRESET.update(i)
 	},
 	load(i) {
-		let data = PRESET.player.main[i]
+		let data = PRESET.data.main[i]
 		PRESET_DATA[PRESET.loc.preset].load(data.str || "", data)
 
 		$.notify(`Preset #${i+1} loaded`, "info")
 		closeToolTip()
 	},
 	rename(i) {
-		PRESET.player.main[i].title = prompt("Enter your new preset name. Leaving the blank will reset the name!")
+		PRESET.data.main[i].title = prompt("Enter your new preset name. Leaving the blank will reset the name!")
 		PRESET.save(i)
 	},
 	swap(i, j) {
-		if (j < 0 || j >= PRESET.player.main.length) return
-		let p1 = PRESET.player.main[i]
-		let p2 = PRESET.player.main[j]
-		PRESET.player.main[i] = p2
-		PRESET.player.main[j] = p1
+		if (j < 0 || j >= PRESET.data.main.length) return
+		let p1 = PRESET.data.main[i]
+		let p2 = PRESET.data.main[j]
+		PRESET.data.main[i] = p2
+		PRESET.data.main[j] = p1
 		PRESET.update(i)
 		PRESET.update(j)
 		PRESET.save()
 	},
 	delete(i) {
 		let newData = []
-		for (var j = 0; j < PRESET.player.main.length; j++) if (i != j) newData.push(PRESET.player.main[j])
-		PRESET.player.main = newData
+		for (var j = 0; j < PRESET.data.main.length; j++) if (i != j) newData.push(PRESET.data.main[j])
+		PRESET.data.main = newData
 		PRESET.save()
 
 		delete PRESET.reload
@@ -180,26 +179,40 @@ let PRESET_DIAL = {
 	detect() {
 		delete this.dial
 		for (var [i, data] of Object.entries(PRESET_DATA)) if (data.in()) this.dial = i
+
+		this.data = this.dial && PRESET.get({ preset: this.dial })
+
 		el("preset_buttons").style.display = this.dial ? "" : "none"
+	},
+	update() {
+		el("preset_dial_info").innerHTML = `${shiftDown ? 'Save' : 'Load'} a dial preset (${PRESET_DATA[PRESET_DIAL.dial].name})`
+		for (var i = 0; i < 3; i++) {
+			let dial = this.data.dial[i]
+			let has = dial !== undefined
+			el("preset_dial_" + i).className = has ? "timetheorembtn" : "storebtn"
+			el("preset_dial_" + i).textContent = has ? dial.title : "Empty"
+		}
+	},
+	click(i) {
+		PRESET_DIAL[shiftDown || !PRESET_DIAL.data.dial[i] ? "save" : "load"](i)
 	},
 	open() {
 		PRESET.open("preset", this.dial)
 	},
-	click(i) {
-		PRESET_DIAL[shiftDown ? "save" : "load"](i)
-	},
+
+	//Loading
 	save(i) {
-		let data = PRESET.data({ preset: PRESET_DIAL.dial })
-		data.dial[i] = PRESET_DATA[PRESET_DIAL.dial].get()
+		let data = PRESET_DIAL.data
+		data.dial[i] = { title: prompt("Name your preset dial #" + (i+1)) || (i+1), str: PRESET_DATA[PRESET_DIAL.dial].get() }
 
 		aarMod.presets[PRESET_DIAL.dial] = data
-		if (PRESET.loc.preset == PRESET_DIAL.dial && !PRESET.loc.global) PRESET.player = data
+		if (PRESET.loc.preset == PRESET_DIAL.dial && !PRESET.loc.global) PRESET.data = data
 
-		$.notify("Dial preset #" + i + " saved", "info")
+		$.notify("Dial preset #" + (i+1) + " saved", "info")
 	},
 	load(i) {
-		PRESET_DATA[PRESET_DIAL.dial].load(PRESET.data({ preset: PRESET_DIAL.dial }).dial[i] || "")
-		$.notify("Dial preset #" + i + " loaded", "info")
+		PRESET_DATA[PRESET_DIAL.dial].load(PRESET_DIAL.data.dial[i].str || "")
+		$.notify("Dial preset #" + (i+1) + " loaded", "info")
 	}
 }
 
@@ -211,7 +224,7 @@ let PRESET_BULK = {
 	},
 	close(save) {
 		if (save) {
-			PRESET.player = this.parse()
+			PRESET.data = this.parse()
 			PRESET.save()
 			delete PRESET.reload
 		}
@@ -222,7 +235,7 @@ let PRESET_BULK = {
 	},
 
 	get() {
-		let data = PRESET.player
+		let data = PRESET.data
 		let value = ``
 
 		value = `-- MAIN --\n`
@@ -233,27 +246,23 @@ let PRESET_BULK = {
 		}
 
 		value += `-- DIAL --\n`
-		for (let [i, dial] of Object.entries(data.dial)) value += `${i} / "${dial}"\n`
+		for (let main of data.dial) value += `"${main.title||''}" / "${main.str}"\n`
 		return value
 	},
 	parse() {
-		let data = { main: [], dial: {} }
-		let mode = ""
-		let lines = el("preset_bulk_str").value.split("\n")
-		for (let line of lines) {
-			if (line == "") continue
+		let data = { main: [], dial: [] }
+		let mode
+		for (let line of el("preset_bulk_str").value.split("\n")) {
 			if (line == "-- MAIN --") mode = "main"
 			if (line == "-- DIAL --") mode = "dial"
+			if (!mode) continue
 
-			let split = line.split(` / `).map(x => x[0] == `"` ? x.slice(1, x.length - 1) : x)
+			let split = line.split(` / `).map(x => x[0] == `"` && x[x.length - 1] == `"` ? x.slice(1, x.length - 1) : x)
 			if (split.length == 1) continue
 
-			if (mode == "main") {
-				let json = { title: split[0], str: split[1] }
-				for (let [i, opt] of Object.entries(PRESET_OPTION_NAMES)) if (split.includes(opt)) json[i] = true
-				data.main.push(json)
-			}
-			if (mode == "dial") data.dial[split[0]] = split[1]
+			let json = { title: split[0], str: split[1] }
+			for (let [i, opt] of Object.entries(PRESET_OPTION_NAMES)) if (split.includes(opt)) json[i] = true		
+			data[mode].push(json)
 		}
 		return data
 	},

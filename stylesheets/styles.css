@@ -1764,7 +1764,7 @@ br {
 	text-align: center
 }
 
-#preset_buttons .timetheorembtn {
+#preset_buttons button {
 	width: 80px;
 	height: 30px;
 }

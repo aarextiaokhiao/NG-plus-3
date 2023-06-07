@@ -2296,7 +2296,7 @@ function gameLoop(diff, quick) {
 		doGhostifyButtonDisplayUpdating(diff)
 		if (hasBraveMilestone(8)) updateQuarkDisplay()
 	}
-	if (PRESET_DIAL.dial) el("preset_dial_info").innerHTML = `${shiftDown ? 'Save' : 'Load'} a dial preset (${PRESET_DATA[PRESET_DIAL.dial].name})`
+	if (PRESET_DIAL.dial) PRESET_DIAL.update()
 }
 
 function updateDisplays() {
