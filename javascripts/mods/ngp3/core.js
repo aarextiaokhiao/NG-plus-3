@@ -4,19 +4,10 @@ let ngp3_build = 20230606
 function doNGP3Updates() {
 	if (!aarMod.ngp3_build) aarMod.ngp3_build = 0
 	if (aarMod.ngp3_build < 20221230) quSave.multPower = 0
-	if (aarMod.ngp3_build < 20230201) {
-		delete ghSave?.ghostlyPhotons
-		delete aarMod.leNoConf
-	}
+	if (aarMod.ngp3_build < 20230201) delete aarMod.leNoConf
 	if (aarMod.ngp3_build < 20230204) {
 		delete quSave.tod.g
 		delete quSave.tod.b
-		if (!ghSave?.reached) {
-			delete player.ghostify
-			loadFundament()
-		}
-		delete ghSave?.disabledRewards
-		delete ghSave?.reached
 	}
 	if (aarMod.ngp3_build < 20230208) {
 		delete brSave.savedAutobuyersBR
@@ -28,24 +19,36 @@ function doNGP3Updates() {
 		updatePositronsEffect()
 	}
 	if (aarMod.ngp3_build < 20230215) player.dilation.freeGalaxies = 0
-	if (aarMod.ngp3_build < 20230215 && E(ghSave?.ghostParticles).gte(1e20)) {
-		alert("Due to massive balancing changes, you will be pushed back to e20 Spectral Particles!")
-
-		resetGHPandNeutrinos()
-		ghSave.neutrinos.upgrades = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
-		ghSave.neutrinos.boosts = 9
-		beSave.upgrades = [1, 2, 3, 4, 5, 6]
-		ghSave.ghostParticles = E(1e20)
-	}
-	if (aarMod.ngp3_build < 20230331 && ghSave) {
-		delete ghSave.wzb
-		delete ghSave.hb
-		delete ghSave.bl
-		delete ghSave.photons.plusOne
-		ghSave.photons.offset = [0,0,0,0,0,0,0]
-	}
 	if (aarMod.ngp3_build < 20230414 && blSave) blSave.wz_capacitors = WEAK_FORCE.setup()
 	if (aarMod.ngp3_build < 20230514 && todSave) todSave.chosen = "r"
+
+	if (!ghSave?.reached) {
+		delete player.ghostify
+		loadFundament()
+	}
+	if (ghSave) {
+		if (aarMod.ngp3_build < 20230201) delete ghSave.ghostlyPhotons
+		if (aarMod.ngp3_build < 20230204) {
+			delete ghSave.disabledRewards
+			delete ghSave.reached
+		}
+		if (aarMod.ngp3_build < 20230215 && E(ghSave.ghostParticles).lt(1e20)) {
+			alert("Due to massive balancing changes, you will be pushed back to e20 Spectral Particles!")
+
+			resetGHPandNeutrinos()
+			ghSave.neutrinos.upgrades = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+			ghSave.neutrinos.boosts = 9
+			beSave.upgrades = [1, 2, 3, 4, 5, 6]
+			ghSave.ghostParticles = E(1e20)
+		}
+		if (aarMod.ngp3_build < 20230331) {
+			delete ghSave.wzb
+			delete ghSave.hb
+			delete ghSave.bl
+			delete ghSave.photons.plusOne
+			ghSave.photons.offset = [0,0,0,0,0,0,0]
+		}
+	}
 	/*if (aarMod.ngp3_build < 20230420 && E(ghSave?.ghostParticles).gte(1e40)) {
 		alert("Due to massive balancing changes, you will be pushed back to e40 Spectral Particles!")
 
