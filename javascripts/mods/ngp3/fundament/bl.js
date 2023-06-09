@@ -577,3 +577,5 @@ const BL_JOKE = {
 		el("bl_unl").className = "qu_upg " + (ghSave.lab_real.key && LAB.req() ? "storebtn" : "unavailablebtn")
 	}
 }
+
+//Higgs later.
