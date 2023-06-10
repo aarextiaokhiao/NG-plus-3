@@ -22,7 +22,7 @@ function doNGP3Updates() {
 	if (aarMod.ngp3_build < 20230414 && blSave) blSave.wz_capacitors = WEAK_FORCE.setup()
 	if (aarMod.ngp3_build < 20230514 && todSave) todSave.chosen = "r"
 
-	if (!ghSave?.reached) {
+	if (!ghSave?.reached && !ghSave?.times) {
 		delete player.ghostify
 		loadFundament()
 	}
