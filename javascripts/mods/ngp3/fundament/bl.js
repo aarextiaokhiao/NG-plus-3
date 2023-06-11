@@ -578,4 +578,4 @@ const BL_JOKE = {
 	}
 }
 
-//Higgs later.
+//Higgs Field: A pyramid with rows being dimensions. Boosts can boost things above.
