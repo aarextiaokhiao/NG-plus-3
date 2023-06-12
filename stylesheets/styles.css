@@ -2329,22 +2329,19 @@ td.lEp {
 	font-size: 25px
 }
 .qu_upg.neutrinoupg {
-	background: black !important;
-	border: 1px solid #bfbfbf;
-	box-shadow: inset 0px 0px 20px 0px #bfbfbf;
-	color: #bfbfbf;
-	text-shadow: 0px 0px 3px #bfbfbf, 0px 0px 6px #bfbfbf
+	background: #111;
+	border: 1px solid #bbb;
+	box-shadow: inset 0px 0px 20px 0px #bbb;
+	color: #bbb;
+	text-shadow: 0px 0px 3px #bfbfbf
 }
 .qu_upg.neutrinoupg:hover {
-	background: white !important;
-	color: #3f3f3f;
-	text-shadow: 0px 0px 3px #3f3f3f, 0px 0px 6px #3f3f3f;
+	background: #777;
 	cursor: pointer
 }
 .qu_upg_bought.neutrinoupg {
 	background: #bfcfbf !important;
 	border: 1px solid #7f9f7f;
-	box-shadow: inset 0px 0px 20px 0px #afbfaf;
 	color: #2f5f2f;
 	text-shadow: 0px 0px 3px #2f5f2f
 }

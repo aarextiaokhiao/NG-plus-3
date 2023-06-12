@@ -385,20 +385,17 @@ function setEverythingPreNGp3onLoad(){
 }
 
 function setAarexModIfUndefined(){
-	if (player.aarexModifications === undefined) {
-		player.aarexModifications = {}
-		aarMod = player.aarexModifications
-	}
+	aarMod = deepUndefinedAndDecimal(player.aarexModifications, {
+		dilationConf: true,
+		eternityChallRecords: {},
+		presets: {},
 
-	if (aarMod.dilationConf === undefined) aarMod.dilationConf = true
-	if (aarMod.offline === undefined) aarMod.offline = 10
-	if (aarMod.progressBar === undefined) aarMod.progressBar = true
-	if (aarMod.logRateChange === undefined) aarMod.logRateChange = false
-	if (aarMod.eternityChallRecords === undefined) aarMod.eternityChallRecords = {}
-
-	if (aarMod.tabsSave === undefined) aarMod.tabsSave = {}
-	if (aarMod.presets === undefined) aarMod.presets = {}
-	if (aarMod.noFooter == undefined) aarMod.noFooter = player.options.theme == "Aarex's Modifications" || player.options.theme == "Aarex's Mods II"
+		offline: 10,
+		progressBar: true,
+		tabsSave: {},
+		noFooter: player.options.theme == "Aarex's Modifications" || player.options.theme == "Aarex's Mods II"
+	})
+	player.aarexModifications = aarMod
 
 	if (mod.ngp3 && aarMod.newGame3PlusVersion === undefined) {
 		forceHardReset = true
