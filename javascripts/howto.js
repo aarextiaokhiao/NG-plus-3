@@ -438,10 +438,11 @@ let HOW_TO = [
 		layer: "fundament",
 		desc: `At ??? Bosonic Matter, you can prestige Bosonic Matter and W & Z Bosons for Higgs.
 		<br><br>
-		Higgs gives Higgs Dimensions (dependent on amount), which produce Higgs Mass in return.<br>
-		Higgs Mass provide Higgs Boosts, depending on what you choose. Those boosts only boost prior Bosonic Lab content.<br>
-		There is a size limit for Higgs Boosts on a Higgs Dimension.`
-	}, {
+		Each Higgs unlocks a placeable boost along with a slot in a pyramid.
+		<br>
+		Those boosts are stronger by Higgs Mass, but later rows are less effective.
+		<br>
+		Later rows catch up closer to first rows; as Higgs Mass is divided in a logarithmic strength formula.`
 		mod: _ => ngp3,
 		req: _ => ghSave?.gw?.unl,
 
