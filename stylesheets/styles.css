@@ -2406,9 +2406,12 @@ td.lEp {
 }
 
 .hypo {
+	display: inline-block;
+	border-radius: 0.5em 0 0.5em 0;
 	height: 1em;
 	width: 1em;
-	display: inline-block
+	color: #0007;
+	font-weight: bold
 }
 .hypo.hypo0 {
 	background: #b67f33;

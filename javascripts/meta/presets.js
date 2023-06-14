@@ -229,6 +229,7 @@ let PRESET_BULK = {
 			delete PRESET.reload
 		}
 		PRESET.open()
+		PRESET_DIAL.detect()
 	},
 	download() {
 		downloadData(el("preset_bulk_str").value, `NG+3 v2.31 Beta - ${PRESET_DATA[PRESET.loc.preset].name} Presets - ${new Date().toGMTString()}.txt`)
@@ -238,22 +239,21 @@ let PRESET_BULK = {
 		let data = PRESET.data
 		let value = ``
 
-		value = `-- MAIN --\n`
 		for (let main of data.main) {
 			value += `"${main.title||''}" / "${main.str}"`
 			for (let [i, opt] of Object.entries(PRESET_OPTION_NAMES)) if (main[i]) value += ` / ${opt}`
 			value += `\n`
 		}
-
-		value += `-- DIAL --\n`
-		for (let main of data.dial) value += `"${main.title||''}" / "${main.str}"\n`
+		if (!PRESET.loc.global) {
+			value = `-- MAIN --\n` + value + `\n-- DIAL --\n`
+			for (let main of data.dial) value += `"${main.title||''}" / "${main.str}"\n`
+		}
 		return value
 	},
 	parse() {
 		let data = { main: [], dial: [] }
-		let mode
+		let mode = "main"
 		for (let line of el("preset_bulk_str").value.split("\n")) {
-			if (line == "-- MAIN --") mode = "main"
 			if (line == "-- DIAL --") mode = "dial"
 			if (!mode) continue
 

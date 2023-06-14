@@ -3919,17 +3919,16 @@
 			</div>
 			<div class="bl_tab" id="hypotheses" style='display: none'>
 				<button class='storebtn' style='width: 120px; height: 36px' onclick="BL_HYPOTHESES.clear()">Clear</button>
-				<button class='storebtn' style='width: 120px; height: 36px' onclick="BL_HYPOTHESES.exportField()">Export</button>
-				<button class='storebtn' style='width: 120px; height: 36px' onclick="BL_HYPOTHESES.importField()">Import</button><br>
+				<button class='storebtn' style='width: 120px; height: 36px' onclick="BL_HYPOTHESES.export()">Export</button>
+				<button class='storebtn' style='width: 120px; height: 36px' onclick="BL_HYPOTHESES.import()">Import</button><br>
 
 				<div id='hypo_choice'></div><br>
+				Stability: <span id='hypo_stable'></span>
 				<table id="hypo_field" style="margin: auto"></table><br>
 
 				<h2>Bonds</h2>
 				<i style='opacity: 0.5'>Shift down to show all bond effects.</i>
-				<div id="hypo_bonds">
-					<!-- <span class="hypo hypo1"></span><span class="hypo hypo2"></span>: [effect] -->
-				</div>
+				<div id="hypo_bonds"></div>
 			</div>
 			<div class="bl_tab" id="weak_force">
 				<table style="margin: 0 auto">
@@ -3945,7 +3944,7 @@
 					</td>
 				</table>
 				<table id="wz_capacitors" style='margin: auto'></table>
-				<b class='red' id="wz_deactive">Get at least 1 Hypercharge to activate all boosts above.</b>
+				<b class='red' id="wz_deactive">Nullified! Assign more W- Bosons or weaken a Capacitor.</b>
 			</div>
 			<div class="bl_tab" id="higgs">
 				<span id="hb" style="font-size:25px">0</span> Higgs
@@ -3993,7 +3992,7 @@
 			<br><br><hr>
 
 			<b>(NG+3 v2.31: Ghostify Respecced)</b><br>
-			<b class="red">(Beta: 6/11/23 Build)</b><br>
+			<b class="red">(Beta: 6/13/23 Build)</b><br>
 			By <a href="https://aarextiaokhiao.github.io/">Aarex</a>, pg132, and usavictor.
 			<br><br>
 

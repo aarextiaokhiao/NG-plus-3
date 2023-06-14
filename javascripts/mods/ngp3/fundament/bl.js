@@ -48,10 +48,9 @@ const BOSONIC_LAB = LAB = {
 		return E(0)
 
 		let r = E(bondEff("0;1", 0))
-		if (bondEff("1;3") >= 5) r = r.mul(2)
+		if (bondEff("0;3") >= 2) r = r.mul(2)
 		if (isCapacitorsActive()) r = r.mul(capacitorEff(0))
 		if (isCapacitorsActive()) r = r.mul(capacitorEff(1))
-		if (isCapacitorsActive() && r.gt(1)) r = r.pow(capacitorEff(2))
 		if (hasBLMilestone(12)) r = r.mul(blEff(12))
 		if (hasBLMilestone(19)) r = r.mul(blEff(19))
 		return r
@@ -207,36 +206,46 @@ function showBLTab(x) {
 
 //Subfeatures
 const BL_HYPOTHESES = {
-	//Calculation
+	/* CALCULATION */
 	temp() {
+		tmp.funda.lab.stable = 0
+		tmp.funda.lab.stable_max = 6
+		if (isCapacitorsActive()) tmp.funda.lab.stable_max += capacitorEff(2, 0)
+
 		tmp.funda.lab.bond = {}
 		for (let i of Object.keys(blSave.hypo_field)) {
 			let x = parseInt(i.split(";")[1])
 			let y = parseInt(i.split(";")[0])
-			this.recordBond(y+";"+x, y+";"+(x+1))
-			this.recordBond(y+";"+x, (y+1)+";"+x)
+			this.checkBond(y+";"+x, y+";"+(x+1))
+			this.checkBond(y+";"+x, (y+1)+";"+x)
 		}
 
-		tmp.funda.lab.bond_eff = {}
-		for (let [i, a] of Object.entries(tmp.funda.lab.bond)) tmp.funda.lab.bond_eff[i] = this.bond_eff[i].eff(a)
+		tmp.funda.lab.bonds = {}
+		if (tmp.funda.lab.stable > tmp.funda.lab.stable_max) return
+		for (let [i, a] of Object.entries(tmp.funda.lab.bond)) tmp.funda.lab.bonds[i] = this.bonds[i].eff(a)
 	},
 
 	/* HYPOTHESES */
-	choose(x) {
-		BL_HYPOTHESES.hypo_chosen = x
-	},
-	hypo_types: [
+	data: [
 		{
 			name: "Infinity",
+			power: 0,
+			sym: "∞",
 			unl: _ => true,
 		}, {
 			name: "Eternal",
+			power: 1,
+			sym: "Δ",
 			unl: _ => true,
 		}, {
 			name: "Quantum",
+			power: 1,
+			sym: "Π",
 			unl: _ => true,
 		}, {
 			name: "Spectral",
+			power: 2,
+			sym: "φ",
 			unl: _ => blSave.best_bosons.gte(1e3),
 		}
 	],
@@ -246,19 +255,19 @@ const BL_HYPOTHESES = {
 		blSave.hypo_field = {}
 		BL_HYPOTHESES.temp()
 	},
-	exportField() {
-		exportData(PRESET_DATA.bl.get())
+	export: _ => exportData(PRESET_DATA.bl.get()),
+	import: _ => PRESET_DATA.bl.load(prompt("Insert your preset here. Your field will be overwritten on import!")),
+	choose(x) {
+		BL_HYPOTHESES.hypo_chosen = x
 	},
-	importField() {
-		PRESET_DATA.bl.load(prompt("Insert your preset here. Your field will be overwritten on import!"))
-	},
-
 	place(x) {
 		if (blSave.hypo_field[x] === BL_HYPOTHESES.hypo_chosen) delete blSave.hypo_field[x]
 		else blSave.hypo_field[x] = BL_HYPOTHESES.hypo_chosen
 		BL_HYPOTHESES.temp()
 	},
-	recordBond(a, b) {
+
+	/* BONDS */
+	checkBond(a, b) {
 		let field = blSave.hypo_field
 		if (field[a] === undefined) return
 		if (field[b] === undefined) return
@@ -266,39 +275,39 @@ const BL_HYPOTHESES = {
 
 		let id = Math.min(field[a], field[b]) + ";" + Math.max(field[b], field[a])
 		tmp.funda.lab.bond[id] = (tmp.funda.lab.bond[id] || 0) + 1
+		tmp.funda.lab.stable += this.data[field[a]].power + this.data[field[b]].power
 	},
-
-	bond_eff: {
+	bonds: {
 		["0;1"]: {
-			eff: x => x/40,
+			eff: x => pow10(x/10).sub(1).div(10),
 			disp: e => `Generate <b>${shorten(e)}/s</b> Bosonic Matter.`,
 		},
 		["0;2"]: {
-			eff: x => Math.floor(x/4),
+			eff: x => Math.floor(x),
 			disp: e => `Add W Bosons by <b>+${e}</b>`,
 		},
 		["1;2"]: {
-			eff: x => Math.floor(x/8),
+			eff: x => Math.floor(x/2),
 			disp: e => `Add Z0 Bosons by <b>+${e}</b>`,
 		},
 		["0;3"]: {
-			eff: x => Math.cbrt(x/4+1),
-			disp: e => `Strengthen W-Z Capacitors by <b>${shorten(e)}x</b>`,
+			eff: x => x,
+			disp: e => `At 2 levels, double Bosonic Matter. <b>(${e}/2)</b>`,
 		},
 		["1;3"]: {
 			eff: x => x,
-			disp: e => `At 3 levels, double Bosonic Matter. <b>(${e}/3)</b>`,
+			disp: e => `At 2 levels, double W Bosons. <b>(${e}/2)</b>`,
 		},
 		["2;3"]: {
 			eff: x => x,
-			disp: e => `At 4 levels, double Z0 Bosons. <b>(${e}/4)</b>`,
+			disp: e => `At 2 levels, double Z0 Bosons. <b>(${e}/2)</b>`,
 		}
 	},
 
 	/* HTML */
 	setupTab() {
 		let choices = ""
-		for (let i = 0; i < this.hypo_types.length; i++) choices += `<button class='hypo_btn' id='hypo_choice_${i}' ach-tooltip="${this.hypo_types[i].name}" onclick="BL_HYPOTHESES.choose(${i})"><span class="hypo hypo${i}"></span></button>`
+		for (let [i, h] of Object.entries(this.data)) choices += `<button class='hypo_btn' id='hypo_choice_${i}' ach-tooltip="${h.name}" onclick="BL_HYPOTHESES.choose(${i})"><span class="hypo hypo${i}">${h.sym}</span></button>`
 		el("hypo_choice").innerHTML = choices
 
 		let field = "<tr>"
@@ -311,9 +320,9 @@ const BL_HYPOTHESES = {
 		el("hypo_field").innerHTML = field
 	},
 	update() {
-		for (let i = 0; i < this.hypo_types.length; i++) {
+		for (let i = 0; i < this.data.length; i++) {
 			el("hypo_choice_" + i).className = "hypo_btn " + (this.hypo_chosen == i ? "chosen" : "")
-			el("hypo_choice_" + i).style.display = this.hypo_types[i].unl() ? "" : "none"
+			el("hypo_choice_" + i).style.display = this.data[i].unl() ? "" : "none"
 		}
 
 		for (let x = 0; x < 5; x++) {
@@ -321,14 +330,17 @@ const BL_HYPOTHESES = {
 				let id = y+";"+x
 				let type = blSave.hypo_field[id]
 				el('hypo_'+id).className = type !== undefined ? "hypo hypo" + type : "hypo"
+				el('hypo_'+id).textContent = type !== undefined ? this.data[type].sym : ""
 			}
 		}
+		el('hypo_stable').textContent = getFullExpansion(tmp.funda.lab.stable) + " / " + getFullExpansion(tmp.funda.lab.stable_max)
+		el('hypo_stable').className = tmp.funda.lab.stable > tmp.funda.lab.stable_max ? "red" : ""
 
 		let bonds = ""
-		let shown = Object.keys(tmp.funda.lab.bond_eff)
+		let shown = Object.keys(tmp.funda.lab.bonds)
 		if (shiftDown) {
 			let unlocked = []
-			for (var [i, d] of Object.entries(this.hypo_types)) {
+			for (var [i, d] of Object.entries(this.data)) {
 				if (!d.unl()) continue
 				for (var j of unlocked) {
 					if (shown.includes(j+";"+i)) continue
@@ -339,9 +351,9 @@ const BL_HYPOTHESES = {
 		}
 		for (let i of shown) {
 			let split = i.split(";")
-			let has = tmp.funda.lab.bond_eff[i] !== undefined
-			let eff = tmp.funda.lab.bond_eff[i] ?? this.bond_eff[i].eff(0)
-			bonds += `<span class="hypo hypo${split[0]}"></span><span class="hypo hypo${split[1]}"></span> <span ${has ? '' : 'style="opacity: 0.2"'}>${this.bond_eff[i].disp(eff)}</span><br>`
+			let has = tmp.funda.lab.bonds[i] !== undefined
+			let eff = tmp.funda.lab.bonds[i] ?? this.bonds[i].eff(0)
+			bonds += `<span class="hypo hypo${split[0]}"></span><span class="hypo hypo${split[1]}"></span> <span ${has ? '' : 'style="opacity: 0.2"'}>${this.bonds[i].disp(eff)}</span><br>`
 		}
 		el("hypo_bonds").innerHTML = bonds
 	},
@@ -379,7 +391,7 @@ PRESET_DATA.bl = {
 					continue
 				}
 
-				let unl = BL_HYPOTHESES.hypo_types[entry[2]]?.unl
+				let unl = BL_HYPOTHESES.data[entry[2]]?.unl
 				check = unl && unl()
 
 				if (!check) {
@@ -398,9 +410,10 @@ PRESET_DATA.bl = {
 }
 
 function bondEff(i, def = 1) {
-	return tmp.funda.lab?.bond_eff[i] ?? def
+	return tmp.funda.lab?.bonds[i] ?? def
 }
 
+/* WZ CAPACITORS */
 const WEAK_FORCE = {
 	setup() {
 		let data = []
@@ -414,27 +427,33 @@ const WEAK_FORCE = {
 		tmp.funda.lab.bosons = amt
 		amt.w = this.amt.w()
 		amt.z = this.amt.z()
+		amt.max = 0
 		amt.hc = amt.z
-		for (var d of blSave.wz_capacitors) {
+		for (var [i, d] of Object.entries(blSave.wz_capacitors)) {
 			amt.w -= d.p + d.m
 			amt.hc += d.m - d.p
+			if (d.p == 5 && d.m == 0 && amt.max == i) amt.max++
 		}
 
 		let eff = {}
 		let str = bondEff("0;3")
 		tmp.funda.lab.capacitors = eff
-		for (var [i, d] of Object.entries(this.capacitors)) eff[i] = d.eff(blSave.wz_capacitors[i].p * str)
+		for (var [i, d] of Object.entries(this.capacitors)) {
+			if (i > amt.max + 1) return
+			eff[i] = d.eff(blSave.wz_capacitors[i].p * str)
+		}
 	},
 
 	/* BOSONS */
 	amt: {
 		w() {
 			let r = bondEff("0;2", 0)
+			if (bondEff("1;3") >= 2) r *= 2
 			return r
 		},
 		z() {
 			let r = bondEff("1;2", 0)
-			if (bondEff("2;3") >= 4) r *= 2
+			if (bondEff("2;3") >= 2) r *= 2
 			return r
 		}
 	},
@@ -443,60 +462,52 @@ const WEAK_FORCE = {
 	capacitors: [
 		{
 			eff: x => Math.sqrt(x + 1),
-			disp: e => `Boost Bosonic Matter by <b>${shorten(e)}x</b>.`,
-			unl: _ => true,
+			disp: e => `Boost Bosonic Matter by <b>${shorten(e)}x</b>.`
 		}, {
 			eff: x => blSave.bosons.add(1).log10() * Math.sqrt(x) + 1,
-			disp: e => `Bosonic Matter synergizes itself by <b>${shorten(e)}x</b>.`,
-			unl: _ => true,
+			disp: e => `Bosonic Matter synergizes itself by <b>${shorten(e)}x</b>.`
 		}, {
-			eff: x => Math.sqrt(x + 1),
-			disp: e => `Raise Bosonic Matter by <b>^${shorten(e)}</b> before milestones.`,
-			unl: _ => true,
-		}, {
-			eff: x => Math.log10(x+10),
-			disp: e => `Boost Hypotheses by <b>${shorten(e)}x</b>.`,
-			unl: _ => false,
+			eff: x => x,
+			disp: e => `Add Stability by <b>+${e}</b>.`
 		}
 	],
-	total(i) {
-	},
 	put(i, type) {
 		let data = blSave.wz_capacitors
-		if (type == "plus" && tmp.funda.lab.bosons.w >= 1 && data[i].p + data[i].m < 5) data[i].p++
-		if (type == "minus" && tmp.funda.lab.bosons.w >= 1 && data[i].p + data[i].m < 5) data[i].m++
 		if (type == "putout") {
 			data[i].p = Math.max(data[i].p - 1, 0)
 			data[i].m = Math.max(data[i].m - 1, 0)
 		}
-		if (type == "clear") data[i] = {p: 0, m: 0}
+		if (data[i].p + data[i].m >= 5) return
+		if (type == "plus" && tmp.funda.lab.bosons.w >= 1) data[i].p++
+		if (type == "minus" && tmp.funda.lab.bosons.w >= 1) data[i].m++
 	},
 
 	/* HTML */
 	setupTab() {
 		let html = ""
-		for (var i in this.capacitors) html += `<td id='wz_capacitor_div_${i}' style='text-align: center; width: 200px'>
+		for (var i in this.capacitors) html += `<td id='wz_capacitor_div_${i}' style='text-align: center; vertical-align: 0; width: 200px; display: none'>
 			<div class='wz_capacitor'>
 				<button class='can plus' id='wz_capacitor_plus_${i}' onclick='WEAK_FORCE.put(${i}, "plus")'></button>
 				<button class='can minus' id='wz_capacitor_minus_${i}' onclick='WEAK_FORCE.put(${i}, "minus")'></button>
 			</div>
-			<span id='wz_capacitor_eff_${i}'></span><br><br>
-
-			<button class='storebtn' onclick='WEAK_FORCE.put(${i}, "putout")'>Putout</button><br>
+			<button class='storebtn' onclick='WEAK_FORCE.put(${i}, "putout")'>Weaken</button><br><br>
+			<span id='wz_capacitor_eff_${i}'></span>
 		</td>`
 		//<button class='storebtn' onclick='WEAK_FORCE.put(${i}, "clear")'>Clear</button>
 		el("wz_capacitors").innerHTML = html
 	},
 	update() {
-		let data_tmp = tmp.funda.lab
-		el("wz_w").innerHTML = data_tmp.bosons.w
-		el("wz_z").innerHTML = data_tmp.bosons.z
-		el("wz_hc").innerHTML = data_tmp.bosons.hc
+		let data_tmp = tmp.funda.lab.bosons
+		el("wz_w").innerHTML = data_tmp.w
+		el("wz_z").innerHTML = data_tmp.z
+		el("wz_hc").innerHTML = data_tmp.hc
 		el("wz_hc").className = !isCapacitorsActive() ? "red" : ""
 		el("wz_deactive").style.display = !isCapacitorsActive() ? "" : "none"
-		for (var [i, d] of Object.entries(this.capacitors)) {
-			el("wz_capacitor_div_"+i).style.display = d.unl() ? "" : "none"
-			if (!d.unl()) return
+
+		for (let [i, d] of Object.entries(this.capacitors)) {
+			let unl = data_tmp.max + 1 >= i
+			el("wz_capacitor_div_"+i).style.display = unl ? "" : "none"
+			if (!unl) continue
 
 			let amts = blSave.wz_capacitors[i]
 			let maxed = amts.p + amts.m >= 5
@@ -505,13 +516,13 @@ const WEAK_FORCE = {
 			el("wz_capacitor_minus_"+i).className = "minus " + (maxed ? "unavailablebtn" : "can")
 			el("wz_capacitor_minus_"+i).innerHTML = amts.m + "-"
 
-			el("wz_capacitor_eff_"+i).innerHTML = d.disp(data_tmp.capacitors[i])
+			el("wz_capacitor_eff_"+i).innerHTML = d.disp(tmp.funda.lab.capacitors[i])
 		}
 	},
 }
 
 function isCapacitorsActive() {
-	return tmp.funda.lab.bosons?.hc > 0
+	return tmp.funda.lab.bosons?.hc >= 0
 }
 
 function capacitorEff(i, def = 1) {
