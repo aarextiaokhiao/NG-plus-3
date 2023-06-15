@@ -43,11 +43,11 @@ function point(x, y, ctz){
 
 const ANIMATIONS = {
 	gSac: {
-		unl: _ => inNGM(2) && (player.galacticSacrifice.times > 0 ||player.infinities > 0 || getEternitied() > 0 || quantumed),
+		unl: _ => inNGM(2) && (player.galacticSacrifice.times > 0 || infinitied()),
 		title: "Galactic Sacrifice"
 	},
 	bigCrunch: {
-		unl: _ => player.infinities > 0 || getEternitied() > 0 || quantumed,
+		unl: _ => infinitied(),
 		title: "Big Crunch"
 	},
 	quantum: {
@@ -101,7 +101,7 @@ function animationOnOff(x) {
 }
 
 function drawAnimations(ts){
-	if (player.dilation.tachyonParticles.gte(1) && el("eternitystore").style.display !== "none" && el("dilation").style.display !== "none" && player.options.animations.tachyonParticles) {
+	if (player.dilation.tachyonParticles.gte(1) && isTabShown("eter") && isTabShown("dil") && player.options.animations.tachyonParticles) {
 		ctx3.clearRect(0, 0, canvas.width, canvas.height);
 		if (player.options.theme == "Aarex's Modifications") ctx3.fillStyle="#e5e5e5";
 		else if (player.options.theme == "Dark" || player.options.theme == "Dark Metro") ctx3.fillStyle="#FFF";
@@ -143,7 +143,7 @@ function drawAnimations(ts){
 }
 
 function drawTreeBranch(num1, num2) {
-	if (!isTabShown("timestudies")) return
+	if (!isTabShown("ts")) return
 
 	var name1 = parseInt(num1);
 	var isECName = false;
@@ -323,7 +323,7 @@ function drawStudyTree() {
 	drawTreeBranch("dilstudy4", "dilstudy5")
 	if (mod.ngpp) drawTreeBranch("dilstudy5", "dilstudy6")
 	if (mod.ngp3) drawTreeBranch("dilstudy6", "masteryportal")
-	if (shiftDown && el("eternitystore").style.display !== "none" && el("timestudies").style.display !== "none") {
+	if (shiftDown) {
 		for (i=0; i<all.length; i++) {
 			let id = all[i]
 			let disp = id

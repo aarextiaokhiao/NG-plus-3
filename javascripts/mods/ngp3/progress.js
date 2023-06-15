@@ -7,11 +7,6 @@ const NGP3_FEATURES = {
 	},
 	md: {
 		name: "Meta Dimensions",
-		tab() {
-			showTab("dimensions")
-			showDimTab("metadimensions")
-		},
-
 		met: _ => hasDilStudy(6),
 		req: _ => 1e24,
 		req_res: _ => player.dilation.dilatedTime,
@@ -21,8 +16,8 @@ const NGP3_FEATURES = {
 	ms: {
 		name: "Mastery Studies",
 		tab() {
-			showTab("eternitystore")
-			showEternityTab("masterystudies")
+			TAB_CORE.open("eter")
+			TAB_CORE.open("eter", "ts_master")
 		},
 
 		met: _ => mod.ngp3 && player.dilation.upgrades.includes("ngpp6"),
@@ -34,7 +29,7 @@ const NGP3_FEATURES = {
 	qu: {
 		name: "Quantum",
 		tab() {
-			showTab("quantumtab")
+			TAB_CORE.open("qu")
 		},
 
 		met: _ => (quantumed && isQuantumReached()) || bigRipped(),
@@ -45,11 +40,6 @@ const NGP3_FEATURES = {
 	},
 	pos: {
 		name: "Positrons",
-		tab() {
-			showTab("quantumtab")
-			showQuantumTab('positrons')
-		},
-
 		met: _ => hasMasteryStudy("d7"),
 		req: _ => 50,
 		req_res: _ => quantumWorth,
@@ -57,11 +47,6 @@ const NGP3_FEATURES = {
 	},
 	qc: {
 		name: "Quantum Challenges",
-		tab() {
-			showTab("challenges")
-			showChallengesTab("quantumchallenges")
-		},
-
 		met: _ => hasMasteryStudy("d8"),
 		req: _ => 16750,
 		req_res: _ => quSave.electrons.amount,
@@ -69,11 +54,6 @@ const NGP3_FEATURES = {
 	},
 	pc: {
 		name: "Paired Challenges",
-		tab() {
-			showTab("challenges")
-			showChallengesTab("pChalls")
-		},
-
 		met: _ => hasMasteryStudy("d9"),
 		req: _ => 8,
 		req_res: _ => Object.keys(quSave.challenges).length,
@@ -81,10 +61,6 @@ const NGP3_FEATURES = {
 	},
 	ant: {
 		name: "Duplicants",
-		tab() {
-			showTab("duplicants")
-		},
-
 		met: _ => hasMasteryStudy("d10"),
 		req: _ => 4,
 		req_res: _ => quSave.pairedChallenges.completed,
@@ -92,10 +68,6 @@ const NGP3_FEATURES = {
 	},
 	ed: {
 		name: "Emperor Dimensions",
-		tab() {
-			teleportToEDs()
-		},
-
 		met: _ => hasMasteryStudy("d11"),
 		req: _ => 10,
 		req_res: _ => EDsave[1].perm,
@@ -103,11 +75,6 @@ const NGP3_FEATURES = {
 	},
 	nf: {
 		name: "Nanofield",
-		tab() {
-			showTab("duplicants")
-			showAntTab('nanofield')
-		},
-
 		met: _ => hasMasteryStudy("d12"),
 		req: _ => 10,
 		req_res: _ => EDsave[8].perm,
@@ -115,11 +82,6 @@ const NGP3_FEATURES = {
 	},
 	decay: {
 		name: "Decay",
-		tab() {
-			showTab("quantumtab")
-			showQuantumTab('tod')
-		},
-
 		met: _ => hasMasteryStudy("d13"),
 		req: _ => 16,
 		req_res: _ => nfSave.rewards,
@@ -128,9 +90,6 @@ const NGP3_FEATURES = {
 	br: {
 		name: "Big Rip",
 		tab() {
-			showTab("quantumtab")
-			showQuantumTab('bigrip')
-
 			el("welcome").style.display = "flex"
 			el("welcomeMessage").innerHTML = "<h1>Your journey is not over...</h1>Anyways, welcome to NG+4, originally by Soul147! You have reached the NG+4 checkpoint. However, many features remain for you to dominate."
 		},
@@ -143,8 +102,7 @@ const NGP3_FEATURES = {
 	be: {
 		name: "Break Eternity",
 		tab() {
-			showTab("eternitystore")
-			showEternityTab('eternityupgrades')
+			TAB_CORE.open("eter", "upg_eter")
 		},
 
 		met: _ => beSave?.unlocked,
@@ -156,7 +114,7 @@ const NGP3_FEATURES = {
 	fu: {
 		name: "Fundament",
 		tab() {
-			showTab("ghostify")
+			TAB_CORE.open("funda")
 		},
 
 		met: _ => (!bigRipped() || isQuantumReached()) && ghostified,
@@ -168,8 +126,8 @@ const NGP3_FEATURES = {
 	ph: {
 		name: "Photons",
 		tab() {
-			showTab("ghostify")
-			showGhostifyTab('gphtab')
+			TAB_CORE.open("funda")
+			TAB_CORE.open("funda", "ph")
 		},
 
 		met: _ => PHOTON.unlocked(),
@@ -181,7 +139,7 @@ const NGP3_FEATURES = {
 	bl: {
 		name: "Bosonic Lab",
 		tab() {
-			showTab("bosonic_lab")
+			TAB_CORE.open("bl")
 		},
 
 		met: _ => LAB.unlocked(),
@@ -192,7 +150,7 @@ const NGP3_FEATURES = {
 	hb: {
 		name: "Higgs",
 		tab() {
-			showTab("bosonic_lab")
+			TAB_CORE.open("bl")
 		},
 
 		met: _ => false,
@@ -205,7 +163,7 @@ const NGP3_FEATURES = {
 const NGP3_FEATURE_LEN = Object.keys(NGP3_FEATURES).length
 
 function ngp3_feature_notify(k) {
-	NGP3_FEATURES[k].tab()
+	NGP3_FEATURES[k].tab?.()
 	$.notify("Congratulations! You unlocked " + NGP3_FEATURES[k].name + "!", "success")
 
 	el("ngp3_feature_ani").style.display = ""

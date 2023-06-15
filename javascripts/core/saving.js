@@ -386,7 +386,6 @@ function rename_save(i = savePlacement) {
 			progressBar: true,
 			logRateChange: false,
 			eternityChallRecords: {},
-			tabsSave: {on: false},
 			breakInfinity: false
 		}
 		data.aarexModifications.save_name = save_name
@@ -746,8 +745,7 @@ function updateNewPlayer(mode, preset) {
 		},
 		aarexModifications: {
 			progressBar: true,
-			eternityChallRecords: {},
-			tabsSave: {}
+			eternityChallRecords: {}
 		}
 	}
 	aarMod = player.aarexModifications

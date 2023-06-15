@@ -127,7 +127,7 @@ function galacticSacrifice(auto, force, chall) {
 	}
 	if (chall) {
 		player.galacticSacrifice.chall = chall
-		showTab("dimensions")
+		TAB_CORE.open("dim")
 	}
 	if (inNGM(4)) {
 		if (!force) {
@@ -304,8 +304,8 @@ function updateGalaxyUpgradesDisplay(){
 	el("galaxy43").innerHTML = text43 + curr43 + "<br>Cost: <span id='galcost43'></span> GP"
 }
 
-function galacticUpgradeButtonTypeDisplay () {
-	let t = el("galTable")
+function galacticUpgradeButtonTypeDisplay() {
+	let t = el("galUpgs")
 	for (let i = 1; i <= 5; i++) { //5 rows
 		var r = t.rows[i-1]
 		if (!galConditions["r"+i] || galConditions["r"+i]()) {
@@ -706,11 +706,11 @@ function calcG13Exp(){
 
 //Unknown
 function gSacrificeUnl() {
-	return inNGM(2) && (player.galaxies || gSacrificed() || player.infinitied || getEternitied() || quantumed)
+	return inNGM(2) && (player.galaxies || gSacrificed() || infinitied())
 }
 
 function gSacrificed() {
-	return player?.galacticSacrifice?.times 
+	return inNGM(2) && (player?.galacticSacrifice?.times || infinitied())
 }
 
 function hasGSacUpg(x) {
@@ -735,10 +735,6 @@ function displayGalSacStats(){
 function galSacDisplay(){
 	if (inNGM(2) && (player.galacticSacrifice.times > 0 || player.infinitied > 0 || player.eternities != 0 || quantumed) && !isEmptiness) {
 		el("galaxyPoints2").innerHTML = "You have <span class='GPAmount'>"+shortenDimensions(player.galacticSacrifice.galaxyPoints)+"</span> Galaxy point"+(player.galacticSacrifice.galaxyPoints.eq(1)?".":"s.")
-	}
-	if (el("galaxy").style.display=='block') {
-		galacticUpgradeSpanDisplay()
-		galacticUpgradeButtonTypeDisplay()
 	}
 	galSacBtnUpdating()
 }

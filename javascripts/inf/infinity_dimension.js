@@ -11,16 +11,12 @@ function maxAllID(auto) {
 	for (var t = 1; t <= 8; t++) if (!auto || player.infDimBuyers[t-1]) buyMaxInfDims(t)
 }
 
-function hideMaxIDButton(onLoad=false) {
-	if (!onLoad && !mod.ngp3) return
-	var hide = true
-	if (player.masterystudies && player.currentEterChall != "eterc8") {
-		hide = false
-		if (player.eternities > 17) {
-			for (var d = 0; d < 8; d++) {
-				if (player.infDimBuyers[d] && d > 6) hide = true
-				else break
-			}
+function hideMaxIDButton() {
+	var hide = player.currentEterChall == "eterc8"
+	if (getEternitied() > 17) {
+		for (var d = 0; d < 8; d++) {
+			if (!player.infDimBuyers[d]) break
+			if (d + 1 == 8) hide = true
 		}
 	}
 	el("maxAllID").style.display = hide ? "none" : ""
@@ -43,18 +39,16 @@ function DimensionRateOfChange(tier) {
 }
 
 function updateInfinityDimensions() {
-	if (isTabShown("infinitydimensions")) {
-		updateInfPower()
-		for (let tier = 1; tier <= 8; ++tier) {
-			var unl = player.infDimensionsUnlocked[tier-1]
-			el("infRow" + tier).style.display = unl ? "" : "none"
-			if (unl) {
-				el("infD" + tier).textContent = dimNames[tier] + " Infinity Dimension x" + shortenMoney(DimensionPower(tier));
-				el("infAmount" + tier).textContent = DimensionDescription(tier);
-				el("infMax" + tier).textContent = (quantumed ? '' : "Cost: ") + shortenInfDimCosts(getIDCost(tier)) + " IP"
-				el("infMax"+tier).className = player.infinityPoints.gte(getIDCost(tier)) ? "storebtn" : "unavailablebtn"
-				el("infRow" + tier).style.visibility = "visible";
-			}
+	updateInfPower()
+	for (let tier = 1; tier <= 8; ++tier) {
+		var unl = player.infDimensionsUnlocked[tier-1]
+		el("infRow" + tier).style.display = unl ? "" : "none"
+		if (unl) {
+			el("infD" + tier).textContent = dimNames[tier] + " Infinity Dimension x" + shortenMoney(DimensionPower(tier));
+			el("infAmount" + tier).textContent = DimensionDescription(tier);
+			el("infMax" + tier).textContent = (quantumed ? '' : "Cost: ") + shortenInfDimCosts(getIDCost(tier)) + " IP"
+			el("infMax"+tier).className = player.infinityPoints.gte(getIDCost(tier)) ? "storebtn" : "unavailablebtn"
+			el("infRow" + tier).style.visibility = "visible";
 		}
 	}
 }
@@ -241,20 +235,8 @@ function switchAutoInf(tier) {
 }
 
 function toggleAllInfDims() {
-	if (player.infDimBuyers[0]) {
-		for (var i = 1; i <= 8; i++) {
-			player.infDimBuyers[i - 1] = false
-			el("infauto" + i).textContent = "Auto: OFF"
-		}
-	} else {
-		for (var i=1; i <= 8; i++) {
-			if (getEternitied() - 10 >= i) {
-				player.infDimBuyers[i - 1] = true
-				el("infauto" + i).textContent = "Auto: ON"
-			}
-		}
-	}
-	hideMaxIDButton()
+	for (var i = 8; i >= 1; i--) player.infDimBuyers[i - 1] = !player.infDimBuyers[0]
+	loadInfAutoBuyers()
 }
 
 function loadInfAutoBuyers() {
@@ -262,7 +244,7 @@ function loadInfAutoBuyers() {
 		if (player.infDimBuyers[i - 1]) el("infauto" + i).textContent = "Auto: ON"
 		else el("infauto" + i).textContent = "Auto: OFF"
 	}
-	hideMaxIDButton(true)
+	hideMaxIDButton()
 }
 
 function getIDReplMult() {

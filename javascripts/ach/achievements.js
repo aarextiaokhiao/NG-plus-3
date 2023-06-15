@@ -505,8 +505,6 @@ function updateAchievements() {
 		}
 	}
 	el("nothingnessSecret").style.display = rowsShown ? "none" : ""
-
-	achTabButtonsDisplay()
 }
 
 function getNormalAchAmount(){
@@ -550,7 +548,6 @@ function toggleSecretAchs() {
 	// 0 == visible, 1 == not visible
 	aarMod.hideSecretAchs = !aarMod.hideSecretAchs;
 	el("hideSecretAchs").textContent = (aarMod.hideSecretAchs ? "Show" : "Hide") + " extra achievements";
-	achTabButtonsDisplay()
 }
 
 function achMultLabelUpdate() {
@@ -566,10 +563,4 @@ function metaAchMultLabelUpdate() {
 
 	el("metaAchMultLabel").style.display = "inline-block"
 	el("metaAchMultLabel").textContent = "Achievement multiplier to Meta Dimensions: " + shorten(tmp.qu.chal.reward[6]) + "x"
-}
-
-function achTabButtonsDisplay() {
-	if (aarMod.hideSecretAchs && el("normalachievements").style.display != "block") showAchTab("normalachievements");
-	el("achTabButtons").style.display=aarMod.hideSecretAchs?"none":""
-	el("badgestabbtn").style.display=inNGM(2)||mod.ngp3?"":"none"
 }

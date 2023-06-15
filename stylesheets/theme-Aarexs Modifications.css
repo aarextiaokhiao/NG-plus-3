@@ -71,35 +71,6 @@ strong { color: #0072e5 }
 .floatingText {
     color: #00e500 !important
 }
-#pSac, #paradoxbtn, #pdtabbtn button {
-	background: radial-gradient(#720072, #e500e5);
-	border-color: #e500e5 !important;
-	color: #e572e5 !important;
-	text-shadow: 0px 0px 3px #191919, 0px 0px 6px #e500e5;
-}
-#pSac:hover, #paradoxbtn:hover, #pdtabbtn button:hover {
-	box-shadow: inset 0px 0px 12px 0px #e500e5;
-	color: #e572e5 !important;
-	text-shadow: 0px 0px 6px #191919, 0px 0px 6px #e500e5;
-}
-.pxAmount, #pPow, #pPowEffect {
-	color: #e500e5 !important
-}
-.pupg {
-	background: #720072 !important;
-	border-color: #e500e5 !important;
-	color: #e572e5 !important;
-	text-shadow: 0px 0px 3px #000000, 0px 0px 6px #e500e5
-}
-.pupg:hover {
-	text-shadow: 0px 0px 6px #000000, 0px 0px 6px #e500e5
-}
-.pubought {
-	background: #e500e5 !important;
-	border-color: #e500e5 !important;
-	color: #e5e5e5 !important;
-	text-shadow: 0px 0px 6px #000000, 0px 0px 6px #e500e5
-}
 .galaxybtn, .galaxyupgbtn {
     border-color: #2d5be5 !important
 }
@@ -159,11 +130,11 @@ strong { color: #0072e5 }
 .autoBuyerDiv {
     border-color: #727272
 }
-#blackHoleTabbtn button, #blackholeunlock.storebtn, #blackholediv table .storebtn, .antbtn, #replicantReset.storebtn, #edtabbtn button {
+#tab_btn_bh, #blackholeunlock.storebtn, #blackholediv table .storebtn, .antbtn, #replicantReset.storebtn {
 	border: 2px solid #333333 !important;
 	text-shadow: none
 }
-#blackHoleTabbtn button:hover, #blackholeunlock.storebtn:hover, #blackholediv table .storebtn:hover, .antbtn:hover, #replicantReset.storebtn:hover, #edtabbtn button:hover {
+#tab_btn_bh:hover, #blackholeunlock.storebtn:hover, #blackholediv table .storebtn:hover, .antbtn:hover, #replicantReset.storebtn:hover {
 	background-color: #333333 !important;
 	box-shadow: none
 }
@@ -175,11 +146,11 @@ strong { color: #0072e5 }
     background-color: #191919 !important;
     border-color: #e2bd00 !important
 }
-.eternitybtn, #timedimensions td:nth-child(4) .storebtn, .eternityupbtn, .milestonereward, .timestudy, .eternityttbtn, #breakEternityTabbtn button {
+.eternitybtn, #timedimensions td:nth-child(4) .storebtn, .eternityupbtn, .milestonereward, .timestudy, .eternityttbtn {
     border-color: #7100e2 !important;
     animation: none
 }
-.eternitybtn:hover, #timedimensions td:nth-child(4) .storebtn:hover, .timestudy:hover, .eternityttbtn:hover, #breakEternityTabbtn button:hover {
+.eternitybtn:hover, #timedimensions td:nth-child(4) .storebtn:hover, .timestudy:hover, .eternityttbtn:hover {
     background-color: #7100e2 !important
 }
 #theorembuybackground {
@@ -329,13 +300,13 @@ strong { color: #0072e5 }
 #galaxyThreshold, #dilatedGalaxies {
     color: #0072e5 !important
 }
-#dilationTabbtn button, .dilationbtn, .dilationupg, .dilationupgrebuyable {
+#tab_btn_dil, .dilationbtn, .dilationupg, .dilationupgrebuyable {
     background-color: #191919 !important;
     color: #e5e5e5 !important;
     border-color: #72e572 !important;
     animation: none
 }
-#dilationTabbtn button:hover, .dilationbtn:hover, .dilationupg:hover, .dilationupgrebuyable:hover {
+#tab_btn_dil:hover, .dilationbtn:hover, .dilationupg:hover, .dilationupgrebuyable:hover {
     background-color: #72e572 !important;
     color: #191919 !important;
     animation: none
@@ -350,11 +321,11 @@ strong { color: #0072e5 }
 #reversedilation.dilationupg, #xdrow .dilationupgrebuyable { border-color: #16e528 !important }
 #reversedilation.dilationupg:hover, #xdrow .dilationupgrebuyable:hover  { background-color: #16e528 !important }
 #exDilationAmount { color:  #16e528 !important }
-#dilstudy6.dilationupg, #mdtabbtn .secondarytabbtn, #metadimensions .storebtn, #dil14.dilationupg, #dil15.dilationupg, #dil16.dilationupg, #dil17.dilationupg, #masteryportal.dilationupg, #masterystudyunlock button, #masterystudies .dilationupg {
+#dilstudy6.dilationupg, #tab_btn_dim_meta, #metadimensions .storebtn, #dil14.dilationupg, #dil15.dilationupg, #dil16.dilationupg, #dil17.dilationupg, #masteryportal.dilationupg, #masterystudyunlock button, #masterystudies .dilationupg {
     border-color: #00e5e5 !important;
     animation: none
 }
-#dilstudy6.dilationupg:hover, #mdtabbtn .secondarytabbtn:hover, #metadimensions .storebtn:hover, #dil13.dilationupg:hover, #dil14.dilationupg:hover, #dil15.dilationupg:hover, #dil16.dilationupg:hover, #masteryportal.dilationupg:hover, #masterystudyunlock button:hover, #masterystudies .dilationupg:hover {
+#dilstudy6.dilationupg:hover, #tab_btn_dim_meta:hover, #metadimensions .storebtn:hover, #dil13.dilationupg:hover, #dil14.dilationupg:hover, #dil15.dilationupg:hover, #dil16.dilationupg:hover, #masteryportal.dilationupg:hover, #masterystudyunlock button:hover, #masterystudies .dilationupg:hover {
     background-color: #00e5e5 !important;
     animation: none
 }
@@ -366,10 +337,10 @@ strong { color: #0072e5 }
 #metaAntimatterAmount, #metaAntimatterBest, #metaAntimatterPower, #metaAntimatterEffect {
     color: #00e5e5 !important
 }
-#quantum.storebtn, .quantumbtn, #pastquantums, #dilstudy8.dilationupg, #qctabbtn, #dilstudy9.dilationupg, #pccompletionsbtn {
+#quantum.storebtn, .quantumbtn, #dilstudy8.dilationupg, #qctabbtn, #dilstudy9.dilationupg, #pccompletionsbtn {
     border-color: #009900 !important
 }
-#quantum.storebtn:hover, .quantumbtn:hover, #pastquantums:hover, #dilstudy8.dilationupg:hover, #dilstudy8.dilationupgbought, #qctabbtn:hover, #dilstudy9.dilationupg:hover, #dilstudy9.dilationupgbought, #pccompletionsbtn:hover {
+#quantum.storebtn:hover, .quantumbtn:hover, #dilstudy8.dilationupg:hover, #dilstudy8.dilationupgbought, #qctabbtn:hover, #dilstudy9.dilationupg:hover, #dilstudy9.dilationupgbought, #pccompletionsbtn:hover {
     background-color: #009900 !important
 }
 #progressbar.quantumProgress {
@@ -392,12 +363,12 @@ strong { color: #0072e5 }
 	border: 2px solid #191919 !important;
 	color: #191919 !important
 }
-#dilstudy7.dilationupg, #positronstabbtn button, .positron { 
+#dilstudy7.dilationupg, #tab_btn_pos, .positron { 
 	background-color: #191919 !important;
 	border: 2px solid #d2e500 !important;
 	animation: none !important
 }
-#dilstudy7.dilationupg:hover, #positronstabbtn button:hover, #dilstudy7.dilationupgbought, .positron:hover { background-color: #d2e500 !important }
+#dilstudy7.dilationupg:hover, #tab_btn_pos:hover, #dilstudy7.dilationupgbought, .positron:hover { background-color: #d2e500 !important }
 #positronsAmount, #positronsTranslation { color: #d2e500 !important }
 #positronsEffect { color: #00e500 !important }
 .quantumchallengediv {
@@ -427,14 +398,14 @@ strong { color: #0072e5 }
 #eggonAmount, #eggonRate { color: #e5dab7 !important }
 #reduceHatchSpeed.storebtn { border: 2px solid #e5dab7 !important }
 #reduceHatchSpeed.storebtn:hover { background-color: #e5dab7 !important }
-#dilstudy12.dilationupg, #nanofieldtabbtn button { border: 2px solid #999999 !important }
+#dilstudy12.dilationupg, #tab_btn_nf { border: 2px solid #999999 !important }
 #produceQuarkCharge, .nfReward { 
 	background-color: #191919 !important;
 	border: 1px solid #999999 !important;
 	text-shadow: none;
 	animation: none
 }
-#dilstudy12.dilationupg:hover, #dilstudy12.dilationupgbought, #nanofieldtabbtn button:hover, #produceQuarkCharge:hover {
+#dilstudy12.dilationupg:hover, #dilstudy12.dilationupgbought, #tab_btn_nf:hover, #produceQuarkCharge:hover {
 	background-color: #999999 !important;
 	color: #191919;
 	text-shadow: none
@@ -446,8 +417,8 @@ strong { color: #0072e5 }
 	color: #e5e5e5 !important;
 	text-shadow: none
 }
-#dilstudy13.dilationupg, #todtabbtn button { border: 2px solid #993f00 !important }
-#dilstudy13.dilationupg:hover, #dilstudy13.dilationupgbought, #todtabbtn button:hover {
+#dilstudy13.dilationupg, #tab_btn_decay { border: 2px solid #993f00 !important }
+#dilstudy13.dilationupg:hover, #dilstudy13.dilationupgbought, #tab_btn_decay:hover {
 	background-color: #993f00 !important;
 	color: #191919;
 	text-shadow: none
@@ -512,25 +483,14 @@ strong { color: #0072e5 }
 	color: #5be567 !important
 }
 .ghostifybtn, .brCompleted {
-	border-color: transparent !important
+	border-color: transparent !important;
+	animation: ghostifytext 4s linear infinite
 }
 .ghostifybtn:hover {
 	border-color: rgba(255,255,255,0.5) !important
 }
 #GHPAmount, #quantumedBMAmount {
 	animation: ghostifytext 4s linear infinite
-}
-.aarexmodsghostifybtn {
-	background: linear-gradient(#0c0033, #2e0033);
-	border: 2px solid;
-	box-shadow: inset 0px 0px 24px 0px black;
-	font-weight: bold;
-	transition-duration: 0.2s;
-	animation: ghostifytext 4s linear infinite
-}
-.aarexmodsghostifybtn:hover {
-	background: linear-gradient(#0c0033, #2e0033);
-	box-shadow: inset 0px 0px 12px 0px #420072
 }
 #bugExport b, .warning {
 	color: #e50000
@@ -554,12 +514,13 @@ strong { color: #0072e5 }
 	box-shadow: none;
 	text-shadow: none;
 }
-#gphtabbtn button {
+#tab_btn_ph, .photon {
 	background-color: #191919 !important;
     border-color: #bfaf5f !important;
+    box-shadow: none !important;
 	color: #e5e5e5 !important
 }
-#gphtabbtn button:hover {
+#tab_btn_ph:hover, .photon:hover {
 	background-color: #bfaf5f !important;
 	color: #191919 !important
 }

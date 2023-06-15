@@ -103,8 +103,7 @@ function tweakBigRip(id, reset) {
 	if (id == 10) {
 		if (!hasDilStudy(1)) player.dilation.studies.push(1)
 		if (reset) {
-			showTab("eternitystore")
-			showEternityTab("dilation")
+			TAB_CORE.open("eter", "dil")
 		}
 	}
 	if (id == 11) {
@@ -260,7 +259,6 @@ function breakEternity() {
 	beSave.break = !beSave.break
 	beSave.did = true
 	updateBreakEternity()
-	if (beSave.break && el("timedimensions").style.display == "block") showDimTab("antimatterdimensions")
 	if (!player.dilation.active && isSmartPeakActivated) {
 		EPminpeakType = 'normal'
 		EPminpeak = E(0)
@@ -355,7 +353,7 @@ function updateBreakEternityUpgradesTemp() {
 
 function getBEUnls() {
 	//Upgrades
-	let x = 8
+	let x = 7
 	if (PHOTON.unlocked()) x += 3
 	return x
 }
@@ -411,9 +409,10 @@ function updateBreakEternity() {
 	el("eternityUpgrades").style.display = !broke ? "" : "none"
 	el("eternalMatterDiv").style.display = broke ? "" : "none"
 	el("breakEternityUpgrades").style.display = broke ? "" : "none"
+	el("breakUpgRow3").style.display = getBEUnls() > 7 ? "" : "none"
 	el("breakUpg7").style.visibility = broke ? "visible" : "hidden"
 	el("breakUpg7Max").style.visibility = broke ? "visible" : "hidden"
-	el("beShortcut").style.display = broke ? "" : "none"
+	el("beShortcut").style.display = broke && !LAB.unlocked() ? "" : "none"
 	if (broke) {
 		for (var u = 1; u < getBEUnls(); u++) el("breakUpg" + u + "Cost").textContent = shortenDimensions(getBreakUpgCost(u))
 		el("breakUpg7MultIncrease").textContent = shortenDimensions(1e9)
@@ -426,7 +425,7 @@ function breakEternityDisplay(){
 	el("breakEternityBtn").innerHTML = (beSave.break ? "FIX" : "BREAK") + " ETERNITY"
 	el("eternalMatter").innerHTML = shortenDimensions(beSave.eternalMatter)
 	for (var u = 1; u < getBEUnls(); u++) {
-		el("breakUpg" + u).className = (beSave.upgrades.includes(u) && u != 7) ? "eternityupbtnbought" : beSave.eternalMatter.gte(getBreakUpgCost(u)) ? "eternityupbtn" : "eternityupbtnlocked"
+		el("breakUpg" + u).className = beSave.upgrades.includes(u) ? "eternityupbtnbought" : beSave.eternalMatter.gte(getBreakUpgCost(u)) ? "eternityupbtn" : "eternityupbtnlocked"
 		if (u == 8) el("breakUpg8Mult").textContent = (getBreakUpgMult(8) * 100 - 100).toFixed(1)
 		else if (u != 7 && el("breakUpg" + u + "Mult")) el("breakUpg" + u + "Mult").textContent = shortenMoney(getBreakUpgMult(u))
 	}

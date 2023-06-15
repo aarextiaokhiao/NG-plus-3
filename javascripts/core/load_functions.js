@@ -392,7 +392,7 @@ function setAarexModIfUndefined(){
 
 		offline: 10,
 		progressBar: true,
-		tabsSave: {},
+		tabs: {},
 		noFooter: player.options.theme == "Aarex's Modifications" || player.options.theme == "Aarex's Mods II"
 	})
 	player.aarexModifications = aarMod
@@ -407,6 +407,7 @@ function setAarexModIfUndefined(){
 		delete player.masterystudies
 		delete aarMod.newGame3PlusVersion
 	}
+	delete aarMod.tabsSave
 	delete aarMod.offlineProgress
 }
 
@@ -1376,7 +1377,6 @@ function setConfirmationsDisplay(){
 function setOptionsDisplaysStuff1(){
 	el("progressBarBtn").textContent = (aarMod.progressBar?"Hide":"Show")+" progress bar"
 	el("toggleLogRateChange").textContent = "Logarithm rate: O"+(aarMod.logRateChange?"N":"FF")
-	el("tabsSave").textContent = "Saved tabs: O"+(aarMod.tabsSave.on?"N":"FF")
 	updatePerformanceTicks()
 	dimDescEnd = (aarMod.logRateChange?" OoM":"%")+"/s)"
 
@@ -1400,7 +1400,6 @@ function setDisplaysStuff1(){
 	
 	el("bestAntimatterType").textContent = quantumed ? "Your best meta-antimatter for this quantum" : "Your best-ever meta-antimatter"
 
-	el("masterystudyunlock").style.display = player.dilation.upgrades.includes("ngpp6") && mod.ngp3 ? "" : "none"
 	el("respecMastery").style.display = player.dilation.upgrades.includes("ngpp6") && mod.ngp3 ? "block" : "none"
 	el("respecMastery2").style.display = player.dilation.upgrades.includes("ngpp6") && mod.ngp3 ? "block" : "none"
 
@@ -1638,7 +1637,6 @@ function onLoad(noOffline) {
 	updateChallengeTimes()
 	updateAutobuyers()
 	updatePriorities()
-	updateMilestones()
 	loadInfAutoBuyers()
 	updateRespecButtons()
 	updateEternityChallenges()
@@ -1655,10 +1653,7 @@ function onLoad(noOffline) {
 	updatePCCompletions()
 	updateLastTenGhostifies()
 
-	if (mod.rs) {
-		if (el("timestudies").style.display=="block") showEternityTab("ers_timestudies",true)
-		updateGalaxyControl()
-	} else if (el("ers_timestudies").style.display=="block") showEternityTab("timestudies",true)
+	if (mod.rs) updateGalaxyControl()
 	poData=meta.save["presetsOrder"+(mod.rs?"_ers":"")]
 
 	el("maxTimeDimensions").style.display=removeMaxTD?"none":""
@@ -1689,11 +1684,8 @@ function onLoad(noOffline) {
 
 	el("newsbtn").textContent=(player.options.newsHidden?"Show":"Hide")+" news ticker"
 	el("game").style.display=player.options.newsHidden?"none":"block"
-	el("secretoptionsbtn").style.display=player.options.secrets?"":"none"
 	updateGhostlyNews()
 	if (!player.options.newsHidden) scrollNextMessage()
-
-	resetTabs()
 
 	if (player.totalTimePlayed < 1 || inflationCheck || forceToQuantumAndRemove) {
 		updateNGModeMessage()

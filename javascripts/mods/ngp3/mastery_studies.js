@@ -311,15 +311,14 @@ var masteryStudies = {
 }
 
 function enterMasteryPortal() {
-	if (player.dilation.upgrades.includes("ngpp6")) {
-		recordUpDown(1)
-		showEternityTab("masterystudies")
-	}
+	if (!player.dilation.upgrades.includes("ngpp6")) return
+	recordUpDown(1)
+	TAB_CORE.open("eter", "ts_master")
 }
 
 function exitMasteryPortal() {
 	recordUpDown(2)
-	showEternityTab("timestudies")
+	TAB_CORE.open("eter", "ts")
 }
 
 function convertMasteryStudyIdToDisplay(x) {
@@ -462,25 +461,16 @@ function getMasteryStudyCostMult(id) {
 }
 
 function buyingD7Changes(){
-	showTab("quantumtab")
-	showQuantumTab("positrons")
+	TAB_CORE.open("qu", "pos")
 }
 
 function buyingDilStudyQC(){
-	showTab("challenges")
-	showChallengesTab("quantumchallenges")
-	updateQuantumChallenges()
-}
-
-function buyingDilStudyPC(){
-	showTab("challenges")
-	showChallengesTab("quantumchallenges")
+	TAB_CORE.open("chal", "chal_qu")
 	updateQuantumChallenges()
 }
 
 function buyingDilStudyReplicant(){
-	showTab("quantumtab")
-	showQuantumTab("duplicants")
+	TAB_CORE.open("ant")
 	el("timestudy322").style.display=""
 }
 
@@ -491,26 +481,22 @@ function buyingDilStudyED(){
 }
 
 function buyingDilStudyNanofield(){
-	showTab("quantumtab")
-	showQuantumTab("duplicants")
-	showQuantumTab("nanofield")
+	TAB_CORE.open("ant", "nf")
 	NF.shown()
 }
 
 function buyingDilStudyToD(){
-	showTab("quantumtab")
-	showQuantumTab("tod")
+	TAB_CORE.open("qu", "tod")
 }
 
 function buyingDilStudyRip(){
-	showTab("quantumtab")
-	showChallengesTab("bigrip")
+	TAB_CORE.open("chal", "rip")
 }
 
 function buyingDilationStudy(id){
 	if (id == 7) buyingD7Changes()
 	if (id == 8) buyingDilStudyQC()
-	if (id == 9) buyingDilStudyPC()
+	if (id == 9) buyingDilStudyQC()
 	if (id == 10) buyingDilStudyReplicant()
 	if (id == 11) buyingDilStudyED()
 	if (id == 12) buyingDilStudyNanofield()
@@ -575,8 +561,8 @@ function buyMasteryStudy(type, id, quick=false) {
 			if (id == 302) fillAll()
 			masteryStudies.bought++
 		} else if (type == "ec") {
-			showTab("challenges")
-			showChallengesTab("eternitychallenges")
+			TAB_CORE.open("chal")
+			TAB_CORE.open("chal", "chal_ec")
 		} else if (type == "d") {
 			updateUnlockedMasteryStudies()
 			updateSpentableMasteryStudies()
@@ -700,7 +686,7 @@ function drawMasteryBranch(id1, id2) {
 function drawMasteryTree() {
 	msctx.clearRect(0, 0, msc.width, msc.height);
 	if (player === undefined) return
-	if (!isTabShown("masterystudies")) return
+	if (!isTabShown("ts_master")) return
 	drawMasteryBranch("back", "timestudy241")
 	for (let id of masteryStudies.unlocked) {
 		let paths = getMasteryStudyConnections(id)

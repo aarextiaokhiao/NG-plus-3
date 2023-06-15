@@ -126,6 +126,16 @@ function setupDimensionHTML() {
 }
 
 function setupHTMLAndData() {
+	for (let i of Object.keys(TABS)) {
+		if (i != "root") {
+			el("tab_" + i).className = "tab"
+			el("tab_" + i).align = "center"
+		}
+		if (TABS[i].stab != undefined) {
+			el("tabs_" + i).className = "table"
+			el("tabs_" + i).align = "center"
+		}
+	}
 	setupResetData()
 
 	setupDimensionHTML()
@@ -172,19 +182,6 @@ function setTheme(name) {
 el("theme").onclick = function () {
 	closeToolTip()
 	el('thememenu').style.display="flex"
-}
-
-function showTab(tabName, type = "tab", init) {
-	//iterate over all elements in div_tab class. Hide everything that's not tabName and show tabName
-	var tabs = document.getElementsByClassName(type);
-	var tab, oldTab
-	for (var i = 0; i < tabs.length; i++) {
-		tab = tabs.item(i);
-		if (tab.style.display == "block") oldTab = tab.id
-		tab.style.display = tab.id == tabName ? "block" : "none"
-	}
-	aarMod.tabsSave[type] = tabName
-	if (oldTab !== tabName && !init) onTabSwitch()
 }
 
 
@@ -298,7 +295,7 @@ function updateEternityChallenges() {
 		el(property).textContent=onchallenge?"Running":"Start"
 		el(property).className=onchallenge?"onchallengebtn":"challengesbtn"
 	}
-	el("eterctabbtn").parentElement.style.display=locked?"none":"" //will be hidden on Darkness
+	//el("eterctabbtn").parentElement.style.display=locked?"none":"" //will be hidden on Darkness
 	el("autoEC").style.display=quantumed?"inline-block":"none"
 	if (quantumed) el("autoEC").className=quSave.autoEC?"timestudybought":"storebtn"
 }
@@ -653,11 +650,6 @@ function toggleLogRateChange() {
 	dimDescEnd = (aarMod.logRateChange?" OoM":"%")+"/s)"
 }
 
-function toggleTabsSave() {
-	aarMod.tabsSave.on =! aarMod.tabsSave.on
-	el("tabsSave").textContent = "Saved tabs: O" + (aarMod.tabsSave.on ? "N" : "FF")
-}
-
 function updatePerformanceTicks() {
 	if (aarMod.performanceTicks) el("updaterateslider").min=1
 	else {
@@ -680,7 +672,7 @@ function togglePerformanceTicks() {
 function showHideFooter(toggle) {
 	if (toggle) aarMod.noFooter = !aarMod.noFooter
 	el("nofooterbtn").textContent = (aarMod.noFooter ? "Show" : "Hide") + " footer"
-	el("footer").style.display = !aarMod.noFooter || isTabShown("options") ? "" : "none"
+	el("footer").style.display = !aarMod.noFooter || isTabShown("opt") ? "" : "none"
 }
 
 el("newsbtn").onclick = function(force) {
@@ -776,54 +768,22 @@ function sacrifice(auto) {
 
 var ndAutobuyersUsed = 0
 var autoBuyers = {
-	d1: {
-		interval: _ => 1500,
-	},
-	d2: {
-		interval: _ => 2000,
-	},
-	d3: {
-		interval: _ => 2500,
-	},
-	d4: {
-		interval: _ => 3000,
-	},
-	d5: {
-		interval: _ => 4000,
-	},
-	d6: {
-		interval: _ => 5000,
-	},
-	d7: {
-		interval: _ => 6000,
-	},
-	d8: {
-		interval: _ => 7500,
-	},
-	ts: {
-		interval: _ => 5000,
-	},
-	db: {
-		interval: _ => 8000,
-	},
-	gal: {
-		interval: _ => inNGM(2) ? 60000 : 15000,
-	},
-	inf: {
-		interval: _ => inNGM(2) ? 60000 : 300000,
-	},
-	sac: {
-		interval: _ => inNGM(2) ? 15000 : 100,
-	},
-	gSac: {
-		interval: _ => 15000,
-	},
-	tsb: {
-		interval: _ => 15000,
-	},
-	tdb: {
-		interval: _ => 15000,
-	}
+	d1: { interval: _ => 1500 },
+	d2: { interval: _ => 2000 },
+	d3: { interval: _ => 2500 },
+	d4: { interval: _ => 3000 },
+	d5: { interval: _ => 4000 },
+	d6: { interval: _ => 5000 },
+	d7: { interval: _ => 6000 },
+	d8: { interval: _ => 7500 },
+	ts: { interval: _ => 5000, },
+	db: { interval: _ => 8000 },
+	gal: { interval: _ => inNGM(2) ? 60000 : 15000 },
+	inf: { interval: _ => inNGM(2) ? 60000 : 300000 },
+	sac: { interval: _ => inNGM(2) ? 15000 : 100 },
+	gSac: { interval: _ => 15000 },
+	tsb: { interval: _ => 15000 },
+	tdb: { interval: _ => 15000 }
 }
 var autoBuyerKeys = []
 for (var i of Object.keys(autoBuyers)) autoBuyerKeys.push(i)
@@ -1290,7 +1250,6 @@ function eternity(force, auto, dil, presetLoad) {
 		//Infinities / Eternities
 		player.infinitiedBank = nA(player.infinitiedBank, gainBankedInf())
 		player.eternities = nA(player.eternities, gainEternitiedStat())
-		updateMilestones()
 		updateBankedEter()
 
 		//Eternity 
@@ -1359,11 +1318,6 @@ function eternity(force, auto, dil, presetLoad) {
 	player.dilation.active = dil
 	doReset("eter", auto)
 
-	if (player.eternities == 1 && !quantumed) {
-		showTab("dimensions")
-		showDimTab("timedimensions")
-	}
-
 	if (quantumed) updateColorCharge()
 	doAutoEterTick()
 }
@@ -1400,7 +1354,7 @@ function gainBankedInf() {
 function exitChallenge() {
 	if (player.galacticSacrifice?.chall) {
 		galacticSacrifice(false, true)
-		showTab("dimensions")
+		TAB_CORE.open("dim")
 	} else if (player.currentChallenge !== "") {
 		startChallenge("");
 		updateChallenges();
@@ -1543,8 +1497,6 @@ function dilationStuffABTick(){
 	el('distribEx').style.display = hasAch("ngud14") ? "" : "none"
 	if (player?.autoEterOptions?.dilUpgs) autoBuyDilUpgs()
 
-	el("dilationTabbtn").style.display = hasDilStudy(1) ? "table-cell" : "none"
-	el("blackHoleTabbtn").style.display = hasDilStudy(1) && mod.ngud ? "table-cell" : "none"
 	updateDilationUpgradeButtons()
 }
 
@@ -1584,8 +1536,9 @@ function updatePerSecond(quick) {
 	updateNGpp16Reward()
 
 	// More Displays
+	TAB_CORE.update_tmp()
 	updateHeaders()
-	updateResetTierButtons()
+	updateMilestones()
 	primaryStatsDisplayResetLayers()
 	updateGalaxyUpgradesDisplay()
 	updateNGM2RewardDisplay()
@@ -1743,15 +1696,6 @@ function normalChallPowerUpdating(diff){
 	checkMatter(diff)
 }
 
-function dimensionTabDisplayUpdating(){
-	el("dimTabButtons").style.display = "none"
-	if (player.infDimensionsUnlocked[0] || player.eternities !== 0 || quantumed || inNGM(4)) el("dimTabButtons").style.display = "inline-block"
-
-	el("idtabbtn").style.display = ((player.infDimensionsUnlocked[0] || player.eternities > 0 || quantumed) && !inQC(8)) ? "" : "none"
-	el("tdtabbtn").style.display = ((player.eternities > 0 || quantumed || inNGM(4)) && (!inQC(8) || tmp.qu.be) && player.currentEternityChall != "eterc10") ? "" : "none"
-	el("mdtabbtn").style.display = hasDilStudy(6) ? "" : "none"
-}
-
 function infinityTimeBlackHoleDimUpdating(diff){
 	var step = inQC(4) ? 2 : 1
 	var stepT = inNC(7) && inNGM(4) ? 2 : step
@@ -1778,7 +1722,7 @@ function bigCrunchButtonUpdating(){
 	el("postInfinityButton").style.display = 'none'
 	if (tmp.ri) {
 		el("bigcrunch").style.display = 'inline-block';
-		if ((!inNC(0) && !player.options.retryChallenge) || (!player.break && player.bestInfinityTime < 600)) showTab('emptiness')
+		if ((!inNC(0) && !player.options.retryChallenge) || (!player.break && player.bestInfinityTime < 600)) TAB_CORE.open("")
 	} else if (player.break && player.currentChallenge == "") {
 		if (player.money.gte(Number.MAX_VALUE)) {
 			el("postInfinityButton").style.display = ""
@@ -2065,7 +2009,7 @@ function progressBarUpdating(){
 	if (!aarMod.progressBar) return
 
 	el("progressbar").className=""
-	if (isTabShown("metadimensions")) doNGP3ProgressBar() 
+	if (isTabShown("dim_meta")) doNGP3ProgressBar() 
 	else if (player.currentChallenge !== "") {
 		currentChallengeProgress()
 	} else if (!player.break) {
@@ -2103,15 +2047,6 @@ function ECRewardDisplayUpdating(){
 	el("ec14reward").textContent = "Reward: Free tickspeed upgrades boost the IC3 reward to be " + getIC3EffFromFreeUpgs().toFixed(0) + "x stronger."
 
 	el("ec10span").textContent = shortenMoney(ec10bonus) + "x"
-}
-
-function challengeOverallDisplayUpdating(){
-	if (isTabShown("eternitychallenges")) ECRewardDisplayUpdating()
-	if (isTabShown("quantumchallenges")) {
-		el("qcDisclaimer").innerHTML = (isQCFree() ? "" : "Spend Positrons to start Quantum Challenges.<br>You have " + getFullExpansion(Math.round(quSave.electrons.amount)) + " Positrons.<br>") + "<b class='red'>Positrons are disabled in Quantum Challenges!</b>"
-		for (var c = 1; c <= 8; c++) el("qc" + c + "reward").textContent = QC[c].reward_eff_disp(tmp.qu.chal.reward[c])
-	}
-	if (isTabShown("bigrip")) updateBigRipTab()
 }
 
 function chall23PowerUpdating(){
@@ -2304,7 +2239,7 @@ function updateDisplays() {
 	chall23PowerUpdating()
 	updateMoney()
 	updateCoinPerSec()
-	updateTabDisplay()
+	TAB_CORE.update_tab("root")
 	tickspeedDisplay()
 	galSacDisplay()
 	progressBarUpdating()
@@ -2317,7 +2252,6 @@ function updateDisplays() {
 	el("infinityPoints2").innerHTML = msg
 
 	bigCrunchButtonUpdating()
-	challengeOverallDisplayUpdating()
 	nextICUnlockUpdating()
 	newIDDisplayUpdating()
 
@@ -2731,42 +2665,9 @@ function isEterBuyerOn() {
 	return (player.eternityBuyer.dilMode != "upgrades" && !player.eternityBuyer.slowStopped) || (player.eternityBuyer.dilMode == "upgrades" && player.eternityBuyer.tpUpgraded)
 }
 
-function showInfTab(tabName) {
-	showTab(tabName, "inftab")
-}
-
-function showStatsTab(tabName) {
-	showTab(tabName, "statstab")
-}
-
-function showDimTab(tabName) {
-	showTab(tabName, "dimtab")
-}
-
 function toggleProgressBar() {
 	aarMod.progressBar=!aarMod.progressBar
 	el("progressBarBtn").textContent = (aarMod.progressBar?"Hide":"Show")+" progress bar"	
-}
-
-function showChallengesTab(tabName) {
-	showTab(tabName, "challengeTab")
-}
-
-function showEternityTab(tabName, init) {
-	if (tabName == "timestudies" && mod.rs) tabName = "ers_" + tabName
-	showTab(tabName, "eternitytab", init)
-}
-
-function showAchTab(tabName) {
-	showTab(tabName, "achtab")
-}
-
-function showAutoTab(tabName) {
-	showTab(tabName, "autotab")
-}
-
-function showOptionTab(tabName) {
-	showTab(tabName, "optionstab")
 }
 
 function closeToolTip(showStuck) {
@@ -2787,18 +2688,14 @@ function initGame() {
 	//Load a save.
 	load_game(false, "start")
 
-	//Show one tab during init or they'll all start hidden
-	let tabsSave = aarMod.tabsSave
-	showOptionTab((tabsSave?.on && tabsSave?.optionstab) || "saving")
-	showTab((tabsSave?.on && tabsSave?.tab) || "dimensions")
-
 	//On load
 	game_loaded = true
 	console.log("[ 👻 Antimatter Dimensions: NG+3 v" + ngp3_ver + ": Ghostify Respecced 👻 ]")
 	setTimeout(function(){
 		el("container").style.display = "block"
 		el("loading").style.display = "none"
-	},100)
+		onTabSwitch()
+	}, 100)
 	clearInterval(stuckTimeout)
 
 	setInterval(updatePerSecond, 1000)

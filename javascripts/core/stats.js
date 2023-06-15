@@ -1,15 +1,3 @@
-function displayStats() {
-	if (isTabShown("stats")) {
-		displayMainStats()
-		displayGalSacStats()
-		infoScaleDisplay()
-	}
-	if (isTabShown("stats_inf")) displayInfinityStats()
-	if (isTabShown("stats_eter")) displayEternityStats()
-	if (isTabShown("stats_qu")) displayQuantumStats()
-	if (isTabShown("stats_fund")) bestGhostifyDisplay()
-}
-
 function displayMainStats() {
 	el("totalmoney").textContent = 'You have made a total of ' + shortenMoney(player.totalmoney) + ' antimatter.'
 	el("totalresets").textContent = 'You have performed ' + getFullExpansion(player.resets) + ' Dimension Boosts/Shifts.'

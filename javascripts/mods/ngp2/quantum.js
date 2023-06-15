@@ -34,16 +34,7 @@ function quantum(auto, force, qc, bigRip = false) {
 
 	var implode = !auto && !force && isAnimationOn("quantum")
 	if (implode) {
-		quantumAni(function(){
-			if (!speedrunMilestonesReached) {
-				showDimTab("antimatterdimensions")
-				showChallengesTab("challenges")
-				showInfTab("preinf")
-				showEternityTab("timestudies")
-				showTab("dimensions")
-			}
-			doQuantum(force, auto, qc)
-		})
+		quantumAni(_ => doQuantum(force, auto, qc))
 	} else doQuantum(force, auto, qc)
 }
 
@@ -325,10 +316,6 @@ function doQuantum(force, auto, qc = {}) {
 	var oldTime = quSave.time
 	doReset("qu", auto)
 
-	el("quantumbtn").style.display = "none"
-	el("bigripbtn").style.display = "none"
-	el("ghostifybtn").style.display = "none"
-
 	//Post-Quantum
 	if (bigRip) {
 		for (var u = 0; u < brSave.upgrades.length; u++) tweakBigRip(brSave.upgrades[u])
@@ -338,6 +325,11 @@ function doQuantum(force, auto, qc = {}) {
 }
 
 RESETS.qu = {
+	modReq: _ => mod.ngpp,
+	prequsite: _ => false,
+	reached: _ => isQuantumReached(),
+	got: _ => quantumed,
+
 	resetEC(order) {
 		let bigRip = bigRipped()
 		if (bigRip ? !hasRipUpg(2) : !isRewardEnabled(3)) {
@@ -452,9 +444,8 @@ RESETS.qu = {
 		if (player.timestudy.theorem == 0 && !player.dilation.upgrades.includes(10)) quSave.wasted = true
 
 		if (!auto) {
-			updateMilestones()
 			updateMasteryStudyCosts()
-			drawMasteryTree()
+			updateHeaders()
 			updateBreakEternity()
 		}
 	}

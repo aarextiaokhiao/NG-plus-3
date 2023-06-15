@@ -31,7 +31,6 @@ function loadFundament() {
 	ghSave.times = nP(ghSave.times)
 	updateBraveMilestones()
 	updateAutoGhosts(true)
-	updatePhotonUnlocks()
 	delete BL_HYPOTHESES.hypo_chosen
 }
 
@@ -65,12 +64,12 @@ function ghostify(auto, force) {
 		implosionCheck = 1
 		ghostifyAni(gain, amt, seconds)
 		setTimeout(function(){
-			showTab("")
+			TAB_CORE.open("none")
 		}, seconds * 250)
 		setTimeout(function(){
 			if (Math.random()<1e-3) giveAchievement("Boo!")
-			showQuantumTab("uquarks")
-			showAntTab("antcore")
+			TAB_CORE.switch("qu", "aq")
+			TAB_CORE.switch("ant", "ant_n")
 			ghostifyReset(false, gain)
 		}, seconds * 625)
 		setTimeout(function(){
@@ -115,6 +114,11 @@ function ghostifyReset(force, gain) {
 }
 
 RESETS.funda = {
+	modReq: _ => mod.ngp3,
+	prequsite: _ => hasMasteryStudy("d14"),
+	reached: _ => isQuantumReached() && bigRipped(),
+	got: _ => ghostified,
+
 	resetQuantums() {
 		quSave.times = 0
 		quSave.best = 9999999999
@@ -159,7 +163,6 @@ RESETS.funda = {
 			quSave.pairedChallenges.completed = 0
 		}
 		updateQuantumChallenges()
-		updateQuantumTabDisplays()
 		updatePCCompletions()
 	},
 	resetDuplicants(bm) {
@@ -382,17 +385,15 @@ function updateBraveMilestones() {
 	for (var r = 1; r < 3; r++) el("braveRow" + r).className = ghSave.milestones < r * 8 ? "" : "completedrow"
 }
 
-function showGhostifyTab(tabName) {
-	showTab(tabName, "ghostifytab")
-}
+TABS = Object.assign(TABS, {
+	funda: { name: "Fundament", class: "ghostifybtn", stab: [ "nt", "ph", "auto_ant", "mil_brave" ], unl: _ => ghostified, update: _ => LAB.updateReq() },
+	stats_funda: { name: "Fundament", class: "ghostifybtn", update: _ => bestGhostifyDisplay() },
 
-function updateGhostifyTabs() {
-	if (isTabShown("neutrinos")) NT.update()
-	if (isTabShown("gphtab")) PHOTON.update()
-	if (isTabShown("automaticghosts")) updateAutomatorHTML()
-
-	el("bl_req").style.display = PHOTON.unlocked() && !LAB.unlocked() && !BL_JOKE.started() ? "" : "none"
-}
+	nt: { name: "Neutrinos", update: _ => NT.update() },
+	ph: { name: "Photons", update: _ => PHOTON.update() },
+	auto_ant: { name: "Automator Ants", update: _ => updateAutomatorHTML() },
+	mil_brave: { name: "Brave Milestones" }
+})
 
 //Sublayers
 function resetGHPandNeutrinos() {

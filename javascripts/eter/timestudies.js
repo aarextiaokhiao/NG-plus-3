@@ -130,10 +130,8 @@ function buyDilationStudy(name, cost) {
 			showEternityTab("dilation")
 			if (player.eternityUpgrades.length < 1) giveAchievement("Work harder.")
 		} else if (name > 5) {
-			if (quantumed || !mod.ngp3) {
-				showTab("dimensions")
-				showDimTab("metadimensions")
-			} else ngp3_feature_notify("md")
+			TAB_CORE.open('dim', 'dim_meta')
+			ngp3_feature_notify("md")
 		}
 		player.dilation.studies.push(name)
 		player.timestudy.theorem -= cost

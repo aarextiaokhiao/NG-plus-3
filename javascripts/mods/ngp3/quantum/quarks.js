@@ -306,7 +306,7 @@ function drawQuarkAnimation(ts){
 	let centerY = qkc.height / 2
 	let offset = Math.max(centerX, centerY)
 
-	if (el("quantumtab").style.display !== "none" && el("uquarks").style.display !== "none" && isAnimationOn("quarks")) {
+	if (isAnimationOn("quarks")) {
 		delta = (ts - lastTs) / 1000
 		lastTs = ts
 

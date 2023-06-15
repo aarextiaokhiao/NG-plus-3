@@ -6,7 +6,6 @@ let PHOTON = {
 	unlock() {
 		ghSave.photons.unl = true
 		ngp3_feature_notify("ph")
-		updatePhotonUnlocks()
 	},
 
 	//Calculation
@@ -181,21 +180,23 @@ let PHOTON = {
 		}
 	},
 	update() {
+		let unl = PHOTON.unlocked()
+		el("gphUnl").style.display = unl ? "none" : ""
+		el("gphDiv").style.display = unl ? "" : "none"
 		if (!PHOTON.unlocked()) {
 			el("gphUnl").textContent = "Get "+shortenCosts(pow10(1.9e9))+" antimatter in Big Rip to unlock Photons."
 			return
 		}
 
 		el("ph_emission").textContent = getFullExpansion(PHOTON.totalEmissions())
+		for (const [i, emission] of Object.entries(PHOTON.emissionData)) el("ph_shop_req_" + i).textContent = `${shorten(emission.req(ghSave.photons.emission[i] || 0))} ${emission.resName}`
+
 		el("ph_amt").textContent = shortenMoney(ghSave.photons.amt)
 		el("ph_prod").textContent = "(+" + shortenMoney(PHOTON.photonGain()) + "/s)"
 		el("ph_lighten").textContent = getFullExpansion(ghSave.photons.lighten)
 		el("ph_lighten_eff").textContent = "+" + getFullExpansion(PHOTON.enlightenEff()) + " cap"
 		el("ph_lighten_req").textContent = "Requires " + getFullExpansion(ghSave.photons.lighten * 2 + 14) + " Emissions"
 
-		for (const [i, emission] of Object.entries(PHOTON.emissionData)) {
-			el("ph_shop_req_" + i).textContent = `${shorten(emission.req(ghSave.photons.emission[i] || 0))} ${emission.resName}`
-		}
 		for (const [i, light] of Object.entries(PHOTON.lightData)) {
 			el("ph_light_per_" + i).textContent = ((1 + ghSave.photons.offset[i]) * 100).toFixed(0)
 			el("ph_light_amt_" + i).textContent = shorten(ghSave.photons.light[i] || 0) + " / " + shorten(PHOTON.lightCap(i))
@@ -207,12 +208,4 @@ let PHOTON = {
 			el("ph_light_req_" + i).style.display = ghSave.photons.light[i] ? "none" : ""
 		}
 	}
-}
-
-function updatePhotonUnlocks() {
-	if (!ghostified) return
-
-	let unl = PHOTON.unlocked()
-	el("gphUnl").style.display = unl ? "none" : ""
-	el("gphDiv").style.display = unl ? "" : "none"
 }

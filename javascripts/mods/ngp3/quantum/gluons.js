@@ -132,7 +132,7 @@ const GLUON = {
 				<table><tr>${mix_table}</tr></table>
 			</td>`
 		}
-		el("gluonupgrades").innerHTML = html
+		el("gl_upgs").innerHTML = html
 	},
 	update() {
 		var gains = getGluonGains()

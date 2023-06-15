@@ -172,23 +172,21 @@ const BOSONIC_LAB = LAB = {
 	},
 	update() {
 		el("bl_amt").textContent = shorten(blSave.bosons)
-		el("bl_best").textContent = "" //"(" + shorten(blSave.best_bosons) + " best)"
 		el("bl_prod").textContent = shorten(this.prod()) + "/s"
 
-		if (isTabShown("hypotheses")) BL_HYPOTHESES.update()
-		if (isTabShown("weak_force")) WEAK_FORCE.update()
-		if (isTabShown("bl_milestones")) {
-			for (var [i, d] of Object.entries(this.milestones)) {
-				let unl = !d.unl || d.unl()
-				el("bl_milestone_div_"+i).style.display = unl ? "" : "none"
-				if (!unl) continue
+		for (var [i, d] of Object.entries(this.milestones)) {
+			let unl = !d.unl || d.unl()
+			el("bl_milestone_div_"+i).style.display = unl ? "" : "none"
+			if (!unl) continue
 
-				el("bl_milestone_"+i).className = (hasBLMilestone(i) ? "milestonereward" : "milestonerewardlocked") + " bl"
-				el("bl_milestone_req_"+i).innerHTML = shiftDown ? "#" + (parseInt(i) + 1) : shortenDimensions(d.req) + " bM"
-				if (d.effDesc) el("bl_milestone_eff_"+i).innerHTML = d.effDesc(tmp.funda.lab.ms[i])
-			}
+			el("bl_milestone_"+i).className = (hasBLMilestone(i) ? "milestonereward" : "milestonerewardlocked") + " bl"
+			el("bl_milestone_req_"+i).innerHTML = shiftDown ? "#" + (parseInt(i) + 1) : shortenDimensions(d.req) + " bM"
+			if (d.effDesc) el("bl_milestone_eff_"+i).innerHTML = d.effDesc(tmp.funda.lab.ms[i])
 		}
 	},
+	updateReq() {
+		el("bl_req").style.display = PHOTON.unlocked() && !LAB.unlocked() && !BL_JOKE.started() ? "" : "none"
+	}
 }
 
 function hasBLMilestone(i) {
@@ -200,9 +198,13 @@ function blEff(i, def) {
 	return tmp.funda.lab?.ms[i] || def
 }
 
-function showBLTab(x) {
-	showTab(x, "bl_tab")
-}
+TABS = Object.assign(TABS, {
+	bl: { name: "Bosonic Lab", class: "bosonic_btn", stab: [ "bl_hy", "bl_wf", "mil_bl", "bl_real" ], unl: _ => LAB.unlocked() || BL_JOKE.started() },
+	bl_hy: { name: "Hypotheses", update: _ => BL_HYPOTHESES.update(), unl: _ => LAB.unlocked() },
+	bl_wf: { name: "Weak Force", update: _ => WEAK_FORCE.update(), unl: _ => LAB.unlocked() },
+	mil_bl: { name: "Milestones", update: _ => LAB.update(), unl: _ => LAB.unlocked() },
+	bl_real: { unl: _ => BL_JOKE.started() }
+})
 
 //Subfeatures
 const BL_HYPOTHESES = {
@@ -361,7 +363,7 @@ const BL_HYPOTHESES = {
 
 PRESET_DATA.bl = {
 	name: "Hypotheses",
-	in: _ => isTabShown("bosonic_lab") && isTabShown("hypotheses"),
+	in: _ => isTabShown("bl") && isTabShown("bl_hy"),
 	unl: _ => LAB.unlocked(),
 
 	get() {
@@ -579,8 +581,8 @@ const BL_JOKE = {
 	//HTML
 	updateHTML() {
 		let started = this.started()
-		el("bl_header").style.display = started ? "none" : ""
-		el("tab_bl").textContent = started && !ghSave.lab_real.signed ? "???" : "Bosonic Lab"
+		if (el("tab_btn_bl")) el("tab_btn_bl").textContent = started && !ghSave.lab_real.signed ? "???" : "Bosonic Lab"
+
 		for (var i = 1; i <= 5; i++) el("bl_portion_"+i).style.display = started ? "" : "none"
 		if (!started) return
 
@@ -588,5 +590,3 @@ const BL_JOKE = {
 		el("bl_unl").className = "qu_upg " + (ghSave.lab_real.key && LAB.req() ? "storebtn" : "unavailablebtn")
 	}
 }
-
-//Higgs Field: A pyramid with rows being dimensions. Boosts can boost things above.

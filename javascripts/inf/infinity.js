@@ -288,7 +288,7 @@ var challNames = [null, null, "Second Dimension Autobuyer Challenge", "Third Dim
 var challOrder = [null, 1, 2, 3, 8, 6, 10, 9, 11, 5, 4, 12, 7, 13, 14, 15, 16]
 
 function updateChallenges() {
-	var buttons = Array.from(el("normalchallenges").getElementsByTagName("button")).concat(Array.from(el("breakchallenges").getElementsByTagName("button")))
+	var buttons = Array.from(el("tab_chal_n").getElementsByTagName("button")).concat(Array.from(el("tab_chal_inf").getElementsByTagName("button")))
 	for (var i=0; i < buttons.length; i++) {
 		buttons[i].className = "challengesbtn";
 		buttons[i].textContent = "Start"
@@ -335,7 +335,6 @@ function updateChallenges() {
 		el("postc7").textContent = "Trapped in"
 	}
 
-	if (player.postChallUnlocked > 0 || Object.keys(player.eternityChalls).length > 0 || player.eternityChallUnlocked !== 0 || quantumed) el("challTabButtons").style.display = "table"
 	for (c=0;c<order.length;c++) el(order[c]).parentElement.parentElement.style.display=player.postChallUnlocked<c+1?"none":""
 }
 

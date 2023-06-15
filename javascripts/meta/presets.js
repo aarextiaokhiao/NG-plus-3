@@ -1,8 +1,8 @@
 let PRESET_DATA = {
 	ts: {
 		name: "Time Studies",
-		unl: _ => (getEternitied() > 0 || quantumed) && !mod.rs,
-		in: _ => isTabShown("eternitystore") && (isTabShown('timestudies') || isTabShown('masterystudies')),
+		unl: _ => (eternitied()) && !mod.rs,
+		in: _ => isTabShown("eter") && (isTabShown('ts') || isTabShown('ts_master')),
 
 		get: _ => getStudyTreeStr(),
 		options: ["respec", "dil"],
@@ -22,7 +22,7 @@ let PRESET_DATA = {
 	ts_er: {
 		name: "Studies [Respecced]",
 		unl: _ => getEternitied() > 0 && mod.rs,
-		in: _ => isTabShown("eternitystore") && isTabShown('ers_timestudies'),
+		in: _ => isTabShown("eter") && isTabShown('ts_respec'),
 
 		get: _ => getStudyTreeStr(),
 		options: ["respec", "dil"],

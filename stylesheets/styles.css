@@ -1708,11 +1708,11 @@ br {
     position: relative;
 }
 
-#timestudies span {
+#tab_ts span {
     display:block;
     pointer-events:none;
 }
-#timestudies br {
+#tab_ts br {
     content: " ";
     display: block;
     margin: 0;
@@ -1919,7 +1919,7 @@ td.lEp {
 #gb { animation: gb 5s infinite }
 #br { animation: br 5s infinite }
 
-#gluonupgrades, #gluonupgrades * {
+#gl_upgs, #gl_upgs * {
 	margin: 0 auto;
 	text-align: center
 }
@@ -2050,7 +2050,7 @@ td.lEp {
 	100% {background-color: #0000bf; border: 1px solid #00007f; color: #00001f}
 }
 
-#positrons button {
+#tab_pos button {
 	width: 180px;
 	height: 90px;
 	font-size: 12px

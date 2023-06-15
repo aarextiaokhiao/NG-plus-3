@@ -9,7 +9,7 @@ function babyRateUpdating(){
 	}
 }
 
-function updatePilonDisplay(){
+function updatePilonDisplay() {
 	el("gatheredQuarks").textContent = shortenDimensions(quSave.replicants.quarks.floor())
 	el("quarkTranslation").textContent = "+" + shortenMoney(tmp.qu.ant.preon_eff * 100) + "%"
 
@@ -41,14 +41,15 @@ function growupRateUpdating(){
 	el("growupProgress").textContent = Math.round(quSave.replicants.ageProgress.toNumber() * 100) + "%"
 }
 
-function updateDuplicantsTab() {
-	for (var i = 0; i < antTabs.tabIds.length; i++) {
-		var id = antTabs.tabIds[i]
-		if (isTabShown(id)) antTabs.update[id]()
-	}
-	updateDuplicants()
-	updatePilonDisplay()
-}
+TABS = Object.assign(TABS, {
+	ant: { name: "Duplicants", class: "antbtn", stab: [ "ant_n", "dim_emp", "nf" ], unl: _ => hasMasteryStudy("d7") && !LAB.unlocked() },
+	ant_n: { name: "Ants", unl: _ => hasMasteryStudy("d0"), update: _ => updateDuplicants() },
+	dim_emp: { name: "Emperors", class: "antbtn", unl: _ => hasMasteryStudy("d10"), update() {
+		updateDuplicants()
+		updateEmperorDimensions()
+	} },
+	nf: { name: "Nanofield", unl: _ => hasMasteryStudy("d11"), update: _ => updateNanoverseTab() }
+})
 
 function updateDuplicantsSubtab(){
 	el("replicantiAmount2").textContent = shortenDimensions(player.replicanti.amount)
@@ -67,16 +68,7 @@ function updateDuplicantsSubtab(){
 	el("reduceHatchSpeed").innerHTML = "Hatch speed: " + hatchSpeedDisplay() + " → " + hatchSpeedDisplay(true) + "<br>Cost: " + shortenDimensions(quSave.replicants.hatchSpeedCost) + " for all 3 gluons"
 }
 
-var antTabs = {
-	tabIds: ["antcore", "emperordimensions", "nanofield"],
-	update: {
-		antcore: () => updateDuplicantsSubtab(),
-		emperordimensions: () => updateEmperorDimensions(),
-		nanofield: () => updateNanoverseTab()
-	}
-}
-
-function updateDuplicants(mode) {
+function updateDuplicants() {
 	let showCosts = quSave.replicants.limit < 1e3
 	el("quantumFoodAmount").textContent = getFullExpansion(quSave.replicants.quantumFood)
 
@@ -109,6 +101,8 @@ function updateDuplicants(mode) {
 		el("buyQuantumFoodED").className = "qu_upg " + (quSave.gluons.rg.min(quSave.gluons.gb).min(quSave.gluons.br).lt(quSave.replicants.quantumFoodCost) ? "unavailable" : "ant") + "btn"
 		el("breakLimitED").className = (quSave.gluons.rg.min(quSave.gluons.gb).min(quSave.gluons.br).lt(quSave.replicants.limitCost) || !isLimitUpgAffordable() ? "unavailable" : "ant") + "btn"
 	}
+
+	updatePilonDisplay()
 }
 
 function getGatherRate() {
@@ -290,8 +284,7 @@ function getHatchSpeed() {
 }
 
 function teleportToEDs() {
-	showTab("duplicants")
-	showAntTab("emperordimensions")
+	TAB_CORE.open("ant", "dim_emp")
 }
 
 function setupEmpDimensionHTML() {
@@ -492,9 +485,6 @@ function getPilonEffect() {
 
 function updatePostBM14Display() {
 	let bm14 = hasBraveMilestone(14)
-
-	el("anttabbtn").style.display = bm14 ? "none" : ""
-	if (el("antcore").style.display == "block" && bm14) showAntTab("emperordimensions")
 	el("foodCell").style.display = bm14 ? "none" : ""
 	el(bm14 ? "pilonsCellED" : "pilonsCell").appendChild(el("pilonsDiv"))
 }

@@ -944,7 +944,6 @@ function onNotationChange() {
 	updateLastTenEternities();
 	tmp.tickUpdate = true;
 	setAchieveTooltip()
-	updateMilestones()
 	if (mod.ngp3) {
 		updateLastTenQuantums()
 		updateLastTenGhostifies()

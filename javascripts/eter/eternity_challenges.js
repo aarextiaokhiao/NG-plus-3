@@ -9,8 +9,6 @@ function unlockEChall(idx) {
 	if (player.eternityChallUnlocked == 0) {
 		player.eternityChallUnlocked = idx
 		el("eterc"+player.eternityChallUnlocked+"div").style.display = "inline-block"
-		if (!justImported) showTab("challenges")
-		if (!justImported) showChallengesTab("eternitychallenges")
 		if (idx !== 13 && idx !== 14) {
 			updateTimeStudyButtons(true)
 			player.etercreq = idx

@@ -48,28 +48,28 @@ const NEUTRINO = NT = {
 			for (let type of this.types) r = r.add(ghSave.neutrinos[type])
 			return r.round()
 		},
-		setType(type, x) {
-			ghSave.neutrinos[type] = E(x).round()
-		},
-		addType(type, x) {
-			this.setType(type, ghSave.neutrinos[type].add(x))
-		},
-		addAll(x) {
-			for (let type of this.types) this.addType(type, x)
-		},
-		subType(type, x) {
-			this.setType(type, ghSave.neutrinos[type].sub(ghSave.neutrinos[type].min(x)))
+		gain() { 
+			let r = E_pow(getNeutrinoMultBase(), ghSave.neutrinos.multPower - 1)
+			r = E_pow(PHOTON.eff(3), brSave.bestGals).mul(r)
+			if (mod.p3ep) r = r.mul(pow10(player.galaxies / 1e5))
+			return r
 		},
 		spend(x) {
 			let sum = this.total()
 			for (let type of this.types) this.subType(type, ghSave.neutrinos[type].div(sum).mul(x))
 		},
 
-		gain() { 
-			let r = E_pow(getNeutrinoMultBase(), ghSave.neutrinos.multPower - 1)
-			r = E_pow(PHOTON.eff(3), brSave.bestGals).mul(r)
-			if (mod.p3ep) r = r.mul(pow10(player.galaxies / 1e5))
-			return r
+		setType(type, x) {
+			ghSave.neutrinos[type] = E(x).round()
+		},
+		addType(type, x) {
+			this.setType(type, ghSave.neutrinos[type].add(x))
+		},
+		subType(type, x) {
+			this.setType(type, ghSave.neutrinos[type].sub(ghSave.neutrinos[type].min(x)))
+		},
+		addAll(x) {
+			for (let type of this.types) this.addType(type, x)
 		}
 	},
 	boosts: {

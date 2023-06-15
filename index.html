@@ -58,7 +58,7 @@
 					<div id="quantumbtnRate" class="hideEmpty"></div>
 					<div id="quantumbtnPeak" class="hideEmpty"></div>
 				</button>
-			</div><div id="layer_fund">
+			</div><div id="layer_funda">
 				<div id="ghostparticles">
 					You have <span id='GHPAmount'>0</span> Spectral Particles.<br>
 					<div id="quantumedBM">Quantumed <span id='quantumedBMAmount'>0</span> times</div>
@@ -87,40 +87,19 @@
 				<button id="tickSpeedMax" onclick="buyMaxTickSpeed()" style="color:black; height: 25px; font-size: 12px" class="storebtn">Buy Max</button>
 				<div id="tickSpeedAmount">Tickspeed: 1000</div>
 			</div>
-		</div><div id="tab_header">
-			<button id="dimensionsbtn" style="font-size: 20px" class="tabbtn" onclick="showTab('dimensions')">Dimensions</button>
-			<button id="achievementsbtn" style="font-size: 20px" class="tabbtn" onclick="showTab('achievements')">Achievements</button>
-			<button id="statisticsbtn" style="font-size: 20px" class="tabbtn" onclick="showTab('statistics')">Statistics</button>
-			<button id="optionsbtn" style="font-size: 20px" class="tabbtn" onclick="showTab('options')">Options</button>
-			<button id="challengesbtn" style="font-size: 20px" class="tabbtn" onclick="showTab('challenges')">Challenges</button>
-			<button id="automationbtn" style="font-size: 20px" class="tabbtn" onclick='showTab("automation")'>Automation</button>
-			<span id="tab_break"><br></span>
-			<button id="tab_galSac" style="font-size: 20px; display: none" class="galaxybtn" onclick='showTab("galaxy")'>Galaxy</button>
-			<button id="tab_inf" style="font-size: 20px; display: none" class="infinitybtn" onclick="showTab('infinity')">Infinity</button>
-			<button id="tab_eter" style="font-size: 20px; display: none" class="eternitybtn" onclick="showTab('eternitystore')">Eternity</button>
-			<button id="tab_qu" style="font-size: 20px; display: none" class="quantumbtn" onclick='showTab("quantumtab")'>Quantum</button>
-			<button id="tab_ant" style="font-size: 20px" class="antbtn" onclick='showTab("duplicants")'>Duplicants</button>
-			<button id="tab_fund" style="font-size: 20px" class="ghostifybtn" onclick='showTab("ghostify")'>Fundament</button>
-			<button id="tab_bl" style="font-size: 20px" class="bosonic_btn" onclick='showTab("bosonic_lab")'>???</button>
 		</div>
+		<div id='tabs_root'></div>
 		<div style="position:absolute; left: 0; right: 0; margin-left: auto; margin-right: auto; width: 360px; top: 19px">
 			<button class="infinitybtn" id="bigcrunch" style="font-size: 50px; width: 360px; height: 100px;" onclick="bigCrunch()">Big Crunch</button>
-		</div><div id="emptiness" class="tab" style="font-size: 150%">
+		</div><div id="emptiness" style="font-size: 150%">
 			<br><br><br>
 			<br><br><br>
 			The world has collapsed on itself due to excess of antimatter.
 		</div>
 
-		<div id="dimensions" class="tab">
-			<table class="table" align="center" style="margin: auto" id="dimTabButtons">
-				<tr>
-					<td><button class="secondarytabbtn" onclick="showDimTab('antimatterdimensions')">Dimensions</button></td>
-					<td id="idtabbtn"><button class="secondarytabbtn infinitybtn" onclick="showDimTab('infinitydimensions')">Infinity Dimensions</button></td>
-					<td id="tdtabbtn"><button class="secondarytabbtn eternitybtn" onclick="showDimTab('timedimensions')">Time Dimensions</button></td>
-					<td id="mdtabbtn"><button class="secondarytabbtn quantumbtn" onclick="showDimTab('metadimensions')">Meta Dimensions</button></td>
-				</tr>
-			</table>
-			<div id="antimatterdimensions" class="dimtab">
+		<div id="tab_dim">
+			<table id='tabs_dim'></table>
+			<div id="tab_dim_am">
 				<p id="mp10d"></p>
 				<p></p>
 				<input id="confirmation" type="checkbox" style="width:20px; height: 18px; display: none" ach-tooltip="No confirmation when doing Dimensional Sacrifice" onchange="sacrificeConf()">
@@ -153,7 +132,7 @@
 				</table>
 				<button id="quickReset" style="color:black; width: 200px; height: 50px; font-size: 12px; display: none" class="storebtn" onclick="quickReset()">Lose a reset, returning to the start of the reset</button>
 			</div>
-			<div id="infinitydimensions" class="dimtab">
+			<div id="tab_dim_inf">
 				<div>
 					<p>You have <span id="infPowAmount" style="font-size:35px; color: black">0</span> Infinity Power. <span id="infPowEffectPowerDiv"></span>ranslated to <span id="infDimMultAmount" style="font-size:35px; color: black">0</span>x multiplier on all Normal Dimensions</p>
 				</div>
@@ -163,7 +142,7 @@
 				<div id="eterc8ids" style="display: none;"></div>
 				<button id="toggleallinfdims"style="width:140px; height: 30px; font-size: 12px; visibility: hidden" onclick="toggleAllInfDims()" class="storebtn">Toggle all ON/OFF</button>
 			</div>
-			<div id="timedimensions" class="dimtab">
+			<div id="tab_dim_time">
 				<div>
 					<p id="itmult"></p>
 					<p id="totaltickgained">You've gained 0 tickspeed upgrades.</p>
@@ -175,9 +154,9 @@
 				<table id="timeDimTable" class="table"></table>
 				<button id="togglealltimedims" style="width:140px; height: 30px; font-size: 12px; visibility: hidden" onclick="toggleAllTimeDims()" class="storebtn">Toggle all ON/OFF</button>
 			</div>
-			<div id="metadimensions" class="dimtab">
+			<div id="tab_dim_meta">
 				<div>
-					<p>You have <span id="metaAntimatterAmount" style="font-size:35px; color: black">0</span> meta-antimatter.<p>
+					<p>You have <span id="metaAntimatterAmount" style="font-size:35px; color: black">0</span> meta-antimatter.</p>
 					<p><span id="bestAntimatterType"></span> was <span id="metaAntimatterBest" style="font-size:35px; color: black">0</span>. <span id="bestAntimatterTranslation"></span>ranslated to <span id="metaAntimatterEffect" style="font-size:35px; color: black">0</span>x <span id="metaAntimatterEffectType"></span>.</p>
 					<p id="bestAntimatterQuantum"></p>
 					<p id="bestMAOverGhostifies"></p>
@@ -208,17 +187,9 @@
 				</table>
 			</div>
 		</div>
-		<div id="options" class="tab" align="center">
-			<table class="table" align="center" style="margin: auto">
-				<tr>
-					<td><button class="secondarytabbtn" onclick="showOptionTab('saving')">Saves</button></td>
-					<td><button class="secondarytabbtn" onclick="showOptionTab('displayoptions')">Display</button></td>
-					<td><button class="secondarytabbtn" onclick="showOptionTab('hotkeys')">Hotkeys</button></td>
-					<td><button class="secondarytabbtn" onclick="showOptionTab('otheroptions')">Others</button></td>
-					<td id="secretoptionsbtn"><button class="secondarytabbtn" onclick="showOptionTab('secrets')">Secrets</button></td>
-				</tr>
-			</table>
-			<div class='optionstab' id='saving'>
+		<div id="tab_opt">
+			<table id='tabs_opt'></table>
+			<div id='tab_opt_save'>
 				<span id="save_name"></span>
 				<table>
 					<tr>
@@ -243,24 +214,25 @@
 						<td><div><button id="bugExport" onclick="bugExport()" class="storebtn" style="color:black; width:200px; height:55px; font-size:12px; display:none">Export "Infinite" bug save<br><b>(WARNING: This disappears when you reload the game!)</button></b></div></td>
 					</tr>
 				</table>
-			</div><div class='optionstab' id='displayoptions' style='display:none'>
+			</div>
+			<div id='tab_opt_disp'>
 				<table>
 					<tr>
 						<td><button id="theme" class="storebtn" style="color:black; width: 200px; height: 55px; font-size: 12px"></button></td>
 						<td><button id="animationoptionsbtn" class="storebtn" style="color:black; width: 200px; height: 55px; font-size:160%;">Animations</button></td>
-						<td><div class="storebtn" style="color:black; width: 198px; height: 55px; font-size:130%; text-align: center;"><b id="updaterate">Update Rate: 50ms</b><input id="updaterateslider" style="width: 170px;" type="range" min="0" max="200" value="50" class="slider" ></td>
+						<td><div class="storebtn" style="color:black; width: 198px; height: 55px; font-size:130%; text-align: center;"><b id="updaterate">Update Rate: 50ms</b><input id="updaterateslider" style="width: 170px;" type="range" min="0" max="200" value="50" class="slider"></td>
 					</tr><tr>
 						<td><button onclick="showOptions('notationmenu')" id="notation" onclick="" class="storebtn" style="color:black; width: 200px; height: 55px; font-size:10px"></button></td>
 						<td><button onclick="showVisibilityMenu()" class="storebtn" style="color:black; width: 200px; height: 55px; font-size: 15px">Show/hide stuff</button></td>
-						<td><button id="tabsSave" onclick="toggleTabsSave()" class="storebtn" style="color:black; width: 200px; height: 55px; font-size: 15px"></button></td>
-					</tr><tr>
 						<td><button id="netQuarkTop" onclick="updateNetTop(true)" class="storebtn" style="color:black; width: 200px; height: 55px"></button></td>
 					</tr>
 				</table>
-			</div><div class='optionstab' id='hotkeys' style='display:none'>
+			</div>
+			<div id='tab_opt_key'>
 				<button id="disablehotkeys" onclick="toggleHotkeys()" class="storebtn" style="color:black; width: 200px; height: 55px; font-size:120%">Disable hotkeys</button><br>
 				<p id='hotkeysDesc'></p>
-			</div><div class='optionstab' id='otheroptions' style='display:none'>
+			</div>
+			<div id='tab_opt_other'>
 				<table>
 					<tr>
 						<td><button id="confirmations" onclick="showConfirmations()" class="storebtn" style="color:black; width: 200px; height: 55px; font-size: 15px">Confirmations</button></td>
@@ -272,7 +244,8 @@
 						<td><button class="storebtn" onclick="PRESET.open()" style="color:black; width: 200px; height: 55px; font-size: 20px">Presets</button></td>
 					</tr>
 				</table>
-			</div><div class='optionstab' id='secrets' style='display:none'>
+			</div>
+			<div id='tab_opt_sec'>
 				<table>
 					<tr>
 						<td><div><button id="ghostlynewsbtn" onclick="updateGhostlyNews(true)" class="storebtn" style="color:black; width: 200px; height: 55px; font-size:120%">Show ghostly news ticker</button></div></td>
@@ -280,16 +253,9 @@
 				</table>
 			</div>
 		</div>
-		<div id="statistics" class="tab" align="center" style="color: black; font-size: 12px; margin: 0 auto">
-			<div id='statstabs'>
-				<br>
-				<button class="secondarytabbtn" onclick="showStatsTab('stats')">General</button>
-				<button class="secondarytabbtn infinitybtn" onclick="showStatsTab('stats_inf')" id="stats_tab_inf">Infinity</button>
-				<button class="secondarytabbtn eternitybtn" onclick="showStatsTab('stats_eter')" id="stats_tab_eter">Eternity</button>
-				<button class="secondarytabbtn quantumbtn" onclick="showStatsTab('stats_qu')" id="stats_tab_qu">Quantum</button>
-				<button class="secondarytabbtn ghostifybtn" onclick="showStatsTab('stats_fund')" id="stats_tab_fund">Fundament</button>
-			</div><br>
-			<div id="stats" class="statstab">
+		<div id="tab_stats">
+			<table id="tabs_stats"></table>
+			<div id="tab_stats_main">
 				<div id='brfilter'><br></div>
 				<div id="totalmoney">You have made x antimatter.</div>
 				<div id="totalresets">You have made x dimensional boosts/shifts.</div>
@@ -311,7 +277,7 @@
 					<h2>Progression</h2>
 					<table id="ngp3_progress"></table>
 				</table>-->
-			</div><div id="stats_inf" class="statstab" >
+			</div><div id="tab_stats_inf">
 				<h1>Infinity</h1>
 				<div id="infinitied">You have infinitied x times.</div>
 				<div id="infinitiedBank">You have infinitied x times.</div>
@@ -369,7 +335,7 @@
 				<div id="infchallengetime14"></div>
 				<br>
 				<div id="infchallengetimesum"></div>
-			</div><div id="stats_eter" class="statstab" >
+			</div><div id="tab_stats_eter">
 				<h1>Eternity</h1>
 				<div id="eternitied">You have eternitied x times.</div>
 				<div id="eternitiedBank"></div>
@@ -416,7 +382,7 @@
 				<br>
 				<div id="eterchallengetimesum"></div>
 				<button class="qu_upg storebtn" id="bl_portion_1" onclick='BL_JOKE.find(1)' style='opacity: 0.1'>You agree that you will remain hidden in eternity.</button>
-			</div><div id="stats_qu" class="statstab" >
+			</div><div id="tab_stats_qu">
 				<h1>Quantum</h1>
 				<div id="quantumed"></div>
 				<div id="bestQuantum"></div>
@@ -465,7 +431,7 @@
 					<span id="upcc"></span><br>
 					Your ranking is <span id="pccranking"></span> / 56.
 				</div>
-			</div><div id="stats_fund" class="statstab" >
+			</div><div id="tab_stats_funda">
 				<h1>Fundament</h1>
 				<div id="ghostified"></div>
 				<div id="bestGhostify"></div>
@@ -486,15 +452,9 @@
 				<div id="averageGhostifyRun"></div>
 			</div>
 		</div>
-		<div id="achievements" class="tab">
-			<table class="table" align="center" style="margin: auto" id="achTabButtons">
-				<tr>
-					<td><button class="secondarytabbtn" onclick="showAchTab('normalachievements')">Achievements</button></td>
-					<td><button class="secondarytabbtn" onclick="showAchTab('secretachievements')">Secret Achievements</button></td>
-					<td><button class="secondarytabbtn" id="badgestabbtn" onclick="showAchTab('badges')">Badges</button></td>
-				</tr>
-			</table>
-			<div id="normalachievements" class="achtab">
+		<div id="tab_ach">
+			<table id="tabs_ach"></table>
+			<div id="tab_ach_n">
 				<div id="achmultlabel" style="font-size: 140%">Current achievement multiplier on each Dimension: 1x</div>
 				<div id="metaAchMultLabel" style="font-size: 140%">Achievement multiplier to Meta Dimensions: 1x</div>
 				<div>
@@ -1126,7 +1086,7 @@
 					</tr>
 				</table>
 				<div id="nothingness">You completed all the normal achievements! Congratulations!</div>
-			</div><div id="secretachievements" class="achtab">
+			</div><div id="tab_ach_sec">
 				<table id="secretachievementtable" style="margin: auto">
 					<tr id="secretAchRow1">
 						<td>
@@ -1287,7 +1247,7 @@
 					</tr>
 				</table>
 				<div id="nothingnessSecret">You completed all secret achievements! Congratulations!</div>
-			</div><div id="badges" class="achtab">
+			</div><div id="tab_ach_badge">
 				<b class='red'>
 					Badges are saved through saves and mods.<br>
 					You can't get any badge with buffs and NGUd'.<br>
@@ -1296,20 +1256,12 @@
 				<div id="badges_div"></div>
 			</div>
 		</div>
-		<div id="challenges" class="tab">
+		<div id="tab_chal">
 			<br>
 			<button class="storebtn" style="font-size: 100%; width:200px" onclick="exitChallenge()">Exit Challenge</button><br><br>
-			<table class="table" align="center" style="margin: auto; display: none" id="challTabButtons">
-				<tr>
-					<td><button id="nctabbtn" class="secondarytabbtn" onclick="showChallengesTab('normalchallenges')">Challenges</button></td>
-					<td><button id="postctabbtn" class="secondarytabbtn infinitybtn" onclick="showChallengesTab('breakchallenges')">Infinity Challenges</button></td>
-					<td><button id="eterctabbtn" class="secondarytabbtn eternitybtn" onclick="showChallengesTab('eternitychallenges')">Eternity Challenges</button></td>
-					<td><button id="qctabbtn" class="secondarytabbtn quantumbtn" onclick="showChallengesTab('quantumchallenges')">Quantum Challenges</button></td>
-					<td><button id='riptabbtn' class="secondarytabbtn bigrip" onclick="showChallengesTab('bigrip')">Big Rip</button></td>
-				</tr>
-			</table>
+			<table id="tabs_chal"></table>
 			<div id="nextchall"></div>
-			<div id="normalchallenges" class="challengeTab">
+			<div id="tab_chal_n">
 				<table class="table" style="margin: 0 auto">
 					<tr>
 						<td>
@@ -1520,8 +1472,7 @@
 						</td>
 					</tr>
 				</table>
-			</div>
-			<div id="breakchallenges" class="challengeTab">
+			</div><div id="tab_chal_inf">
 				<table  class="table" style="margin: 0 auto">
 					<tr id='icngmm_row'>
 						<td>
@@ -1735,9 +1686,7 @@
 						</td>
 					</tr>
 				</table>
-
-			</div>
-			<div id="eternitychallenges" class="challengeTab">
+			</div><div id="tab_chal_eter">
 				<div>Complete Eternity Challenges again for a bigger reward, maximum of 5 times.</div>
 				<button class="storebtn" onclick="autoECToggle()" id="autoEC" style="width:150px; height: 40px; font-size: 10px; margin: auto">Don't auto-respec studies and auto-reunlock ECs</button>
 				<table  class="table" style="margin: 0 auto">
@@ -1956,8 +1905,7 @@
 						</td>
 					</tr>
 				</table>
-			</div>
-			<div id="quantumchallenges" class="challengeTab">
+			</div><div id="tab_chal_qu">
 				<div id='qcDisclaimer'></div>
 				<div id='positronsAmount2'></div>
 				<table class="table" id="qc_table" style='margin: 0 auto'></table>
@@ -2033,7 +1981,7 @@
 						</tr>
 					</table>
 				</div>
-			</div><div class="challengeTab" id="bigrip">
+			</div><div id="tab_rip">
 				<table style='margin: auto'>
 					<td><button class="qu_upg quantumbtn" onclick="buyingDilStudyPC()">Teleport to Paired Challenges.</button></td>
 					<td><button id="bigRipBtn" onclick="bigRip()"></button></td>
@@ -2073,648 +2021,637 @@
 				</table>
 			</div>
 		</div>
-		<div id="automation" class="tab" align="center" style="display: none"></div>
-		<div id="galaxy" class="tab" align="center" style="display: none">
+		<div id="tab_gSac">
+			<table id="tabs_gSac"></table>
 			<div id="vanillaGalaxyPoints">
 				<br>
 				<div id="galaxyPoints" style="color: #4169E1; font-size: 15px; width: 40%; margin: 0 auto">You have x galaxy points.</div>
 				<br>
 			</div>
-			<table class="table" id="galTable" style="margin: 0 auto">
-				<tr>
-					<td>
-						<button id="galaxy11" class="infinistorebtn1" onclick="buyGalaxyUpgrade(11)"></button>
-					</td>
-					<td>
-						<button id="galaxy12" class="infinistorebtn2" onclick="buyGalaxyUpgrade(12)"></button>
-					</td>
-					<td>
-						<button id="galaxy13" class="infinistorebtn3" onclick="buyGalaxyUpgrade(13)"></button>
-					</td>
-					<td>
-						<button id="galaxy14" class="infinistorebtn4" onclick="buyGalaxyUpgrade(14)">Tickspeed Boosts give 32 free tickspeed purchases each.<br>Cost: 300 GP</button>
-					</td>
-					<td>
-						<button id="galaxy15" class="infinistorebtn4" onclick="buyGalaxyUpgrade(15)"></button>
-					</td>
-					<td>
-						<button id="galaxy16" class="infinistorebtn4" onclick="buyGalaxyUpgrade(16)">Square the effect of the upgrade to the left, and Time Dimension Shifts multiply GP gain.<br>Cost: <span id='galcost16'></span> GP</button>
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<button id="galaxy21" class="infinistorebtn1" onclick="buyGalaxyUpgrade(21)"></button>
-					</td>
-					<td>
-						<button id="galaxy22" class="infinistorebtn2" onclick="buyGalaxyUpgrade(22)">Galaxies are <span id='galBuff22'></span>x stronger, reduce the cost by 20 less except for the first, and decrease the cost multiplier to 30.<br>Cost: 5 GP</button>
-					</td>
-					<td>
-						<button id="galaxy23" class="infinistorebtn3" onclick="buyGalaxyUpgrade(23)"><span id='galDesc23'></span><br>Currently: <span id='galspan23'>x</span>x more power<br>Cost: 100 GP</button>
-					</td>
-					<td>
-						<button id="galaxy24" class="infinistorebtn4" onclick="buyGalaxyUpgrade(24)">Increase the multiplier of the product of bought based on your galaxy points.<br>Currently: <span id='galspan24'>x</span>x<br>Cost: <span id='galcost24'></span> GP</button>
-					</td>
-					<td>
-						<button id="galaxy25" class="infinistorebtn4" onclick="buyGalaxyUpgrade(25)">Tickspeed multiplier boosts Time Dimensions more based on your Galaxy points.<br>Currently: ^<span id='galspan25'>x</span><br>Cost: <span id='galcost25'></span> GP</button>
-					</td>
-					<td>
-						<button id="galaxy26" class="infinistorebtn4" onclick="buyGalaxyUpgrade(26)">Square the effect of the upgrade to the left.<br>Cost: <span id='galcost26'></span> GP</button>
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<button id="galaxy31" class="infinistorebtn1" onclick="buyGalaxyUpgrade(31)">Increase all dimension multipliers.<br>Currently: x^<span id='galspan31'></span><br>Cost: <span id='galcost31'></span> GP</button>
-					</td>
-					<td>
-						<button id="galaxy32" class="infinistorebtn2" onclick="buyGalaxyUpgrade(32)">Gain more galaxy points based on your total antimatter.<br>Currently: <span id='galspan32'>x</span>x<br>Cost: <span id='galcost32'></span> GP</button>
-					</td>
-					<td>
-						<button id="galaxy33" class="infinistorebtn3" onclick="buyGalaxyUpgrade(33)">The multiplier per ten dimensions is stronger based on your galaxy points.<br>Currently: <span id='galspan33'>x</span>x more power<br>Cost: <span id='galcost33'></span> GP</button></td>
-					</td>
-					<td>
-						<button id="galaxy34" class="infinistorebtn4" onclick="buyGalaxyUpgrade(34)">Decrease tickspeed boost cost multiplier to 4.<br>Cost: <span id='galcost34'></span> GP</button>
-					</td>
-					<td>
-						<button id="galaxy35" class="infinistorebtn4" onclick="buyGalaxyUpgrade(35)" style="font-size:9px">Each bought Time Dimension boosts Normal Dimensions by the product of x/6 and your multiplier of the product of bought.<br>Currently: <span id='galspan35'></span>x<br>Cost: <span id='galcost35'></span> GP</button>
-					</td>
-					<td>
-						<button id="galaxy36" class="infinistorebtn4" onclick="buyGalaxyUpgrade(36)">Square the effect of the upgrade to the left.<br>Cost: <span id='galcost36'></span> GP</button>
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<button id="galaxy41" class="infinistorebtn1" onclick="buyGalaxyUpgrade(41)"></button>
-					</td>
-					<td>
-						<button id="galaxy42" class="infinistorebtn2" onclick="buyGalaxyUpgrade(42)"></button>
-					</td>
-					<td>
-						<button id="galaxy43" class="infinistorebtn3" onclick="buyGalaxyUpgrade(43)"></button>
-					</td>
-					<td>
-						<button id="galaxy44" class="infinistorebtn4" onclick="buyGalaxyUpgrade(44)">Normal Dimensions boost Time Dimensions.<br>Cost: <span id='galcost44'></span> GP</button>
-					</td>
-					<td>
-						<button id="galaxy45" class="infinistorebtn4" onclick="buyGalaxyUpgrade(45)">Time Dimensions boost Normal Dimensions, and Eighth Dimensions multiply GP gain.<br>Cost: <span id='galcost45'></span> GP</button>
-					</td>
-					<td>
-						<button id="galaxy46" class="infinistorebtn4" onclick="buyGalaxyUpgrade(46)">Boost all upgrades in this row based on your GP.<br>Currently: <span id='galspan46'>0</span>%<br>Cost: <span id='galcost46'></span> GP</button>
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<button id="galaxy51" class="infinistorebtn1" onclick="buyGalaxyUpgrade(51)">Galaxy points boost Eternity points.<br>Currently: <span id='galspan51'>?</span>x<br>Cost: <span id='galcost51'>1e4500</span> GP</button>
-					</td>
-					<td>
-						<button id="galaxy52" class="infinistorebtn2" onclick="buyGalaxyUpgrade(52)">Reduce the galaxy softcap of Galaxy points gain formula.<br>Cost: <span id='galcost52'>1e5500</span> GP</button>
-					</td>
-					<td>
-						<button id="galaxy53" class="infinistorebtn3" onclick="buyGalaxyUpgrade(53)">Galaxy points boost 2x Infinity Points multiplier upgrades<br>Cost: <span id='galcost53'>1e15000</span> GP</button>
-					</td>
-					<td>
-						<button id="galaxy54" class="infinistorebtnlocked">???<br>Cost: ??? GP</button>
-					</td>
-					<td>
-						<button id="galaxy55" class="infinistorebtnlocked">???<br>Cost: ??? GP</button>
-					</td>
-					<td>
-						<button id="galaxy56" class="infinistorebtnlocked">???<br>Cost: ??? GP</button>
-					</td>
-				</tr>
-			</table>
+			<div id="tab_upg_gSac">
+				<table id="galUpgs" style="margin: 0 auto">
+					<tr>
+						<td>
+							<button id="galaxy11" class="infinistorebtn1" onclick="buyGalaxyUpgrade(11)"></button>
+						</td>
+						<td>
+							<button id="galaxy12" class="infinistorebtn2" onclick="buyGalaxyUpgrade(12)"></button>
+						</td>
+						<td>
+							<button id="galaxy13" class="infinistorebtn3" onclick="buyGalaxyUpgrade(13)"></button>
+						</td>
+						<td>
+							<button id="galaxy14" class="infinistorebtn4" onclick="buyGalaxyUpgrade(14)">Tickspeed Boosts give 32 free tickspeed purchases each.<br>Cost: 300 GP</button>
+						</td>
+						<td>
+							<button id="galaxy15" class="infinistorebtn4" onclick="buyGalaxyUpgrade(15)"></button>
+						</td>
+						<td>
+							<button id="galaxy16" class="infinistorebtn4" onclick="buyGalaxyUpgrade(16)">Square the effect of the upgrade to the left, and Time Dimension Shifts multiply GP gain.<br>Cost: <span id='galcost16'></span> GP</button>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<button id="galaxy21" class="infinistorebtn1" onclick="buyGalaxyUpgrade(21)"></button>
+						</td>
+						<td>
+							<button id="galaxy22" class="infinistorebtn2" onclick="buyGalaxyUpgrade(22)">Galaxies are <span id='galBuff22'></span>x stronger, reduce the cost by 20 less except for the first, and decrease the cost multiplier to 30.<br>Cost: 5 GP</button>
+						</td>
+						<td>
+							<button id="galaxy23" class="infinistorebtn3" onclick="buyGalaxyUpgrade(23)"><span id='galDesc23'></span><br>Currently: <span id='galspan23'>x</span>x more power<br>Cost: 100 GP</button>
+						</td>
+						<td>
+							<button id="galaxy24" class="infinistorebtn4" onclick="buyGalaxyUpgrade(24)">Increase the multiplier of the product of bought based on your galaxy points.<br>Currently: <span id='galspan24'>x</span>x<br>Cost: <span id='galcost24'></span> GP</button>
+						</td>
+						<td>
+							<button id="galaxy25" class="infinistorebtn4" onclick="buyGalaxyUpgrade(25)">Tickspeed multiplier boosts Time Dimensions more based on your Galaxy points.<br>Currently: ^<span id='galspan25'>x</span><br>Cost: <span id='galcost25'></span> GP</button>
+						</td>
+						<td>
+							<button id="galaxy26" class="infinistorebtn4" onclick="buyGalaxyUpgrade(26)">Square the effect of the upgrade to the left.<br>Cost: <span id='galcost26'></span> GP</button>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<button id="galaxy31" class="infinistorebtn1" onclick="buyGalaxyUpgrade(31)">Increase all dimension multipliers.<br>Currently: x^<span id='galspan31'></span><br>Cost: <span id='galcost31'></span> GP</button>
+						</td>
+						<td>
+							<button id="galaxy32" class="infinistorebtn2" onclick="buyGalaxyUpgrade(32)">Gain more galaxy points based on your total antimatter.<br>Currently: <span id='galspan32'>x</span>x<br>Cost: <span id='galcost32'></span> GP</button>
+						</td>
+						<td>
+							<button id="galaxy33" class="infinistorebtn3" onclick="buyGalaxyUpgrade(33)">The multiplier per ten dimensions is stronger based on your galaxy points.<br>Currently: <span id='galspan33'>x</span>x more power<br>Cost: <span id='galcost33'></span> GP</button></td>
+						</td>
+						<td>
+							<button id="galaxy34" class="infinistorebtn4" onclick="buyGalaxyUpgrade(34)">Decrease tickspeed boost cost multiplier to 4.<br>Cost: <span id='galcost34'></span> GP</button>
+						</td>
+						<td>
+							<button id="galaxy35" class="infinistorebtn4" onclick="buyGalaxyUpgrade(35)" style="font-size:9px">Each bought Time Dimension boosts Normal Dimensions by the product of x/6 and your multiplier of the product of bought.<br>Currently: <span id='galspan35'></span>x<br>Cost: <span id='galcost35'></span> GP</button>
+						</td>
+						<td>
+							<button id="galaxy36" class="infinistorebtn4" onclick="buyGalaxyUpgrade(36)">Square the effect of the upgrade to the left.<br>Cost: <span id='galcost36'></span> GP</button>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<button id="galaxy41" class="infinistorebtn1" onclick="buyGalaxyUpgrade(41)"></button>
+						</td>
+						<td>
+							<button id="galaxy42" class="infinistorebtn2" onclick="buyGalaxyUpgrade(42)"></button>
+						</td>
+						<td>
+							<button id="galaxy43" class="infinistorebtn3" onclick="buyGalaxyUpgrade(43)"></button>
+						</td>
+						<td>
+							<button id="galaxy44" class="infinistorebtn4" onclick="buyGalaxyUpgrade(44)">Normal Dimensions boost Time Dimensions.<br>Cost: <span id='galcost44'></span> GP</button>
+						</td>
+						<td>
+							<button id="galaxy45" class="infinistorebtn4" onclick="buyGalaxyUpgrade(45)">Time Dimensions boost Normal Dimensions, and Eighth Dimensions multiply GP gain.<br>Cost: <span id='galcost45'></span> GP</button>
+						</td>
+						<td>
+							<button id="galaxy46" class="infinistorebtn4" onclick="buyGalaxyUpgrade(46)">Boost all upgrades in this row based on your GP.<br>Currently: <span id='galspan46'>0</span>%<br>Cost: <span id='galcost46'></span> GP</button>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<button id="galaxy51" class="infinistorebtn1" onclick="buyGalaxyUpgrade(51)">Galaxy points boost Eternity points.<br>Currently: <span id='galspan51'>?</span>x<br>Cost: <span id='galcost51'>1e4500</span> GP</button>
+						</td>
+						<td>
+							<button id="galaxy52" class="infinistorebtn2" onclick="buyGalaxyUpgrade(52)">Reduce the galaxy softcap of Galaxy points gain formula.<br>Cost: <span id='galcost52'>1e5500</span> GP</button>
+						</td>
+						<td>
+							<button id="galaxy53" class="infinistorebtn3" onclick="buyGalaxyUpgrade(53)">Galaxy points boost 2x Infinity Points multiplier upgrades<br>Cost: <span id='galcost53'>1e15000</span> GP</button>
+						</td>
+						<td>
+							<button id="galaxy54" class="infinistorebtnlocked">???<br>Cost: ??? GP</button>
+						</td>
+						<td>
+							<button id="galaxy55" class="infinistorebtnlocked">???<br>Cost: ??? GP</button>
+						</td>
+						<td>
+							<button id="galaxy56" class="infinistorebtnlocked">???<br>Cost: ??? GP</button>
+						</td>
+					</tr>
+				</table>
+			</div>
 		</div>
-		<div id="infinity" class="tab" align="center" style="display: none">
+		<div id="tab_inf">
 			<br>
 			<div id='vanillaInfinityPoints'>
 				<div id="infinityPoints1" style="color: black; font-size: 15px; width: 40%; margin: 0 auto"></div><br>
 			</div>
-			<table id="infTabs" align="center" style="margin: auto">
-				<td><button class="secondarytabbtn" onclick="showInfTab('preinf')">Upgrades</button></td>
-				<td><button id="autobuyersbtn" class="secondarytabbtn" onclick="showInfTab('autobuyers')">Autobuyers</button></td>
-				<td><button id="postinfbtn" class="secondarytabbtn" onclick="showInfTab('postinf')" >Break Infinity</button></td>
-				<td><button id="replicantitabbtn" class="secondarytabbtn" onclick="showInfTab('replicantis')">Replicantis</button></td>
-			</table>
-			<div id="preinf" class="inftab">
-			<br>
-			<table id="preinfupgrades" class="table" style="margin: 0 auto"></table>
-			<button id="infiMult" class="infinimultbtn">You gain 2x more IP.<br>Currently: <br>Cost: 100 IP</button>
-			<div><button id="infmultbuyer" class="storebtn" onclick="infMultAutoToggle()" style="display:none; height: 25px; width: 190px; font-size:10px; margin-top: 3px;"></button></div>
-		</div>
-		<div id="autobuyers" class="inftab">
-			<br>
-			<button class="storebtn" id="toggleautobuyers" style="font-size: 100%; width: 150px; height: 40px; margin: 3px" onclick="toggleAutoBuyers()">Enable/disable autobuyers</button>
-			<button class="storebtn" id="togglebulk" style="font-size: 100%; width: 150px; height: 40px;margin: 3px" onclick="toggleBulk()">Disable bulk buy</button>
-			<button class="storebtn" id="togglebuymax" style="font-size: 100%; width: 150px; height: 40px;margin: 3px" onclick="toggleAllABBulks()">Toggle "buy max" to all</button>
-			<button class="storebtn" id="maxAutobuyerUpgrades" style="font-size: 100%; width: 150px; height: 40px;margin: 3px" onclick="maxAutobuyerUpgrades()">Max autobuyer upgrades</button>
-			<br>
-			<button class="storebtn" id="togglecrunchmode" style="font-size: 100%; width: 150px; height: 40px;margin: 3px; display: none" onclick="toggleCrunchMode()">Auto crunch mode: amount</button>
-			<button class="storebtn" id="toggleautoetermode" style="font-size: 100%; width: 150px; height: 40px;margin: 3px; display: none" onclick="toggleAutoEterMode()">Auto eternity mode: amount</button>
-			<button class="storebtn" id="toggleautoquantummode" style="font-size: 100%; width: 150px; height: 40px;margin: 3px; display: none" onclick="toggleAutoQuantumMode()"></button>
-			<br>
-			<table class="table" style="margin: 0 auto">
-				<tr>
-					<td></td>
-					<td id="autoBuyerEter"><div class="autoBuyerDiv" style="display:block">
-						<div>Automatic Eternity</div>
-						<div><span id='eterlimittext'>Amount of EP to wait until reset:</span>
-						<input type="text" onchange="updatePriorities()" id="priority13"></input></div>
-						<br>
-						<span style="font-size: 80%">Is active</span>
-						<input type="checkbox" onchange="updateAutobuyers()" id="eternityison"></input>
-						<div id='dilationmode'>
-							<div>Amount of eternities to wait until dilate time:
-							<input type="text" onchange="updatePriorities()" id="prioritydil"></input></div>
-							<span style="font-size: 80%">Is active</span>
-							<input type="checkbox" onchange="updateAutobuyers()" id="dilatedeternityison"></input>
-						</div>
-					</div></td>
-					<td id="autoBuyerQuantum">
-						<div class="autoBuyerDiv" style="display:block">
-							<div>Automatic Quantum</div>
-							<div><span id='autoquantumtext'></span>
-							<input type="text" onchange="updatePriorities()" id="priorityquantum"></input></div>
+			<table id="tabs_inf"></table>
+			<div id="tab_upg_inf">
+				<br>
+				<table id="preinfupgrades" class="table" style="margin: 0 auto"></table>
+				<button id="infiMult" class="infinimultbtn">You gain 2x more IP.<br>Currently: <br>Cost: 100 IP</button>
+				<div><button id="infmultbuyer" class="storebtn" onclick="infMultAutoToggle()" style="display:none; height: 25px; width: 190px; font-size:10px; margin-top: 3px;"></button></div>
+			</div>
+			<div id="tab_auto_buy">
+				<br>
+				<button class="storebtn" id="toggleautobuyers" style="font-size: 100%; width: 150px; height: 40px; margin: 3px" onclick="toggleAutoBuyers()">Enable/disable autobuyers</button>
+				<button class="storebtn" id="togglebulk" style="font-size: 100%; width: 150px; height: 40px;margin: 3px" onclick="toggleBulk()">Disable bulk buy</button>
+				<button class="storebtn" id="togglebuymax" style="font-size: 100%; width: 150px; height: 40px;margin: 3px" onclick="toggleAllABBulks()">Toggle "buy max" to all</button>
+				<button class="storebtn" id="maxAutobuyerUpgrades" style="font-size: 100%; width: 150px; height: 40px;margin: 3px" onclick="maxAutobuyerUpgrades()">Max autobuyer upgrades</button>
+				<br>
+				<button class="storebtn" id="togglecrunchmode" style="font-size: 100%; width: 150px; height: 40px;margin: 3px; display: none" onclick="toggleCrunchMode()">Auto crunch mode: amount</button>
+				<button class="storebtn" id="toggleautoetermode" style="font-size: 100%; width: 150px; height: 40px;margin: 3px; display: none" onclick="toggleAutoEterMode()">Auto eternity mode: amount</button>
+				<button class="storebtn" id="toggleautoquantummode" style="font-size: 100%; width: 150px; height: 40px;margin: 3px; display: none" onclick="toggleAutoQuantumMode()"></button>
+				<br>
+				<table class="table" style="margin: 0 auto">
+					<tr>
+						<td></td>
+						<td id="autoBuyerEter"><div class="autoBuyerDiv" style="display:block">
+							<div>Automatic Eternity</div>
+							<div><span id='eterlimittext'>Amount of EP to wait until reset:</span>
+							<input type="text" onchange="updatePriorities()" id="priority13"></input></div>
 							<br>
 							<span style="font-size: 80%">Is active</span>
-							<input type="checkbox" onchange="updateAutobuyers()" id="quantumison"></input>
-						</div>
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<div class="autoBuyerDiv" id="ab_db">
-							<div>Automatic Dimensional Boosts</div>
-							<button class="autobuyerbtn" id="ab_db_upg"></button>
-							<div style="font-size: 80%"id="ab_db_int"></div>
-							<span style="font-size: 80%">Max 8ths used on reset:</span>
-							<input type="text" onchange="updatePriorities()" id="priority10"></input>
-							<br>
-							<span style="font-size: 80%">Galaxies required to always Dimboost:</span>
-							<input type="text" onchange="updatePriorities()" id="overGalaxies"></input>
-							<br>
-							<div id="bulkdimboost">
-								<span style="font-size: 80%" id="bulklabel">Bulk DimBoost amount:</span>
-								<input type="text" onchange="updatePriorities()" id="bulkDimboost"></input>
+							<input type="checkbox" onchange="updateAutobuyers()" id="eternityison"></input>
+							<div id='dilationmode'>
+								<div>Amount of eternities to wait until dilate time:
+								<input type="text" onchange="updatePriorities()" id="prioritydil"></input></div>
+								<span style="font-size: 80%">Is active</span>
+								<input type="checkbox" onchange="updateAutobuyers()" id="dilatedeternityison"></input>
 							</div>
-							<br>
-							<span style="font-size: 80%">Is active</span>
-							<input type="checkbox" onchange="updateAutobuyers()" id="10ison"></input>
-						</div>
-					</td>
-					<td>
-						<div class="autoBuyerDiv" id="ab_gal">
-							<div>Automatic Galaxies</div>
-							<button class="autobuyerbtn" id="ab_gal_upg"></button>
-							<div style="font-size: 80%"id="ab_gal_int"></div>
-							<span>Max Galaxies:</span>
-							<input type="text" onchange="updatePriorities()" id="priority11"></input>
-							<br>
-							<div id="galaxybulk" style="display: none">
-								<span style="font-size: 80%">Buy max galaxies every X seconds (0 to always buy):</span>
-								<input type="text" onchange="updatePriorities()" id="bulkgalaxy"></input>
-							</div>
-							<br>
-							<span style="font-size: 80%">Is active</span>
-							<input type="checkbox" onchange="updateAutobuyers()" id="11ison"></input>
-						</div>
-					</td>
-					<td>
-						<div class="autoBuyerDiv" id="ab_inf">
-							<div>Automatic Big Crunches</div>
-							<button class="autobuyerbtn" id="ab_inf_upg"></button>
-							<div style="font-size: 80%"id="ab_inf_int"></div>
-							<div id="iplimit"><span id="limittext">Amount of IP to wait until reset:</span>
-							<input type="text" onchange="updatePriorities()" id="priority12"></input></div>
-							<br>
-							<div id="maxReplicantiCrunchSwitchDiv" style="display: none">
-							  <span>Require max replicanti:</span>
-							  <input type="checkbox" onchange="updatePriorities()" id="maxReplicantiCrunchSwitch"></input>
-							  <br>
-							</div>
-							<div id="IPPeakDiv" style="display: none">
-							  <span>Require IP from crunch at peak:</span>
-							  <input type="checkbox" onchange="updatePriorities()" id="requireIPPeak"></input>
-							  <br>
-							</div>
-							<span style="font-size: 80%">Is active</span>
-							<input type="checkbox" onchange="updateAutobuyers()" id="12ison"></input>
-						</div>
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<div class="autoBuyerDiv" id="ab_d1">
-							<div>Automatic 1st Dimensions</div>
-							<button class="autobuyerbtn" id="ab_d1_upg"></button>
-							<button class="autobuyerbtn" id="ab_d1_toggle"></button>
-							<div style="font-size: 80%" id="ab_d1_int"></div>
-							<span>Priority:</span>
-							<select onchange="updatePriorities()" id="priority1">
-							<option value="1">1</option>
-							<option value="2">2</option>
-							<option value="3">3</option>
-							<option value="4">4</option>
-							<option value="5">5</option>
-							<option value="6">6</option>
-							<option value="7">7</option>
-							<option value="8">8</option>
-							<option value="9">9</option>
-							</select>
-							<br>
-							<span style="font-size: 80%">Is active</span>
-							<input type="checkbox" onchange="updateAutobuyers()" id="1ison"></input>
-						</div>
-					</td>
-					<td>
-						<div class="autoBuyerDiv" id="ab_d2">
-							<div>Automatic 2nd Dimensions</div>
-							<button class="autobuyerbtn" id="ab_d2_upg"></button>
-							<button class="autobuyerbtn" id="ab_d2_toggle"></button>
-							<div style="font-size: 80%" id="ab_d2_int"></div>
-							<span>Priority:</span>
-							<select onchange="updatePriorities()" id="priority2">
-							<option value="1">1</option>
-							<option value="2">2</option>
-							<option value="3">3</option>
-							<option value="4">4</option>
-							<option value="5">5</option>
-							<option value="6">6</option>
-							<option value="7">7</option>
-							<option value="8">8</option>
-							<option value="9">9</option>
-							</select>
-							<br>
-							<span style="font-size: 80%">Is active</span>
-							<input type="checkbox" onchange="updateAutobuyers()" id="2ison"></input>
-						</div>
-					</td>
-					<td>
-						<div class="autoBuyerDiv" id="ab_d3">
-							<div>Automatic 3rd Dimensions</div>
-							<button class="autobuyerbtn" id="ab_d3_upg"></button>
-							<button class="autobuyerbtn" id="ab_d3_toggle"></button>
-							<div style="font-size: 80%" id="ab_d3_int"></div>
-							<span>Priority:</span>
-							<select onchange="updatePriorities()" id="priority3">
-							<option value="1">1</option>
-							<option value="2">2</option>
-							<option value="3">3</option>
-							<option value="4">4</option>
-							<option value="5">5</option>
-							<option value="6">6</option>
-							<option value="7">7</option>
-							<option value="8">8</option>
-							<option value="9">9</option>
-							</select>
-							<br>
-							<span style="font-size: 80%">Is active</span>
-							<input type="checkbox" onchange="updateAutobuyers()" id="3ison"></input>
-						</div>
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<div class="autoBuyerDiv" id="ab_d4">
-							<div>Automatic 4th Dimensions</div>
-							<button class="autobuyerbtn" id="ab_d4_upg"></button>
-							<button class="autobuyerbtn" id="ab_d4_toggle"></button>
-							<div style="font-size: 80%" id="ab_d4_int"></div>
-							<span>Priority:</span>
-							<select onchange="updatePriorities()" id="priority4">
-							<option value="1">1</option>
-							<option value="2">2</option>
-							<option value="3">3</option>
-							<option value="4">4</option>
-							<option value="5">5</option>
-							<option value="6">6</option>
-							<option value="7">7</option>
-							<option value="8">8</option>
-							<option value="9">9</option>
-							</select>
-							<br>
-							<span style="font-size: 80%">Is active</span>
-							<input type="checkbox" onchange="updateAutobuyers()" id="4ison"></input>
-						</div>
-					</td>
-					<td>
-						<div class="autoBuyerDiv" id="ab_d5">
-							<div>Automatic 5th Dimensions</div>
-							<button class="autobuyerbtn" id="ab_d5_upg"></button>
-							<button class="autobuyerbtn" id="ab_d5_toggle"></button>
-							<div style="font-size: 80%" id="ab_d5_int"></div>
-							<span>Priority:</span>
-							<select onchange="updatePriorities()" id="priority5">
-							<option value="1">1</option>
-							<option value="2">2</option>
-							<option value="3">3</option>
-							<option value="4">4</option>
-							<option value="5">5</option>
-							<option value="6">6</option>
-							<option value="7">7</option>
-							<option value="8">8</option>
-							<option value="9">9</option>
-							</select>
-							<br>
-							<span style="font-size: 80%">Is active</span>
-							<input type="checkbox" onchange="updateAutobuyers()" id="5ison"></input>
-						</div>
-					</td>
-					<td>
-						<div class="autoBuyerDiv" id="ab_d6">
-							<div>Automatic 6th Dimensions</div>
-							<button class="autobuyerbtn" id="ab_d6_upg"></button>
-							<button class="autobuyerbtn" id="ab_d6_toggle"></button>
-							<div style="font-size: 80%" id="ab_d6_int"></div>
-							<span>Priority:</span>
-							<select onchange="updatePriorities()" id="priority6">
-							<option value="1">1</option>
-							<option value="2">2</option>
-							<option value="3">3</option>
-							<option value="4">4</option>
-							<option value="5">5</option>
-							<option value="6">6</option>
-							<option value="7">7</option>
-							<option value="8">8</option>
-							<option value="9">9</option>
-							</select>
-							<br>
-							<span style="font-size: 80%">Is active</span>
-							<input type="checkbox" onchange="updateAutobuyers()" id="6ison"></input>
-						</div>
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<div class="autoBuyerDiv" id="ab_d7">
-							<div>Automatic 7th Dimensions</div>
-							<button class="autobuyerbtn" id="ab_d7_upg"></button>
-							<button class="autobuyerbtn" id="ab_d7_toggle"></button>
-							<div style="font-size: 80%" id="ab_d7_int"></div>
-							<span>Priority:</span>
-							<select onchange="updatePriorities()" id="priority7">
-							<option value="1">1</option>
-							<option value="2">2</option>
-							<option value="3">3</option>
-							<option value="4">4</option>
-							<option value="5">5</option>
-							<option value="6">6</option>
-							<option value="7">7</option>
-							<option value="8">8</option>
-							<option value="9">9</option>
-							</select>
-							<br>
-							<span style="font-size: 80%">Is active</span>
-							<input type="checkbox" onchange="updateAutobuyers()" id="7ison"></input>
-						</div>
-					</td>
-					<td>
-						<div class="autoBuyerDiv" id="ab_d8">
-							<div>Automatic 8th Dimensions</div>
-							<button class="autobuyerbtn" id="ab_d8_upg"></button>
-							<button class="autobuyerbtn" id="ab_d8_toggle"></button>
-							<div style="font-size: 80%" id="ab_d8_int"></div>
-							<span>Priority:</span>
-							<select onchange="updatePriorities()" id="priority8">
-							<option value="1">1</option>
-							<option value="2">2</option>
-							<option value="3">3</option>
-							<option value="4">4</option>
-							<option value="5">5</option>
-							<option value="6">6</option>
-							<option value="7">7</option>
-							<option value="8">8</option>
-							<option value="9">9</option>
-							</select>
-							<br>
-							<span style="font-size: 80%">Is active</span>
-							<input type="checkbox" onchange="updateAutobuyers()" id="8ison"></input>
-						</div>
-					</td>
-					<td>
-						<div class="autoBuyerDiv" id="ab_ts">
-							<div>Automatic Tickspeed</div>
-							<button class="autobuyerbtn" id="ab_ts_upg"></button>
-							<button class="autobuyerbtn" id="ab_ts_toggle"></button>
-							<div style="font-size: 80%" id="ab_ts_int"></div>
-							<span>Priority:</span>
-							<select onchange="updatePriorities()" id="priority9">
-							<option value="1">1</option>
-							<option value="2">2</option>
-							<option value="3">3</option>
-							<option value="4">4</option>
-							<option value="5">5</option>
-							<option value="6">6</option>
-							<option value="7">7</option>
-							<option value="8">8</option>
-							<option value="9">9</option>
-							</select>
-							<br>
-							<span style="font-size: 80%">Is active</span>
-							<input type="checkbox" onchange="updateAutobuyers()" id="9ison"></input>
-						</div>
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<div class="autoBuyerDiv" id="ab_tsb">
-							<div>Automatic Tickspeed Boosts</div>
-							<button class="autobuyerbtn" id="ab_tsb_upg"></button>
-							<div style="font-size: 80%"id="ab_tsb_int"></div>
-							<span style="font-size: 80%">Max 8ths used on reset:</span>
-							<input type="text" onchange="updatePriorities()" id="priority15"></input>
-							<br>
-							<span style="font-size: 80%">Galaxies required to always tickspeed boost:</span>
-							<input type="text" onchange="updatePriorities()" id="overGalaxiesTickspeedBoost"></input>
-							<br>
-							<div id="bulkTickBoostDiv">
-								<span style="font-size: 80%">Bulk Tickspeed Boost amount:</span>
-								<input type="text" onchange="updatePriorities()" id="bulkTickBoost"></input>
+						</div></td>
+						<td id="autoBuyerQuantum">
+							<div class="autoBuyerDiv" style="display:block">
+								<div>Automatic Quantum</div>
+								<div><span id='autoquantumtext'></span>
+								<input type="text" onchange="updatePriorities()" id="priorityquantum"></input></div>
 								<br>
+								<span style="font-size: 80%">Is active</span>
+								<input type="checkbox" onchange="updateAutobuyers()" id="quantumison"></input>
 							</div>
-							<span style="font-size: 80%">Is active</span>
-							<input type="checkbox" onchange="updateAutobuyers()" id="15ison"></input>
-						</div>
-					</td>
-					<td>
-						<div class="autoBuyerDiv" id="ab_sac">
-							<div>Automatic Sacrifice</div>
-							<button class="autobuyerbtn" id="ab_sac_upg"></button>
-							<div style="font-size: 80%"id="ab_sac_int"></div>
-							<div><span>Sacrifice when the multiplier is over:</span>
-							<input type="text" onchange="updatePriorities()" id="prioritySac"></input></div>
-							<br>
-							<span style="font-size: 80%">Is active</span>
-							<input type="checkbox" onchange="updateAutobuyers()" id="13ison"></input>
-						</div>
-					</td>
-					<td>
-						<div class="autoBuyerDiv" id="ab_gSac">
-							<div>Automatic Galactic Sacrifice</div>
-							<button class="autobuyerbtn" id="ab_gSac_upg"></button>
-							<div style="font-size: 80%"id="ab_gSac_int"></div>
-							<div><span>Galactic sacrifice when GP gain is over:</span>
-							<input type="text" onchange="updatePriorities()" id="priority14"></input></div>
-							<br>
-							<span style="font-size: 80%">Is active</span>
-							<input type="checkbox" onchange="updateAutobuyers()" id="14ison"></input>
-						</div>
-					</td>
-				</tr>
-				<tr>
-					<td></td>
-					<td>
-						<div class="autoBuyerDiv" id="ab_tdb">
-							<div>Automatic Time Dimension Boosts</div>
-							<button class="autobuyerbtn" id="ab_tdb_upg"></button>
-							<div style="font-size: 80%"id="ab_tdb_int"></div>
-							<span style="font-size: 80%">Max 8ths used on reset:</span>
-							<input type="text" onchange="updatePriorities()" id="priority16"></input>
-							<br>
-							<span style="font-size: 80%">Galaxies required to always Time Dimension Boost:</span>
-							<input type="text" onchange="updatePriorities()" id="overGalaxiesTDBoost"></input>
-							<br>
-							<span style="font-size: 80%">Is active</span>
-							<input type="checkbox" onchange="updateAutobuyers()" id="16ison"></input>
-						</div>
-					</td>
-					<td></td>
-				</tr>
-			</table>
-		</div>
-		<div id="postinf" class="inftab" align="center">
-			<br>
-			<div id="abletobreak"></div>
-			<br>
-			<table id="breaktable" class="table" style="margin: 0 auto; padding-left: 8px">
-				<tr>
-					<td>
-						<button id="break" class="infinistorebtn2" onclick="breakInfinity()" ach-tooltip="Cost multipliers post-infinity will begin increasing faster, but so will the Infinity Point gain">BREAK INFINITY</button>
-					</td>
-				</tr>
-			</table><br>
-			<table id="postinftable" class="table" style="margin: 0 auto; padding-left: 8px">
-				<tr>
-					<td>
-						<button id="postinfi01" class="infinistorebtn1"></button>
-					</td>
-					<td>
-						<button id="postinfi11" class="infinistorebtn1">Production based on total antimatter produced <br>Currently:<br>Cost: 10 K IP</button>
-					</td>
-					<td>
-						<button id="postinfi21" class="infinistorebtn1">Production based on current antimatter<br>Currently: <br>Cost: 50 K IP</button>
-					</td>
-					<td>
-						<button id="postinfi41" class="infinistorebtn1">Double the power of Galaxies<br>Currently: <br>Cost: 500 K IP</button>
-					</td>
-				</tr><tr>
-					<td>
-						<button id="postinfi02" class="infinistorebtn1"></button>
-					</td>
-					<td>
-						<button id="postinfi12" class="infinistorebtn1">Increase the production of all dimensions by amount infinitied <br>Currently:<br>Cost: 100 K IP</button>
-					</td>
-					<td>
-						<button id="postinfi22" class="infinistorebtn1">achievemult</button>
-					</td>
-					<td>
-						<button id="postinfi32" class="infinistorebtn1">Increase the production of all dimensions based on slowest challenge run<br>Cost: 3 M IP</button>
-					</td>
-				</tr><tr>
-					<td>
-						<button id="postinfi03" class="infinistorebtn1"></button>
-					</td>
-					<td>
-						<button id="postinfi13" class="infinistorebtn1" onclick="buyInfinityUpgrade('infinitiedGeneration',20e6)">You passively generate Infinitied stat based on your fastest infinity.<br>1 every <br>Cost: 20 M IP</button>
-					</td>
-					<td>
-						<button id="postinfi23" class="infinistorebtn1">Unlock the option to bulk buy Dimension Boosts<br>Cost: </button>
-					</td>
-					<td>
-						<button id="postinfi33" class="infinistorebtn1" onclick="buyInfinityUpgrade('autoBuyerUpgrade',1e15)">Autobuyers work twice as fast <br>Cost: 1 Qa IP</button>
-					</td>
-				</tr><tr>
-					<td>
-						<button id="postinfi04" class="infinimultbtn"></button>
-					</td>
-					<td>
-						<button id="postinfi31" class="infinimultbtn">Tickspeed cost multiplier increase <br>10x → 9x<br>Cost: 300 K IP</button>
-					</td>
-					<td>
-						<button id="postinfi42" class="infinimultbtn">Dimension cost multiplier increase <br>10x → 9x<br>Cost: 10 M IP</button>
-					</td>
-					<td>
-						<button id="offlineProd" class="infinimultbtn">Dimension cost multiplier increase <br>10x → 9x<br>Cost: 10 M IP</button>
-					</td>
-				</tr><tr id="postinfir5">
-					<td>
-						<button id="postinfi50" class="infinistorebtn1">Dimension boost cost increases by 0.5 less.<br>4 → 3.5<br>Cost: 1e25 IP</button>
-					</td>
-					<td>
-						<button id="postinfi51" class="infinistorebtn1">Galaxies are 20% more stronger.<br>Cost: 1e29 IP</button>
-					</td>
-					<td>
-						<button id="postinfi52" class="infinistorebtn1">Galaxy cost increases by 3 less.<br>25 → 22<br>Cost: 1e33 IP</button>
-					</td>
-					<td>
-						<button id="postinfi53" class="infinistorebtn1">Divide all Infinity Dimension cost multipliers by 50.<br>Cost: 1e37 IP</button>
-					</td>
-				</tr><tr id="postinfir6">
-					<td>
-						<button id="postinfi60" class="infinistorebtn1">You gain more Infinity Points based on your galaxies.<br>Currently: 1x<br>Cost: 1e50 IP</button>
-					</td>
-					<td>
-						<button id="postinfi61" class="infinistorebtn1">g11 formula is better.<br>Cost: 1e450 IP</button>
-					</td>
-					<td>
-						<button id="postinfi62" class="infinistorebtn1">Dimension Boosts make g13 stronger.<br>Cost: 1e700 IP</button>
-					</td>
-					<td>
-						<button id="postinfi63" class="infinistorebtn1">Unlock 2 new rows of Galaxy Point upgrades.<br>Cost: 1e2000 IP</button>
-					</td>
-				</tr>
-			</table>
-		</div>
-		<div id="replicantis" class="inftab">
-			<br>
-			<button class="storebtn" id="replicantiunlock" onclick="unlockReplicantis()" style="width:200px; height: 80px">Unlock Replicantis<br>Cost: 1e140 IP</button>
-			<div id="replicantidiv" style="display: none; width: 1000px">
-				<div id="eterc8repl" style="display: none;"></div>
-				<p style="font-size: 15px">You have <span id="replicantiamount" style="font-size:23px; color: black">0</span> replicanti, translated to <span id="replicantimult" style="font-size:23px; color: black">0</span> <span id="replDesc"></span></p>
-				<span id="replicantieff"></span>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<div class="autoBuyerDiv" id="ab_db">
+								<div>Automatic Dimensional Boosts</div>
+								<button class="autobuyerbtn" id="ab_db_upg"></button>
+								<div style="font-size: 80%"id="ab_db_int"></div>
+								<span style="font-size: 80%">Max 8ths used on reset:</span>
+								<input type="text" onchange="updatePriorities()" id="priority10"></input>
+								<br>
+								<span style="font-size: 80%">Galaxies required to always Dimboost:</span>
+								<input type="text" onchange="updatePriorities()" id="overGalaxies"></input>
+								<br>
+								<div id="bulkdimboost">
+									<span style="font-size: 80%" id="bulklabel">Bulk DimBoost amount:</span>
+									<input type="text" onchange="updatePriorities()" id="bulkDimboost"></input>
+								</div>
+								<br>
+								<span style="font-size: 80%">Is active</span>
+								<input type="checkbox" onchange="updateAutobuyers()" id="10ison"></input>
+							</div>
+						</td>
+						<td>
+							<div class="autoBuyerDiv" id="ab_gal">
+								<div>Automatic Galaxies</div>
+								<button class="autobuyerbtn" id="ab_gal_upg"></button>
+								<div style="font-size: 80%"id="ab_gal_int"></div>
+								<span>Max Galaxies:</span>
+								<input type="text" onchange="updatePriorities()" id="priority11"></input>
+								<br>
+								<div id="galaxybulk" style="display: none">
+									<span style="font-size: 80%">Buy max galaxies every X seconds (0 to always buy):</span>
+									<input type="text" onchange="updatePriorities()" id="bulkgalaxy"></input>
+								</div>
+								<br>
+								<span style="font-size: 80%">Is active</span>
+								<input type="checkbox" onchange="updateAutobuyers()" id="11ison"></input>
+							</div>
+						</td>
+						<td>
+							<div class="autoBuyerDiv" id="ab_inf">
+								<div>Automatic Big Crunches</div>
+								<button class="autobuyerbtn" id="ab_inf_upg"></button>
+								<div style="font-size: 80%"id="ab_inf_int"></div>
+								<div id="iplimit"><span id="limittext">Amount of IP to wait until reset:</span>
+								<input type="text" onchange="updatePriorities()" id="priority12"></input></div>
+								<br>
+								<div id="maxReplicantiCrunchSwitchDiv" style="display: none">
+								  <span>Require max replicanti:</span>
+								  <input type="checkbox" onchange="updatePriorities()" id="maxReplicantiCrunchSwitch"></input>
+								  <br>
+								</div>
+								<div id="IPPeakDiv" style="display: none">
+								  <span>Require IP from crunch at peak:</span>
+								  <input type="checkbox" onchange="updatePriorities()" id="requireIPPeak"></input>
+								  <br>
+								</div>
+								<span style="font-size: 80%">Is active</span>
+								<input type="checkbox" onchange="updateAutobuyers()" id="12ison"></input>
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<div class="autoBuyerDiv" id="ab_d1">
+								<div>Automatic 1st Dimensions</div>
+								<button class="autobuyerbtn" id="ab_d1_upg"></button>
+								<button class="autobuyerbtn" id="ab_d1_toggle"></button>
+								<div style="font-size: 80%" id="ab_d1_int"></div>
+								<span>Priority:</span>
+								<select onchange="updatePriorities()" id="priority1">
+								<option value="1">1</option>
+								<option value="2">2</option>
+								<option value="3">3</option>
+								<option value="4">4</option>
+								<option value="5">5</option>
+								<option value="6">6</option>
+								<option value="7">7</option>
+								<option value="8">8</option>
+								<option value="9">9</option>
+								</select>
+								<br>
+								<span style="font-size: 80%">Is active</span>
+								<input type="checkbox" onchange="updateAutobuyers()" id="1ison"></input>
+							</div>
+						</td>
+						<td>
+							<div class="autoBuyerDiv" id="ab_d2">
+								<div>Automatic 2nd Dimensions</div>
+								<button class="autobuyerbtn" id="ab_d2_upg"></button>
+								<button class="autobuyerbtn" id="ab_d2_toggle"></button>
+								<div style="font-size: 80%" id="ab_d2_int"></div>
+								<span>Priority:</span>
+								<select onchange="updatePriorities()" id="priority2">
+								<option value="1">1</option>
+								<option value="2">2</option>
+								<option value="3">3</option>
+								<option value="4">4</option>
+								<option value="5">5</option>
+								<option value="6">6</option>
+								<option value="7">7</option>
+								<option value="8">8</option>
+								<option value="9">9</option>
+								</select>
+								<br>
+								<span style="font-size: 80%">Is active</span>
+								<input type="checkbox" onchange="updateAutobuyers()" id="2ison"></input>
+							</div>
+						</td>
+						<td>
+							<div class="autoBuyerDiv" id="ab_d3">
+								<div>Automatic 3rd Dimensions</div>
+								<button class="autobuyerbtn" id="ab_d3_upg"></button>
+								<button class="autobuyerbtn" id="ab_d3_toggle"></button>
+								<div style="font-size: 80%" id="ab_d3_int"></div>
+								<span>Priority:</span>
+								<select onchange="updatePriorities()" id="priority3">
+								<option value="1">1</option>
+								<option value="2">2</option>
+								<option value="3">3</option>
+								<option value="4">4</option>
+								<option value="5">5</option>
+								<option value="6">6</option>
+								<option value="7">7</option>
+								<option value="8">8</option>
+								<option value="9">9</option>
+								</select>
+								<br>
+								<span style="font-size: 80%">Is active</span>
+								<input type="checkbox" onchange="updateAutobuyers()" id="3ison"></input>
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<div class="autoBuyerDiv" id="ab_d4">
+								<div>Automatic 4th Dimensions</div>
+								<button class="autobuyerbtn" id="ab_d4_upg"></button>
+								<button class="autobuyerbtn" id="ab_d4_toggle"></button>
+								<div style="font-size: 80%" id="ab_d4_int"></div>
+								<span>Priority:</span>
+								<select onchange="updatePriorities()" id="priority4">
+								<option value="1">1</option>
+								<option value="2">2</option>
+								<option value="3">3</option>
+								<option value="4">4</option>
+								<option value="5">5</option>
+								<option value="6">6</option>
+								<option value="7">7</option>
+								<option value="8">8</option>
+								<option value="9">9</option>
+								</select>
+								<br>
+								<span style="font-size: 80%">Is active</span>
+								<input type="checkbox" onchange="updateAutobuyers()" id="4ison"></input>
+							</div>
+						</td>
+						<td>
+							<div class="autoBuyerDiv" id="ab_d5">
+								<div>Automatic 5th Dimensions</div>
+								<button class="autobuyerbtn" id="ab_d5_upg"></button>
+								<button class="autobuyerbtn" id="ab_d5_toggle"></button>
+								<div style="font-size: 80%" id="ab_d5_int"></div>
+								<span>Priority:</span>
+								<select onchange="updatePriorities()" id="priority5">
+								<option value="1">1</option>
+								<option value="2">2</option>
+								<option value="3">3</option>
+								<option value="4">4</option>
+								<option value="5">5</option>
+								<option value="6">6</option>
+								<option value="7">7</option>
+								<option value="8">8</option>
+								<option value="9">9</option>
+								</select>
+								<br>
+								<span style="font-size: 80%">Is active</span>
+								<input type="checkbox" onchange="updateAutobuyers()" id="5ison"></input>
+							</div>
+						</td>
+						<td>
+							<div class="autoBuyerDiv" id="ab_d6">
+								<div>Automatic 6th Dimensions</div>
+								<button class="autobuyerbtn" id="ab_d6_upg"></button>
+								<button class="autobuyerbtn" id="ab_d6_toggle"></button>
+								<div style="font-size: 80%" id="ab_d6_int"></div>
+								<span>Priority:</span>
+								<select onchange="updatePriorities()" id="priority6">
+								<option value="1">1</option>
+								<option value="2">2</option>
+								<option value="3">3</option>
+								<option value="4">4</option>
+								<option value="5">5</option>
+								<option value="6">6</option>
+								<option value="7">7</option>
+								<option value="8">8</option>
+								<option value="9">9</option>
+								</select>
+								<br>
+								<span style="font-size: 80%">Is active</span>
+								<input type="checkbox" onchange="updateAutobuyers()" id="6ison"></input>
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<div class="autoBuyerDiv" id="ab_d7">
+								<div>Automatic 7th Dimensions</div>
+								<button class="autobuyerbtn" id="ab_d7_upg"></button>
+								<button class="autobuyerbtn" id="ab_d7_toggle"></button>
+								<div style="font-size: 80%" id="ab_d7_int"></div>
+								<span>Priority:</span>
+								<select onchange="updatePriorities()" id="priority7">
+								<option value="1">1</option>
+								<option value="2">2</option>
+								<option value="3">3</option>
+								<option value="4">4</option>
+								<option value="5">5</option>
+								<option value="6">6</option>
+								<option value="7">7</option>
+								<option value="8">8</option>
+								<option value="9">9</option>
+								</select>
+								<br>
+								<span style="font-size: 80%">Is active</span>
+								<input type="checkbox" onchange="updateAutobuyers()" id="7ison"></input>
+							</div>
+						</td>
+						<td>
+							<div class="autoBuyerDiv" id="ab_d8">
+								<div>Automatic 8th Dimensions</div>
+								<button class="autobuyerbtn" id="ab_d8_upg"></button>
+								<button class="autobuyerbtn" id="ab_d8_toggle"></button>
+								<div style="font-size: 80%" id="ab_d8_int"></div>
+								<span>Priority:</span>
+								<select onchange="updatePriorities()" id="priority8">
+								<option value="1">1</option>
+								<option value="2">2</option>
+								<option value="3">3</option>
+								<option value="4">4</option>
+								<option value="5">5</option>
+								<option value="6">6</option>
+								<option value="7">7</option>
+								<option value="8">8</option>
+								<option value="9">9</option>
+								</select>
+								<br>
+								<span style="font-size: 80%">Is active</span>
+								<input type="checkbox" onchange="updateAutobuyers()" id="8ison"></input>
+							</div>
+						</td>
+						<td>
+							<div class="autoBuyerDiv" id="ab_ts">
+								<div>Automatic Tickspeed</div>
+								<button class="autobuyerbtn" id="ab_ts_upg"></button>
+								<button class="autobuyerbtn" id="ab_ts_toggle"></button>
+								<div style="font-size: 80%" id="ab_ts_int"></div>
+								<span>Priority:</span>
+								<select onchange="updatePriorities()" id="priority9">
+								<option value="1">1</option>
+								<option value="2">2</option>
+								<option value="3">3</option>
+								<option value="4">4</option>
+								<option value="5">5</option>
+								<option value="6">6</option>
+								<option value="7">7</option>
+								<option value="8">8</option>
+								<option value="9">9</option>
+								</select>
+								<br>
+								<span style="font-size: 80%">Is active</span>
+								<input type="checkbox" onchange="updateAutobuyers()" id="9ison"></input>
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<div class="autoBuyerDiv" id="ab_tsb">
+								<div>Automatic Tickspeed Boosts</div>
+								<button class="autobuyerbtn" id="ab_tsb_upg"></button>
+								<div style="font-size: 80%"id="ab_tsb_int"></div>
+								<span style="font-size: 80%">Max 8ths used on reset:</span>
+								<input type="text" onchange="updatePriorities()" id="priority15"></input>
+								<br>
+								<span style="font-size: 80%">Galaxies required to always tickspeed boost:</span>
+								<input type="text" onchange="updatePriorities()" id="overGalaxiesTickspeedBoost"></input>
+								<br>
+								<div id="bulkTickBoostDiv">
+									<span style="font-size: 80%">Bulk Tickspeed Boost amount:</span>
+									<input type="text" onchange="updatePriorities()" id="bulkTickBoost"></input>
+									<br>
+								</div>
+								<span style="font-size: 80%">Is active</span>
+								<input type="checkbox" onchange="updateAutobuyers()" id="15ison"></input>
+							</div>
+						</td>
+						<td>
+							<div class="autoBuyerDiv" id="ab_sac">
+								<div>Automatic Sacrifice</div>
+								<button class="autobuyerbtn" id="ab_sac_upg"></button>
+								<div style="font-size: 80%"id="ab_sac_int"></div>
+								<div><span>Sacrifice when the multiplier is over:</span>
+								<input type="text" onchange="updatePriorities()" id="prioritySac"></input></div>
+								<br>
+								<span style="font-size: 80%">Is active</span>
+								<input type="checkbox" onchange="updateAutobuyers()" id="13ison"></input>
+							</div>
+						</td>
+						<td>
+							<div class="autoBuyerDiv" id="ab_gSac">
+								<div>Automatic Galactic Sacrifice</div>
+								<button class="autobuyerbtn" id="ab_gSac_upg"></button>
+								<div style="font-size: 80%"id="ab_gSac_int"></div>
+								<div><span>Galactic sacrifice when GP gain is over:</span>
+								<input type="text" onchange="updatePriorities()" id="priority14"></input></div>
+								<br>
+								<span style="font-size: 80%">Is active</span>
+								<input type="checkbox" onchange="updateAutobuyers()" id="14ison"></input>
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<td></td>
+						<td>
+							<div class="autoBuyerDiv" id="ab_tdb">
+								<div>Automatic Time Dimension Boosts</div>
+								<button class="autobuyerbtn" id="ab_tdb_upg"></button>
+								<div style="font-size: 80%"id="ab_tdb_int"></div>
+								<span style="font-size: 80%">Max 8ths used on reset:</span>
+								<input type="text" onchange="updatePriorities()" id="priority16"></input>
+								<br>
+								<span style="font-size: 80%">Galaxies required to always Time Dimension Boost:</span>
+								<input type="text" onchange="updatePriorities()" id="overGalaxiesTDBoost"></input>
+								<br>
+								<span style="font-size: 80%">Is active</span>
+								<input type="checkbox" onchange="updateAutobuyers()" id="16ison"></input>
+							</div>
+						</td>
+						<td></td>
+					</tr>
+				</table>
+			</div>
+			<div id="tab_break">
 				<br>
-				<button class="storebtn" id="replicantichance" onclick="upgradeReplicantiChance()" style="width:180px; height: 50px; font-size: 10px">Replicate chance: 1%<br>+1% Costs: 1e6969 IP</button>
-				<button class="storebtn" id="replicantiinterval" onclick="upgradeReplicantiInterval()" style="width:180px; height: 50px; font-size: 10px">Interval: 1000ms<br>→ 900 Costs: 1e6969 IP</button>
-				<button class="storebtn" id="replicantimax" onclick="upgradeReplicantiGalaxy()" style="width:180px; height: 50px; font-size: 10px">Max Replicated Galaxies: 0<br>+1 Costs: 1e6969 IP</button>
+				<div id="abletobreak"></div>
 				<br>
-				<button class="storebtn" id="replauto1" onclick="toggleReplAuto(0)" style="width:180px; font-size: 10px; visibility: hidden">Auto: ON</button>
-				<button class="storebtn" id="replauto2" onclick="toggleReplAuto(1)" style="width:180px; font-size: 10px; visibility: hidden">Auto: ON</button>
-				<button class="storebtn" id="replauto3" onclick="toggleReplAuto(2)" style="width:180px; font-size: 10px; visibility: hidden">Auto: ON</button>
-				<br><br><br>
-				<p id="replicantiapprox"></p>
+				<table id="breaktable" class="table" style="margin: 0 auto; padding-left: 8px">
+					<tr>
+						<td>
+							<button id="break" class="infinistorebtn2" onclick="breakInfinity()" ach-tooltip="Cost multipliers post-infinity will begin increasing faster, but so will the Infinity Point gain">BREAK INFINITY</button>
+						</td>
+					</tr>
+				</table><br>
+				<table id="postinftable" class="table" style="margin: 0 auto; padding-left: 8px">
+					<tr>
+						<td>
+							<button id="postinfi01" class="infinistorebtn1"></button>
+						</td>
+						<td>
+							<button id="postinfi11" class="infinistorebtn1">Production based on total antimatter produced <br>Currently:<br>Cost: 10 K IP</button>
+						</td>
+						<td>
+							<button id="postinfi21" class="infinistorebtn1">Production based on current antimatter<br>Currently: <br>Cost: 50 K IP</button>
+						</td>
+						<td>
+							<button id="postinfi41" class="infinistorebtn1">Double the power of Galaxies<br>Currently: <br>Cost: 500 K IP</button>
+						</td>
+					</tr><tr>
+						<td>
+							<button id="postinfi02" class="infinistorebtn1"></button>
+						</td>
+						<td>
+							<button id="postinfi12" class="infinistorebtn1">Increase the production of all dimensions by amount infinitied <br>Currently:<br>Cost: 100 K IP</button>
+						</td>
+						<td>
+							<button id="postinfi22" class="infinistorebtn1">achievemult</button>
+						</td>
+						<td>
+							<button id="postinfi32" class="infinistorebtn1">Increase the production of all dimensions based on slowest challenge run<br>Cost: 3 M IP</button>
+						</td>
+					</tr><tr>
+						<td>
+							<button id="postinfi03" class="infinistorebtn1"></button>
+						</td>
+						<td>
+							<button id="postinfi13" class="infinistorebtn1" onclick="buyInfinityUpgrade('infinitiedGeneration',20e6)">You passively generate Infinitied stat based on your fastest infinity.<br>1 every <br>Cost: 20 M IP</button>
+						</td>
+						<td>
+							<button id="postinfi23" class="infinistorebtn1">Unlock the option to bulk buy Dimension Boosts<br>Cost: </button>
+						</td>
+						<td>
+							<button id="postinfi33" class="infinistorebtn1" onclick="buyInfinityUpgrade('autoBuyerUpgrade',1e15)">Autobuyers work twice as fast <br>Cost: 1 Qa IP</button>
+						</td>
+					</tr><tr>
+						<td>
+							<button id="postinfi04" class="infinimultbtn"></button>
+						</td>
+						<td>
+							<button id="postinfi31" class="infinimultbtn">Tickspeed cost multiplier increase <br>10x → 9x<br>Cost: 300 K IP</button>
+						</td>
+						<td>
+							<button id="postinfi42" class="infinimultbtn">Dimension cost multiplier increase <br>10x → 9x<br>Cost: 10 M IP</button>
+						</td>
+						<td>
+							<button id="offlineProd" class="infinimultbtn">Dimension cost multiplier increase <br>10x → 9x<br>Cost: 10 M IP</button>
+						</td>
+					</tr><tr id="postinfir5">
+						<td>
+							<button id="postinfi50" class="infinistorebtn1">Dimension boost cost increases by 0.5 less.<br>4 → 3.5<br>Cost: 1e25 IP</button>
+						</td>
+						<td>
+							<button id="postinfi51" class="infinistorebtn1">Galaxies are 20% more stronger.<br>Cost: 1e29 IP</button>
+						</td>
+						<td>
+							<button id="postinfi52" class="infinistorebtn1">Galaxy cost increases by 3 less.<br>25 → 22<br>Cost: 1e33 IP</button>
+						</td>
+						<td>
+							<button id="postinfi53" class="infinistorebtn1">Divide all Infinity Dimension cost multipliers by 50.<br>Cost: 1e37 IP</button>
+						</td>
+					</tr><tr id="postinfir6">
+						<td>
+							<button id="postinfi60" class="infinistorebtn1">You gain more Infinity Points based on your galaxies.<br>Currently: 1x<br>Cost: 1e50 IP</button>
+						</td>
+						<td>
+							<button id="postinfi61" class="infinistorebtn1">g11 formula is better.<br>Cost: 1e450 IP</button>
+						</td>
+						<td>
+							<button id="postinfi62" class="infinistorebtn1">Dimension Boosts make g13 stronger.<br>Cost: 1e700 IP</button>
+						</td>
+						<td>
+							<button id="postinfi63" class="infinistorebtn1">Unlock 2 new rows of Galaxy Point upgrades.<br>Cost: 1e2000 IP</button>
+						</td>
+					</tr>
+				</table>
+			</div>
+			<div id="tab_rep">
 				<br>
-				<button class="storebtn" id="replicantireset" onclick="replicantiGalaxy()" style="width: 200px; height: 70px; font-size: 12px">Reset replicanti amount, but get a free galaxy</button>
-				<br>
-				<button class="storebtn" id="replicantiresettoggle" onclick="replicantiGalaxyAutoToggle()" style="width: 200px; height: 25px; font-size: 12px; display: none">Auto galaxy OFF</button><br>
-				<button class="storebtn" id="replicantibulkmodetoggle" onclick="replicantiGalaxyBulkModeToggle()" style="width: 200px; height: 25px; font-size: 12px; display: none">Galaxy bulk mode: single</button>
-				<div id="replicantigalaxypowerdiv" style="display: none;">
-				  <p>For next eternity:</p>
-				  Galaxy strength: <input type="text" onchange="setReplicantiNewGalaxyStrength()" id="galStrength"></input>
-				  <br>
-				  Replicanti needed to get a galaxy: <input type="text" onchange="setReplicantiNewLimit()" id="replLimit"></input>
+				<button class="storebtn" id="replicantiunlock" onclick="unlockReplicantis()" style="width:200px; height: 80px">Unlock Replicantis<br>Cost: 1e140 IP</button>
+				<div id="replicantidiv" style="display: none; width: 1000px">
+					<div id="eterc8repl" style="display: none;"></div>
+					<p style="font-size: 15px">You have <span id="replicantiamount" style="font-size:23px; color: black">0</span> replicanti, translated to <span id="replicantimult" style="font-size:23px; color: black">0</span> <span id="replDesc"></span></p>
+					<span id="replicantieff"></span>
+					<br>
+					<button class="storebtn" id="replicantichance" onclick="upgradeReplicantiChance()" style="width:180px; height: 50px; font-size: 10px">Replicate chance: 1%<br>+1% Costs: 1e6969 IP</button>
+					<button class="storebtn" id="replicantiinterval" onclick="upgradeReplicantiInterval()" style="width:180px; height: 50px; font-size: 10px">Interval: 1000ms<br>→ 900 Costs: 1e6969 IP</button>
+					<button class="storebtn" id="replicantimax" onclick="upgradeReplicantiGalaxy()" style="width:180px; height: 50px; font-size: 10px">Max Replicated Galaxies: 0<br>+1 Costs: 1e6969 IP</button>
+					<br>
+					<button class="storebtn" id="replauto1" onclick="toggleReplAuto(0)" style="width:180px; font-size: 10px; visibility: hidden">Auto: ON</button>
+					<button class="storebtn" id="replauto2" onclick="toggleReplAuto(1)" style="width:180px; font-size: 10px; visibility: hidden">Auto: ON</button>
+					<button class="storebtn" id="replauto3" onclick="toggleReplAuto(2)" style="width:180px; font-size: 10px; visibility: hidden">Auto: ON</button>
+					<br><br><br>
+					<p id="replicantiapprox"></p>
+					<br>
+					<button class="storebtn" id="replicantireset" onclick="replicantiGalaxy()" style="width: 200px; height: 70px; font-size: 12px">Reset replicanti amount, but get a free galaxy</button>
+					<br>
+					<button class="storebtn" id="replicantiresettoggle" onclick="replicantiGalaxyAutoToggle()" style="width: 200px; height: 25px; font-size: 12px; display: none">Auto galaxy OFF</button><br>
+					<button class="storebtn" id="replicantibulkmodetoggle" onclick="replicantiGalaxyBulkModeToggle()" style="width: 200px; height: 25px; font-size: 12px; display: none">Galaxy bulk mode: single</button>
+					<div id="replicantigalaxypowerdiv" style="display: none;">
+					  <p>For next eternity:</p>
+					  Galaxy strength: <input type="text" onchange="setReplicantiNewGalaxyStrength()" id="galStrength"></input>
+					  <br>
+					  Replicanti needed to get a galaxy: <input type="text" onchange="setReplicantiNewLimit()" id="replLimit"></input>
+					</div>
 				</div>
 			</div>
 		</div>
-		</div><div id="eternitystore" class="tab" style="font-size: 15px; margin: 0 auto; display: none" align="center">
-			<table id="eterTabs" align="center" style="margin: auto">
-				<tr>
-					<td><button class="secondarytabbtn" onclick="showEternityTab('timestudies')">Time Studies</button></td>
-					<td id="masterystudyunlock"><button class="secondarytabbtn" onclick="showEternityTab('masterystudies')">Mastery Studies</button></td>
-					<td><button class="secondarytabbtn" onclick="showEternityTab('eternityupgrades')">Upgrades</button></td>
-					<td id="dilationTabbtn"><button class="secondarytabbtn" onclick="showEternityTab('dilation')">Time Dilation</button></td>
-					<td id="blackHoleTabbtn"><button class="secondarytabbtn" onclick="showEternityTab('blackhole')">Black Hole</button></td>
-					<td><button class="secondarytabbtn" onclick="showEternityTab('milestones')">Milestones</button></td>
-				</tr>
-			</table>
-			<div class="eternitytab" id="timestudies" style="font-size: 15px">
+		<div id="tab_eter">
+			<table id="tabs_eter"></table>
+			<div id="tab_ts">
 				<canvas id="studyTreeCanvas"></canvas>
 				<tr>
 					<td><button class="storebtn" onclick="exportStudyTree()" style="width:150px; height: 40px; font-size: 10px; margin: auto">Export tree</button><td>
@@ -2933,7 +2870,7 @@
 				<div style="height: 60px;"></div>
 				<button class="qu_upg storebtn" id="bl_portion_2" onclick='BL_JOKE.find(2)' style='opacity: 0.1'>You agree that your interior knowledge is shared to ours.</button>
 			</div>
-			<div class="eternitytab" id="ers_timestudies" style="font-size: 15px">
+			<div id="tab_ts_respec">
 				<button class="storebtn" onclick="exportStudyTree()" style="width:150px; height: 40px; font-size: 10px; margin: auto">Export spec</button>
 				<button class="storebtn" onclick="respecToggle()" id="respec2" style="width:150px; height: 40px; font-size: 10px; margin: auto">Respec time studies on next Eternity</button>
 				<button class="storebtn" onclick="importStudyTree()" style="width:150px; height: 40px; font-size: 10px; margin: auto">Import spec</button>
@@ -2979,7 +2916,7 @@
 					</tr>
 				</table>-->
 			</div>
-			<div class="eternitytab" id="masterystudies" style="font-size: 15px">
+			<div id="tab_ts_master">
 				<canvas id="studyTreeCanvas2"></canvas>
 				Mastery study cost multiplier: <text id='costmult'></text>x<br>
 				Total normal mastery studies bought: <text id='totalmsbought'></text><br>
@@ -3160,7 +3097,7 @@
 				</button>-->
 				<div style="height: 60px;"></div>
 			</div>
-			<div class="eternitytab" id="eternityupgrades">
+			<div id="tab_upg_eter">
 				<div id="breakEternityReq"></div>
 				<div id="breakEternityNoBigRip">Break Eternity only works if you big rip the universe again.</div>
 				<div id="eternalMatterDiv"><span id="eternalMatter" style="font-size:35px"></span> Eternal Matter</div>
@@ -3218,7 +3155,7 @@
 						<td>
 							<button id="breakUpg6" class="eternityupbtnlocked" onclick="buyBreakUpg(6)">Eternity Points and Eternal Matter boost Space Shards.<br>Currently: <span id="breakUpg6Mult">1.0</span>x<br>Cost: <span id="breakUpg6Cost"></span> Eternal Matter</button>
 						</td>
-					</tr><tr>
+					</tr><tr id="breakUpgRow3">
 						<td>
 							<button id="breakUpg8" class="eternityupbtnlocked" onclick="buyBreakUpg(8)">Outside of Dilation, Tachyon Particles strengthen Infinite Time.<br>Currently: <span id="breakUpg8Mult">???</span>%<br>Cost: <span id="breakUpg8Cost"></span> Eternal Matter</button>
 						</td>
@@ -3261,7 +3198,7 @@
 					</tr>
 				</table>
 			</div>
-			<div class="eternitytab" id="milestones">
+			<div id="tab_mil_eter">
 				<table class="table" align="center" style="margin: auto" id="milestones">
 					<tr>
 						<td class="milestoneText">1 Eternity:</td>
@@ -3377,7 +3314,7 @@
 					</tr>
 				</table>
 			</div>
-			<div class="eternitytab" id="dilation" style="font-size: 11px">
+			<div id="tab_dil">
 				<canvas id="dilationCanvas"></canvas>
 				<div>
 					<p>You have <span id="tachyonParticleAmount" style="font-size:35px; color: black">0</span> tachyon particles.</p>
@@ -3469,7 +3406,7 @@
 					</td>
 				</tr></table>
 			</div>
-			<div class="eternitytab" id="blackhole" style="font-size: 11px">
+			<div id="tab_bh">
 				<br>
 				<button class="storebtn" id="blackholeunlock" onclick="unlockBlackhole()" style="width:200px; height: 80px">Unlock the black hole<br>Cost: 1e4000 EP</button>
 				<div id="blackholediv" style='display: none'>
@@ -3501,17 +3438,10 @@
 				</div>
 				<canvas id="blackHoleCanvas" width="400" height="400" style="user-select: none;"></canvas>
 			</div>
-		</div><div class='tab' id='quantumtab'>
-			<table id="quTabs" align="center" style="margin: auto">
-				<tr>
-					<td><button class="secondarytabbtn" onclick="showQuantumTab('uquarks')">Anti-Quarks</button></td>
-					<td><button class="secondarytabbtn" onclick="showQuantumTab('gluons')">Gluons</button></td>
-					<td id='positronstabbtn'><button class="secondarytabbtn" onclick="showQuantumTab('positrons')">Positrons</button></td>
-					<td id='todtabbtn'><button class="secondarytabbtn" onclick="showQuantumTab('tod')">Decay</button></td>
-					<td><button class="secondarytabbtn" onclick="showQuantumTab('speedruns')">Speedrun Milestones</button></td>
-				</tr>
-			</table>
-			<div class='quantumtab' id='uquarks'>
+		</div>
+		<div class='tab' id='tab_qu'>
+			<table id="tabs_qu"></table>
+			<div id="tab_aq">
 				<canvas id="quarkCanvas" style='opacity: 0.4'></canvas>
 				<span id="quarks2" style='font-size: 16px'>0</span>
 				<span id="quantumWorth1" style='font-size: 16px'>0</span>
@@ -3582,10 +3512,10 @@
 				<button id='qk_mult_upg' onclick='buyQuarkMult()'></button><br>
 				<button class="storebtn" onclick='maxQuarkMult()' style='width:190px'>Max</button>
 			</div>
-			<div class='quantumtab' id='gluons'>
-				<table id='gluonupgrades'></table>
+			<div id='tab_gl'>
+				<table id='gl_upgs'></table>
 			</div>
-			<div id="speedruns" class="quantumtab">
+			<div id="tab_mil_time">
 				<div>Get your best quantum time faster than the requirement for a reward!</div>
 				<button class='storebtn' id='reward3disable' onclick='disableReward(3)' style='width:180px'>6 hours reward: ON</button>
 				<button class='storebtn' id='reward4disable' onclick='disableReward(4)' style='width:180px'>4.5 hours reward: ON</button>
@@ -3632,7 +3562,7 @@
 					</tr>
 				</table>
 			</div>
-			<div class='quantumtab' id='positrons'>
+			<div id='tab_pos'>
 				You have <span id="normalGalaxies">0</span> Antimatter Galaxies.<br>
 				You discharged <span id='sacrificedGals'>0</span> galaxies.<br>
 				<button class='gluonupgrade storebtn' id='sacrificeGal' onclick='sacrificeGalaxy()'>Discharge <span id='sacrificeGals'>0</span> for <span id="positronsGain"></span> Positrons<br>(+<span id='positronsGainMult'>2</span> per galaxy)</button><br>
@@ -3651,7 +3581,7 @@
 				<button class='storebtn' onclick="maxPositronUpg()" style='height: 24px'>Max all</button><br>
 				<button class="qu_upg storebtn" id="bl_portion_3" onclick='BL_JOKE.find(3)' style='opacity: 0.1'>You agree that you are willing to sacrifice yourself.</button>
 			</div>
-			<div class='quantumtab' id='tod'>
+			<div id='tab_decay'>
 				<span id="todspeed"></span>
 				<br>
 				<button class="storebtn" onclick="todSave.chosen = 'r'">Red</button>
@@ -3703,51 +3633,48 @@
 				<button class="storebtn" onclick="maxTreeUpg()" style="width: 190px">Max Tree Upgrades</button>
 			</div>
 		</div>
-		<div class='tab' id='duplicants'>
-			<table id='antTabs' align="center" style="margin: auto">
-				<tr>
-					<td id="anttabbtn"><button class="secondarytabbtn" onclick="showAntTab('antcore')">Ants</button></td>
-					<td id="edtabbtn"><button class="secondarytabbtn" onclick="showAntTab('emperordimensions')">Emperors</button></td>
-					<td id="nanofieldtabbtn"><button class="secondarytabbtn" onclick="showAntTab('nanofield')">Nanofield</button></td>
-				</tr>
-			</table>
-			<div class='anttab' id='antcore'>
-				You have <span id="replicantiAmount2">1</span> replicantis.<br>
-				You have <span class="rqC" id="rgRepl">1</span> red-green, <span class="gqC" id="gbRepl">1</span> green-blue, and <span class="bqC" id="brRepl">1</span> blue-red gluons.<br>
-				<table class='qtable'><tr>
-					<td>
-						<span id="replicantAmount" style="font-size:35px">0</span> normal duplicants<br>
-						They are gathering <span id="normalReplGatherRate" style="font-size:25px">0</span> pilons per second.<br>
-						<button class="storebtn" id="replicantReset" style="width: 220px; height: 60px; font-size: 11px" onclick='replicantReset()'></button><br><button class="storebtn" id="autoReset" style="width: 220px" onclick='toggleAutoReset()'></button>
-					</td><td>
-						<span id="workerReplAmount" style="font-size:25px">0</span> workers<br>
-						They are gathering <span id="workerReplGatherRate" style="font-size:15px">0</span> pilons per second and producing <span id="eggonRate" style="font-size:15px">0</span> <span id="workerReplWhat">eggons</span> per <span id="eggonRateTimeframe">minute</span>.<br>
-						Feed your normal duplicant to become a worker. <span id="workerProgress" style="font-size:15px">0.0%</span><br>
-						<button class='storebtn' id='feedNormal' style='width: 280px' onclick="feedReplicant(1)">Feed one with quantum food</button><br>
-						<button id='breakLimit' class='storebtn' style='width: 280px; height: 60px' onclick='breakLimit()'></button><br>
-						<button class='storebtn' style='width: 280px' onclick='maxBuyLimit()'>Max limit upgrades</button>
-					</td><td>
-						<span id="babyReplAmount" style="font-size:25px">0</span> babies<br>
-						They are gathering <span id="babyReplGatherRate" style="font-size:20px">0</span> pilons per second.<br>
-						They will become normal duplicants at <span id="growupRate" style="font-size:15px"></span> per <span id="growupRateUnit"></span>. <span id="growupProgress" style="font-size:15px">0.0%</span>.<br>
-					</td>
-				</tr><tr>
-					<td id="pilonsCell">
-						<span id="pilonsDiv">
-							<span id="gatheredQuarks" style="font-size:25px">0</span> pilons <span id="gatherRate" style="font-size:20px">+0/s</span><br>
-							Translated to <span id="quarkTranslation" style="font-size:15px">0</span> extra Replicated Galaxies</p>
-						</span>
-					</td><td>
-						You have <span id="quantumFoodAmount" style="font-size:35px">0</span> quantum food.<br>
-						<button class='gluonupgrade storebtn' id='buyQuantumFood' onclick='buyQuantumFood()'></button><br>
-						<button class='storebtn' id='buyMaxQuantumFood' onclick='buyMaxQuantumFood()' style="width: 190px">Buy max</button>
-					</td><td id="eggonsCell">
-						You have <span id="eggonAmount" style="font-size:35px">0</span> eggons. <span id="hatchProgress" style="font-size:15px">0.0%</span><br>
-						<button class='storebtn' id='reduceHatchSpeed' style='width: 240px; height: 80px' onclick='reduceHatchSpeed()'></button><br>
-						<button class='storebtn' id='maxReduceHatchSpeed' onclick='maxReduceHatchSpeed()' style="width: 240px">Buy max</button>
-					</td>
-				</tr></table>
-			</div><div class="anttab" id="emperordimensions">
+		<div id='tab_ant'>
+			<table id='tabs_ant'></table>
+			<div id='tab_ant_n'>
+				You have <span id="replicantiAmount2"></span> replicantis.<br>
+				You have <span class="rqC" id="rgRepl"></span> red-green, <span class="gqC" id="gbRepl"></span> green-blue, and <span class="bqC" id="brRepl"></span> blue-red gluons.<br>
+				<table class='qtable'>
+					<tr>
+						<td>
+							<span id="replicantAmount" style="font-size:35px">0</span> normal duplicants<br>
+							They are gathering <span id="normalReplGatherRate" style="font-size:25px">0</span> pilons per second.<br>
+							<button class="storebtn" id="replicantReset" style="width: 220px; height: 60px; font-size: 11px" onclick='replicantReset()'></button><br><button class="storebtn" id="autoReset" style="width: 220px" onclick='toggleAutoReset()'></button>
+						</td><td>
+							<span id="workerReplAmount" style="font-size:25px">0</span> workers<br>
+							They are gathering <span id="workerReplGatherRate" style="font-size:15px">0</span> pilons per second and producing <span id="eggonRate" style="font-size:15px">0</span> <span id="workerReplWhat">eggons</span> per <span id="eggonRateTimeframe">minute</span>.<br>
+							Feed your normal duplicant to become a worker. <span id="workerProgress" style="font-size:15px">0.0%</span><br>
+							<button class='storebtn' id='feedNormal' style='width: 280px' onclick="feedReplicant(1)">Feed one with quantum food</button><br>
+							<button id='breakLimit' class='storebtn' style='width: 280px; height: 60px' onclick='breakLimit()'></button><br>
+							<button class='storebtn' style='width: 280px' onclick='maxBuyLimit()'>Max limit upgrades</button>
+						</td><td>
+							<span id="babyReplAmount" style="font-size:25px">0</span> babies<br>
+							They are gathering <span id="babyReplGatherRate" style="font-size:20px">0</span> pilons per second.<br>
+							They will become normal duplicants at <span id="growupRate" style="font-size:15px"></span> per <span id="growupRateUnit"></span>. <span id="growupProgress" style="font-size:15px">0.0%</span>.<br>
+						</td>
+					</tr><tr>
+						<td id="pilonsCell">
+							<span id="pilonsDiv">
+								<span id="gatheredQuarks" style="font-size:25px">0</span> pilons <span id="gatherRate" style="font-size:20px">+0/s</span><br>
+								Translated to <span id="quarkTranslation" style="font-size:15px">0</span> extra Replicated Galaxies</p>
+							</span>
+						</td><td>
+							You have <span id="quantumFoodAmount" style="font-size:35px">0</span> quantum food.<br>
+							<button class='gluonupgrade storebtn' id='buyQuantumFood' onclick='buyQuantumFood()'></button><br>
+							<button class='storebtn' id='buyMaxQuantumFood' onclick='buyMaxQuantumFood()' style="width: 190px">Buy max</button>
+						</td><td id="eggonsCell">
+							You have <span id="eggonAmount" style="font-size:35px">0</span> eggons. <span id="hatchProgress" style="font-size:15px">0.0%</span><br>
+							<button class='storebtn' id='reduceHatchSpeed' style='width: 240px; height: 80px' onclick='reduceHatchSpeed()'></button><br>
+							<button class='storebtn' id='maxReduceHatchSpeed' onclick='maxReduceHatchSpeed()' style="width: 240px">Buy max</button>
+						</td>
+					</tr>
+				</table>
+			</div>
+			<div id='tab_dim_emp'>
 				<p><span id="replicantAmountED" style="font-size:35px; color: black">0</span> normal duplicants</p>
 				<p id="pilonsCellED"></p>
 				<table style='margin: auto'><tr class='table_top_text'>
@@ -3772,7 +3699,8 @@
 						</td>
 					</tr>
 				</table>
-			</div><div class='anttab' id='nanofield'>
+			</div>
+			<div id='tab_nf'>
 				You have <span id="quarksNanofield"></span> pilons.<br>
 				<table class="qtable"><tr><td id="quarkChargeDiv">
 					<span id="quarkCharge" style="font-size:25px"></span> Nanocharge<br>
@@ -3791,17 +3719,10 @@
 				<br><br>
 			</div>
 		</div>
-		<div class='tab' id='ghostify'>
-			<table id="fundaTabs" align="center" style="margin: auto">
-				<tr>
-					<td><button class="secondarytabbtn" onclick="showGhostifyTab('neutrinos')">Neutrinos</button></td>
-					<td id="gphtabbtn"><button class="secondarytabbtn" onclick="showGhostifyTab('gphtab')">Photons</button></td>
-					<td><button class="secondarytabbtn" onclick="showGhostifyTab('automaticghosts')">Automator Ants</button></td>
-					<td><button class="secondarytabbtn" onclick="showGhostifyTab('bravemilestones')">Brave Milestones</button></td>
-				</tr>
-			</table>
+		<div id="tab_funda">
+			<table id="tabs_funda"></table>
 			<b id='bl_req'>Get 15 Light Emissions to unlock Bosonic Lab.</b>
-			<div id="neutrinos" class="ghostifytab">
+			<div id="tab_nt">
 				<div id="neutrinosGain"></div>
 				<table class='qtable'>
 					<tr style="font-size: 15px">
@@ -3824,7 +3745,8 @@
 					You became a ghost! You phased out of the universe, and entered what we called this bigger scale "Fundamental."<br>
 					It's spectral and obscure inbetween quantum and something significant... Let's not get noticed.
 				</i><br>
-			</div><div id="gphtab" class="ghostifytab">
+			</div>
+			<div id="tab_ph">
 				<div id="gphUnl"></div>
 				<div id="gphDiv">
 					<table class="table" style="margin: 0 auto">
@@ -3859,7 +3781,8 @@
 					<i style="opacity: 0.1">You were too spectral. Tributes to Ghostify!</i><br>
 					<button class="qu_upg storebtn" id="bl_portion_4" onclick='BL_JOKE.find(4)' style='opacity: 0.1'>You agree to research what lies beyond physics.</button>
 				</div>
-			</div><div id="automaticghosts" class="ghostifytab">
+			</div>
+			<div id="tab_auto_ant">
 				<span id="quantumWorth2">0</span>
 				<table style="margin: auto">
 					<tr>
@@ -3877,7 +3800,8 @@
 				<br><hr>
 				<h3 class="red">Welcome to Automation Division! As you enlarge, your ants have sacrificed to unleash the automation...</h3>
 				<table id="autoAntTable" style="margin: auto"></table>
-			</div><div id="bravemilestones" class="ghostifytab">
+			</div>
+			<div id="tab_mil_brave">
 				Fundament with least Quantums as possbile for a Reward!
 				<table style="margin: auto">
 					<tr id="braveRow1">
@@ -3903,21 +3827,16 @@
 				</table>
 			</div>
 		</div>
-		<div class="tab" id="bosonic_lab">
-			<div id="bl_header">
-				<span id="bl_amt" style="font-size:25px"></span> Bosonic Matter
-				<span id="bl_best" style="font-size:15px"></span><br>
-				<span id="bl_prod"></span><br>
-				<table class="table" align="center" style="margin: auto">
-					<tr>
-						<td><button class="secondarytabbtn" onclick='showBLTab("hypotheses")'>Hypotheses</button></td>
-						<td><button class="secondarytabbtn" onclick='showBLTab("weak_force")'>Weak Force</button></td>
-						<!-- <td><button class="secondarytabbtn" onclick='showBLTab("higgs")'>Higgs</button></td> -->
-						<td><button class="secondarytabbtn" onclick='showBLTab("bl_milestones")'>Milestones</button></td>
-					</tr>
-				</table>
-			</div>
-			<div class="bl_tab" id="hypotheses" style='display: none'>
+		<div id="tab_bl">
+			<table id="tabs_bl">
+				<tr>
+					<td><button class="secondarytabbtn" onclick='showBLTab("hypotheses")'>Hypotheses</button></td>
+					<td><button class="secondarytabbtn" onclick='showBLTab("weak_force")'>Weak Force</button></td>
+					<!-- <td><button class="secondarytabbtn" onclick='showBLTab("higgs")'>Higgs</button></td> -->
+					<td><button class="secondarytabbtn" onclick='showBLTab("bl_milestones")'>Milestones</button></td>
+				</tr>
+			</table>
+			<div id="tab_bl_hy" style='display: none'>
 				<button class='storebtn' style='width: 120px; height: 36px' onclick="BL_HYPOTHESES.clear()">Clear</button>
 				<button class='storebtn' style='width: 120px; height: 36px' onclick="BL_HYPOTHESES.export()">Export</button>
 				<button class='storebtn' style='width: 120px; height: 36px' onclick="BL_HYPOTHESES.import()">Import</button><br>
@@ -3930,7 +3849,7 @@
 				<i style='opacity: 0.5'>Shift down to show all bond effects.</i>
 				<div id="hypo_bonds"></div>
 			</div>
-			<div class="bl_tab" id="weak_force">
+			<div id="tab_bl_wf">
 				<table style="margin: 0 auto">
 					<td style='width: 240px; text-align: center'>
 						<span id="wz_w" style='font-size: 24px'>0</span>
@@ -3946,15 +3865,17 @@
 				<table id="wz_capacitors" style='margin: auto'></table>
 				<b class='red' id="wz_deactive">Nullified! Assign more W- Bosons or weaken a Capacitor.</b>
 			</div>
-			<div class="bl_tab" id="higgs">
+			<!--<div id="higgs">
 				<span id="hb" style="font-size:25px">0</span> Higgs
 				<br>
 				<button class="qu_upg hb">Reset Bosonic Lab for +1 Higgs.<br>(??? Bosons)</button>
-			</div>
-			<div class="bl_tab" id="bl_milestones">
+			</div>-->
+			<div id="tab_mil_bl">
+				<span id="bl_amt" style="font-size:25px"></span> Bosonic Matter<br>
+				<span id="bl_prod"></span><br>
 				<table id="bl_milestone_table" style='margin: auto'></table>
 			</div>
-			<div class="bl_tab" id="lab_real">
+			<div id="tab_bl_real">
 				By agreeing, you have readed all 5 portions hidden from the game, and become a ghost scientist for the rest of life.<br>
 				<b class='red'>Violating the terms of service will end the contract early.</b>
 				<br><br>
@@ -3992,7 +3913,7 @@
 			<br><br><hr>
 
 			<b>(NG+3 v2.31: Ghostify Respecced)</b><br>
-			<b class="red">(Beta: 6/13/23 Build)</b><br>
+			<b class="red">(Beta: 6/14/23 Build)</b><br>
 			By <a href="https://aarextiaokhiao.github.io/">Aarex</a>, pg132, and usavictor.
 			<br><br>
 
@@ -4264,10 +4185,11 @@
 	<script type="text/javascript" src="javascripts/core/infinite_bug_detection.js"></script>
 	<script type="text/javascript" src="javascripts/core/load_functions.js"></script>
 	<script type="text/javascript" src="javascripts/core/newsticker.js"></script>
-	<script type="text/javascript" src="javascripts/core/prestige_resets.js"></script>
+	<script type="text/javascript" src="javascripts/core/resets.js"></script>
 	<script type="text/javascript" src="javascripts/core/saving.js"></script>
 	<script type="text/javascript" src="javascripts/core/softcap.js"></script>
 	<script type="text/javascript" src="javascripts/core/stats.js"></script>
+	<script type="text/javascript" src="javascripts/core/tabs.js"></script>
 
 	<script type="text/javascript" src="javascripts/ach/achieve_check.js"></script>
 	<script type="text/javascript" src="javascripts/ach/achievements.js"></script>

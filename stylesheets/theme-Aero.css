@@ -1362,11 +1362,11 @@ td .timestudybought.pos_study {
 .postinfcrunch:hover {
     box-shadow: inset 0 0 5px #fa73, 0 0 8px #fa77;
 }
-#tab_inf {
+#tab_btn_inf {
     position: relative;
     overflow: hidden;
 }
-#tab_inf::before {
+#tab_btn_inf::before {
     content: "∞";
     top: -60px; left: 0; right: 0;
     font-size: 6em;
@@ -1385,11 +1385,11 @@ td .timestudybought.pos_study {
 .eternitybtn:hover {
     box-shadow: inset 0 0 5px #caf3, 0 0 8px #caf7;
 }
-#tab_eter {
+#tab_btn_eter {
     position: relative;
     overflow: hidden;
 }
-#tab_eter::before {
+#tab_btn_eter::before {
     content: "Δ";
     top: -60px; left: 0; right: 0;
     font-size: 6em;
@@ -1408,11 +1408,11 @@ td .timestudybought.pos_study {
 .quantumbtn:hover {
     box-shadow: inset 0 0 5px #bf73, 0 0 8px #bf77;
 }
-#tab_qu {
+#tab_btn_qu {
     position: relative;
     overflow: hidden;
 }
-#tab_qu::before {
+#tab_btn_qu::before {
     content: "ᴨ";
     top: -70px; left: 0; right: 0;
     font-size: 6em;
@@ -1433,11 +1433,11 @@ td .timestudybought.pos_study {
 .ghostifybtn:hover {
     box-shadow: inset 0 0 5px #7007, 0 0 8px #7f77;
 }
-#tab_fund {
+#tab_btn_funda {
     position: relative;
     overflow: hidden;
 }
-#tab_fund::before {
+#tab_btn_funda::before {
     content: "φ";
     top: -70px; left: 0; right: 0;
     font-size: 6em;

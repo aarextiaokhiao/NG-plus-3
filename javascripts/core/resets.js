@@ -83,6 +83,11 @@ let RESETS = {
 		}
 	},
 	galSac: {
+		modReq: _ => inNGM(2),
+		prequsite: _ => false,
+		reached: _ => getGSAmount().gt(0),
+		got: _ => player.galacticSacrifice.times > 0 || player.infinitied > 0 || eternitied(),
+
 		doReset() {
 			player.galaxies = 0
 			updateNCVisuals()
@@ -93,12 +98,16 @@ let RESETS = {
 		}
 	},
 	inf: {
+		modReq: _ => true,
+		prequsite: _ => false,
+		reached: _ => tmp.ri,
+		got: _ => player.infinitied > 0 || eternitied(),
+
 		doReset(order) {
 			player.thisInfinityTime = 0
 			IPminpeak = E(0)
 			Marathon2 = 0
 
-			if (isEmptiness) showTab("dimensions")
 			if (inNGM(2)) player.galacticSacrifice = newGalacticDataOnInfinity(order != "inf")
 			player.infinityPower = E(1)
 
@@ -107,9 +116,16 @@ let RESETS = {
 
 			let keepRepGal = (order == "eter" && hasAch("ng3p67")) || (order == "inf" && speedrunMilestonesReached >= 28)
 			if (!keepRepGal) player.replicanti.galaxies = (order == "inf" && hasTimeStudy(33)) ? Math.floor(player.replicanti.galaxies / 2) : 0
+
+			if (isEmptiness) TAB_CORE.open("dim")
 		}
 	},
 	eter: {
+		modReq: _ => true,
+		prequsite: _ => player.break,
+		reached: _ => canEternity(),
+		got: _ => eternitied(),
+
 		doReset(order, auto) {
 			player.infinitied = 0
 			player.bestInfinityTime = 9999999999
@@ -189,9 +205,10 @@ let RESETS = {
 			if (!auto) {
 				updateChallenges()
 				updateAutobuyers()
-				if (!canBreakInfinity()) player.break = false
+				updateMilestones()
 				hideMaxIDButton()
 			}
+			if (!canBreakInfinity()) player.break = false
 		}
 	}
 }
@@ -239,9 +256,6 @@ function nanofieldResetOnQuantum(){
 	nfSave.antienergy = E(0)
 	nfSave.power = 0
 	nfSave.powerThreshold = E(50)
-}
-		
-function doMetaDimensionsReset(order, qc) {
 }
 
 function completelyResetInfinityDimensions(){
@@ -312,3 +326,48 @@ function completelyResetTimeDimensions() {
 		}
 	}
 }
+
+//HTML
+function updateResetTierButtons() {
+	let unls = 0
+	for (let [entry, data] of Object.entries(RESETS)) {
+		let elm = el("layer_" + entry)
+		if (!elm) continue
+
+		let got = data.modReq() && data.got()
+		let shown = got || (data.modReq() && (data.reached() || data.prequsite()))
+
+		elm.style.display = shown ? "" : "none"
+		if (shown) {
+			elm.style.left = [85, 15, 50][unls % 3] + "%"
+			elm.style.top = Math.floor(unls / 3) * 120 + "px"
+			unls++
+		}
+	}
+
+	let blockLen = Math.floor(unls / 3)
+	el("block_header").style.display = blockLen ? "" : "none"
+	el("block_header").style.height = (blockLen * 120) + "px"
+	el("bigcrunch").parentElement.style.top = (blockLen * 120 + 19) + "px"
+
+	if (!mod.ngpp) return
+
+	let bigRip = bigRipped()
+	el("quantumbtn").className = bigRip ? "bigrip" : "quantumbtn"
+	el("quantumbtn").style.display = bigRip || isQuantumReached() ? "" : "none"
+
+	el("bigripbtn").style.display = canBigRip() ? "" : "none"
+	el("bigripbtn").innerHTML = (ghostified ? "" : "Show to the limitless! ") + "Big Rip the cosmos."
+	el("ghostifybtn").style.display = bigRip && isQuantumReached() ? "" : "none"
+	el("ghostparticles").style.display = ghostified ? "" : "none"
+	if (ghostified) {
+		el("GHPAmount").textContent = shortenDimensions(ghSave.ghostParticles)
+
+		var showQuantumed = !hasBraveMilestone(16)
+		el("quantumedBM").style.display = showQuantumed ? "" : "none"
+		if (showQuantumed) el("quantumedBMAmount").textContent = getFullExpansion(quSave.times)
+	}
+}
+
+const infinitied = x => player.infinities > 0 || eternitied()
+const eternitied = x => getEternitied() > 0 || quantumed

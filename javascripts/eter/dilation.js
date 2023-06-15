@@ -335,7 +335,6 @@ function buyDilationUpgrade(id, max) {
 		if (id == 4) player.dilation.freeGalaxies *= 2 // Double the current galaxies
 		if (id == 10 && mod.ngp3) delete quSave.wasted
 		if (id == "ngpp6" && mod.ngp3) {
-			el("masterystudyunlock").style.display=""
 			el("respecMastery").style.display = "block"
 			el("respecMastery2").style.display = "block"
 			if (!quantumed) {

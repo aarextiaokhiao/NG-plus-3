@@ -1,6 +1,6 @@
 //VERSION: 2.31
 let ngp3_ver = 2.31
-let ngp3_build = 20230613
+let ngp3_build = 20230614
 function doNGP3Updates() {
 	if (!aarMod.ngp3_build) aarMod.ngp3_build = 0
 	if (aarMod.ngp3_build < 20221230) quSave.multPower = 0
@@ -65,29 +65,7 @@ function doNGP3Updates() {
 	aarMod.ngp3_build = ngp3_build
 }
 
-//v1.5 
-function showQuantumTab(tabName) {
-	showTab(tabName, "quantumtab")
-}
-
-var quantumTabs = {
-	tabIds: ["uquarks", "gluons", "positrons", "duplicants", "tod"],
-	update: {
-		uquarks: updateQuarksTab,
-		gluons: _ => GLUON.update(),
-		positrons: updatePositronsTab,
-		tod: updateTreeOfDecayTab
-	}
-}
-
-function updateQuantumTabs() {
-	for (var i = 0; i < quantumTabs.tabIds.length; i++) {
-		var id = quantumTabs.tabIds[i]
-		if (isTabShown(id)) quantumTabs.update[id]()
-	}
-	if (hasBraveMilestone(8)) updateQuantumWorth("display")
-}
-
+//v1.5
 function toggleAutoTT() {
 	if (speedrunMilestonesReached < 2) maxTheorems()
 	else player.autoEterOptions.tt = !player.autoEterOptions.tt
@@ -258,10 +236,6 @@ function canBuyGalaxyThresholdUpg() {
 	return !mod.ngp3 || player.dilation.rebuyables[2] < 60
 }
 
-function showAntTab(tabName) {
-	showTab(tabName, "anttab")
-}
-
 //v2.21: NG+3.1
 function getOldAgeRequirement() {
 	let year = new Date().getFullYear() || 2022
@@ -286,18 +260,6 @@ function intergalacticDisplay() {
 			shorten(dilates(tmp.qu.intergal.eff).pow(player.dilation.active ? nanopart : 1)) + 
 			'x to Eighth Dimensions'
 	} else el("intergalacticLabel").parentElement.style.display = "none"
-}
-
-function updateQuantumTabDisplays() {
-	el("qctabbtn").style.display = hasMasteryStudy("d8") ? "" : "none"
-	el("tab_ant").style.display = hasMasteryStudy("d10") ? "inline-block" : "none"
-	el("riptabbtn").style.display = hasMasteryStudy("d14") ? "" : "none"
-
-	if (!quantumed) return
-	el("positronstabbtn").style.display = isPositronsOn() ? "" : "none"
-	el("antTabs").style.display = hasMasteryStudy("d11") ? "" : "none"
-	el("nanofieldtabbtn").style.display = NF.unl() ? "" : "none"
-	el("todtabbtn").style.display = isDecayOn() ? "" : "none"
 }
 
 function beatNGP3() {
@@ -339,7 +301,6 @@ function updateNGP3Temp() {
 
 function doPerSecondNGP3Stuff(quick) {
 	if (!quick) {
-		updateQuantumTabDisplays()
 		updateQuarkDisplay()
 		updateNetTop()
 		el('toggleautoquantummode').style.display = quSave?.reachedInfQK ? "" : "none"
@@ -527,6 +488,24 @@ function quantumOverallUpdating(diff){
 	}
 	thisQuantumTimeUpdating()
 }
+
+TABS = Object.assign(TABS, {
+	qu: { name: "Quantum", class: "quantumbtn", stab: [ "aq", "gl", "pos", "ant_n", "nf", "decay", "mil_time" ], unl: _ => quantumed, update() {
+		if (hasBraveMilestone(8)) updateQuantumWorth("display")
+	} },
+	stats_qu: { name: "Quantum", class: "quantumbtn", unl: _ => quantumed, update: _ => displayQuantumStats() },
+
+	aq: { name: "Anti-Quarks", update: _ => updateQuarksTab() },
+	gl: { name: "Gluons", update: _ => GLUON.update() },
+	pos: { name: "Positrons", unl: _ => hasMasteryStudy("d7") && !inAnyQC(), update: _ => updatePositronsTab() },
+	chal_qu: { name: "Quantum", class: "quantumbtn", unl: _ => hasMasteryStudy("d8"), update() {
+		el("qcDisclaimer").innerHTML = (isQCFree() ? "" : "Spend Positrons to start Quantum Challenges.<br>You have " + getFullExpansion(Math.round(quSave.electrons.amount)) + " Positrons.<br>") + "<b class='red'>Positrons are disabled in Quantum Challenges!</b>"
+		for (var c = 1; c <= 8; c++) el("qc" + c + "reward").textContent = QC[c].reward_eff_disp(tmp.qu.chal.reward[c])
+	} },
+	decay: { name: "Decay", unl: _ => hasMasteryStudy("d12"), update: _ => updateTreeOfDecayTab() },
+	rip: { name: "Big Rip", class: "bigrip", unl: _ => hasMasteryStudy("d13"), update: _ => updateBigRipTab() },
+	mil_time: { name: "Speedrun Milestones" }
+})
 
 //Settings
 function updateNetTop(toggle) {

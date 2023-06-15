@@ -230,6 +230,14 @@ function breakInfinityUpgradeDisplay(){
 	else el("postinfi42").innerHTML = "Dimension cost multiplier increase<br>"+player.dimensionMultDecrease.toFixed(ECComps("eterc6") % 5 > 0 ? 1 : 0) + "x"
 	el("offlineProd").innerHTML = "Generate " + player.offlineProd + "% > " + Math.max(Math.max(5, player.offlineProd + 5), Math.min(50, player.offlineProd + 5)) + "% of your best IP/min from the last 10 Infinities, works offline<br>Currently: " + shortenMoney(bestRunIppm.mul(player.offlineProd / 100)) + "IP/min<br> Cost: " + shortenCosts(player.offlineProdCost) + " IP"
 	if (player.offlineProd == 50) el("offlineProd").innerHTML = "Generate " + player.offlineProd + "% of your best IP/min from the last 10 Infinities, works offline<br>Currently: " + shortenMoney(bestRunIppm.mul(player.offlineProd / 100)) + " IP/min"
+
+	if (inNGM(2)) breakNGm2UpgradeColumnDisplay()
+	if (inNGM(2) && (player.infinityDimension3.amount.gt(0) || player.eternities > (aarMod.newGameMinusVersion? -20 : 0) || quantumed)) {
+		breakNGm2UpgradeRow5Display()
+	} else el("postinfir5").style.display = "none"
+	if (inNGM(2) && (player.infinityDimension4.amount.gt(0) || player.eternities > (aarMod.newGameMinusVersion ? -20 : 0) || quantumed)) {
+		breakNGm2UpgradeRow6Display()
+	} else el("postinfir6").style.display = "none"
 }
 
 function roundedDBCostIncrease(a){
@@ -299,21 +307,6 @@ function breakNGm2UpgradeRow6Display(){
 	el("postinfi63").innerHTML = "Unlock 2 new rows of Galaxy Point upgrades.<br>Cost: " + shortenCosts(E("1e2000")) + " IP"
 }
 
-function INFINITYUPGRADESDisplay(){
-	if (isTabShown("preinf")) preBreakUpgradeDisplay()
-	if (isTabShown("postinf") && el("breaktable").style.display == "inline-block") {
-		breakInfinityUpgradeDisplay()
-		if (inNGM(2)) breakNGm2UpgradeColumnDisplay()
-		if (inNGM(2) && (player.infinityDimension3.amount.gt(0) || player.eternities > (aarMod.newGameMinusVersion? -20 : 0) || quantumed)) {
-			breakNGm2UpgradeRow5Display()
-		} else el("postinfir5").style.display = "none"
-		if (inNGM(2) && (player.infinityDimension4.amount.gt(0) || player.eternities > (aarMod.newGameMinusVersion ? -20 : 0) || quantumed)) {
-			breakNGm2UpgradeRow6Display()
-		} else el("postinfir6").style.display = "none"
-	}
-	if (isTabShown("replicantis")) replicantiDisplay()
-}
-
 function eternityUpgradesDisplay(){
 	var eu2formula = "(x/200) ^ log4(2x)"
 	if (mod.rs) eu2formula = "x ^ log4(2x)"
@@ -354,46 +347,6 @@ function updateDilation(){
 	el('freeGalaxyMult').textContent = fgm == 1 ? "Tachyonic Galaxy" : Math.round(fgm * 10) / 10 + " Tachyonic Galaxies"
 	el("galaxyThreshold").textContent = shortenMoney(player.dilation.nextThreshold)
 	el("dilatedGalaxies").textContent = getFullExpansion(Math.floor(player.dilation.freeGalaxies))
-}
-
-function ETERNITYSTOREDisplay(){
-	if (el("TTbuttons").style.display !== "none") updateTheoremButtons()
-
-	if (isTabShown("timestudies")) mainTimeStudyDisplay()
-	if (isTabShown("timestudies") || isTabShown("ers_timestudies")) updateTimeStudyButtons()
-	if (isTabShown("ers_timestudies")) updateERSTTDesc()
-	if (isTabShown("masterystudies")) updateMasteryStudyButtons()
-
-	if (isTabShown("eternityupgrades")) {
-		eternityUpgradesDisplay()
-		updateEternityUpgrades()
-		breakEternityDisplay()
-	}
-	if (isTabShown("dilation")) {
-		updateDilation()
-		updateExdilation()
-	}
-	if (isTabShown("blackhole")) updateBlackhole()
-}
-
-function updateDimensionsDisplay() {
-	dimensionTabDisplayUpdating()
-	if (isTabShown("antimatterdimensions")) dimensionTabDisplay()
-	if (isTabShown("infinitydimensions")) updateInfinityDimensions()
-	if (isTabShown("timedimensions")) updateTimeDimensions()
-	if (isTabShown("metadimensions")) updateMetaDimensions()
-}
-
-function updateTabDisplay() {
-	if (isTabShown("dimensions")) updateDimensionsDisplay()
-	if (isTabShown("statistics")) displayStats()
-	if (isTabShown("challenges")) challengeOverallDisplayUpdating()
-	if (isTabShown("infinity")) INFINITYUPGRADESDisplay()
-	if (isTabShown("eternitystore")) ETERNITYSTOREDisplay()
-	if (isTabShown("quantumtab")) updateQuantumTabs()
-	if (isTabShown("duplicants")) updateDuplicantsTab()
-	if (isTabShown("ghostify")) updateGhostifyTabs()
-	if (isTabShown("bosonic_lab") && !BL_JOKE.started()) LAB.update()
 }
 
 function replicantiDisplay() {
@@ -515,7 +468,7 @@ function ABTypeDisplay(){
 }
 
 function infPoints2Display(){
-	if (player.infinitied > 0 || player.infinityPoints.gt(0) || player.infinityUpgrades.length > 0 || getEternitied() > 0 || quantumed) el("infinityPoints2").style.display = "inline-block"
+	if (player.infinitied > 0 || player.infinityPoints.gt(0) || player.infinityUpgrades.length > 0 || eternitied()) el("infinityPoints2").style.display = "inline-block"
 	else el("infinityPoints2").style.display = "none"
 }
 
@@ -554,9 +507,8 @@ function replicantiAutoDisplay() {
 }
 
 function primaryStatsDisplayResetLayers() {
-	var showStats = player.challenges.length > 1 || player.infinitied > 0 || getEternitied() > 0 || quantumed ? "" : "none"
+	var showStats = player.challenges.length > 1 || player.infinitied > 0 || eternitied() ? "" : "none"
 	el("brfilter").style.display = showStats
-	el("statstabs").style.display = showStats
 }
 
 function ECCompletionsDisplay(){
@@ -606,171 +558,42 @@ function showHideConfirmations() {
 	el("ghostifyConfirmBtn").style.display = ghostified ? "inline-block" : "none"
 }
 
-//PRESTIGES
-let PRESTIGES = {
-	galSac: {
-		modReq: _ => inNGM(2),
-		prequsite: _ => false,
-		reached: _ => getGSAmount().gt(0),
-		got: _ => player.galacticSacrifice.times > 0 || player.infinitied > 0 || getEternitied() > 0 || quantumed,
-	},
-	inf: {
-		modReq: _ => true,
-		prequsite: _ => false,
-		reached: _ => tmp.ri,
-		got: _ => player.infinitied > 0 || getEternitied() > 0 || quantumed,
-	},
-	eter: {
-		modReq: _ => true,
-		prequsite: _ => player.break,
-		reached: _ => canEternity(),
-		got: _ => getEternitied() > 0 || quantumed,
-	},
-	qu: {
-		modReq: _ => mod.ngpp,
-		prequsite: _ => false,
-		reached: _ => isQuantumReached(),
-		got: _ => quantumed,
-	},
-	fund: {
-		modReq: _ => mod.ngp3,
-		prequsite: _ => hasMasteryStudy("d14"),
-		reached: _ => isQuantumReached() && bigRipped(),
-		got: _ => ghostified,
-	},
-}
-
+//RESETS
 function updateHeaders() {
 	//Show Header
 	let header = !isEmptiness
 	el("main_header").style.display = header ? "" : "none"
-	el("tab_header").style.display = header ? "" : "none"
+	el("tabs_root").style.display = header ? "" : "none"
+	el("emptiness").style.display = header ? "none" : ""
+	updateResetTierButtons()
 	if (!header) return
-
-	//Variables
-	let funda = ghostified
-	let quan = quantumed
-	let eter = player.eternities !== 0 || quan
-	let inf = player.infinitied > 0 || player.infinityPoints.gt(0) || eter
-	let chal = inNGM(4) ? gSacrificed() || inf : player.challenges.includes("challenge1") || inf
-
-	//NG-X Hell
-	el("automationbtn").style.display = tmp.tab.auto && chal ? "inline-block" : "none"
-
-	//Side-Tabs
-	el("challengesbtn").style.display = chal ? "inline-block" : "none"
-	el("tab_bl").style.display = BL_JOKE.started() || LAB.unlocked() ? "inline-block" : "none"
-}
-
-function updateResetTierButtons(){
-	let unls = 0
-	for (let [entry, data] of Object.entries(PRESTIGES)) {
-		let elm = el("layer_" + entry)
-		let got = data.modReq() && data.got()
-		let shown = got || (data.modReq() && (data.reached() || data.prequsite()))
-
-		elm.style.display = shown ? "" : "none"
-		if (shown) {
-			elm.style.left = [85, 15, 50][unls % 3] + "%"
-			elm.style.top = Math.floor(unls / 3) * 120 + "px"
-			unls++
-		}
-	
-		let stats = el("stats_tab_" + entry)
-		if (stats) stats.style.display = got ? "" : "none"
-		el("tab_" + entry).style.display = got ? "" : "none"
-	}
-
-	let blockLen = Math.floor(unls / 3)
-	el("tab_break").style.display = blockLen ? "" : "none"
-	el("block_header").style.display = blockLen ? "" : "none"
-	el("block_header").style.height = (blockLen * 120) + "px"
-	el("bigcrunch").parentElement.style.top = (blockLen * 120 + 19) + "px"
-
-	if (!mod.ngpp) return
-
-	let bigRip = bigRipped()
-	el("quantumbtn").className = bigRip ? "bigrip" : "quantumbtn"
-	el("quantumbtn").style.display = bigRip || isQuantumReached() ? "" : "none"
-
-	el("bigripbtn").style.display = canBigRip() ? "" : "none"
-	el("bigripbtn").innerHTML = (ghostified ? "" : "Show to the limitless! ") + "Big Rip the cosmos."
-	el("ghostifybtn").style.display = bigRip && isQuantumReached() ? "" : "none"
-	el("ghostparticles").style.display = ghostified ? "" : "none"
-	if (ghostified) {
-		el("GHPAmount").textContent = shortenDimensions(ghSave.ghostParticles)
-
-		var showQuantumed = !hasBraveMilestone(16)
-		el("quantumedBM").style.display = showQuantumed ? "" : "none"
-		if (showQuantumed) el("quantumedBMAmount").textContent = getFullExpansion(quSave.times)
-	}
-}
-
-function resetTabs() {
-	setTabPlacements()
-
-	var tabs = aarMod.tabsSave
-	if (!tabs?.on) tabs = {}
-
-	showDimTab(tabs?.dimtab || 'antimatterdimensions')
-	showStatsTab(tabs?.statstab || 'stats')
-	showAchTab(tabs?.achtab || 'normalachievements')
-	showChallengesTab(tabs?.challengeTab || 'normalchallenges')
-	showAutoTab(tabs?.autotab || 'autobuyers')
-	showInfTab(tabs?.inftab || 'preinf')
-	showEternityTab(tabs?.eternitytab || 'timestudies')
-	showQuantumTab(tabs?.quantumtab || 'uquarks')
-	showAntTab(tabs?.anttab || 'antcore')
-	showGhostifyTab(tabs?.ghostifytab || 'neutrinos')
-	showBLTab(tabs?.bltab || (ghSave?.lab_real ? "lab_real" : "hypotheses"))
 }
 
 function onTabSwitch() {
-	el("progress").style.display = aarMod.progressBar && isTabShown("dimensions") ? "block" : "none"
+	el("progress").style.display = aarMod.progressBar && isTabShown("dim") ? "block" : "none"
 
-	let study_tree = isTabShown("eternitystore") && (isTabShown('timestudies') || isTabShown('ers_timestudies') || isTabShown('masterystudies'))
+	let study_tree = isTabShown("eter") && (isTabShown('ts') || isTabShown('ts_respec') || isTabShown('ts_master'))
 	el("TTbuttons").style.display = study_tree ? "block" : "none"
 	if (study_tree) resizeCanvas()
 
-	if (isTabShown("eternitystore")) {
-		if (isTabShown('dilation') || isTabShown("blackhole")) resizeCanvas()
-		if (isTabShown("dilation")) requestAnimationFrame(drawAnimations)
-		if (isTabShown("blackhole")) requestAnimationFrame(drawBlackhole)
+	if (isTabShown("eter")) {
+		if (isTabShown("dil") || isTabShown("bh")) resizeCanvas()
+		if (isTabShown("dil")) requestAnimationFrame(drawAnimations)
+		if (isTabShown("bh")) requestAnimationFrame(drawBlackhole)
 	}
-	if (isTabShown("quantumtab") && isTabShown("uquarks")) {
+	if (isTabShown("qu") && isTabShown("aq")) {
 		resizeCanvas()
 		requestAnimationFrame(drawQuarkAnimation)
 	}
 
 	var oldEmpty = isEmptiness
-	isEmptiness = isTabShown("emptiness")
+	isEmptiness = !aarMod.tabs.root
 	if (oldEmpty != isEmptiness) updateHeaders()
 
 	showHideFooter()
 	PRESET_DIAL.detect()
 }
 
-function setTabPlacements() {
-	//Automation
-	let auto = inNGM(4)
-	if (tmp.tab.auto != auto) { 
-		tmp.tab.auto = auto
-		el(auto ? "automation" : "infinity").appendChild(el("autobuyers"))
-		el("autobuyers").className = auto ? "autotab" : "inftab"
-		el("autobuyersbtn").style.display = auto ? "none" : ""
-
-		el(auto ? "automation" : "ghostify").appendChild(el("automaticghosts"))
-		el("automaticghosts").className = auto ? "autotab" : "ghostifytab"
-	}
-
-	//Semiprime
-	let udsp = mod.udsp
-	if (tmp.tab.udsp != udsp) { 
-		tmp.tab.udsp = udsp
-		el(udsp ? "bh_udsp_feed" : "bh_feed").appendChild(el("bh_feed_div"))
-	}
-}
-
 function isTabShown(x) {
-	return el(x).style.display !== "none"
+	return el("tab_" + x).style.display == "block"
 }
