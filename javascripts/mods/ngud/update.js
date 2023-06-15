@@ -190,7 +190,7 @@ function updateBlackhole() {
 }
 
 function drawBlackhole(ts) {
-	if (isTabShown("eter") && isTabShown("bh") && isAnimationOn("blackHole")) {
+	if (isTabShown("bh") && isAnimationOn("blackHole")) {
 		bhctx.clearRect(0, 0, canvas.width, canvas.height);
 		let radius = Math.max(player.blackhole.power.log(2), 0);
 		bhctx.beginPath()

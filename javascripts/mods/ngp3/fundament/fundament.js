@@ -387,7 +387,7 @@ function updateBraveMilestones() {
 
 TABS = Object.assign(TABS, {
 	funda: { name: "Fundament", class: "ghostifybtn", stab: [ "nt", "ph", "auto_ant", "mil_brave" ], unl: _ => ghostified, update: _ => LAB.updateReq() },
-	stats_funda: { name: "Fundament", class: "ghostifybtn", update: _ => bestGhostifyDisplay() },
+	stats_funda: { name: "Fundament", class: "ghostifybtn", unl: _ => ghostified, update: _ => bestGhostifyDisplay() },
 
 	nt: { name: "Neutrinos", update: _ => NT.update() },
 	ph: { name: "Photons", update: _ => PHOTON.update() },

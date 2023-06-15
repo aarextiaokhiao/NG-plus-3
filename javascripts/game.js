@@ -2239,7 +2239,7 @@ function updateDisplays() {
 	chall23PowerUpdating()
 	updateMoney()
 	updateCoinPerSec()
-	TAB_CORE.update_tab("root")
+	TAB_CORE.update()
 	tickspeedDisplay()
 	galSacDisplay()
 	progressBarUpdating()
@@ -2694,7 +2694,7 @@ function initGame() {
 	setTimeout(function(){
 		el("container").style.display = "block"
 		el("loading").style.display = "none"
-		onTabSwitch()
+		resizeCanvas()
 	}, 100)
 	clearInterval(stuckTimeout)
 

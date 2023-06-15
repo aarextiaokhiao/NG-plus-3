@@ -414,7 +414,7 @@ function updateBreakEternity() {
 	el("breakUpg7Max").style.visibility = broke ? "visible" : "hidden"
 	el("beShortcut").style.display = broke && !LAB.unlocked() ? "" : "none"
 	if (broke) {
-		for (var u = 1; u < getBEUnls(); u++) el("breakUpg" + u + "Cost").textContent = shortenDimensions(getBreakUpgCost(u))
+		for (var u = 1; u <= getBEUnls(); u++) el("breakUpg" + u + "Cost").textContent = shortenDimensions(getBreakUpgCost(u))
 		el("breakUpg7MultIncrease").textContent = shortenDimensions(1e9)
 	}
 }
@@ -424,7 +424,7 @@ function breakEternityDisplay(){
 
 	el("breakEternityBtn").innerHTML = (beSave.break ? "FIX" : "BREAK") + " ETERNITY"
 	el("eternalMatter").innerHTML = shortenDimensions(beSave.eternalMatter)
-	for (var u = 1; u < getBEUnls(); u++) {
+	for (var u = 1; u <= getBEUnls(); u++) {
 		el("breakUpg" + u).className = beSave.upgrades.includes(u) ? "eternityupbtnbought" : beSave.eternalMatter.gte(getBreakUpgCost(u)) ? "eternityupbtn" : "eternityupbtnlocked"
 		if (u == 8) el("breakUpg8Mult").textContent = (getBreakUpgMult(8) * 100 - 100).toFixed(1)
 		else if (u != 7 && el("breakUpg" + u + "Mult")) el("breakUpg" + u + "Mult").textContent = shortenMoney(getBreakUpgMult(u))

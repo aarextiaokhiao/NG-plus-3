@@ -42,13 +42,16 @@ function growupRateUpdating(){
 }
 
 TABS = Object.assign(TABS, {
-	ant: { name: "Duplicants", class: "antbtn", stab: [ "ant_n", "dim_emp", "nf" ], unl: _ => hasMasteryStudy("d7") && !LAB.unlocked() },
-	ant_n: { name: "Ants", unl: _ => hasMasteryStudy("d0"), update: _ => updateDuplicants() },
-	dim_emp: { name: "Emperors", class: "antbtn", unl: _ => hasMasteryStudy("d10"), update() {
+	ant: { name: "Duplicants", class: "antbtn", stab: [ "ant_n", "dim_emp", "nf" ], unl: _ => hasMasteryStudy("d10") && !LAB.unlocked() },
+	ant_n: { name: "Ants", unl: _ => hasMasteryStudy("d10"), update() {
+		updateDuplicants()
+		updateDuplicantsSubtab()
+	} },
+	dim_emp: { name: "Emperors", class: "antbtn", unl: _ => hasMasteryStudy("d11"), update() {
 		updateDuplicants()
 		updateEmperorDimensions()
 	} },
-	nf: { name: "Nanofield", unl: _ => hasMasteryStudy("d11"), update: _ => updateNanoverseTab() }
+	nf: { name: "Nanofield", unl: _ => hasMasteryStudy("d12"), update: _ => updateNanoverseTab() }
 })
 
 function updateDuplicantsSubtab(){

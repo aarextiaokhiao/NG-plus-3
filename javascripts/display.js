@@ -568,32 +568,3 @@ function updateHeaders() {
 	updateResetTierButtons()
 	if (!header) return
 }
-
-function onTabSwitch() {
-	el("progress").style.display = aarMod.progressBar && isTabShown("dim") ? "block" : "none"
-
-	let study_tree = isTabShown("eter") && (isTabShown('ts') || isTabShown('ts_respec') || isTabShown('ts_master'))
-	el("TTbuttons").style.display = study_tree ? "block" : "none"
-	if (study_tree) resizeCanvas()
-
-	if (isTabShown("eter")) {
-		if (isTabShown("dil") || isTabShown("bh")) resizeCanvas()
-		if (isTabShown("dil")) requestAnimationFrame(drawAnimations)
-		if (isTabShown("bh")) requestAnimationFrame(drawBlackhole)
-	}
-	if (isTabShown("qu") && isTabShown("aq")) {
-		resizeCanvas()
-		requestAnimationFrame(drawQuarkAnimation)
-	}
-
-	var oldEmpty = isEmptiness
-	isEmptiness = !aarMod.tabs.root
-	if (oldEmpty != isEmptiness) updateHeaders()
-
-	showHideFooter()
-	PRESET_DIAL.detect()
-}
-
-function isTabShown(x) {
-	return el("tab_" + x).style.display == "block"
-}

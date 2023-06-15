@@ -101,7 +101,7 @@ function animationOnOff(x) {
 }
 
 function drawAnimations(ts){
-	if (player.dilation.tachyonParticles.gte(1) && isTabShown("eter") && isTabShown("dil") && player.options.animations.tachyonParticles) {
+	if (player.dilation.tachyonParticles.gte(1) && isTabShown("dil") && player.options.animations.tachyonParticles) {
 		ctx3.clearRect(0, 0, canvas.width, canvas.height);
 		if (player.options.theme == "Aarex's Modifications") ctx3.fillStyle="#e5e5e5";
 		else if (player.options.theme == "Dark" || player.options.theme == "Dark Metro") ctx3.fillStyle="#FFF";

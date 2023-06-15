@@ -3,8 +3,8 @@ let TABS = {
 
 	ach: { name: "Achievements", stab: [ "ach_n", "ach_sec", "ach_badge" ] },
 	ach_n: { name: "Normal" },
-	ach_sec: { name: "Secrets" },
-	ach_badge: { name: "Badges" },
+	ach_sec: { name: "Secrets", unl: _ => !aarMod.hideSecretAchs },
+	ach_badge: { name: "Badges", unl: _ => !aarMod.hideSecretAchs },
 
 	stats: { name: "Statistics", stab: [ "stats_main", "stats_inf", "stats_eter", "stats_qu", "stats_funda" ] },
 	stats_main: { name: "Main", update() {
@@ -20,7 +20,7 @@ let TABS = {
 	opt_disp: { name: "Display" },
 	opt_key: { name: "Hotkeys" },
 	opt_other: { name: "Others" },
-	opt_sec: { name: "Secrets" },
+	opt_sec: { name: "Secrets", unl: _ => aarMod.secrets != undefined },
 
 	dim: { name: "Dimensions", stab: [ "dim_am", "dim_inf", "dim_time", "dim_meta", "dim_emp" ] },
 	dim_am: { name: "Antimatter", update: _ => dimensionTabDisplay() },
@@ -69,7 +69,7 @@ let TABS = {
 		updateDilation()
 		updateExdilation()
 	} },
-	bh: { name: "Black Hole", unl: _ => player.blackhole?.unl, update: _ => updateBlackhole() }
+	bh: { name: "Black Hole", unl: _ => player.dilation.studies.includes(1) && mod.ngud, update: _ => updateBlackhole() }
 }
 
 const TAB_CORE = {
@@ -94,7 +94,7 @@ const TAB_CORE = {
 			if (TABS[i] == undefined) continue
 			if (TABS[i].unl != undefined && !TABS[i].unl()) continue
 			this.collect(i)
-			delete tmp.tab.rev[i] 
+			delete tmp.tab.rev[i]
 			tmp.tab.rev[i] = x
 		}	
 	},
@@ -116,24 +116,48 @@ const TAB_CORE = {
 			el(x == "root" ? "container" : "tab_" + x).appendChild(el("tab_" + i))
 		}
 		el("tabs_" + x).innerHTML = tab.length > 1 ? div : ""
-		this.switch(x, tab.includes(tmp.tab.open[x]) ? tmp.tab.open[x] : tab[0])
+		this.switch(x, tab.includes(aarMod.tabs[x]) ? aarMod.tabs[x] : tab[0])
 	},
 
 	//Open: Open the tab and subtabs.
 	open(x, i) {
 		this.switch("root", x)
 		if (i) this.switch(x, i)
-		onTabSwitch()
 	},
 	switch(a, b) {
 		if (tmp.tab.open[a]) el("tab_" + tmp.tab.open[a]).style.display = ""
 		if (b) el("tab_" + b).style.display = "block"
 		aarMod.tabs[a] = tmp.tab.open[a] = b
+
+		tmp.tab.in = [tmp.tab.open.root, tmp.tab.open[tmp.tab.open.root]]
+		if (isTabShown(b)) onTabSwitch()
 	},
 
-	//update_dom: Update the opened tab.
-	update_tab(x) {
-		TABS[x]?.update?.()
-		if (tmp.tab.open[x]) this.update_tab(tmp.tab.open[x])
+	//update: Update opened tabs.
+	update() {
+		for (var x of tmp.tab.in) TABS[x]?.update?.()
 	},
+}
+
+function onTabSwitch() {
+	el("progress").style.display = aarMod.progressBar && isTabShown("dim") ? "block" : "none"
+
+	let study_tree = isTabShown('ts') || isTabShown('ts_respec') || isTabShown('ts_master')
+	el("TTbuttons").style.display = study_tree ? "block" : "none"
+
+	resizeCanvas()
+	if (isTabShown("dil")) requestAnimationFrame(drawAnimations)
+	if (isTabShown("bh")) requestAnimationFrame(drawBlackhole)
+	if (isTabShown("aq")) requestAnimationFrame(drawQuarkAnimation)
+
+	var oldEmpty = isEmptiness
+	isEmptiness = !aarMod.tabs.root
+	if (oldEmpty != isEmptiness) updateHeaders()
+
+	showHideFooter()
+	PRESET_DIAL.detect()
+}
+
+function isTabShown(x) {
+	return tmp.tab.in.includes(x)
 }

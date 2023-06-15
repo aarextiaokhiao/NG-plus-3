@@ -363,7 +363,7 @@ const BL_HYPOTHESES = {
 
 PRESET_DATA.bl = {
 	name: "Hypotheses",
-	in: _ => isTabShown("bl") && isTabShown("bl_hy"),
+	in: _ => isTabShown("bl_hy"),
 	unl: _ => LAB.unlocked(),
 
 	get() {

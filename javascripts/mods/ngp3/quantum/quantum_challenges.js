@@ -317,7 +317,7 @@ function importPC() {
 
 PRESET_DATA.pc = {
 	name: "Paired Challenges",
-	in: _ => isTabShown("chal") && isTabShown("chal_qu") && hasMasteryStudy("d9"),
+	in: _ => isTabShown("chal_qu") && hasMasteryStudy("d9"),
 	unl: _ => hasMasteryStudy("d9"),
 
 	get() {
