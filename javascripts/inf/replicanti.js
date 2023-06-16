@@ -128,7 +128,7 @@ function canGetReplicatedGalaxy() {
 }
 
 function canAutoReplicatedGalaxy() {
-	return !hasTimeStudy(131) || (mod.ngp3 && hasAch("ngpp16"))
+	return getEternitied() >= 3 && (!hasTimeStudy(131) || mod.ngp3 && hasAch("ngpp16"))
 }
 
 function getMaxRG() {

@@ -43,7 +43,7 @@ function growupRateUpdating(){
 
 TABS = Object.assign(TABS, {
 	ant: { name: "Duplicants", class: "antbtn", stab: [ "ant_n", "dim_emp", "nf" ], unl: _ => hasMasteryStudy("d10") && !LAB.unlocked() },
-	ant_n: { name: "Ants", unl: _ => hasMasteryStudy("d10"), update() {
+	ant_n: { name: "Ants", unl: _ => hasMasteryStudy("d10") && !hasBraveMilestone(14), update() {
 		updateDuplicants()
 		updateDuplicantsSubtab()
 	} },

@@ -88,12 +88,12 @@ function getIC3Exp() {
 		if (g < 7) return 1 + g / 5
 		let y = 5
 		let z = .5
-		if (tmp.ec > 29) {
+		if (tmp.ec_eff > 29) {
 			if (player.currentEternityChall == "" || player.currentEternityChall == "eterc12") {
 				z = .9
-				if (tmp.ec > 53) y = 1.4 - ((tmp.ec - 54) / 15)
-				else if (tmp.ec > 42) y = 2
-				else if (tmp.ec > 37) y = 3.5
+				if (tmp.ec_eff > 53) y = 1.4 - ((tmp.ec_eff - 54) / 15)
+				else if (tmp.ec_eff > 42) y = 2
+				else if (tmp.ec_eff > 37) y = 3.5
 			} else z = .6
 		}
 		x = 2 + Math.pow(g - 5, z) / y

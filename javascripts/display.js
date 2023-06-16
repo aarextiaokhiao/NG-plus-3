@@ -19,14 +19,14 @@ function tickspeedBoostDisplay(){
 function galaxyReqDisplay(){
 	var nextGal = getGalaxyRequirement(0, true)
 	var totalRepl = getTotalRG()
-	var totalDil = Math.floor(player.dilation.freeGalaxies)
-	var totalTypes = totalDil ? 3 : totalRepl ? 2 : 1
+	var dil = Math.floor(player.dilation.freeGalaxies)
+	var totalTypes = dil ? 3 : totalRepl ? 2 : 1
 
 	var msg = getGalaxyScaleName(nextGal.scaling) + (nextGal.scaling <= 3 ? "Antimatter " : "") + ' Galaxies '
 	msg += "(" + getFullExpansion(player.galaxies)
 	if (totalTypes >= 2) msg += " + " + getFullExpansion(totalRepl)
-	if (totalTypes >= 3) msg += " + " + getFullExpansion(totalDil)
-	if (totalTypes >= 2 && shiftDown) msg += " = " + getFullExpansion(player.galaxies + totalRepl + totalDil)
+	if (totalTypes >= 3) msg += " + " + getFullExpansion(dil)
+	if (totalTypes >= 2 && shiftDown) msg += " = " + getFullExpansion(player.galaxies + totalRepl + dil)
 
 	msg += "): "
 	if (totalTypes >= 3) msg += "<br>"
@@ -384,9 +384,9 @@ function replicantiDisplay() {
 		el("replicantimax").className = (player.infinityPoints.gte(getRGCost())) ? "storebtn" : "unavailablebtn"
 		el("replicantireset").className = (canGetReplicatedGalaxy()) ? "storebtn" : "unavailablebtn"
 		el("replicantireset").style.height = (hasAch("ngpp16") && !hasAch("ng3p67") ? 90 : 70) + "px"
-		el("replicantiresettoggle").textContent="Auto galaxy "+(player.replicanti.galaxybuyer?"ON":"OFF")+(!canAutoReplicatedGalaxy()?" (disabled)":"")
 
-		for (var i = i; i <= 3; i++) el("replauto"+i).innerHTML = "Auto: " + (player.replicanti.auto[i-1] ? "ON" : "OFF")
+		for (var i = 1; i <= 3; i++) el("replauto"+i).innerHTML = "Auto: " + (player.replicanti.auto[i-1] ? "ON" : "OFF")
+		el("replicantiresettoggle").textContent="Auto galaxy "+(player.replicanti.galaxybuyer?"ON":"OFF")
 	} else {
 		el("replicantiunlock").innerHTML = "Unlock Replicantis<br>Cost: " + shortenCosts(inOnlyNGM(2) ? 1e80 : 1e140) + " IP"
 		el("replicantiunlock").className = (player.infinityPoints.gte(inOnlyNGM(2) ? 1e80 : 1e140)) ? "storebtn" : "unavailablebtn"
@@ -482,15 +482,12 @@ function dimboostABTypeDisplay(){
 }
 
 function IDABDisplayCorrection(){
+	let mode = getEternitied() > 10 ? "visible" : "hidden"
 	if (getEternitied() > 10) {
-		for (var i=1;i<getEternitied()-9 && i < 9; i++) {
-			el("infauto"+i).style.visibility = "visible"
-		}
+		for (var i=1;i<getEternitied()-9 && i < 9; i++) el("infauto"+i).style.visibility = "visible"
 		el("toggleallinfdims").style.visibility = "visible"
 	} else {
-		for (var i=1; i<9; i++) {
-			el("infauto"+i).style.visibility = "hidden"
-		}
+		for (var i=1; i<9; i++) el("infauto"+i).style.visibility = "hidden"
 		el("toggleallinfdims").style.visibility = "hidden"
 	}
 }
@@ -502,12 +499,12 @@ function replicantiAutoDisplay() {
 	else el("replauto2").style.visibility = "hidden"
 	if (getEternitied() >= 80) el("replauto3").style.visibility = "visible"
 	else el("replauto3").style.visibility = "hidden"
-	if (getEternitied() >= 3) el("replicantiresettoggle").style.display = ""
+	if (canAutoReplicatedGalaxy()) el("replicantiresettoggle").style.display = ""
 	else el("replicantiresettoggle").style.display = "none"
 }
 
 function primaryStatsDisplayResetLayers() {
-	var showStats = player.challenges.length > 1 || player.infinitied > 0 || eternitied() ? "" : "none"
+	var showStats = infinitied() ? "" : "none"
 	el("brfilter").style.display = showStats
 }
 
@@ -558,7 +555,6 @@ function showHideConfirmations() {
 	el("ghostifyConfirmBtn").style.display = ghostified ? "inline-block" : "none"
 }
 
-//RESETS
 function updateHeaders() {
 	//Show Header
 	let header = !isEmptiness
@@ -568,3 +564,9 @@ function updateHeaders() {
 	updateResetTierButtons()
 	if (!header) return
 }
+
+/*function glowText(id) {
+	var text = el(id);
+	text.style.setProperty("-webkit-animation", "glow 1s");
+	text.style.setProperty("animation", "glow 1s");
+}*/

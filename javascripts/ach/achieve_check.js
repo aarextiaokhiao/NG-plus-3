@@ -191,7 +191,7 @@ function checkOtherPreNGp3Achieve(){
 	if (tmp.sacPow.gte(Number.MAX_VALUE)) giveAchievement("Yet another infinity reference")
 	if (tmp.sacPow.gte(pow10(9000)) && !inNC(11)) giveAchievement("IT'S OVER 9000")
 	if (player.currentChallenge.includes("post")) giveAchievement("Infinitely Challenging")
-	if (tmp.ec >= 50) giveAchievement("5 more eternities until the update")
+	if (tmp.ec_eff >= 50) giveAchievement("5 more eternities until the update")
 	if (player.infinitiedBank >= 5000000000) giveAchievement("No ethical consumption");
 	if (getEternitied() >= 100) giveAchievement("This mile took an Eternity")
 	if (player.bestEternity < 300) giveAchievement("That wasn't an eternity");

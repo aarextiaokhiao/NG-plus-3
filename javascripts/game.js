@@ -274,36 +274,23 @@ function checkICID(name) {
 }
 
 function updateEternityChallenges() {
-	tmp.ec=0
-	var locked=!quantumed
-	for (ec=1;ec<15;ec++) {
-		var property = "eterc"+ec 
-		var ecdata = player.eternityChalls[property]
-		if (ecdata) {
-			tmp.ec+=ecdata
-			locked=false
-		}
-		el(property+"div").style.display=ecdata?"inline-block":"none"
-		el(property).textContent=ecdata>4?"Completed":"Locked"
-		el(property).className=ecdata>4?"completedchallengesbtn":"lockedchallengesbtn"
-	}
-	if (player.eternityChallUnlocked>0) {
-		var property="eterc"+player.eternityChallUnlocked
-		var onchallenge=player.currentEternityChall==property
-		locked=false
-		el(property+"div").style.display="inline-block"
-		el(property).textContent=onchallenge?"Running":"Start"
-		el(property).className=onchallenge?"onchallengebtn":"challengesbtn"
-	}
-	//el("eterctabbtn").parentElement.style.display=locked?"none":"" //will be hidden on Darkness
-	el("autoEC").style.display=quantumed?"inline-block":"none"
-	if (quantumed) el("autoEC").className=quSave.autoEC?"timestudybought":"storebtn"
-}
+	tmp.ec_eff = 0
+	tmp.ec_unl = quantumed
+	for (let ec = 1; ec <= 14; ec++) {
+		let id = "eterc" + ec
+		let comps = player.eternityChalls[id]
+		let unl = player.eternityChallUnlocked == ec
+		let run = player.currentEternityChall == id
+		if (unl || comps > 0) tmp.ec_unl = true
+		if (comps > 0) tmp.ec_eff += comps
 
-function glowText(id) {
-	var text = el(id);
-	text.style.setProperty("-webkit-animation", "glow 1s");
-	text.style.setProperty("animation", "glow 1s");
+		el(id + "div").style.display = comps > 0 || unl ? "inline-block" : "none"
+		el(id).textContent = unl ? (run ? "Running" : "Start") : comps == 5 ? "Completed" : "Locked"
+		el(id).className = unl ? (run ? "onchallengebtn" : "challengesbtn") : comps == 5 ? "completedchallengesbtn" : "lockedchallengesbtn"
+	}
+
+	el("autoEC").style.display = quantumed ? "inline-block" : "none"
+	if (quantumed) el("autoEC").className=quSave.autoEC?"timestudybought":"storebtn"
 }
 
 function toggleChallengeRetry() {
@@ -347,12 +334,6 @@ el("secretstudy").onclick = function () {
 el("The first one's always free").onclick = function () {
 	giveAchievement("The first one's always free")
 };
-
-function glowText(id) {
-	var text = el(id);
-	text.style.setProperty("-webkit-animation", "glow 1s");
-	text.style.setProperty("animation", "glow 1s");
-}
 
 el("maxall").onclick = function () {
 	if (tmp.ri) return false
@@ -1318,6 +1299,7 @@ function eternity(force, auto, dil, presetLoad) {
 	player.dilation.active = dil
 	doReset("eter", auto)
 
+	if (player.eternitied == 1 && !quantumed) TAB_CORE.open("dim", "dim_time")
 	if (quantumed) updateColorCharge()
 	doAutoEterTick()
 }

@@ -5,17 +5,16 @@ function onChallengeFail() {
 	if (failureCount > 9) giveAchievement("You're a failure")
 }
 
-function unlockEChall(idx) {
-	if (player.eternityChallUnlocked == 0) {
-		player.eternityChallUnlocked = idx
-		el("eterc"+player.eternityChallUnlocked+"div").style.display = "inline-block"
-		if (idx !== 13 && idx !== 14) {
-			updateTimeStudyButtons(true)
-			player.etercreq = idx
-		}
-		if (mod.ngp3) delete quSave.autoECN
-	}
+function unlockEChall(idx, auto) {
+	if (player.eternityChallUnlocked != 0) return
+	player.eternityChallUnlocked = idx
 	updateEternityChallenges()
+
+	if (idx < 12) {
+		updateTimeStudyButtons(true)
+		player.etercreq = idx
+	}
+	if (mod.ngp3) delete quSave.autoECN
 }
 
 function ECComps(name) {
@@ -115,11 +114,10 @@ var ECCosts = [null,
 
 for (let ecnum = 1; ecnum <= 12; ecnum ++){
 	el("ec" + ecnum + "unl").onclick = function(){
-		if (canUnlockECFromNum(ecnum)) {
-			unlockEChall(ecnum)
-			player.timestudy.theorem -= ECCosts[ecnum]
-			drawStudyTree()
-		}
+		if (!canUnlockECFromNum(ecnum)) return
+		player.timestudy.theorem -= ECCosts[ecnum]
+		unlockEChall(ecnum)
+		drawStudyTree()
 	}
 }
 

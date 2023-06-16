@@ -417,7 +417,6 @@ function setSomeEterEraStuff() {
 	if (player.infinitied == 0 && getEternitied() == 0) el("infinityPoints2").style.display = "none"
 
 	if (player.eternityChallUnlocked === null) player.eternityChallUnlocked = 0
-	if (player.eternityChallUnlocked !== 0) el("eterc"+player.eternityChallUnlocked+"div").style.display = "inline-block"
 
 	if (getEternitied()<1) el("infmultbuyer").textContent="Max buy IP mult"
 	else el("infmultbuyer").textContent="Autobuy IP mult "+(player.infMultBuyer?"ON":"OFF")

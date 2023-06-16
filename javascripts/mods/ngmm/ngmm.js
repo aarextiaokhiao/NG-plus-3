@@ -517,7 +517,7 @@ let galMults = {
 			if (l > 2) return pow10(l * Math.min(l, 6) * Math.min(l, 4))
 			return pow10(2 + Math.min(4, getInfinitied())).pow(exp)
 		}
-		if (tmp.ec > 53) return pow10(2e4)
+		if (tmp.ec_eff > 53) return pow10(2e4)
 		let x = getG11Infinities()
 		let z = getG11Divider()
 		
@@ -661,7 +661,7 @@ function getG11Infinities() {
 	if (e > 0 && x < 1e8 && tmp.ic_power > 0) x += 2e6
 	if (player.infinityUpgrades.includes("postinfi61")) x += 1e7
 	if (player.infinityUpgrades.includes("postinfi61") && player.galacticSacrifice.upgrades.length > 9) x += player.galacticSacrifice.upgrades.length * 1e7
-	x += tmp.ec * 1e10
+	x += tmp.ec_eff * 1e10
 	if (x > 1e8) x = Math.sqrt(x * 1e8)
 	return x
 }
@@ -672,7 +672,7 @@ function getG11Divider(){
 	if (c > 0 && player.challenges.includes("postcngmm_1")) z -= (c + 6) / 4
 	if (c > 6) z += 0.085 * tmp.ic_power - 0.31
 	if (player.infinityUpgrades.includes("postinfi61")) z -= .1
-	z -= Math.pow(tmp.ec, 0.3)/10
+	z -= Math.pow(tmp.ec_eff, 0.3)/10
 	if (getEternitied() > 0) z -= 0.5
 	if (z < 6) z = Math.pow(1296 * z, .2)
 	return z

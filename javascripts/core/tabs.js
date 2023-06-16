@@ -30,8 +30,8 @@ let TABS = {
 
 	chal: { name: "Challenges", stab: [ "chal_n", "chal_inf", "chal_eter", "chal_qu", "rip" ], unl: _ => inNGM(4) ? gSacrificed() : infinitied() },
 	chal_n: { name: "Normal" },
-	chal_inf: { name: "Infinity", class: "infinitybtn" },
-	chal_eter: { name: "Eternity", class: "eternitybtn", update: _ => ECRewardDisplayUpdating() },
+	chal_inf: { name: "Infinity", unl: _ => player.postChallUnlocked || eternitied(), class: "infinitybtn" },
+	chal_eter: { name: "Eternity", unl: _ => tmp.ec_unl, class: "eternitybtn", update: _ => ECRewardDisplayUpdating() },
 
 	gSac: { name: "Galaxy", class: "galaxybtn", stab: [ "upg_gSac", "auto_buy" ], unl: _ => gSacrificed() },
 	upg_gSac: { name: "Upgrades", update() {
