@@ -938,7 +938,7 @@ function updateNotationOption() {
 }
 
 function onNotationChange() {
-	document.getElementsByClassName("hideInMorse").display = player.options.notation == "Morse code" || player.options.notation == 'Spazzy' ? "none" : ""
+	el_class("hideInMorse").display = player.options.notation == "Morse code" || player.options.notation == 'Spazzy' ? "none" : ""
 	updateNotationOption()
 	updateLastTenRuns();
 	updateLastTenEternities();

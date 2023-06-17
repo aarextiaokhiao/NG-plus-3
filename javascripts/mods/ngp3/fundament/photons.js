@@ -1,7 +1,7 @@
 let PHOTON = {
 	/* CORE */
 	//Unlock
-	req: _ => bigRipped() && player.money.gte(pow10(1.9e9)),
+	req: _ => bigRipped() && player.money.gte(pow10(2.9e9)),
 	unlocked: _ => ghSave?.photons.unl,
 	unlock() {
 		ghSave.photons.unl = true
@@ -64,17 +64,17 @@ let PHOTON = {
 	},
 	emissionData: [
 		{
-			resName: "Preonic Spin",
-			res: _ => todSave.r.spin,
+			resName: "Space Shards",
+			res: _ => ghSave.ghostParticles,
 
-			req: i => E(10).pow(Math.pow(i,1.5)).mul(1e27),
-			bulk: r => Math.floor(Math.pow(r.max(1).div(1e27).log(10),2/3)) + 1,
+			req: i => E(1e10).pow(i).mul(1e100),
+			bulk: r => Math.floor(r.max(1).div(1e100).log(1e10)) + 1,
 		}, {
 			resName: "Spectral Particles",
 			res: _ => ghSave.ghostParticles,
 
-			req: i => E(1e3).pow(i).mul(1e19),
-			bulk: r => Math.floor(r.max(1).div(1e19).log(1e3)) + 1,
+			req: i => E(1e3).pow(i).mul(1e23),
+			bulk: r => Math.floor(r.max(1).div(1e23).log(1e3)) + 1,
 		}, {
 			resName: "Photons",
 			res: _ => ghSave.photons.amt,
@@ -184,7 +184,7 @@ let PHOTON = {
 		el("gphUnl").style.display = unl ? "none" : ""
 		el("gphDiv").style.display = unl ? "" : "none"
 		if (!PHOTON.unlocked()) {
-			el("gphUnl").textContent = "Get "+shortenCosts(pow10(1.9e9))+" antimatter in Big Rip to unlock Photons."
+			el("gphUnl").textContent = "Get "+shortenCosts(pow10(2.9e9))+" antimatter in Big Rip to unlock Photons."
 			return
 		}
 

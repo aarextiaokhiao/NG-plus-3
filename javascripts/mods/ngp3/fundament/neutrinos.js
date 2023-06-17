@@ -175,16 +175,15 @@ const NEUTRINO = NT = {
 				},
 				effDesc: e => `Increase IC3 multiplier base by <b>${shorten(e)}x</b>.`,
 			}, {
-				cost: E(1e19),
+				cost: E(1e24),
 				eff(nt) {
 					nt = nt[0].add(1).log10()+nt[1].add(1).log10()+nt[2].add(1).log10()
-					let r = Math.log2(Math.max(nt / 70, 1)) / 150
-					if (r > 0.007) r = (r + 0.007) / 2
+					let r = Math.log2(Math.max(nt / 70, 1)) / 300
 					return r
 				},
-				effDesc: e => `TS232 regains <b>${shorten(e*100)}%</b> power.`,
+				effDesc: e => `Outside of Big Rip, TS232 regains <b>${shorten(e*100)}%</b> power.`,
 			}, {
-				cost: E(1e35),
+				cost: E(1/0),
 				eff(nt) {
 					nt = nt[0].add(1).log10()+nt[1].add(1).log10()+nt[2].add(1).log10()
 					return Math.log10(Math.max(nt / 100, 1)) + 1
@@ -194,9 +193,9 @@ const NEUTRINO = NT = {
 				cost: E(1/0),
 				eff(nt) {
 					nt = nt[0].add(1).log10()+nt[1].add(1).log10()+nt[2].add(1).log10()
-					return 1
+					return Math.min(Math.log10(nt / 100 + 1), 1)
 				},
-				effDesc: e => `Placeholder.`,
+				effDesc: e => `RG strength affects galaxies at <b>^${e.toFixed(3)}</b> rate.`,
 			}
 		]
 	},
@@ -293,14 +292,14 @@ const NEUTRINO = NT = {
 				effDesc: e => `(hover)`
 			}, {
 				unl: _ => PHOTON.unlocked(),
-				cost: E(1e25),
+				cost: E(1e30),
 				desc: `Tachyonic Galaxies scale Positron softcap later.`,
 
 				eff: _ => player.dilation.freeGalaxies * 2,
 				effDesc: e => `+${getFullExpansion(e)}`
 			}, {
 				unl: _ => PHOTON.unlocked(),
-				cost: E(1e29),
+				cost: E(1e33),
 				desc: `Replicate Slowdown absorbs Replicate Interval. Lower Replicate Interval.`
 			}, {
 				unl: _ => PHOTON.unlocked(),

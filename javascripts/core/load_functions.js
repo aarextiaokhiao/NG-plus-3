@@ -1385,7 +1385,7 @@ function setOptionsDisplaysStuff1(){
 	el("infmultbuyer").style.display = getEternitied()>0||mod.ngp3?"inline-block":"none"
 	if (!player.options.hotkeys) el("disablehotkeys").textContent = "Enable hotkeys"
 
-	document.getElementsByClassName("hideInMorse").display = player.options.notation == "Morse code" ? "none" : ""
+	el_class("hideInMorse").display = player.options.notation == "Morse code" ? "none" : ""
 
 	el("hideRepresentation").textContent=(aarMod.hideRepresentation?"Show":"Hide")+" antimatter representation"
 	el("showAchRowNums").textContent=(aarMod.showAchRowNums?"Hide":"Show")+" achievement info"

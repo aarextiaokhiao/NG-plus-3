@@ -2653,7 +2653,7 @@ function toggleProgressBar() {
 }
 
 function closeToolTip(showStuck) {
-	var elements = document.getElementsByClassName("popup")
+	var elements = el_class("popup")
 	for (var i=0; i<elements.length; i++) if (elements[i].id!='welcome') elements[i].style.display = "none"
 	if (showStuck && !game_loaded) stuckPopUp()
 }
