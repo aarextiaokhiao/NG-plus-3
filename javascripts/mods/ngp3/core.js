@@ -1,6 +1,6 @@
 //VERSION: 2.31
 let ngp3_ver = 2.31
-let ngp3_build = 20230616
+let ngp3_build = 20230617
 function doNGP3Updates() {
 	if (!aarMod.ngp3_build) aarMod.ngp3_build = 0
 	if (aarMod.ngp3_build < 20221230) quSave.multPower = 0
@@ -49,18 +49,6 @@ function doNGP3Updates() {
 			ghSave.photons.offset = [0,0,0,0,0,0,0]
 		}
 	}
-	/*if (aarMod.ngp3_build < 20230420 && E(ghSave?.ghostParticles).gte(1e40)) {
-		alert("Due to massive balancing changes, you will be pushed back to e40 Spectral Particles!")
-
-		resetGHPandNeutrinos()
-		ghSave.photons.emissions = []
-		ghSave.photons.lighten = []
-		ghSave.ghostParticles = E(1e40)
-		blSave.bosons = E(0)
-		blSave.best_bosons = E(0)
-
-		delete quSave.qcsNoDil
-	}*/
 	aarMod.newGame3PlusVersion = ngp3_ver
 	aarMod.ngp3_build = ngp3_build
 }
@@ -502,8 +490,8 @@ TABS = Object.assign(TABS, {
 		el("qcDisclaimer").innerHTML = (isQCFree() ? "" : "Spend Positrons to start Quantum Challenges.<br>You have " + getFullExpansion(Math.round(quSave.electrons.amount)) + " Positrons.<br>") + "<b class='red'>Positrons are disabled in Quantum Challenges!</b>"
 		for (var c = 1; c <= 8; c++) el("qc" + c + "reward").textContent = QC[c].reward_eff_disp(tmp.qu.chal.reward[c])
 	} },
-	decay: { name: "Decay", unl: _ => hasMasteryStudy("d12"), update: _ => updateTreeOfDecayTab() },
-	rip: { name: "Big Rip", class: "bigrip", unl: _ => hasMasteryStudy("d13"), update: _ => updateBigRipTab() },
+	decay: { name: "Decay", unl: _ => hasMasteryStudy("d13"), update: _ => updateTreeOfDecayTab() },
+	rip: { name: "Big Rip", class: "bigrip", unl: _ => hasMasteryStudy("d14"), update: _ => updateBigRipTab() },
 	mil_time: { name: "Speedrun Milestones" }
 })
 

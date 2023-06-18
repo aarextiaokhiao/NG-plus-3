@@ -100,12 +100,7 @@ function tweakBigRip(id, reset) {
 		}
 		if (!hasRipUpg(12)) player.timestudy.theorem += 1350
 	}
-	if (id == 10) {
-		if (!hasDilStudy(1)) player.dilation.studies.push(1)
-		if (reset) {
-			TAB_CORE.open("eter", "dil")
-		}
-	}
+	if (id == 10 && !hasDilStudy(1)) player.dilation.studies.push(1)
 	if (id == 11) {
 		if (reset) player.timestudy = {
 			theorem: 0,
@@ -210,12 +205,12 @@ function updateBRU17Temp() {
 }
 
 function updateBigRipUpgradesTemp(){
-	updateBRU17Temp()
 	updateBRU1Temp()
 	updateBRU8Temp()
 	updateBRU14Temp()
 	updateBRU15Temp()
 	updateBRU16Temp()
+	updateBRU17Temp()
 }
 
 function bigRipUpgradeUpdating() {

@@ -313,12 +313,12 @@ var masteryStudies = {
 function enterMasteryPortal() {
 	if (!player.dilation.upgrades.includes("ngpp6")) return
 	recordUpDown(1)
-	TAB_CORE.open("eter", "ts_master")
+	TAB_CORE.open("ts_master")
 }
 
 function exitMasteryPortal() {
 	recordUpDown(2)
-	TAB_CORE.open("eter", "ts")
+	TAB_CORE.open("ts")
 }
 
 function convertMasteryStudyIdToDisplay(x) {
@@ -461,11 +461,11 @@ function getMasteryStudyCostMult(id) {
 }
 
 function buyingD7Changes(){
-	TAB_CORE.open("qu", "pos")
+	TAB_CORE.open("pos")
 }
 
 function buyingDilStudyQC(){
-	TAB_CORE.open("chal", "chal_qu")
+	TAB_CORE.open("chal_qu")
 	updateQuantumChallenges()
 }
 
@@ -481,16 +481,16 @@ function buyingDilStudyED(){
 }
 
 function buyingDilStudyNanofield(){
-	TAB_CORE.open("ant", "nf")
+	TAB_CORE.open("nf")
 	NF.shown()
 }
 
 function buyingDilStudyToD(){
-	TAB_CORE.open("qu", "tod")
+	TAB_CORE.open("tod")
 }
 
 function buyingDilStudyRip(){
-	TAB_CORE.open("chal", "rip")
+	TAB_CORE.open("rip")
 }
 
 function buyingDilationStudy(id){
@@ -560,10 +560,8 @@ function buyMasteryStudy(type, id, quick=false) {
 		if (type == "t") {
 			if (id == 302) fillAll()
 			masteryStudies.bought++
-		} else if (type == "ec") {
-			TAB_CORE.open("chal")
-			TAB_CORE.open("chal", "chal_ec")
-		} else if (type == "d") {
+		} else if (type == "ec") TAB_CORE.open("chal_ec")
+		else if (type == "d") {
 			updateUnlockedMasteryStudies()
 			updateSpentableMasteryStudies()
 		}

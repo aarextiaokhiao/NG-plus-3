@@ -287,7 +287,7 @@ function getHatchSpeed() {
 }
 
 function teleportToEDs() {
-	TAB_CORE.open("ant", "dim_emp")
+	TAB_CORE.open("dim_emp")
 }
 
 function setupEmpDimensionHTML() {

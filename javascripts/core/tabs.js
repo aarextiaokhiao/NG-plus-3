@@ -112,7 +112,7 @@ const TAB_CORE = {
 			let data = TABS[i]
 			let type = data.class || ""
 			if (x == "root") div += `<button class='${type || "tabbtn"}' id='tab_btn_${i}' onclick="TAB_CORE.open('${i}')" style='font-size: 20px'>${data.name}</button> `
-			else div += `<td><button class='secondarytabbtn ${type}' id='tab_btn_${i}' onclick="TAB_CORE.open('${x}', '${i}')">${data.name}</button></td>`
+			else div += `<td><button class='secondarytabbtn ${type}' id='tab_btn_${i}' onclick="TAB_CORE.open('${i}')">${data.name}</button></td>`
 			el(x == "root" ? "container" : "tab_" + x).appendChild(el("tab_" + i))
 		}
 		el("tabs_" + x).innerHTML = tab.length > 1 ? div : ""
@@ -120,9 +120,15 @@ const TAB_CORE = {
 	},
 
 	//Open: Open the tab and subtabs.
-	open(x, i) {
-		this.switch("root", x)
-		if (i) this.switch(x, i)
+	open(x) {
+		let p = tmp.tab.rev[x] || "root"
+		if (p != "root") this.switch("root", p)
+		this.switch(p, x)
+	},
+	shift(p, i) {
+		let tabs = tmp.tab.new[p]
+		let index = tabs.indexOf(tmp.tab.open[p])
+		if (index >= 0 && index + i >= 0 && index + i < tabs.length) this.switch(p, tabs[index + i])
 	},
 	switch(a, b) {
 		if (tmp.tab.open[a]) el("tab_" + tmp.tab.open[a]).style.display = ""

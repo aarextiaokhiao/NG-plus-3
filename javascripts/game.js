@@ -729,7 +729,7 @@ function sacrifice(auto) {
 	if (player.resets < 5) return false
 	if (player.currentEternityChall == "eterc3") return false
 
-	if (!auto && player.options.sacrificeConfirmation && confirm("Dimensional Sacrifice will remove all of your First to Seventh Dimensions (with the cost and multiplier unchanged) for a boost to the Eighth Dimension. It will take time to regain production.")) return
+	if (!auto && player.options.sacrificeConfirmation && !confirm("Dimensional Sacrifice will remove all of your First to Seventh Dimensions (with the cost and multiplier unchanged) for a boost to the Eighth Dimension. It will take time to regain production.")) return
 
 	var sacGain = calcSacrificeBoost()
 	var maxPower = inNGM(2) ? pow10(8888) : Number.MAX_VALUE
@@ -1071,7 +1071,7 @@ function toggleHotkeys() {
 }
 
 function updateHotkeys() {
-	let html = "Hotkeys: 1-8 for buy 10 dimension, shift+1-8 for buy 1 dimension, T to buy max tickspeed, shift+T to buy one tickspeed, M for max all,<br>S for sacrifice"
+	let html = "Hotkeys: Arrow keys to move tabs, 1-8 for buy 10 dimension, shift+1-8 for buy 1 dimension, T to buy max tickspeed, shift+T to buy one tickspeed, M for max all,<br>S for sacrifice"
 	if (!hasAch("r136")) html += ", D for dimension boost"
 	if (!hasAch("ng3p51")) {
 		if (inNGM(3)) html += ", B for tickspeed boost"
@@ -1299,7 +1299,7 @@ function eternity(force, auto, dil, presetLoad) {
 	player.dilation.active = dil
 	doReset("eter", auto)
 
-	if (player.eternitied == 1 && !quantumed) TAB_CORE.open("dim", "dim_time")
+	if (player.eternitied == 1 && !quantumed) TAB_CORE.open("dim_time")
 	if (quantumed) updateColorCharge()
 	doAutoEterTick()
 }
@@ -2738,39 +2738,42 @@ window.addEventListener('keydown', function(event) {
 		if (shiftDown) buyOneDimension(key-48)
 		else buyManyDimension(key-48)
 		return false;
-	} else if (key >= 97 && key <= 104) {
-		if (shiftDown) buyOneDimension(key-96)
-		else buyManyDimension(key-96)
-		return false;
 	}
 	switch (key) {
-		case 65: // A
-			toggleAutoBuyers();
-		break;
+		case 37: // Left
+			TAB_CORE.shift("root", -1)
+			break
+		case 39: // Right
+			TAB_CORE.shift("root", 1)
+			break
+		case 38: // Up
+			TAB_CORE.shift(tmp.tab.open.root, -1)
+			break
+		case 40: // Down
+			TAB_CORE.shift(tmp.tab.open.root, 1)
+			break
 
+		case 65: // A
+			toggleAutoBuyers()
+			break
 		case 66: // B
 			if (hasAch("ng3p51")) bigRip()
 			else if (inNGM(3)) manualTickspeedBoost()
-		break;
-
+			break
 		case 68: // D
 			if (shiftDown && hasAch("ngpp11")) metaBoost()
 			else if (hasAch("r136")) startDilatedEternity()
 			else el("softReset").onclick()
-		break;
-
+			break
 		case 70: // F
 			if (hasAch("ng3p51")) ghostify()
-		break;
-
+			break
 		case 71: // G
 			if (!hasAch("ng3p51")) el("secondSoftReset").onclick()
-		break;
-
+			break
 		case 76: // N
 			if (inNGM(4)) tdBoost(1)
-		break;
-
+			break
 		case 77: // M
 			if (ndAutobuyersUsed<9||!player.challenges.includes("postc8")) el("maxall").onclick()
 			if (hasDilStudy(6)) {
@@ -2782,24 +2785,20 @@ window.addEventListener('keydown', function(event) {
 				}
 				if (maxmeta) el("metaMaxAll").onclick()
 			}
-		break;
-
+			break
+		case 82: // R
+			replicantiGalaxy()
+			break
 		case 83: // S
-			el("sacrifice").onclick()
-		break;
-
+			sacrifice()
+			break
 		case 84: // T
 			if (shiftDown) buyTickSpeed()
 			else buyMaxTickSpeed()
-		break;
-
+			break
 		case 85: // U
 			if (mod.ngp3) unstableAll()
-		break;
-
-		case 82: //R
-			replicantiGalaxy()
-		break;
+			break
 	}
 }, false);
 

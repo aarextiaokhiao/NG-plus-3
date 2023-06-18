@@ -15,10 +15,7 @@ const NGP3_FEATURES = {
 	},
 	ms: {
 		name: "Mastery Studies",
-		tab() {
-			TAB_CORE.open("eter")
-			TAB_CORE.open("eter", "ts_master")
-		},
+		tab: _ => TAB_CORE.open("eter", "ts_master"),
 
 		met: _ => mod.ngp3 && player.dilation.upgrades.includes("ngpp6"),
 		req: _ => 1e100,
@@ -28,9 +25,7 @@ const NGP3_FEATURES = {
 	},
 	qu: {
 		name: "Quantum",
-		tab() {
-			TAB_CORE.open("qu")
-		},
+		tab: _ => TAB_CORE.open("qu"),
 
 		met: _ => (quantumed && isQuantumReached()) || bigRipped(),
 		req: _ => inAnyQC() ? getQCGoal() : getQuantumReq(),
@@ -101,9 +96,7 @@ const NGP3_FEATURES = {
 	},
 	be: {
 		name: "Break Eternity",
-		tab() {
-			TAB_CORE.open("eter", "upg_eter")
-		},
+		tab: _ => TAB_CORE.open("upg_eter"),
 
 		met: _ => beSave?.unlocked,
 		req: _ => E("1e100"),
@@ -125,10 +118,7 @@ const NGP3_FEATURES = {
 	},
 	ph: {
 		name: "Photons",
-		tab() {
-			TAB_CORE.open("funda")
-			TAB_CORE.open("funda", "ph")
-		},
+		tab: _ => TAB_CORE.open("ph"),
 
 		met: _ => PHOTON.unlocked(),
 		req: _ => pow10(1.9e9),
@@ -138,9 +128,7 @@ const NGP3_FEATURES = {
 	},
 	bl: {
 		name: "Bosonic Lab",
-		tab() {
-			TAB_CORE.open("bl")
-		},
+		tab: _ => TAB_CORE.open("bl_hy"),
 
 		met: _ => LAB.unlocked(),
 		req: _ => 15,
@@ -149,9 +137,7 @@ const NGP3_FEATURES = {
 	},
 	hb: {
 		name: "Higgs",
-		tab() {
-			TAB_CORE.open("bl")
-		},
+		tab: _ => TAB_CORE.open("bl"),
 
 		met: _ => false,
 		req: _ => 1e7,

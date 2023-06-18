@@ -84,9 +84,8 @@ let RESETS = {
 	},
 	galSac: {
 		modReq: _ => inNGM(2),
-		prequsite: _ => false,
-		reached: _ => getGSAmount().gt(0),
-		got: _ => player.galacticSacrifice.times > 0 || player.infinitied > 0 || eternitied(),
+		reached: _ => getGSAmount().gt(0) && !isEmptiness,
+		got: _ => gSacrificed() && !isEmptiness,
 
 		doReset() {
 			player.galaxies = 0
@@ -99,7 +98,6 @@ let RESETS = {
 	},
 	inf: {
 		modReq: _ => true,
-		prequsite: _ => false,
 		reached: _ => tmp.ri,
 		got: _ => player.infinitied > 0 || eternitied(),
 
@@ -335,7 +333,7 @@ function updateResetTierButtons() {
 		if (!elm) continue
 
 		let got = data.modReq() && data.got()
-		let shown = got || (data.modReq() && (data.reached() || data.prequsite()))
+		let shown = got || (data.modReq() && (data.reached() || data.prequsite?.()))
 
 		elm.style.display = shown ? "" : "none"
 		if (shown) {

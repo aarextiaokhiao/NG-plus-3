@@ -556,13 +556,12 @@ function showHideConfirmations() {
 }
 
 function updateHeaders() {
-	//Show Header
 	let header = !isEmptiness
 	el("main_header").style.display = header ? "" : "none"
+	el("bonus_header").style.display = header ? "" : "none"
 	el("tabs_root").style.display = header ? "" : "none"
 	el("emptiness").style.display = header ? "none" : ""
 	updateResetTierButtons()
-	if (!header) return
 }
 
 /*function glowText(id) {

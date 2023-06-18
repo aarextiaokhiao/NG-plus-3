@@ -326,7 +326,6 @@ function doQuantum(force, auto, qc = {}) {
 
 RESETS.qu = {
 	modReq: _ => mod.ngpp,
-	prequsite: _ => false,
 	reached: _ => isQuantumReached(),
 	got: _ => quantumed,
 

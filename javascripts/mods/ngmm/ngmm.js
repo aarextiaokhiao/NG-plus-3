@@ -733,9 +733,7 @@ function displayGalSacStats(){
 }
 
 function galSacDisplay(){
-	if (inNGM(2) && (player.galacticSacrifice.times > 0 || player.infinitied > 0 || player.eternities != 0 || quantumed) && !isEmptiness) {
-		el("galaxyPoints2").innerHTML = "You have <span class='GPAmount'>"+shortenDimensions(player.galacticSacrifice.galaxyPoints)+"</span> Galaxy point"+(player.galacticSacrifice.galaxyPoints.eq(1)?".":"s.")
-	}
+	if (gSacrificed() && !isEmptiness) el("galaxyPoints2").innerHTML = "You have <span class='GPAmount'>"+shortenDimensions(player.galacticSacrifice.galaxyPoints)+"</span> Galaxy point"+(player.galacticSacrifice.galaxyPoints.eq(1)?".":"s.")
 	galSacBtnUpdating()
 }
 
