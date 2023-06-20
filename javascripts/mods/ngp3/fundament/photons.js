@@ -105,7 +105,7 @@ let PHOTON = {
 			name: "red",
 			start: 1,
 			eff: a => E_pow(tmp.gal.ts || 1, -Math.min(Math.sqrt(a) / 20, 0.2)),
-			desc: e => `Multiply per-ten multiplier by ${shorten(e)}x. (based on tickspeed reduction)`
+			desc: e => `Tickspeed reduction multiplies per-ten multiplier by ${shorten(e)}x.`
 		}, {
 			name: "orange",
 			start: 3,
