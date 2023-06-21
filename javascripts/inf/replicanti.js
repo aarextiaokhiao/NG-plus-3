@@ -54,7 +54,7 @@ function upgradeReplicantiInterval() {
 	if (E(player.replicanti.interval).lt(1)) {
 		let cost = E(1).div(player.replicanti.interval)
 		if (cost.gt(1e10)) cost = cost.div(1e5).pow(2)
-		if (hasNU(14)) cost = pow10(800 * Math.pow(cost.log10() * 50 + 1, 4))
+		if (hasNU(13)) cost = pow10(800 * Math.pow(cost.log10() * 50 + 1, 4))
 		else cost = pow10(800 * cost.toNumber())
 		player.replicanti.intervalCost = cost
 	} else player.replicanti.intervalCost = player.replicanti.intervalCost.mul(1e10)
@@ -261,8 +261,9 @@ function getReplSpeed() {
 }
 
 function absorbReplication() {
-	tmp.rep.absorb = hasNU(14) ? -tmp.rep.interval.div(tmp.rep.dupRate).min(1).log10() : 0
-	if (tmp.rep.absorb > 0) tmp.rep.speeds.exp *= tmp.rep.absorb
+	tmp.rep.warp = hasNU(13) ? -tmp.rep.interval.div(tmp.rep.dupRate).min(1).log10() : 0
+	if (tmp.rep.warp > 0) tmp.rep.speeds.exp *= tmp.rep.warp
+	tmp.rep.warp_lim = E(10).pow(tmp.rep.speeds.exp / Math.log10(1.001))
 }
 
 function getReplicantiInterval() {
@@ -284,11 +285,11 @@ function getReplicantiFinalInterval() {
 	let speed = tmp.rep.speeds
 	let x = tmp.rep.interval.div(tmp.rep.dupRate)
 
-	if (tmp.rep.absorb > 0) {
-		x = 10 / speed.exp
-		if (hasBLMilestone(1)) x /= blEff(1)
+	if (tmp.rep.warp > 0) {
+		let speed2 = player.replicanti.amount.lt(tmp.rep.warp_lim)
+		x = 1 / speed.exp
+		if (speed2) x *= 5
 	}
-	if (hasBLMilestone(11) && player.replicanti.amount.lt(blEff(11))) x /= 10
 
 	if (player.replicanti.amount.gt(Number.MAX_VALUE)) x = mod.rs ? Math.pow(hasAch("r107") ? Math.max(player.replicanti.amount.log(2)/1024,1) : 1, -.25) * x.toNumber() : E_pow(speed.inc, Math.max(player.replicanti.amount.log10() / speed.exp - 1, 0)).mul(x)
 

@@ -65,10 +65,10 @@ let PHOTON = {
 	emissionData: [
 		{
 			resName: "Space Shards",
-			res: _ => ghSave.ghostParticles,
+			res: _ => brSave.spaceShards,
 
-			req: i => E(1e10).pow(i).mul(1e100),
-			bulk: r => Math.floor(r.max(1).div(1e100).log(1e10)) + 1,
+			req: i => E(1e8).pow(i).mul(1e100),
+			bulk: r => Math.floor(r.max(1).div(1e100).log(1e8)) + 1,
 		}, {
 			resName: "Spectral Particles",
 			res: _ => ghSave.ghostParticles,
@@ -104,16 +104,16 @@ let PHOTON = {
 		{
 			name: "red",
 			start: 1,
-			eff: a => E_pow(tmp.gal.ts || 1, -Math.min(Math.sqrt(a) / 20, 0.2)),
+			eff: a => E_pow(tmp.gal.ts || 1, -Math.min(Math.sqrt(a) / 10, 0.2)),
 			desc: e => `Tickspeed reduction multiplies per-ten multiplier by ${shorten(e)}x.`
 		}, {
 			name: "orange",
-			start: 3,
+			start: 4,
 			eff: a => 1.5 - 0.5 / (a / 3 + 1),
 			desc: e => `Starting at ^9, raise 2nd Neutrino Boost by ^${shorten(e)}.`
 		}, {
 			name: "yellow",
-			start: 4,
+			start: 5,
 			eff: a => Math.log2(a + 1) / 20,
 			desc: e => `Discharged Galaxies work, but as ${(e*100).toFixed(1)}% effective.`
 		}, {

@@ -175,7 +175,7 @@ const NEUTRINO = NT = {
 				},
 				effDesc: e => `Increase IC3 multiplier base by <b>${shorten(e)}x</b>.`,
 			}, {
-				cost: E(1e24),
+				cost: E(1e27),
 				eff(nt) {
 					nt = nt[0].add(1).log10()+nt[1].add(1).log10()+nt[2].add(1).log10()
 					let r = Math.log2(Math.max(nt / 70, 1)) / 300
@@ -292,18 +292,18 @@ const NEUTRINO = NT = {
 				effDesc: e => `(hover)`
 			}, {
 				unl: _ => PHOTON.unlocked(),
-				cost: E(1e30),
+				cost: E(1e35),
+				desc: `Unlock Replicanti Warp.`
+			}, {
+				unl: _ => PHOTON.unlocked(),
+				cost: E(1e36),
 				desc: `Tachyonic Galaxies scale Positron softcap later.`,
 
-				eff: _ => player.dilation.freeGalaxies * 2,
+				eff: _ => player.dilation.freeGalaxies,
 				effDesc: e => `+${getFullExpansion(e)}`
 			}, {
 				unl: _ => PHOTON.unlocked(),
-				cost: E(1e33),
-				desc: `Replicate Slowdown absorbs Replicate Interval. Lower Replicate Interval.`
-			}, {
-				unl: _ => PHOTON.unlocked(),
-				cost: E(1e35),
+				cost: E(1e42),
 				desc: `Galaxy strength raises Meta-Antimatter effect.`,
 
 				eff: _ => tmp.gal.str / 2,

@@ -52,7 +52,7 @@ function getPositronBoost(mod) {
 	var r = quSave.electrons.amount
 	var ss = 8e4
 	var ss_speed = 8e4
-	if (hasNU(13)) ss += NT.eff("upg", 13, 0)
+	if (hasNU(14)) ss += NT.eff("upg", 14, 0)
 	if (r > ss) r = Math.sqrt((r - ss + ss_speed) * ss_speed) + ss - ss_speed
 
 	if (hasGluonUpg("rg", 4) && mod != "no-rg4") r *= 0.7

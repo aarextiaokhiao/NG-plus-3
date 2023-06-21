@@ -63,7 +63,7 @@ const BOSONIC_LAB = LAB = {
 		}, {
 			req: E(200),
 			desc: "Replicanti Absorb speeds up Replicanti.",
-			eff: b => Math.max((tmp.rep.absorb || 1) / 5, 1),
+			eff: b => Math.max((tmp.rep.warp || 1) / 5, 1),
 			effDesc: e => shorten(e) + "x",
 		}, {
 			req: E(500),
