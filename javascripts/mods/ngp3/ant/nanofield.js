@@ -162,7 +162,7 @@ var nanoRewards = {
 		4: _ => ["dt_to_ma_exp"],
 		5: _ => ["dil_exp"],
 		6: _ => ["md_boost"],
-		7: _ => hasNU(6) ? ["pilon_charge", "decay_exp"] : ["remote_start", "pilon_charge"],
+		7: _ => hasNU(16) ? ["pilon_charge", "decay_exp"] : hasNU(6) ? ["pilon_charge"] : ["remote_start", "pilon_charge"],
 		8: _ => ["per_10_power", "pilon_energy"],
 	},
 }
