@@ -404,7 +404,7 @@ let HOW_TO = [
 
 		title: "Photons",
 		layer: "fundament",
-		desc: `Best Tachyon Particles produce Photons. Photons reset on Fundament.
+		desc: `Best Tachyon Particles produce Photons, which reset on Fundament.
 		<br><br>
 		Your Spectral Particles, Neutrinos, and Photons give Light Emissions.<br>
 		Every Light is dependent on Emissions, but has a fixed limit.<br>
