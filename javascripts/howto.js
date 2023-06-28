@@ -410,7 +410,7 @@ let HOW_TO = [
 		Every Light is dependent on Emissions, but has a fixed limit.<br>
 		Enlightenments require Emissions to gain, in which increase limits of all Lights.
 		<br><br>
-		Light multiplier can be exchanged within any Light, but can't go below 75%.`
+		Light multipliers can be exchanged on 2 Lights, but can't go below 75%.`
 	}, {
 		mod: _ => ngp3,
 		req: _ => ghSave?.lab?.unl,
@@ -419,7 +419,7 @@ let HOW_TO = [
 		tab: "bl",
 		layer: "fundament",
 		desc: `<b>Hypotheses</b><br>
-		There's a 5x5 grid where each bond of Hypotheses has its unique boost.
+		There's a 5x5 grid where each bond of Hypotheses boosts differently.
 		<br><br>
 		<b>Bosonic Milestones</b><br>
 		At a specific amount of best Bosonic Matter, you'll unlock a Bosonic Milestone. Best Bosonic Matter strengthens some milestones.
