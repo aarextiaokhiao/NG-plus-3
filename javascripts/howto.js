@@ -410,7 +410,7 @@ let HOW_TO = [
 		Every Light is dependent on Emissions, but has a fixed limit.<br>
 		Enlightenments require Emissions to gain, in which increase limits of all Lights.
 		<br><br>
-		Light multipliers can be exchanged on 2 Lights, but can't go below 75%.`
+		Multipliers can be exchanged between 2 Lights, but they can't go below 75%.`
 	}, {
 		mod: _ => ngp3,
 		req: _ => ghSave?.lab?.unl,
