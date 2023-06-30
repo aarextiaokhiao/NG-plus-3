@@ -429,7 +429,7 @@ let HOW_TO = [
 		- W+ = +1 Hypercharge if assigned, powers up Capaciators.<br>
 		- W- = -1 Hypercharge if assigned<br>
 		- Z0 = -1 Hypercharge`
-	/*}, {
+	}, {
 		mod: _ => ngp3,
 		req: _ => ghSave?.hb?.unl,
 
@@ -450,7 +450,7 @@ let HOW_TO = [
 		tab: "bl",
 		layer: "fundament",
 		desc: `???`
-	}, {
+	}/*, {
 		mod: _ => ngp3,
 		req: _ => ghSave?.bd.unl,
 
