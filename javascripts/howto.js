@@ -407,7 +407,7 @@ let HOW_TO = [
 		desc: `Best Tachyon Particles produce Photons, which reset on Fundament.
 		<br><br>
 		Your Spectral Particles, Neutrinos, and Photons give Light Emissions.<br>
-		Every Light is dependent on Emissions, but has a fixed limit.<br>
+		Light Emissions boost all Lights, but are limited.<br>
 		Enlightenments require Emissions to gain, in which increase limits of all Lights.
 		<br><br>
 		Multipliers can be exchanged between 2 Lights, but they can't go below 75%.`
