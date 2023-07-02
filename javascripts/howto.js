@@ -436,13 +436,10 @@ let HOW_TO = [
 		title: "Higgs Field",
 		tab: "bl",
 		layer: "fundament",
-		desc: `At ??? Bosonic Matter, you can prestige Bosonic Matter and W & Z Bosons for Higgs.
-		<br><br>
-		Each Higgs unlocks a placeable boost along with a slot in a pyramid.
+		desc: `At ??? Bosonic Matter, you can prestige Bosonic Matter and W & Z Bosons for Higgs. You'll unlock Higgs Field where you can swap boosts in a pyramid.
 		<br>
-		Those boosts are stronger by Higgs Mass, but later rows are less effective.
-		<br>
-		Later rows catch up closer to first rows; as Higgs Mass is divided in a logarithmic strength formula.`
+		Higgs Mass strengthen these boosts, but later rows are less effective. These will later catch up with earlier rows.`,
+	}/*, {
 		mod: _ => ngp3,
 		req: _ => ghSave?.gw?.unl,
 
@@ -450,7 +447,7 @@ let HOW_TO = [
 		tab: "bl",
 		layer: "fundament",
 		desc: `???`
-	}/*, {
+	}, {
 		mod: _ => ngp3,
 		req: _ => ghSave?.bd.unl,
 
@@ -500,8 +497,8 @@ let HOW_TO = [
 
 		title: "Annihilation",
 		layer: "fundament",
-		desc: `Nullify features for Exotic Matter.`*/
-	}/*, {
+		desc: `Nullify features for Exotic Matter.`
+	}, {
 		mod: _ => true,
 		req: _ => true,
 
