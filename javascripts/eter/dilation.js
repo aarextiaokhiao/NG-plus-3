@@ -80,7 +80,7 @@ function getEternityBoostToDT(){
 
 function getNGUDTGain(){
 	var gain = E(1)
-	gain = gain.mul(getBlackholePowerEffect())
+	if (!mod.udsp) gain = gain.mul(getBlackholePowerEffect())
 	if (player.eternityUpgrades.includes(7)) gain = gain.mul(1 + Math.log10(Math.max(1, player.money.log(10))) / 40)
 	if (player.eternityUpgrades.includes(8)) gain = gain.mul(1 + Math.log10(Math.max(1, player.infinityPoints.log(10))) / 20)
 	if (player.eternityUpgrades.includes(9)) gain = gain.mul(1 + Math.log10(Math.max(1, player.eternityPoints.log(10))) / 10)

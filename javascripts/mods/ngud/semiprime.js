@@ -110,3 +110,7 @@ const BH_UDSP = {
 		for (let [i, d] of Object.entries(BH_UDSP.eff)) el("bh_udsp_eff_"+i).innerHTML = hasBlackHoleEff(i) ? d.desc(tmp.bh_eff[i]) : `[ Feed ${getFullExpansion(d.req)} Remnants ]`
 	}
 }
+
+function moveBlackHoleFeed() {
+	el(mod.udsp ? "bh_udsp_feed" : "bh_feed").appendChild(el("bh_feed_div"))
+}

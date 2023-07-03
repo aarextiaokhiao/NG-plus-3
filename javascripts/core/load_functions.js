@@ -1628,6 +1628,7 @@ function onLoad(noOffline) {
 	setTSDisplay()
 	setReplAutoDisplay()
 	setSomeQuantumAutomationDisplay()
+	moveBlackHoleFeed()
 
 	if (mod.ngp3) updateNGp3DisplayStuff()
 	hideDimensions()
