@@ -90,7 +90,6 @@ function getNGUDTGain(){
 function getDilPower() {
 	var ret = E_pow(3, getDilUpgPower(3))
 	if (NGP3andVanillaCheck() && hasAch("r132")) ret = ret.mul(Math.max(Math.pow(player.galaxies, 0.04), 1))
-
 	if (player.dilation.upgrades.includes("ngud1")) ret = getD18Bonus().mul(ret)
 	if (mod.ngp3) {
 		if (hasAch("ng3p11")) ret = ret.mul(Math.max(getTotalRG() / 125, 1))

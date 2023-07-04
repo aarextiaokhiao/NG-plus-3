@@ -585,7 +585,7 @@ var metaSaveId = betaId + "AD_aarexModifications"
 function loadSave() {
 	let metaSave = localStorage.getItem(metaSaveId)
 	if (metaSave == null) {
-		let err = "No save found. Please go to main page and then reload."
+		let err = "Save not found. Go to the game and reload this page."
 		alert(err)
 		throw err
 	}
@@ -593,7 +593,7 @@ function loadSave() {
 
 	player = localStorage.getItem(btoa(prefix+metaSave.current))
 	if (player == null) {
-		let err = "No save found. Please go to main page and then reload."
+		let err = "Save not found. Go to the game and reload this page."
 		alert(err)
 		throw err
 	}
