@@ -109,8 +109,8 @@ let PHOTON = {
 		}, {
 			name: "orange",
 			start: 4,
-			eff: a => 1.5 - 0.5 / (a / 3 + 1),
-			desc: e => `Starting at ^9, raise 2nd Neutrino Boost by ^${shorten(e)}.`
+			eff: a => 1.5 - 0.5 / Math.log2(a + 2),
+			desc: e => `Starting at ^9, raise 2nd Neutrino Boost by ^${e.toFixed(3)}.`
 		}, {
 			name: "yellow",
 			start: 5,
