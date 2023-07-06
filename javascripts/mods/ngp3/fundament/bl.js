@@ -294,15 +294,15 @@ const BL_HYPOTHESES = {
 		},
 		["0;3"]: {
 			eff: x => x,
-			disp: e => `At 2 levels, double Bosonic Matter. <b>(${e}/2)</b>`,
+			disp: e => `On 2 bonds, double Bosonic Matter. <b>(${e}/2)</b>`,
 		},
 		["1;3"]: {
 			eff: x => x,
-			disp: e => `At 2 levels, double W Bosons. <b>(${e}/2)</b>`,
+			disp: e => `On 2 bonds, double W Bosons. <b>(${e}/2)</b>`,
 		},
 		["2;3"]: {
 			eff: x => x,
-			disp: e => `At 2 levels, double Z0 Bosons. <b>(${e}/2)</b>`,
+			disp: e => `On 2 bonds, double Z0 Bosons. <b>(${e}/2)</b>`,
 		}
 	},
 
