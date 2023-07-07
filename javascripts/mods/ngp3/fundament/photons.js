@@ -113,12 +113,12 @@ let PHOTON = {
 			desc: e => `Starting at ^9, raise 2nd Neutrino Boost by ^${e.toFixed(3)}.`
 		}, {
 			name: "yellow",
-			start: 5,
+			start: 6,
 			eff: a => Math.log2(a + 1) / 20,
 			desc: e => `Discharged Galaxies work, but as ${(e*100).toFixed(1)}% effective.`
 		}, {
 			name: "green",
-			start: 6,
+			start: 10,
 			eff(a) {
 				if (a > 5) a = Math.log10(a * 2) + 4
 				return 1+a/1.5e3
@@ -126,17 +126,17 @@ let PHOTON = {
 			desc: e => `Gain ${shorten((e-1)*100)}% more Neutrinos per Big Rip galaxy.`
 		}, {
 			name: "blue",
-			start: 9,
+			start: 20,
 			eff: a => Math.log10(a / 5 + 1) + 1,
 			desc: e => `Raise Replicate Slowdown by ^${shorten(e)}.`
 		}, {
 			name: "violet",
-			start: 11,
+			start: 50,
 			eff: a => Math.log10(a + 1) / 5 + 1,
 			desc: e => `Raise Emperor Dimensions by ^${shorten(e)}.`
 		}, {
 			name: "ultraviolet",
-			start: 12,
+			start: 100,
 			eff: a => Math.cbrt(a / 5 + 1),
 			desc: e => `Post-16 Nanoreward scaling scales ${shorten(e)}x slower.`
 		}

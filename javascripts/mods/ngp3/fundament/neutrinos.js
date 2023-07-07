@@ -183,7 +183,7 @@ const NEUTRINO = NT = {
 				},
 				effDesc: e => `Outside of Big Rip, TS232 regains <b>${shorten(e*100)}%</b> power.`,
 			}, {
-				cost: E(1/0),
+				cost: E(1e29),
 				eff(nt) {
 					nt = nt[0].add(1).log10()+nt[1].add(1).log10()+nt[2].add(1).log10()
 					return Math.log10(Math.max(nt / 100, 1)) + 1
