@@ -198,7 +198,7 @@
 						<td><div><button id="importbtn" class="storebtn" onclick='import_save()' style="color:black; width: 200px; height: 55px; font-size: 20px">Import</button></div></td>
 					</tr><tr>
 						<td><div class="storebtn" id="autoSaveIntDiv" style="color:black; width: 198px; height: 55px; font-size:130%; text-align: center;"><b id="autoSaveInterval">Auto-save interval: 30s</b><input id="autoSaveIntervalSlider" style="width: 170px;" type="range" min="14" max="120" value="30" class="slider" oninput="changeAutoSaveInterval(true)"></div></td>
-						<td><div><button id="exportybtn" class="storebtn" onclick='export_file()' style="color:black; width: 200px; height: 55px; font-size: 20px">Download</button></div></td>
+						<td><div><button id="exportybtn" class="storebtn" onclick='export_file()' style="color:black; width: 200px; height: 55px; font-size: 20px">Save to file</button></div></td>
 						<td><div><button id="load" class="storebtn" onclick='load_saves()' style="color:black; width: 200px; height: 55px; font-size: 20px">Load</button></div></td>
 					</tr><tr>
 						<td><div class="storebtn" style="color:black; width: 198px; height: 55px; font-size:130%; text-align: center;"><b id="offlineInterval"></b><input id="offlineSlider" style="width: 170px;" type="range" min="0" max="10" class="slider" oninput="adjustOfflineProgress()"></div></td>
@@ -4136,7 +4136,7 @@
 		Here's a field of text for all your presets! Enjoy!<br>
 		<textarea id='preset_bulk_str'></textarea><br>
 		<button class='storebtn' onclick="PRESET_BULK.close(true)">Save</button>
-		<button class='storebtn' onclick="PRESET_BULK.download()">Download</button>
+		<button class='storebtn' onclick="PRESET_BULK.download()">Save to file</button>
 		<button class='storebtn' onclick="PRESET_BULK.close()">Cancel</button>
 	</div>
 

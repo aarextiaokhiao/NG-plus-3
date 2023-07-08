@@ -237,7 +237,7 @@ function exportData(encoded, success) {
 var onImport = false
 function import_save(i = savePlacement) {
 	if (i == -1) {
-		$.notify("Disabled during Rediscovery. Cheaters shall not win.")
+		$.notify("Importing saves is disabled during a Rediscovery to prevent cheating.")
 		return
 	}
 
@@ -246,7 +246,7 @@ function import_save(i = savePlacement) {
 	onImport = false
 
 	if (save_data.split("AntimatterDimensions")[1] && save_data.split("EndOf")[1]) {
-		$.notify("Reality isn't supported in this mod!", "error")
+		$.notify("The Reality Update is incompatible with Aarex's mods.", "error")
 		return
 	}
 	if (save_data.constructor !== String) save_data = "";
@@ -293,7 +293,7 @@ function import_save(i = savePlacement) {
 			return
 		}
 		if (decoded_save_data?.reality || decoded_save_data?.celestials) {
-			$.notify("Reality or NG+Reality aren't supported in this mod!", "error")
+			$.notify("The Reality Update is incompatible with Aarex's mods.", "error")
 			return
 		}
 		if (i == savePlacement) {
@@ -346,7 +346,7 @@ function swap_save(i, j) {
 
 function delete_save(i) {
 	if (REDISCOVER.in()) {
-		$.notify("Can't delete a save during Rediscovery is on!")
+		$.notify("You cannot delete Rediscovery saves.")
 		return
 	}
 	if (meta.save.saveOrder.length == 1) {
@@ -373,7 +373,7 @@ function delete_save(i) {
 }
 
 function rename_save(i = savePlacement) {
-	var save_name = prompt("Input the new name of " + (i == savePlacement ? "your current save" : "save #" + (i + 1))+". It's recommended to put the name of the mod as your save name. Leave blank to reset the save's name.")
+	var save_name = prompt("Input the new name of " + (i == savePlacement ? "your current save" : "save #" + (i + 1))+". Leave the space blank to reset the save's name.")
 
 	if (i == savePlacement) {
 		aarMod.save_name = save_name
@@ -786,7 +786,7 @@ function doNGMinusNewPlayer(){
 	aarMod.newGameMinusVersion = 2.2
 }
 
-function doNGPlusOneNewPlayer(){
+function doNGPlusOneNewPlayer(){ // eventually change to have multiple versions/variations of NG+
 	for (i = 1; i <= 13; i++) { // get all achievements up to and including row 13
 		for (j = 1; j <= 8; j++) {
 			player.achievements.push("r" + i + j)

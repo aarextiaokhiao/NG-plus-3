@@ -225,7 +225,7 @@ var performedTS
 function updateTimeStudyButtons(changed, forceupdate = false) {
 	if (!forceupdate && (changed ? player.dilation.upgrades.includes(10) : performedTS && !player.dilation.upgrades.includes(10))) return
 	performedTS = true
-	if (mod.rs) {
+	if (mod.rs) { // eternity
 		var locked = getTotalTT(player) < 60
 		el("nextstudy").textContent = locked ? "Next time study set unlock at 60 total Time Theorems." : ""
 		el("tsrow3").style.display = locked ? "none" : ""
