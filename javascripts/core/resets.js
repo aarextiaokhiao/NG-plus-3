@@ -367,5 +367,5 @@ function updateResetTierButtons() {
 	}
 }
 
-const infinitied = x => player.infinities > 0 || eternitied()
+const infinitied = x => player.infinitied > 0 || eternitied()
 const eternitied = x => getEternitied() > 0 || quantumed
