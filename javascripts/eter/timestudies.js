@@ -24,7 +24,7 @@ function buyWithIP() {
 
 function buyWithEP() {
 	if (!canBuyTTWithEP()) {
-		alert("You need to buy at least 1 time dimension before you can purchase theorems with Eternity Points.")
+		alert("You need to buy at least 1 Time Dimension before you can purchase Theorems with Eternity Points.")
 		return false;
 	}
 	if (player.eternityPoints.gte(player.timestudy.epcost)) {
@@ -127,7 +127,7 @@ function buyDilationStudy(name, cost) {
 	if (player.timestudy.theorem >= cost && !hasDilStudy(name) && (hasDilStudy(name - 1) || name < 2)) {
 		if (name < 2) {
 			if (ECComps("eterc11") + ECComps("eterc12") < 10 || getTotalTT(player) < getDilationTotalTTReq()) return
-			showEternityTab("dilation")
+			TAB_CORE.open('dil')
 			if (player.eternityUpgrades.length < 1) giveAchievement("Work harder.")
 		} else if (name > 5) {
 			TAB_CORE.open('dim_meta')
@@ -225,7 +225,7 @@ var performedTS
 function updateTimeStudyButtons(changed, forceupdate = false) {
 	if (!forceupdate && (changed ? player.dilation.upgrades.includes(10) : performedTS && !player.dilation.upgrades.includes(10))) return
 	performedTS = true
-	if (mod.rs) {
+	if (mod.rs) { // eternity
 		var locked = getTotalTT(player) < 60
 		el("nextstudy").textContent = locked ? "Next time study set unlock at 60 total Time Theorems." : ""
 		el("tsrow3").style.display = locked ? "none" : ""
