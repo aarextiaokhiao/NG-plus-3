@@ -21,7 +21,7 @@ function updateNanoverseTab() {
 		el("quarkChargeProductionCap").textContent = shortenMoney(getQuarkChargeProductionCap())
 	}
 
-	el("produceQuarkCharge").innerHTML = (nfSave.producingCharge ? "Stop" : "Start") + " production of nanocharge." + (nfSave.producingCharge ? "" : "<br>(You won't gain pilons on production)")
+	el("produceQuarkCharge").innerHTML = (nfSave.producingCharge ? "Stop" : "Start") + " producing nanocharge." + (nfSave.producingCharge ? "" : "<br>(You'll stop producing Pilons)")
 	el("produceQuarkCharge").className = "antbtn " + (nfSave.producingCharge ? "hover" : "")
 
 	var amt = nfSave.rewards
