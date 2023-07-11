@@ -188,7 +188,7 @@ el("theme").onclick = function () {
 function updateMoney() {
 	let abbs = modAbbs(mod, true)
 	el("z").textContent = (abbs.length > 8 ? "" : "AD: ") + abbs + " | " + shortenMoney(player.money) + (player.money.e >= 1e6 ? "" : " antimatter")
-	el("coinAmount").textContent = shortenMoney(player.money)
+	el("coinAmount").textContent = formatQuick(player.money, 2, !inNGM(3) ? Math.min(Math.max(3 - player.money.e, 0), 3) : 0)
 
 	var element2 = el("matter");
 	if (inNC(12) || player.currentChallenge == "postc1" || player.currentChallenge == "postc6") element2.textContent = "There is " + formatValue(player.options.notation, player.matter, 2, 1) + " matter."; //TODO
