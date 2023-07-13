@@ -447,7 +447,7 @@ newsArray = [//always true
 ["Local duplicant paralyzed after eating 413 quantum food", "hasMasteryStudy('d10')", "am235"],
 ["Hey, yeah you. You're playing this game right? And you're seeing this newsticker right now right? There are prbably many hundreds of news tickers, maybe even thousands. A news ticker does take like half a minute to scroll past the scrren AT A MINIMUM, and if we say there are 1000 news, it would take you about 1000 news for you to get this one. So multiply half a minute with 1000, and you get 500 minutes. That's a huge chunk of your day, that could be spent doing something else. Also, consider the fact that you'll probably miss this news like 99% of the time, it would most probably take you like a week on average to find this news. All this time, you played a simple game, instead of doing anything else. In one week you could have learned how to make your own idle game, and many other things. So stop playing now, and do something else for once, you lazybag.", true, "am236"],
 ["Spelpotatis owns the communism news, Aarex can confirm it.", true, "am237"],
-["Only 0.000001% can get this dimension :scream::scream:", true, "am238"],
+["Only 0.000001% can get this dimension 😱😱", true, "am238"],
 ["Meester Twees-Twitter, Jo-ho-oh gold and silver, Juhmatok-medal-itis, but that underestimates the significance of TWOW S2", "mod.ngp3", "am239"],
 ["Local duplicant tries to succeed as becoming a fictional scientist", "hasMasteryStudy('d10')", "am240"],
 ["What do you mean Aarex balancing? I think his balancing is perfectly fine! -new player who doesn't know about pre-respec", true, "am241"],
