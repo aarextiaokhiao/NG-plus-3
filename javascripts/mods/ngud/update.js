@@ -239,7 +239,7 @@ function hasExdilation() {
 }
 
 function getExdilationReq() {
-	if (mod.udsp && !aarMod.nguepV) return {ep: "1e20000", dt: 1e40}
+	if (mod.udsp) return {ep: "1e10000", dt: 1e27}
 	return {ep: "1e10000", dt: 1e30}
 }
 
