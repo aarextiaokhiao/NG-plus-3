@@ -285,7 +285,7 @@ function updateExdilationStats() {
 			el("xd" + i).style.height = mod.udsp ? "60px" : "50px"
 			el("xd" + i).className = player.exdilation.unspent.eq(0) ? "dilationupgrebuyablelocked" : "dilationupgrebuyable";
 
-			if (mod.udsp) el("xd" + i + "span").textContent = shortenCosts(exDilationUpgradeStrength(i)) + ' → ' + shortenCosts(exDilationUpgradeStrength(i, player.exdilation.unspent)) + ' scaling start'
+			if (mod.udsp) el("xd" + i + "span").textContent = shortenCosts(getRebuyableDilUpgScaleStart(i)) + ' → ' + shortenCosts(getRebuyableDilUpgScaleStart(i, player.exdilation.unspent)) + ' scaling start'
 			else el("xd" + i + "span").textContent = exDilationUpgradeStrength(i).toFixed(2) + 'x → ' + exDilationUpgradeStrength(i,player.exdilation.unspent).toFixed(2) + 'x'
 		}
 		el("xd"+i).parentElement.style.display = unl ? "" : "none"
