@@ -1871,6 +1871,11 @@ td.green {
 	background: rgba(0, 191, 0, 0.25)
 }
 
+.cyan { color: #00bfbf }
+td.cyan {
+	background: rgba(0, 191, 191, 0.25)
+}
+
 .blue { color: #0000bf }
 td.blue {
 	background: rgba(0, 0, 191, 0.25)

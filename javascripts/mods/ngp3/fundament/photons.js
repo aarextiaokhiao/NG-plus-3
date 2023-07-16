@@ -10,19 +10,16 @@ let PHOTON = {
 
 	//Calculation
 	setup() {
-		return {
+		let r = {
 			amt: E(0),
-			emission: [],
 			light: [],
-			offset: [0,0,0,0,0,0,0],
 			lighten: 0
 		}
+		for (var i of this.lightData) r.light.push(E(0))
+		return r
 	},
 	calc(dt) {
-		ghSave.photons.amt = ghSave.photons.amt.add(this.photonGain().mul(dt))
-		for (var i in this.emissionData) this.getEmission(i)
-
-		this.release()
+		ghSave.photons.amt = ghSave.photons.amt.add(this.photonGain().mul(dt)).min(this.photonCap())
 		this.enlighten()
 	},
 	temp() {
@@ -31,12 +28,9 @@ let PHOTON = {
 		let data = {}
 		tmp.funda.photon = data
 
-		data.leftover = 0
-		for (var i of ghSave.photons.offset) data.leftover -= i
-
 		data.cap = this.lightCap()
 		data.eff = []
-		for (var [i, light] of Object.entries(this.lightData)) data.eff[i] = light.eff(ghSave.photons.light[i] || 0)
+		for (var [i, light] of Object.entries(this.lightData)) data.eff[i] = light.eff(ghSave.photons.light[i].toNumber())
 	},
 
 	/* FEATURES */
@@ -45,51 +39,21 @@ let PHOTON = {
 		let r = E(player.dilation.bestTPOverGhostifies.max(1).log10() / 200).pow(5)
 		if (hasNanoReward("photon")) r = r.mul(getNanorewardEff("photon"))
 		if (hasBLMilestone(18)) r = r.mul(blEff(18))
-		return r
+		return r.div(100)
 	},
-
-	//Feature - Ions
-	getEmission(i) {
-		let amt = ghSave.photons.emission[i] || 0
-		let kind = this.emissionData[i]
-		let bulk = kind.bulk(kind.res())
-		if (isNaN(bulk)) return
-
-		ghSave.photons.emission[i] = Math.max(bulk, amt)
+	photonCap() {
+		return E(1)
 	},
-	totalEmissions() {
-		let total = 0
-		for (const amt of ghSave.photons.emission) total += amt || 0
-		return total
-	},
-	emissionData: [
-		{
-			resName: "Space Shards",
-			res: _ => brSave.spaceShards,
-
-			req: i => E(1e8).pow(i).mul(1e100),
-			bulk: r => Math.floor(r.max(1).div(1e100).log(1e8)) + 1,
-		}, {
-			resName: "Spectral Particles",
-			res: _ => ghSave.ghostParticles,
-
-			req: i => E(1e3).pow(i).mul(1e23),
-			bulk: r => Math.floor(r.max(1).div(1e23).log(1e3)) + 1,
-		}, {
-			resName: "Photons",
-			res: _ => ghSave.photons.amt,
-
-			req: i => E(5).pow(Math.pow(i, mod.p3ep ? 0.75 : 1)).mul(1e5),
-			bulk: r => Math.floor(Math.pow(r.max(1).div(1e5).log(5), 1 / (mod.p3ep ? 0.75 : 1))) + 1,
-		}
-	],
 
 	//Feature - Lights
-	lightCap() {
-		return 5+this.enlightenEff()
-	},
-	release() {
-		ghSave.photons.light = []
+	emit(x) {
+		let max = this.lightCap(x)
+		let amt = ghSave.photons.light[x]
+		let gain = ghSave.photons.amt.min(max.sub(amt))
+		ghSave.photons.amt = ghSave.photons.amt.sub(gain)
+		ghSave.photons.light[x] = amt.add(gain).min(max)
+		return
+		/* = []
 
 		let total = this.totalEmissions()
 		for (const [i, light] of Object.entries(this.lightData)) {
@@ -98,7 +62,12 @@ let PHOTON = {
 			gain = Math.min(Math.max(gain, 0), tmp.funda.photon.cap)
 
 			ghSave.photons.light.push(gain)
-		}
+		}*/
+	},
+	lightCap(x) {
+		let r = E(0) //ghSave.photons.light[(x - 1) % 8]
+		if (x == 0) r = r.add(1)
+		return r.add(this.enlightenEff())
 	},
 	lightData: [
 		{
@@ -125,20 +94,25 @@ let PHOTON = {
 			},
 			desc: e => `Gain ${shorten((e-1)*100)}% more Neutrinos per Big Rip galaxy.`
 		}, {
-			name: "blue",
+			name: "cyan",
 			start: 20,
 			eff: a => Math.log10(a / 5 + 1) + 1,
 			desc: e => `Raise Replicate Slowdown by ^${shorten(e)}.`
 		}, {
-			name: "violet",
+			name: "blue",
 			start: 50,
 			eff: a => Math.log10(a + 1) / 5 + 1,
 			desc: e => `Raise Emperor Dimensions by ^${shorten(e)}.`
 		}, {
-			name: "ultraviolet",
+			name: "violet",
 			start: 100,
 			eff: a => Math.cbrt(a / 5 + 1),
 			desc: e => `Post-16 Nanoreward scaling scales ${shorten(e)}x slower.`
+		}, {
+			name: "ultraviolet",
+			start: 200,
+			eff: a => 1,
+			desc: e => `???`
 		}
 	],
 	eff(x, def = 1) {
@@ -154,7 +128,7 @@ let PHOTON = {
 	//Feature - Enlighten
 	enlighten() {
 		let lighten = ghSave.photons.lighten
-		let gain = Math.floor(Math.floor((PHOTON.totalEmissions() - 14) / 2)) + 1
+		let gain = 0
 		ghSave.photons.lighten = Math.max(gain, lighten)
 	},
 	enlightenEff() {
@@ -164,45 +138,35 @@ let PHOTON = {
 
 	/* HTML */
 	setupTab() {
-		let shop = ``
-		for (var i in PHOTON.emissionData) shop += `(Next: <span id='ph_shop_req_${i}'></span>)<br>`
-		el("ph_shop").innerHTML = shop
-
 		for (var [i, light] of Object.entries(PHOTON.lightData)) {
 			el('ph_light_'+i).innerHTML = `<div id='ph_light_div_${i}' style='display: none'>
-				<span id='ph_light_amt_${i}' style='font-size: 18px'></span>
-				${light.name} (<span id='ph_light_per_${i}'></span>%)<br>
+				<span id='ph_light_amt_${i}' style='font-size: 18px'></span> ${light.name}<br>
 				<span id='ph_light_eff_${i}'></span><br>
-				<button class='storebtn' id='ph_light_trade_${i}' onclick='PHOTON.trade(${i})'>Trade</button>
+				<button class='storebtn photon' id='ph_light_emit_${i}' onclick='PHOTON.emit(${i})'>Emit</button>
 			</div><div id='ph_light_req_${i}'>
 				Requires ${light.start} Emissions
 			</div>`
 		}
 	},
 	update() {
-		let unl = PHOTON.unlocked()
+		let unl = this.unlocked()
 		el("gphUnl").style.display = unl ? "none" : ""
 		el("gphDiv").style.display = unl ? "" : "none"
-		if (!PHOTON.unlocked()) {
+		if (!this.unlocked()) {
 			el("gphUnl").textContent = "Get "+shortenCosts(pow10(2.9e9))+" antimatter in Big Rip to unlock Photons."
 			return
 		}
 
-		el("ph_emission").textContent = getFullExpansion(PHOTON.totalEmissions())
-		for (const [i, emission] of Object.entries(PHOTON.emissionData)) el("ph_shop_req_" + i).textContent = `${shorten(emission.req(ghSave.photons.emission[i] || 0))} ${emission.resName}`
+		el("ph_amt").textContent = shorten(ghSave.photons.amt) + " / " + shorten(this.photonCap())
+		el("ph_prod").textContent = "(+" + shorten(this.photonGain()) + "/s)"
 
-		el("ph_amt").textContent = shortenMoney(ghSave.photons.amt)
-		el("ph_prod").textContent = "(+" + shortenMoney(PHOTON.photonGain()) + "/s)"
 		el("ph_lighten").textContent = getFullExpansion(ghSave.photons.lighten)
-		el("ph_lighten_eff").textContent = "+" + getFullExpansion(PHOTON.enlightenEff()) + " cap"
+		el("ph_lighten_eff").textContent = "+" + getFullExpansion(this.enlightenEff()) + " cap"
 		el("ph_lighten_req").textContent = "Requires " + getFullExpansion(ghSave.photons.lighten * 2 + 14) + " Emissions"
 
-		for (const [i, light] of Object.entries(PHOTON.lightData)) {
-			el("ph_light_per_" + i).textContent = ((1 + ghSave.photons.offset[i]) * 100).toFixed(0)
-			el("ph_light_amt_" + i).textContent = shorten(ghSave.photons.light[i] || 0) + " / " + shorten(PHOTON.lightCap(i))
-			el("ph_light_eff_" + i).textContent = light.desc(PHOTON.eff(i))
-			el("ph_light_trade_" + i).textContent = tmp.funda.photon.leftover ? "Absorb" : "Exchange"
-			el("ph_light_trade_" + i).className = tmp.funda.photon.leftover && ghSave.photons.offset_click == i ? "chosen" : tmp.funda.photon.leftover || ghSave.photons.offset[i] > -.25 ? "storebtn photon" : "unavailablebtn"
+		for (const [i, light] of Object.entries(this.lightData)) {
+			el("ph_light_amt_" + i).textContent = shorten(ghSave.photons.light[i] || 0) + " / " + shorten(this.lightCap(i))
+			el("ph_light_eff_" + i).textContent = light.desc(this.eff(i))
 
 			el("ph_light_div_" + i).style.display = ghSave.photons.light[i] ? "" : "none"
 			el("ph_light_req_" + i).style.display = ghSave.photons.light[i] ? "none" : ""

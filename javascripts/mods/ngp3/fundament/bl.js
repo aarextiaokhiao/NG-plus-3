@@ -2,7 +2,7 @@
 const BOSONIC_LAB = LAB = {
 	/* CORE */
 	//Unlock
-	req: _ => PHOTON.totalEmissions() >= 20,
+	req: _ => 0,
 	unlocked: _ => blSave?.unl,
 	unlock() {
 		blSave.unl = true
