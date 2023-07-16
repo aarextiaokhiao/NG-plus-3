@@ -404,13 +404,10 @@ let HOW_TO = [
 
 		title: "Photons",
 		layer: "fundament",
-		desc: `Best Tachyon Particles produce Photons, which reset on Fundament.
-		<br><br>
-		Your Spectral Particles, Neutrinos, and Photons give Light Emissions.<br>
-		Light Emissions boost all Lights, but are limited.<br>
-		Enlightenments require Emissions to gain, in which increase limits of all Lights.
-		<br><br>
-		Multipliers can be exchanged between 2 Lights, but they can't go below 75%.`
+		desc: `Best Tachyon Particles produce Photons. You can emit Photons into groups of Lights.<br>
+		Initially, you can assign up to 3 groups of 3 colors each.<br>
+		Lights provide boosts, but are capped (increased on prior Lights).<br>
+		Lights are also looped which Ultraviolet Light increases Infrared cap.`
 	}, {
 		mod: _ => ngp3,
 		req: _ => ghSave?.lab?.unl,

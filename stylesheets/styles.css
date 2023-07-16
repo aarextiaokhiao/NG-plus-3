@@ -1844,6 +1844,11 @@ br {
 	vertical-align: 0
 }
 
+.infrared { color: #7f0000 }
+td.infrared {
+	background: rgba(127, 0, 0, 0.25)
+}
+
 .red { color: #bf0000 }
 td.red {
 	background: rgba(191, 0, 0, 0.25)
@@ -1872,9 +1877,6 @@ td.green {
 }
 
 .cyan { color: #00bfbf }
-td.cyan {
-	background: rgba(0, 191, 191, 0.25)
-}
 
 .blue { color: #0000bf }
 td.blue {
@@ -1911,9 +1913,6 @@ td.grey {
 
 .lEp {
 	color: #bfaf5f
-}
-td.lEp {
-	background: rgba(191, 175, 95, 0.25)
 }
 
 #assign_options input {
@@ -2372,8 +2371,8 @@ td.lEp {
 }
 
 .bosonic_btn {
-	background: repeating-linear-gradient(black, transparent), linear-gradient(#710, #307);
-	background-size: 25% 25%, 100% 100%;
+	background: linear-gradient(#307, transparent), linear-gradient(#50b, transparent), linear-gradient(#307, #310, #307);
+	background-size: 25% 25%, 50% 50%, 100% 100%;
 	box-shadow: inset 0 0 6px 0 #b50;
 	text-shadow: 0 0 6px #f50;
 	color: #db7;
@@ -2403,10 +2402,10 @@ td.lEp {
 }
 @keyframes bl { 
 	0%{
-		background-position: 0 0, 0 0
+		background-position: 0 0
 	}
 	100%{
-		background-position: 0 200%, 0 0
+		background-position: 0 200%, 0 200%, 0 0
 	}
 }
 

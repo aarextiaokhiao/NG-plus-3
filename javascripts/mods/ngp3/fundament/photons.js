@@ -12,6 +12,7 @@ let PHOTON = {
 	setup() {
 		let r = {
 			amt: E(0),
+			aim: {},
 			light: [],
 			lighten: 0
 		}
@@ -28,65 +29,62 @@ let PHOTON = {
 		let data = {}
 		tmp.funda.photon = data
 
-		data.cap = this.lightCap()
 		data.eff = []
-		for (var [i, light] of Object.entries(this.lightData)) data.eff[i] = light.eff(ghSave.photons.light[i].toNumber())
+		for (var [i, light] of Object.entries(this.lightData)) data.eff[i] = light.eff(ghSave.photons.light[i].toNumber() / 100)
+	},
+
+	//Currency - Photons
+	photonGain() {
+		let r = E(player.dilation.bestTPOverGhostifies.max(1).log10()).div(1e3)
+		if (hasNanoReward("photon")) r = r.mul(getNanorewardEff("photon"))
+		if (hasBLMilestone(18)) r = r.mul(blEff(18))
+		return r
+	},
+	photonCap() {
+		return E(100)
 	},
 
 	/* FEATURES */
-	//Feature - Photons
-	photonGain() {
-		let r = E(player.dilation.bestTPOverGhostifies.max(1).log10() / 200).pow(5)
-		if (hasNanoReward("photon")) r = r.mul(getNanorewardEff("photon"))
-		if (hasBLMilestone(18)) r = r.mul(blEff(18))
-		return r.div(100)
+	//Feature - Emit
+	aims(x) {
+		let r = []
+		for (var [i, k] of Object.entries(ghSave.photons.aim)) if (x == k) r.push(i)
+		return r
 	},
-	photonCap() {
-		return E(1)
+	aim(x) {
+		let r = ((ghSave.photons.aim[x] || 0) + 1) % 4
+		while (r && this.aims(r).length >= 3) r = (r + 1) % 4
+		ghSave.photons.aim[x] = r
+	},
+	emit(x) {
+		for (var i of this.aims(x)) ghSave.photons.light[i] = ghSave.photons.light[i].add(ghSave.photons.amt).min(this.lightCap(i))
+		ghSave.photons.amt = E(0)
 	},
 
 	//Feature - Lights
-	emit(x) {
-		let max = this.lightCap(x)
-		let amt = ghSave.photons.light[x]
-		let gain = ghSave.photons.amt.min(max.sub(amt))
-		ghSave.photons.amt = ghSave.photons.amt.sub(gain)
-		ghSave.photons.light[x] = amt.add(gain).min(max)
-		return
-		/* = []
-
-		let total = this.totalEmissions()
-		for (const [i, light] of Object.entries(this.lightData)) {
-			let gain = total - light.start + 1
-			gain *= 1 + ghSave.photons.offset[i]
-			gain = Math.min(Math.max(gain, 0), tmp.funda.photon.cap)
-
-			ghSave.photons.light.push(gain)
-		}*/
-	},
 	lightCap(x) {
-		let r = E(0) //ghSave.photons.light[(x - 1) % 8]
-		if (x == 0) r = r.add(1)
-		return r.add(this.enlightenEff())
+		let r = ghSave.photons.light[x == 0 ? 7 : x - 1].sqrt()
+		if (x == 0) r = r.add(100)
+		return r
 	},
 	lightData: [
 		{
-			name: "red",
+			name: "infrared",
 			start: 1,
 			eff: a => E_pow(tmp.gal.ts || 1, -Math.min(Math.sqrt(a) / 10, 0.2)),
 			desc: e => `Tickspeed reduction multiplies per-ten multiplier by ${shorten(e)}x.`
 		}, {
-			name: "orange",
+			name: "red",
 			start: 4,
 			eff: a => 1.5 - 0.5 / Math.log2(a + 2),
 			desc: e => `Starting at ^9, raise 2nd Neutrino Boost by ^${e.toFixed(3)}.`
 		}, {
-			name: "yellow",
+			name: "orange",
 			start: 6,
 			eff: a => Math.log2(a + 1) / 20,
 			desc: e => `Discharged Galaxies are ${(e*100).toFixed(1)}% effective.`
 		}, {
-			name: "green",
+			name: "yellow",
 			start: 10,
 			eff(a) {
 				if (a > 5) a = Math.log10(a * 2) + 4
@@ -94,7 +92,7 @@ let PHOTON = {
 			},
 			desc: e => `Gain ${shorten((e-1)*100)}% more Neutrinos per Big Rip galaxy.`
 		}, {
-			name: "cyan",
+			name: "green",
 			start: 20,
 			eff: a => Math.log10(a / 5 + 1) + 1,
 			desc: e => `Raise Replicate Slowdown by ^${shorten(e)}.`
@@ -131,18 +129,18 @@ let PHOTON = {
 		let gain = 0
 		ghSave.photons.lighten = Math.max(gain, lighten)
 	},
-	enlightenEff() {
-		let r = ghSave.photons.lighten
-		return Math.ceil(r * 2.5)
-	},
 
 	/* HTML */
 	setupTab() {
+		let h = ``
+		for (var i = 1; i <= 3; i++) h += `<button class='storebtn photon' onclick='PHOTON.emit(${i})'>${i}</button>`
+		el("ph_emits").innerHTML = h
+
 		for (var [i, light] of Object.entries(PHOTON.lightData)) {
 			el('ph_light_'+i).innerHTML = `<div id='ph_light_div_${i}' style='display: none'>
 				<span id='ph_light_amt_${i}' style='font-size: 18px'></span> ${light.name}<br>
 				<span id='ph_light_eff_${i}'></span><br>
-				<button class='storebtn photon' id='ph_light_emit_${i}' onclick='PHOTON.emit(${i})'>Emit</button>
+				<button class='storebtn photon' id='ph_light_aim_${i}' onclick='PHOTON.aim(${i})'></button>
 			</div><div id='ph_light_req_${i}'>
 				Requires ${light.start} Emissions
 			</div>`
@@ -161,7 +159,6 @@ let PHOTON = {
 		el("ph_prod").textContent = "(+" + shorten(this.photonGain()) + "/s)"
 
 		el("ph_lighten").textContent = getFullExpansion(ghSave.photons.lighten)
-		el("ph_lighten_eff").textContent = "+" + getFullExpansion(this.enlightenEff()) + " cap"
 		el("ph_lighten_req").textContent = "Requires " + getFullExpansion(ghSave.photons.lighten * 2 + 14) + " Emissions"
 
 		for (const [i, light] of Object.entries(this.lightData)) {
@@ -170,6 +167,9 @@ let PHOTON = {
 
 			el("ph_light_div_" + i).style.display = ghSave.photons.light[i] ? "" : "none"
 			el("ph_light_req_" + i).style.display = ghSave.photons.light[i] ? "none" : ""
+
+			el("ph_light_aim_" + i).className = "storebtn " + (ghSave.photons.aim[i] ? "photon" : "")
+			el("ph_light_aim_" + i).textContent = "Aim: " + (ghSave.photons.aim[i] ?? "OFF")
 		}
 	}
 }
