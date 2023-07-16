@@ -296,9 +296,9 @@ function getRebuyableDilUpgCost(id) {
 	return cost
 }
 
-function getRebuyableDilUpgScaleStart(id) {
+function getRebuyableDilUpgScaleStart(id, add=0) {
 	let scale = Object.values(DIL_UPG_COSTS["r"+id])
-	if (mod.udsp) scale[2] = exDilationUpgradeStrength(id).mul(id == 4 ? 1e8 : 1e20).min(scale[2])
+	if (mod.udsp) scale[2] = exDilationUpgradeStrength(id, add).mul(id == 4 ? 1e8 : 1e20).min(scale[2])
 
 	let r = E(scale[2]).div(scale[0]).log(scale[1])
 	if (!mod.udsp) r = Math.floor(r)
