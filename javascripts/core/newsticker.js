@@ -396,7 +396,7 @@ newsArray = [//always true
 ["Remember the good old days with no softcaps... well the new devs came in and put in too many!", true, "am193"],
 
 /* v2.31 */
-["[placeholder]", false, "am78"],
+["Some got redacted for appropriately inconvenience of antimatter. Apparently, it comes from Ninth Dimension.", true, "am78"],
 ["[placeholder]", false, "am123"],
 ["[placeholder]", false, "am142"],
 ["[placeholder]", false, "am149"],

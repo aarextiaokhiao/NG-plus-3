@@ -54,7 +54,7 @@ function setR3Tooltip(){
 
 function setR4Tooltip(){
 	// Row 4 (6/8)
-	let cancer = el("Spreading Cancer");
+	let nerd = el("Spreading Nerd");
 	let sanic = el("Supersanic")
 	let zero = el("Zero Deaths");
 	//r44/////
@@ -65,7 +65,7 @@ function setR4Tooltip(){
 
 	//ACHIEVEMENT ROW 4
 	sanic.setAttribute('ach-tooltip', "Get over " + formatValue(player.options.notation, 1e63, 0, 0) + " antimatter" + (inNGM(4) ? " and unlock new galaxy upgrades at " + formatValue(player.options.notation, 1e666, 0, 0) + " antimatter" : "") + ".")
-	cancer.setAttribute('ach-tooltip', "Buy " + (!aarMod.newGameMinusVersion ? "ten" : "10,000") + " Galaxies in total while using Cancer notation."+(inOnlyNGM(2)?" Reward: Gain a multiplier to IP based on the number of galaxies bought in Cancer Notation.":""))
+	nerd.setAttribute('ach-tooltip', "Buy " + (!aarMod.newGameMinusVersion ? "ten" : "10,000") + " Galaxies in total while using Emoji notation."+(inOnlyNGM(2)?" Reward: Double Infinity Points.":""))
 	zero.setAttribute('ach-tooltip',"Big Crunch without Dimension Shifts, Boosts or Galaxies in a challenge. Reward: Dimensions 1-4 are 25% stronger"+(inOnlyNGM(2) ? " and you get 1.25x more IP" : "") + (inNGM(4) ? " and gain more passive GP gain based on GP." : "."))
 	potato.setAttribute('ach-tooltip', "Get more than " + formatValue(player.options.notation, 1e29, 0, 0) + " ticks per second. Reward: Reduce the starting tick interval by 2%.");
 	dimensional.setAttribute('ach-tooltip', "Reach " + formatValue(player.options.notation, 1e12, 0, 0) + " of all Normal Dimensions, except for the 8th Dimension.");
@@ -356,7 +356,7 @@ function setR17Tooltip(){
 	//ng3p35/////
 	let cantGet = el("I can’t get my multipliers higher!")
 	let noDil = el("No dilation means no production.")
-	let dontWant = el("I don't want you to live anymore.")
+	let dontWant = el("I am not interested...")
 
 	//ACHIEVEMENT ROW 17
 	internal.setAttribute('ach-tooltip', "Reach " + shortenCosts(E("1e333")) + " MA without having 2nd Meta Dimensions and Meta-Dimension Boosts. Reward: 1st Meta Dimensions are stronger based on meta antimatter.")
@@ -376,7 +376,7 @@ function setR18Tooltip(){
 	//ng3p45/////
 	//ng3p46/////
 	let stop = el("Stop blocking me!")
-	let dying = el("Are you currently dying?")
+	let dying = el("Is this really worth it?")
 
 	//ACHIEVEMENT ROW 18
 	notrelative.setAttribute('ach-tooltip', "Get " + shorten(pow10(411))+" dilated time without gaining tachyon particles. Reward: You gain more DT based on the amount of Nanorewards.")
@@ -415,7 +415,7 @@ function setR20Tooltip(){
 	//ng3p65/////
 	let oppose = el("I rather oppose the theory of everything")
 	let willenough = el("Will it be enough?")
-	let pls = el("Please answer me why you are dying.")
+	let pls = el("Please answer me why.")
 
 	let willenoughReward = [] // for the achievement "Will it be enough?"
 	willenoughReward.push("keep Replicanti on Eternity")

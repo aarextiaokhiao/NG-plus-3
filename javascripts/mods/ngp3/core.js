@@ -1,6 +1,6 @@
 //VERSION: 2.31
 let ngp3_ver = 2.31
-let ngp3_build = 20230716
+let ngp3_build = 20230716.01
 function doNGP3Updates() {
 	if (!aarMod.ngp3_build) aarMod.ngp3_build = 0
 	if (aarMod.ngp3_build < 20221230) quSave.multPower = 0
@@ -352,7 +352,7 @@ function ngP3AchieveCheck() {
 	if (player.money.log10() >= 7.88e13 && quSave.pairedChallenges.completed == 0) giveAchievement("The truth of anti-challenged")
 	if (player.money.log10() >= 6.2e11 && player.currentEternityChall == "eterc11") giveAchievement("I can’t get my multipliers higher!")
 	if (player.replicanti.amount.log10() >= 2e6 && player.dilation.tachyonParticles.eq(0)) giveAchievement("No dilation means no production.")
-	if (player.infinityPoints.gte(E_pow(Number.MAX_VALUE, 1000)) && ableToGetRid5) giveAchievement("I don't want you to live anymore.")
+	if (player.infinityPoints.gte(E_pow(Number.MAX_VALUE, 1000)) && ableToGetRid5) giveAchievement("I am not interested...")
 	if (player.dilation.dilatedTime.log10() >= 411 && quSave.notrelative) giveAchievement("Time is not relative")
 	if (!hasAch("ng3p42")) {
 		for (d = 2; d < 9; d++) {
@@ -363,7 +363,7 @@ function ngP3AchieveCheck() {
 	if (player.money.log10() >= 8e6 && inQC(6) && inQC(8)) giveAchievement("Impossible expectations")
 	if (player.timestudy.theorem >= 1.1e7 && quSave.wasted) giveAchievement("Studies are wasted")
 	if (quSave.replicants.requirement.gte("1e12500000")) giveAchievement("Stop blocking me!")
-	if (player.infinityPoints.gte(pow10(2.75e5)) && ableToGetRid6) giveAchievement("Are you currently dying?")
+	if (player.infinityPoints.gte(pow10(2.75e5)) && ableToGetRid6) giveAchievement("Is this really worth it?")
 	if (nfSave.rewards >= 21 && noTree) giveAchievement("But I don't want to grind!")
 	if (player.replicanti.amount.log10() >= (mod.udp ? 268435456 : 36e6)) giveAchievement("Will it be enough?")
 	if (player.options.secrets && player.options.secrets.ghostlyNews && !player.options.newsHidden) giveAchievement("Two tickers")
@@ -388,7 +388,7 @@ function ngP3AchieveCheck() {
 	if (beSave.eternalMatter.gte(9.999999e99)) giveAchievement("This achievement doesn't exist 4")
 	if (ghSave.milestones == 16) giveAchievement("I rather oppose the theory of everything")
 	if (inQC(6) && inQC(8) && !bigRipped() && player.money.e >= 4e7) giveAchievement("Really?")
-	if (ableToGetRid8 && player.infinityPoints.log10() >= 9.5e5) giveAchievement("Please answer me why you are dying.")
+	if (ableToGetRid8 && player.infinityPoints.log10() >= 9.5e5) giveAchievement("Please answer me why.")
 
 	if (PHOTON.unlocked()) giveAchievement("Progressing as a Ghost")
 	if (bigRipped() && player.eternityPoints.e >= 1e5) giveAchievement("Underchallenged")

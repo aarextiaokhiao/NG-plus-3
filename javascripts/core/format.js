@@ -922,8 +922,8 @@ var notationArray = [
 ]
 
 function updateNotationOption() {
-	var notationMsg = "Notation: " + (player.options.notation == "Emojis" ? "Cancer" : player.options.notation)
-	var commasMsg = (player.options.commas == "Emojis" ? "Cancer" : player.options.commas) + " on exponents"
+	var notationMsg = "Notation: " + player.options.notation
+	var commasMsg = player.options.commas + " on exponents"
 	el("notation").innerHTML = "<p style='font-size:15px'>Notations</p>" + notationMsg + "<br>" + commasMsg
 	el("chosenNotation").textContent = player.options.notation=="AF5LN"?"Notation: Aarex's Funny 5-letter Notation":notationMsg
 	el("chosenCommas").textContent = player.options.commas=="AF5LN"?"Aarex's Funny 5-letter Notation on exponents":commasMsg
@@ -995,7 +995,7 @@ function openAdvNotations() {
 		row.innerHTML = "<button class='storebtn' style='width:160px; height: 40px' onclick='setCommas(1)'>Same notation on exponents</button>"
 		
 		for (n = 0; n < notationArray.length; n++) {
-			var name = notationArray[n] == "Emojis" ? "Cancer" : notationArray[n]
+			var name = notationArray[n]
 			row = notationsTable.insertRow(n)
 			row.innerHTML = "<button class='storebtn' id='select" + name + "' style='width:160px; height: 40px' onclick='setAdvNotation(" + n + ")' ach-tooltip='Examples: " + formatValue(notationArray[n], 4.16e19, 2, 2) + ", " + formatValue(notationArray[n], E("4.12e619"), 2, 2, true) + "'>Select " + name + "</button>"
 			row = commasTable.insertRow(n + 2)
@@ -1030,7 +1030,7 @@ function openNotationOptions() {
 		el("psiSide").textContent = "Non-first arguments on " + (player.options.psi.side == "r" ? "right" : "left") + " side"
 		var letters = [null, 'E', 'F', 'G', 'H']
 		el("psiLetter").textContent = (player.options.psi.letter[0] ? "Force " + letters[player.options.psi.letter[0]] : "Automatically choose letter")
-		el("chosenSubNotation").textContent = "Sub-notation: " + (player.options.spazzy.subNotation == "Emojis" ? "Cancer" : player.options.spazzy.subNotation)
+		el("chosenSubNotation").textContent = "Sub-notation: " + player.options.spazzy.subNotation
 		el("useDe").checked = player.options.aas.useDe
 		el("useMyr").checked = player.options.standard.useMyr
 	} else {
@@ -1112,6 +1112,6 @@ function switchNotationOption(notation,id) {
 function switchSubNotation(id) {
 	if (player.options.spazzy.subNotation == notationArray[id]) return
 	player.options.spazzy.subNotation = notationArray[id]
-	el("chosenSubNotation").textContent = "Sub-notation: " + (player.options.spazzy.subNotation == "Emojis" ? "Cancer" : player.options.spazzy.subNotation)
+	el("chosenSubNotation").textContent = "Sub-notation: " + player.options.spazzy.subNotation
 	onNotationChange()
 }

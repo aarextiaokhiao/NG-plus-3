@@ -182,7 +182,7 @@ function checkOtherPreNGp3Achieve(){
 	if (player.galaxies >= 540 && player.replicanti.galaxies == 0) giveAchievement("Unique snowflakes")
 	if (player.dilation.active) giveAchievement("I told you already, time is relative")
 	if (player.resets >= 10) giveAchievement("Boosting to the max")
-	if (player.spreadingCancer >= 10) giveAchievement("Spreading Cancer")
+	if (player.spreadingCancer >= 10) giveAchievement("Spreading Nerd")
 	if (player.spreadingCancer >= 1000000) giveAchievement("Cancer = Spread")
 	if (player.infinitied >= 10) giveAchievement("That's a lot of infinites");
 	if (player.break) giveAchievement("Limit Break")

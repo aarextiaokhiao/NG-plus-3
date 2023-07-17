@@ -23,7 +23,7 @@ const allAchievements = {
 	r36 : "Claustrophobic",
 	r37 : "That's fast!",
 	r38 : "I don't believe in Gods",
-	r41 : "Spreading Cancer",
+	r41 : "Spreading Nerd",
 	r42 : "Supersanic",
 	r43 : "Zero Deaths",
 	r44 : "Over in 30 seconds",
@@ -143,7 +143,7 @@ const allAchievements = {
 	ng3p35 : "An ant office?",
 	ng3p36 : "I can’t get my multipliers higher!",
 	ng3p37 : "No dilation means no production.",
-	ng3p38 : "I don't want you to live anymore.",
+	ng3p38 : "I am not interested...",
 
 	ng3p41 : "Time is not relative",
 	ng3p42 : "ERROR 404: DIMENSIONS NOT FOUND",
@@ -152,7 +152,7 @@ const allAchievements = {
 	ng3p45 : "Do protons decay?",
 	ng3p46 : "Hardly marked",
 	ng3p47 : "Stop blocking me!",
-	ng3p48 : "Are you currently dying?",
+	ng3p48 : "Is this really worth it?",
 
 	ng3p51 : "To the new dimension!",
 	ng3p52 : "Quantum doesn't take so long",
@@ -170,7 +170,7 @@ const allAchievements = {
 	ng3p65 : "But I don't want to grind!",
 	ng3p66 : "I rather oppose the theory of everything",
 	ng3p67 : "Will it be enough?",
-	ng3p68 : "Please answer me why you are dying.",
+	ng3p68 : "Please answer me why.",
 
 	ng3p71 : "Progressing as a Ghost",
 	ng3p72 : "Underchallenged",

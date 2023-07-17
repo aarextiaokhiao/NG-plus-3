@@ -116,7 +116,7 @@ function getBranchSpeedText(){
 	if (E(getTreeUpgradeEffect(3)).gt(1)) text += "Tree Upgrade 3: " + shorten(getTreeUpgradeEffect(3)) + "x, "
 	if (E(getTreeUpgradeEffect(5)).gt(1)) text += "Tree Upgrade 5: " + shorten(getTreeUpgradeEffect(5)) + "x, "
 	if (hasNU(4)) text += "Neutrino Upgrade 4: " + shorten(NT.eff("upg", 4)) + "x, "
-	if (hasAch("ng3p48") && player.meta.resets) text += "'Are you currently dying?' reward: " + shorten(Math.sqrt(player.meta.resets + 1)) + "x, "
+	if (hasAch("ng3p48") && player.meta.resets) text += "'Is this really worth it?' reward: " + shorten(Math.sqrt(player.meta.resets + 1)) + "x, "
 	if (hasNanoReward("decay_exp")) text += "7th Nanobenefit: ^" + shorten(getNanorewardEff("decay_exp")) + ", "
 	if (text == "") return "No multipliers currently"
 	return text.slice(0, text.length-2)

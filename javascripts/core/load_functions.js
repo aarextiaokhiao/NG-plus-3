@@ -477,7 +477,7 @@ function dov7tov10(){
 	el(inERS?"r22":"r35").appendChild(el("Don't you dare sleep"))
 	el(inERS?"r35":"r76").appendChild(el("One for each dimension"))
 	el(inERS?"r41":"r22").appendChild(el("Fake News"))
-	el(inERS?"r76":"r41").appendChild(el("Spreading Cancer"))
+	el(inERS?"r76":"r41").appendChild(el("Spreading Nerd"))
 	el("Universal harmony").style["background-image"]="url(images/"+(!mod.ngp3?104:"104-ngp3")+".png)"
 	el("Infinite time").style["background-image"]="url(images/"+(inERS?79:69)+".png)"
 

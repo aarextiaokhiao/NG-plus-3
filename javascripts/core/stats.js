@@ -6,9 +6,6 @@ function displayMainStats() {
 	el("boosts").style.display = showBoosts ? '' : 'none'
 	if (showBoosts) el("boosts").textContent = 'You have performed '+getFullExpansion(player.tickspeedBoosts)+' Tickspeed Boosts.'
 	el("galaxies").textContent = 'You have ' + getFullExpansion(player.galaxies) + ' Antimatter Galaxies.'
-	var showCancer = player.spreadingCancer > 0 && player.galacticSacrifice
-	el("spreadingCancer").style.display = showCancer ? '' : 'none'
-	if (showCancer) el("spreadingCancer").textContent = 'You have made '+getFullExpansion(player.spreadingCancer)+' total galaxies while using Cancer notation.'
 	el("totalTime").textContent = "You have played for " + timeDisplay(player.totalTimePlayed) + "."
 }
 
