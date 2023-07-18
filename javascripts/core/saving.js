@@ -732,11 +732,6 @@ function updateNewPlayer(mode, preset) {
 			eternityconfirm: true,
 			commas: "Commas",
 			updateRate: 50,
-			chart: {
-				updateRate: 1000,
-				duration: 10,
-				warning: 0,
-			},
 			animations: {
 				floatingText: true,
 				bigCrunch: true,

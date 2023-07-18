@@ -2411,24 +2411,6 @@ function startInterval() {
 	}, player.options.updateRate);
 }
 
-// this is a relic from pre-reality; should we remove it?
-function enableChart() {
-	if (el("chartOnOff").checked) {
-		player.options.chart.on = true;
-		if (player.options.chart.warning < 1) alert("Warning: Using the chart can cause performance issues. Please disable it if you're experiencing lag.")
-	} else {
-		player.options.chart.on = false;
-	}
-}
-
-function enableChartDips() {
-	if (el("chartDipsOnOff").checked) {
-		player.options.chart.dips = true;
-	} else {
-		player.options.chart.dips = false;
-	}
-}
-
 var slider = el("updaterateslider");
 var sliderText = el("updaterate");
 
