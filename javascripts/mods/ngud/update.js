@@ -335,7 +335,7 @@ function exDilationUpgradeStrength(x, add = 0) {
 
 function reverseDilation() {
 	if (!canReverseDilation()) return;
-	if (player.options.exdilationconfirm && !confirm(`Reversing Dilation resets Time Dilation and Black Hole power in exchange for ex-dilation, which reduces dilation penalty and strengthens repeatable upgrades. Are you sure?`)) return
+	if (player.options.exdilationconfirm && !confirm(`Reversing Dilation resets Time Dilation and Black Hole Power in exchange for ex-dilation, which reduces dilation penalty and strengthens repeatable upgrades. Are you sure?`)) return
 
 	player.exdilation.unspent = player.exdilation.unspent.add(getExDilationGain())
 	player.exdilation.times++

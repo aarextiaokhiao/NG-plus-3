@@ -12,7 +12,7 @@ function displayMainStats() {
 function displayInfinityStats(){
 	el("thisInfinity").textContent = "You have spent " + timeDisplay(player.thisInfinityTime) + " in this Infinity."
 	el("bestInfinity").textContent = player.bestInfinityTime < 9999999999 ? "Your fastest Infinity is " + timeDisplay(player.bestInfinityTime) + "." : ""
-	el("infinitied").textContent = "You have Infinitied " + getFullExpansion(player.infinitied) + " time" + (player.infinitied == 1 ? "" : "s") + (player.eternities!==0||player.eternitiesBank>0 ? " this Eternity." : ".")
+	el("infinitied").textContent = "You have Infinitied " + getFullExpansion(player.infinitied) + " time" + (player.infinitied == 1 ? "" : "s") + (player.eternities !== 0 || player.eternitiesBank > 0 ? " this Eternity." : ".")
 }
 
 function bankedInfinityDisplay(){
@@ -48,15 +48,15 @@ function displayQuantumStats() {
 	let br = hasAch("ng3p51")
 	el("stats_br").style.display = br ? "" : "none"
 	if (br) {
-		setAndMaybeShow("bigRipped", brSave.times, '"You have big ripped the universe " + getFullExpansion(brSave.times) + " times."')
+		setAndMaybeShow("bigRipped", brSave.times, '"You have big ripped the universe " + getFullExpansion(brSave.times) + " time" + (brSave.times == 1 ? "" : "s") + ".')
 		setAndMaybeShow("bestmoneythisrip", bigRipped(), "'Your best antimatter for this Big Rip is ' + shortenMoney(brSave.bestThisRun) + '.'")
-		el("totalmoneybigrip").textContent = 'You have made a total of ' + shortenMoney(brSave.totalAntimatter) + ' antimatter in all big rips.'
-		el("bestgalsbigrip").textContent = 'Your best amount of normal galaxies for all Big Rips is ' + getFullExpansion(brSave.bestGals) + "."
+		el("totalmoneybigrip").textContent = 'You have made a total of ' + shortenMoney(brSave.totalAntimatter) + ' antimatter in all Big Rips.'
+		el("bestgalsbigrip").textContent = 'Your best amount of Antimatter Galaxies for all Big Rips is ' + getFullExpansion(brSave.bestGals) + "."
 	}
 }
 
 function bestGhostifyDisplay(){
-	el("ghostified").textContent = "You enlarged " + getFullExpansion(ghSave.times) + " times."
+	el("ghostified").textContent = "You have enlarged " + getFullExpansion(ghSave.times) + " time" + (ghSave.times == 1 ? "" : "s") +"."
 	el("thisGhostify").textContent = "You have spent " + timeDisplay(ghSave.time) + " in this Fundament."
 	el("bestGhostify").textContent = "Your fastest Fundament is in " + timeDisplay(ghSave.best) + "."
 }

@@ -268,7 +268,7 @@ function setR13p5Tooltip(){
 	let ridNGud = el("I already got rid of you.")
 
 	//NGUD ACHIEVEMENT ROW (13.5)
-	stillamil.setAttribute('ach-tooltip', "Reach "+shortenCosts(1e6)+" black hole power.")
+	stillamil.setAttribute('ach-tooltip', "Reach "+shortenCosts(1e6)+" Black Hole Power.")
 	out.setAttribute('ach-tooltip',"Get more than "+shortenCosts(1e5)+" ex-dilation." + (mod.udsp ? " Reward: You can equally distribute ex-dilation to all repeatable Dilation upgrades." : ""))
 	ridNGud.setAttribute('ach-tooltip', "Reach "+shortenCosts(E("1e20000"))+" IP without any Time Studies or Dilation upgrades while Dilated.")
 }

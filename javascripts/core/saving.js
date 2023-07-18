@@ -133,7 +133,7 @@ function changeSaveDesc(i, exit) {
 			}
 		} else if (data.exdilation && data.blackhole.unl) {
 			var datastart="Eternity Points: "+shortenDimensions(E(data.eternityPoints))
-			var dataend=", Black Hole power: "+shortenMoney(E(data.blackhole.power))
+			var dataend=", Black Hole Power: "+shortenMoney(E(data.blackhole.power))
 			if (data.exdilation.times > 0) msg+=datastart+dataend+", Ex-dilation: "+shortenDimensions(E(data.exdilation.unspent))
 			else msg+=datastart+", Dilated time: "+shortenMoney(E(data.dilation.dilatedTime))+", Banked Infinities: "+getFullExpansion(data.infinitiedBank)+", Replicanti: "+shortenMoney(E(data.replicanti.amount))+dataend
 		} else if (data.dilation?data.dilation.studies.includes(1):false) {

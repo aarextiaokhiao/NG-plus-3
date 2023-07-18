@@ -9,7 +9,7 @@ function updateNanoverseTab() {
 	el("preonEnergy").textContent = shortenMoney(nfSave.energy)
 	el("quarkEnergyRate").textContent = shortenMoney(getQuarkEnergyProduction())
 
-	let noCharge = hasBLMilestone(3)
+	let noCharge = hasBLMilestone(3) // right now BL milestones do not consider the possibility of being locked out of pilon boost
 	el("quarkChargeDiv").style.display = noCharge ? "none" : ""
 	el("quarkAntienergyDiv").style.display = noCharge ? "none" : ""
 	if (!noCharge) {
@@ -125,10 +125,10 @@ var nanoRewards = {
 			return "meta-antimatter effect is ^" + x.toFixed(2)
 		},
 		dil_gal_gain: function(x) {
-			return "each Replicated Galaxy gives " + x.toFixed(3) + "x more dilated time"
+			return "each Replicated Galaxy gives " + x.toFixed(3) + "x more Dilated Time"
 		},
 		dt_to_ma_exp: function(x) {
-			return "dilated time gives ^" + x.toFixed(3) + " boost to Meta Dimensions"
+			return "Dilated Time raises the Meta Dimensions boost to ^" + x.toFixed(3)
 		},
 		dil_exp: function(x) {
 			return "in dilation, raise Normal Dimensions and Tickspeed by ^" + x.toFixed(2)
@@ -149,7 +149,7 @@ var nanoRewards = {
 			return "produce nanoenergy " + shorten(x) + "x faster"
 		},
 		decay_exp: function(x) {
-			return "raise Decay speed by ^" + shorten(x)
+			return "raise Decay speed to ^" + shorten(x)
 		},
 		photon: function(x) {
 			return "gain " + shorten(x) + "x more Photons"

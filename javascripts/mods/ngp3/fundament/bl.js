@@ -59,7 +59,7 @@ const BOSONIC_LAB = LAB = {
 		{
 			//QOL
 			req: E(100),
-			desc: "[QOL] Bank ^0.9 of Replicantis on exiting Big Rips."
+			desc: "[QOL] Bank ^0.9 of Replicantis upon exiting Big Rips."
 		}, {
 			req: E(200),
 			desc: "Replicanti Absorb speeds up Replicanti.",
@@ -76,10 +76,12 @@ const BOSONIC_LAB = LAB = {
 			desc: "[QOL] Preon charge production boosts pilon energy instead."
 		}, {
 			req: E(1.5e3),
-			desc: "Eternities boost Space Shards more.",
+			desc: "Eternities boost Space Shards.",
+			eff: b => 1,
+			effDesc: e => 1 + "x",
 		}, {
 			req: E(2e3),
-			desc: "Replicated Galaxies add Intergalactic outside of Big Rips.",
+			desc: "Replicated Galaxies count in Intergalactic's formula outside of Big Rips.",
 			eff: b => getTotalRG(),
 			effDesc: e => "+" + shortenDimensions(e)
 		}, {
@@ -93,10 +95,10 @@ const BOSONIC_LAB = LAB = {
 			desc: "[QOL] Net Quarks give more Automator Potency."
 		}, {
 			req: E(1.5e4),
-			desc: "Replicanti efficiency boosts Time Dimensions more."
+			desc: "Replicanti efficiency boosts Time Dimensions further."
 		}, {
 			req: E(2e4),
-			desc: "Per-bought Time Dimensions works in Big Rip, but reduced."
+			desc: "The Time Dimensions multiplier per-purchase works in Big Rip, but is reduced."
 		}, {
 			req: E(5e4),
 			desc: "Bosonic Matter multiplies Neutrino multiplier base.",

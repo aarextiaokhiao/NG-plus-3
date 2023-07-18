@@ -2,9 +2,9 @@ const QC = QUANTUM_CHALLENGE = {
 	1: {
 		cost: 16750,
 		goal: pow10(6.65e9),
-		desc: "Normal Dimensions 3-8 don't produce anything.",
+		desc: "Antimatter Dimensions 3-8 don't produce anything.",
 
-		reward: "Add 0.25x to positron multiplier for each Quantum Challenge completion, and First & Second Dimensions boost dilated time production.",
+		reward: "Add 0.25x to positron multiplier for each Quantum Challenge completion, and First & Second Dimensions boost Dilated Time production.",
 		reward_eff(comps) {
 			if (comps == 0) return E(1)
 			let base = getDimensionFinalMultiplier(1).mul(getDimensionFinalMultiplier(2)).max(1).log10()
@@ -30,7 +30,7 @@ const QC = QUANTUM_CHALLENGE = {
 		goal: pow10(4.525e10),
 		desc: "Meta-Antimatter boosts Infinity Dimensions instead.",
 
-		reward: "Infinity Power boosts Meta Dimensions at greatly reduced rate.",
+		reward: "Infinity Power boosts Meta Dimensions at a greatly reduced rate.",
 		reward_eff(comps) {
 			if (comps == 0) return 1
 			let ipow = player.infinityPower.add(1).log10()
@@ -45,7 +45,7 @@ const QC = QUANTUM_CHALLENGE = {
 	4: {
 		cost: 24050,
 		goal: pow10(5.325e10),
-		desc: "Automatic Big Crunch Challenge is applied in Normal - Meta Dimensions. Meta-Dimension Boosts scale slower, but nullify buffs.",
+		desc: "Automatic Big Crunch Challenge is applied to Antimatter, Infinity, Time, and Meta Dimensions. Meta-Dimension Boosts scale slower, but nullify buffs.",
 
 		reward: "All even Meta Dimensions boost all odd Meta Dimensions.",
 		reward_eff(comps) {
@@ -202,7 +202,7 @@ function updateQCTimes() {
 			tempcounter++
 		}
 	}
-	setAndMaybeShow("qctimesum", tempcounter > 1, '"The sum of your completed Quantum Challenge time records is "+timeDisplayShort(' + temp + ', false, 3)')
+	setAndMaybeShow("qctimesum", tempcounter > 1, '"The sum of your completed Quantum Challenge time records is " + timeDisplayShort(' + temp + ', false, 3) + "."')
 }
 
 function updateQCRewardsTemp() {
@@ -240,7 +240,7 @@ function selectQC(x) {
 
 function doReachAMGoalStuff(chall){
 	if (el("welcome").style.display != "flex") el("welcome").style.display = "flex"
-	el("welcomeMessage").innerHTML = "You reached the antimatter goal (" + shorten(getQCGoal()) + "), but you didn't reach the meta-antimatter goal yet! Get " + shorten(getQuantumReq()) + " meta-antimatter" + (bigRipped() ? " and then you can fundament!" : " and then go Quantum to complete your challenge!")
+	el("welcomeMessage").innerHTML = "You reached the antimatter goal (" + shorten(getQCGoal()) + "), but you didn't reach the meta-antimatter goal yet! Get " + shorten(getQuantumReq()) + " meta-antimatter" + (bigRipped() ? " and then you can Fundament!" : " and then go Quantum to complete your challenge!")
 	quSave.nonMAGoalReached.push(chall)
 }
 
@@ -310,7 +310,7 @@ function respecPC(force) {
 }
 
 function importPC() {
-	let str = prompt("This will force a Quantum and respec your Paired Challenges!")
+	let str = prompt("Input a list of PCs below. This will force a Quantum, respec your Paired Challenges, and import your selected PC choices.")
 	if (str == "") return
 	PRESET_DATA.pc.load(str)
 }
@@ -405,7 +405,7 @@ function updatePCTable() {
 		if (r != c) {
 			var divid = "pc" + (r * 10 + c)
 			var pcid = r * 10 + c
-			if (r > c) pcid = c * 10  +r
+			if (r > c) pcid = c * 10 + r
 			var comp = quSave.pairedChallenges.completions[pcid]
 			if (comp !== undefined) {
 				el(divid).textContent = "PC" + comp
@@ -413,13 +413,21 @@ function updatePCTable() {
 				var achTooltip = 'Fastest time: ' + (quSave.pairedChallenges.fastest[pcid] ? timeDisplayShort(quSave.pairedChallenges.fastest[pcid]) : "N/A")
 				el(divid).setAttribute('ach-tooltip', achTooltip)
 
-				if (divid=="pc38") giveAchievement("Hardly marked")
-				if (divid=="pc68") giveAchievement("Big Rip isn't enough")
+				console.log(divid, + " " + pcid)
+				var clear38 = (divid == "pc83" || pcid == 38)
+				if (clear38) giveAchievement("Hardly marked")
 			} else if (pcid == 68 && ghostified) {
 				el(divid).textContent = "BR"
 				el(divid).className = "brCompleted"
 				el(divid).removeAttribute('ach-tooltip')
-				el(divid).setAttribute('ach-tooltip', 'Fastest time from start of Fundament: ' + timeDisplayShort(ghSave.best))
+				if (quSave.pairedChallenges.completions[86] > 0) {
+					el(divid).setAttribute('ach-tooltip', 'Fastest BR time from start of Fundament: ' + timeDisplayShort(ghSave.best) + ', fastest QC6+8 time: ' + timeDisplayShort(quSave.pairedChallenges.fastest[86] ? quSave.pairedChallenges.fastest[86] : "N/A"))
+				} else {
+					el(divid).setAttribute('ach-tooltip', 'Fastest BR time from start of Fundament: ' + timeDisplayShort(ghSave.best))
+				}
+
+				var clear68 = (divid == "pc86" || pcid == 68)
+				if (clear68) giveAchievement("Big Rip isn't enough")
 			} else {
 				el(divid).textContent = ""
 				el(divid).className = ""

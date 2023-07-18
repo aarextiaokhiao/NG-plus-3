@@ -269,6 +269,7 @@ function doQuantum(force, auto, qc = {}) {
 	let qcs = tmp.qu.chal.in
 	let intensity = qcs.length
 	let oldMoney = player.money
+	var oldTime = quSave.time
 	if (hasMasteryStudy("d9")) {
 		if (!force && intensity == 2) {
 			let qc1 = Math.min(qcs[0], qcs[0])
@@ -276,7 +277,7 @@ function doQuantum(force, auto, qc = {}) {
 			var pcid = qc1 * 10 + qc2
 			if (qc1 == qc2) {
 				console.log("There is an issue, you have assigned a QC twice (QC" + qc1 + ")")
-				$.notify("Somehow, you have assigned the same Quantum Challenge twice; this paired challenge attempt will not count.", "error")
+				$.notify("Somehow, you have assigned the same Quantum Challenge twice; this Paired Challenge attempt will not count.", "error")
 			} else {
 				quSave.pairedChallenges.completed = Math.max(quSave.pairedChallenges.completed, quSave.pairedChallenges.current)
 				var in68 = pcid == 68 || pcid == 86 // each pair will work
@@ -316,7 +317,6 @@ function doQuantum(force, auto, qc = {}) {
 	if (!bigRip && oldBigRip && player.galaxies == 9 && player.replicanti.galaxies == 9 && player.timeDimension4.amount.round().eq(9)) giveAchievement("We can really afford 9.")
 
 	//Finally, do a Quantum reset!
-	var oldTime = quSave.time
 	doReset("qu", auto)
 
 	//Post-Quantum

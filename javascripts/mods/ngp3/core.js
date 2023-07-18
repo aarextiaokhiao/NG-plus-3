@@ -118,8 +118,8 @@ function updateBankedEter(updateHtml = true) {
 
 	bankedEterGain = nD(player.eternities, 20)
 	if (updateHtml) {
-		setAndMaybeShow("bankedEterGain", bankedEterGain > 0, '"You will gain "+getFullExpansion(bankedEterGain)+" banked eternities on next quantum."')
-		setAndMaybeShow("eternitiedBank", player.eternitiesBank, '"You have "+getFullExpansion(player.eternitiesBank)+" banked eternities."')
+		setAndMaybeShow("bankedEterGain", bankedEterGain > 0, '"You will gain "+getFullExpansion(bankedEterGain)+" banked Eternities on next Quantum."')
+		setAndMaybeShow("eternitiedBank", player.eternitiesBank, '"You have "+getFullExpansion(player.eternitiesBank)+" banked Eternities."')
 	}
 }
 
@@ -131,7 +131,7 @@ function fillAll() {
 		updateTheoremButtons()
 		updateTimeStudyButtons()
 		drawStudyTree()
-		if (player.timestudy.studies.length > 56) $.notify("All studies in time study tab are now filled.")
+		if (player.timestudy.studies.length > 56) $.notify("All Studies in the Time Study tab are now filled.")
 	}
 }
 
@@ -256,7 +256,7 @@ function beatNGP3() {
 	You reached the inner depths of lab...<br>
 	<b class='red'>(but for now...)</b><br><br>
 	<h1>You have beaten ${modAbbs(mod, true)}!</h1>
-	This took you ${timeDisplayShort(player.totalTimePlayed)} and ${player.achievements.length} achievements.<br><br>
+	This took you ${timeDisplayShort(player.totalTimePlayed)} with ${player.achievements.length} achievements.<br><br>
 	Post-game is coming soon!<br>
 	Thanks for playing!`
 	onObtainBadgeCheck("tgr")

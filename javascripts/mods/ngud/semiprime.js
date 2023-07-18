@@ -84,7 +84,7 @@ const BH_UDSP = {
 		{ req: 1, eff: x => Math.min(1 + x.add(1).log10() / 10, 2), desc: e => `Strengthen the replicanti Dilation upgrade by <b>${shorten(e)}x</b>.` },
 		{ req: 3, eff: x => x.add(1).log10() + 1, desc: e => `Gain <b>${shorten(e)}x</b> more Dilated Time.` },
 		{ req: 6, eff: x => x.add(1).log10() / 2 + 1, desc: e => `Gain <b>${shorten(e)}x</b> more ex-dilation.` },
-		{ req: 10, eff: x => x.add(1).pow(.1), desc: e => `Gain <b>${shorten(e)}x</b> more Black Hole power.` },
+		{ req: 10, eff: x => x.add(1).pow(.1), desc: e => `Gain <b>${shorten(e)}x</b> more Black Hole Power.` },
 		{ req: 15, eff: x => x.add(1).log10() + 1, desc: e => `Gain <b>${shorten(e)}x</b> more banked Infinities.` },
 		{ req: 21, eff: x => x.add(1).log10() / 5 + 1, desc: e => `Raise ex-dilation by <b>^${shorten(e)}</b>.` },
 	],
