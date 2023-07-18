@@ -922,8 +922,8 @@ var notationArray = [
 ]
 
 function updateNotationOption() {
-	var notationMsg = "Notation: " + player.options.notation
-	var commasMsg = player.options.commas + " on exponents"
+	var notationMsg = "Notation: " + (player.options.notation == "Emojis" ? "Cancer / Emojis" : player.options.notation)
+	var commasMsg = (player.options.commas == "Emojis" ? "Cancer" : player.options.commas) + " on exponents"
 	el("notation").innerHTML = "<p style='font-size:15px'>Notations</p>" + notationMsg + "<br>" + commasMsg
 	el("chosenNotation").textContent = player.options.notation=="AF5LN"?"Notation: Aarex's Funny 5-letter Notation":notationMsg
 	el("chosenCommas").textContent = player.options.commas=="AF5LN"?"Aarex's Funny 5-letter Notation on exponents":commasMsg
@@ -954,8 +954,8 @@ function onNotationChange() {
 	}
 	el("achmultlabel").textContent = "Current achievement multiplier on each Dimension: " + shortenMoney(player.achPow) + "x"
 	if (hasAch("ng3p18") || hasAch("ng3p37")) {
-		el('bestTP').textContent="Your best"+(ghostified ? "" : " ever")+" Tachyon particles"+(ghostified ? " in this Fundament" : "")+" was "+shorten(player.dilation.bestTP)+"."
-		setAndMaybeShow('bestTPOverGhostifies',ghostified,'"Your best-ever Tachyon particles was "+shorten(player.dilation.bestTPOverGhostifies)+"."')
+		el('bestTP').textContent="Your best"+(ghostified ? "" : " ever")+" Tachyon Particles"+(ghostified ? " in this Fundament" : "")+" was "+shorten(player.dilation.bestTP)+"."
+		setAndMaybeShow('bestTPOverGhostifies',ghostified,'"Your best-ever Tachyon Particles was "+shorten(player.dilation.bestTPOverGhostifies)+"."')
 	}
 }
 

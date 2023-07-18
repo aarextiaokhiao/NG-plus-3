@@ -454,7 +454,7 @@ function startDilatedEternity(auto) {
 	if (!hasDilStudy(1)) return
 
 	var onActive = !player.dilation.active
-	if (!auto && onActive && aarMod.dilationConf && !confirm("Dilating time will start a new Eternity where all of your Normal/Infinity/Time Dimension multiplier's exponents and the Tickspeed multiplier's exponent will be reduced to ^0.75. If you can Eternity while dilated, you'll be rewarded with tachyon particles based on your antimatter and tachyon particles.")) return
+	if (!auto && onActive && aarMod.dilationConf && !confirm("Dilating time will start a new Eternity where all of your Antimatter, Infinity, and Time Dimension multiplier's exponents and the Tickspeed multiplier's exponent will be reduced to ^0.75. If you can Eternity while dilated, you'll be rewarded with Tachyon Particles based on your antimatter and current amount of Tachyon Particles.")) return
 
 	eternity(onActive || !canEternity(), auto, onActive)
 }

@@ -6,6 +6,9 @@ function displayMainStats() {
 	el("boosts").style.display = showBoosts ? '' : 'none'
 	if (showBoosts) el("boosts").textContent = 'You have performed '+getFullExpansion(player.tickspeedBoosts)+' Tickspeed Boosts.'
 	el("galaxies").textContent = 'You have ' + getFullExpansion(player.galaxies) + ' Antimatter Galaxies.'
+	var showCancer = player.spreadingCancer > 0 && player.galacticSacrifice
+	el("spreadingCancer").style.display = showCancer ? '' : 'none'
+	if (showCancer) el("spreadingCancer").textContent = 'You have made '+getFullExpansion(player.spreadingCancer)+' total galaxies while using Cancer/Emoji notation.'
 	el("totalTime").textContent = "You have played for " + timeDisplay(player.totalTimePlayed) + "."
 }
 
@@ -17,10 +20,10 @@ function displayInfinityStats(){
 
 function bankedInfinityDisplay(){
 	el("infinitiedBank").style.display = (player.infinitiedBank > 0) ? "block" : "none"
-	el("infinitiedBank").textContent = "You have " + getFullExpansion(player.infinitiedBank) + " banked infinities."
+	el("infinitiedBank").textContent = "You have " + getFullExpansion(player.infinitiedBank) + " banked Infinities."
 	var bankedInfGain=gainBankedInf()
 	el("bankedInfGain").style.display = bankedInfGain>0 ? "block" : "none"
-	el("bankedInfGain").textContent = "You will gain " + getFullExpansion(bankedInfGain) + " banked infinities on next Eternity."
+	el("bankedInfGain").textContent = "You will gain " + getFullExpansion(bankedInfGain) + " banked Infinities on next Eternity."
 	if (hasAch("ng3p72")) updateBankedEter(true)
 }
 
@@ -34,8 +37,8 @@ function displayEternityStats() {
 	let dil = hasAch("r136")
 	el("stats_dil").style.display = dil ? "" : "none"
 	if (dil) {
-		el("bestmoneydilation").textContent = player.dilation.best ? "Your best antimatter in dilation is " + shortenMoney(player.dilation.best) + "." : ""
-		el("dilated").textContent = "You have succesfully dilated "+getFullExpansion(player.dilation.times)+" times."
+		el("bestmoneydilation").textContent = player.dilation.best ? "Your best antimatter in Dilation is " + shortenMoney(player.dilation.best) + "." : ""
+		el("dilated").textContent = "You have succesfully Dilated "+getFullExpansion(player.dilation.times)+" times."
 		el("exdilated").textContent = exdilated() ? "You have reversed Dilation " + getFullExpansion(player.exdilation.times) + " times." : ""
 	}
 }
@@ -95,15 +98,15 @@ function eventsTimeDisplay(years, thisYear){
 		 3000,	 2600,	2500,	2300,	1800,
 		 1400,	 1175,	800,	 753,	 653,
 		 539,		356,	 200,	 4,		 0]
-	var events = ["start of Pliocene epoch", "birthdate of Lucy (typical Australopithicus afarensis female)", "Quaternary period", "Calabrian age", "Homo sapiens",
-		"Homo neanderthalensis", "emergence of anatomically modern humans", "Homo sapiens idaltu", "peak of Eemian interglacial period", "earliest abstract/symbolic art",
+	var events = ["start of Pliocene epoch", "birthdate of Lucy (typical Australopithicus afarensis female)", "Quaternary period", "Calabrian age", "first alleged appearance of Homo sapiens",
+		"first alleged appearance of Homo neanderthalensis", "emergence of anatomically modern humans", "first alleged appearance of Homo sapiens idaltu", "peak of Eemian interglacial period", "earliest abstract/symbolic art",
 		"Upper Paleolithic", "Late Stone Age", "European early modern humans", "first human settlement", "oldest known figurative art",
-		"oldest known domesticated dog", "Last Glacial Maximum", "oldest ovens", "oldest known twisted rope", "oldest human permanent settlement (hamlet considering built of rocks and of mammoth bones)",
+		"oldest known domesticated dog", "Last Glacial Maximum", "oldest ovens", "oldest known twisted rope", "oldest human permanent settlement (hamlet considering to be built of rocks and of mammoth bones)",
 		"rise of Kerberan culture", "colonization of North America", "domestication of the pig", "prehistoric warfare", "Holocene",
 		"death of other human breeds", "agricultural revolution", "farmers arrived in Europe", "first metal tools", "first horse",
 		"Sumerian cuneiform writing system", "union of Egypt", "rise of Maya", "extinct of mammoths", "rise of Akkadian Empire",
 		"first alphabetic writing", "rise of Olmec civilization", "end of bronze age", "rise of Greek city-states", "rise of Rome",
-		"rise of Persian Empire", "fall of Babylonian Empire", "birth of Alexander the Great", "first paper", "birth of Jesus Christ"]
+		"rise of Persian Empire", "fall of Babylonian Empire", "birth of Alexander the Great", "first papers", "birth of Jesus Christ"]
 	/*
 	"the homo sapiens" is weird, as is "the homo neanderthaliensis" and "the homo sapiens idaltu"
 	*/

@@ -133,7 +133,7 @@
 			</div>
 			<div id="tab_dim_inf">
 				<div>
-					<p>You have <span id="infPowAmount" style="font-size:35px; color: black">0</span> Infinity Power. <span id="infPowEffectPowerDiv"></span>ranslated to <span id="infDimMultAmount" style="font-size:35px; color: black">0</span>x multiplier on all Normal Dimensions</p>
+					<p>You have <span id="infPowAmount" style="font-size:35px; color: black">0</span> Infinity Power. <span id="infPowEffectPowerDiv"></span>ranslated to <span id="infDimMultAmount" style="font-size:35px; color: black">0</span>x multiplier on all Antimatter Dimensions</p>
 				</div>
 				<div id="infPowPerSec">You are getting 0 Infinity Power per second.</div>
 				<button id="maxAllID" class="storebtn" style="font-size: 12px" onclick="maxAllID()">Max all</Button>
@@ -145,7 +145,7 @@
 				<div>
 					<p id="itmult"></p>
 					<p id="totaltickgained">You've gained 0 tickspeed upgrades.</p>
-					<p>You have <span id="timeShardAmount" style="font-size:35px; color: black">0</span> Time Shards. The next tickspeed upgrade is at <span id="tickThreshold" style="font-size:35px; color: black">0</span></p>
+					<p>You have <span id="timeShardAmount" style="font-size:35px; color: black">0</span> Time Shards. The next tickspeed upgrade is at <span id="tickThreshold" style="font-size:35px; color: black">0</span>.</p>
 				</div>
 
 				<div id="timeShardsPerSec">You are getting 0 Time Shards per second.</div>
@@ -196,11 +196,11 @@
 						<td><div><button id="exportbtn" class="storebtn" onclick='export_save()' style="color:black; width: 200px; height: 55px; font-size: 20px">Export</button></div></td>
 						<td><div><button id="importbtn" class="storebtn" onclick='import_save()' style="color:black; width: 200px; height: 55px; font-size: 20px">Import</button></div></td>
 					</tr><tr>
-						<td><div class="storebtn" id="autoSaveIntDiv" style="color:black; width: 198px; height: 55px; font-size:130%; text-align: center;"><b id="autoSaveInterval">Auto-save interval: 30s</b><input id="autoSaveIntervalSlider" style="width: 170px;" type="range" min="14" max="120" value="30" class="slider" oninput="changeAutoSaveInterval(true)"></div></td>
+						<td><div class="storebtn" id="autoSaveIntDiv" style="color:black; width: 198px; height: 55px; font-size: 130%; text-align: center;"><b id="autoSaveInterval">Auto-save interval: 30s</b><input id="autoSaveIntervalSlider" style="width: 170px;" type="range" min="14" max="120" value="30" class="slider" oninput="changeAutoSaveInterval(true)"></div></td>
 						<td><div><button id="exportybtn" class="storebtn" onclick='export_file()' style="color:black; width: 200px; height: 55px; font-size: 20px">Save to file</button></div></td>
 						<td><div><button id="load" class="storebtn" onclick='load_saves()' style="color:black; width: 200px; height: 55px; font-size: 20px">Load</button></div></td>
 					</tr><tr>
-						<td><div class="storebtn" style="color:black; width: 198px; height: 55px; font-size:130%; text-align: center;"><b id="offlineInterval"></b><input id="offlineSlider" style="width: 170px;" type="range" min="0" max="10" class="slider" oninput="adjustOfflineProgress()"></div></td>
+						<td><div class="storebtn" style="color:black; width: 198px; height: 55px; font-size:107.5%; text-align: center;"><b id="offlineInterval"></b><input id="offlineSlider" style="width: 170px;" type="range" min="0" max="10" class="slider" oninput="adjustOfflineProgress()"></div></td>
 						<td><div><button id="rename" class="storebtn" onclick='rename_save()' style="color:black; width: 200px; height: 55px; font-size: 20px">Rename</button></div></td>
 					</tr><tr>
 						<td colspan=3><br><hr></td>
@@ -604,7 +604,7 @@
 							<div id="1 million is a lot" class="achievement achievementlocked" style="background-image: url(images/404.png)"><br></div>
 						</td>
 						<td>
-							<div id="Not-so-challenging" class="achievement achievementlocked" style="background-image: url(images/405.png)" ach-tooltip="Get the sum of all of your challenge times under 3 minutes. Reward: All Normal Dimensions are stronger in the first 3 minutes of an Infinity, but only in challenges."><br></div>
+							<div id="Not-so-challenging" class="achievement achievementlocked" style="background-image: url(images/405.png)" ach-tooltip="Get the sum of all of your challenge times under 3 minutes. Reward: All Antimatter Dimensions are stronger in the first 3 minutes of an Infinity, but only in challenges."><br></div>
 						</td>
 						<td>
 							<div id="Faster than a squared potato" class="achievement achievementlocked" style="background-image: url(images/406.png)" ach-tooltip="Reach 1e52 ticks per second. Reward: -2% tickspeed."><br></div>
@@ -627,13 +627,13 @@
 							<div id="This achievement doesn't exist" class="achievement achievementlocked" style="background-image: url(images/43.png)" ach-tooltip="Get 9.9999e9999 antimatter. Reward: Dimensions are more powerful the more unspent antimatter you have."><br></div>
 						</td>
 						<td>
-							<div id="End me" class="achievement achievementlocked" style="background-image: url(images/44.png)" ach-tooltip="Get the sum of all Normal Challenge times under 5 seconds. Reward: All Normal Dimensions are 40% stronger in challenges."><br></div>
+							<div id="End me" class="achievement achievementlocked" style="background-image: url(images/44.png)" ach-tooltip="Get the sum of all Normal Challenge times under 5 seconds. Reward: All Antimatter Dimensions are 40% stronger in challenges."><br></div>
 						</td>
 						<td>
 							<div id="NEW DIMENSIONS???" class="achievement achievementlocked" style="background-image: url(images/45.png)"><br></div>
 						</td>
 						<td id="r76">
-							<div id="One for each dimension" class="achievement achievementlocked" style="background-image: url(images/21.png)" ach-tooltip="Play for 8 days. Reward: Gain an extremely small time multiplier to your Normal Dimensions."><br></div>
+							<div id="One for each dimension" class="achievement achievementlocked" style="background-image: url(images/21.png)" ach-tooltip="Play for 8 days. Reward: Gain an extremely small time multiplier to your Antimatter Dimensions."><br></div>
 						</td>
 						<td>
 							<div id="How the antitables have turned" class="achievement achievementlocked" style="background-image: url(images/47.png)"><br></div>
@@ -670,16 +670,16 @@
 					</tr>
 					<tr id="achRow9">
 						<td>
-							<div id="Ludicrous Speed" class="achievement achievementlocked" style="background-image: url(images/57.png)" ach-tooltip="Big Crunch for 1e200 IP in 2 seconds or less. Reward: All Normal Dimensions are significantly stronger in the first 5 seconds of an Infinity."><br></div>
+							<div id="Ludicrous Speed" class="achievement achievementlocked" style="background-image: url(images/57.png)" ach-tooltip="Big Crunch for 1e200 IP in 2 seconds or less. Reward: All Antimatter Dimensions are significantly stronger in the first 5 seconds of an Infinity."><br></div>
 						</td>
 						<td>
-							<div id="I brake for nobody" class="achievement achievementlocked" style="background-image: url(images/58.png)" ach-tooltip="Big Crunch for 1e250 IP in 20 seconds or less. Reward: All Normal Dimensions are significantly stronger in the first 60 seconds of an Infinity."><br></div>
+							<div id="I brake for nobody" class="achievement achievementlocked" style="background-image: url(images/58.png)" ach-tooltip="Big Crunch for 1e250 IP in 20 seconds or less. Reward: All Antimatter Dimensions are significantly stronger in the first 60 seconds of an Infinity."><br></div>
 						</td>
 						<td>
 							<div id="MAXIMUM OVERDRIVE" class="achievement achievementlocked" style="background-image: url(images/59.png)" ach-tooltip="Reach 1e300 IP/min. Reward: Gain an additional 4x multiplier to IP."><br></div>
 						</td>
 						<td>
-							<div id="Minute of infinity" class="achievement achievementlocked" style="background-image: url(images/60.png)" ach-tooltip="Reach 1e260 infinity power. Reward: Double infinity power gain."><br></div>
+							<div id="4.3333 minutes of Infinity" class="achievement achievementlocked" style="background-image: url(images/60.png)" ach-tooltip="Reach 1e260 infinity power. Reward: Double infinity power gain."><br></div>
 						</td>
 						<td>
 							<div id="Is this safe?" class="achievement achievementlocked" style="background-image: url(images/61.png)" ach-tooltip="Gain Infinite replicanti in 30 minutes. Reward: Infinity doesn't reset your replicanti amount."><br></div>
@@ -740,7 +740,7 @@
 							<div id="Do I really need to infinity" class="achievement achievementlocked" style="background-image: url(images/78.png)" ach-tooltip="Eternity with only 1 Infinity. Reward: Gain a multiplier to IP based on your Infinities."><br></div>
 						</td>
 						<td>
-							<div id="8 nobody got time for that" class="achievement achievementlocked" style="background-image: url(images/79.png)" ach-tooltip="Eternity while only buying 8th Normal Dimensions."><br></div>
+							<div id="8 nobody got time for that" class="achievement achievementlocked" style="background-image: url(images/79.png)" ach-tooltip="Eternity while only buying 8th Antimatter Dimensions."><br></div>
 						</td>
 						<td>
 							<div id="IT'S OVER 9000" class="achievement achievementlocked" style="background-image: url(images/80.png)" ach-tooltip="Get a total sacrifice multiplier of 1e9000. Reward: Sacrifice doesn't reset your dimensions."><br></div>
@@ -751,7 +751,7 @@
 							<div id="Can you get infinite IP?" class="achievement achievementlocked" style="background-image: url(images/81.png)" ach-tooltip="Reach 1e30008 IP."><br></div>
 						</td>
 						<td>
-							<div id="You're already dead." class="achievement achievementlocked" style="background-image: url(images/82.png)" ach-tooltip="Eternity while only buying 1st Normal Dimensions."><br></div>
+							<div id="You're already dead." class="achievement achievementlocked" style="background-image: url(images/82.png)" ach-tooltip="Eternity while only buying 1st Antimatter Dimensions."><br></div>
 						</td>
 						<td>
 							<div id="5 more eternities until the update" class="achievement achievementlocked" style="background-image: url(images/83.png)"><br></div>
@@ -1247,9 +1247,10 @@
 				<div id="nothingnessSecret">You completed all secret achievements! Congratulations!</div>
 			</div><div id="tab_ach_badge">
 				<b class='red'>
-					Badges are saved through saves and mods.<br>
-					You can't get any badge with buffs and NGUd'.<br>
-					You can't also get NG-x badges with NG+, and NG+3 badges with NG+4.
+					Badges are accomplishments recorded when you complete certain tasks in mods under specific conditions.<br>
+					These are kept through all saves and provide no reward.<br>
+					You can't get badges if you use mods that may buff certain elements of the game, including NGUd'.<br>
+					You also can't get NG-x badges with NG+, and NG+3 badges with NG+4.
 				</b>
 				<div id="badges_div"></div>
 			</div>
@@ -1516,7 +1517,7 @@
 						</td>
 						<td>
 							<div class="infchallengediv" id="postcngm3_2div" style="height: 140px; display: none">
-								<span>All Normal Dimension multipliers are disabled except for Infinity Power, but the Galaxy boost on Infinity Power is stronger.</span>
+								<span>All Antimatter Dimension multipliers are disabled except for Infinity Power, but the Galaxy boost on Infinity Power is stronger.</span>
 								<br>
 								<br>
 								<div class="outer">
@@ -1573,14 +1574,14 @@
 						<td id='icngmm_4div' style='display:none'></td>
 						<td id='ic3div'>
 							<div class="infchallengediv" id="postc3div" style="height: 140px; display: none">
-								<span>Tickspeed interval decrease is always at 0%, but for every tickspeed purchase you get a static multiplier on all Normal Dimensions, which increases with galaxies.</span>
+								<span>Tickspeed interval decrease is always at 0%, but for every tickspeed purchase you get a static multiplier on all Antimatter Dimensions, which increases with Galaxies.</span>
 								<br>
 								<br>
 								<div class="outer">
 									<button id="postc3" class="challengesbtn" onclick="startChallenge('postc3')">Start</button>
 									<br>
 									<span id="postc3goal" >Goal: 1e5000</span><br>
-									<span>Reward: Gain a static multiplier on every tickspeed purchase.</span>
+									<span>Reward: Gain a static multiplier on every Tickspeed purchase.</span>
 								</div>
 							</div>
 						</td>
@@ -1593,7 +1594,7 @@
 									<button id="postc4" class="challengesbtn" onclick="startChallenge('postc4')">Start</button>
 									<br>
 									<span id="postc4goal" >Goal: 1e13000</span><br>
-									<span>Reward: All Normal Dimension multipliers are raised to the power of 1.05.</span>
+									<span>Reward: All Antimatter Dimension multipliers are raised to the power of 1.05.</span>
 								</div>
 							</div>
 						</td>
@@ -1637,7 +1638,7 @@
 									<button id="postc5" class="challengesbtn" onclick="startChallenge('postc5')">Start</button>
 									<br>
 									<span id="postc5goal" >Goal: 1e11111</span><br>
-									<span>Reward: Galaxies are 10% more powerful, and reduce the requirements for Galaxies and Dimension Boosts by 1.</span>
+									<span>Reward: Antimatter Galaxies are 10% more powerful, and reduce the requirements for Antimatter Galaxies and Dimension Boosts by 1.</span>
 								</div>
 							</div>
 						</td>
@@ -1678,7 +1679,7 @@
 									<button id="postc8" class="challengesbtn" onclick="startChallenge('postc8')">Start</button>
 									<br>
 									<span id="postc8goal" >Goal: 1e27000</span><br>
-									<span>Reward: You get a multiplier to Normal Dimensions 2-7 based on the 1st and 8th Normal Dimension multipliers.</span>
+									<span>Reward: You get a multiplier to Antimatter Dimensions 2-7 based on the 1st and 8th Normal Dimension multipliers.</span>
 								</div>
 							</div>
 						</td>
@@ -1827,7 +1828,7 @@
 						</td>
 						<td>
 							<div class="eterchallengediv" id="eterc10div" style="height: 140px; display: none">
-								<span>Time Dimensions and Infinity Dimensions are disabled, but you gain an immense boost from your Infinities to Normal Dimensions.<br>
+								<span>Time Dimensions and Infinity Dimensions are disabled, but you gain an immense boost from your Infinities to Antimatter Dimensions.<br>
 									(infinities^1000) Currently: <span id="ec10span">xX</span>
 								</span>
 								<br>
@@ -1845,7 +1846,7 @@
 					<tr>
 						<td>
 							<div class="eterchallengediv" id="eterc11div" style="height: 140px; display: none">
-								<span>All Dimension multipliers are disabled, except for the multipliers from Infinity Power and Dimension Boosts to Normal Dimensions.</span>
+								<span>All Dimension multipliers are disabled, except for the multipliers from Infinity Power and Dimension Boosts to Antimatter Dimensions.</span>
 								<br>
 								<br>
 								<div class="outer">
@@ -1875,7 +1876,7 @@
 					<tr>
 						<td>
 							<div class="eterchallengediv" id="eterc13div" style="height: 140px; display: none">
-								<span>Infinity Dimensions are disabled, and the Dimension Boost multiplier to Normal Dimensions is nullified.</span>
+								<span>Infinity Dimensions are disabled, and the Dimension Boost multiplier to Antimatter Dimensions is nullified.</span>
 								<br>
 								<br>
 								<div class="outer">
@@ -1988,7 +1989,7 @@
 				<b class='red'>Upgrades only work in Big Rips. Upgrades starting at 3rd nullify 1st upgrade.</b>
 				<table class="table" align="center" style="margin: auto">
 					<tr>
-						<td><button id="bigripupg1" onclick='buyBigRipUpg(1)'>Infinity Points boost Normal Dimensions.<br>Currently: <span id="bigripupg1current">1.00</span>x<br>Cost: <span id="bigripupg1cost"></span> Space Shards</button></td>
+						<td><button id="bigripupg1" onclick='buyBigRipUpg(1)'>Infinity Points boost Antimatter Dimensions.<br>Currently: <span id="bigripupg1current">1.00</span>x<br>Cost: <span id="bigripupg1cost"></span> Space Shards</button></td>
 						<td><button id="bigripupg2" onclick='buyBigRipUpg(2)'>Start with all ECs and 100,000 Eternities.<br>Cost: <span id="bigripupg2cost"></span> Space Shards</button></td>
 						<td><button id="bigripupg3" onclick='buyBigRipUpg(3)'>Gain 5 Time Theorems.<br>Cost: <span id="bigripupg3cost"></span> Space Shards</button></td>
 						<td><button id="bigripupg4" onclick='buyBigRipUpg(4)'>Replicantis replicate 10x faster, and boost Infinity Dimensions.<br>Cost: <span id="bigripupg4cost"></span> Space Shards</button></td>
@@ -2053,7 +2054,7 @@
 							<button id="galaxy21" class="infinistorebtn1" onclick="buyGalaxyUpgrade(21)"></button>
 						</td>
 						<td>
-							<button id="galaxy22" class="infinistorebtn2" onclick="buyGalaxyUpgrade(22)">Galaxies are <span id='galBuff22'></span>x stronger, reduce the cost by 20 less except for the first, and decrease the cost multiplier to 30.<br>Cost: 5 GP</button>
+							<button id="galaxy22" class="infinistorebtn2" onclick="buyGalaxyUpgrade(22)">Galaxies are <span id='galBuff22'></span>x stronger, reduce galaxy cost by 20 after the first galaxy, and decrease the cost multiplier to 30.<br>Cost: 5 GP</button>
 						</td>
 						<td>
 							<button id="galaxy23" class="infinistorebtn3" onclick="buyGalaxyUpgrade(23)"><span id='galDesc23'></span><br>Currently: <span id='galspan23'>x</span>x more power<br>Cost: 100 GP</button>
@@ -2070,19 +2071,19 @@
 					</tr>
 					<tr>
 						<td>
-							<button id="galaxy31" class="infinistorebtn1" onclick="buyGalaxyUpgrade(31)">Increase all dimension multipliers.<br>Currently: x^<span id='galspan31'></span><br>Cost: <span id='galcost31'></span> GP</button>
+							<button id="galaxy31" class="infinistorebtn1" onclick="buyGalaxyUpgrade(31)">Increase all Antimatter Dimension multipliers.<br>Currently: x^<span id='galspan31'></span><br>Cost: <span id='galcost31'></span> GP</button>
 						</td>
 						<td>
-							<button id="galaxy32" class="infinistorebtn2" onclick="buyGalaxyUpgrade(32)">Gain more galaxy points based on your total antimatter.<br>Currently: <span id='galspan32'>x</span>x<br>Cost: <span id='galcost32'></span> GP</button>
+							<button id="galaxy32" class="infinistorebtn2" onclick="buyGalaxyUpgrade(32)">Gain more Galaxy Points based on your total antimatter.<br>Currently: <span id='galspan32'>x</span>x<br>Cost: <span id='galcost32'></span> GP</button>
 						</td>
 						<td>
-							<button id="galaxy33" class="infinistorebtn3" onclick="buyGalaxyUpgrade(33)">The multiplier per ten dimensions is stronger based on your galaxy points.<br>Currently: <span id='galspan33'>x</span>x more power<br>Cost: <span id='galcost33'></span> GP</button></td>
+							<button id="galaxy33" class="infinistorebtn3" onclick="buyGalaxyUpgrade(33)">Multiply per-10 dimension multiplier based on your Galaxy Points.<br>Currently: <span id='galspan33'>x</span>x more power<br>Cost: <span id='galcost33'></span> GP</button></td>
 						</td>
 						<td>
-							<button id="galaxy34" class="infinistorebtn4" onclick="buyGalaxyUpgrade(34)">Decrease tickspeed boost cost multiplier to 4.<br>Cost: <span id='galcost34'></span> GP</button>
+							<button id="galaxy34" class="infinistorebtn4" onclick="buyGalaxyUpgrade(34)">Decrease tickspeed boost cost multiplier by 4.<br>Cost: <span id='galcost34'></span> GP</button>
 						</td>
 						<td>
-							<button id="galaxy35" class="infinistorebtn4" onclick="buyGalaxyUpgrade(35)" style="font-size:9px">Each bought Time Dimension boosts Normal Dimensions by the product of x/6 and your multiplier of the product of bought.<br>Currently: <span id='galspan35'></span>x<br>Cost: <span id='galcost35'></span> GP</button>
+							<button id="galaxy35" class="infinistorebtn4" onclick="buyGalaxyUpgrade(35)" style="font-size:9px">Each bought Time Dimension boosts Antimatter Dimensions by the product of x/6 and your multiplier of the product of bought.<br>Currently: <span id='galspan35'></span>x<br>Cost: <span id='galcost35'></span> GP</button>
 						</td>
 						<td>
 							<button id="galaxy36" class="infinistorebtn4" onclick="buyGalaxyUpgrade(36)">Square the effect of the upgrade to the left.<br>Cost: <span id='galcost36'></span> GP</button>
@@ -2099,10 +2100,10 @@
 							<button id="galaxy43" class="infinistorebtn3" onclick="buyGalaxyUpgrade(43)"></button>
 						</td>
 						<td>
-							<button id="galaxy44" class="infinistorebtn4" onclick="buyGalaxyUpgrade(44)">Normal Dimensions boost Time Dimensions.<br>Cost: <span id='galcost44'></span> GP</button>
+							<button id="galaxy44" class="infinistorebtn4" onclick="buyGalaxyUpgrade(44)">Antimatter Dimensions boost Time Dimensions.<br>Cost: <span id='galcost44'></span> GP</button>
 						</td>
 						<td>
-							<button id="galaxy45" class="infinistorebtn4" onclick="buyGalaxyUpgrade(45)">Time Dimensions boost Normal Dimensions, and Eighth Dimensions multiply GP gain.<br>Cost: <span id='galcost45'></span> GP</button>
+							<button id="galaxy45" class="infinistorebtn4" onclick="buyGalaxyUpgrade(45)">Time Dimensions boost Antimatter Dimensions, and Eighth Dimensions multiply GP gain.<br>Cost: <span id='galcost45'></span> GP</button>
 						</td>
 						<td>
 							<button id="galaxy46" class="infinistorebtn4" onclick="buyGalaxyUpgrade(46)">Boost all upgrades in this row based on your GP.<br>Currently: <span id='galspan46'>0</span>%<br>Cost: <span id='galcost46'></span> GP</button>
@@ -2621,7 +2622,8 @@
 				<button class="storebtn" id="replicantiunlock" onclick="unlockReplicantis()" style="width:200px; height: 80px">Unlock Replicantis<br>Cost: 1e140 IP</button>
 				<div id="replicantidiv" style="display: none; width: 1000px">
 					<div id="eterc8repl" style="display: none;"></div>
-					<p style="font-size: 15px">You have <span id="replicantiamount" style="font-size:23px; color: black">0</span> replicanti, translated to <span id="replicantimult" style="font-size:23px; color: black">0</span> <span id="replDesc"></span></p>
+					<p style="font-size: 15px">You have <span id="replicantiamount" style="font-size:23px; color: black">0</span> replicanti, translated to <span id="replicantimult" style="font-size:23px; color: black">0</span> <span id="replDesc"></span>
+					<br><span></span></p>
 					<span id="replicantieff"></span>
 					<br>
 					<button class="storebtn" id="replicantichance" onclick="upgradeReplicantiChance()" style="width:180px; height: 50px; font-size: 10px">Replicate chance: 1%<br>+1% Costs: 1e6969 IP</button>
@@ -2658,7 +2660,7 @@
 				</tr>
 				<button class="storebtn" onclick="respecMasteryToggle()" id="respecMastery" style="width:150px; height: 40px; font-size: 10px; margin: auto">Respec mastery studies on next Eternity</button>
 				<button class="storebtn" onclick="fillAll()" id="fillAll" style="width:150px; height: 40px; font-size: 10px; margin: auto">Buy all time studies</button>
-				<table class="table" id="studytable">
+				<table class="table" id="studytable" style="margin-top: 15px;">
 					<tr>
 						<td style="opacity: 0;"><button class="timestudylocked"></button></td>
 						<td><button class="timestudylocked" id="11" onclick="buyTimeStudy(11)">Tickspeed affects 1st Time Dimension with reduced effect<span id="11desc">Currently: 1x</span>Cost: 1 Time Theorem</button></td>
@@ -2704,7 +2706,7 @@
 				<br>
 				<table class="table" id="studytable">
 					<tr>
-						<td><button id="71" onclick="buyTimeStudy(71)">Sacrifice affects all other Normal Dimensions with reduced effect<span id="71desc">Currently: 1x</span>Cost: 4 Time Theorems</button></td>
+						<td><button id="71" onclick="buyTimeStudy(71)">Sacrifice affects all other Antimatter Dimensions with reduced effect<span id="71desc">Currently: 1x</span>Cost: 4 Time Theorems</button></td>
 						<td><button id="72" onclick="buyTimeStudy(72)">Sacrifice affects 4th Infinity Dimension with greatly reduced effect<span id="72desc">Currently: 1x</span>Cost: 6 Time Theorems</button></td>
 						<td><button id="73" onclick="buyTimeStudy(73)">Sacrifice affects 3rd Time Dimension with greatly reduced effect<span id="73desc">Currently: 1x</span>Cost: 5 Time Theorems</button></td>
 					</tr>
@@ -2714,12 +2716,12 @@
 						<td><button id="83" onclick="buyTimeStudy(83)">Dimension Boosts are 0.04% more effective for each tick upgrade gained from Time Dimensions<span>Cost: 5 Time Theorems</button></td>
 					</tr>
 					<tr>
-						<td><button id="91" onclick="buyTimeStudy(91)">Normal Dimensions gain a multiplier based on time spent this Eternity<span id="91desc">Currently: 1x</span>Cost: 4 Time Theorems</button></td>
+						<td><button id="91" onclick="buyTimeStudy(91)">Antimatter Dimensions gain a multiplier based on time spent this Eternity<span id="91desc">Currently: 1x</span>Cost: 4 Time Theorems</button></td>
 						<td><button id="92" onclick="buyTimeStudy(92)">Infinity Dimensions gain a multiplier based on fastest Eternity time<span id="92desc">Currently: 1x</span>Cost: 5 Time Theorems</button></td>
 						<td><button id="93" onclick="buyTimeStudy(93)">Time Dimensions gain a multiplier based on tick upgrades gained<span id="93desc">Currently: 1x</span>Cost: 7 Time Theorems</button></td>
 					</tr>
 					<tr>
-						<td><button id="101" onclick="buyTimeStudy(101)">Replicanti gives a multiplier to NDs equal to their amount.<span>Cost: 4 Time Theorems</button></td>
+						<td><button id="101" onclick="buyTimeStudy(101)">Replicanti gives a multiplier to ADs equal to their amount.<span>Cost: 4 Time Theorems</button></td>
 						<td><button id="102" onclick="buyTimeStudy(102)">Replicated Galaxies power up Replicanti multiplier<span>Cost: 6 Time Theorems</button></td>
 						<td><button id="103" onclick="buyTimeStudy(103)">Time Dimensions gain a multiplier equal to Replicated Galaxy amount<span>Cost: 6 Time Theorems</p></button></td>
 					</tr>
@@ -2768,7 +2770,7 @@
 				</table>
 				<table class="table" id="studytable">
 					<tr>
-						<td><button id="161" onclick="buyTimeStudy(161)"><span id="161desc">1e616x multiplier on all Normal Dimensions</span>Cost: 7 Time Theorems</button></td>
+						<td><button id="161" onclick="buyTimeStudy(161)"><span id="161desc">1e616x multiplier on all Antimatter Dimensions</span>Cost: 7 Time Theorems</button></td>
 						<td><button id="162" onclick="buyTimeStudy(162)"><span id="162desc">1e11x multiplier on all Infinity Dimensions</span>Cost: 7 Time Theorems</button></td>
 					</tr>
 				</table>
@@ -2796,7 +2798,7 @@
 					<tr>
 						<td><button id="191" onclick="buyTimeStudy(191)">Bank 5% of your Infinities on Eternity.<span>Cost: 400 Time Theorems</button></td>
 						<td><button id="192" onclick="buyTimeStudy(192)" style="font-size: 10px;"><span id="192desc"></span>Cost: 730 Time Theorems</button></td>
-						<td><button id="193" onclick="buyTimeStudy(193)">Eternities boost Normal Dimensions.<span id="193desc">Currently: 1x</span>Cost: 300 Time Theorems</button></td>
+						<td><button id="193" onclick="buyTimeStudy(193)">Eternities boost Antimatter Dimensions.<span id="193desc">Currently: 1x</span>Cost: 300 Time Theorems</button></td>
 					</tr>
 				</table>
 				<table class="table" id="studytable">
@@ -2809,7 +2811,7 @@
 						<td><button id="211" onclick="buyTimeStudy(211)">Dimension Boost scales <span id="211desc" style="display:inline"></span> less.<span>Cost: 120 Time Theorems</button></td>
 						<td><button id="212" onclick="buyTimeStudy(212)">Time Shards strengthen Galaxies.<span id="212desc">Currently: 1x</span>Cost: 150 Time Theorems</button></td>
 						<td><button id="213" onclick="buyTimeStudy(213)">Replicanti replicates <span id="213desc" style="display:inline"></span>x faster.<span>Cost: 200 Time Theorems</button></td>
-						<td><button id="214" onclick="buyTimeStudy(214)">Sacrifice further boosts the 8th Normal Dimension.<span id="214desc">Currently: 1x</span>Cost: 120 Time Theorems</button></td>
+						<td><button id="214" onclick="buyTimeStudy(214)">Sacrifice further boosts the 8th Antimatter Dimension.<span id="214desc">Currently: 1x</span>Cost: 120 Time Theorems</button></td>
 					</tr>
 				</table>
 				<table class="table" id="studytable">
@@ -2818,7 +2820,7 @@
 						<td><button id="222" onclick="buyTimeStudy(222)">Dimension Boost costs scale by another <span id="222desc" style="display:inline"></span> less.<span>Cost: 900 Time Theorems</button></td>
 						<td><button id="223" onclick="buyTimeStudy(223)">Galaxy cost scaling starts 7 galaxies later.<span>Cost: 900 Time Theorems</button></td>
 						<td><button id="224" onclick="buyTimeStudy(224)">Galaxy cost scaling starts 1 galaxy later for every 2000 Dimension Boosts.<span>Cost: 900 Time Theorems</button></td>
-						<td><button id="225" onclick="buyTimeStudy(225)">You gain extra RGs based on how high above infinity your replicanti are.<span>Cost: 900 Time Theorems</button></td>
+						<td><button id="225" onclick="buyTimeStudy(225)">You gain extra RGs based on how high above Infinity your replicanti are.<span>Cost: 900 Time Theorems</button></td>
 						<td><button id="226" onclick="buyTimeStudy(226)">You gain extra RGs based on your max RGs.<span>Cost: 900 Time Theorems</button></td>
 						<td><button id="227" onclick="buyTimeStudy(227)">Sacrifice affects the 4th Time Dimension with reduced effect.<span id="227desc"></span><span>Cost: 900 Time Theorems</button></td>
 						<td><button id="228" onclick="buyTimeStudy(228)">Sacrifice scales better.<span>Cost: 900 Time Theorems</button></td>
@@ -2827,14 +2829,14 @@
 				<table class="table" id="studytable">
 					<tr>
 						<td><button id="231" onclick="buyTimeStudy(231)">Dimension Boosts are more effective based on their amount.<span id="231desc"></span><span>Cost: 500 Time Theorems</button></td>
-						<td><button id="232" onclick="buyTimeStudy(232)">Galaxies are more effective based on your antimatter galaxies.<span id="232desc"></span><span>Cost: 500 Time Theorems</button></td>
+						<td><button id="232" onclick="buyTimeStudy(232)">Galaxies are more effective based on your Antimatter Galaxies.<span id="232desc"></span><span>Cost: 500 Time Theorems</button></td>
 						<td><button id="233" onclick="buyTimeStudy(233)">Max Replicated Galaxy upgrade cost is reduced based on replicanti amount.<span>Cost: 500 Time Theorems</button></td>
 						<td><button id="234" onclick="buyTimeStudy(234)">Sacrifice boosts First Dimension.<span>Cost: 500 Time Theorems</button></td>
 					</tr>
 				</table>
 				<table class="table" id="studytable">
 					<tr>
-						<td><button class="eternitychallengestudy" id="ec11unl">Eternity Challenge 11<span>Requirement: Use only the Normal Dimension path<span>Cost: 1 Time Theorem</button></td>
+						<td><button class="eternitychallengestudy" id="ec11unl">Eternity Challenge 11<span>Requirement: Use only the Antimatter Dimension path<span>Cost: 1 Time Theorem</button></td>
 						<td><button class="eternitychallengestudy" id="ec12unl">Eternity Challenge 12<span>Requirement: Use only the Infinity Dimension path<span>Cost: 1 Time Theorem</button></td>
 					</tr>
 				</table>
@@ -3097,7 +3099,7 @@
 			</div>
 			<div id="tab_upg_eter">
 				<div id="breakEternityReq"></div>
-				<div id="breakEternityNoBigRip">Break Eternity only works if you big rip the universe again.</div>
+				<div id="breakEternityNoBigRip">Break Eternity only works in Big Ripped universes.</div>
 				<div id="eternalMatterDiv"><span id="eternalMatter" style="font-size:35px"></span> Eternal Matter</div>
 				<table class="top_text_align" id="eternityUpgrades" style="margin: 0 auto">
 					<tr>
@@ -3122,13 +3124,13 @@
 						</td>
 					</tr><tr id="dilationeterupgrow">
 						<td>
-							<button id="eter7" class="eternityupbtn" onclick="buyEternityUpgrade(7, new Decimal('1e1500'))">Dilated time gain is boosted by antimatter<br>Currently: Xx<br>Cost: 1e1500 EP</button>
+							<button id="eter7" class="eternityupbtn" onclick="buyEternityUpgrade(7, new Decimal('1e1500'))">Dilated Time gain is boosted by Antimatter<br>Currently: Xx<br>Cost: 1e1500 EP</button>
 						</td>
 						<td>
-							<button id="eter8" class="eternityupbtn" onclick="buyEternityUpgrade(8, new Decimal('1e2000'))">Dilated time gain is boosted by infinity points<br>Currently: Xx<br>Cost: 1e2000 EP</button>
+							<button id="eter8" class="eternityupbtn" onclick="buyEternityUpgrade(8, new Decimal('1e2000'))">Dilated Time gain is boosted by Infinity Points<br>Currently: Xx<br>Cost: 1e2000 EP</button>
 						</td>
 						<td>
-							<button id="eter9" class="eternityupbtn" onclick="buyEternityUpgrade(9, new Decimal('1e3000'))">Dilated time gain is boosted by eternity points<br>Currently: Xx<br>Cost: 1e3000 EP</button>
+							<button id="eter9" class="eternityupbtn" onclick="buyEternityUpgrade(9, new Decimal('1e3000'))">Dilated Time gain is boosted by Eternity Points<br>Currently: Xx<br>Cost: 1e3000 EP</button>
 						</td>
 					</tr>
 				</table>
@@ -3171,7 +3173,7 @@
 							<button class="eternitychallengestudy" onclick="startEC10()" style="width: 190px; height: 90px; margin: 0">Eternity Points: <span id="eterShortcutEP"></span><br>Start Eternity Challenge 10.</button>
 						</td>
 						<td>
-							<button class="dilationupg" onclick="startDilatedEternity(false, true)" style="width: 190px; height: 90px; margin: 0">Tachyon particles: <span id="eterShortcutTP"></span><br>Dilate time.</button>
+							<button class="dilationupg" onclick="startDilatedEternity(false, true)" style="width: 190px; height: 90px; margin: 0">Tachyon Particles: <span id="eterShortcutTP"></span><br>Dilate time.</button>
 						</td>
 					</tr>
 				</table>
@@ -3201,121 +3203,95 @@
 					<tr>
 						<td class="milestoneText">1 Eternity:</td>
 						<td class="milestoneText">2 Eternities:</td>
-					</tr>
-					<tr>
-						<td><button id="reward0">Unlock the IP multiplier autobuyer</button></td>
-						<td><button id="reward1">You keep your autobuyers on Eternity</button></td>
-					</tr>
-					<tr>
 						<td class="milestoneText">3 Eternities:</td>
 						<td class="milestoneText">4 Eternities:</td>
 					</tr>
 					<tr>
+						<td><button id="reward0">Unlock the IP multiplier autobuyer</button></td>
+						<td><button id="reward1">You keep your autobuyers on Eternity</button></td>
 						<td><button id="reward2">Unlock the Replicated Galaxy autobuyer</button></td>
 						<td><button id="reward3">You keep your Infinity upgrades on Eternity, except for your IP multiplier</button></td>
 					</tr>
 					<tr>
 						<td class="milestoneText">5 Eternities:</td>
 						<td class="milestoneText">7 Eternities:</td>
-					</tr>
-					<tr>
-						<td><button id="reward4" style="font-size: 12px">Unlock more Big Crunch autobuyer options</button></td>
-						<td><button id="reward5" style="font-size: 10px">You complete Infinity Challenges as soon as you unlock them, and get the Sacrifice autobuyer immediately</button></td>
-					</tr>
-					<tr>
 						<td class="milestoneText">9 Eternities:</td>
 						<td class="milestoneText">10 Eternities:</td>
 					</tr>
 					<tr>
+						<td><button id="reward4" style="font-size: 12px">Unlock more Big Crunch autobuyer options</button></td>
+						<td><button id="reward5" style="font-size: 10px">You complete Infinity Challenges as soon as you unlock them, and get the Sacrifice autobuyer immediately</button></td>
 						<td><button id="reward6">You can automatically buy max Galaxies</button></td>
 						<td><button id="reward7">You can automatically buy max Dimension Boosts</button></td>
 					</tr>
 					<tr>
 						<td class="milestoneText">11 Eternities:</td>
 						<td class="milestoneText">12 Eternities:</td>
-					</tr>
-					<tr>
-						<td><button id="reward8">Unlock the autobuyer for the First Infinity Dimension</button></td>
-						<td><button id="reward9">Unlock the autobuyer for the Second Infinity Dimension</button></td>
-					</tr>
-					<tr>
 						<td class="milestoneText">13 Eternities:</td>
 						<td class="milestoneText">14 Eternities:</td>
 					</tr>
 					<tr>
+						<td><button id="reward8">Unlock the autobuyer for the First Infinity Dimension</button></td>
+						<td><button id="reward9">Unlock the autobuyer for the Second Infinity Dimension</button></td>
 						<td><button id="reward10">Unlock the autobuyer for the Third Infinity Dimension</button></td>
 						<td><button id="reward11">Unlock the autobuyer for the Fourth Infinity Dimension</button></td>
 					</tr>
 					<tr>
 						<td class="milestoneText">15 Eternities:</td>
 						<td class="milestoneText">16 Eternities:</td>
-					</tr>
-					<tr>
-						<td><button id="reward12">Unlock the autobuyer for the Fifth Infinity Dimension</button></td>
-						<td><button id="reward13">Unlock the autobuyer for the Sixth Infinity Dimension</button></td>
-					</tr>
-					<tr>
 						<td class="milestoneText">17 Eternities:</td>
 						<td class="milestoneText">18 Eternities:</td>
 					</tr>
 					<tr>
+						<td><button id="reward12">Unlock the autobuyer for the Fifth Infinity Dimension</button></td>
+						<td><button id="reward13">Unlock the autobuyer for the Sixth Infinity Dimension</button></td>
 						<td><button id="reward14">Unlock the autobuyer for the Seventh Infinity Dimension</button></td>
 						<td><button id="reward15">Unlock the autobuyer for the Eighth Infinity Dimension</button></td>
 					</tr>
 					<tr>
 						<td class="milestoneText">20 Eternities:</td>
 						<td class="milestoneText">25 Eternities:</td>
-					</tr>
-					<tr>
-						<td><button id="reward16">You keep your Break Infinity upgrades on Eternity</button></td>
-						<td><button id="reward17">You automatically unlock Infinity Dimensions upon reaching their requirements</button></td>
-					</tr>
-					<tr>
 						<td class="milestoneText">30 Eternities:</td>
 						<td class="milestoneText">40 Eternities:</td>
 					</tr>
 					<tr>
-						<td><button id="reward18">Start with all Normal Dimensions available for purchase</button></td>
-						<td><button id="reward19">Unlock the autobuyer for the replicanti chance upgrade</button></td>
+						<td><button id="reward16">You keep your Break Infinity upgrades on Eternity</button></td>
+						<td><button id="reward17">You automatically unlock Infinity Dimensions upon reaching their requirements</button></td>
+						<td><button id="reward18">Start with all Antimatter Dimensions available for purchase</button></td>
+						<td><button id="reward19">Unlock the autobuyer for the Replicanti Chance upgrade</button></td>
 					</tr>
 					<tr>
 						<td class="milestoneText">50 Eternities:</td>
 						<td class="milestoneText">60 Eternities:</td>
-					</tr>
-					<tr>
-						<td><button id="reward20">You start with Replicanti unlocked</button></td>
-						<td><button id="reward21">Unlock autobuyer for the replicanti interval upgrade</button></td>
-					</tr>
-					<tr>
 						<td class="milestoneText">80 Eternities:</td>
 						<td class="milestoneText">100 Eternities:</td>
 					</tr>
 					<tr>
+						<td><button id="reward20">You start with Replicanti unlocked</button></td>
+						<td><button id="reward21">Unlock autobuyer for the Replicanti Interval upgrade</button></td>
 						<td><button id="reward22">Unlock the autobuyer for the Replicated Galaxy upgrade</button></td>
 						<td><button id="reward23">Unlock the autobuyer for Eternities</button></td>
 					</tr>
-					<tr id='mdmilestonesrow1a'>
-						<td class="milestoneText" id='milestone24'></td>
-						<td class="milestoneText" id='milestone25'></td>
-					</tr>
-					<tr id='mdmilestonesrow1b'>
-						<td><button id="reward24">Dimension Boosts and Galaxies no longer reset Dimensions</button></td>
-						<td><button id="reward25">Start Eternities with 100% replicanti chance, and 1 ms replicanti interval upgrades</button></td>
-					</tr>
-					<tr id='mdmilestonesrow2a'>
-						<td class="milestoneText" id='milestone26'></td>
-						<td class="milestoneText" id='milestone27'></td>
-					</tr>
-					<tr id='mdmilestonesrow2b'>
-						<td><button id="reward26">Unlock the "Replicanti amount" mode for the Eternity autobuyer</button></td>
-						<td><button id="reward27">Unlock the "time since peak changed" mode for the Eternity autobuyer</button></td>
+					<tr id='mdmilestones'>
+						<tr>
+							<td class="milestoneText" id='milestone24'></td>
+							<td class="milestoneText" id='milestone25'></td>
+							<td class="milestoneText" id='milestone26'></td>
+							<td class="milestoneText" id='milestone27'></td>
+						</tr>
+						<tr>
+							<td><button id="reward24">Dimension Boosts and Galaxies no longer reset Dimensions</button></td>
+							<td><button id="reward25">Start Eternities with 100% replicanti chance, and 1 ms replicanti interval upgrades</button></td>
+							<td><button id="reward26">Unlock the "Replicanti amount" mode for the Eternity autobuyer</button></td>
+							<td><button id="reward27">Unlock the "time since peak changed" mode for the Eternity autobuyer</button></td>
+						</tr>
 					</tr>
 				</table>
 			</div>
 			<div id="tab_dil">
 				<canvas id="dilationCanvas"></canvas>
 				<div>
-					<p>You have <span id="tachyonParticleAmount" style="font-size:35px; color: black">0</span> tachyon particles.</p>
+					<p>You have <span id="tachyonParticleAmount" style="font-size:35px; color: black">0</span> Tachyon Particles.</p>
 					<p id="xdp">You have <span id="exDilationAmount" style="font-size:35px; color: black">0</span> ex-dilation, <span id="exDilationDesc"></span></p>
 				</div>
 				<p id='bestTP'></p>
@@ -3330,19 +3306,19 @@
 						</td>
 					</tr>
 				</table>
-				<p>You have <span id="dilatedTimeAmount" style="font-size:35px; color: black">0</span> dilated time <span id="dilatedTimePerSecond" style="font-size:25px; color: black">0</span></p>
-				<p>Next <span id="freeGalaxyMult">free galaxy</span> at <span id="galaxyThreshold" style="font-size:25px; color: black">1000</span> dilated time, gained total of <span id="dilatedGalaxies" style="font-size:25px; color: black">0</span></p>
+				<p>You have <span id="dilatedTimeAmount" style="font-size:35px; color: black">0</span> Dilated Time. <span id="dilatedTimePerSecond" style="font-size:25px; color: black">0</span></p>
+				<p>The next <span id="freeGalaxyMult">tachyon galaxy</span> at <span id="galaxyThreshold" style="font-size:25px; color: black">1000</span> Dilated Time. You've gained a total of <span id="dilatedGalaxies" style="font-size:25px; color: black">0</span> Tachyonic Galaxies.</p>
 				<button id="rebuyupgmax" style="width:210px; height: 30px; font-size: 12px" onclick="maxAllDilUpgs()" class="storebtn">Max all dilation upgrades</button>
 				<button id="rebuyupgAuto" style="width:210px; height: 30px; font-size: 12px" onclick="toggleAutoEter('rebuyupg')" class="storebtn"></button>
 				<button id="dilUpgsAuto" style="width:240px; height: 30px; font-size: 12px" onclick="toggleAutoEter('dilUpgs')" class="storebtn"></button>
 				<button id="distribEx" style="width:180px; height: 30px; font-size: 12px" onclick="distribEx()" class="storebtn">Distribute ex-dilation</button>
 				<table><tr>
 					<td>
-						<button id="dil11" onclick="buyDilationUpgrade('r1')">Double dilated time.<br><span id="dil11cost"></span></button>
+						<button id="dil11" onclick="buyDilationUpgrade('r1')">Double Dilated Time generation.<br><span id="dil11cost"></span></button>
 					</td><td>
 						<button id="dil12" onclick="buyDilationUpgrade('r2')">Tachyonic Galaxies scale slower, but reset Dilated Time and Tachyonic Galaxies.<br><span id="dil12cost"></span></button>
 					</td><td>
-						<button id="dil13" onclick="buyDilationUpgrade('r3')">Triple Tachyon Particles.<br><span id="dil13cost"></span></button>
+						<button id="dil13" onclick="buyDilationUpgrade('r3')">Triple Tachyon Particle gain.<br><span id="dil13cost"></span></button>
 					</td><td>
 						<button id="dil14" onclick="buyDilationUpgrade('r4')">Antimatter gives more Tachyon Particles.<br><span id="dil14cost"></span></button>
 					</td>
@@ -3363,50 +3339,50 @@
 					</td><td>
 						<button id="dil22" onclick="buyDilationUpgrade(5)">Time Dimensions are affected by replicanti multiplier ^ 0.1.<br><span id="dil22cost"></span></button>
 					</td><td>
-						<button id="dil23" onclick="buyDilationUpgrade(6)">Normal Dimensions gain a multiplier based on Dilated Time, unaffected by Time Dilation.<br><span id="dil23cost"></span></button>
+						<button id="dil23" onclick="buyDilationUpgrade(6)">Antimatter Dimensions gain a multiplier based on DT, unaffected by Time Dilation.<br><span id="dil23cost"></span></button>
 					</td><td>
 						<button id="dil24" onclick="buyDilationUpgrade('ngpp1')">Replicanti increases faster based on Dilated Time.<br><span id="dil24cost"></span></button>
 					</td>
 				</tr></table>
 				<table><tr>
 					<td>
-						<button id="dil31" onclick="buyDilationUpgrade(7)">Gain a multiplier to IP based on dilated time.<br><span id="dil31desc"></span><br><span id="dil31cost"></span></button>
+						<button id="dil31" onclick="buyDilationUpgrade(7)">Gain a multiplier to IP based on Dilated Time.<br><span id="dil31desc"></span><br><span id="dil31cost"></span></button>
 					</td><td>
-						<button id="dil32" onclick="buyDilationUpgrade(8)">Unlock the ability to pick all the study paths from the first split.<br><span id="dil32cost"></span></button>
+						<button id="dil32" onclick="buyDilationUpgrade(8)">Unlock the ability to pick all the Time Study paths from the first split.<br><span id="dil32cost"></span></button>
 					</td><td>
-						<button id="dil33" onclick="buyDilationUpgrade(9)">Reduce the dilation penalty. (^1.05 after reduction)<br><span id="dil33cost"></span></button>
+						<button id="dil33" onclick="buyDilationUpgrade(9)">Reduce the Dilation penalty. (^1.05 after reduction)<br><span id="dil33cost"></span></button>
 					</td><td>
-						<button id="dil34" onclick="buyDilationUpgrade('ngpp2')">Eternities and dilated time power up each other.<br><span id="dil34cost"></span></button>
+						<button id="dil34" onclick="buyDilationUpgrade('ngpp2')">Eternities and Dilated Time power up each other.<br><span id="dil34cost"></span></button>
 					</td>
 				</tr></table>
 				<table><tr>
 					<td>
 						<button id="dil51" onclick="buyDilationUpgrade('ngpp3')" style='font-size:10px'>Meta Dimensions gain a multiplier based on tickspeed.<br>(1+log(1+log(x)))<br><span id="dil51desc"></span><br><span id="dil51cost"></span></button>
 					</td><td>
-						<button id="dil52" onclick="buyDilationUpgrade('ngpp4')" style='font-size:10px'>Meta-dimension shifts, boosts, and per-ten upgrades are boosted by dilated time.<br><span id="dil52desc"></span><br><span id="dil52cost"></span></button>
+						<button id="dil52" onclick="buyDilationUpgrade('ngpp4')" style='font-size:10px'>Meta-Dimension Shifts, Boosts, and per-ten upgrades are boosted by Dilated Time.<br><span id="dil52desc"></span><br><span id="dil52cost"></span></button>
 					</td><td>
-						<button id="dil53" onclick="buyDilationUpgrade('ngpp5')">The meta-antimatter effect on dimension boosts is stronger.<br>(^8 → ^9)<br><span id="dil53cost"></span></button>
+						<button id="dil53" onclick="buyDilationUpgrade('ngpp5')">The meta-antimatter effect on Dimension Boosts is stronger.<br>(^8 → ^9)<br><span id="dil53cost"></span></button>
 					</td><td>
-						<button id="dil54" onclick="buyDilationUpgrade('ngpp6')" style='font-size:10px'>Dilated time production is boosted based on best meta-antimatter.<br><span id="dil54formula"></span><br><span id="dil54desc"></span><br><span id="dil54cost"></span></button>
+						<button id="dil54" onclick="buyDilationUpgrade('ngpp6')" style='font-size:10px'>Dilated Time production is boosted based on best meta-antimatter.<br><span id="dil54formula"></span><br><span id="dil54desc"></span><br><span id="dil54cost"></span></button>
 					</td>
 				</tr></table>
 				<table><tr>
 					<td>
-						<button id="dil41" onclick="buyDilationUpgrade(10)">Generate time theorems based on tachyon particles.<br><span id="dil41desc"></span><br><span id="dil41cost"></span></button>
+						<button id="dil41" onclick="buyDilationUpgrade(10)">Generate Time Theorems based on Tachyon Particles.<br><span id="dil41desc"></span><br><span id="dil41cost"></span></button>
 					</td><td>
-						<button id="dil42" onclick="buyDilationUpgrade('ngud1')">Gain 5% more Tachyon particles for each <span id="dil42oom"></span>x replicanti.<br><span id="dil42desc"></span><br><span id="dil42cost"></span></button>
+						<button id="dil42" onclick="buyDilationUpgrade('ngud1')">Gain 5% more Tachyon Particles for each <span id="dil42oom"></span>x replicanti.<br><span id="dil42desc"></span><br><span id="dil42cost"></span></button>
 					</td><td>
-						<button id="dil43" onclick="buyDilationUpgrade('ngud2')">Eternities and dilated time boost each other by ^0.1.<br><span id="dil43cost"></span></button>
+						<button id="dil43" onclick="buyDilationUpgrade('ngud2')">Eternities and Dilated Time boost each other by ^0.1.<br><span id="dil43cost"></span></button>
 					</td><td>
-						<button id="dil44" onclick="buyDilationUpgrade('udsp1')">Dilated time increases hunger cap.<br><span id="dil44cost"></span></button>
+						<button id="dil44" onclick="buyDilationUpgrade('udsp1')">Dilated Time increases hunger cap.<br><span id="dil44cost"></span></button>
 					</td><td>
-						<button id="dil45" onclick="buyDilationUpgrade('udsp2')">Hunger cap speeds up black hole hunger.<br><span id="dil45cost"></span></button>
+						<button id="dil45" onclick="buyDilationUpgrade('udsp2')">Hunger cap speeds up Black Hole hunger.<br><span id="dil45cost"></span></button>
 					</td>
 				</tr></table>
 			</div>
 			<div id="tab_bh">
 				<br>
-				<button class="storebtn" id="blackholeunlock" onclick="unlockBlackhole()" style="width:200px; height: 80px">Unlock the black hole<br>Cost: 1e4000 EP</button>
+				<button class="storebtn" id="blackholeunlock" onclick="unlockBlackhole()" style="width:200px; height: 80px">Unlock the Black Hole<br>Cost: 1e4000 EP</button>
 				<div id="blackholediv" style='display: none'>
 					<div>
 						<p>You have <span id="blackholePowAmount" style="font-size:35px; color: black">0</span> black hole power, translated to <span id="DilMultAmount" style="font-size:35px; color: black">0</span>x multiplier on Dilated Time gain, and <span id="InfAndReplMultAmount" style="font-size:35px; color: black">0</span>x multiplier on banked Infinity gain and Replicanti speed.</p>
@@ -3427,7 +3403,7 @@
 				<div id="bh_udsp" style='display: none'>
 					<span id="bh_udsp_dm" style="font-size: 35px"></span> Black Hole Power
 					<table id="bh_udsp_eff"></table>
-					<button class='eternityupbtn' onclick="BH_UDSP.feed.use()">Feed Black Hole with Remnants</button><br>
+					<button class='eternityupbtnlocked' id="feedBHButton" onclick="BH_UDSP.feed.use()">Feed Black Hole with Remnants</button><br>
 					<b>Hunger</b>: <span id="bh_udsp_hu"></span>
 					<br><br><hr>
 
@@ -3482,7 +3458,7 @@
 						<button class='storebtn' id='blueAssort' onclick='assignQuark("b")'>Assort</button>
 					</td>
 				</tr></table>
-				You will get <span id="assort_amount"></span> colored quarks when you assort quarks<br>
+				You will get <span id="assort_amount"></span> colored quarks when you assort quarks.<br>
 				Your quarks have a net <span id='colorCharge'></span>.<br>
 				<table class='qtable'>
 					<tr>
@@ -3497,13 +3473,13 @@
 						</td>
 					</tr><tr>
 						<td class="rqC">
-							Translated to <span class="red" id="redTranslation" style="font-size:35px"></span> stronger galaxies</p>
+							Translated to <span class="red" id="redTranslation" style="font-size:35px"></span> stronger Antimatter Galaxies</p>
 						</td>
 						<td>
 							Translated to <span class="green" id="greenTranslation" style="font-size:35px"></span> extra Replicated Galaxies</p>
 						</td>
 						<td class="bqC">
-							Translated to <span class="blue" id="blueTranslation" style="font-size:35px"></span> dilated time production<span id="bluePowerMDEffect">, <span class="blue" id="blueTranslationMD" style="font-size:35px"></span> Meta Dimension production</span></span>
+							Translated to <span class="blue" id="blueTranslation" style="font-size:35px"></span> Dilated Time production<span id="bluePowerMDEffect">, <span class="blue" id="blueTranslationMD" style="font-size:35px"></span> Meta Dimension production</span></span>
 						</td>
 					</tr>
 				</table>
@@ -3521,7 +3497,7 @@
 				<button class='storebtn' id='reward27disable' onclick='disableReward(27)' style='width:190px'>10 seconds reward: ON</button>
 				<table style="margin: auto">
 					<tr id="speedrunRow1">
-						<td><div id="speedrunMilestone1" style="background-image: url(images/quantum_speedruns/1.png)" ach-tooltip="Reward: Start with 20,000 eternities."></div></td>
+						<td><div id="speedrunMilestone1" style="background-image: url(images/quantum_speedruns/1.png)" ach-tooltip="Reward: Start with 20,000 Eternities."></div></td>
 						<td><div id="speedrunMilestone2" style="background-image: url(images/quantum_speedruns/2.png)" ach-tooltip="Reward: Unlock the Time Theorem autobuyer."></div></td>
 						<td><div id="speedrunMilestone3" style="background-image: url(images/quantum_speedruns/3.png)" ach-tooltip="Reward: Start with all Eternity Challenges completed and Eternity Upgrades bought."></div></td>
 						<td><div id="speedrunMilestone4" style="background-image: url(images/quantum_speedruns/4.png)" ach-tooltip="Reward: Start with Time Dilation unlocked."></div></td>
@@ -3533,10 +3509,10 @@
 					<tr id="speedrunRow2">
 						<td><div id="speedrunMilestone9" style="background-image: url(images/quantum_speedruns/9.png)" ach-tooltip="Reward: Unlock the third Meta Dimension autobuyer."></div></td>
 						<td><div id="speedrunMilestone10" style="background-image: url(images/quantum_speedruns/10.png)" ach-tooltip="Reward: Unlock the Fourth Meta Dimension autobuyer."></div></td>
-						<td><div id="speedrunMilestone11" style="background-image: url(images/quantum_speedruns/11.png)" ach-tooltip="Reward: Unlock the Fifth Meta Dimension autobuyer and keep time studies."></div></td>
+						<td><div id="speedrunMilestone11" style="background-image: url(images/quantum_speedruns/11.png)" ach-tooltip="Reward: Unlock the Fifth Meta Dimension autobuyer and keep Time Studies."></div></td>
 						<td><div id="speedrunMilestone12" style="background-image: url(images/quantum_speedruns/12.png)" ach-tooltip="Reward: Unlock the Sixth Meta Dimension autobuyer."></div></td>
 						<td><div id="speedrunMilestone13" style="background-image: url(images/quantum_speedruns/13.png)" ach-tooltip="Reward: Unlock the Seventh Meta Dimension autobuyer."></div></td>
-						<td><div id="speedrunMilestone14" style="background-image: url(images/quantum_speedruns/14.png)" ach-tooltip="Reward: Unlock the Eighth Meta Dimension autobuyer, and keep all non-rebuyable dilation upgrades."></div></td>
+						<td><div id="speedrunMilestone14" style="background-image: url(images/quantum_speedruns/14.png)" ach-tooltip="Reward: Unlock the Eighth Meta Dimension autobuyer, and keep all non-rebuyable Dilation upgrades."></div></td>
 						<td><div id="speedrunMilestone15" style="background-image: url(images/quantum_speedruns/15.png)" ach-tooltip="Reward: Unlock the Meta-Dimension Boost autobuyer."></div></td>
 						<td><div id="speedrunMilestone16" style="background-image: url(images/quantum_speedruns/16.png)" ach-tooltip="Reward: You keep all your Mastery Studies."></div></td>
 					</tr>
@@ -3553,7 +3529,7 @@
 					<tr id="speedrunRow4">
 						<td colspan=2></td>
 						<td><div id="speedrunMilestone25" style="background-image: url(images/quantum_speedruns/25.png)" ach-tooltip="Reward: Unlock the manual mode for the Eternity autobuyer, and Quantum doesn't disable auto-Discharge."></div></td>
-						<td><div id="speedrunMilestone26" style="background-image: url(images/quantum_speedruns/26.png)" ach-tooltip="Reward: The rebuyable dilation upgrade autobuyer can buy the maximum upgrades possible."></div></td>
+						<td><div id="speedrunMilestone26" style="background-image: url(images/quantum_speedruns/26.png)" ach-tooltip="Reward: The rebuyable Dilation upgrade autobuyer can buy the maximum upgrades possible."></div></td>
 						<td><div id="speedrunMilestone27" style="background-image: url(images/quantum_speedruns/27.png)" ach-tooltip="Reward: You can buy max Meta-Dimension Boosts, and start with 4 Meta-Dimension Boosts."></div></td>
 						<td><div id="speedrunMilestone28" style="background-image: url(images/quantum_speedruns/28.png)" ach-tooltip="Reward: You gain banked infinities based on your post-crunch infinitied stat, and Replicated Galaxies don't reset on Big Crunch."></div></td>
 						<td colspan=2></td>
@@ -3941,14 +3917,14 @@
 	</div>
 
 	<!-- OPTIONS -->
-	<div class="popup loadmenu" id="loadmenu" style="overflow-y:hidden; height: 360px">
+	<div class="popup loadmenu" id="loadmenu" style="overflow-y: hidden; height: 360px">
 		<button class="closebtn storebtn" onclick="closeToolTip(true)">&times;</button>
 		<button id="newSaveBtn" class="storebtn" style="font-size: 15px" onclick="new_save()">New</button>
 		<button id="newImportBtn" class="storebtn" style="font-size: 15px" onclick="import_save('new')">Import</button>
 		<button id="cancelNewSaveBtn" class="storebtn" style="font-size: 15px; display: none" onclick="show_mods()">Saves</button>
 		<br>
 		<div id="savesTab" style="height:320px;overflow-y:auto">
-			To load without offline progress, load while holding shift.<br><br>
+			To load without offline progress, click load while holding shift.<br><br>
 			<table id='saves'></table>
 		</div>
 		<div id="modsTab" style="height:320px;overflow-y:auto;display:none">
@@ -3959,26 +3935,26 @@
 			<button class="storebtn" style="width: 360px; font-size: 15px" onclick="show_mods('adv')" style="display: inline">More</button>
 		</div>
 		<div id="advModsTab" style="height: 320px; overflow-y: auto; display: none">
-			Select a mod for your journey. Click 'New' to begin.<br>
+			You can select various mods for this save.<br>Click 'New' to begin a save file with these mods.<br>
 			<button class="storebtn" onclick="reset_mods()">Reset Mods</button>
 			<br><br>
 			<b>Expansion</b><br>
-			<button class="storebtn longbtn" id='ngppBtn' onclick="toggle_mod('ngpp')" ach-tooltip="Adds new several end-game content. Featuring NG+3, the most popular mod yet!">NG++: OFF</button>
+			<button class="storebtn longbtn" id='ngppBtn' onclick="toggle_mod('ngpp')" ach-tooltip="Adds a lot of endgame content post-Dilation, including NG+3, one of the most popular mods!">NG++: OFF</button>
 			<button class="storebtn longbtn" id='ngudBtn' onclick="toggle_mod('ngud')" ach-tooltip="Adds some end-game content including Black Hole.">NGUd: OFF</button><br>
-			<button class="storebtn longbtn" id='ngpBtn' onclick="toggle_mod('ngp')" ach-tooltip="Start at Time Dilation.">NG+: OFF</button>
+			<button class="storebtn longbtn" id='ngpBtn' onclick="toggle_mod('ngp')" ach-tooltip="Start with many boosts that last until you reach Time Dilation.">NG+: OFF</button>
 			<br><br>
 			<b>Hellish</b><br>
-			<button class="storebtn longbtn" id='ngmBtn' onclick="toggle_mod('ngm')">NG-: OFF</button>
-			<button class="storebtn longbtn" id='ngmmBtn' onclick="toggle_mod('ngmm')" ach-tooltip="Make this game harder, but adds some mechanics to compromise.">NG--: OFF</button>
+			<button class="storebtn longbtn" id='ngmBtn' onclick="toggle_mod('ngm')" ach-tooltip="The original NG- savefile modification ported into Aarex's Mods.">NG-: OFF</button>
+			<button class="storebtn longbtn" id='ngmmBtn' onclick="toggle_mod('ngmm')" ach-tooltip="Makes the game harder, but adds some mechanics to compromise.">NG--: OFF</button>
 			<br><br>
 			<b>Buff</b><br>
 			<button class="storebtn longbtn" id='ngmuBtn' onclick="toggle_mod('ngmu')" ach-tooltip="A spinoff to NG^, which is slower than NG^, but faster than NG=.">NG*: OFF</button>
-			<button class="storebtn longbtn" id='ngepBtn' onclick="toggle_mod('ngep')" ach-tooltip="A original mod that starts buffed mods.">NG↑: OFF</button>
+			<button class="storebtn longbtn" id='ngepBtn' onclick="toggle_mod('ngep')" ach-tooltip="Series of mods that make the game faster with more buffs (some include additional content).">NG↑: OFF</button>
 			<button class="storebtn longbtn" id='ngumuBtn' onclick="toggle_mod('ngumu')" ach-tooltip="A mod which buffs some boosts to NG Update Prime.">NGUd*': OFF</button>
 			<button class="storebtn longbtn" id='nguepBtn' onclick="toggle_mod('nguep')" ach-tooltip="A mod which greatly buffs some boosts to NG Update Prime.">NGUd↑': OFF</button>
 			<br><br>
 			<b>Others</b><br>
-			<button class="storebtn longbtn" id='rsBtn' onclick="toggle_mod('rs')">Respecced: OFF</button>
+			<button class="storebtn longbtn" id='rsBtn' style="font-size: 11px;" onclick="toggle_mod('rs')">Eternity Respecced: OFF</button>
 			<button class="storebtn longbtn" id='aauBtn' onclick="toggle_mod('aau')" ach-tooltip="Start with all achievements unlocked.">AAU: OFF</button><br>
 			<button class="qu_upg storebtn" id="bl_portion_5" onclick='BL_JOKE.find(5)' style='opacity: 0.1'>You agree to explore other places.</button>
 		</div>

@@ -188,7 +188,7 @@ el("theme").onclick = function () {
 function updateMoney() {
 	let abbs = modAbbs(mod, true)
 	el("z").textContent = (abbs.length > 8 ? "" : "AD: ") + abbs + " | " + shortenMoney(player.money) + (player.money.e >= 1e6 ? "" : " antimatter")
-	el("coinAmount").textContent = formatQuick(player.money, 2, !inNGM(3) ? Math.min(Math.max(3 - player.money.e, 0), 3) : 0)
+	el("coinAmount").textContent = formatQuick(player.money, 2, inNGM(3) ? Math.min(Math.max(3 - player.money.e, 0), 3) : 0)
 
 	var element2 = el("matter");
 	if (inNC(12) || player.currentChallenge == "postc1" || player.currentChallenge == "postc6") element2.textContent = "There is " + formatValue(player.options.notation, player.matter, 2, 1) + " matter."; //TODO
@@ -482,10 +482,10 @@ el("postinfi31").onclick = function() {
 		player.infinityPoints = player.infinityPoints.minus(player.tickSpeedMultDecreaseCost)
 		player.tickSpeedMultDecreaseCost *= 5
 		player.tickSpeedMultDecrease--;
-		if (player.tickSpeedMultDecrease > 2) el("postinfi31").innerHTML = "Tickspeed cost multiplier increase <br>"+player.tickSpeedMultDecrease+"x → "+(player.tickSpeedMultDecrease-1)+"x<br>Cost: "+shortenDimensions(player.tickSpeedMultDecreaseCost) +" IP"
+		if (player.tickSpeedMultDecrease > 2) el("postinfi31").innerHTML = "Decrease the Tickspeed cost multiplier increase post-e308<br>"+player.tickSpeedMultDecrease+"x → "+(player.tickSpeedMultDecrease-1)+"x<br>Cost: "+shortenDimensions(player.tickSpeedMultDecreaseCost) +" IP"
 		else {
 			for (c=0;c<ECComps("eterc11");c++) player.tickSpeedMultDecrease-=0.07
-			el("postinfi31").innerHTML = "Tickspeed cost multiplier increase<br>"+player.tickSpeedMultDecrease.toFixed(player.tickSpeedMultDecrease<2?2:0)+"x"
+			el("postinfi31").innerHTML = "Decrease the Tickspeed cost multiplier increase post-e308<br>"+player.tickSpeedMultDecrease.toFixed(player.tickSpeedMultDecrease<2?2:0)+"x"
 		}
 	}
 }
@@ -511,10 +511,10 @@ el("postinfi42").onclick = function() {
 		player.infinityPoints = player.infinityPoints.minus(player.dimensionMultDecreaseCost)
 		player.dimensionMultDecreaseCost *= 5000
 		player.dimensionMultDecrease--;
-		if (player.dimensionMultDecrease > 3) el("postinfi42").innerHTML = "Dimension cost multiplier increase <br>"+player.dimensionMultDecrease+"x → "+(player.dimensionMultDecrease-1)+"x<br>Cost: "+shortenCosts(player.dimensionMultDecreaseCost) +" IP"
+		if (player.dimensionMultDecrease > 3) el("postinfi42").innerHTML = "Decrease the Dimension cost multiplier post-e308<br>Currently: "+player.dimensionMultDecrease+"x → "+(player.dimensionMultDecrease-1)+"x<br>Cost: "+shortenCosts(player.dimensionMultDecreaseCost) +" IP"
 		else {
 			for (c=0;c<ECComps("eterc6");c++) player.dimensionMultDecrease-=0.2
-			el("postinfi42").innerHTML = "Dimension cost multiplier increase<br>"+player.dimensionMultDecrease.toFixed(ECComps("eterc6")%5>0?1:0)+"x"
+			el("postinfi42").innerHTML = "Decrease the Dimension cost multiplier post-e308<br>Currently: "+player.dimensionMultDecrease.toFixed(ECComps("eterc6")%5>0?1:0)+"x"
 		}
 	}
 }
@@ -550,10 +550,7 @@ function updateMilestones() {
 			el(name).className = "milestonerewardlocked"
 		}
 	}
-	el("mdmilestonesrow1a").style.display = moreUnlocked ? "" : "none"
-	el("mdmilestonesrow1b").style.display = moreUnlocked ? "" : "none"
-	el("mdmilestonesrow2a").style.display = moreUnlocked ? "" : "none"
-	el("mdmilestonesrow2b").style.display = moreUnlocked ? "" : "none"
+	el("mdmilestones").style.display = moreUnlocked ? "" : "none"
 }
 
 function infMultAutoToggle() {
@@ -745,6 +742,10 @@ function sacrifice(auto) {
 		if ((inNC(7) || player.currentChallenge == "postcngm3_3") && !hasAch("r118")) clearDimensions(6)
 		else if (!hasAch("r118")) clearDimensions(7)
 	}
+	
+	if (tmp.sacPow >= 600) giveAchievement("The Gods are pleased");
+	if (tmp.sacPow.gte(Number.MAX_VALUE)) giveAchievement("Yet another infinity reference")
+	if (tmp.sacPow.gte(pow10(9000)) && !inNC(11)) giveAchievement("IT'S OVER 9000")
 }
 
 var ndAutobuyersUsed = 0
@@ -829,7 +830,7 @@ function updateAutobuyers() {
 	} else {
 		el("postinftable").style.display = "none"
 		el("breaktable").style.display = "none"
-		el("abletobreak").textContent = "You need to get Automated Big Crunch interval to 0.1 to be able to break infinity"
+		el("abletobreak").textContent = "You need to reduce the Automatic Big Crunches interval to 0.1 seconds to be able to Break Infinity"
 		el("abletobreak").style.display = "block"
 		el("break").style.display = "none"
 		el("break").textContent = "BREAK INFINITY"
@@ -1046,6 +1047,8 @@ function toggleAutoBuyers() {
 	player.autoSacrifice.isOn = !bool
 	player.eternityBuyer.isOn = !bool
 	if (mod.ngp3) quSave.autobuyer.enabled = !bool
+
+	$.notify("Autobuyers toggled " + (bool ? "off" : "on"), "info")
 	updateCheckBoxes()
 	updateAutobuyers()
 }
@@ -1071,19 +1074,20 @@ function toggleHotkeys() {
 }
 
 function updateHotkeys() {
-	let html = "Hotkeys: Arrow keys to move tabs, 1-8 for buy 10 dimension, shift+1-8 for buy 1 dimension, T to buy max tickspeed, shift+T to buy one tickspeed, M for max all,<br>S for sacrifice"
-	if (!hasAch("r136")) html += ", D for dimension boost"
+	// todo: improve hotkeys to be more visual-based and give the ability to change and reset hotkeys
+	let html = "Hotkeys: Arrow keys to move tabs, 1-8 to buy 10 of that Dimension, shift+1-8 to buy 1 of that Dimension, T to buy max Tickspeed, shift+T to buy one tickspeed upgrade, M to max all, <br>S to sacrifice"
+	if (!hasAch("r136")) html += ", D to Dimension Boost"
 	if (!hasAch("ng3p51")) {
-		if (inNGM(3)) html += ", B for tickspeed boost"
-		if (inNGM(4)) html += ", N for time dimension boost"
-		html += ", G for galaxy"
+		if (inNGM(3)) html += ", B to Tickspeed Boost"
+		if (inNGM(4)) html += ", N to Time Dimension Boost"
+		html += ", G to Galaxy"
 	}
-	html += ", C for crunch, A for toggle autobuyers, R for Replicated Galaxies, E for eternity"
+	html += ", C to Crunch, A to toggle autobuyers, R to get a Replicated Galaxy, E to Eternity"
 	if (hasAch("r136")) html += ", D to dilate time"
 	if (hasAch("ngpp11")) html += ", shift+D to Meta-Dimension Boost"
-	if (mod.ngpp) html += ", Q for quantum"
-	if (hasAch("ng3p45")) html += ", U for unstabilize all quarks"
-	if (hasAch("ng3p51")) html += ", B for Big Rip, F to fundament"
+	if (mod.ngpp) html += ", Q to quantum"
+	if (hasAch("ng3p45")) html += ", U to unstabilize all quarks"
+	if (hasAch("ng3p51")) html += ", B to Big Rip, and F to fundament"
 	html += "."
 	if (mod.rs) html += "<br>You can hold shift while buying time studies to buy all up until that point, see each study's number, and save study trees."
 	if (BL_JOKE.started() && ghSave.lab_real.signed) html += "<br><b onclick='BL_JOKE.findKey()'>Hotkeys</b> do not work while holding control."
@@ -1105,7 +1109,7 @@ function updateEterChallengeTimes() {
 			tempcounter++
 		}
 	}
-	setAndMaybeShow("eterchallengetimesum",tempcounter>1,'"Sum of completed eternity challenge time records is "+timeDisplayShort('+temp+', false, 3)')
+	setAndMaybeShow("eterchallengetimesum",tempcounter>1,'"The sum of your completed Eternity Challenge time records is "+timeDisplayShort('+temp+', false, 3)+"."')
 }
 
 var averageEp = E(0)
@@ -1223,7 +1227,7 @@ function canEternity() {
 
 function eternity(force, auto, dil, presetLoad) {
 	if (!force && !canEternity()) return
-	if (!auto && !dil && player.options.eternityconfirm && !confirm("Eternity will reset everything except achievements and challenge records. You will also gain an Eternity Point and unlock various upgrades.")) return
+	if (!auto && !dil && player.options.eternityconfirm && !confirm("Eternity will reset everything except achievements and challenge records. You will gain an Eternity Point and unlock various upgrades.")) return
 
 	var oldEter = getEternitied()
 	var oldEP = player.eternityPoints
@@ -1914,7 +1918,7 @@ function infDimProgress(){
 	var p = Math.min(player.money.e / getNewInfReq().money.e * 100, 100).toFixed(2) + "%"
 	el("progressbar").style.width = p
 	el("progresspercent").textContent = p
-	el("progress").setAttribute('ach-tooltip',"Percentage to next dimension unlock")
+	el("progress").setAttribute('ach-tooltip',"Percentage to next Dimension unlock")
 }
 
 function currentEChallengeProgress(){
@@ -1949,7 +1953,7 @@ function gainTPProgress(){
 	var p = (getDilGain().log10() / player.dilation.totalTachyonParticles.log10()).toFixed(2) + "%"
 	el("progressbar").style.width = p
 	el("progresspercent").textContent = p
-	el("progress").setAttribute('ach-tooltip','Percentage to the requirement for tachyon particle gain')
+	el("progress").setAttribute('ach-tooltip','Percentage to the requirement for Tachyon Particle gain')
 }
 
 function ngpp13Progress(){
@@ -2018,12 +2022,12 @@ function ECRewardDisplayUpdating(){
 	el("ec3reward").textContent = "Reward: Increase the multiplier for buying 10 Dimensions. Currently: " + shorten(getDimensionPowerMultiplier("no-QC5")) + "x"
 	el("ec4reward").textContent = "Reward: Infinity Dimensions gain a multiplier from unspent IP. Currently: " + shortenMoney(getECReward(4)) + "x"
 	el("ec5reward").textContent = "Reward: Galaxy cost scaling starts " + getECReward(5) + " galaxies later."
-	el("ec6reward").textContent = "Reward: Further reduce the dimension cost multiplier increase. Currently: " + player.dimensionMultDecrease.toFixed(1) + "x "
+	el("ec6reward").textContent = "Reward: Further reduce the Dimension cost multiplier increase. Currently: " + player.dimensionMultDecrease.toFixed(1) + "x "
 	el("ec7reward").textContent = "Reward: First Time Dimensions produce Eighth Infinity Dimensions. Currently: " + shortenMoney(DimensionProduction(9)) + " per second. "
 	el("ec8reward").textContent = "Reward: Infinity Power powers up Replicated Galaxies. Currently: " + (getECReward(8) * 100 - 100).toFixed(2) + "%"
-	el("ec9reward").textContent = "Reward: Infinity Dimensions gain a " + (inNGM(2) ? "post dilation " : "") + " multiplier based on your Time Shards. Currently: "+shortenMoney(getECReward(9))+"x "
+	el("ec9reward").textContent = "Reward: Infinity Dimensions gain a " + (inNGM(2) ? "post-Dilation " : "") + " multiplier based on your Time Shards. Currently: "+shortenMoney(getECReward(9))+"x "
 	el("ec10reward").textContent = "Reward: Time Dimensions gain a multiplier from your Infinities. Currently: " + shortenMoney(getECReward(10)) + "x "
-	el("ec11reward").textContent = "Reward: Further reduce the tickspeed cost multiplier increase. Currently: " + player.tickSpeedMultDecrease.toFixed(2) + "x "
+	el("ec11reward").textContent = "Reward: Further reduce the Tickspeed cost multiplier increase. Currently: " + player.tickSpeedMultDecrease.toFixed(2) + "x "
 	el("ec12reward").textContent = "Reward: Infinity Dimension cost multipliers are reduced. (x^" + getECReward(12) + ")"
 	el("ec13reward").textContent = "Reward: Increase the exponent of meta-antimatter's effect. (" + (getECReward(13)+9) + "x)"
 	el("ec14reward").textContent = "Reward: Free tickspeed upgrades boost the IC3 reward to be " + getIC3EffFromFreeUpgs().toFixed(0) + "x stronger."
@@ -2358,7 +2362,7 @@ let simulateParts = {
 		color: "brown"
 	},
 	le: {
-		amt: _ => PHOTON.unlocked() && PHOTON.totalEmissions(),
+		amt: _ => PHOTON.unlocked(),
 		name: "Light Emissions",
 		color: "#b97"
 	},
@@ -2407,6 +2411,7 @@ function startInterval() {
 	}, player.options.updateRate);
 }
 
+// this is a relic from pre-reality; should we remove it?
 function enableChart() {
 	if (el("chartOnOff").checked) {
 		player.options.chart.on = true;
@@ -2509,7 +2514,7 @@ function galSacABTick(){
 }
 
 function galaxyABTick(){
-	if (player.autobuyers[10].ticks*100 >= player.autobuyers[10].interval && getAmount(inNC(4)?6:8) >= getGalaxyRequirement() && player.autobuyers[10].isOn) {
+	if (player.autobuyers[10].ticks*100 >= player.autobuyers[10].interval && getAmount(inNC(4) ? 6 : 8) >= getGalaxyRequirement() && player.autobuyers[10].isOn) {
 		if (getEternitied() < 9) {
 			if (player.autobuyers[10].isOn && player.autobuyers[10].priority > player.galaxies) {
 				autoS = false;
@@ -2544,7 +2549,7 @@ function dimBoostABTick(){
 	if (player.autobuyers[9].isOn && dimBoolean()) {
 		if (player.resets < 4) dimBoost(1)
 		else if (getEternitied() < 10 && !player.autobuyers[9].bulkBought) dimBoost(player.autobuyers[9].bulk)
-		else if ((Math.round(timer * 100))%(Math.round(player.autobuyers[9].bulk * 100)) == 0 && getAmount(8) >= getShiftRequirement(0).amount) maxBuyDimBoosts()
+		else if ((Math.round(timer * 100))%(Math.round(player.autobuyers[9].bulk * 100)) == 0 && getAmount(8) <= getShiftRequirement(0).amount) maxBuyDimBoosts()
 		player.autobuyers[9].ticks = 0
 	}
 	player.autobuyers[9].ticks += 1;
@@ -2587,11 +2592,11 @@ function autoBuyerTick() {
 		} else player.autobuyers[11].ticks += 1;
 	}
 
-	if (player.autobuyers[9]%1 !== 0) dimBoostABTick()
-	if (inNGM(4) && player.autobuyers[14]%1 !== 0) TDBoostABTick()
-	if (inNGM(3) && player.autobuyers[13]%1 !== 0) TSBoostABTick()
-	if (player.autobuyers[10]%1 !== 0) galaxyABTick()
 	if (inNGM(2) && player.autobuyers[12]%1 !== 0) galSacABTick()
+	if (player.autobuyers[10]%1 !== 0) galaxyABTick()
+	if (player.autobuyers[9]%1 !== 0) dimBoostABTick()
+	if (inNGM(3) && player.autobuyers[13]%1 !== 0) TSBoostABTick()
+	if (inNGM(4) && player.autobuyers[14]%1 !== 0) TDBoostABTick()
 
 	if (player.autoSacrifice%1 !== 0) {
 		if ((inNGM(2) ? player.autoSacrifice.ticks * 100 >= player.autoSacrifice.interval : true) && calcSacrificeBoost().gte(player.autoSacrifice.priority) && player.autoSacrifice.isOn) {
@@ -2605,7 +2610,7 @@ function autoBuyerTick() {
 		if (priority[i].ticks * 100 >= priority[i].interval || priority[i].interval == 100) {
 			if (priority[i].isOn) {
 				if (priority[i] == player.autobuyers[8]) {
-					if (!inNC(14) | inNGM(3)) {
+					if (!inNC(14) || inNGM(3)) {
 						if (priority[i].target == 10) buyMaxTickSpeed()
 						else buyTickSpeed()
 					}

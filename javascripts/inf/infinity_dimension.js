@@ -279,7 +279,7 @@ function updateInfPower() {
 	el("infPowAmount").textContent = shortenMoney(player.infinityPower)
 	if (inNGM(2)) el("infPowEffectPower").textContent = tmp.inf_pow_exp.toFixed(2)
 	el("infDimMultAmount").textContent = shortenMoney(tmp.inf_pow)
-	if (player.currentEternityChall == "eterc7") el("infPowPerSec").textContent = "You are getting " +shortenDimensions(DimensionProduction(1))+" Seventh Dimensions per second."
+	if (player.currentEternityChall == "eterc7") el("infPowPerSec").textContent = "You are getting " +shortenDimensions(DimensionProduction(1))+" Seventh Antimatter Dimensions per second."
 	else {
 		let r = DimensionProduction(1)
 		el("infPowPerSec").textContent = "You are getting " + shortenDimensions(r) + " Infinity Power per second."

@@ -424,7 +424,8 @@ button b, button span {
 }
 
 #pres_header {
-	position: relative
+	position: relative;
+    margin-top: 20px;
 }
 
 #pres_header > div {
@@ -900,7 +901,7 @@ button b, button span {
     border: 1px solid black;
     font-weight: bold;
     width: 170px;
-    height: 80px;
+    height: 90px;
     transition-duration: 0.2s;
     cursor: pointer;
     border-radius: 4px;
@@ -916,7 +917,7 @@ button b, button span {
     border: 1px solid #b341e0;
     font-weight: bold;
     width: 170px;
-    height: 80px;
+    height: 90px;
     transition-duration: 0.2s;
     cursor: pointer;
     border-radius: 4px;
@@ -1034,7 +1035,7 @@ button b, button span {
     font-weight: bold;
     border: 1px solid #691fa5;
     width: 170px;
-    height: 80px;
+    height: 90px;
     transition-duration: 0.2s;
     border-radius: 4px;
     font-size: 0.65rem;
@@ -1053,7 +1054,7 @@ button b, button span {
     font-weight: bold;
     border: 1px solid #691fa5;
     width: 170px;
-    height: 80px;
+    height: 90px;
     transition-duration: 0.2s;
     border-radius: 4px;
     font-size: 0.65rem;
@@ -1067,7 +1068,7 @@ button b, button span {
     font-weight: bold;
     border: 1px solid black;
     width: 170px;
-    height: 80px;
+    height: 90px;
     transition-duration: 0.2s;
     border-radius: 4px;
     font-size: 0.65rem;
@@ -1310,8 +1311,8 @@ button b, button span {
     font-weight: bold;
     font-size: 0.7rem;
     border: 2px solid #64DD17;
-    width: 190px;
-    height: 90px;
+    width: 200px;
+    height: 100px;
     transition-duration: 0.2s;
     cursor: pointer;
     border-radius: 4px;
@@ -1329,8 +1330,8 @@ button b, button span {
     font-weight: bold;
     font-size: 0.65rem;
     border: 1px solid #64DD17;
-    width: 170px;
-    height: 80px;
+    width: 200px;
+    height: 100px;
     transition-duration: 0.2s;
     cursor: pointer;
     border-radius: 4px;
@@ -1345,8 +1346,8 @@ button b, button span {
     font-weight: bold;
     font-size: 0.65rem;
     border: 1px solid #64ddad;
-    width: 170px;
-    height: 80px;
+    width: 200px;
+    height: 100px;
     transition-duration: 0.2s;
     cursor: pointer;
     border-radius: 4px;
@@ -1360,8 +1361,8 @@ button b, button span {
     background: #64DD17;
     font-weight: bold;
     border: 1px solid black;
-    width: 170px;
-    height: 80px;
+    width: 200px;
+    height: 100px;
     transition-duration: 0.2s;
     border-radius: 4px;
     font-size: 0.65rem;
@@ -1374,8 +1375,8 @@ button b, button span {
     background: #5F5F5F;
     font-weight: bold;
     border: 1px solid #64ddad;
-    width: 170px;
-    height: 80px;
+    width: 200px;
+    height: 100px;
     transition-duration: 0.2s;
     border-radius: 4px;
     font-size: 0.65rem;
@@ -1388,8 +1389,8 @@ button b, button span {
     background: #5F5F5F;
     font-weight: bold;
     border: 1px solid #3e8a0f;
-    width: 170px;
-    height: 80px;
+    width: 200px;
+    height: 100px;
     transition-duration: 0.2s;
     border-radius: 4px;
     font-size: 0.65rem;
@@ -1503,7 +1504,7 @@ h3,
 h4,
 h5,
 h6 {
-    color: #222;
+    color: #646464;
     margin: 0 0 20px;
 }
 

@@ -66,7 +66,7 @@ const allAchievements = {
 	r91 : "Ludicrous Speed",
 	r92 : "I brake for nobody",
 	r93 : "MAXIMUM OVERDRIVE",
-	r94 : "Minute of infinity",
+	r94 : "4.3333 minutes of Infinity",
 	r95 : "Is this safe?",
 	r96 : "Time is relative",
 	r97 : "Yes. This is hell.",
@@ -359,7 +359,7 @@ function giveAchievement(name, noUpdate) {
 		updateAutobuyers()
 	}
 	if (name == "Kee-hee-hee!") {
-		setAndMaybeShow('bestTPOverGhostifies', true, '"Your best-ever Tachyon particles was "+shorten(player.dilation.bestTPOverGhostifies)+"."')
+		setAndMaybeShow('bestTPOverGhostifies', true, '"Your best-ever Tachyon Particles was "+shorten(player.dilation.bestTPOverGhostifies)+"."')
 		dev.giveAllNGAchievements()
 		for (let i = 1; i <= 8; i++){
 			if (!hasAch("ngpp1" + i)) player.achievements.push("ngpp1" + i)
@@ -551,9 +551,9 @@ function toggleSecretAchs() {
 }
 
 function achMultLabelUpdate() {
-	var label = "Normal"
-	if (hasAch("r75")) label += "/Infinity"
-	if (player.eternityUpgrades.includes(4)) label += "/Time"
+	var label = "Antimatter"
+	if (hasAch("r75")) label += ", Infinity"
+	if (player.eternityUpgrades.includes(4)) label += ", and Time"
 	return label
 }
 

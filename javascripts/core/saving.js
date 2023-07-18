@@ -119,7 +119,7 @@ function changeSaveDesc(i, exit) {
 				if (data.masterystudies.includes('d13')) msg+=", Preonic Spins: "+shortenDimensions(E(data.quantum.tod.r.spin))
 				else if (data.masterystudies.includes('d12')) msg+=", Nanocharge: "+shortenDimensions(E(data.quantum.nanofield.charge))+", Nanorewards: "+getFullExpansion(data.quantum.nanofield.rewards)
 				else if (data.masterystudies.includes('d10')) msg+=", Duplicants: "+shortenDimensions(getTotalDuplicants(data))+", Worker duplicants: "+shortenDimensions(getTotalWorkers(data))
-				else if (data.masterystudies.includes('d9')) msg+=", Paired challenges: "+data.quantum.pairedChallenges.completed
+				else if (data.masterystudies.includes('d9')) msg+=", Paired Challenges: "+data.quantum.pairedChallenges.completed
 				else if (data.masterystudies.includes('d8')) {
 					var completions=0
 					if (typeof(data.quantum.challenges)=="number") completions=data.quantum.challenges
@@ -133,12 +133,12 @@ function changeSaveDesc(i, exit) {
 			}
 		} else if (data.exdilation && data.blackhole.unl) {
 			var datastart="Eternity Points: "+shortenDimensions(E(data.eternityPoints))
-			var dataend=", Black hole power: "+shortenMoney(E(data.blackhole.power))
+			var dataend=", Black Hole power: "+shortenMoney(E(data.blackhole.power))
 			if (data.exdilation.times > 0) msg+=datastart+dataend+", Ex-dilation: "+shortenDimensions(E(data.exdilation.unspent))
-			else msg+=datastart+", Dilated time: "+shortenMoney(E(data.dilation.dilatedTime))+", Banked infinities: "+getFullExpansion(data.infinitiedBank)+", Replicanti: "+shortenMoney(E(data.replicanti.amount))+dataend
+			else msg+=datastart+", Dilated time: "+shortenMoney(E(data.dilation.dilatedTime))+", Banked Infinities: "+getFullExpansion(data.infinitiedBank)+", Replicanti: "+shortenMoney(E(data.replicanti.amount))+dataend
 		} else if (data.dilation?data.dilation.studies.includes(1):false) {
-			var data2="Tachyon particles: "+shortenMoney(E(data.dilation.totalTachyonParticles))+", Dilated time: "+shortenMoney(E(data.dilation.dilatedTime))
-			if (data.dilation.studies.includes(6)) data2+=", Best meta-antimatter: "+shortenMoney(E(data.meta.bestAntimatter))+", Meta-dimension shifts/boosts: "+data.meta.resets
+			var data2="Tachyon particles: "+shortenMoney(E(data.dilation.totalTachyonParticles))+", Dilated Time: "+shortenMoney(E(data.dilation.dilatedTime))
+			if (data.dilation.studies.includes(6)) data2+=", Best meta-antimatter: "+shortenMoney(E(data.meta.bestAntimatter))+", Meta-Dimension Shifts/Boosts: "+data.meta.resets
 			else if (!data.dilation.studies.includes(5)) data2="Time Theorems: "+shortenMoney(getTotalTT(data))+", "+data2
 			else if (!data.dilation.upgrades.includes(10)) data2="Eternity Points: "+shortenDimensions(data.eternityPoints)+", "+data2
 			msg+=data2
@@ -156,8 +156,8 @@ function changeSaveDesc(i, exit) {
 					msg+=", Challenge completions: "+totalChallengeCompletions
 				}
 			} else if (data.infinitied>(data.aarexModifications.newGameMinusVersion?990:data.aarexModifications.newGamePlusVersion?1:0)) msg+="Infinity Points: "+shortenDimensions(E(data.infinityPoints))+", Infinities: "+data.infinitied.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")+", Challenge completions: "+data.challenges.length
-			else if (data?.galacticSacrifice?.times) msg+="Antimatter: "+shortenMoney(E(data.money))+", Galaxy points: "+shortenDimensions(E(data.galacticSacrifice.galaxyPoints))
-			else msg+="Antimatter: "+shortenMoney(E(data.money))+", Dimension Shifts/Boosts: "+data.resets+((data.tickspeedBoosts != undefined ? (data.resets > 0 || data.tickspeedBoosts > 0 || data.galaxies > 0 || data.infinitied > 0 || data.eternities != 0 || isSaveQuantumed) : false)?", Tickspeed boosts: "+getFullExpansion(data.tickspeedBoosts):"")+", Galaxies: "+data.galaxies
+			else if (data?.galacticSacrifice?.times) msg+="Antimatter: "+shortenMoney(E(data.money))+", Galaxy Points: "+shortenDimensions(E(data.galacticSacrifice.galaxyPoints))
+			else msg+="Antimatter: "+shortenMoney(E(data.money))+", Dimension Shifts/Boosts: "+data.resets+((data.tickspeedBoosts != undefined ? (data.resets > 0 || data.tickspeedBoosts > 0 || data.galaxies > 0 || data.infinitied > 0 || data.eternities != 0 || isSaveQuantumed) : false)?", Tickspeed Boosts: "+getFullExpansion(data.tickspeedBoosts):"")+", Galaxies: "+data.galaxies
 		}
 		element.innerHTML = msg
 	} catch (e) {
@@ -242,10 +242,11 @@ function import_save(i = savePlacement) {
 	}
 
 	onImport = true
-	var save_data = prompt("Input your save. " + (i == "new" ? "" : "("+(i==savePlacement?"your current save file":"save #"+(i+1))+" will be overwritten!)"));
+	var save_data = prompt("Input your save. " + (i == "new" ? "(the save file will be placed as the last entry of your savefile list)" : "("+(i==savePlacement?"your current save file":"save #"+(i+1))+" will be overwritten!)"));
 	onImport = false
 
-	if (save_data.split("AntimatterDimensions")[1] && save_data.split("EndOf")[1]) {
+	// current reality version update number is 19
+	if (save_data.version > 12.2 && save_data.split("AntimatterDimensions")[1] && save_data.split("EndOf")[1]) {
 		$.notify("The Reality Update is incompatible with Aarex's mods.", "error")
 		return
 	}

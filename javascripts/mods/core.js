@@ -28,7 +28,7 @@ var modPresets = {
 	udsp: {ngpp: 2, ngp: 1, ngud: 3},
 }
 var modFullNames = {
-	rs: "Respecced",
+	rs: "Eternity Respecced",
 	ngep: "NG↑",
 	ngpp: "NG++",
 	ngp: "NG+",
@@ -42,7 +42,7 @@ var modFullNames = {
 	//ngprw: "NG+ Reworked"
 }
 var modSubNames = {
-	ngp: ["OFF", "ON", "+4"],
+	ngp: ["OFF", "ON", "+4"], // TODO: make ngp customization more versatile
 	ngpp: ["OFF", "ON", "+3"],
 	//ngep: ["Linear (↑⁰)", "Exponential (↑)"/*, "Tetrational (↑↑)"*/],
 	ngmm: ["OFF", "ON", "-3", "-4"],
@@ -202,10 +202,10 @@ let welcomeMsgs = {
 
 	["Mu"]: "Welcome to NG Multiplied, made by Despacit and Soul147! This mode adds many buffs which may break the game, similar to NG^.",
 	["Ep"]: "Welcome to NG^, made by Naruyoko! This mode adds many buffs to features that can end up unbalancing the game significantly.",
-	["ER"]: "Welcome to Eternity Respecced, created by dan-simon! In this mode, Eternity is changed to be balanced better without any scaling. Note: The port is not complete on this site, so you should search for the separate website for the mod itself to get the latest version.",
+	["ER"]: "Welcome to Eternity Respecced, created by dan-simon! In this mode, Eternity is changed to be balanced better without any scaling. Note: The port is not complete yet, and will be implemented soon.",
 
-	["No+"]: "You have disabled NG+ features on NG++. This means you start off from the beginning of Antimatter Dimensions without any buffs, and with NG+3 enabled, it can be considered as The Grand Run. If you want to go for it, good luck.",
-	["GR"]: "Welcome to the Grand Run. This is the endurance of both NG and NG+++, but doesn't contain Reality content / balancing. Have fun on a really long game! >:D",
+	["No+"]: "You have disabled NG+ features on NG++. Without NG+ effects, you will play Antimatter Dimensions without any headstarts, and with NG+3 enabled, it can be considered as The Grand Run. If you want to go for it, good luck.",
+	["GR"]: "Welcome to the Grand Run, where you start from the beginning of the original Antimatter Dimensions, but play up to the end of NG+3 without Reality content / balancing. Have fun!",
 	["AAU"]: "You have applied the AAU 'mod', made by Apeirogon. This will unbalance many areas of the game, as you get all achievements available in your save. It is not recommended to choose this 'mod' for this reason, unless you want fast gameplay.",
 }
 
@@ -276,5 +276,6 @@ function modAbbs(mods = mod, short) {
 	if (ngpRecommended(mods)) end += (mods.ngpp == 2 ? ", The Grand Run" : ", No NG+")
 	if (mods.aau) end += ", AAU"
 
+	if (r == "NG") r  = short ? "NG=" : "Vanilla AD (pre-Reality)"
 	return r + (short ? "" : end)
 }

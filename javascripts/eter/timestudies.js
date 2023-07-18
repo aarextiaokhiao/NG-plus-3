@@ -227,7 +227,7 @@ function updateTimeStudyButtons(changed, forceupdate = false) {
 	performedTS = true
 	if (mod.rs) { // eternity
 		var locked = getTotalTT(player) < 60
-		el("nextstudy").textContent = locked ? "Next time study set unlock at 60 total Time Theorems." : ""
+		el("nextstudy").textContent = locked ? "Next Time Study set unlocks at 60 total Time Theorems." : ""
 		el("tsrow3").style.display = locked ? "none" : ""
 		for (var id = 1; id < (locked ? 5 : 7); id++) {
 			var b = player.timestudy.ers_studies[id]

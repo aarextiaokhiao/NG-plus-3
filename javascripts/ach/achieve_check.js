@@ -138,7 +138,7 @@ function checkMatterAMNDReqAchieve(){
 function checkInfPowerReqAchieve(){
 	if (player.infinityPower.gt(1)) giveAchievement("A new beginning.");
 	if (player.infinityPower.gt(1e6)) giveAchievement("1 million is a lot"); 
-	if (player.infinityPower.gt(1e260)) giveAchievement("Minute of infinity"); 
+	if (player.infinityPower.gt(1e260)) giveAchievement("4.3333 minutes of Infinity"); 
 }
 
 function checkTickspeedReqAchieve(){
@@ -170,12 +170,13 @@ function checkOtherPreNGp3Achieve(){
 		if (player.exdilation.unspent.gt(1e5)) giveAchievement("Finally I'm out of that channel");
 		if (ableToGetRid2 && player.infinityPoints.log10() >= 20000) giveAchievement("I already got rid of you.")
 	}
-	if (mod.ngpp && hasDilStudy(5)) giveAchievement("I'm so meta")
+	if (mod.ngpp && hasDilStudy(6)) giveAchievement("I'm so meta")
 	checkUniversalHarmony()
 	if (infchallengeTimes < 7.5) giveAchievement("Never again")
 	if (player.totalTimePlayed >= 10 * 60 * 60 * 24 * 8) giveAchievement("One for each dimension")
 	if (Math.random() < 0.00001) giveAchievement("Do you feel lucky? Well do ya punk?")
-	//starting here i need to move checks into the correct function:
+	
+	// need to know if we should really decide to move these into separate functions
 	if (player.galaxies >= 50) giveAchievement("YOU CAN GET 50 GALAXIES!??")
 	if (player.galaxies >= 2) giveAchievement("Double Galaxy");
 	if (player.galaxies >= 1) giveAchievement("You got past The Big Wall");
@@ -190,7 +191,6 @@ function checkOtherPreNGp3Achieve(){
 	if (tmp.sacPow >= 600) giveAchievement("The Gods are pleased");
 	if (tmp.sacPow.gte(Number.MAX_VALUE)) giveAchievement("Yet another infinity reference")
 	if (tmp.sacPow.gte(pow10(9000)) && !inNC(11)) giveAchievement("IT'S OVER 9000")
-	if (player.currentChallenge.includes("post")) giveAchievement("Infinitely Challenging")
 	if (tmp.ec_eff >= 50) giveAchievement("5 more eternities until the update")
 	if (player.infinitiedBank >= 5000000000) giveAchievement("No ethical consumption");
 	if (getEternitied() >= 100) giveAchievement("This mile took an Eternity")

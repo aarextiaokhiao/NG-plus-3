@@ -124,8 +124,8 @@ function updateAutoGhosts(load) {
 
 	isAutoGhostsSafe = data.power >= powerConsumed
 	el("consumedPower").textContent = powerConsumed.toFixed(2)
-	el("machineQuote").textContent = !isAutoGhostsSafe ? "Overloaded! Vacate some or seek more power to enable!" :
-		!powerConsumed ? "The machine idles... Hire some ants to do work for you." : ""
+	el("machineQuote").textContent = !isAutoGhostsSafe ? "Overloaded! Vacate some ants or seek more power to enable!" :
+		!powerConsumed ? "The machine is idle... Hire some ants to do work for you." : ""
 }
 
 function loadAutoGhost(id) {

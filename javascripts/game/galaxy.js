@@ -3,10 +3,9 @@ function galaxyReset(bulk) {
 
 	if (autoS) auto = false;
 	autoS = true;
-
 	player.galaxies += bulk
-	if (player.sacrificed == 0 && bulk) giveAchievement("I don't believe in Gods");
-	if (player.options.notation == "Cancer") player.spreadingCancer += bulk
+	if (player.options.notation == "Emojis") player.spreadingCancer += bulk
+	checkOnGalaxyReset()
 	if (mod.ngp3 && bulk) {
 		if (quSave.autoOptions.sacrifice) sacrificeGalaxy()
 		if (hasNB(1)) NT.onGalaxy(bulk)
@@ -15,6 +14,17 @@ function galaxyReset(bulk) {
 	let am = player.money
 	doReset("gal")
 	if (hasAch("r111")) player.money = am
+}
+
+function checkOnGalaxyReset() {
+	if (player.sacrificed == 0) giveAchievement("I don't believe in Gods");
+	if (player.galaxies >= 50) giveAchievement("YOU CAN GET 50 GALAXIES!??")
+	if (player.galaxies >= 2) giveAchievement("Double Galaxy");
+	if (player.galaxies >= 1) giveAchievement("You got past The Big Wall");
+	if (player.galaxies >= 540 && player.replicanti.galaxies == 0) giveAchievement("Unique snowflakes")
+	
+	if (player.spreadingCancer >= 10) giveAchievement("Spreading Nerd")
+	if (player.spreadingCancer >= 1000000) giveAchievement("Cancer = Spread")
 }
 
 el("secondSoftReset").onclick = function() {

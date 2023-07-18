@@ -1322,7 +1322,7 @@ td .timestudybought.pos_study {
 #dimensionsbtn, #dimensionsbtn ~ button {
     margin-top: 4px;
     /* for testing purposes */
-    //display: inline-block !important;
+    /* display: inline-block !important; */
 }
 
 .galaxybtn {

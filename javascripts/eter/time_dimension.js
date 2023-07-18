@@ -123,7 +123,7 @@ function getTimeDimensionRateOfChange(tier) {
 function getTimeDimensionDescription(tier) {
 	if (!isTDUnlocked(((inNC(7) && inNGM(4)) || inQC(4) ? 2 : 1) + tier)) return getFullExpansion(player['timeDimension' + tier].bought)
 	else if (player.timeShards.l > 1e7) return shortenDimensions(player['timeDimension' + tier].amount)
-	else return shortenDimensions(player['timeDimension' + tier].amount) + ' (+' + formatValue(player.options.notation, getTimeDimensionRateOfChange(tier), 2, 2) + dimDescEnd;
+	else return formatQuick(player['timeDimension' + tier].amount, 2, inNGM(4) ? Math.min(Math.max(3 - player.money.e, 1), 3) : 0) + ' (+' + formatValue(player.options.notation, getTimeDimensionRateOfChange(tier), 2, 2) + dimDescEnd;
 }
 
 function updateTimeDimensions() {
@@ -133,7 +133,7 @@ function updateTimeDimensions() {
 			el("timeRow" + tier).style.display = "table-row"
 			el("timeD" + tier).textContent = dimNames[tier] + " Time Dimension x" + shortenMoney(getTimeDimensionPower(tier));
 			el("timeAmount" + tier).textContent = getTimeDimensionDescription(tier);
-			el("timeMax" + tier).textContent = (quantumed ? '':"Cost: ") + shortenDimensions(player["timeDimension" + tier].cost) + (inNGM(4) ? "" : " EP")
+			el("timeMax" + tier).textContent = (quantumed ? '':"Cost: ") + formatQuick(player["timeDimension" + tier].cost, 2, inNGM(4) ? Math.min(Math.max(3 - player.money.e, 1), 3) : 0) + (inNGM(4) ? "" : " EP")
 			if (getOrSubResourceTD(tier).gte(player["timeDimension" + tier].cost)) el("timeMax"+tier).className = "storebtn"
 		else el("timeMax" + tier).className = "unavailablebtn"
 		} else el("timeRow" + tier).style.display = "none"
@@ -143,7 +143,7 @@ function updateTimeDimensions() {
 		var req = getTDBoostReq()
 		el("tdReset").style.display = ""
 		el("tdResetLabel").textContent = "Time Dimension "+(isShift ? "Shift" : "Boost") + " (" + getFullExpansion(player.tdBoosts) + "): requires " + getFullExpansion(req.amount) + " " + dimNames[req.tier] + " Time Dimensions"
-		el("tdResetBtn").textContent = "Reset prior features for a " + (isShift ? "new dimension" : "boost")
+		el("tdResetBtn").textContent = "Reset prior features for a " + (isShift ? "new Dimension" : "Boost")
 		el("tdResetBtn").className = (player["timeDimension" + req.tier].bought < req.amount) ? "unavailablebtn" : "storebtn"
 	} else el("tdReset").style.display = "none"
 }
@@ -154,7 +154,7 @@ function updateTimeShards() {
 	el("timeShardAmount").textContent = shortenMoney(player.timeShards)
 	el("tickThreshold").textContent = shortenMoney(player.tickThreshold)
 	if (player.currentEternityChall == "eterc7") el("timeShardsPerSec").textContent = "You are getting " + shortenDimensions(p) + " Eighth Infinity Dimensions per second."
-	else el("timeShardsPerSec").textContent = "You are getting " + shortenDimensions(p) + " Timeshards per second."
+	else el("timeShardsPerSec").textContent = "You are getting " + shortenDimensions(p) + " Time Shards per second."
 }
 
 var timeDimCostMults = [[null, 3, 9, 27, 81, 243, 729, 2187, 6561], [null, 1.5, 2, 3, 20, 150, 1e5, 3e6, 1e8]]
@@ -178,7 +178,7 @@ function timeDimCost(tier, bought) {
 function buyTimeDimension(tier, am) {
 	var dim = player["timeDimension"+tier]
 	if (getAmount(1) < 1) {
-		alert("You need to buy a first Normal Dimension to be able to buy Time Dimensions.")
+		alert("You need to buy a first Antimatter Dimension to be able to buy Time Dimensions.")
 		return
 	}
 	if (!isTDUnlocked(tier)) return false

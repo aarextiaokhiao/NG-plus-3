@@ -23,6 +23,7 @@ function doBigCrunch(auto) {
 	else if (player.break && player.currentChallenge == "") add = getIPGain()
 	else if (hasTimeStudy(51)) add = add.mul(1e15)
 	player.infinityPoints = player.infinityPoints.add(add)
+	player.bestInfinityTime = player.bestInfinityTime > player.thisInfinityTime ? player.thisInfinityTime : player.bestInfinityTime
 
 	if (auto && autoS) {
 		if (getIPGain().dividedBy(player.thisInfinityTime).gt(player.autoIP) && !player.break) player.autoIP = getIPGain().dividedBy(player.thisInfinityTime);
@@ -249,7 +250,7 @@ function checkOnCrunchAchievements() {
 	if (getIPGain().gte(1e150)) giveAchievement("All your IP are belong to us")
 	if (getIPGain().gte(1e200) && player.thisInfinityTime <= 20) giveAchievement("Ludicrous Speed")
 	if (getIPGain().gte(1e250) && player.thisInfinityTime <= 200) giveAchievement("I brake for nobody")
-
+	if (player.currentChallenge.includes("post")) giveAchievement("Infinitely Challenging")
 	if (player.currentChallenge == "postc5" && player.thisInfinityTime <= 100) giveAchievement("Hevipelle did nothing wrong")
 	if (inNGM(3) && player.thisInfinityTime <= 100 && player.currentChallenge == "postc7") giveAchievement("Hevipelle did nothing wrong")
 	if (player.currentChallenge == "postc8") giveAchievement("Anti-antichallenged");
@@ -284,6 +285,7 @@ function getInfinitiedGain() {
 }
 
 //CHALLENGES
+// to do: fix all challenge ids because i have no idea how it got this messed up
 var challNames = [null, null, "Second Dimension Autobuyer Challenge", "Third Dimension Autobuyer Challenge", "Fourth Dimension Autobuyer Challenge", "Fifth Dimension Autobuyer Challenge", "Sixth Dimension Autobuyer Challenge", "Seventh Dimension Autobuyer Challenge", "Eighth Dimension Autobuyer Challenge", "Tickspeed Autobuyer Challenge", "Automated Dimension Boosts Challenge", "Automated Galaxies Challenge", "Automated Big Crunches Challenge", "Automated Dimensional Sacrifice Challenge", "Automated Galactic Sacrifice Challenge", "Automated Tickspeed Boosts Challenge", "Automated Time Dimension Boosts Challenge"]
 var challOrder = [null, 1, 2, 3, 8, 6, 10, 9, 11, 5, 4, 12, 7, 13, 14, 15, 16]
 
@@ -407,7 +409,7 @@ function updateChallengeTimes() {
 		temp+=player.challengeTimes[i]
 		tempcounter++
 	}
-	setAndMaybeShow("challengetimesum",tempcounter>1,'"Sum of completed challenge time records is "+timeDisplayShort('+temp+', false, 3)')
+	setAndMaybeShow("challengetimesum",tempcounter>1,'"Sum of completed Normal Challenge time records is " + timeDisplayShort('+temp+', false, 3) + "."')
 
 	var temp=0
 	var tempcounter=0
@@ -418,7 +420,7 @@ function updateChallengeTimes() {
 			tempcounter++
 		}
 	}
-	setAndMaybeShow("infchallengetimesum",tempcounter>1,'"Sum of completed infinity challenge time records is "+timeDisplayShort('+temp+', false, 3)')
+	setAndMaybeShow("infchallengetimesum",tempcounter>1,'"Sum of completed Infinity Challenge time records is " + timeDisplayShort('+temp+', false, 3) + "."')
 	updateWorstChallengeBonus();
 }
 

@@ -72,15 +72,15 @@ const GLUON = {
 		],
 		br: [
 			{
-				disp: "Dilated time boosts tachyon particles.",
+				disp: "Dilated Time boosts Tachyon Particles.",
 				eff: _ => Math.sqrt(player.dilation.dilatedTime.add(10).log10()) / 2,
 				eff_desc: e => shorten(e) + "x"
 			}, {
-				disp: "Sacrifice boosts dilated time.",
+				disp: "Sacrifice boosts Dilated Time.",
 				eff: _ => E_pow(2.2, Math.pow(tmp.sacPow.log10() / 1e6, 0.25)),
 				eff_desc: e => shorten(e) + "x"
 			}, {
-				disp: "Tachyon particles slightly boost dilated time production."
+				disp: "Tachyon Particles slightly boost Dilated Time production."
 			}, {
 				disp: "Multiplier per ten dimensions boosts Meta Dimensions.",
 				eff() {

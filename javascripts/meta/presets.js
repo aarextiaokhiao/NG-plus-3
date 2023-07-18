@@ -151,7 +151,7 @@ let PRESET = {
 		closeToolTip()
 	},
 	rename(i) {
-		PRESET.data.main[i].title = prompt("Enter your new preset name. Leaving the blank will reset the name!")
+		PRESET.data.main[i].title = prompt("Enter your new preset name. Leaving the input box blank will reset the name!")
 		PRESET.save(i)
 	},
 	swap(i, j) {

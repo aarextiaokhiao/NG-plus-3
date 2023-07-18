@@ -97,8 +97,8 @@ function resetBlackholeDimensions(full) {
 
 //feeding
 let BH_FEED = {
-	dilatedTime: { title: "dilated time", cost: [pow10(20), 10], res: _ => player.dilation.dilatedTime, sub: x => { player.dilation.dilatedTime = player.dilation.dilatedTime.sub(x) } },
-	bankedInfinities: { title: "banked infinities", cost: [5e9, 2], res: _ => player.infinitiedBank, sub: x => { player.infinitiedBank = nS(player.infinitiedBank, x) } },
+	dilatedTime: { title: "Dilated Time", cost: [pow10(20), 10], res: _ => player.dilation.dilatedTime, sub: x => { player.dilation.dilatedTime = player.dilation.dilatedTime.sub(x) } },
+	bankedInfinities: { title: "Banked Infinities", cost: [5e9, 2], res: _ => player.infinitiedBank, sub: x => { player.infinitiedBank = nS(player.infinitiedBank, x) } },
 	replicanti: { title: "replicanti", cost: [pow10(2e4), pow10(1e3)], res: _ => player.replicanti.amount, sub: x => { player.replicanti.amount = player.replicanti.amount.sub(x) } },
 }
 
@@ -148,8 +148,13 @@ function updateBHFeed() {
 	el("blackholeAuto").style.display = (mod.udp || mod.udsp) && hasAch("ngpp17") ? "" : "none"
 	el('blackholeAuto').textContent = "Auto: O"+(mod.udp&&player.autoEterOptions.blackhole?"N":"FF")
 	for (let i of Object.keys(BH_FEED)) {
-		el("bh_feed_"+i).innerHTML = (mod.udsp ? "<b>+1 Remnant</b>" : `Feed the black hole with ${BH_FEED[i].title}`) + `<br>Cost: ${shortenCosts(feedBlackHoleCost(i))} ${BH_FEED[i].title}`
+		el("bh_feed_"+i).innerHTML = (mod.udsp ? "<b>+1 Remnant</b>" : `Feed the Black Hole with ${BH_FEED[i].title}`) + `<br>Cost: ${shortenCosts(feedBlackHoleCost(i))} ${BH_FEED[i].title}`
 		el("bh_feed_"+i).className = canFeedBlackHole(i) ? 'eternityupbtn' : 'eternityupbtnlocked'
+	}
+
+	if (mod.udsp) {
+		let gain = Math.floor(Math.min(player.blackhole.hunger, player.blackhole.upgrades.total / 3))
+		el("feedBHButton").className = gain == 1 ? "eternityupbtn" : "eternityupbtnlocked"
 	}
 }
 
@@ -161,7 +166,7 @@ function updateBlackhole() {
 	el("blackholediv").style.display = unl && !mod.udsp ? "" : "none"
 	el("blackholeunlock").style.display = unl ? "none" : ""
 	if (!unl) {
-		el("blackholeunlock").innerHTML = "Unlock the black hole<br>Cost: " + shortenCosts(E('1e4000')) + " EP"
+		el("blackholeunlock").innerHTML = "Unlock the Black Hole<br>Cost: " + shortenCosts(E('1e4000')) + " EP"
 		el("blackholeunlock").className = (player.eternityPoints.gte("1e4000")) ? "storebtn" : "unavailablebtn"
 		return
 	}
@@ -172,7 +177,7 @@ function updateBlackhole() {
 
 	drawBlackhole()
 	el("blackholePowAmount").innerHTML = shortenMoney(player.blackhole.power);
-	if (!mod.udsp) el("blackholePowPerSec").innerHTML = "You are getting " + shortenMoney(getBlackholeDimensionProduction(1)) + " black hole power per second.";
+	if (!mod.udsp) el("blackholePowPerSec").innerHTML = "You are getting " + shortenMoney(getBlackholeDimensionProduction(1)) + " Black Hole power per second.";
 
 	el("DilMultAmount").innerHTML = formatValue(player.options.notation, getBlackholePowerEffect(), 2, 2)
 	el("InfAndReplMultAmount").innerHTML = formatValue(player.options.notation, getBlackholePowerEffect().pow(1/3), 2, 2)
@@ -263,11 +268,11 @@ function updateExdilationButton() {
 	if (!has) return
 	if (canReverseDilation()) {
 		el("reversedilation").className = "dilationbtn"
-		el("reversedilation").innerHTML = "Reverse dilation." + (exdilated() ? "<br>Gain "+shortenDimensions(getExDilationGain()) + " ex-dilation" : "")
+		el("reversedilation").innerHTML = "Reverse Dilation." + (exdilated() ? "<br>Gain "+shortenDimensions(getExDilationGain()) + " ex-dilation" : "")
 	} else {
 		let req = getExdilationReq()
 		el("reversedilation").className = "eternityupbtnlocked"
-		el("reversedilation").textContent = "Get "+(player.eternityPoints.lt(req.ep)?shortenCosts(E(req.ep))+" EP and ":"")+shortenCosts(req.dt)+" dilated time to reverse dilation."
+		el("reversedilation").textContent = "Get "+(player.eternityPoints.lt(req.ep)?shortenCosts(E(req.ep))+" EP and ":"")+shortenCosts(req.dt)+" Dilated Time to reverse Dilation."
 	}
 }
 
@@ -330,7 +335,7 @@ function exDilationUpgradeStrength(x, add = 0) {
 
 function reverseDilation() {
 	if (!canReverseDilation()) return;
-	if (player.options.exdilationconfirm && !confirm(`Reversing dilation resets Time Dilation and Black Hole power in exchange for ex-dilation, which reduces dilation penalty and strengthens repeatable upgrades. Are you sure?`)) return
+	if (player.options.exdilationconfirm && !confirm(`Reversing Dilation resets Time Dilation and Black Hole power in exchange for ex-dilation, which reduces dilation penalty and strengthens repeatable upgrades. Are you sure?`)) return
 
 	player.exdilation.unspent = player.exdilation.unspent.add(getExDilationGain())
 	player.exdilation.times++
@@ -344,7 +349,7 @@ function reverseDilation() {
 
 function toggleExdilaConf() {
 	player.options.exdilationconfirm = !player.options.exdilationconfirm
-	el("exdilationConfirmBtn").textContent = "Reverse dilation confirmation: " + (player.options.exdilationconfirm ? "ON" : "OFF")
+	el("exdilationConfirmBtn").textContent = "Reverse Dilation confirmation: " + (player.options.exdilationconfirm ? "ON" : "OFF")
 }
 
 function boostDilationUpgrade(x) {

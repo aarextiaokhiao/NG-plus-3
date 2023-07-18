@@ -674,7 +674,7 @@ function doQuantumRestore(){
 	}
 	if (aarMod.newGamePlusPlusVersion < 2.901) {
 		aarMod.quantumConf = true
-		$.notify('NG++ was updated to include quantum reset.', 'info')
+		$.notify('NG++ was updated to include the Quantum reset.', 'info')
 	}
 	if (aarMod.newGamePlusPlusVersion < 2.9011 && player.autoEterOptions === undefined) {
 		player.autoEterOptions = {epmult:false}
@@ -1280,7 +1280,7 @@ function dov12tov122(){
 			updateAchievements();
 		}
 	}
-	if (player.version < 12.2) {
+	if (player.version < 12.2) { // last supported vanilla version
 		player.version = 12.2
 		player.sixthCost = Decimal.mul(player.sixthCost, 10)
 		if (mod.ngpp) player.meta[6].cost = Decimal.mul(player.meta[6].cost, 10)
@@ -1397,34 +1397,34 @@ function setDisplaysStuff1(){
 	el("secretstudy").style.opacity = 0
 	el("secretstudy").style.cursor = "pointer"
 	
-	el("bestAntimatterType").textContent = quantumed ? "Your best meta-antimatter for this quantum" : "Your best-ever meta-antimatter"
+	el("bestAntimatterType").textContent = quantumed ? "Your best meta-antimatter for this Quantum" : "Your best-ever meta-antimatter"
 
 	el("respecMastery").style.display = player.dilation.upgrades.includes("ngpp6") && mod.ngp3 ? "block" : "none"
 	el("respecMastery2").style.display = player.dilation.upgrades.includes("ngpp6") && mod.ngp3 ? "block" : "none"
 
 	if (inNGM(2)) {
-		el("galaxy11").innerHTML = "Normal"+(inNGM(4)?" and Time D":" d")+"imensions are "+(player.infinitied>0||getEternitied()!==0||quantumed?"cheaper based on your Infinities.<br>Currently: <span id='galspan11'></span>x":"99% cheaper.")+"<br>Cost: 1 GP"
-		el("galaxy15").innerHTML = "Normal and Time Dimensions produce "+(player.infinitied>0||getEternitied()!==0||quantumed?"faster based on your Infinities.<br>Currently: <span id='galspan15'></span>x":"100x faster")+".<br>Cost: 1 GP"
+		el("galaxy11").innerHTML = "Antimatter"+(inNGM(4)?" and Time D":" D")+"imensions are "+(player.infinitied>0||getEternitied()!==0||quantumed?"cheaper based on your Infinities.<br>Currently: <span id='galspan11'></span>x":"99% cheaper.")+"<br>Cost: 1 GP"
+		el("galaxy15").innerHTML = "Antimatter and Time Dimensions produce "+(player.infinitied>0||getEternitied()!==0||quantumed?"faster based on your Infinities.<br>Currently: <span id='galspan15'></span>x":"100x faster")+".<br>Cost: 1 GP"
 	} else {
 		el("infi21").innerHTML = "Increase the multiplier for buying 10 Dimensions<br>"+(mod.ngep?"20x → 24x":"2x → 2.2x")+"<br>Cost: 1 IP"
 		el("infi33").innerHTML = "Increase Dimension Boost multiplier<br>2x → 2.5x<br>Cost: 7 IP"
 	}
 	var resetSkipCosts=[20,40,80]
-	for (u=1;u<4;u++) el("infi4"+u).innerHTML="You start with the "+(u+4)+"th dimension unlocked"+(!inNGM(3)?"":" and "+(u*4)+" tickspeed boosts")+"<br>Cost: "+resetSkipCosts[u-1]+" IP"
-	el("infi44").innerHTML="You start with the 8th dimension unlocked"+(!inNGM(3)?"":", 16 tickspeed boosts")+", and a Galaxy<br>Cost: 500 IP"
+	for (u=1;u<4;u++) el("infi4"+u).innerHTML="You start with the "+(u+4)+"th dimension unlocked"+(!inNGM(3)?"":" and "+(u*4)+" Tickspeed Boosts")+"<br>Cost: "+resetSkipCosts[u-1]+" IP"
+	el("infi44").innerHTML="You start with the 8th dimension unlocked"+(!inNGM(3)?"":", 16 Tickspeed Boosts")+", and a Galaxy<br>Cost: 500 IP"
 }
 
 function setChallengeDisplay(){
 	var showMoreBreak = inNGM(2) ? "" : "none"
 	for (i=1;i<5;i++) el("postinfi0"+i).parentElement.style.display=showMoreBreak
 	el("d1AutoChallengeDesc").textContent=(inNGM(4)?"Galactic Sacrifice":"Big Crunch")+" for the first time."
-	el("d5AutoChallengeDesc").textContent=inNGM(2)?"Tickspeed upgrades"+(!inNGM(3)?"":" and Tickspeed Boosts")+(inNGM(4)?" are weaker":" start out useless")+", but galaxies make them stronger.":"Tickspeed starts at 7%."
+	el("d5AutoChallengeDesc").textContent=inNGM(2)?"Tickspeed upgrades"+(!inNGM(3)?"":" and Tickspeed Boosts")+(inNGM(4)?" are weaker":" start out useless")+", but Galaxies make them stronger.":"Tickspeed starts at 7%."
 	el("tbAutoChallengeDesc").textContent=!inNGM(3)?"Whenever you buy 10 of a dimension or tickspeed, everything else of equal cost will increase to its next cost step.":"You can't get Tickspeed Boosts and Antimatter Galaxies are 25% weaker."
 	el("autoDBChallengeDesc").textContent="There are only 6 dimensions, with Dimension Boost"+(!inNGM(3)?"":", Tickspeed Boost,")+" and Antimatter Galaxy costs modified."
-	el("autoCrunchChallengeDesc").textContent="Each Normal Dimension produces the Dimension 2 tiers before it; First Dimensions produce reduced antimatter. "+(inNGM(2)?"Galaxies are far more powerful.":"")
-	el("autoDSChallengeDesc").textContent=!inNGM(3)?"Per-ten multiplier is always 1x, but the product of dimensions bought multiplies all dimensions.":"The product of amount is used instead of the product of bought."
-	el("autoGSChallengeDesc").textContent=inNGM(4)?"You can hold up to 10 total Dimension Boosts, Time Dimension Boosts, Tickspeed Boosts, and Galaxies.":(inNGM(3)?"All galaxy upgrades from the third column are disabled and Tickspeed Boosts give 20 free tickspeed purchases each instead.":"You can only get 308 tickspeed upgrades. This count does not reset on resets.")
-	el("autoTBChallengeDesc").textContent=inNGM(4)?"Dimension Boosts and Time Dimension Boosts divide Tickspeed Multiplier instead.":"Dimension Boosts and Galaxies only boost Galaxy point gain and Tickspeed Boosts are nerfed, but Galaxy points boost Tickspeed Boosts."
+	el("autoCrunchChallengeDesc").textContent="Each Antimatter Dimension produces the Dimension 2 tiers before it; First Dimensions produce reduced antimatter. "+(inNGM(2)?"Galaxies are far more powerful.":"")
+	el("autoDSChallengeDesc").textContent=!inNGM(3)?"Per-ten multiplier is always 1x, but the product of dimensions bought multiplies all Antimatter Dimensions.":"The product of amount is used instead of the product of bought."
+	el("autoGSChallengeDesc").textContent=inNGM(4)?"You can hold up to 10 total Dimension Boosts, Time Dimension Boosts, Tickspeed Boosts, and Galaxies.":(inNGM(3)?"All Galaxy upgrades from the third column are disabled and Tickspeed Boosts give 20 free tickspeed purchases each instead.":"You can only get 308 tickspeed upgrades. This count does not reset on resets.")
+	el("autoTBChallengeDesc").textContent=inNGM(4)?"Dimension Boosts and Time Dimension Boosts divide Tickspeed Multiplier instead.":"Dimension Boosts and Galaxies only boost Galaxy Point gain and Tickspeed Boosts are nerfed, but Galaxy Points boost Tickspeed Boosts."
 	el("infPowEffectPowerDiv").innerHTML=inNGM(2)?"Raised to the power of <span id='infPowEffectPower' style='font-size:35px; color: black'></span>, t":"T"
 	el("ngmmchalls").style.display=inNGM(2)?"":"none"
 	el("ngmmmchalls").style.display=!inNGM(3)?"none":""
@@ -1454,7 +1454,7 @@ function setInfChallengeDisplay(){
 		el("ic3div").style.display=""
 		el("ic2div").appendChild(el("postc2").parentElement.parentElement)
 	}
-	el("postc2reward").textContent = "Reward: "+(inNGM(2)?"S":"Get the sacrifice autobuyer, and s")+"acrifice is more powerful."
+	el("postc2reward").textContent = "Reward: "+(inNGM(2)?"S":"Get the Sacrifice autobuyer, and S")+"acrifice is more powerful."
 	if (!inNGM(3)) {
 		el("icngm3_row").style.display="none"
 		el("icngm3_row2").style.display="none"
@@ -1482,18 +1482,18 @@ function setInfChallengeDisplay(){
 
 function setOtherChallDisplay(){
 	el("galaxy21").innerHTML=(inNGM(3)?"Reduce the Dimension Boost cost multiplier to "+(inNGM(4)?10:5):"Dimension Boost scaling starts 2 boosts later, and increases the cost by 5 each")+".<br>Cost: 1 GP"
-	el("galaxy12").innerHTML="Normal "+(inNGM(4)?"and Time D":"D")+"imensions gain a multiplier based on time spent in this Galactic Sacrifice.<br>Currently: <span id='galspan12'>x</span>x<br>Cost: "+galCosts[12]+" GP"
+	el("galaxy12").innerHTML="Antimatter "+(inNGM(4)?"and Time D":"D")+"imensions gain a multiplier based on time spent in this Galactic Sacrifice.<br>Currently: <span id='galspan12'>x</span>x<br>Cost: "+galCosts[12]+" GP"
 	el("galBuff22").textContent=inNGM(4)?2:5
-	el("galaxy13").innerHTML="Normal "+(inNGM(4)?"and Time D":"D")+"imensions gain a multiplier based on your Galaxy points.<br>Currently: <span id='galspan13'>x</span>x<br>Cost: "+galCosts[13]+" GP"
-	el("galDesc23").textContent="Dimension "+(inNGM(4)?" Boosts and Time Dimension B":"B")+"oosts are stronger based on your Galaxy points."
+	el("galaxy13").innerHTML="Antimatter "+(inNGM(4)?"and Time D":"D")+"imensions gain a multiplier based on your Galaxy Points.<br>Currently: <span id='galspan13'>x</span>x<br>Cost: "+galCosts[13]+" GP"
+	el("galDesc23").textContent="Dimension "+(inNGM(4)?" Boosts and Time Dimension B":"B")+"oosts are stronger based on your Galaxy Points."
 	el("galcost31").textContent=galCosts[31]
 	el("galcost32").textContent=galCosts[32]
 	
-	el("ic1desc").textContent="All the previous challenges (except for the Tickspeed challenge"+(inNGM(2)?',':" and")+" Automatic Big Crunch challenge"+(inNGM(2)?", and Automatic Galactic Sacrifice challenge":"")+") are applied at once."
+	el("ic1desc").textContent="All previous Normal Challenges (except for the Tickspeed challenge"+(inNGM(2)?',':" and")+" Automatic Big Crunch challenge"+(inNGM(2)?", and Automatic Galactic Sacrifice challenge":"")+") are applied at once."
 	el("ic1reward").textContent="Reward: Get "+(inNGM(2)?2:1.3)+"x on all Infinity Dimensions for each Infinity Challenge completed."
 	el("ic2desc").textContent=(!inNGM(3)?"":"Infinity Dimensions are disabled, but Sacrifice is way stronger. ")+"You automatically sacrifice every 0.4 seconds."
-	el("ic4desc").textContent=!inNGM(3)?"Only the latest bought Normal Dimension's production is normal, all other Normal Dimensions produce less.":"All Normal Dimension multipliers are square rooted without the dilation penalty."
-	el("ic5desc").textContent=!inNGM(3)?"When buying Normal Dimensions 1-4, everything with costs smaller or equal increases. When buying Normal Dimensions 5-8, everything with costs bigger or equal increases. When buying tickspeed, everything with the same cost increases.":"You can't get tickspeed upgrades and galaxies. Tickspeed Boosts boost tickspeed instead."
+	el("ic4desc").textContent=!inNGM(3)?"Only the latest bought Antimatter Dimension's production is normal; all other Antimatter Dimensions produce less.":"All Antimatter Dimension multipliers are square rooted without the dilation penalty."
+	el("ic5desc").textContent=!inNGM(3)?"When buying Antimatter Dimensions 1-4, everything with costs smaller or equal increases. When buying Antimatter Dimensions 5-8, everything with costs bigger or equal increases. When buying tickspeed, everything with the same cost increases.":"You can't get tickspeed upgrades and galaxies. Tickspeed Boosts boost tickspeed instead."
 	el("ic7desc").textContent="You can't get Antimatter Galaxies, but the Dimension Boost multiplier "+(inNGM(2)?"is cubed":"is increased to 10x")+"."
 	el("ic7reward").textContent="Reward: The Dimension Boost multiplier "+(inNGM(2)? "is squared":" is increased to 4x.")
 }
@@ -1562,10 +1562,10 @@ function updateNGModeMessage(){
 	ngModeMessages=welcomeMods()
 	if (forceToQuantumAndRemove) {
 		quantum(false, true, 0)
-		ngModeMessages = ["Due to balancing changes, you are forced to quantum and reset your TT and your best TP, but you are given	" + shorten(setTTAfterQuantum) + " TT as compensation."]
+		ngModeMessages = ["Due to balancing changes, you are forced to Quantum and reset your TT and your best TP, but you are given	" + shorten(setTTAfterQuantum) + " TT as compensation."]
 		player.timestudy.theorem = setTTAfterQuantum
 		player.dilation.bestTP = E(0)
-		el('bestTP').textContent = "Your best ever Tachyon particles was 0."
+		el('bestTP').textContent = "Your best ever Tachyon Particles was 0."
 	}
 }
 
@@ -1697,22 +1697,6 @@ function onLoad(noOffline) {
 
 
 /*
-STUFF
-STUFF
-STUFF
-STUFF
-STUFF
-STUFF
-STUFF
-STUFF
-STUFF
-STUFF
-STUFF
-STUFF
-STUFF
-STUFF
-STUFF
-STUFF
 END OF ONLOAD
 */
 
@@ -1728,28 +1712,9 @@ function checkNGM(imported) {
 }
 
 /*
-STUFF
-STUFF
-STUFF
-STUFF
-STUFF
-STUFF
-STUFF
-STUFF
-STUFF
-STUFF
-STUFF
-STUFF
-STUFF
-STUFF
-STUFF
-
-
-
-
 Does transformSaveToDecimal() even do anything anymore
 we can just remove back compatibility right
-no one should have a AD save from back then
+no one should have a AD save from back then // wrong, it is entirely possible
 I guess we shoudln't but ew its laggy, maybe a variable that says if we have done so
 */
 
@@ -1984,6 +1949,7 @@ function conToDeciMS(){
 
 // Credit to MrRedShark77, Edited by Aarex
 // https://github.com/MrRedShark77/NG-plus-3CR/blob/main/javascripts/core/load_functions.js
+// this assumedly does a deep search for undefined values
 function deepUndefinedAndDecimal(obj, data) {
 	console.log(obj, data)
 	if (obj == null) return data

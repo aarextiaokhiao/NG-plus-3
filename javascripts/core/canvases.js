@@ -65,11 +65,11 @@ const ANIMATIONS = {
 	},
 	tachyonParticles: {
 		unl: _ => hasAch("r136"),
-		title: "Tachyon particles"
+		title: "Tachyon Particles"
 	},
 	blackHole: {
 		unl: _ => mod.ngud && (player.blackhole.unl || quantumed),
-		title: "Black hole"
+		title: "Black Hole"
 	},
 	quarks: {
 		unl: _ => quantumed,
@@ -216,8 +216,6 @@ function drawTreeBranch(num1, num2) {
 }
 
 function drawStudyHeader(ctx, id, disp) {
-	if (!shiftDown) return
-
 	var start = el(id).getBoundingClientRect();
 	var x1 = start.left + (start.width / 2) + (document.documentElement.scrollLeft || document.body.scrollLeft);
 	var y1 = start.top + (start.height / 2) + (document.documentElement.scrollTop || document.body.scrollTop);
@@ -323,23 +321,21 @@ function drawStudyTree() {
 	drawTreeBranch("dilstudy4", "dilstudy5")
 	if (mod.ngpp) drawTreeBranch("dilstudy5", "dilstudy6")
 	if (mod.ngp3) drawTreeBranch("dilstudy6", "masteryportal")
-	if (shiftDown) {
-		for (i=0; i<all.length; i++) {
-			let id = all[i]
-			let disp = id
-			let type = el(all[i]).className.split(" ")[1]
-			if (type !== undefined) {
-				if (all[i] == 222 || all[i] == 223 || all[i] == 226 || all[i] == 227 || all[i] == 232 || all[i] == 234) type = "dark"
-				else if (all[i] == 221 || all[i] == 224 || all[i] == 225 || all[i] == 228 || all[i] == 231 || all[i] == 233) type = "light"
-				else if (type.includes("normaldimstudy")) type = "normal dims"
-				else if (type.includes("infdimstudy")) type = "infinity dims"
-				else if (type.includes("timedimstudy")) type = "time dims"
-				else if (type.includes("activestudy")) type = "active"
-				else if (type.includes("passivestudy")) type = "passive"
-				else if (type.includes("idlestudy")) type = "idle"
-				disp += " " + type
-			}
-			drawStudyHeader(ctx, id, disp)
+	for (i=0; i<all.length; i++) {
+		let id = all[i]
+		let disp = id
+		let type = el(all[i]).className.split(" ")[1]
+		if (type !== undefined) {
+			if (all[i] == 222 || all[i] == 223 || all[i] == 226 || all[i] == 227 || all[i] == 232 || all[i] == 234) type = "dark"
+			else if (all[i] == 221 || all[i] == 224 || all[i] == 225 || all[i] == 228 || all[i] == 231 || all[i] == 233) type = "light"
+			else if (type.includes("normaldimstudy")) type = "Antimatter Dims"
+			else if (type.includes("infdimstudy")) type = "Infinity Dims"
+			else if (type.includes("timedimstudy")) type = "Time Dims"
+			else if (type.includes("activestudy")) type = "Active"
+			else if (type.includes("passivestudy")) type = "Passive"
+			else if (type.includes("idlestudy")) type = "Idle"
+			disp += " " + type
 		}
+		drawStudyHeader(ctx, id, disp)
 	}
 }

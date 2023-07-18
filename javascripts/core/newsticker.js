@@ -573,7 +573,7 @@ function scrollNextMessage() {
 		//automatically start the next message scrolling after this one finishes
 		//you could add more time to this timeout if you wanted to have some time between messages
 		scrollTimeouts.push(setTimeout(function() {
-			if (newsArray[nextMsgIndex][2] == "am104") {
+			if (newsArray[nextMsgIndex][2] == "am104") { // I'm done writing news for today.
 				tmp.blankedOut=true
 				setTimeout(scrollNextMessage, 60e3)
 			} else scrollNextMessage()

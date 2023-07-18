@@ -719,8 +719,8 @@ function hasGSacUpg(x) {
 
 function updateNGM2RewardDisplay(){
 	el("postcngmm_1reward").innerHTML = "Reward: Infinity upgrades based on time " + (inNGM(4) ? "" : "or Infinities ") + "are applied post-dilation, and make the GP formula better based on galaxies."
-	el("postcngm3_1description").innerHTML = "Multiplier per ten Dimensions is 1x, Dimension Boosts have no effect," + (inNGM(4) ? " have a much lower time dimension cost limit," : "") + " and Tickspeed Boost effect softcap starts immediately."
-	el("postcngm3_1reward").innerHTML = "Reward: Tickspeed boost effect softcap is softer" + (inNGM(4) ? ", remote galaxy scaling starts .5 later and triple GP per IC completion" : "") + "."
+	el("postcngm3_1description").innerHTML = "Multiplier per ten Dimensions is 1x, Dimension Boosts have no effect," + (inNGM(4) ? " have a much lower Time Dimension cost limit," : "") + " and Tickspeed Boost effect softcap starts immediately."
+	el("postcngm3_1reward").innerHTML = "Reward: Tickspeed boost effect softcap is softer" + (inNGM(4) ? ", remote galaxy scaling starts 0.5 galaxies later and triple GP per IC completion" : "") + "."
 }
 
 function displayGalSacStats(){
@@ -773,8 +773,8 @@ function passiveGPGen(diff){
 function doGPUpgCrunchUpdating(g11MultShown){
 	var showg11Mult = player.infinitied > 0 || player.eternities !== 0 || quantumed
 	if (inNGM(2) && (showg11Mult != g11MultShown)) {
-		el("galaxy11").innerHTML = "Normal" + (inNGM(4) ? " and Time D" : " d")+"imensions are " + (showg11Mult ? "cheaper based on your infinitied stat.<br>Currently: <span id='galspan11'></span>x":"99% cheaper.")+"<br>Cost: 1 GP"
-		el("galaxy15").innerHTML = "Normal and Time Dimensions produce " + (showg11Mult ? "faster based on your infinitied stat.<br>Currently: <span id='galspan15'></span>x":"100x faster")+".<br>Cost: 1 GP"
+		el("galaxy11").innerHTML = "Antimatter" + (inNGM(4) ? " and Time D" : " D")+"imensions are " + (showg11Mult ? "cheaper based on your Infinities.<br>Currently: <span id='galspan11'></span>x":"99% cheaper.")+"<br>Cost: 1 GP"
+		el("galaxy15").innerHTML = "Antimatter and Time Dimensions produce " + (showg11Mult ? "faster based on your Infinities.<br>Currently: <span id='galspan15'></span>x":"100x faster")+".<br>Cost: 1 GP"
 	}
 }
 

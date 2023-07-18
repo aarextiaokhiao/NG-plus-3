@@ -235,7 +235,7 @@ function getECReward(x) {
 
 function startEternityChallenge(n) {
 	if (player.currentEternityChall == "eterc"+n || parseInt(n) != player.eternityChallUnlocked) return
-	if (player.options.challConf) if (!confirm("You will start over with just your time studies, eternity upgrades and achievements. You need to reach a set IP goal with special conditions.")) return
+	if (player.options.challConf) if (!confirm("You will start over with just your Time Studies, Eternity upgrades and achievements. You need to reach a set IP goal with special conditions to beat the Eternity Challenge.")) return
 	if (ghostified && name == "eterc10") ghSave.under = false
 
 	//Eternities (to add)

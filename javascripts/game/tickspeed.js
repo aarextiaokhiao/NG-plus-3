@@ -5,6 +5,7 @@ function getTickSpeedMultiplier() {
 }
 
 function getGalaxyTickSpeedMultiplier() {
+	let galPow = getGalaxyPower() * tmp.gal.str
 	if (inQC(2)) return 0.89
 
 	let gal = tmp.gal.init
@@ -39,7 +40,6 @@ function getGalaxyTickSpeedMultiplier() {
 	}
 
 	//Exponential
-	let galPow = getGalaxyPower() * tmp.gal.str
 	if (inNC(6, 1) || player.currentChallenge == "postc1") ret = 0.83
 
 	var log = Math.log10(0.965) * (galPow - linearGalaxies) + Math.log10(ret)

@@ -419,7 +419,7 @@ function updatePCTable() {
 				el(divid).textContent = "BR"
 				el(divid).className = "brCompleted"
 				el(divid).removeAttribute('ach-tooltip')
-				el(divid).setAttribute('ach-tooltip', 'Fastest time from start of Ghostify: ' + timeDisplayShort(ghSave.best))
+				el(divid).setAttribute('ach-tooltip', 'Fastest time from start of Fundament: ' + timeDisplayShort(ghSave.best))
 			} else {
 				el(divid).textContent = ""
 				el(divid).className = ""
