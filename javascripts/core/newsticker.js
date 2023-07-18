@@ -256,7 +256,7 @@ newsArray = [//always true
 ["A brave man said 'When will gamers reach the singularity of this game?' But the game said 'There is insufficient data for the answer'.", "mod.ngp3", "am45"],
 ["If you want to time travel, you need to learn how to pass time first. To do that, you need to fundament too.", "mod.ngp3", "am46"],
 ["If you are a ghost, try to click me!", "mod.ngp3", "am47"],
-["Soon(TM)", "(mod.ngp3 ? brSave.bestAntimatter.gte(pow10(155887875)) : false)", "am48"],
+["Soon(TM)", "(mod.ngp3 ? brSave.bestThisRun.gte(pow10(155887875)) : false)", "am48"], // this is highly outdated isn't it
 ["Reality actually contains everything (including celestials).", "mod.ngp3", "am49"],
 ["New prestige layer coming soon, Police-ize! When you prestige, you unlock officer dimensions. They behave like all other dimensions except they produce anti-anti-antimatter. This anti-anti-antimatter can be used to purchase more officer dimensions. The anti-anti-antimatter also makes your galaxies feel more safer, providing a boost in galaxy efficiency, based on your highest reached AAAM.", "mod.ngp3", "am50"],
 ['NG+3 is ending soon...', "ghostified", "am51"],
@@ -278,7 +278,7 @@ newsArray = [//always true
 ["BREAKING NEWS: In Post-NG+5, there are over 69 rows of achievements", "mod.ngp3", "am67"],
 ["I was making 'Big Rip' the first descension layer, but the community voted to allow us to get more antimatter. If Big Rip was a descension layer, then there would be no new upgrades that boost outside of Big Rips.", "player.totalmoney.gte(pow10(32e14))", "am68"],
 ["How much replicanti would a replicanti replicate if a replicanti could replicate replicanti?", "player.replicanti.unl", "am69"],
-["Nice try. Ninth dimension aren't real.", "(mod.ngp3 ? eds[8].perm : false)", "am70"],
+["Nice try. Ninth dimension aren't real.", "(mod.ngp3 ? EDsave[8].perm : false)", "am70"],
 ["The year is 2120. Aarex is somehow still alive. However, the next update isn't out. Aarex is supposed to be working on the 8th prestige layer, but has invented approximately 72423985051 other mods and games, so he can't. Updates only come out approximately ever 5 years. (And you thought the 5 hours meme was funny.)", "mod.ngp3", "am71"],
 ["Breaking News: Aarex has announced NG-9. It includes you starting with the ability to purchase IDs, and everything starts 1e308x slower! Estimated time to complete: 10,000 years.", "inNGM(3)", "am72"],
 ["There are a lot of news tickers, how did you find this one?", true, "am73"],
@@ -346,8 +346,8 @@ newsArray = [//always true
 ["GET A FREE PASS TO A GHOST TRANSFORMATION MACHINE NOW! IT IS TOTALLY WORTH IT!", 'ghostified', "am138"],
 ['I told you "don\'t click that news" or else you will get a useless achievement.', "hasAch('ng3ps12')", "am139"],
 ["Want to decay a quark multiple times? Be a Bosonic Lab scientist!", "ghostified", "am140"],
-['"Anti-preons destroyed our rewards. We should take revenge and steal their rewards back." ~ Worker duplicant #247,273,145.', 'ghostified && hasBU(24)', "am141"],
-["If Preons and Anti-Preons exist, then why Anti-Decay doesn't exist?", 'ghostified && hasBU(24)', "am143"],
+['"Anti-preons destroyed our rewards. We should take revenge and steal their rewards back." ~ Worker duplicant #247,273,145.', 'ghostified', "am141"],
+["If Preons and Anti-Preons exist, then why Anti-Decay doesn't exist?", 'ghostified', "am143"],
 ['Wait a second. I think I\'ve realized something. The main writer never says what broadcasting channel we\'re on. I was always curious what channel our news show is on, so I went into a top secret room the main writer never tells us to go in. And what I found...I found what channel we broadcasted on. It is "999". But channel 999 doesn\'t exist! And I also found some other things...at the bottom-right of the page, it says "Sponsored by Hevipelle". Who is Hevipelle? I\'ve never heard anyone named Hevipelle in the world. Does this mean...does this mean that Hevipelle is a nickname for someone? A...oh no. There\'s more text. A sentence says...it says..."Because the physics of the game "Antimatter Dimensions" does not allow for visuals, all thoughts, feelings, and actions made by any being are put into short news tickers. OH MY GOD I\'M IN A VIDEOGAME OH GOD THIS IS A NEWS TICKER F\*\*\* THIS DEVELOP-sifdweyfwytrwqe8723648765237869iyusdqwe-0))$#(&)QBTR&_(B)&30-b5q&)rfb)+B0R-98w#$)9b)({bew)#(5R[q)(t()qet){(q#*bT8bb &){rb&rqw#b %&r7#w&R&{07&&b#w$&b )r ({e[-(b reafbgu ({brdiuufertuyreuyyuyuefuyuyfiYUiuyEYUFiuyGUY087378578052}}}}}}},,,', true, "am144"],
 ["Hi, Billy Mays here for the Antimatter Dimensions game, the new easier way to waste time!", true, "am145"],
 ["When does the 0th dimension come out", true, "am146"],
@@ -472,12 +472,12 @@ newsArray = [//always true
 ['"Get me out of my head... I can\'t control myself..." ~ Kids after seeing matter apocalypses', true, "am260"],
 ['"Spacetime generators? Eh, more like Dimensions!"', true, "am261"],
 ["For no reason, duplicants and ghosts have been censored in this news ticker.", "ghostified", "am262"],
-["Duplicants and ghosts reported that Aarex went missing from Bosonic Lab! He is planning to destroy our places!", "mod.ngp3 && ghSave?.wzb.unl", "am263"],
+["Duplicants and ghosts reported that Aarex went missing from Bosonic Lab! He is planning to destroy our places!", "mod.ngp3 && blSave.unl", "am263"],
 ["Florida man reports that duplicants and ghosts were erdiciated by Aarex!", "mod.ngp3", "am264"],
 ["Strings are for smart nerds.", "ghostified", "am265"],
 ["Sorry, but we actually made of strings. That's what everything does.", "ghostified", "am266"],
 ["Strings can't fold like that! It actually become complex shapes!", "ghostified", "am267"],
-["There was a modder legend who added a missing feature between Neutrinos and Photons to virtually jump over.", "PHOTON.unl()", "am268"],
+["There was a modder legend who added a missing feature between Neutrinos and Photons to virtually jump over.", "PHOTON.unlocked()", "am268"],
 ["[placeholder]", false, "am269"],
 ["[placeholder]", false, "am270"],
 ["Absolute zero. That's how many particles didn't contain.", "ghostified", "am271"],
@@ -529,6 +529,7 @@ function scrollNextMessage() {
 	try {
 		do {nextMsgIndex = Math.floor(Math.random() * newsArray.length)} while (!eval(newsArray[nextMsgIndex][1]) || (newsArray[nextMsgIndex][2].indexOf("am") > -1 && !hasAch("r22")))
 	} catch(e) {
+		console.log("Find news id " + newsArray[nextMsgIndex][2])
 		console.log("Newsarray doesn't work at idx " + nextMsgIndex)
 	}
 	scrollTimeouts.forEach(function(v) {clearTimeout(v);});

@@ -413,7 +413,6 @@ function updatePCTable() {
 				var achTooltip = 'Fastest time: ' + (quSave.pairedChallenges.fastest[pcid] ? timeDisplayShort(quSave.pairedChallenges.fastest[pcid]) : "N/A")
 				el(divid).setAttribute('ach-tooltip', achTooltip)
 
-				console.log(divid, + " " + pcid)
 				var clear38 = (divid == "pc83" || pcid == 38)
 				if (clear38) giveAchievement("Hardly marked")
 			} else if (pcid == 68 && ghostified) {
