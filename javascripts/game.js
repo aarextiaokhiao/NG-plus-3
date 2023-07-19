@@ -2531,7 +2531,7 @@ function dimBoostABTick(){
 	if (player.autobuyers[9].isOn && dimBoolean()) {
 		if (player.resets < 4) dimBoost(1)
 		else if (getEternitied() < 10 && !player.autobuyers[9].bulkBought) dimBoost(player.autobuyers[9].bulk)
-		else if ((Math.round(timer * 100))%(Math.round(player.autobuyers[9].bulk * 100)) == 0 && getAmount(8) <= getShiftRequirement(0).amount) maxBuyDimBoosts()
+		else if ((Math.round(timer * 100))%(Math.round(player.autobuyers[9].bulk * 100)) == 0 && getAmount(8) >= getShiftRequirement(0).amount) maxBuyDimBoosts()
 		player.autobuyers[9].ticks = 0
 	}
 	player.autobuyers[9].ticks += 1;
