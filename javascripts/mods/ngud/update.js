@@ -244,7 +244,7 @@ function hasExdilation() {
 }
 
 function getExdilationReq() {
-	if (mod.udsp) return {ep: "1e45000", dt: 1e27}
+	if (mod.udsp) return {ep: "1e4500", dt: 1e27}
 	return {ep: "1e10000", dt: 1e30}
 }
 
