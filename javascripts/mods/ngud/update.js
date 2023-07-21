@@ -244,7 +244,7 @@ function hasExdilation() {
 }
 
 function getExdilationReq() {
-	if (mod.udsp) return {ep: "1e45000", dt: 1e27}
+	if (mod.udsp) return {ep: "1e4500", dt: 1e27}
 	return {ep: "1e10000", dt: 1e30}
 }
 
@@ -268,7 +268,7 @@ function updateExdilationButton() {
 	if (!has) return
 	if (canReverseDilation()) {
 		el("reversedilation").className = "dilationbtn"
-		el("reversedilation").innerHTML = "Reverse Dilation." + (exdilated() ? "<br>Gain "+shortenDimensions(getExDilationGain()) + " ex-dilation" : "")
+		el("reversedilation").innerHTML = "Reverse Dilation." + (exdilated() ? "<br>Gain "+shortenMoney(getExDilationGain()) + " ex-dilation" : "")
 	} else {
 		let req = getExdilationReq()
 		el("reversedilation").className = "eternityupbtnlocked"
@@ -282,7 +282,7 @@ function updateExdilationStats() {
 	el("xdrow").style.display = unl ? "" : "none"
 	if (!unl) return
 
-	el("exDilationAmount").textContent = shortenDimensions(player.exdilation.unspent)
+	el("exDilationAmount").textContent = shortenMoney(player.exdilation.unspent)
 	el("exDilationBenefit").textContent = (mod.udsp ? exDilationBenefit() * 100 : exDilationBenefit() / 0.0075).toFixed(1)
 	for (var i = 1; i <= 4; i++) {
 		let unl = isDilUpgUnlocked("r" + i)
@@ -290,7 +290,7 @@ function updateExdilationStats() {
 			el("xd" + i).style.height = mod.udsp ? "60px" : "50px"
 			el("xd" + i).className = player.exdilation.unspent.eq(0) ? "dilationupgrebuyablelocked" : "dilationupgrebuyable";
 
-			if (mod.udsp) el("xd" + i + "span").textContent = shortenCosts(getRebuyableDilUpgScaleStart(i)) + ' → ' + shortenCosts(getRebuyableDilUpgScaleStart(i, player.exdilation.unspent)) + ' scaling start'
+			if (mod.udsp) el("xd" + i + "span").textContent = shortenMoney(getRebuyableDilUpgScaleStart(i)) + ' → ' + shortenMoney(getRebuyableDilUpgScaleStart(i, player.exdilation.unspent)) + ' scaling start'
 			else el("xd" + i + "span").textContent = exDilationUpgradeStrength(i).toFixed(2) + 'x → ' + exDilationUpgradeStrength(i,player.exdilation.unspent).toFixed(2) + 'x'
 		}
 		el("xd"+i).parentElement.style.display = unl ? "" : "none"
