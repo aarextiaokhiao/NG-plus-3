@@ -496,58 +496,6 @@ function dov7tov10(){
 	}
 }
 
-function doNGM1Versions(){
-	if (aarMod.newGameMinusVersion === undefined && !mod.rs) {
-		if (checkNGM() > 0) {
-			aarMod.newGameMinusVersion = (aarMod.newGameMinusUpdate !== undefined ? aarMod.newGameMinusUpdate : player.newGameMinusUpdate === undefined ? checkNGM() : 1.1)
-			delete aarMod.newGameMinusUpdate
-			delete player.newGameMinusUpdate
-		}
-	}
-	if (aarMod.newGameMinusVersion < 1.1) {
-		player.totalTimePlayed+=1728000
-		player.timestudy.theorem+=1
-		player.timestudy.ipcost=Decimal.div(player.timestudy.ipcost,2)
-		if (player.eternityChalls.eterc1==undefined) player.eternityChalls.eterc1=-6
-		else player.eternityChalls.eterc1-=6
-		if (player.eternityChalls.eterc11==undefined) player.eternityChalls.eterc11=1
-		else if (player.eternityChalls.eterc11<5) player.eternityChalls.eterc11+=1
-		aarMod.newGameMinusVersion = 1.1
-	}
-	if (aarMod.newGameMinusVersion < 2) {
-		if (player.eternities == -20) {
-			player.infinitied += 991
-			player.offlineProdCost = Decimal.mul(player.offlineProdCost, 5e4)
-		}
-		player.infinitiedBank -= 996
-		player.spreadingCancer -= 9000
-		player.timeDimension1.power = player.timeDimension1.power.mul(2)
-		player.timestudy.theorem--
-		player.timestudy.ipcost = player.timestudy.ipcost.div(5e11)
-		player.dilation.nextThreshold.e = 6
-		player.dilation.totalTachyonParticles = E(500)
-		player.dilation.rebuyables[2] = 1
-		player.timeDimension5.power = pow10(-3)
-		player.timeDimension6.power = E(0.0004)
-		player.timeDimension7.power = pow10(-4)
-		player.timeDimension8.power = E(0.00004)
-	}
-	if (aarMod.newGameMinusVersion < 2.1) {
-		player.timeDimension1.power = player.timeDimension1.power.mul(8)
-		player.timeDimension4.power = player.timeDimension4.power.mul(4)
-		player.timestudy.theorem--
-		player.dilation.totalTachyonParticles = player.dilation.totalTachyonParticles.add(1500)
-	}
-	if (aarMod.newGameMinusVersion < 2.2) {
-		player.timestudy.theorem += 3;
-		const pow_div = [0,160,5/3,1,3,100,80,100/3,20];
-		for (i=1;i<=8;i++) player["timeDimension"+i].power = player["timeDimension"+i].power.div(pow_div[i]);
-		if (player.eternityChalls.eterc11 == 1) delete player.eternityChalls.eterc11
-		else player.eternityChalls.eterc11--
-		$.notify('Your NG- save has been updated due to few balancing issues.', 'info')
-	}
-}
-
 function doInitNGp2NOT3Stuff(){
 	if (aarMod.newGamePlusPlusVersion === undefined && !player.masterystudies) { 
 		if (player.dilation.rebuyables[4] !== undefined) {
@@ -1292,7 +1240,6 @@ function updateVersionsONLOAD(){
 	el('info').style.display = mod.ngp3 ? "" : "none"
 
 	dov7tov10()
-	doNGM1Versions()
 	if (aarMod.newGamePlusVersion === undefined) if (player.eternities < 20 && ECComps("eterc1") > 0) aarMod.newGamePlusVersion = 1
 	doInitNGp2NOT3Stuff()
 	doNGP2v2tov2302()

@@ -232,10 +232,10 @@ function breakInfinityUpgradeDisplay(){
 	if (player.offlineProd == 50) el("offlineProd").innerHTML = "Generate " + player.offlineProd + "% of your best IP/min from the last 10 Infinities, works offline<br>Currently: " + shortenMoney(bestRunIppm.mul(player.offlineProd / 100)) + " IP/min"
 
 	if (inNGM(2)) breakNGm2UpgradeColumnDisplay()
-	if (inNGM(2) && (player.infinityDimension3.amount.gt(0) || player.eternities > (aarMod.newGameMinusVersion? -20 : 0) || quantumed)) {
+	if (inNGM(2) && (player.infinityDimension3.amount.gt(0) || player.eternities > 0 || quantumed)) {
 		breakNGm2UpgradeRow5Display()
 	} else el("postinfir5").style.display = "none"
-	if (inNGM(2) && (player.infinityDimension4.amount.gt(0) || player.eternities > (aarMod.newGameMinusVersion ? -20 : 0) || quantumed)) {
+	if (inNGM(2) && (player.infinityDimension4.amount.gt(0) || player.eternities > 0 || quantumed)) {
 		breakNGm2UpgradeRow6Display()
 	} else el("postinfir6").style.display = "none"
 }

@@ -33,7 +33,6 @@ var modFullNames = {
 	ngpp: "NG++",
 	ngp: "NG+",
 	ngmm: "NG--",
-	ngm: "NG-",
 	ngud: "NGUd",
 	nguep: "NGUd↑'",
 	ngmu: "NG*",
@@ -117,7 +116,6 @@ let mod = {}
 function checkMods(save = player) {
 	let aMod = save.aarexModifications || {}
 	return {
-		ngm: aMod.newGameMinusVersion != undefined,
 		ngp: aMod.ngp4V != undefined ? 2 : aMod.newGamePlusVersion != undefined ? 1 : 0,
 		ngep: aMod.newGameExpVersion != undefined,
 		ngpp: save.masterystudies != undefined ? 2 : save.meta != undefined ? 1 : 0,

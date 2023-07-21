@@ -143,11 +143,11 @@ function changeSaveDesc(i, exit) {
 			else if (!data.dilation.upgrades.includes(10)) data2="Eternity Points: "+shortenDimensions(data.eternityPoints)+", "+data2
 			msg+=data2
 		} else {
-			var totalChallengeCompletions=(data.aarexModifications.newGameMinusVersion?-6:0)
+			var totalChallengeCompletions=0
 			for (ec=1;ec<13;ec++) totalChallengeCompletions+=(data.eternityChalls['eterc'+ec]?data.eternityChalls['eterc'+ec]:0)
 			if (totalChallengeCompletions>0) {
 				msg+="Time Theorems: "+getFullExpansion(getTotalTT(data))+", Challenge completions: "+totalChallengeCompletions
-			} else if (data.eternities>(data.aarexModifications.newGameMinusVersion?-20:0)) msg+="Eternity Points: "+shortenDimensions(E(data.eternityPoints))+", Eternities: "+data.eternities.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")+", Time Theorems: "+getTotalTT(data)
+			} else if (data.eternities>0) msg+="Eternity Points: "+shortenDimensions(E(data.eternityPoints))+", Eternities: "+data.eternities.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")+", Time Theorems: "+getTotalTT(data)
 			else if (data.achievements.includes("r51")) {
 				msg+="Antimatter: "+shortenMoney(E(data.money))+", Infinity Points: "+shortenDimensions(E(data.infinityPoints))
 				if (data.postChallUnlocked>0&&!data.replicanti.unlocked) {
@@ -155,7 +155,7 @@ function changeSaveDesc(i, exit) {
 					for (ic=1;ic<13;ic++) totalChallengeCompletions+=data.challenges.includes("postc"+ic)?1:0
 					msg+=", Challenge completions: "+totalChallengeCompletions
 				}
-			} else if (data.infinitied>(data.aarexModifications.newGameMinusVersion?990:data.aarexModifications.newGamePlusVersion?1:0)) msg+="Infinity Points: "+shortenDimensions(E(data.infinityPoints))+", Infinities: "+data.infinitied.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")+", Challenge completions: "+data.challenges.length
+			} else if (data.infinitied>0) msg+="Infinity Points: "+shortenDimensions(E(data.infinityPoints))+", Infinities: "+data.infinitied.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")+", Challenge completions: "+data.challenges.length
 			else if (data?.galacticSacrifice?.times) msg+="Antimatter: "+shortenMoney(E(data.money))+", Galaxy Points: "+shortenDimensions(E(data.galacticSacrifice.galaxyPoints))
 			else msg+="Antimatter: "+shortenMoney(E(data.money))+", Dimension Shifts/Boosts: "+data.resets+((data.tickspeedBoosts != undefined ? (data.resets > 0 || data.tickspeedBoosts > 0 || data.galaxies > 0 || data.infinitied > 0 || data.eternities != 0 || isSaveQuantumed) : false)?", Tickspeed Boosts: "+getFullExpansion(data.tickspeedBoosts):"")+", Galaxies: "+data.galaxies
 		}
@@ -485,7 +485,7 @@ function updateNewPlayer(mode, preset) {
 		secondAmount: E(0),
 		thirdAmount: E(0),
 		fourthAmount: E(0),
-		firstBought: mod.ngm ? 5 : 0,
+		firstBought: 0,
 		secondBought: 0,
 		thirdBought: 0,
 		fourthBought: 0,
@@ -503,13 +503,13 @@ function updateNewPlayer(mode, preset) {
 		challenges: [],
 		currentChallenge: "",
 		infinityPoints: E(0),
-		infinitied: mod.ngm ? 990 : mod.ngp ? 1 : 0,
-		infinitiedBank: mod.ngm ? -1000 : 0,
+		infinitied: mod.ngp ? 1 : 0,
+		infinitiedBank: 0,
 		totalTimePlayed: 0,
 		bestInfinityTime: 9999999999,
 		thisInfinityTime: 0,
 		resets: 0,
-		galaxies: mod.ngm ? -1 : 0,
+		galaxies: 0,
 		totalmoney: E(0),
 		achPow: 1,
 		newsArray: [],
@@ -522,30 +522,30 @@ function updateNewPlayer(mode, preset) {
 		chall3Pow: E(0.01),
 		matter: E(0),
 		chall11Pow: E(1),
-		partInfinityPoint: mod.ngm ? -1e300 : 0,
-		partInfinitied: mod.ngm ? -1e8 : 0,
+		partInfinityPoint: 0,
+		partInfinitied: 0,
 		break: false,
 		challengeTimes: [600*60*24*31, 600*60*24*31, 600*60*24*31, 600*60*24*31, 600*60*24*31, 600*60*24*31, 600*60*24*31, 600*60*24*31, 600*60*24*31, 600*60*24*31, 600*60*24*31],
 		infchallengeTimes: [600*60*24*31, 600*60*24*31, 600*60*24*31, 600*60*24*31, 600*60*24*31, 600*60*24*31, 600*60*24*31, 600*60*24*31],
 		lastTenRuns: [[600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0]],
 		lastTenEternities: [[600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0], [600*60*24*31, 0]],
-		infMult: E(mod.ngm ? 0.5 : 1),
-		infMultCost: E(mod.ngm ? 30 : 10),
+		infMult: E(1),
+		infMultCost: E(10),
 		tickSpeedMultDecrease: 10,
 		tickSpeedMultDecreaseCost: 3e6,
-		dimensionMultDecrease: mod.ngm ? 11 : 10,
+		dimensionMultDecrease: 10,
 		dimensionMultDecreaseCost: 1e8,
 		overXGalaxies: 10,
 		version: 10,
 		infDimensionsUnlocked: [],
 		infinityPower: E(1),
-		spreadingCancer: mod.ngm ? -9990 : 0,
+		spreadingCancer: 0,
 		postChallUnlocked: 0,
 		postC4Tier: 0,
 		postC3Reward: E(1),
 		postC8Mult: E(1),
 		eternityPoints: E(0),
-		eternities: mod.ngm ? -20 : 0,
+		eternities: 0,
 		thisEternity: 0,
 		bestEternity: 9999999999,
 		eternityUpgrades: [],
@@ -576,35 +576,35 @@ function updateNewPlayer(mode, preset) {
 			cost: E(1e20),
 			amount: E(0),
 			bought: 0,
-			power: E(mod.ngm ? 0.0000125 : 1),
+			power: E(1),
 			baseAmount: 0
 		},
 		infinityDimension5 : {
 			cost: E(1e140),
 			amount: E(0),
 			bought: 0,
-			power: E(mod.ngm ? 0.01 : 1),
+			power: E(1),
 			baseAmount: 0
 		},
 		infinityDimension6 : {
 			cost: E(1e200),
 			amount: E(0),
 			bought: 0,
-			power: E(mod.ngm ? 0.015 : 1),
+			power: E(1),
 			baseAmount: 0
 		},
 		infinityDimension7 : {
 			cost: E(1e250),
 			amount: E(0),
 			bought: 0,
-			power: E(mod.ngm ? 0.01 : 1),
+			power: E(1),
 			baseAmount: 0
 		},
 		infinityDimension8 : {
 			cost: E(1e280),
 			amount: E(0),
 			bought: 0,
-			power: E(mod.ngm ? 0.01 : 1),
+			power: E(1),
 			baseAmount: 0
 		},
 		infDimBuyers: [false, false, false, false, false, false, false, false],
@@ -614,53 +614,53 @@ function updateNewPlayer(mode, preset) {
 		timeDimension1: {
 			cost: E(1),
 			amount: E(0),
-			power: E(mod.ngm ? 0.01 : 1),
+			power: E(1),
 			bought: 0
 		},
 		timeDimension2: {
 			cost: E(5),
 			amount: E(0),
-			power: E(mod.ngm ? 0.03 : 1),
+			power: E(1),
 			bought: 0
 		},
 		timeDimension3: {
 			cost: E(100),
 			amount: E(0),
-			power: E(mod.ngm ? 0.025 : 1),
+			power: E(1),
 			bought: 0
 		},
 		timeDimension4: {
 			cost: E(1000),
 			amount: E(0),
-			power: E(mod.ngm ? 0.02 : 1),
+			power: E(1),
 			bought: 0
 		},
 		timeDimension5: {
 			cost: E("1e2350"),
 			amount: E(0),
-			power: E(mod.ngm ? 1e-5 : 1),
+			power: E(1),
 			bought: 0
 		},
 		timeDimension6: {
 			cost: E("1e2650"),
 			amount: E(0),
-			power: E(mod.ngm ? 5e-6 : 1),
+			power: E(1),
 			bought: 0
 		},
 		timeDimension7: {
 			cost: E("1e3000"),
 			amount: E(0),
-			power: E(mod.ngm ? 3e-6 : 1),
+			power: E(1),
 			bought: 0
 		},
 		timeDimension8: {
 			cost: E("1e3350"),
 			amount: E(0),
-			power: E(mod.ngm ? 2e-6 : 1),
+			power: E(1),
 			bought: 0
 		},
 		offlineProd: 0,
-		offlineProdCost: mod.ngm ? 5e11 : 1e7,
+		offlineProdCost: 1e7,
 		challengeTarget: 0,
 		autoSacrifice: 1,
 		replicanti: {
@@ -668,7 +668,7 @@ function updateNewPlayer(mode, preset) {
 			unl: false,
 			chance: 0.01,
 			chanceCost: E(mod.ngmm?1e90:1e150),
-			interval: mod.ngm ? 5000 : 1000,
+			interval: 1000,
 			intervalCost: E(mod.ngmm?1e80:mod.rs?1e150:1e140),
 			gal: 0,
 			galaxies: 0,
@@ -676,13 +676,13 @@ function updateNewPlayer(mode, preset) {
 			auto: [false, false, false]
 		},
 		timestudy: {
-			theorem: mod.ngm ? -6 : 0,
+			theorem: 0,
 			amcost: E("1e20000"),
-			ipcost: E(mod.ngm ? 1e-13 : 1),
+			ipcost: E(1),
 			epcost: E(1),
 			studies: [],
 		},
-		eternityChalls: mod.ngm ? {eterc1:-6} : {},
+		eternityChalls: {},
 		eternityChallGoal: E(Number.MAX_VALUE),
 		currentEternityChall: "",
 		eternityChallUnlocked: 0,
@@ -705,13 +705,13 @@ function updateNewPlayer(mode, preset) {
 			active: false,
 			tachyonParticles: E(0),
 			dilatedTime: E(0),
-			totalTachyonParticles: E(mod.ngm ? 2000 :0),
+			totalTachyonParticles: E(0),
 			nextThreshold: E(1000),
 			freeGalaxies: 0,
 			upgrades: [],
 			rebuyables: {
 				1: 0,
-				2: mod.ngm ? 1 : 0,
+				2: 0,
 				3: 0,
 			}
 		},
@@ -746,7 +746,6 @@ function updateNewPlayer(mode, preset) {
 	}
 	aarMod = player.aarexModifications
 
-	if (mod.ngm) doNGMinusNewPlayer()
 	if (mod.ngpp) doNGPlusTwoNewPlayer()
 	if (mod.ngpp > 1) doNGPlusThreeNewPlayer()
 
@@ -774,12 +773,6 @@ function updateNewPlayer(mode, preset) {
 		aarMod.aau = 1
 		dev.giveAllAchievements(true)
 	}
-}
-
-function doNGMinusNewPlayer(){
-	player.achievements.push("r22")
-	player.achievements.push("r85")
-	aarMod.newGameMinusVersion = 2.2
 }
 
 function doNGPlusOneNewPlayer(){ // eventually change to have multiple versions/variations of NG+

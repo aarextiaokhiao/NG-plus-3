@@ -211,7 +211,7 @@ newsArray = [//always true
 ["How dare you actually get zero deaths on a first run?", 'hasAch("r43") && player.infinitied == 1 && player.eternities == 0', "s1"],
 ["Legend says the ninth dimension is supposed to be found here, but I don't see anything.", "player.money.e >= 41900 && !player.replicanti.unl && player.eternities == 0", "s2"],
 //Aarex's Modifications
-["A brave man tried NG- and NG-- modes at the same time, but he will be dead before he would complete this mode.", 'aarMod.newGameMinusVersion && player.galacticSacrifice', "am1"],
+["???", false, "am1"],
 ["You would be dead if you started writing down your antimatter amount", 'player.money.gt(pow10(3 * 86400 * 365.2425 * 79.3 / 10))', "am2"],
 ["If you just broke the game, the psychic helper wants you to reset the game.", 'isNaN(break_infinity_js ? player.money.logarithm : player.money)', "am3"],
 ["I wish I would create NG+++ while dan-simon is currently updating NG++ every day.", 'mod.ngpp', "am4"],
@@ -222,7 +222,7 @@ newsArray = [//always true
 ["In dan-simon's version, only this achievement was enough to break the game.", 'hasAch("ngpp7")', "am9"],
 ["Is there meta-infinity?", 'mod.ngpp && player.meta.bestAntimatter.gte(Number.MAX_VALUE)', "am10"],
 ["NG++-+- was confirmed.", 'mod.ngp3', "am11"],
-["You wanted a prestige layer so here you go.", 'inNGM(2) && player.eternities > (aarMod.newGameMinusVersion?-20:0)', "am12"],
+["You wanted a prestige layer so here you go.", 'inNGM(2) && player.eternities > 0', "am12"],
 ["You are challenging in a challenge in a challenge. Challenge-ception.", "player.currentChallenge != '' && player.currentEternityChall != '' && inAnyQC()", "am13"],
 ["New updates are coming in a day, not 5 hours. Sorry, jokers!", true, "am14"],
 ["Whale complained that matter and antimatter are balanced and the universe would not be existed.", true, "am15"],
