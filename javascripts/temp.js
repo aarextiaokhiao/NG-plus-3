@@ -109,7 +109,7 @@ var unspentBonus = 1
 var mult18 = E(1)
 var ec10bonus = E(1)
 
-function getAchievementMult(){
+function getAchievementMult() {
 	var ach = player.achievements.length
 	var gups = inNGM(2) ? player.galacticSacrifice.upgrades.length : 0
 	var minus = inNGM(2) ? 10 : 30

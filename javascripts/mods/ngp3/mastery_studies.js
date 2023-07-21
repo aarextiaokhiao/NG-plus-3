@@ -234,7 +234,7 @@ var masteryStudies = {
 		323: "Cancel dilation penalty for the Normal Dimension boost from replicanti.",
 		331: "Dimension Supersonic scaling starts 240,000 later, and the cost increase is reduced by 3.",
 		332: "You gain replicanti faster based on your normal galaxies.",
-		341: "Preons boost dilated time production at reduced rate.",
+		341: "Pilons boost dilated time production at reduced rate.",
 		342: "All Replicated Galaxies are stronger and use the same formula.",
 		343: "Tachyonic Galaxies are as strong as a normal Replicated Galaxy.",
 		344: "Pilons strengthen Replicated Galaxies.",

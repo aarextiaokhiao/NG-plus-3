@@ -364,7 +364,7 @@ let HOW_TO = [
 
 		title: "Decay",
 		layer: "quantum",
-		desc: `You can turn all your Red Quarks for Free Preons, which eventually decay in exchange of Preonic Spin. Preonic Spins can be spent on a massive set of upgrades.`
+		desc: `You can turn all your Colored Quarks for Free Preons, which eventually decay in exchange of Preonic Spin. Preonic Spins can be spent on a massive set of upgrades.`
 	}, {
 		mod: _ => ngp3,
 		req: _ => player.masterystudies.includes("d14"),

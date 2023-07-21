@@ -1037,7 +1037,7 @@ function doNGm2v11tov3(){
 	if (aarMod.newGameMinusMinusVersion < 1.91) {
 		for (tier=1;tier<9;tier++) {
 			let dim = player["infinityDimension"+tier]
-			dim.cost = E_pow(getIDCostMult(tier),dim.baseAmount/10).mul(infBaseCost[tier])
+			dim.cost = E_pow(getIDCostMult(tier),dim.baseAmount / 10).mul(infBaseCost[tier])
 		}
 	}
 	if (aarMod.newGameMinusMinusVersion < 2) {

@@ -473,30 +473,6 @@ function updateNewPlayer(mode, preset) {
 		money: E(mod.ngmm>2?200:mod.ngp>1?20:10),
 		tickSpeedCost: E(1000),
 		tickspeed: E(mod.ngp>1?500:1000),
-		firstCost: E(10),
-		secondCost: E(100),
-		thirdCost: E(10000),
-		fourthCost: E(1000000),
-		fifthCost: E(1e9),
-		sixthCost: E(1e13),
-		seventhCost: E(1e18),
-		eightCost: E(1e24),
-		firstAmount: E(0),
-		secondAmount: E(0),
-		thirdAmount: E(0),
-		fourthAmount: E(0),
-		firstBought: 0,
-		secondBought: 0,
-		thirdBought: 0,
-		fourthBought: 0,
-		fifthAmount: E(0),
-		sixthAmount: E(0),
-		seventhAmount: E(0),
-		eightAmount: E(0),
-		fifthBought: 0,
-		sixthBought: 0,
-		seventhBought: 0,
-		eightBought: 0,
 		sacrificed: E(0),
 		achievements: [],
 		infinityUpgrades: [],
@@ -745,6 +721,7 @@ function updateNewPlayer(mode, preset) {
 		}
 	}
 	aarMod = player.aarexModifications
+	resetDimensions()
 
 	if (mod.ngpp) doNGPlusTwoNewPlayer()
 	if (mod.ngpp > 1) doNGPlusThreeNewPlayer()

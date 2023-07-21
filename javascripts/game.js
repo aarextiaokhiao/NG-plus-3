@@ -660,19 +660,6 @@ el("newsbtn").onclick = function(force) {
 	if (!player.options.newsHidden) scrollNextMessage()
 }
 
-function resetDimensions() {
-	var costs = [10, 100, 1e4, 1e6, 1e9, 1e13, 1e18, 1e24]
-	var costMults = [1e3, 1e4, 1e5, 1e6, 1e8, 1e10, 1e12, 1e15]
-	if (inNC(10) || player.currentChallenge == "postc1") costs = [10, 100, 100, 500, 2500, 2e4, 2e5, 4e6]
-	if (inNC(10)) costMults = [1e3, 5e3, 1e4, 1.2e4, 1.8e4, 2.6e4, 3.2e4, 4.2e4]
-	for (var d=1;d<9;d++) {
-		var name=dimTiers[d]
-		player[name+"Amount"] = E(0)
-		player[name+"Bought"] = 0
-		player[name+"Cost"] = E(costs[d-1])
-	}
-}
-
 function getSacrificeBoost(){
 	return calcSacrificeBoost()
 }
@@ -1708,7 +1695,7 @@ function bigCrunchButtonUpdating(){
 	el("postInfinityButton").style.display = 'none'
 	if (tmp.ri) {
 		el("bigcrunch").style.display = 'inline-block';
-		if ((!inNC(0) && !player.options.retryChallenge) || (!player.break && player.bestInfinityTime < 600)) TAB_CORE.open("")
+		if ((!inNC(0) || !player.break) && player.bestInfinityTime > 600) TAB_CORE.open("")
 	} else if (player.break && player.currentChallenge == "") {
 		if (player.money.gte(Number.MAX_VALUE)) {
 			el("postInfinityButton").style.display = ""
