@@ -51,7 +51,7 @@ function buyAutobuyer(id, quick) {
 
 function toggleAutobuyerTarget(id) {
 	let data = getAutobuyerData(id)
-	data.target = data.target == id ? 10 + id : id
+	data.target = data.target == id ? 10 + (id == 9 ? 0 : id) : id
 	el("ab_" + autoBuyerKeys[id-1] + "_toggle").textContent = "Buys " + (data.target == id ? "singles" : id == 9 ? "max" : "until 10")
 }
 
