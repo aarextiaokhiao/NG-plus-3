@@ -49,8 +49,6 @@ function doBigCrunch(auto) {
 	checkChallengesOnCrunch()
 
 	//Others
-	if (player.replicanti.unl && !hasAch("r95")) player.replicanti.amount = E(1)
-	if (speedrunMilestonesReached < 28 && !hasAch("ng3p67")) player.replicanti.galaxies = (hasTimeStudy(33)) ? Math.floor(player.replicanti.galaxies / 2) : 0
 	doGPUpgCrunchUpdating(true)
 	doReset("inf")
 
