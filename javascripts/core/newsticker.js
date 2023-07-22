@@ -530,8 +530,8 @@ function scrollNextMessage() {
 	try {
 		do {nextMsgIndex = Math.floor(Math.random() * newsArray.length)} while (!eval(newsArray[nextMsgIndex][1]) || (newsArray[nextMsgIndex][2].indexOf("am") > -1 && !hasAch("r22")))
 	} catch(e) {
-		console.log("Find news id " + newsArray[nextMsgIndex][2])
 		console.log("Newsarray doesn't work at idx " + nextMsgIndex)
+		console.log("Find news id " + newsArray[nextMsgIndex][2])
 	}
 	scrollTimeouts.forEach(function(v) {clearTimeout(v);});
 	scrollTimeouts = [];

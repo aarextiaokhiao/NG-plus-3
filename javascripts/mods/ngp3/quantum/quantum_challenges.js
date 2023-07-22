@@ -83,7 +83,7 @@ const QC = QUANTUM_CHALLENGE = {
 	7: {
 		cost: 31300,
 		goal: pow10(6.254e10),
-		desc: "Dimensions and Tickspeed upgrades scale really fast. Per-10 multipliers and meta-antimatter effect do nothing.",
+		desc: "Dimensions and Tickspeed upgrades scale really fast. Per-10 multipliers and meta-antimatter effect is nullified.",
 
 		reward: "Free tickspeed upgrades scale slower.",
 		reward_eff(comps) {
@@ -227,6 +227,10 @@ function getQCIdCost(qcs) {
 }
 
 function selectQC(x) {
+	if (speedrunMilestonesReached < 16) {
+		$.notify("You must unlock the 5 minute Quantum speedrun milestone to start Quantum Challenges!", "error")
+		return
+	}
 	if (pcFocus) {
 		if (pcAssigned.includes(x)) return
 		pcChosen.push(x)
