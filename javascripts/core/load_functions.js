@@ -700,12 +700,10 @@ function doQuantumUpdates(){
 	}
 	if (aarMod.newGame3PlusVersion < 1.99799) player.respecOptions={time:player.respec,mastery:player.respec}
 	if (aarMod.newGame3PlusVersion < 1.998) {
-		var respecedMS=[]
-		for (id=0;id<player.masterystudies.length;id++) {
-			if (player.masterystudies[id]=="t322") respecedMS.push("t323")
-			else respecedMS.push(player.masterystudies[id])
-		}
-		player.masterystudies=respecedMS
+		var respecedMS = []
+		for (var id of player.masterystudies) respecedMS.push(id == "t322" ? "t323" : id)
+		player.masterystudies = respecedMS
+
 		quSave.autoOptions = {}
 		quSave.replicants = {
 			amount: 0,
@@ -816,9 +814,7 @@ function doQuantumUpdates(){
 	}
 }
 
-function doFundamentUpdates(){
-	let skip = 0
-
+function doFundamentUpdates() {
 	//v2.0: Fundament
 	if (aarMod.newGame3PlusVersion < 2) {
 		player.eternityBuyer.dilMode = "amount"
@@ -840,16 +836,14 @@ function doFundamentUpdates(){
 		brSave = quSave.bigRip
 		beSave = quSave.breakEternity
 		aarMod.ghostifyConf = true
-		skip++
 	}
 
 	//v2.1: Ghostly Photons
 	if (aarMod.newGame3PlusVersion < 2.1) skip++
 	if (aarMod.newGame3PlusVersion < 2.101) {
-		var newAchievements=[]
-		for (var a=0;a<player.achievements.length;a++) if (player.achievements[a]!="ng3p67") newAchievements.push(player.achievements[a])
-		player.achievements=newAchievements
-		skip++
+		var newAch = []
+		for (var a of player.achievements) if (a != "ng3p67") newAch.push(a)
+		player.achievements = newAch
 	}
 
 	//v2.2: Bosonic Lab
@@ -857,15 +851,7 @@ function doFundamentUpdates(){
 	if (aarMod.newGame3PlusVersion < 2.21) {
 		var oldBRUpg20Bought = brSave && brSave.upgrades.pop()
 		if (oldBRUpg20Bought != 20) brSave.upgrades.push(oldBRUpg20Bought)
-		skip++
 	}
-
-	//v2.3: Higgs
-	if (aarMod.newGame3PlusVersion < 2.3) skip++
-
-	//v2.31: Ghostify Respecced
-	if (aarMod.newGame3PlusVersion < 2.31) skip++ //v2.31 reworks them
-	if (skip > 1) giveAchievement("Waiting, I see...")
 }
 
 function doPostNGP3Versions() {
@@ -1460,9 +1446,8 @@ function setTSDisplay(){
 }
 
 function updateNGp3DisplayStuff(){
-	for (var i=0;i<masteryStudies.timeStudies.length;i++) {
-		var t=masteryStudies.timeStudies[i]
-		var d=masteryStudies.timeStudyDescs[t]
+	for (var t of MTS.timeStudies) {
+		var d=MTS.timeStudyDescs[t]
 		el("ts"+t+"Desc").innerHTML=(typeof(d)=="function"?d():d)||"Unknown desc."
 	}
 	updateMasteryStudyCosts()

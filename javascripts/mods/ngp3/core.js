@@ -49,6 +49,7 @@ function doNGP3Updates() {
 			ghSave.photons.offset = [0,0,0,0,0,0,0]
 		}
 	}
+	if (aarMod.ngp3_build < 20230721.01 && hasMasteryStudy("d8") && quSave.best > 3e3) alert("Quantum Challenges are locked until you get a 5-minute Speedrun Milestone!")
 	aarMod.newGame3PlusVersion = ngp3_ver
 	aarMod.ngp3_build = ngp3_build
 }
@@ -396,7 +397,7 @@ function ngP3AchieveCheck() {
 	if (todSave.r.quarks.gte(pow10(1e12)) && !brSave.times) giveAchievement("Weak Decay")	
 	if (getRadioactiveDecays() >= 1) giveAchievement("Radioactive Decaying to the max!")
 	if (ghSave.best <= 30) giveAchievement("Running through Big Rips")
-	if (masteryStudies.bought >= 48) giveAchievement("The Theory of Ultimate Studies")
+	if (MTS.bought >= 48) giveAchievement("The Theory of Ultimate Studies")
 	if (ghSave.photons.lighten) giveAchievement("Here comes the light")
 
 	if (LAB.unlocked()) giveAchievement("Even Ghostlier than before")
@@ -486,7 +487,7 @@ TABS = Object.assign(TABS, {
 	aq: { name: "Anti-Quarks", update: _ => updateQuarksTab() },
 	gl: { name: "Gluons", update: _ => GLUON.update() },
 	pos: { name: "Positrons", unl: _ => hasMasteryStudy("d7") && !inAnyQC(), update: _ => updatePositronsTab() },
-	chal_qu: { name: "Quantum", class: "quantumbtn", unl: _ => hasMasteryStudy("d8"), update() {
+	chal_qu: { name: "Quantum", class: "quantumbtn", unl: _ => hasMasteryStudy("d8") && speedrunMilestonesReached >= 16, update() {
 		el("qcDisclaimer").innerHTML = (isQCFree() ? "" : "Spend Positrons to start Quantum Challenges.<br>You have " + getFullExpansion(Math.round(quSave.electrons.amount)) + " Positrons.<br>") + "<b class='red'>Positrons are disabled in Quantum Challenges!</b>"
 		for (var c = 1; c <= 8; c++) el("qc" + c + "reward").textContent = QC[c].reward_eff_disp(tmp.qu.chal.reward[c])
 	} },

@@ -156,7 +156,6 @@ let RESETS = {
 				player.offlineProdCost = 1e7
 			}
 
-			player.infDimensionsUnlocked = resetInfDimUnlocked()
 			completelyResetInfinityDimensions()
 
 			if (getEternitied() < 7) player.autoSacrifice = 1
@@ -256,63 +255,25 @@ function nanofieldResetOnQuantum(){
 	nfSave.powerThreshold = E(50)
 }
 
-function completelyResetInfinityDimensions(){
-	player.infinityDimension1 = {
-		cost: E(1e8),
-		amount: E(0),
-		bought: 0,
-		power: E(1),
-		baseAmount: 0
+function completelyResetInfinityDimensions() {
+	const ID_COSTS = [null, 1e8, 1e9, 1e10, 1e20, 1e140, 1e200, 1e250, 1e280]
+	for (var i = 1; i <= 8; i++) {
+		player["infinityDimension" + i] = {
+			cost: E(ID_COSTS[i]),
+			amount: E(0),
+			bought: 0,
+			power: E(1),
+			baseAmount: 0
+		}
 	}
-	player.infinityDimension2 = {
-		cost: E(1e9),
-		amount: E(0),
-		bought: 0,
-		power: E(1),
-		baseAmount: 0
-	}
-	player.infinityDimension3 = {
-		cost: E(1e10),
-		amount: E(0),
-		bought: 0,
-		power: E(1),
-		baseAmount: 0
-	}
-	player.infinityDimension4 = {
-		cost: E(1e20),
-		amount: E(0),
-		bought: 0,
-		power: E(1),
-		baseAmount: 0
-	}
-	player.infinityDimension5 = {
-		cost: E(1e140),
-		amount: E(0),
-		bought: 0,
-		power: E(1),
-		baseAmount: 0
-	}
-	player.infinityDimension6 = {
-		cost: E(1e200),
-		amount: E(0),
-		bought: 0,
-		power: E(1),
-		baseAmount: 0
-	}
-	player.infinityDimension7 = {
-		cost: E(1e250),
-		amount: E(0),
-		bought: 0,
-		power: E(1),
-		baseAmount: 0
-	}
-	player.infinityDimension8 = {
-		cost: E(1e280),
-		amount: E(0),
-		bought: 0,
-		power: E(1),
-		baseAmount: 0
-	}
+	resetInfDimUnlocked()
+}
+
+function resetInfDimUnlocked() {
+	let data = []
+	let value = getEternitied() >= 25 && hasAch("ng3p21")
+	for (var d = 1; d <= 8; d++) data.push(value)
+	player.infDimensionsUnlocked = data
 }
 
 function completelyResetTimeDimensions() {

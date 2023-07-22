@@ -17,9 +17,8 @@ function eligibleConvert() {
 	if (!mod.ngp3 && !inEasierMode() && !aarMod.ersVersion) {
 		if (mod.ngud) convert = "NGUdS'"
 		else convert = "NG+3"
-	} else
-		convert = undefined;
-	return convert;
+	} else convert = undefined
+	return convert
 }
 
 function convertSave(conversion) {

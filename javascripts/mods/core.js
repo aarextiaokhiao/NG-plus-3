@@ -99,9 +99,7 @@ function toggle_mod(id) {
 	}
 	if (id == "rs") {
 		modChosen = { rs: modChosen.rs }
-	} else {
-		modChosen.rs = 0
-	}
+	} else modChosen.rs = 0
 
 	update_mod_btns()
 }

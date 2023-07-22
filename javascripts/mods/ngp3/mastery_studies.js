@@ -1,4 +1,4 @@
-var masteryStudies = {
+const MTS = MASTERY_STUDIES = {
 	initCosts: {
 		time: {241: 2e71, 251: 5e71, 252: 5e71, 253: 5e71, 261: 2e71, 262: 2e71, 263: 2e71, 264: 2e71, 265: 2e71, 266: 2e71, 271: 2.7434842249657063e76, 272: 2.7434842249657063e76, 273: 2.7434842249657063e76, 281: 6.858710562414266e76, 282: 6.858710562414266e76, 291: 2.143347050754458e77, 292: 2.143347050754458e77, 301: 8.573388203017832e77, 302: 2.6791838134430725e78, 303: 8.573388203017832e77, 311: 8.573388203017832e77, 312: 8.573388203017832e77, 321: 2.6791838134430727e76, 322: 9.324815538194444e77, 323: 2.6791838134430727e76, 331: 1.0172526041666666e79, 332: 1.0172526041666666e79, 341: 9.5367431640625e78, 342: 1.0172526041666666e79, 343: 1.0172526041666666e79, 344: 9.5367431640625e78, 351: 2.1192762586805557e79, 361: 1.5894571940104167e79, 362: 1.5894571940104167e79, 371: 2.1192762586805557e79, 372: 6.622738308376736e79, 373: 2.1192762586805557e79, 381: 6.622738308376736e79, 382: 6.622738308376736e79, 383: 6.622738308376736e79, 391: 8.27842288547092e79, 392: 8.27842288547092e79, 393: 8.27842288547092e79, 401: 4.967053731282552e80, 402: 8.278422885470921e80, 411: 1.3245476616753473e76, 412: 1.655684577094184e76, 421: 1.9868214925130208e77, 431: 1.1037897180627893e80},
 		ec: {13: 1.7777777777777776e72, 14: 1.7777777777777776e72},
@@ -10,7 +10,6 @@ var masteryStudies = {
 		ec: {},
 		dil: {}
 	},
-	costMult: 1,
 	ecReqs: {
 		13: function() {
 			let comps = ECComps("eterc13")
@@ -24,10 +23,10 @@ var masteryStudies = {
 	ecReqsStored: {},
 	ecReqDisplays: {
 		13: function() {
-			return getFullExpansion(masteryStudies.ecReqsStored[13]) + " Dimension Boosts"
+			return getFullExpansion(MTS.ecReqsStored[13]) + " Dimension Boosts"
 		},
 		14: function() {
-			return getFullExpansion(masteryStudies.ecReqsStored[14]) + "% replicate chance"
+			return getFullExpansion(MTS.ecReqsStored[14]) + "% replicate chance"
 		}
 	},
 	unlockReqConditions: {
@@ -35,7 +34,7 @@ var masteryStudies = {
 			return quantumWorth.gte(50)
 		},
 		8: function() {
-			return quSave.electrons.amount >= 16750
+			return quSave.electrons.amount >= 16750 && speedrunMilestonesReached < 16
 		},
 		9: function() {
 			return QCIntensity(8) >= 1
@@ -61,7 +60,7 @@ var masteryStudies = {
 			return shortenDimensions(quantumWorth) + " / " + shortenDimensions(50) + " net Quarks"
 		},
 		8: function() {
-			return getFullExpansion(quSave.electrons.amount) + " / " + getFullExpansion(16750) + " positrons"
+			return getFullExpansion(quSave.electrons.amount) + " / " + getFullExpansion(16750) + " positrons and 5 minute Speedrun Milestone"
 		},
 		9: function() {
 			return "Complete Quantum Challenge 8"
@@ -83,8 +82,6 @@ var masteryStudies = {
 		}
 	},
 	types: {t: "time", ec: "ec", d: "dil"},
-	studies: [],
-	timeStudies: [],
 	timeStudyEffects: {
 		251() {
 			return Math.floor(player.resets / 3e3)
@@ -304,10 +301,24 @@ var masteryStudies = {
 			return hasMasteryStudy("d13") || ghostified
 		}
 	},
-	unlocked: [],
-	spentable: [],
-	latestBoughtRow: 0,
-	ttSpent: 0
+
+	respec(load) {
+		var respecedMS = []
+		player.timestudy.theorem += MTS.ttSpent
+		for (var id = 0; id < player.masterystudies.length; id++) {
+			var d = player.masterystudies[id].split("d")[1]
+			if (d) respecedMS.push(player.masterystudies[id])
+		}
+		if (player.masterystudies.length > respecedMS.length) delete quSave.wasted
+		if (!hasGluonUpg("gb", 3)) ipMultPower = 2
+		player.masterystudies = respecedMS
+		respecUnbuyableTimeStudies()
+		updateMasteryStudyCosts()
+		if (!load) {
+			updateMasteryStudyButtons()
+			drawMasteryTree()
+		}
+	}
 }
 
 function enterMasteryPortal() {
@@ -329,44 +340,43 @@ function convertMasteryStudyIdToDisplay(x) {
 }
 
 function updateMasteryStudyCosts() {
-	var oldBought = masteryStudies.bought
-	masteryStudies.latestBoughtRow = 0
-	masteryStudies.costMult = 1
-	masteryStudies.bought = 0
-	masteryStudies.ttSpent = 0
-	for (id = 0; id<player.masterystudies.length; id++) {
-		var t = player.masterystudies[id].split("t")[1]
+	var oldBought = MTS.bought
+	MTS.latestBoughtRow = 0
+	MTS.costMult = 1
+	MTS.bought = 0
+	MTS.ttSpent = 0
+	for (let id of player.masterystudies) {
+		var t = id.split("t")[1]
 		if (t) {
 			setMasteryStudyCost(t, "t")
-			masteryStudies.ttSpent += masteryStudies.costs.time[t]
-			masteryStudies.costMult *= getMasteryStudyCostMult(t)
-			masteryStudies.latestBoughtRow = Math.max(masteryStudies.latestBoughtRow,Math.floor(t/10))
-			masteryStudies.bought++
+			MTS.ttSpent += MTS.costs.time[t]
+			MTS.costMult *= getMasteryStudyCostMult(t)
+			MTS.latestBoughtRow = Math.max(MTS.latestBoughtRow,Math.floor(t/10))
+			MTS.bought++
 		}
 	}
-	for (id = 0; id < masteryStudies.timeStudies.length; id++) {
-		var name = masteryStudies.timeStudies[id]
-		if (!masteryStudies.unlocked.includes(name)) break
+	for (let name of MTS.timeStudies) {
+		if (!MTS.unlocked.includes(name)) break
 		if (!hasMasteryStudy("t"+name)) setMasteryStudyCost(name,"t")
 	}
-	for (id = 13; id <= masteryStudies.ecsUpTo; id++) {
-		if (!masteryStudies.unlocked.includes("ec"+id)) break
+	for (let id = 13; id <= MTS.ecsUpTo; id++) {
+		if (!MTS.unlocked.includes("ec"+id)) break
 		setMasteryStudyCost(id,"ec")
-		masteryStudies.ecReqsStored[id] = masteryStudies.ecReqs[id]()
+		MTS.ecReqsStored[id] = MTS.ecReqs[id]()
 	}
-	for (id = 7; id <= masteryStudies.unlocksUpTo; id++) {
-		if (!masteryStudies.unlocked.includes("d"+id)) break
+	for (let id = 7; id <= MTS.unlocksUpTo; id++) {
+		if (!MTS.unlocked.includes("d"+id)) break
 		setMasteryStudyCost(id,"d")
 	}
-	if (oldBought != masteryStudies.bought) updateSpentableMasteryStudies()
-	if (player.eternityChallUnlocked > 12) masteryStudies.ttSpent += masteryStudies.costs.ec[player.eternityChallUnlocked]
+	if (oldBought != MTS.bought) updateSpentableMasteryStudies()
+	if (player.eternityChallUnlocked > 12) MTS.ttSpent += MTS.costs.ec[player.eternityChallUnlocked]
 	updateMasteryStudyTextDisplay()
 }
 
 function setupMasteryStudies() {
-	masteryStudies.studies = [241]
-	masteryStudies.timeStudies = []
-	var map = masteryStudies.studies
+	MTS.studies = [241]
+	MTS.timeStudies = []
+	var map = MTS.studies
 	var part
 	var pos = 0
 	while (true) {
@@ -377,7 +387,7 @@ function setupMasteryStudies() {
 			id = part
 			part = ""
 		}
-		if (typeof(id) == "number") masteryStudies.timeStudies.push(id)
+		if (typeof(id) == "number") MTS.timeStudies.push(id)
 		var paths = getMasteryStudyConnections(id)
 		if (paths !== undefined) for (var x = 0; x < paths.length; x++) {
 			var y = paths[x]
@@ -392,40 +402,40 @@ function setupMasteryStudies() {
 
 function setupMasteryStudiesHTML() {
 	setupMasteryStudies()
-	for (id = 0; id < masteryStudies.timeStudies.length; id++) {
-		var name = masteryStudies.timeStudies[id]
+	for (id = 0; id < MTS.timeStudies.length; id++) {
+		var name = MTS.timeStudies[id]
 		var html = "<span id='ts" + name + "Desc'></span>"
-		if (masteryStudies.hasStudyEffect.includes(name)) html += "<br>Currently: <span id='ts" + name + "Current'></span>"
+		if (MTS.hasStudyEffect.includes(name)) html += "<br>Currently: <span id='ts" + name + "Current'></span>"
 		html += "<br>Cost: <span id='ts" + name + "Cost'></span> Time Theorems"
 		el("timestudy" + name).innerHTML = html
 	}
 }
 
 function getMasteryStudyConnections(id) {
-	return masteryStudies.allConnections[id]
+	return MTS.allConnections[id]
 }
 
 function updateUnlockedMasteryStudies() {
 	var unl = true
 	var rowNum = 0
-	masteryStudies.unlocked = []
-	for (var x = 0; x < masteryStudies.studies.length; x++) {
-		var id = masteryStudies.studies[x]
+	MTS.unlocked = []
+	for (var x = 0; x < MTS.studies.length; x++) {
+		var id = MTS.studies[x]
 		var divid = convertMasteryStudyIdToDisplay(id)
 		if (Math.floor(id / 10) > rowNum) {
 			rowNum = Math.floor(id / 10)
-			if (masteryStudies.allUnlocks["r"+rowNum] && !masteryStudies.allUnlocks["r"+rowNum]()) unl = false
+			if (MTS.allUnlocks["r"+rowNum] && !MTS.allUnlocks["r"+rowNum]()) unl = false
 			el(divid).parentElement.parentElement.parentElement.parentElement.style = unl ? "" : "display: none !important"
-			if (unl) masteryStudies.unlocked.push("r"+rowNum)
+			if (unl) MTS.unlocked.push("r"+rowNum)
 		} else if (divid[0] == "d") el(divid).parentElement.parentElement.parentElement.parentElement.style = unl ? "" : "display: none !important"
-		if (masteryStudies.allUnlocks[id]&&!masteryStudies.allUnlocks[id]()) unl = false
+		if (MTS.allUnlocks[id]&&!MTS.allUnlocks[id]()) unl = false
 		el(divid).style.visibility = unl ? "" : "hidden"
-		if (unl) masteryStudies.unlocked.push(id)
+		if (unl) MTS.unlocked.push(id)
 	}
 }
 
 function updateSpentableMasteryStudies() {
-	masteryStudies.spentable = []
+	MTS.spentable = []
 	addSpentableMasteryStudies(241)
 }
 
@@ -441,7 +451,7 @@ function addSpentableMasteryStudies(x) {
 		var canAdd = false
 		if (ecId) canAdd = ECComps("eterc"+ecId)
 		else canAdd = hasMasteryStudy(isNum?"t"+id:id)
-		if (masteryStudies.unlocked.includes(id) && !masteryStudies.spentable.includes(id)) masteryStudies.spentable.push(id)
+		if (MTS.unlocked.includes(id) && !MTS.spentable.includes(id)) MTS.spentable.push(id)
 		if (canAdd) {
 			var paths = getMasteryStudyConnections(id)
 			if (paths) for (var x=0;x<paths.length;x++) map.push(paths[x])
@@ -451,13 +461,13 @@ function addSpentableMasteryStudies(x) {
 }
 
 function setMasteryStudyCost(id,type) {
-	let d = masteryStudies.initCosts
-	let type2 = masteryStudies.types[type]
-	masteryStudies.costs[type2][id] = (d[type2][id]||0) * (type == "d" ? 1 : masteryStudies.costMult)
+	let d = MTS.initCosts
+	let type2 = MTS.types[type]
+	MTS.costs[type2][id] = (d[type2][id]||0) * (type == "d" ? 1 : MTS.costMult)
 }
 
 function getMasteryStudyCostMult(id) {
-	return masteryStudies.costs.time_mults[id] || 1
+	return MTS.costs.time_mults[id] || 1
 }
 
 function buyingD7Changes(){
@@ -518,7 +528,7 @@ function buyingDilationStudyFirstTime(id){
 function buyMasteryStudy(type, id, quick=false) {
 	if (quick) setMasteryStudyCost(id, type)
 	if (!canBuyMasteryStudy(type, id)) return
-	player.timestudy.theorem -= masteryStudies.costs[masteryStudies.types[type]][id]
+	player.timestudy.theorem -= MTS.costs[MTS.types[type]][id]
 	if (type == 'ec') {
 		player.eternityChallUnlocked = id
 		player.etercreq = id
@@ -528,8 +538,8 @@ function buyMasteryStudy(type, id, quick=false) {
 	if (type == "t") {
 		addSpentableMasteryStudies(id)
 		if (quick) {
-			masteryStudies.costMult *= getMasteryStudyCostMult(id)
-			masteryStudies.latestBoughtRow = Math.max(masteryStudies.latestBoughtRow, Math.floor(id / 10))
+			MTS.costMult *= getMasteryStudyCostMult(id)
+			MTS.latestBoughtRow = Math.max(MTS.latestBoughtRow, Math.floor(id / 10))
 		}
 		if (id == 241 && !hasGluonUpg("gb", 3)) {
 			var otherMults = 1
@@ -559,7 +569,7 @@ function buyMasteryStudy(type, id, quick=false) {
 	if (!quick) {
 		if (type == "t") {
 			if (id == 302) fillAll()
-			masteryStudies.bought++
+			MTS.bought++
 		} else if (type == "ec") TAB_CORE.open("chal_ec")
 		else if (type == "d") {
 			updateUnlockedMasteryStudies()
@@ -573,20 +583,20 @@ function buyMasteryStudy(type, id, quick=false) {
 
 function canBuyMasteryStudy(type, id) {
 	if (type == 't') {
-		if (player.timestudy.theorem < masteryStudies.costs.time[id] || hasMasteryStudy('t' + id) || player.eternityChallUnlocked > 12 || !masteryStudies.timeStudies.includes(id)) return false
+		if (player.timestudy.theorem < MTS.costs.time[id] || hasMasteryStudy('t' + id) || player.eternityChallUnlocked > 12 || !MTS.timeStudies.includes(id)) return false
 		if (player.eternityChallUnlocked > 12) return false
-		if (masteryStudies.latestBoughtRow > Math.floor(id / 10)) return false
-		if (!masteryStudies.spentable.includes(id)) return false
+		if (MTS.latestBoughtRow > Math.floor(id / 10)) return false
+		if (!MTS.spentable.includes(id)) return false
 	} else if (type == 'd') {
-		if (player.timestudy.theorem < masteryStudies.costs.dil[id] || hasMasteryStudy('d' + id)) return false
-		if (!hasBraveMilestone(3) && !masteryStudies.unlockReqConditions[id]()) return false
-		if (!masteryStudies.spentable.includes("d" + id)) return false
+		if (player.timestudy.theorem < MTS.costs.dil[id] || hasMasteryStudy('d' + id)) return false
+		if (!hasBraveMilestone(3) && !MTS.unlockReqConditions[id]()) return false
+		if (!MTS.spentable.includes("d" + id)) return false
 	} else {
-		if (player.timestudy.theorem < masteryStudies.costs.ec[id]) return false
+		if (player.timestudy.theorem < MTS.costs.ec[id]) return false
 		if (player.eternityChallUnlocked) return false
 		if (player.etercreq == id) return true
-		if (id == 13) return player.resets >= masteryStudies.ecReqsStored[13]
-		return Math.round(player.replicanti.chance * 100) >= masteryStudies.ecReqsStored[14]
+		if (id == 13) return player.resets >= MTS.ecReqsStored[13]
+		return Math.round(player.replicanti.chance * 100) >= MTS.ecReqsStored[14]
 	}
 	return true
 }
@@ -597,8 +607,8 @@ function hasMasteryStudy(x) {
 	
 function updateMasteryStudyButtons() {
 	if (!mod.ngp3) return
-	for (id = 0; id < masteryStudies.unlocked.length; id++) {
-		var name = masteryStudies.unlocked[id]
+	for (id = 0; id < MTS.unlocked.length; id++) {
+		var name = MTS.unlocked[id]
 		if (name + 0 == name) {
 			var className
 			var type = name > 270 ? "quantum" : "mastery"
@@ -607,22 +617,22 @@ function updateMasteryStudyButtons() {
 			else if (canBuyMasteryStudy('t', name)) className = "timestudy " + type
 			else className = "timestudylocked"
 			if (div.className !== className) div.className = className
-			if (masteryStudies.hasStudyEffect.includes(name)) {
+			if (MTS.hasStudyEffect.includes(name)) {
 				var mult = getMTSMult(name)
-				el("ts" + name + "Current").textContent = (masteryStudies.studyEffectDisplays[name] !== undefined ? masteryStudies.studyEffectDisplays[name](mult) : shorten(mult) + "x")
+				el("ts" + name + "Current").textContent = (MTS.studyEffectDisplays[name] !== undefined ? MTS.studyEffectDisplays[name](mult) : shorten(mult) + "x")
 			}
 		}
 	}
-	for (id = 13; id <= masteryStudies.ecsUpTo; id++) {
+	for (id = 13; id <= MTS.ecsUpTo; id++) {
 		var div = el("ec" + id + "unl")
-		if (!masteryStudies.unlocked.includes("ec" + id)) break
+		if (!MTS.unlocked.includes("ec" + id)) break
 		if (player.eternityChallUnlocked == id) div.className = "eternitychallengestudybought"
 		else if (canBuyMasteryStudy('ec', id)) div.className = "eternitychallengestudy"
 		else div.className = "timestudylocked"
 	}
-	for (id = 7; id <= masteryStudies.unlocksUpTo; id++) {
+	for (id = 7; id <= MTS.unlocksUpTo; id++) {
 		var div = el("dilstudy" + id)
-		if (!masteryStudies.unlocked.includes("d" + id)) break
+		if (!MTS.unlocked.includes("d" + id)) break
 		if (hasMasteryStudy("d" + id)) div.className = "dilationupgbought"
 		else if (canBuyMasteryStudy('d', id)) div.className = "dilationupg"
 		else div.className = "timestudylocked"
@@ -631,22 +641,22 @@ function updateMasteryStudyButtons() {
 
 function updateMasteryStudyTextDisplay() {
 	if (!mod.ngp3) return
-	el("costmult").textContent = shorten(masteryStudies.costMult)
-	el("totalmsbought").textContent = masteryStudies.bought
-	el("totalttspent").textContent = shortenDimensions(masteryStudies.ttSpent)
-	for (id = 0; id < masteryStudies.timeStudies.length; id++) {
-		var name = masteryStudies.timeStudies[id]
-		if (!masteryStudies.unlocked.includes(name)) break
-		el("ts" + name + "Cost").textContent = shorten(masteryStudies.costs.time[name])
+	el("costmult").textContent = shorten(MTS.costMult)
+	el("totalmsbought").textContent = MTS.bought
+	el("totalttspent").textContent = shortenDimensions(MTS.ttSpent)
+	for (id = 0; id < MTS.timeStudies.length; id++) {
+		var name = MTS.timeStudies[id]
+		if (!MTS.unlocked.includes(name)) break
+		el("ts" + name + "Cost").textContent = shorten(MTS.costs.time[name])
 	}
-	for (id = 13; id <= masteryStudies.ecsUpTo; id++) {
-		if (!masteryStudies.unlocked.includes("ec"+id)) break
-		el("ec" + id + "Cost").textContent = "Cost: " + shorten(masteryStudies.costs.ec[id]) + " Time Theorems"
+	for (id = 13; id <= MTS.ecsUpTo; id++) {
+		if (!MTS.unlocked.includes("ec"+id)) break
+		el("ec" + id + "Cost").textContent = "Cost: " + shorten(MTS.costs.ec[id]) + " Time Theorems"
 		el("ec" + id + "Req").style.display = player.etercreq == id ? "none" : "block"
-		el("ec" + id + "Req").textContent = "Requirement: " + masteryStudies.ecReqDisplays[id]()
+		el("ec" + id + "Req").textContent = "Requirement: " + MTS.ecReqDisplays[id]()
 	}
-	for (id = 7; id <= masteryStudies.unlocksUpTo; id++) {
-		el("ds" + id + "Req").innerHTML = hasBraveMilestone(3) ? "" : "Requirement: " + masteryStudies.unlockReqDisplays[id]()
+	for (id = 7; id <= MTS.unlocksUpTo; id++) {
+		el("ds" + id + "Req").innerHTML = hasBraveMilestone(3) ? "" : "Requirement: " + MTS.unlockReqDisplays[id]()
 	}
 }
 
@@ -686,25 +696,21 @@ function drawMasteryTree() {
 	if (player === undefined) return
 	if (!isTabShown("ts_master")) return
 	drawMasteryBranch("back", "timestudy241")
-	for (let id of masteryStudies.unlocked) {
+	for (let id of MTS.unlocked) {
 		let paths = getMasteryStudyConnections(id)
 		if (!paths) continue
 		for (let to of paths) {
-			if (!masteryStudies.unlocked.includes(to)) continue
+			if (!MTS.unlocked.includes(to)) continue
 			drawMasteryBranch(convertMasteryStudyIdToDisplay(id), convertMasteryStudyIdToDisplay(to))
 		}
 	}
 	if (!shiftDown) return
 
-	for (let id of masteryStudies.unlocked) {
+	for (let id of MTS.unlocked) {
 		if (id + 0 != id) continue
 		let mult = getMasteryStudyCostMult(id)
 		drawStudyHeader(msctx, convertMasteryStudyIdToDisplay(id), id + " (" + shorten(mult) + "x)")
 	}
-	/*
-	drawStudyHeader(msctx, "999", "999 (forbidden)")
-	drawStudyHeader(msctx, "999_2", "999 (forbidden)")
-	*/
 }
 
 function getMasteryStudyMultiplier(id, uses = ""){
@@ -712,15 +718,15 @@ function getMasteryStudyMultiplier(id, uses = ""){
 }
 
 function getMTSMult(id, uses = "") {
-	return (uses == "" && masteryStudies.unlocked.includes(id) && tmp.mts?.[id]) || masteryStudies.timeStudyEffects[id](uses)
+	return (!uses && tmp.mts[id]) ?? MTS.timeStudyEffects[id](uses)
 }
 
 function updateMasteryStudyTemp() {
-	tmp.mts = {}
-	let studies = masteryStudies.unlocked
-	for (var s = 0; s <= studies.length; s++) {
-		var study = studies[s]
-		if (masteryStudies.hasStudyEffect.includes(study)) tmp.mts[study] = masteryStudies.timeStudyEffects[study]("")
+	let studies = MTS.unlocked
+	if (studies === undefined) return
+
+	for (var study of studies) {
+		if (MTS.hasStudyEffect.includes(study)) tmp.mts[study] = MTS.timeStudyEffects[study]("")
 	}
 }
 

@@ -242,7 +242,7 @@ function doQuantum(force, auto, qc = {}) {
 			boughtI: player.timestudy.ipcost.log("1e100"),
 			boughtE: Math.round(player.timestudy.epcost.log(2))
 		}
-		if (player.eternityChallUnlocked > 12) brSave.storedTS.tt += masteryStudies.costs.ec[player.eternityChallUnlocked]
+		if (player.eternityChallUnlocked > 12) brSave.storedTS.tt += MTS.costs.ec[player.eternityChallUnlocked]
 		else brSave.storedTS.tt += ([0, 30, 35, 40, 70, 130, 85, 115, 115, 415, 550, 1, 1])[player.eternityChallUnlocked]
 		for (var s = 0; s < player.masterystudies.length; s++) if (player.masterystudies[s].indexOf("t") == 0) brSave.storedTS.studies.push(parseInt(player.masterystudies[s].split("t")[1]))
 	}
@@ -418,12 +418,12 @@ RESETS.qu = {
 		//NG+3
 		if (speedrunMilestonesReached >= 4 && !isRewardEnabled(4)) {
 			for (var s = 0; s < player.masterystudies.length; s++) {
-				if (player.masterystudies[s].indexOf("t") >= 0) player.timestudy.theorem += masteryStudies.costs.time[player.masterystudies[s].split("t")[1]]
-				else player.timestudy.theorem += masteryStudies.costs.dil[player.masterystudies[s].split("d")[1]]
+				if (player.masterystudies[s].indexOf("t") >= 0) player.timestudy.theorem += MTS.costs.time[player.masterystudies[s].split("t")[1]]
+				else player.timestudy.theorem += MTS.costs.dil[player.masterystudies[s].split("d")[1]]
 			}
 		}
 		if (isRewardEnabled(11) && (bigRip && !hasRipUpg(12))) {
-			if (player.eternityChallUnlocked > 12) player.timestudy.theorem += masteryStudies.costs.ec[player.eternityChallUnlocked]
+			if (player.eternityChallUnlocked > 12) player.timestudy.theorem += MTS.costs.ec[player.eternityChallUnlocked]
 			else player.timestudy.theorem += ([0, 30, 35, 40, 70, 130, 85, 115, 115, 415, 550, 1, 1])[player.eternityChallUnlocked]
 		}
 

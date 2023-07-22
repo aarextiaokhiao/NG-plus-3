@@ -527,114 +527,10 @@ function updateNewPlayer(mode, preset) {
 		eternityUpgrades: [],
 		epmult: E(1),
 		epmultCost: E(500),
-		infinityDimension1 : {
-			cost: E(1e8),
-			amount: E(0),
-			bought: 0,
-			power: E(1),
-			baseAmount: 0
-		},
-		infinityDimension2 : {
-			cost: E(1e9),
-			amount: E(0),
-			bought: 0,
-			power: E(1),
-			baseAmount: 0
-		},
-		infinityDimension3 : {
-			cost: E(1e10),
-			amount: E(0),
-			bought: 0,
-			power: E(1),
-			baseAmount: 0
-		},
-		infinityDimension4 : {
-			cost: E(1e20),
-			amount: E(0),
-			bought: 0,
-			power: E(1),
-			baseAmount: 0
-		},
-		infinityDimension5 : {
-			cost: E(1e140),
-			amount: E(0),
-			bought: 0,
-			power: E(1),
-			baseAmount: 0
-		},
-		infinityDimension6 : {
-			cost: E(1e200),
-			amount: E(0),
-			bought: 0,
-			power: E(1),
-			baseAmount: 0
-		},
-		infinityDimension7 : {
-			cost: E(1e250),
-			amount: E(0),
-			bought: 0,
-			power: E(1),
-			baseAmount: 0
-		},
-		infinityDimension8 : {
-			cost: E(1e280),
-			amount: E(0),
-			bought: 0,
-			power: E(1),
-			baseAmount: 0
-		},
 		infDimBuyers: [false, false, false, false, false, false, false, false],
 		timeShards: E(0),
 		tickThreshold: E(1),
 		totalTickGained: 0,
-		timeDimension1: {
-			cost: E(1),
-			amount: E(0),
-			power: E(1),
-			bought: 0
-		},
-		timeDimension2: {
-			cost: E(5),
-			amount: E(0),
-			power: E(1),
-			bought: 0
-		},
-		timeDimension3: {
-			cost: E(100),
-			amount: E(0),
-			power: E(1),
-			bought: 0
-		},
-		timeDimension4: {
-			cost: E(1000),
-			amount: E(0),
-			power: E(1),
-			bought: 0
-		},
-		timeDimension5: {
-			cost: E("1e2350"),
-			amount: E(0),
-			power: E(1),
-			bought: 0
-		},
-		timeDimension6: {
-			cost: E("1e2650"),
-			amount: E(0),
-			power: E(1),
-			bought: 0
-		},
-		timeDimension7: {
-			cost: E("1e3000"),
-			amount: E(0),
-			power: E(1),
-			bought: 0
-		},
-		timeDimension8: {
-			cost: E("1e3350"),
-			amount: E(0),
-			power: E(1),
-			bought: 0
-		},
 		offlineProd: 0,
 		offlineProdCost: 1e7,
 		challengeTarget: 0,
@@ -721,7 +617,6 @@ function updateNewPlayer(mode, preset) {
 		}
 	}
 	aarMod = player.aarexModifications
-	resetDimensions()
 
 	if (mod.ngpp) doNGPlusTwoNewPlayer()
 	if (mod.ngpp > 1) doNGPlusThreeNewPlayer()
@@ -750,6 +645,10 @@ function updateNewPlayer(mode, preset) {
 		aarMod.aau = 1
 		dev.giveAllAchievements(true)
 	}
+
+	resetDimensions()
+	completelyResetInfinityDimensions()
+	completelyResetTimeDimensions()
 }
 
 function doNGPlusOneNewPlayer(){ // eventually change to have multiple versions/variations of NG+

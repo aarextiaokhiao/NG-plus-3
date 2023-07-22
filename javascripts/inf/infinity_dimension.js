@@ -124,18 +124,6 @@ function DimensionPower(tier) {
 	return mult
 }
 
-function resetInfDimensions() {
-	for (var t = 1; t <= 8; t++) player["infinityDimension" + t].amount = E(player["infinityDimension" + t].baseAmount)
-	player.infinityPower = E(0)
-}
-
-function resetInfDimUnlocked() {
-	let value = player != undefined && getEternitied() >= 25 && hasAch("ng3p21")
-	let data = []
-	for (var d = 1; d <= 8; d++) data.push(value)
-	return data
-}
-
 var infCostMults = [null, 1e3, 1e6, 1e8, 1e10, 1e15, 1e20, 1e25, 1e30]
 var infPowerMults = [[null, 50, 30, 10, 5, 5, 5, 5, 5], [null, 500, 300, 100, 50, 25, 10, 5, 5]]
 var infBaseCost = [null, 1e8, 1e9, 1e10, 1e20, 1e140, 1e200, 1e250, 1e280]

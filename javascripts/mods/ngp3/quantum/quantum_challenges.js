@@ -227,10 +227,6 @@ function getQCIdCost(qcs) {
 }
 
 function selectQC(x) {
-	if (speedrunMilestonesReached < 16) {
-		$.notify("You must unlock the 5 minute Quantum speedrun milestone to start Quantum Challenges!", "error")
-		return
-	}
 	if (pcFocus) {
 		if (pcAssigned.includes(x)) return
 		pcChosen.push(x)

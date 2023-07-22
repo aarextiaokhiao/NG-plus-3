@@ -332,23 +332,7 @@ function respecTimeStudies(ecComp, load) {
 		gotAch = gotAch && respecMastery
 		delete quSave.autoECN
 	}
-	if (respecMastery) {
-		var respecedMS = []
-		player.timestudy.theorem += masteryStudies.ttSpent
-		for (var id = 0; id < player.masterystudies.length; id++) {
-			var d = player.masterystudies[id].split("d")[1]
-			if (d) respecedMS.push(player.masterystudies[id])
-		}
-		if (player.masterystudies.length > respecedMS.length) delete quSave.wasted
-		if (!hasGluonUpg("gb", 3)) ipMultPower = 2
-		player.masterystudies = respecedMS
-		respecUnbuyableTimeStudies()
-		updateMasteryStudyCosts()
-		if (!load) {
-			updateMasteryStudyButtons()
-			drawMasteryTree()
-		}
-	}
+	if (respecMastery) MTS.respec(load)
 
 	player.eternityChallUnlocked = 0
 	if (gotAch) giveAchievement("You do know how these work, right?")

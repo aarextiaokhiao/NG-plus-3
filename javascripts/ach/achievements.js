@@ -241,9 +241,6 @@ const allAchievements = {
 	ng3ps26 : "Deny the afterlife",
 	ng3ps27 : "Revolution, when?",
 	ng3ps28 : "Prestige No-lifer",
-
-	ng3ps31 : "Waiting, I see...",
-	ng3ps32 : "A ghost fate"
 };
 const secretAchievementTooltips = {
 	s11 : "Click on this achievement.",
@@ -286,35 +283,31 @@ const secretAchievementTooltips = {
 	ng3ps26 : "Deny the Ghostify confirmation 15 times in a single session.",
 	ng3ps27 : "Type 1776 on your keyboard.",
 	ng3ps28 : "Quantum 10,000 times.",
-	ng3ps31 : "Skip a v2.X version by not playing it directly.",
-	ng3ps32 : "Become a ghost in v2.3 and then play v2.4."
 };
 const allAchievementNums = Object.invert(allAchievements)
 // to retrieve by value: Object.keys(allAchievements).find(key => allAchievements[key] === "L4D: Left 4 Dimensions");
 
 function clearOldAchieves(){
-		var toRemove = [];
-		var achieveKey;
-		var values = Object.keys(allAchievements).map(function(e) { return allAchievements[e] });
-		for (var i = 0; i < player.achievements.length; i++) {
-				if (values.indexOf(player.achievements[i]) !== -1 ) {	// does index[i] exist in allAchievements as a value?
-						toRemove.push(i); // mark it for removal
-						achieveKey = Object.keys(allAchievements).find(function(key){ return allAchievements[key] === player.achievements[i];});
-						if (!hasAch(achieveKey)) { // check if new key already exists as well
-								player.achievements.push(achieveKey); // if not... add it
-						}
-				} else if (allAchievements[player.achievements[i]] === undefined){
-						var r = player.achievements[i].indexOf("r")
-						if (r < 0) r = 0
-						else r = parseInt(player.achievements[i].split("r")[1])
-						if (r < 140) toRemove.push(i)
-				}
+	var toRemove = [];
+	var achieveKey;
+	var values = Object.keys(allAchievements).map(function(e) { return allAchievements[e] });
+	for (var i = 0; i < player.achievements.length; i++) {
+		if (values.indexOf(player.achievements[i]) !== -1 ) {	// does index[i] exist in allAchievements as a value?
+			toRemove.push(i); // mark it for removal
+			achieveKey = Object.keys(allAchievements).find(function(key){ return allAchievements[key] === player.achievements[i];});
+			if (!hasAch(achieveKey)) { // check if new key already exists as well
+				player.achievements.push(achieveKey); // if not... add it
+			}
+		} else if (allAchievements[player.achievements[i]] === undefined){
+			var r = player.achievements[i].indexOf("r")
+			if (r < 0) r = 0
+			else r = parseInt(player.achievements[i].split("r")[1])
+			if (r < 140) toRemove.push(i)
 		}
+	}
 
-		toRemove.reverse();
-		for (var i = 0; i < toRemove.length; i++) {
-				player.achievements.splice(toRemove[i], 1);
-		}
+	toRemove.reverse();
+	for (var i = 0; i < toRemove.length; i++) player.achievements.splice(toRemove[i], 1)
 }
 
 function giveAchievement(name, noUpdate) {
@@ -476,7 +469,7 @@ function updateAchievements() {
 				var achId = "s" + achNum
 				if (achNum > 40) achId = "ng3ps" + (achNum - 30)
 				var name = allAchievements[achId]
-								if (!el(name)) continue
+				if (!el(name)) continue
 				if (hasAch(achId)) {
 					n++
 					el(name).setAttribute('ach-tooltip', secretAchievementTooltips[achId])

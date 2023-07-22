@@ -1189,12 +1189,12 @@ function doCheckECCompletionStuff(){
 			else if (player.eternityChalls.eterc11 < 5) player.eternityChalls.eterc11++
 		}
 		if (mod.ngp3 ? quSave.autoEC && player.eternityChalls[player.currentEternityChall] < 5 : false) {
-			if (player.etercreq > 12) player.timestudy.theorem += masteryStudies.costs.ec[player.etercreq]
+			if (player.etercreq > 12) player.timestudy.theorem += MTS.costs.ec[player.etercreq]
 			else player.timestudy.theorem += ([0, 30, 35, 40, 70, 130, 85, 115, 115, 415, 550, 1, 1])[player.etercreq]
 			player.eternityChallUnlocked = 0
 			quSave.autoECN = player.etercreq
 		} else if (hasBraveMilestone(2)) {
-			if (player.etercreq > 12) player.timestudy.theorem += masteryStudies.costs.ec[player.etercreq]
+			if (player.etercreq > 12) player.timestudy.theorem += MTS.costs.ec[player.etercreq]
 			else player.timestudy.theorem += ([0, 30, 35, 40, 70, 130, 85, 115, 115, 415, 550, 1, 1])[player.etercreq]
 			player.eternityChallUnlocked = 0
 		} else forceRespec = true
