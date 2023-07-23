@@ -154,7 +154,7 @@ function updateBHFeed() {
 
 	if (mod.udsp) {
 		let gain = Math.floor(Math.min(player.blackhole.hunger, player.blackhole.upgrades.total / 3))
-		el("feedBHButton").className = gain == 1 ? "eternityupbtn" : "eternityupbtnlocked"
+		el("feedBHButton").className = gain >= 1 ? "eternityupbtn" : "eternityupbtnlocked"
 	}
 }
 

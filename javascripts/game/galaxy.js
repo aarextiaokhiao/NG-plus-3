@@ -13,7 +13,7 @@ function galaxyReset(bulk) {
 
 	let am = player.money
 	doReset("gal")
-	if (hasAch("r111")) player.money = am
+	if (hasAch("r111") && am.gte(player.money)) player.money = am
 }
 
 function checkOnGalaxyReset() {
