@@ -308,7 +308,6 @@ function getRebuyableDilUpgScaleStart(id, add=0) {
 function buyDilationUpgrade(id, max) {
 	let cost = getDilUpgCost(id)
 	if (!player.dilation.dilatedTime.gte(cost)) return
-	player.dilation.dilatedTime = player.dilation.dilatedTime.sub(cost)
 
 	if (id[0] == "r") {
 		// Rebuyable
@@ -321,7 +320,8 @@ function buyDilationUpgrade(id, max) {
 		if (id == 2) {
 			if (speedrunMilestonesReached < 22) player.dilation.dilatedTime = E(0)
 			resetDilationGalaxies()
-		}
+		} else player.dilation.dilatedTime = player.dilation.dilatedTime.sub(cost)
+		
 		if (id >= 3) player.eternityBuyer.tpUpgraded = true
 	} else {
 		// Not rebuyable
