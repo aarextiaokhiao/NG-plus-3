@@ -1466,7 +1466,7 @@ function notifyGhostifyMilestones(){
 
 function dilationStuffABTick(){
 	el('rebuyupgAuto').style.display = speedrunMilestonesReached>6?"":"none"
-	el('dilUpgsAuto').style.display = hasAch("ngud14") && mod.udsp ? "" : "none"
+	el('dilUpgsAuto').style.display = hasAch("ngpp13") && mod.udsp ? "" : "none"
 	el('distribEx').style.display = hasAch("ngud14") ? "" : "none"
 	if (player?.autoEterOptions?.dilUpgs) autoBuyDilUpgs()
 
