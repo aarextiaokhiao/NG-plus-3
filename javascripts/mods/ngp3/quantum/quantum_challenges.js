@@ -108,6 +108,8 @@ const QC = QUANTUM_CHALLENGE = {
 
 function setupQCHTML() {
 	let table = ""
+	let table2 = ""
+	let pc = 0
 	for (let qc = 1; qc <= 8; qc++) {
 		let data = QC[qc]
 		table += `<td>
@@ -125,9 +127,29 @@ function setupQCHTML() {
 				</div>
 			</div>
 		</td>`
-		if (qc % 2 == 0) table += "</tr><tr>"
+		if (qc % 2 == 0) {
+			pc++
+			table += "</tr><tr>"
+			table2 += `<td>
+				<div class="quantumchallengediv">
+					<span id="pc${pc}desc"></span>
+					<br>
+					<br>
+					<div class="outer">
+						<button id="pc${pc}" class="challengesbtn" onclick="selectPC(${pc})"></button>
+						<button id="pc${pc}br" class="challengesbtn" onclick="selectPC(${pc}, true)"></button>
+						<br>
+						<span id="pc${pc}cost"></span><br>
+						<span id="pc${pc}goal"></span><br>
+						Reward: Boost the reward for these sub-challenges.
+					</div>
+				</div>
+			</td>`
+			if (pc % 2 == 0) table2 += "</tr><tr>"
+		}
 	}
 	el("qc_table").innerHTML = `<tr>${table}</tr>`
+	el("pc_table").innerHTML = `<tr>${table2}</tr>`
 }
 
 function updateQuantumChallenges() {

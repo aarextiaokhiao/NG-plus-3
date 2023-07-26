@@ -170,7 +170,7 @@ function ngp3_feature_notify(k) {
 
 	setTimeout(function() {
 		el("ngp3_feature_ani").style.opacity = 0
-	}, 3500)
+	}, 2500)
 	setTimeout(function() {
 		el("ngp3_feature_ani").style.display = "none"
 		el("ngp3_feature_ani").style.opacity = 1
@@ -185,7 +185,7 @@ function ngp3_feature_notify(k) {
 		el("ngp3_feature_ani_2b").style.top = "50%"
 		el("ngp3_feature_ani_2b").style.width = "0"
 		el("ngp3_feature_ani_2b").style.height = "0"
-	}, 4000)
+	}, 3000)
 }
 
 function updateNGP3Progress() {

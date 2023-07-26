@@ -1886,72 +1886,7 @@
 					<button class="storebtn" onclick="exportData(PRESET_DATA.pc.get())" style="width:150px; height: 40px; font-size: 10px; border-width: 1px; margin: auto">Export</button>
 					<button class="storebtn" onclick="importPC()" style="width:150px; height: 40px; font-size: 10px; border-width: 1px; margin: auto">Import</button><br>
 					<b class="warning">Assigning will bring you into the Quantum Challenges tab.</b><br>
-					<table class="table" style="margin: 0 auto">
-						<tr>
-							<td>
-								<div class="quantumchallengediv">
-									<span id="pc1desc"></span>
-									<br>
-									<br>
-									<div class="outer">
-										<button id="pc1" class="challengesbtn" onclick="selectPC(1)"></button>
-										<button id="pc1br" class="challengesbtn" onclick="selectPC(1, true)"></button>
-										<br>
-										<span id="pc1cost"></span><br>
-										<span id="pc1goal"></span><br>
-										Reward: Boost the reward for these sub-challenges.
-									</div>
-								</div>
-							</td>
-							<td>
-								<div class="quantumchallengediv">
-									<span id="pc2desc"></span>
-									<br>
-									<br>
-									<div class="outer">
-										<button id="pc2" class="challengesbtn" onclick="selectPC(2)"></button>
-										<button id="pc2br" class="challengesbtn" onclick="selectPC(2, true)"></button>
-										<br>
-										<span id="pc2cost"></span><br>
-										<span id="pc2goal"></span><br>
-										Reward: Boost the reward for these sub-challenges.
-									</div>
-								</div>
-							</td>
-						</tr>
-						<tr>
-							<td>
-								<div class="quantumchallengediv">
-									<span id="pc3desc"></span>
-									<br>
-									<br>
-									<div class="outer">
-										<button id="pc3" class="challengesbtn" onclick="selectPC(3)"></button>
-										<button id="pc3br" class="challengesbtn" onclick="selectPC(3, true)"></button>
-										<br>
-										<span id="pc3cost"></span><br>
-										<span id="pc3goal"></span><br>
-										Reward: Boost the reward for these sub-challenges.
-									</div>
-								</div>
-							</td>
-							<td>
-								<div class="quantumchallengediv">
-									<span id="pc4desc"></span>
-									<br>
-									<br>
-									<div class="outer">
-										<button id="pc4" class="challengesbtn" onclick="selectPC(4)"></button>
-										<button id="pc4br" class="challengesbtn" onclick="selectPC(4, true)"></button>
-										<br>
-										<span id="pc4cost"></span><br>
-										<span id="pc4goal"></span><br>
-										Reward: Boost the reward for these sub-challenges.
-									</div>
-								</div>
-							</td>
-						</tr>
-					</table>
+					<table class="table" id="pc_table" style='margin: 0 auto'></table>
 				</div>
 			</div><div id="tab_rip">
 				<table style='margin: auto'>
@@ -3411,25 +3346,13 @@
 				</table>
 				<div id="assign_opt_req">More assort options unlock at 100 net Quarks.</div>
 				<table class='qtable'><tr>
-					<td class="rqC">
-						<span class="red" id="redQuarks" style="font-size:35px">0</span> red anti-quarks
-					</td>
-					<td>
-						<span class="green" id="greenQuarks" style="font-size:35px">0</span> green anti-quarks
-					</td>
-					<td class="bqC">
-						<span class="blue" id="blueQuarks" style="font-size:35px">0</span> blue anti-quarks
-					</td>
+					<td class="rqC"><span class="red" id="redQuarks" style="font-size:35px">0</span> red anti-quarks</td>
+					<td><span class="green" id="greenQuarks" style="font-size:35px">0</span> green anti-quarks</td>
+					<td class="bqC"><span class="blue" id="blueQuarks" style="font-size:35px">0</span> blue anti-quarks</td>
 				</tr><tr>
-					<td>
-						<button class='storebtn' id='redAssort' onclick='assignQuark("r")'>Assort</button>
-					</td>
-					<td>
-						<button class='storebtn' id='greenAssort' onclick='assignQuark("g")'>Assort</button>
-					</td>
-					<td>
-						<button class='storebtn' id='blueAssort' onclick='assignQuark("b")'>Assort</button>
-					</td>
+					<td><button class='storebtn' id='redAssort' onclick='assignQuark("r")'>Assort</button></td>
+					<td><button class='storebtn' id='greenAssort' onclick='assignQuark("g")'>Assort</button></td>
+					<td><button class='storebtn' id='blueAssort' onclick='assignQuark("b")'>Assort</button></td>
 				</tr></table>
 				You will get <span id="assort_amount"></span> colored quarks when you assort quarks.<br>
 				Your quarks have a net <span id='colorCharge'></span>.<br>
@@ -3662,8 +3585,6 @@
 				<span id="nanorewards" style="font-size:35px"></span> Nanorewards <br>
 				(Next: <span id="nanorewardThreshold" style="font-size:15px"></span> Energy)
 				<table class="table" style="margin: auto" id="nfRewards"></table>
-				<!-- Maybe Annihilation would nullify Nanofield, but keeps Nanoenergy, Nanopower, and Nanorewards. -->
-				<br><br>
 			</div>
 		</div>
 		<div id="tab_funda">
@@ -3853,7 +3774,7 @@
 			<br><br><hr>
 
 			<b>(NG+3 v2.31: Ghostify Respecced)</b><br>
-			<b class="red">(Beta: 7/21/23b Build)</b><br>
+			<b class="red">(Beta: 7/25/23 Build)</b><br>
 			By <a href="https://aarextiaokhiao.github.io/">Aarex</a>, pg132, and usavictor.
 			<br><br>
 
@@ -4006,12 +3927,10 @@
 			<table id='psiLetterOptions'>
 				<tr>
 					<td colspan=2 style='text-align:center'><button class="storebtn" style="width:160px; height: 40px" onclick="switchNotationOption('psi','psiLetterNone')">Automatically choose letter</button></td>
-				</tr>
-				<tr>
+				</tr><tr>
 					<td><button class="storebtn" style="width:160px; height: 40px" onclick="switchNotationOption('psi','psiLetterE')">Force E</button></td>
 					<td><button class="storebtn" style="width:160px; height: 40px" onclick="switchNotationOption('psi','psiLetterF')">Force F</button></td>
-				</tr>
-				<tr>
+				</tr><tr>
 					<td><button class="storebtn" style="width:160px; height: 40px" onclick="switchNotationOption('psi','psiLetterG')">Force G</button></td>
 					<td><button class="storebtn" style="width:160px; height: 40px" onclick="switchNotationOption('psi','psiLetterH')">Force H</button></td>
 				</tr>

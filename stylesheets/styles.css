@@ -2560,7 +2560,7 @@ td.grey {
 	color: #003fbf;
 	text-shadow: 0px 0px 3px #003fbf, 0px 0px 6px #003fbf;
 	cursor: pointer
-}*/
+}
 
 .timestudy.forbidden {
 	background: linear-gradient(90deg, black, transparent, black), linear-gradient(#b0f, black, #f0f) !important;
@@ -2570,7 +2570,7 @@ td.grey {
 .timestudy.forbidden:hover {
 	box-shadow: 0 0 60px #b0f !important;
 	color: white
-}
+}*/
 
 @media print,
 screen and (max-width: 960px) {

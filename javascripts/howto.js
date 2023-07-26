@@ -278,7 +278,7 @@ let HOW_TO = [
 
 		title: "Black Hole",
 		layer: "eternity",
-		desc: `On spending e4K EP, you can convert your resources to Remnants which will be used later on. Your Black Hole generates hunger. Feeding with Remnants not only reduces hunger, but also unlocks various boosts based on power, which is a reward.`
+		desc: `On spending e4K EP, you can convert your resources to Remnants which will be used later on. Your Black Hole generates hunger. Feeding with Remnants not only reduces hunger, but also unlocks various boosts based on power, which is a reward. [will be rewritten]`
 	}, {
 		mod: _ => player.meta !== undefined,
 		req: _ => player.dilation.studies.includes(6),
@@ -407,7 +407,7 @@ let HOW_TO = [
 		desc: `Best Tachyon Particles produce Photons. You can emit Photons into groups of Lights.<br>
 		Initially, you can assign up to 3 groups of 3 colors each.<br>
 		Lights provide boosts, but are capped (increased on prior Lights).<br>
-		Lights are also looped which Ultraviolet Light increases Infrared cap.`
+		Lights are also looped which Ultraviolet Light increases Infrared cap. [will be rewritten]`
 	}, {
 		mod: _ => ngp3,
 		req: _ => ghSave?.lab?.unl,
