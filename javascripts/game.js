@@ -1602,7 +1602,7 @@ function passiveIPupdating(diff){
 	else player.partInfinityPoint = 0
 
 	let x = Math.floor(player.partInfinityPoint / 10)
-	if (x > 0 && !dev.testZone2) {
+	if (x > 0) {
 		player.partInfinityPoint -= x * 10
 		player.infinityPoints = player.infinityPoints.add(getIPMult().mul(x))
 	}
@@ -1701,7 +1701,7 @@ function bigCrunchButtonUpdating(){
 			el("postInfinityButton").style.display = ""
 			var currentIPmin = getIPGain().dividedBy(player.thisInfinityTime/600)
 			if (currentIPmin.gt(IPminpeak)) IPminpeak = currentIPmin
-			if (IPminpeak.log10() > 1e6 || dev.testZone2) el("postInfinityButton").innerHTML = "Big Crunch"
+			if (IPminpeak.log10() > 1e6) el("postInfinityButton").innerHTML = "Big Crunch"
 			else {
 				var IPminpart = IPminpeak.log10() > 1e4 ? "" : "<br>" + shortenDimensions(currentIPmin) + " IP/min" + "<br>Peaked at " + shortenDimensions(IPminpeak) + " IP/min"
 				el("postInfinityButton").innerHTML = "<b>" + (IPminpeak.log10() > 1e4 ? "Gain " : "Big Crunch for ") + shortenDimensions(getIPGain()) + " Infinity Points.</b>" + IPminpart
@@ -1733,7 +1733,7 @@ function nextICUnlockUpdating(){
 }
 
 function passiveIPperMUpdating(diff){
-	if (!dev.testZone2) player.infinityPoints = player.infinityPoints.add(bestRunIppm.mul(player.offlineProd/100).mul(diff/600))
+	player.infinityPoints = player.infinityPoints.add(bestRunIppm.mul(player.offlineProd/100).mul(diff/600))
 }
 
 function giveBlackHolePowerUpdating(diff){
@@ -2134,7 +2134,7 @@ function fixInfinityTimes(){
 }
 
 function infUpgPassiveIPGain(diff){
-	if (diff > player.autoTime && !player.break && !dev.testZone2) player.infinityPoints = player.infinityPoints.add(player.autoIP.div(player.autoTime).mul(diff))
+	if (diff > player.autoTime && !player.break) player.infinityPoints = player.infinityPoints.add(player.autoIP.div(player.autoTime).mul(diff))
 }
 
 function gameLoop(diff, quick) {

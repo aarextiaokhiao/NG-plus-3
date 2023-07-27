@@ -28,8 +28,6 @@ dev.giveAllNGAchievements = function() {
 	updateAchievements()
 }
 
-
-
 dev.doubleEverything = function() {
 	Object.keys(player).forEach( function(key) {
 		if (typeof player[key] === "number") player[key] *= 2;
@@ -173,14 +171,5 @@ dev.enterTestZone = function() {
 	- No Decay.
 	*/
 	dev.testZone = !dev.testZone
-	doReset("funda")
-}
-
-dev.enterTestZone2 = function() {
-	/* 
-	Test the Fundament Challenge:
-	- No Infinity Points.
-	*/
-	dev.testZone2 = !dev.testZone2
 	doReset("funda")
 }

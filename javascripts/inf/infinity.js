@@ -19,8 +19,7 @@ function bigCrunch(auto) {
 function doBigCrunch(auto) {
 	//Infinity
 	var add = getIPMult()
-	if (dev.testZone2) add = E(0)
-	else if (player.break && player.currentChallenge == "") add = getIPGain()
+	if (player.break && player.currentChallenge == "") add = getIPGain()
 	else if (hasTimeStudy(51)) add = add.mul(1e15)
 	player.infinityPoints = player.infinityPoints.add(add)
 	player.bestInfinityTime = player.bestInfinityTime > player.thisInfinityTime ? player.thisInfinityTime : player.bestInfinityTime
@@ -141,7 +140,7 @@ function getIPMult() {
 }
 
 function IPonCrunchPassiveGain(diff){
-	if (hasTimeStudy(181) && !dev.testZone2) player.infinityPoints = player.infinityPoints.add(getIPGain().mul(diff / 100))
+	if (hasTimeStudy(181)) player.infinityPoints = player.infinityPoints.add(getIPGain().mul(diff / 100))
 }
 
 function doCrunchInfinitiesGain(){
