@@ -24,7 +24,7 @@ function distribEx() {
 
 //v2: Rebalanced
 function hasBlackHoleEff(i) {
-	return (player.blackhole?.best || 0) >= BH_UDSP.eff[i].req
+	return tmp.bh_eff?.[i] !== undefined
 }
 
 function getBlackHoleEff(i, def = 1) {
@@ -32,85 +32,125 @@ function getBlackHoleEff(i, def = 1) {
 }
 
 const BH_UDSP = {
+	getSave() {
+		let s = {
+			hunger: 0,
+			weight: {},
+			boost: {}
+		}
+		for (var i in BH_FEED) s.weight[i] = 0
+		return s
+	},
+
+	//Calculation
 	calc(dt) {
-		let data = BH_UDSP.feed
-		player.blackhole.hunger = Math.min((player.blackhole.hunger || 0) + data.hunger_gain() * dt, data.hunger_cap())
+		player.blackhole.hunger = Math.max(player.blackhole.hunger - dt, 0)
+		for (let [i, b] of Object.entries(BH_FEED)) player.blackhole.upgrades[i] = Math.max(player.blackhole.upgrades[i], E(b.res()).max(1).div(b.cost[0]).log(b.cost[1]) + 1)
+		for (let i in player.blackhole.boost) {
+			player.blackhole.boost[i] -= dt
+			if (player.blackhole.boost[i] <= 0) delete player.blackhole.boost[i]
+		}
 	},
 	temp() {
 		if (!mod.udsp || !player.blackhole?.unl) {
 			delete tmp.bh_eff
 			return
 		}
-
-		tmp.bh_eff = []
-		for (let d of BH_UDSP.eff) tmp.bh_eff.push(d.eff(player.blackhole.power))
+		tmp.bh_eff = {}
+		for (let d in player.blackhole.boost) tmp.bh_eff[d] = this.boosts[d].eff(player.blackhole.power)
 	},
 
 	//Features
-	remnant: {
-		reduce() {
-			if (player.exdilation.unspent.eq(0)) return
-			player.exdilation.unspent = E(0)
-			for (let i of Object.keys(BH_FEED)) player.blackhole.upgrades[i] /= 2
-		},
-	},
-	feed: {
-		use() {
-			let gain = Math.floor(Math.min(player.blackhole.hunger, player.blackhole.upgrades.total / 3))
-			if (gain == 0) return
+	hunger: {
+		cap: _ => 100,
+		calc: x => player.blackhole.upgrades[x] * player.blackhole.weight[x] / 100,
 
-			player.blackhole.upgrades.total -= gain * 3
-			player.blackhole.best = Math.max(player.blackhole.best || 0, gain * 3)
-			player.blackhole.hunger -= gain
-			player.blackhole.power = player.blackhole.power.add(BH_UDSP.feed.gain(gain))
+		feed() {
+			if (player.blackhole.hunger >= this.cap()) return
+			for (let [i, b] of Object.entries(BH_UDSP.boosts)) {
+				let can = true
+				for (let [i2, req] of Object.entries(b.req)) if (this.calc(i2) < req) can = false
+				if (can) player.blackhole.boost[i] = 600
+			}
+			player.blackhole.power = player.blackhole.power.add(1)
+			player.blackhole.hunger += 200
 		},
-		gain(x) {
-			let r = pow10(x / 2)
-			if (hasBlackHoleEff(3)) r = r.mul(getBlackHoleEff(3))
-			return r
+		change(i) {
+			let sum = 0
+			for (let i2 in BH_FEED) if (i2 != i) sum += player.blackhole.weight[i2]
+			player.blackhole.weight[i] = Math.min(el("bh_udsp_w_"+i).value, 100 - sum)
+			this.update()
 		},
-		hunger_gain() {
-			let r = .03
-			if (player.dilation.upgrades.includes("udsp2")) r *= Math.max(this.hunger_cap() / 5, 1)
-			return r
+		update() {
+			for (let i in BH_FEED) el("bh_udsp_w_" + i).value = player.blackhole.weight[i]
 		},
-		hunger_cap() {
-			let r = 1
-			if (player.dilation.upgrades.includes("udsp1")) r += Math.max(player.dilation.dilatedTime.max(1).log10() / 3 - 10, 0)
-			return r
-		}
 	},
-	eff: [
-		{ req: 1, eff: x => Math.min(1 + x.add(1).log10() / 10, 2), desc: e => `Strengthen the replicanti Dilation upgrade by <b>${shorten(e)}x</b>.` },
-		{ req: 3, eff: x => x.add(1).log10() + 1, desc: e => `Gain <b>${shorten(e)}x</b> more Dilated Time.` },
-		{ req: 6, eff: x => x.add(1).log10() / 2 + 1, desc: e => `Gain <b>${shorten(e)}x</b> more ex-dilation.` },
-		{ req: 10, eff: x => x.add(1).pow(.1), desc: e => `Gain <b>${shorten(e)}x</b> more Black Hole Power.` },
-		{ req: 15, eff: x => x.add(1).log10() + 1, desc: e => `Gain <b>${shorten(e)}x</b> more banked Infinities.` },
-		{ req: 21, eff: x => x.add(1).log10() / 5 + 1, desc: e => `Raise ex-dilation by <b>^${shorten(e)}</b>.` },
+	boosts: [
+		{
+			req: { dilatedTime: 1 },
+			eff: x => Math.min(1 + x.add(1).log10() / 10, 2),
+			disp: e => `Strengthen the replicanti Dilation upgrade by <b>${shorten(e)}x</b>.`
+		},
+		{
+			req: { dilatedTime: 1 },
+			eff: x => x.add(1).log10() + 1,
+			disp: e => `Gain <b>${shorten(e)}x</b> more Dilated Time.`
+		},
+		{
+			req: { dilatedTime: 1 },
+			eff: x => x.add(1).log10() / 2 + 1,
+			disp: e => `Gain <b>${shorten(e)}x</b> more ex-dilation.`
+		},
+		{
+			req: { dilatedTime: 1 },
+			eff: x => x.add(1).pow(.1),
+			disp: e => `Gain <b>${shorten(e)}x</b> more Black Hole Power.`
+		},
+		{
+			req: { dilatedTime: 1 },
+			eff: x => x.add(1).log10() + 1,
+			disp: e => `Gain <b>${shorten(e)}x</b> more banked Infinities.`
+		},
+		{
+			req: { dilatedTime: 1 },
+			eff: x => x.add(1).log10() / 5 + 1,
+			disp: e => `Raise ex-dilation by <b>^${shorten(e)}</b>.`
+		},
 	],
 
 	//DOM
 	setup() {
 		let html = ""
-		for (let i in BH_UDSP.eff) {
-			html += `<td id="bh_udsp_eff_${i}" style='width: 420px; text-align: center'></td>`
-			if (i % 2 == 1) html += `</tr><tr>`
+		for (let i in BH_FEED) {
+			html += `<tr>
+				<td>
+					<b>${BH_FEED[i].title}</b>:
+					<span id="bh_udsp_amt_${i}"></span>
+				</td><td>
+					<input id="bh_udsp_w_${i}" type="range" min="0" max="100" onchange="BH_UDSP.hunger.change('${i}')"></input>
+					<span id="bh_udsp_per_${i}"></span>
+				</td>
+				<td></td>
+			</tr>`
 		}
-		el("bh_udsp_eff").innerHTML = `<tr>${html}</tr>`
+		el("bh_udsp_feed").innerHTML = html
 	},
 	update() {
 		let unl = player.blackhole.unl && mod.udsp
 		el("bh_udsp").style.display = unl ? "" : "none"
-		el("blackholeSac").style.display = unl && exdilated() ? "" : "none"
 		if (!unl) return
 
-		el("bh_udsp_hu").textContent = shorten(player.blackhole.hunger) + " / " + shorten(BH_UDSP.feed.hunger_cap())
+		el("bh_udsp_btn").className = player.blackhole.hunger < this.hunger.cap() ? "storebtn" : "unavailablebtn"
+		el("bh_udsp_hu").textContent = shorten(player.blackhole.hunger) + " / " + shorten(this.hunger.cap())
 		el("bh_udsp_dm").textContent = shorten(player.blackhole.power)
-		el("bh_udsp_re").textContent = getFullExpansion(player.blackhole.upgrades.total)
-		for (let [i, d] of Object.entries(BH_UDSP.eff)) el("bh_udsp_eff_"+i).innerHTML = hasBlackHoleEff(i) ? d.desc(tmp.bh_eff[i]) : `[ Feed ${getFullExpansion(d.req)} Remnants ]`
-	}
-}
 
-function moveBlackHoleFeed() {
-	el(mod.udsp ? "bh_udsp_feed" : "bh_feed").appendChild(el("bh_feed_div"))
+		for (let i in BH_FEED) {
+			el("bh_udsp_per_" + i).innerHTML = player.blackhole.weight[i] + "%"
+			el("bh_udsp_amt_" + i).innerHTML = shorten(this.hunger.calc(i))
+		}
+
+		let html = ""
+		for (let [i, t] of Object.entries(player.blackhole.boost)) html += `<b>#${parseInt(i)+1}</b> (${timeDisplayShort(t * 10, 1)}): ${BH_UDSP.boosts[i].disp(tmp.bh_eff[i])}<br>`
+		el("bh_udsp_eff").innerHTML = html
+	}
 }

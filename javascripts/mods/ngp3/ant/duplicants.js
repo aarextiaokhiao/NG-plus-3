@@ -165,7 +165,7 @@ function getEmperorDimensionMultiplier(dim) {
 	if (dim == 8) ret = ret.mul(E_pow(1.1, quSave.emperorDimensions[8].perm - 8).max(1))
 	if (dim == 1 && hasAch("ng3p54")) ret = ret.mul(Math.pow(todSave.r.spin.add(10).log10(), 3))
 	if (hasNU(7) && dim % 2 == 1) ret = ret.mul(NT.eff("upg", 7))
-	ret = ret.pow(PHOTON.eff(5))
+	ret = ret.pow(lightEff(5))
 	return ret
 }
 

@@ -1184,10 +1184,12 @@ function doNGM4v0tov2111(){
 
 function doNGSPUpdatingVersion(){
 	if (!mod.udsp) return
+	aarMod.nguspV = 2
 
 	for (var d = 1; d <= 8; d++) delete player["blackholeDimension"+d]
 	if (player.dilation.autoUpgrades === undefined) player.dilation.autoUpgrades = []
-	aarMod.nguspV = 2
+	player.blackhole = deepUndefinedAndDecimal(player.blackhole, BH_UDSP.getSave())
+	BH_UDSP.hunger.update()
 }
 
 function doInitInfMultStuff(){
@@ -1560,7 +1562,6 @@ function onLoad(noOffline) {
 	setTSDisplay()
 	setReplAutoDisplay()
 	setSomeQuantumAutomationDisplay()
-	moveBlackHoleFeed()
 
 	if (mod.ngp3) updateNGp3DisplayStuff()
 	hideDimensions()

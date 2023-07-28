@@ -99,7 +99,7 @@ function resetBlackholeDimensions(full) {
 let BH_FEED = {
 	dilatedTime: { title: "Dilated Time", cost: [pow10(20), 10], res: _ => player.dilation.dilatedTime, sub: x => { player.dilation.dilatedTime = player.dilation.dilatedTime.sub(x) } },
 	bankedInfinities: { title: "Banked Infinities", cost: [5e9, 2], res: _ => player.infinitiedBank, sub: x => { player.infinitiedBank = nS(player.infinitiedBank, x) } },
-	replicanti: { title: "replicanti", cost: [pow10(2e4), pow10(1e3)], res: _ => player.replicanti.amount, sub: x => { player.replicanti.amount = player.replicanti.amount.sub(x) } },
+	replicanti: { title: "Replicanti", cost: [pow10(2e4), pow10(1e3)], res: _ => player.replicanti.amount, sub: x => { player.replicanti.amount = player.replicanti.amount.sub(x) } },
 }
 
 function feedBlackHoleCost(i) {
@@ -151,11 +151,6 @@ function updateBHFeed() {
 		el("bh_feed_"+i).innerHTML = (mod.udsp ? "<b>+1 Remnant</b>" : `Feed the Black Hole with ${BH_FEED[i].title}`) + `<br>Cost: ${shortenCosts(feedBlackHoleCost(i))} ${BH_FEED[i].title}`
 		el("bh_feed_"+i).className = canFeedBlackHole(i) ? 'eternityupbtn' : 'eternityupbtnlocked'
 	}
-
-	if (mod.udsp) {
-		let gain = Math.floor(Math.min(player.blackhole.hunger, player.blackhole.upgrades.total / 3))
-		el("feedBHButton").className = gain >= 1 ? "eternityupbtn" : "eternityupbtnlocked"
-	}
 }
 
 //power
@@ -171,10 +166,10 @@ function updateBlackhole() {
 		return
 	}
 
-	updateBHFeed()
 	BH_UDSP.update()
 	if (mod.udsp) return
 
+	updateBHFeed()
 	drawBlackhole()
 	el("blackholePowAmount").innerHTML = shortenMoney(player.blackhole.power);
 	if (!mod.udsp) el("blackholePowPerSec").innerHTML = "You are getting " + shortenMoney(getBlackholeDimensionProduction(1)) + " Black Hole power per second.";
@@ -208,13 +203,17 @@ function drawBlackhole(ts) {
 }
 
 function resetBlackhole(full) {
+	let oldSave = player.blackhole
 	player.blackhole = {
 		unl: speedrunMilestonesReached >= 5,
-		upgrades: {dilatedTime: 0, bankedInfinities: 0, replicanti: 0, total: 0},
+		upgrades: { dilatedTime: 0, bankedInfinities: 0, replicanti: 0, total: 0 },
 		power: E(0)
 	}
+	if (mod.udsp) {
+		player.blackhole = deepUndefinedAndDecimal(player.blackhole, BH_UDSP.getSave())
+		player.blackhole.weight = oldSave.weight
+	}
 
-	player.blackhole.power = E(0)
 	el('blackHoleCanvas').getContext('2d').clearRect(0, 0, 400, 400)
 
 	resetBlackholeDimensions(!hasAch("ng3p67") || !mod.udp || aarMod.ngumuV)

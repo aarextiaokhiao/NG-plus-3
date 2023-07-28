@@ -1846,26 +1846,26 @@ br {
 }
 
 .infrared { color: #7f0000 }
-td.infrared {
+div.infrared {
 	background: rgba(127, 0, 0, 0.25)
 }
 
 .red { color: #bf0000 }
-td.red {
+div.red {
 	background: rgba(191, 0, 0, 0.25)
 }
 
 .orange {
 	color: #bf5f00
 }
-td.orange {
+div.orange {
 	background: rgba(191, 95, 0, 0.25)
 }
 
 .yellow {
 	color: #bfbf00
 }
-td.yellow {
+div.yellow {
 	background: rgba(191, 191, 0, 0.25)
 }
 
@@ -1873,35 +1873,35 @@ td.yellow {
 .l_green {
 	color: #007f00
 }
-td.green {
+div.green {
 	background: rgba(0, 191, 0, 0.25)
 }
 
 .cyan { color: #00bfbf }
 
 .blue { color: #0000bf }
-td.blue {
+div.blue {
 	background: rgba(0, 0, 191, 0.25)
 }
 
 .indigo {
 	color: #2f00bf
 }
-td.indigo {
+div.indigo {
 	background: rgba(47, 0, 191, 0.25)
 }
 
 .violet {
 	color: #5f00bf
 }
-td.violet {
+div.violet {
 	background: rgba(95, 0, 191, 0.25)
 }
 
-.uv {
+.ultraviolet {
 	color: #8f00bf
 }
-td.uv {
+div.ultraviolet {
 	background: rgba(143, 0, 191, 0.25)
 }
 

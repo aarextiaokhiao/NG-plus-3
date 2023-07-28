@@ -50,7 +50,7 @@ const NEUTRINO = NT = {
 		},
 		gain() { 
 			let r = E_pow(getNeutrinoMultBase(), ghSave.neutrinos.multPower - 1)
-			r = E_pow(PHOTON.eff(3), brSave.bestGals).mul(r)
+			r = E_pow(lightEff(3), brSave.bestGals).mul(r)
 			if (mod.p3ep) r = r.mul(pow10(player.galaxies / 1e5))
 			return r
 		},
@@ -103,7 +103,7 @@ const NEUTRINO = NT = {
 				eff(nt) {
 					let nb2neutrinos = Math.pow(nt[0].add(1).log10(),2)+Math.pow(nt[1].add(1).log10(),2)+Math.pow(nt[2].add(1).log10(),2)
 					let nb2 = Math.pow(nb2neutrinos, .25) * 1.5
-					if (nb2 > 9) nb2 = Math.pow(nb2 / 9, PHOTON.eff(1)) * 3 + 6
+					if (nb2 > 9) nb2 = Math.pow(nb2 / 9, lightEff(1)) * 3 + 6
 					return nb2
 				},
 				effDesc: e => `Replicate chance boosts itself more. (<b>+^${shorten(e)}</b>)`,

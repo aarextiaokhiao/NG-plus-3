@@ -199,7 +199,7 @@ function getNanoRewardReqFixed(n){
 	let a = getActiveNanoScalings()
 	let s = getNanoScalingsStart()
 	if (n >= s[0] && a[0]) x = x.mul(E_pow(4.0, (n - s[0])))
-	if (n >= s[1] && a[1]) x = x.mul(E_pow(2.0, (n - s[1]) * (n - s[1] + 3) / PHOTON.eff(6)))
+	if (n >= s[1] && a[1]) x = x.mul(E_pow(2.0, (n - s[1]) * (n - s[1] + 3) / lightEff(6)))
 	return x
 }
 

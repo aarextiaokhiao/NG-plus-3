@@ -1,6 +1,6 @@
 //VERSION: 2.31
 let ngp3_ver = 2.31
-let ngp3_build = 20230725
+let ngp3_build = 20230727
 function doNGP3Updates() {
 	if (!aarMod.ngp3_build) aarMod.ngp3_build = 0
 	if (aarMod.ngp3_build < 20221230) quSave.multPower = 0
@@ -32,7 +32,13 @@ function doNGP3Updates() {
 			delete ghSave.disabledRewards
 			delete ghSave.reached
 		}
-		if (aarMod.ngp3_build < 20230215 && E(ghSave.ghostParticles).lt(1e20)) {
+		if (aarMod.ngp3_build < 20230727) {
+			delete ghSave.wzb
+			delete ghSave.hb
+			delete ghSave.bl
+			ghSave.photon = PHOTON.setup()
+		}
+		if (aarMod.ngp3_build < 20230727 && E(ghSave.ghostParticles).lt(1e20)) {
 			alert("Due to massive balancing changes, you will be pushed back to e20 Spectral Particles!")
 
 			resetGHPandNeutrinos()
@@ -40,13 +46,6 @@ function doNGP3Updates() {
 			ghSave.neutrinos.boosts = 9
 			beSave.upgrades = [1, 2, 3, 4, 5, 6]
 			ghSave.ghostParticles = E(1e20)
-		}
-		if (aarMod.ngp3_build < 20230331) {
-			delete ghSave.wzb
-			delete ghSave.hb
-			delete ghSave.bl
-			delete ghSave.photons.plusOne
-			ghSave.photons.offset = [0,0,0,0,0,0,0]
 		}
 	}
 	if (aarMod.ngp3_build < 20230721.01 && hasMasteryStudy("d8") && quSave.best > 3e3) alert("Quantum Challenges are locked until you get a 5-minute Speedrun Milestone!")

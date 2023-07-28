@@ -256,7 +256,7 @@ function getReplSpeed() {
 	}
 	inc = inc + 1
 	if (hasGluonUpg("gb", 2)) exp *= 2
-	exp *= PHOTON.eff(4)
+	exp *= lightEff(4)
 	return {inc: inc, exp: exp}
 }
 

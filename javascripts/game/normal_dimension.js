@@ -264,7 +264,7 @@ function getDimensionPowerMultiplier(focusOn, debug) {
 	if (exp > 1) ret = E_pow(ret, exp)
 	if (focusOn == "positrons") return ret
 
-	if (mod.ngp3) ret = E(PHOTON.eff(0)).mul(ret)
+	if (mod.ngp3) ret = E(lightEff(0)).mul(ret)
 	if (mod.ngmu) {
 		ret = E(Math.log10(player.resets + 1) + 1).mul(ret)
 		ret = E(Math.log10(Math.max(player.galaxies, 0) + 1) * 5 + 1).mul(ret)

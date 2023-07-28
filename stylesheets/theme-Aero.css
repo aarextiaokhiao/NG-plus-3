@@ -1580,7 +1580,7 @@ td.indigo {
 td.violet {
     background: linear-gradient(#c7f5, #c7f3)
 }
-td.uv, td.magenta {
+td.ultraviolet, td.magenta {
     background: linear-gradient(#f7f7, #f7f3)
 }
 
@@ -1611,7 +1611,7 @@ td.indigo.light {
 td.violet.light {
     background: linear-gradient(#c7f7, #c7f5)
 }
-td.uv.light {
+td.ultraviolet.light {
     background: linear-gradient(#f7f7, #f7f5)
 }
 
@@ -1667,6 +1667,6 @@ td.uv.light {
 .violet {
     color: #c7f;
 }
-.uv, .magenta {
+.ultraviolet, .magenta {
     color: #f7f;
 }
