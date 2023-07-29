@@ -87,11 +87,10 @@ function assignAll(auto) {
 	var ratios = quSave.assignAllRatios
 	var sum = ratios.r+ratios.g+ratios.b
 	var oldQuarks = getAssortAmount()
-	var colors = ['r','g','b']
-	for (c = 0; c < 3; c++) {
-		var toAssign = oldQuarks.mul(ratios[colors[c]]/sum).round()
+	for (let c of QUARK_COLORS) {
+		var toAssign = oldQuarks.mul(ratios[c] / sum).round()
 		if (toAssign.gt(0)) {
-			quSave.usedQuarks[colors[c]] = quSave.usedQuarks[colors[c]].add(toAssign).round()
+			quSave.usedQuarks[c] = quSave.usedQuarks[c].add(toAssign).round()
 			if (ghSave?.another > 0) ghSave.another--
 		}
 	}
@@ -108,8 +107,7 @@ function assignAll(auto) {
 			g: quSave.assignAllRatios.r,
 			b: quSave.assignAllRatios.g
 		}
-		var colors = ['r','g','b']
-		for (c = 0; c < 3; c++) el("ratio_" + colors[c]).value = quSave.assignAllRatios[colors[c]]
+		for (let c of QUARK_COLORS) el("ratio_" + c).value = quSave.assignAllRatios[c]
 	}
 	updateColorCharge()
 }
@@ -152,8 +150,7 @@ function changeRatio(color) {
 		return
 	}
 	var sum = 0
-	var colors = ['r','g','b']
-	for (c = 0; c < 3; c++) sum += colors[c] == color ? value : quSave.assignAllRatios[colors[c]]
+	for (let c of QUARK_COLORS) sum += c == color ? value : quSave.assignAllRatios[c]
 	if (sum == 0 || sum == 1/0) {
 		el("ratio_" + color).value = quSave.assignAllRatios[color]
 		return
@@ -166,6 +163,8 @@ function updateAssortOptions() {
 	var autoAssignUnl = quSave?.reachedInfQK
 	el('assign_opt_req').style.display = !advancedUnl ? "" : "none"
 	el('assign_options').style.display = advancedUnl ? "" : "none"
+	for (let c of QUARK_COLORS) el("ratio_" + c).style.display = advancedUnl ? "" : "none"
+
 	el('autoAssign').style.display = autoAssignUnl ? "" : "none"
 	el('autoAssignRotate').style.display = autoAssignUnl ? "" : "none"
 	el('autoReset').style.display = hasAch("ng3p47") ? "" : "none"
@@ -178,17 +177,16 @@ colorCharge = {
 
 function updateColorCharge() {
 	if (!mod.ngp3) return
-	var colors = ['r','g','b']
-	for (var i = 0; i < 3; i++) {
+	for (let c of QUARK_COLORS) {
 		var ret = E(0)
-		if (hasBraveMilestone(2)) ret = quSave.usedQuarks[colors[i]]
-		colorCharge[colors[i]] = ret
+		if (hasBraveMilestone(2)) ret = quSave.usedQuarks[c]
+		colorCharge[c] = ret
 	}
 
-	var sorted=[]
+	var sorted = []
 	for (var s = 1; s < 4; s++) {
 		var search = ''
-		for (var i = 0; i < 3; i++) if (!sorted.includes(colors[i])&&(search==''||quSave.usedQuarks[colors[i]].gte(quSave.usedQuarks[search]))) search=colors[i]
+		for (let c of QUARK_COLORS) if (!sorted.includes(c) && quSave.usedQuarks[c].gte(quSave.usedQuarks[search] ?? 0)) search = c
 		sorted.push(search)
 	}
 
@@ -260,12 +258,11 @@ function updateQuarksTab(tab) {
 
 	if (hasMasteryStudy("t383")) el("blueTranslationMD").textContent=shorten(getMTSMult(383))+"x"
 	if (hasBraveMilestone(8)) {
-		var assortAmount=getAssortAmount()
-		var colors=['r','g','b']
+		var assortAmount = getAssortAmount()
 		el("assort_amount").textContent = shortenDimensions(assortAmount)
-		for (c = 0; c < 3; c++) if (colorCharge[colors[c]].div(colorCharge.qwBonus).lte(1e16)) el(colors[c]+"PowerRate").textContent="+"+shorten(getColorPowerProduction(colors[c]))+"/s"
-
 		el("assignAllButton").className = (assortAmount.lt(1) ? "unavailabl" : "stor") + "ebtn"
+
+		for (let c of QUARK_COLORS) el(c+"PowerRate").textContent="+"+shorten(getColorPowerProduction(c))+"/s"
 	}
 
 	//UPGRADES
@@ -282,7 +279,7 @@ function updateQuarksTabOnUpdate(mode) {
 	if (colorCharge.normal.charge.eq(0)) el("colorCharge").innerHTML='neutral charge'
 	else {
 		var color = COLORS[colorCharge.normal.color]
-		el("colorCharge").innerHTML='<span class="'+color+'">'+color+'</span> charge of <span class="'+color+'" style="font-size:35px">' + shortenDimensions(colorCharge.normal.charge) + "</span>"
+		el("colorCharge").innerHTML='<span class="'+color+'">'+color+'</span> charge of <span class="'+color+'" style="font-size:15px">' + shortenDimensions(colorCharge.normal.charge) + "</span>"
 	}
 
 	var assortAmount = getAssortAmount()
@@ -310,18 +307,20 @@ function drawQuarkAnimation(ts){
 		delta = (ts - lastTs) / 1000
 		lastTs = ts
 
-		qkctx.clearRect(0, 0, qkc.width, qkc.height)
-		let amt = Math.min(Math.log10(quantumWorth.add(1).log10() + 10) * 50, 200)
+		qkctx.fillStyle = "#fff3"
+		qkctx.fillRect(0, 0, qkc.width, qkc.height)
+		let amt = Math.min(Math.log10(quantumWorth.add(1).log10() + 10) * 100, 300)
 		for (let i = 0; i < amt; i++) {
-			let data = quarks[i] || {
-				deg: Math.random() * 1000,
-				speed: Math.random() * .5 + .75
+			let data = quarks[i] ?? {
+				deg: i,
+				delta: Math.floor(Math.random() * 4) + 1,
+				speed: Math.random() * .1 + .2
 			}
 			quarks[i] = data
 			data.deg += delta * data.speed
 
 			let actualDeg = (data.deg / Math.PI) % 1
-			let dist = offset * (Math.sin(data.deg / Math.PI) / 3 + .5)
+			let dist = offset * (0.4 + Math.cos(data.deg / data.delta + ts / 5e3) * 0.3)
 			qkctx.fillStyle = actualDeg > 2/3 ? "#00f" : actualDeg > 1/3 ? "#0f0" : "#f00"
 			point(centerX + Math.sin(data.deg) * dist, centerY + Math.cos(data.deg) * dist, qkctx)
 		}

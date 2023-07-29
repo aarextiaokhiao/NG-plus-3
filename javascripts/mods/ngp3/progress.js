@@ -136,8 +136,8 @@ const NGP3_FEATURES = {
 		req_disp: (amt, req) => `${shorten(amt)} / ${shorten(req)} Light Emissions`
 	},
 	hb: {
-		name: "Higgs",
-		tab: _ => TAB_CORE.open("bl"),
+		name: "Higgs Field",
+		tab: _ => TAB_CORE.open("hb"),
 
 		met: _ => false,
 		req: _ => 1e7,

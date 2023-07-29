@@ -6,19 +6,22 @@ function setupFundament() {
 		best: 9999999999,
 		last10: [[600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)]],
 		milestones: 0,
+		automatorGhosts: setupAutomaticGhostsData(),
+
 		ghostParticles: E(0),
 		multPower: 1,
 		neutrinos: NT.setup(),
-		automatorGhosts: setupAutomaticGhostsData(),
+
 		photons: PHOTON.setup(),
-		lab: LAB.setup()
+		lab: LAB.setup(),
+		hb: HIGGS.setupSave()
 	}
 }
 
 function loadFundament() {
 	ghSave = player.ghostify
-	ghostified = ghSave?.times > 0 
 	blSave = undefined
+	ghostified = ghSave?.times > 0
 
 	if (!mod.ngp3) return
 	player.meta.bestOverGhostifies = Decimal.max(player.meta.bestOverGhostifies, player.meta.bestOverQuantums)
@@ -28,7 +31,6 @@ function loadFundament() {
 	ghSave = deepUndefinedAndDecimal(ghSave, setupFundament())
 	blSave = ghSave?.lab
 
-	ghSave.times = nP(ghSave.times)
 	updateBraveMilestones()
 	updateAutoGhosts(true)
 	delete BL_HYPOTHESES.hypo_chosen
@@ -208,7 +210,7 @@ RESETS.funda = {
 	},
 
 	doReset() {
-		let bm = ghSave.milestones
+		let bm = ghSave?.milestones
 
 		player.infinitiedBank = 0
 		player.eternitiesBank = ghostified ? 200 : 0
@@ -235,19 +237,17 @@ RESETS.funda = {
 			ghSave.neutrinos.mu = E(0)
 			ghSave.neutrinos.tau = E(0)
 		}
+		player.unstableThisGhostify = 0
 
-		ghSave.time = 0
 		GHPminpeak = E(0)
 		GHPminpeakValue = E(0)
 
-		player.unstableThisGhostify = 0
+		if (!ghSave) return
+		ghSave.time = 0
 		ghSave.under = true
 		ghSave.another = 10
 		ghSave.reference = 10
-
 		ghSave.photons.amt = E(0)
-		ghSave.photons.light = []
-		delete ghSave.photons.emission[2]
 	}
 }
 
@@ -264,6 +264,7 @@ function denyGhostify() {
 function updateGhostifyTempStuff() {
 	if (!ghostified) return
 	if (tmp.funda == undefined) tmp.funda = {}
+	HIGGS.temp()
 	LAB.temp()
 	PHOTON.temp()
 	NT.temp()

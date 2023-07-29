@@ -1884,8 +1884,7 @@ function conToDeciMS(){
 // https://github.com/MrRedShark77/NG-plus-3CR/blob/main/javascripts/core/load_functions.js
 // this assumedly does a deep search for undefined values
 function deepUndefinedAndDecimal(obj, data) {
-	console.log(obj, data)
-	if (obj == null) return data
+	if (obj == null || obj == undefined) return data
 	for (let x = 0; x < Object.keys(data).length; x++) {
 		let k = Object.keys(data)[x]
 		if (obj[k] === null || data[k] === undefined) continue;

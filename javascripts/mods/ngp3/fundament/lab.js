@@ -16,12 +16,7 @@ const BOSONIC_LAB = LAB = {
 			best_bosons: E(0),
 
 			hypo_field: {},
-			wz_capacitors: WEAK_FORCE.setup(),
-			hf: {
-				amt: E(0),
-				boosts: {},
-				dims: [E(0), E(0), E(0), E(0)],
-			}
+			wz_capacitors: WEAK_FORCE.setup()
 		}
 	},
 	calc(dt) {
@@ -201,10 +196,11 @@ function blEff(i, def) {
 }
 
 TABS = Object.assign(TABS, {
-	bl: { name: "Bosonic Lab", class: "bosonic_btn", stab: [ "bl_hy", "bl_wf", "mil_bl", "bl_real" ], unl: _ => LAB.unlocked() || BL_JOKE.started() },
+	bl: { name: "Bosonic Lab", class: "bosonic_btn", stab: [ "bl_hy", "bl_wf", "mil_bl", "hb", "bl_real" ], unl: _ => LAB.unlocked() || BL_JOKE.started() },
 	bl_hy: { name: "Hypotheses", update: _ => BL_HYPOTHESES.update(), unl: _ => LAB.unlocked() },
 	bl_wf: { name: "Weak Force", update: _ => WEAK_FORCE.update(), unl: _ => LAB.unlocked() },
 	mil_bl: { name: "Milestones", update: _ => LAB.update(), unl: _ => LAB.unlocked() },
+	hb: { name: "Higgs", update: _ => HIGGS.updateTab(), unl: _ => LAB.unlocked() },
 	bl_real: { unl: _ => BL_JOKE.started() }
 })
 
@@ -497,7 +493,6 @@ const WEAK_FORCE = {
 			<button class='storebtn' onclick='WEAK_FORCE.put(${i}, "putout")'>Weaken</button><br><br>
 			<span id='wz_capacitor_eff_${i}'></span>
 		</td>`
-		//<button class='storebtn' onclick='WEAK_FORCE.put(${i}, "clear")'>Clear</button>
 		el("wz_capacitors").innerHTML = html
 	},
 	update() {

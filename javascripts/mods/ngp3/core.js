@@ -1,6 +1,6 @@
 //VERSION: 2.31
 let ngp3_ver = 2.31
-let ngp3_build = 20230727
+let ngp3_build = 20230728
 function doNGP3Updates() {
 	if (!aarMod.ngp3_build) aarMod.ngp3_build = 0
 	if (aarMod.ngp3_build < 20221230) quSave.multPower = 0
@@ -19,24 +19,14 @@ function doNGP3Updates() {
 		updatePositronsEffect()
 	}
 	if (aarMod.ngp3_build < 20230215) player.dilation.freeGalaxies = 0
-	if (aarMod.ngp3_build < 20230414 && blSave) blSave.wz_capacitors = WEAK_FORCE.setup()
 	if (aarMod.ngp3_build < 20230514 && todSave) todSave.chosen = "r"
+	if (aarMod.ngp3_build < 20230721.01 && hasMasteryStudy("d8") && quSave.best > 3e3) alert("Quantum Challenges are locked until you get a 5-minute Speedrun Milestone!")
 
-	if (!ghSave?.reached && !ghSave?.times) {
-		delete player.ghostify
-		loadFundament()
-	}
-	if (ghSave) {
+	if (ghSave !== undefined) {
 		if (aarMod.ngp3_build < 20230201) delete ghSave.ghostlyPhotons
 		if (aarMod.ngp3_build < 20230204) {
 			delete ghSave.disabledRewards
 			delete ghSave.reached
-		}
-		if (aarMod.ngp3_build < 20230727) {
-			delete ghSave.wzb
-			delete ghSave.hb
-			delete ghSave.bl
-			ghSave.photon = PHOTON.setup()
 		}
 		if (aarMod.ngp3_build < 20230727 && E(ghSave.ghostParticles).lt(1e20)) {
 			alert("Due to massive balancing changes, you will be pushed back to e20 Spectral Particles!")
@@ -47,8 +37,20 @@ function doNGP3Updates() {
 			beSave.upgrades = [1, 2, 3, 4, 5, 6]
 			ghSave.ghostParticles = E(1e20)
 		}
+		if (aarMod.ngp3_build < 20230728) {
+			delete ghSave.wzb
+			delete ghSave.bl
+			delete ghSave.lab?.hf
+			ghSave.photons = PHOTON.setup()
+			ghSave.hb = HIGGS.setup()
+		}
+
+		if (!ghSave.reached && !ghSave.times) {
+			delete player.ghostify
+			loadFundament()
+		}
 	}
-	if (aarMod.ngp3_build < 20230721.01 && hasMasteryStudy("d8") && quSave.best > 3e3) alert("Quantum Challenges are locked until you get a 5-minute Speedrun Milestone!")
+
 	aarMod.newGame3PlusVersion = ngp3_ver
 	aarMod.ngp3_build = ngp3_build
 }
@@ -521,6 +523,7 @@ function setupNGP3HTMLAndData() {
 	NT.setupTab()
 	PHOTON.setupTab()
 	LAB.setupTab()
+	HIGGS.setupTab()
 
 	//META
 	setupBadges()

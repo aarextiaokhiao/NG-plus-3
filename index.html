@@ -3325,55 +3325,56 @@
 				<canvas id="quarkCanvas" style='opacity: 0.4'></canvas>
 				<span id="quarks2" style='font-size: 16px'>0</span>
 				<span id="quantumWorth1" style='font-size: 16px'>0</span>
-				<table id='assign_options' class='qtable'>
-					<td class='red'>
-						<button class='storebtn' id="assignAllButton" onclick='assignAll()'>Distribute</button>
-						<button class='storebtn' id="autoAssign" onclick='toggleAutoAssign()'>Auto: OFF</button>
-						<button class='storebtn' id="autoAssignRotate" style="width:135px" onclick='rotateAutoAssign()'>Rotation: None</button>
-					</td><td class='green'>
-						Assort percentage: <input id="assort_percentage" type="number" min=1 max=100 onchange="changeAssortPercentage()">%
-						<button class='storebtn' id="assort_percentage_10" style="width:50px" onclick="changeAssortPercentage(10)">10%</button>
-						<button class='storebtn' id="assort_percentage_25" style="width:50px" onclick="changeAssortPercentage(25)">25%</button>
-						<button class='storebtn' id="assort_percentage_50" style="width:50px" onclick="changeAssortPercentage(50)">50%</button>
-						<button class='storebtn' id="assort_percentage_100" style="width:50px" onclick="changeAssortPercentage(100)">100%</button>
-					</td><td class='blue'>
-						R: <input id="ratio_r" type="number" min=0 onchange="changeRatio('r')"></input>
-						G: <input id="ratio_g" type="number" min=0 onchange="changeRatio('g')"></input>
-						B: <input id="ratio_b" type="number" min=0 onchange="changeRatio('b')"></input>
-					</td>
-				</table>
+				<div id='assign_options' class='qtable'>
+					<button class='storebtn' id="assignAllButton" onclick='assignAll()'>Distribute</button>
+					<button class='storebtn' id="autoAssign" onclick='toggleAutoAssign()'>Auto: OFF</button>
+					<button class='storebtn' id="autoAssignRotate" style="width:135px" onclick='rotateAutoAssign()'>Rotation: None</button><br>
+
+					Assort percentage: <input id="assort_percentage" type="number" min=1 max=100 onchange="changeAssortPercentage()">%
+					<button class='storebtn' id="assort_percentage_10" style="width:50px" onclick="changeAssortPercentage(10)">10%</button>
+					<button class='storebtn' id="assort_percentage_25" style="width:50px" onclick="changeAssortPercentage(25)">25%</button>
+					<button class='storebtn' id="assort_percentage_50" style="width:50px" onclick="changeAssortPercentage(50)">50%</button>
+					<button class='storebtn' id="assort_percentage_100" style="width:50px" onclick="changeAssortPercentage(100)">100%</button>
+				</div>
 				<div id="assign_opt_req">More assort options unlock at 100 net Quarks.</div>
-				<table class='qtable'><tr>
-					<td class="rqC"><span class="red" id="redQuarks" style="font-size:35px">0</span> red anti-quarks</td>
-					<td><span class="green" id="greenQuarks" style="font-size:35px">0</span> green anti-quarks</td>
-					<td class="bqC"><span class="blue" id="blueQuarks" style="font-size:35px">0</span> blue anti-quarks</td>
-				</tr><tr>
-					<td><button class='storebtn' id='redAssort' onclick='assignQuark("r")'>Assort</button></td>
-					<td><button class='storebtn' id='greenAssort' onclick='assignQuark("g")'>Assort</button></td>
-					<td><button class='storebtn' id='blueAssort' onclick='assignQuark("b")'>Assort</button></td>
-				</tr></table>
+				<br><hr>
+
 				You will get <span id="assort_amount"></span> colored quarks when you assort quarks.<br>
 				Your quarks have a net <span id='colorCharge'></span>.<br>
-				<table class='qtable'>
-					<tr>
-						<td class="rqC">
-							<p><span class="red" id="redPower" style="font-size:35px"></span> red power <span id='rPowerRate' style='font-size:25px' class='red'></span
-						</td>
+				<table>
+					<tr class='red'>
 						<td>
-							<p><span class="green" id="greenPower" style="font-size:35px"></span> green power <span id='gPowerRate' style='font-size:25px' class='green'></span>
+							<span id="redQuarks" style="font-size:35px">0</span> red anti-quarks<br>
+							<button class='storebtn' id='redAssort' onclick='assignQuark("r")'>Assort</button>
+							<input id="ratio_r" type="number" min=0 onchange="changeRatio('r')"></input>
+						</td><td>
+							<span id="redPower" style="font-size:20px"></span> red power<br>
+							<span id='rPowerRate' style='font-size:15px'></span>
 						</td>
-						<td class="bqC">
-							<p><span class="blue" id="bluePower" style="font-size:35px"></span> blue power <span id='bPowerRate' style='font-size:25px' class='blue'></span>
-						</td>
-					</tr><tr>
-						<td class="rqC">
-							Translated to <span class="red" id="redTranslation" style="font-size:35px"></span> stronger Antimatter Galaxies</p>
-						</td>
+						<td><span id="redTranslation" style="font-size:15px"></span> stronger Antimatter Galaxies</td>
+					</tr><tr class='green'>
 						<td>
-							Translated to <span class="green" id="greenTranslation" style="font-size:35px"></span> extra Replicated Galaxies</p>
+							<span id="greenQuarks" style="font-size:35px">0</span> green anti-quarks<br>
+							<button class='storebtn' id='greenAssort' onclick='assignQuark("g")'>Assort</button>
+							<input id="ratio_g" type="number" min=0 onchange="changeRatio('g')"></input>
+						</td><td>
+							<span id="greenPower" style="font-size:20px"></span> green power<br>
+							<span id='gPowerRate' style='font-size:15px'></span>
 						</td>
-						<td class="bqC">
-							Translated to <span class="blue" id="blueTranslation" style="font-size:35px"></span> Dilated Time production<span id="bluePowerMDEffect">, <span class="blue" id="blueTranslationMD" style="font-size:35px"></span> Meta Dimension production</span></span>
+						<td><span id="greenTranslation" style="font-size:15px"></span> extra Replicated Galaxies</td>
+					</tr><tr class='blue'>
+						<td>
+							<span id="blueQuarks" style="font-size:35px">0</span> blue anti-quarks<br>
+							<button id='blueAssort' onclick='assignQuark("b")'>Assort</button>
+							<input id="ratio_b" type="number" min=0 onchange="changeRatio('b')"></input>
+						</td><td>
+							<span id="bluePower" style="font-size:20px"></span> blue power<br>
+							<span id='bPowerRate' style='font-size:15px'></span>
+						</td><td>
+							<span id="blueTranslation" style="font-size:15px"></span> Dilated Time production
+							<div id="bluePowerMDEffect">
+								<span id="blueTranslationMD" style="font-size:15px"></span> Meta Dimension production
+							</div>
 						</td>
 					</tr>
 				</table>
@@ -3615,12 +3616,32 @@
 			<div id="tab_ph">
 				<div id="gphUnl"></div>
 				<div id="gphDiv">
-					<b id='ph_amt' style='font-size: 16px'></b> Photons<br>
-					<b id='ph_emission' style='font-size: 16px'></b> Emissions<br>
+					<b id='ph_emission' style='font-size: 25px'></b> Emissions<br>
+					<table>
+						<tr>
+							<td>
+								Range: <span id="ph_range"></span>
+							</td><td>
+								<button class='storebtn' id="ph_move" onclick="PHOTON.range.move()">Move</button>
+							</td>
+						</tr><tr>
+							<td>
+								Distance: <span id="ph_dist"></span>
+							</td><td>
+								<button class='storebtn' id="ph_extend" onclick="PHOTON.range.extend()">Extend</button>
+							</td>
+						</tr><tr>
+							<td class="lEp">
+								Enlightenments: <b id='ph_enlighten'></b>
+							</td><td>
+								(Req: Get full range)
+							</td>
+						</tr>
+					</table>
 
-					Range: <span id="ph_range"></span><br>
-					<button class='storebtn'>Extend</button>
-					<button class='storebtn'>Move</button><br>
+					<br><hr>
+					<b id='ph_amt' style='font-size: 25px'></b> Photons
+					<span id='ph_prod' style='font-size: 15px'></span><br>
 					<div id="light_table"></div>
 
 					<i style="opacity: 0.1">You were too spectral. Tributes to Ghostify!</i><br>
@@ -3710,11 +3731,16 @@
 				<table id="wz_capacitors" style='margin: auto'></table>
 				<b class='red' id="wz_deactive">Nullified! Assign more W- Bosons or weaken a Capacitor.</b>
 			</div>
-			<!--<div id="higgs">
-				<span id="hb" style="font-size:25px">0</span> Higgs
-				<br>
-				<button class="qu_upg hb">Reset Bosonic Lab for +1 Higgs.<br>(??? Bosons)</button>
-			</div>-->
+			<div id="tab_hb">
+				<span id="hb_amt" style="font-size:25px">0</span> Higgs<br>
+				<div id="hb_mass_div">
+					<span id="hb_mass" style="font-size:15px">0</span> Higgs Mass
+				</div>
+				<button class="qu_upg hb" id="hb_btn" onclick="HIGGS.pres.reset()"></button>
+				<br><br>
+
+				<div id="hb_field" style='display: none'></div>
+			</div>
 			<div id="tab_mil_bl">
 				<span id="bl_amt" style="font-size:25px"></span> Bosonic Matter<br>
 				<span id="bl_prod"></span><br>
@@ -3758,7 +3784,7 @@
 			<br><br><hr>
 
 			<b>(NG+3 v2.31: Ghostify Respecced)</b><br>
-			<b class="red">(Beta: 7/27/23 Build)</b><br>
+			<b class="red">(Beta: 7/28/23 Build)</b><br>
 			By <a href="https://aarextiaokhiao.github.io/">Aarex</a>, pg132, and usavictor.
 			<br><br>
 
@@ -4078,7 +4104,8 @@
 	<script type="text/javascript" src="javascripts/mods/ngp3/fundament/fundament.js"></script>
 	<script type="text/javascript" src="javascripts/mods/ngp3/fundament/neutrinos.js"></script>
 	<script type="text/javascript" src="javascripts/mods/ngp3/fundament/photons.js"></script>
-	<script type="text/javascript" src="javascripts/mods/ngp3/fundament/bl.js"></script>
+	<script type="text/javascript" src="javascripts/mods/ngp3/fundament/lab.js"></script>
+	<script type="text/javascript" src="javascripts/mods/ngp3/fundament/higgs.js"></script>
 	<script type="text/javascript" src="javascripts/mods/ngp3/progress.js"></script>
 	<script type="text/javascript" src="javascripts/mods/ngp3/core.js"></script>
 

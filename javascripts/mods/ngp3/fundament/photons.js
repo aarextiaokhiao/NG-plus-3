@@ -7,8 +7,8 @@ let PHOTON = {
 	setup() {
 		let r = {
 			amt: E(0),
-			emission: E(0),
-			range: [0, 1]
+			enlighten: 0,
+			range: [0, 0.5]
 		}
 		return r
 	},
@@ -22,9 +22,12 @@ let PHOTON = {
 	},
 
 	//Calculation
-	calc() {
-		ghSave.photons.amt = E(0)
-		ghSave.photons.emission = this.range.get()
+	calc(dt) {
+		ghSave.photons.amt = this.photon_prod().mul(dt).add(ghSave.photons.amt)
+		if (ghSave.photons.range[0] == 0 && ghSave.photons.range[1] == 8) {
+			ghSave.photons.range = [0, 0]
+			ghSave.photons.enlighten++
+		}
 	},
 	temp() {
 		if (!this.unlocked()) return
@@ -35,32 +38,36 @@ let PHOTON = {
 		let range = ghSave.photons.range
 		data.light = []
 		data.eff = []
-		data.range = range[1] - range[0]
+		data.dist = range[1] - range[0]
 
 		for (let [i, light] of Object.entries(this.light.data)) {
-			data.light[i] = Math.max(Math.min(range[1] - i, 1), 0)
-			if (i == 0) data.light[0] -= range[0]
-			data.light[i] = ghSave.photons.amt.mul(data.light[i])
+			data.light[i] = Math.min(Math.max(range[1] - range[0] - i, 0), 1) + ghSave.photons.enlighten
+			data.light[i] = ghSave.photons.amt.add(1).pow(data.light[i]).sub(1)
 
 			data.eff[i] = light.eff(0) //will be determined soon
 		}
 	},
 
+	photon_prod: _ => E(1),
+
 	//Feature - Range
 	range: {
 		get() {
-			let r = 3
+			let r = quSave.breakEternity.eternalMatter.log10() / 200
+			r -= ghSave.photons.enlighten * 24
 			r -= ghSave.photons.range[1] * 2
-			r -= tmp.funda.photon.range
-			return r
+			r -= tmp.funda.photon.dist
+			return Math.max(r, 0)
 		},
 		extend() {
-			ghSave.photons.range[0] = Math.max(ghSave.photons.range[0] - ghSave.photons.emission / 3, 0)
+			ghSave.photons.range[0] -= this.getExtend()
 		},
+		getExtend: _ => Math.min(ghSave.photons.range[0], PHOTON.range.get()),
 		move() {
-			let diff = tmp.funda.photon.emission / 3 * 2
-			for (let i = 0; i < 2; i++) ghSave.photons.range[i] += diff
+			let move = this.getMove()
+			for (let i = 0; i < 2; i++) ghSave.photons.range[i] += move
 		},
+		getMove: _ => Math.min(Math.min(0.5 - ghSave.photons.range[0], 8 - ghSave.photons.range[1]), PHOTON.range.get() / 2)
 	},
 
 	//Feature - Lights
@@ -126,9 +133,15 @@ let PHOTON = {
 			return
 		}
 
-		el("ph_emission").textContent = shorten(ghSave.photons.emission)
+		el("ph_amt").textContent = shortenMoney(ghSave.photons.amt)
+		el("ph_prod").textContent = `(+${shorten(this.photon_prod())}/s)`
+		el("ph_emission").textContent = shorten(this.range.get())
+
 		el("ph_range").textContent = `${ghSave.photons.range[0].toFixed(2)} - ${ghSave.photons.range[1].toFixed(2)}`
-		el("ph_amt").textContent = shorten(ghSave.photons.amt)
+		el("ph_dist").textContent = tmp.funda.photon.dist.toFixed(2)
+		el("ph_move").textContent = `Move: +${this.range.getMove().toFixed(2)}`
+		el("ph_extend").textContent = `Extend: +${this.range.getExtend().toFixed(2)}`
+		el("ph_enlighten").textContent = getFullExpansion(ghSave.photons.enlighten)
 
 		for (const [i, light] of Object.entries(this.light.data)) {
 			el("ph_light_amt_" + i).textContent = shorten(tmp.funda.photon.light[i])

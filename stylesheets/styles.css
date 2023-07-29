@@ -2542,6 +2542,61 @@ td.grey {
 	}
 }
 
+.hb_boost {
+	position: relative;
+	width: 480px;
+	height: 72px
+}
+.hb_boost .id {
+	bottom: 0;
+	left: 0;
+	width: 60px;
+	height: 36px;
+	border-radius: 72px 0 0 72px;
+	font-size: 24px;
+	font-weight: bold;
+	color: #0007;
+}
+.hb_boost .eff {
+	bottom: 36px;
+	background: transparent;
+}
+.hb_boost .boost {
+	bottom: 0;
+	right: 0;
+	width: 420px;
+	height: 72px;
+	border-radius: 72px 72px 72px 0;
+}
+.hb_boost .btn {
+	height: 72px;
+	width: 72px;
+
+	background: radial-gradient(black, #0fb);
+	background-position: center;
+	border: 3px solid #0fb;
+	border-radius: 72px;
+
+	font-size: 36px;
+	color: #7fb;
+
+	transition-duration: 0.3s
+}
+.hb_boost .btn:hover {
+	box-shadow: inset 0 0 36px #0fb, 0 0 36px #0fb;
+	cursor: pointer
+}
+.hb_boost .charger {
+	background: radial-gradient(black, #fb0);
+	background-position: center;
+	border: 3px solid #fb0;
+	color: #fb7;
+}
+.hb_boost div {
+	position: absolute;
+	background: #7fb7;
+}
+
 /*.gv {
 	color: #7fdfff;
 	animation: gv 5s ease infinite
