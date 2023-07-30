@@ -196,7 +196,7 @@ function blEff(i, def) {
 }
 
 TABS = Object.assign(TABS, {
-	bl: { name: "Bosonic Lab", class: "bosonic_btn", stab: [ "bl_hy", "bl_wf", "mil_bl", "hb", "bl_real" ], unl: _ => LAB.unlocked() || BL_JOKE.started() },
+	bl: { name: "Bosonic Lab", class: "bosonic_btn", stab: [ "bl_hy", "bl_wf", "hb", "mil_bl", "bl_real" ], unl: _ => LAB.unlocked() || BL_JOKE.started() },
 	bl_hy: { name: "Hypotheses", update: _ => BL_HYPOTHESES.update(), unl: _ => LAB.unlocked() },
 	bl_wf: { name: "Weak Force", update: _ => WEAK_FORCE.update(), unl: _ => LAB.unlocked() },
 	mil_bl: { name: "Milestones", update: _ => LAB.update(), unl: _ => LAB.unlocked() },

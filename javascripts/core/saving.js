@@ -24,6 +24,7 @@ function runAutoSave() {
 
 //Loading
 var savePlacement
+var preventLoop = false
 function load_game(reload, type, preset) {
 	clearInterval(gameLoopIntervalId)
 	updateNewPlayer(type, preset)
@@ -36,12 +37,11 @@ function load_game(reload, type, preset) {
 		infiniteDetected = false
 		if (!infiniteCheck) player = save
 		if (infiniteCheck2) infiniteCheck2 = false
-		if (detectInfinite()) infiniteCheck=true
+		if (detectInfinite()) infiniteCheck = true
 	}
 
 	savePlacement = -1
-	if (typeof(meta.save.current) == "number") {
-		savePlacement = 0
+	if (meta.save.saveOrder.includes(meta.save.current)) {
 		while (meta.save.saveOrder[savePlacement] != meta.save.current) savePlacement++
 	}
 
@@ -109,7 +109,7 @@ function changeSaveDesc(i, exit) {
 			if (data.achievements.includes("ng3p81")) {
 				msg+="Spectral Particles: "+shortenDimensions(E(data.ghostify.ghostParticles))+", Bosons: "+shorten(E(data.ghostify.lab.best_bosons))
 			} else if (data.achievements.includes("ng3p71")) {
-				msg+="Spectral Particles: "+shortenDimensions(E(data.ghostify.ghostParticles))+", Enlightenments: "+getFullExpansion(data.ghostify.photons.lighten)
+				msg+="Spectral Particles: "+shortenDimensions(E(data.ghostify.ghostParticles))
 			} else msg+="Spectral Particles: "+shortenDimensions(E(data.ghostify.ghostParticles))+", Neutrinos: "+shortenDimensions(Decimal.add(data.ghostify.neutrinos.electron, data.ghostify.neutrinos.mu).add(data.ghostify.neutrinos.tau).round())
 		} else if (isSaveQuantumed) {
 			if (!data.masterystudies) msg+="Endgame of NG++"
@@ -423,11 +423,6 @@ function reset_game() {
 };
 
 //Creation + Mods
-function new_save() {
-	if (modsShown == "adv") new_game()
-	else show_mods('basic')
-}
-
 function new_game(type) {
 	changeSaveDesc(savePlacement, true)
 	save_game(true)
@@ -630,13 +625,6 @@ function updateNewPlayer(mode, preset) {
 	if (mod.nguep) aarMod.nguepV = 1.03
 	if (mod.ngumu) aarMod.ngumuV = 1.03
 
-	if (mod.ngmm) {
-		mod.ngmX = aarMod.ngmX = mod.ngmm+1
-		doNGMinusTwoNewPlayer()
-	}
-	if (mod.ngmm >= 2) doNGMinusThreeNewPlayer()
-	if (mod.ngmm >= 3) doNGMinusFourPlayer()
-
 	if (mod.rs == 1) doEternityRespeccedNewPlayer()
 
 	if (mod.ngp) doNGPlusOneNewPlayer()
@@ -649,6 +637,13 @@ function updateNewPlayer(mode, preset) {
 	resetDimensions()
 	completelyResetInfinityDimensions()
 	completelyResetTimeDimensions()
+
+	if (mod.ngmm) {
+		mod.ngmX = aarMod.ngmX = mod.ngmm+1
+		doNGMinusTwoNewPlayer()
+	}
+	if (mod.ngmm >= 2) doNGMinusThreeNewPlayer()
+	if (mod.ngmm >= 3) doNGMinusFourPlayer()
 }
 
 function doNGPlusOneNewPlayer(){ // eventually change to have multiple versions/variations of NG+

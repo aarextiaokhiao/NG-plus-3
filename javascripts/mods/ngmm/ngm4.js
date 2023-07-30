@@ -19,17 +19,16 @@ function resetTDBoosts() {
 
 function resetNGM4TDs() {
 	var power = getDimensionBoostPower()
+
+	completelyResetTimeDimensions()
 	for (var d = 1; d <= 8; d++) {
 		var dim = player["timeDimension" + d]
-		dim.amount = E(0)
-		dim.bought = 0
 		dim.cost = E(timeDimStartCosts[1][d])
 		dim.power = E(power).pow((player.tdBoosts - d + 1) / 2).max(1)
 	}
 	player.timeShards = E(0)
 	player.totalTickGained = 0
 	player.tickThreshold = E(0.01)
-	el("totaltickgained").textContent = "You've gained " + getFullExpansion(player.totalTickGained) + " tickspeed upgrades."
 }
 
 function doNGM4TDMultiplier(tier, ret){

@@ -62,22 +62,32 @@ const BH_UDSP = {
 
 	//Features
 	hunger: {
-		cap: _ => 100,
 		calc: x => player.blackhole.upgrades[x] * player.blackhole.weight[x] / 100,
 
 		feed() {
-			if (player.blackhole.hunger >= this.cap()) return
+			if (player.blackhole.hunger) return
+
+			let data = this.getFeed()
 			for (let [i, b] of Object.entries(BH_UDSP.boosts)) {
 				let can = true
 				for (let [i2, req] of Object.entries(b.req)) if (this.calc(i2) < req) can = false
-				if (can) player.blackhole.boost[i] = 600
+				if (can) player.blackhole.boost[i] = Math.max(player.blackhole.boost[i] || 0, data.time)
 			}
-			player.blackhole.power = player.blackhole.power.add(1)
-			player.blackhole.hunger += 200
+			player.blackhole.power = player.blackhole.power.add(data.mass)
+			player.blackhole.hunger = data.hunger
 		},
-		change(i) {
+		sum() {
 			let sum = 0
-			for (let i2 in BH_FEED) if (i2 != i) sum += player.blackhole.weight[i2]
+			for (let i in BH_FEED) sum += player.blackhole.weight[i]
+			return sum
+		},
+		getFeed() {
+			let sum = this.sum()
+			return { sum, time: 300 ** (100 / sum), hunger: 3 * sum, mass: player.dilation.tachyonParticles.div(1e10).sqrt().mul(sum) }
+		},
+
+		change(i) {
+			let sum = this.sum() - player.blackhole.weight[i]
 			player.blackhole.weight[i] = Math.min(el("bh_udsp_w_"+i).value, 100 - sum)
 			this.update()
 		},
@@ -140,8 +150,9 @@ const BH_UDSP = {
 		el("bh_udsp").style.display = unl ? "" : "none"
 		if (!unl) return
 
-		el("bh_udsp_btn").className = player.blackhole.hunger < this.hunger.cap() ? "storebtn" : "unavailablebtn"
-		el("bh_udsp_hu").textContent = shorten(player.blackhole.hunger) + " / " + shorten(this.hunger.cap())
+		let data = this.hunger.getFeed()
+		el("bh_udsp_btn").className = player.blackhole.hunger ? "unavailablebtn" : "storebtn"
+		el("bh_udsp_hu").innerHTML = player.blackhole.hunger ? "<b>Aversion</b>: " + shorten(player.blackhole.hunger) : `<b>${data.sum}%</b>: ${data.hunger} Aversion, ${timeDisplayShort(data.time * 10)} boosts, +${shorten(data.mass)} Black Hole mass`
 		el("bh_udsp_dm").textContent = shorten(player.blackhole.power)
 
 		for (let i in BH_FEED) {
@@ -150,7 +161,11 @@ const BH_UDSP = {
 		}
 
 		let html = ""
-		for (let [i, t] of Object.entries(player.blackhole.boost)) html += `<b>#${parseInt(i)+1}</b> (${timeDisplayShort(t * 10, 1)}): ${BH_UDSP.boosts[i].disp(tmp.bh_eff[i])}<br>`
+		for (let [i, b] of Object.entries(BH_UDSP.boosts)) {
+			html += `<b>#${parseInt(i)+1}</b>`
+			if (player.blackhole.boost[i]) html += ` (${timeDisplayShort(player.blackhole.boost[i] * 10, 1)}):  ${b.disp(tmp.bh_eff[i])}<br>`
+			else for (let [i2, req] of Object.entries(b.req)) html += `: Requires ${shorten(req)} ${BH_FEED[i2].title} Remnants<br>`
+		}
 		el("bh_udsp_eff").innerHTML = html
 	}
 }

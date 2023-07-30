@@ -2,10 +2,9 @@ function show_mods(type) {
 	modsShown = type
 
 	el("savesTab").style.display = modsShown ? "none" : ""
-	el("modsTab").style.display = modsShown === 'basic' ? "" : "none"
-	el("advModsTab").style.display = modsShown === 'adv' ? "" : "none"
+	el("modsTab").style.display = modsShown ? "" : "none"
 
-	el("newSaveBtn").style.display = modsShown ? (modsShown === 'adv' ? "" : "none") : ""
+	el("newSaveBtn").style.display = modsShown ? "none" : ""
 	el("newImportBtn").style.display = modsShown ? "none" : ""
 	el("cancelNewSaveBtn").style.display = modsShown ? "" : "none"
 }

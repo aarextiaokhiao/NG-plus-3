@@ -23,7 +23,9 @@ let HIGGS = {
 
 		let hm = this.mass
 		for (var [ri, rb] of Object.entries(ghSave.hb.field)) {
-			for (var b of rb) if (b[0] != "c") t[b] = hm.data[b].eff(hm.eff_row(ri))
+			for (var b of rb) {
+				if (this.mass.unl(b) && b[0] != "c") t[b] = hm.data[b].eff(hm.eff_row(ri))
+			}
 		}
 	},
 
@@ -31,12 +33,13 @@ let HIGGS = {
 	pres: {
 		req: i => E(100).pow(i + 8),
 		bulk: bm => Math.floor(E(bm).log(100) - 7),
-		reset() {
+		reset(force) {
 			let bulk = this.bulk(blSave.best_bosons)
-			if (ghSave.hb.amt >= bulk) return
+			if (!force && ghSave.hb.amt >= bulk) return
 
 			if (ghSave.hb.amt == 0) ngp3_feature_notify("hb")
-			ghSave.hb.amt = bulk
+			ghSave.hb.amt = Math.max(ghSave.hb.amt, bulk)
+			ghSave.hb.mass = E(0)
 			blSave.bosons = E(0)
 			blSave.wz_capacitors = WEAK_FORCE.setup()
 		}
@@ -49,15 +52,21 @@ let HIGGS = {
 		charged: i => ghSave.hb.field.map(x => x[0] == "c").includes(true),
 		eff_boost: (i, def) => tmp.funda?.hm_eff?.[i] ?? def,
 		eff_row: i => ghSave.hb.mass.div(3 ** i * 100).log10() + (HIGGS.mass.charged(i) ? 1 : 0),
+		unl: i => ghSave.hb.amt >= HIGGS.mass.data[i].req,
 
 		click(i, x) {
 			if (this.toSwap) {
 				let val_1 = ghSave.hb.field[i][x]
 				let val_2 = ghSave.hb.field[this.toSwap[0]][this.toSwap[1]]
+				if (val_1 != val_2 && this.toSwap[0] != i) {
+					if (!confirm("Swapping will force a Higgs reset!")) return
+					HIGGS.pres.reset(true)
+				}
+
 				ghSave.hb.field[i][x] = val_2
 				ghSave.hb.field[this.toSwap[0]][this.toSwap[1]] = val_1
 				delete this.toSwap
-			}
+			} else this.toSwap = [i,x]
 		},
 
 		data: {
@@ -131,17 +140,15 @@ let HIGGS = {
 	//DOM
 	setupTab() {
 		let html = ``
-		for (var i = 1; i <= 3; i++) html += `<div class="hb_boost">
-			<div class="id">${i}</div>
-			<div class="eff">???%</div>
-			<div class="boost">
-				<button class="btn">${i*4-3}</button>
-				<button class="btn">${i*4-2}</button>
-				<button class="btn">${i*4-1}</button>
-				<button class="btn">${i*4}</button>
-				<button class="btn charger">C</button>
-			</div>
-		</div>`
+		for (let i = 0; i < 3; i++) {
+			let boosts = ``
+			for (let j = 0; j < 5; j++) boosts += `<button class="btn" id="hb_btn_${i}_${j}" onclick="HIGGS.mass.click(${i}, ${j})"></button>`
+			html += `<div class="hb_boost">
+				<div class="id">${i+1}</div>
+				<div class="eff" id="hb_eff_${i}"></div>
+				<div class="boost">${boosts}</div>
+			</div>`
+		}
 		el("hb_field").innerHTML = html
 	},
 	updateTab() {
@@ -157,5 +164,19 @@ let HIGGS = {
 		if (!this.unlocked()) return
 
 		el("hb_mass").textContent = shortenMoney(ghSave.hb.mass)
+		for (let i = 0; i < 3; i++) {
+			el("hb_eff_"+i).textContent = formatPercentage(this.mass.eff_row[i])
+			for (let j = 0; j < 5; j++) {
+				let b = ghSave.hb.field[i][j]
+				let elm = el(`hb_btn_${i}_${j}`)
+				elm.style.display = this.mass.unl(b) ? "" : "none"
+				if (!this.mass.unl(b)) continue
+
+				let ch = b[0] == "c"
+				elm.innerHTML = ch ? "C" : b
+				elm.className = "btn" + (ch ? " charger" : "") + (this.mass.toSwap?.[0] == i && this.mass.toSwap[1] == j ? " chosen" : "")
+				elm.setAttribute("ach-tooltip", "Effect: " + (ch ? "+1x to row (can't be stacked)" : this.mass.data[b].disp(tmp.funda.hm_eff[b])))
+			}
+		}
 	},
 }

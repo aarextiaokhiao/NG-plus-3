@@ -202,6 +202,7 @@
 					</tr><tr>
 						<td><div class="storebtn" style="color:black; width: 198px; height: 55px; font-size:107.5%; text-align: center;"><b id="offlineInterval"></b><input id="offlineSlider" style="width: 170px;" type="range" min="0" max="10" class="slider" oninput="adjustOfflineProgress()"></div></td>
 						<td><div><button id="rename" class="storebtn" onclick='rename_save()' style="color:black; width: 200px; height: 55px; font-size: 20px">Rename</button></div></td>
+						<td><div><button class="storebtn" onclick="load_saves(); show_mods('basic')" style="color:black; width: 200px; height: 55px; font-size: 20px">New Save</button></div></td>
 					</tr><tr>
 						<td colspan=3><br><hr></td>
 					</tr><tr>
@@ -3282,9 +3283,9 @@
 					</td><td>
 						<button id="dil43" onclick="buyDilationUpgrade('ngud2')">Eternities and Dilated Time boost each other by ^0.1.<br><span id="dil43cost"></span></button>
 					</td><td>
-						<button id="dil44" onclick="buyDilationUpgrade('udsp1')">Dilated Time increases hunger cap.<br><span id="dil44cost"></span></button>
+						<button id="dil44" onclick="buyDilationUpgrade('udsp1')">???<br><span id="dil44cost"></span></button>
 					</td><td>
-						<button id="dil45" onclick="buyDilationUpgrade('udsp2')">Hunger cap speeds up Black Hole hunger.<br><span id="dil45cost"></span></button>
+						<button id="dil45" onclick="buyDilationUpgrade('udsp2')">???<br><span id="dil45cost"></span></button>
 					</td>
 				</tr></table>
 			</div>
@@ -3308,12 +3309,15 @@
 					<table class="table" id='bhDimTable'></table>
 				</div>
 				<div id="bh_udsp" style='display: none'>
-					<button class="storebtn" id="bh_udsp_btn" onclick="BH_UDSP.hunger.feed()" style='width: 300px'>Feed for temporary boosts</button>
+					<button class="storebtn" id="bh_udsp_btn" onclick="BH_UDSP.hunger.feed()" style='width: 200px'>Feed</button><br>
+					<span id="bh_udsp_hu"></span>
+					<br><br>
+
+					<h2>Remnants</h2>
 					<table id="bh_udsp_feed"></table>
-					<b>Hunger</b>: <span id="bh_udsp_hu"></span>
 					<hr>
 
-					<span id="bh_udsp_dm" style="font-size: 35px"></span> Black Hole Mass<br>
+					<span id="bh_udsp_dm" style="font-size: 25px"></span> Black Hole Mass<br>
 					<span id="bh_udsp_eff"></span>
 				</div>
 				<canvas id="blackHoleCanvas" width="400" height="400" style="user-select: none;"></canvas>
@@ -3784,7 +3788,7 @@
 			<br><br><hr>
 
 			<b>(NG+3 v2.31: Ghostify Respecced)</b><br>
-			<b class="red">(Beta: 7/28/23 Build)</b><br>
+			<b class="red">(Beta: 7/29/23 Build)</b><br>
 			By <a href="https://aarextiaokhiao.github.io/">Aarex</a>, pg132, and usavictor.
 			<br><br>
 
@@ -3824,7 +3828,7 @@
 	<!-- OPTIONS -->
 	<div class="popup loadmenu" id="loadmenu" style="overflow-y: hidden; height: 360px">
 		<button class="closebtn storebtn" onclick="closeToolTip(true)">&times;</button>
-		<button id="newSaveBtn" class="storebtn" style="font-size: 15px" onclick="new_save()">New</button>
+		<button id="newSaveBtn" class="storebtn" style="font-size: 15px" onclick="show_mods(true)">New</button>
 		<button id="newImportBtn" class="storebtn" style="font-size: 15px" onclick="import_save('new')">Import</button>
 		<button id="cancelNewSaveBtn" class="storebtn" style="font-size: 15px; display: none" onclick="show_mods()">Saves</button>
 		<br>
@@ -3833,14 +3837,15 @@
 			<table id='saves'></table>
 		</div>
 		<div id="modsTab" style="height:320px;overflow-y:auto;display:none">
+			You can select various mods for this save.<br>Click 'New' to begin a save file with these mods.<br>
 			<button class="storebtn" style="width: 360px; font-size: 15px" onclick="new_game('vanilla')" style="display: inline">Vanilla (NG=)</button><br>
 			<button class="storebtn" style="width: 360px; font-size: 15px" onclick="new_game('ngp3')" style="display: inline">New Game Plus 3 (Recommended)</button><br>
 			<button class="storebtn" style="width: 360px; font-size: 15px" onclick="new_game('grand_run')" style="display: inline">Grand Run (NG= → NG+3)</button><br>
-			<button class="storebtn" style="width: 360px; font-size: 15px" onclick="new_game('udsp')" style="display: inline">NG Update Semiprime (NGUdS')</button><hr>
-			<button class="storebtn" style="width: 360px; font-size: 15px" onclick="show_mods('adv')" style="display: inline">More</button>
-		</div>
-		<div id="advModsTab" style="height: 320px; overflow-y: auto; display: none">
-			You can select various mods for this save.<br>Click 'New' to begin a save file with these mods.<br>
+			<button class="storebtn" style="width: 360px; font-size: 15px" onclick="new_game('udsp')" style="display: inline">NG Update Semiprime (NGUdS')</button>
+			<br><br>
+
+			<h2>More</h2>
+			<button class="storebtn" onclick="new_game()">Create</button>
 			<button class="storebtn" onclick="reset_mods()">Reset Mods</button>
 			<br><br>
 			<b>Expansion</b><br>

@@ -43,8 +43,8 @@ let RESETS = {
 				this.startingAM()
 				this.startingDims()
 				player.sacrificed = E(0)
-				if (inNGM(2)) reduceDimCosts()
 				if (inNGM(4)) resetNGM4TDs()
+				if (inNGM(2)) reduceDimCosts()
 			}
 			if (resetDims) resetPowers()
 			this.startingTickspeed()
