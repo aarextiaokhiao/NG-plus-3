@@ -2566,6 +2566,7 @@ td.grey {
 	right: 0;
 	width: 420px;
 	height: 72px;
+	line-height: 0;
 	border-radius: 72px 72px 72px 0;
 }
 .hb_boost .btn {
@@ -2592,6 +2593,12 @@ td.grey {
 	background-position: center;
 	border: 3px solid #fb0;
 	color: #fb7;
+}
+.hb_boost .locked {
+    color: #000000;
+    background: #A3A3A3;
+    font-weight: bold;
+    border: 1px solid #B84B5F;
 }
 .hb_boost div {
 	position: absolute;

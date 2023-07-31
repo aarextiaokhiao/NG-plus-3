@@ -55,6 +55,7 @@ let HIGGS = {
 		unl: i => ghSave.hb.amt >= HIGGS.mass.data[i].req,
 
 		click(i, x) {
+			if (!this.unl(ghSave.hb.field[i][x])) return
 			if (this.toSwap) {
 				let val_1 = ghSave.hb.field[i][x]
 				let val_2 = ghSave.hb.field[this.toSwap[0]][this.toSwap[1]]
@@ -76,57 +77,57 @@ let HIGGS = {
 				disp: e => "Do something.",
 			},
 			2: {
-				req: 1,
+				req: 2,
 				eff: e => 1,
 				disp: e => "Do something.",
 			},
 			3: {
-				req: 1,
+				req: 3,
 				eff: e => 1,
 				disp: e => "Do something.",
 			},
 			4: {
-				req: 1,
+				req: 4,
 				eff: e => 1,
 				disp: e => "Do something.",
 			},
 			5: {
-				req: 1,
+				req: 5,
 				eff: e => 1,
 				disp: e => "Do something.",
 			},
 			6: {
-				req: 1,
+				req: 6,
 				eff: e => 1,
 				disp: e => "Do something.",
 			},
 			7: {
-				req: 1,
+				req: 7,
 				eff: e => 1,
 				disp: e => "Do something.",
 			},
 			8: {
-				req: 1,
+				req: 8,
 				eff: e => 1,
 				disp: e => "Do something.",
 			},
 			9: {
-				req: 1,
+				req: 9,
 				eff: e => 1,
 				disp: e => "Do something.",
 			},
 			10: {
-				req: 1,
+				req: 10,
 				eff: e => 1,
 				disp: e => "Do something.",
 			},
 			11: {
-				req: 1,
+				req: 11,
 				eff: e => 1,
 				disp: e => "Do something.",
 			},
 			12: {
-				req: 1,
+				req: 12,
 				eff: e => 1,
 				disp: e => "Do something.",
 			},
@@ -165,17 +166,21 @@ let HIGGS = {
 
 		el("hb_mass").textContent = shortenMoney(ghSave.hb.mass)
 		for (let i = 0; i < 3; i++) {
+			let shown = true
 			el("hb_eff_"+i).textContent = formatPercentage(this.mass.eff_row[i])
 			for (let j = 0; j < 5; j++) {
 				let b = ghSave.hb.field[i][j]
 				let elm = el(`hb_btn_${i}_${j}`)
-				elm.style.display = this.mass.unl(b) ? "" : "none"
-				if (!this.mass.unl(b)) continue
+				elm.style.display = shown ? "" : "none"
+				if (!shown) continue
 
 				let ch = b[0] == "c"
-				elm.innerHTML = ch ? "C" : b
-				elm.className = "btn" + (ch ? " charger" : "") + (this.mass.toSwap?.[0] == i && this.mass.toSwap[1] == j ? " chosen" : "")
-				elm.setAttribute("ach-tooltip", "Effect: " + (ch ? "+1x to row (can't be stacked)" : this.mass.data[b].disp(tmp.funda.hm_eff[b])))
+				let unl = this.mass.unl(b)
+				if (!unl) shown = false
+
+				elm.innerHTML = !unl ? "?" : ch ? "C" : b
+				elm.className = "btn" + (!unl ? " locked" : ch ? " charger" : "") + (this.mass.toSwap?.[0] == i && this.mass.toSwap[1] == j ? " chosen" : "")
+				elm.setAttribute("ach-tooltip", !unl ? `(Reach ${getFullExpansion(this.mass.data[b].req)} Higgs to show an effect)` : "Effect: " + (ch ? "+1x row efficiency (can't be stacked)" : this.mass.data[b].disp(tmp.funda.hm_eff[b])))
 			}
 		}
 	},
