@@ -303,7 +303,7 @@ function drawQuarkAnimation(ts){
 	let centerY = qkc.height / 2
 	let offset = Math.max(centerX, centerY)
 
-	if (isAnimationOn("quarks")) {
+	if (isAnimationOn("quarks") && isTabShown("aq")) {
 		delta = (ts - lastTs) / 1000
 		lastTs = ts
 
