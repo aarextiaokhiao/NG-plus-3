@@ -42,7 +42,7 @@ function doNGP3Updates() {
 			delete ghSave.bl
 			delete ghSave.lab?.hf
 			ghSave.photons = PHOTON.setup()
-			ghSave.hb = HIGGS.setup()
+			ghSave.hb = HIGGS.setupSave()
 		}
 
 		if (!ghSave.reached && !ghSave.times) {
