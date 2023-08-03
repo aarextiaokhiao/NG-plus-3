@@ -131,9 +131,9 @@ const NGP3_FEATURES = {
 		tab: _ => TAB_CORE.open("bl_hy"),
 
 		met: _ => LAB.unlocked(),
-		req: _ => 15,
-		req_res: _ => PHOTON.totalEmissions(),
-		req_disp: (amt, req) => `${shorten(amt)} / ${shorten(req)} Light Emissions`
+		req: _ => 0,
+		req_res: _ => 1,
+		req_disp: (amt, req) => `???`
 	},
 	hb: {
 		name: "Higgs Field",
