@@ -219,7 +219,7 @@ const NEUTRINO = NT = {
 			{
 				//Cost: Neutrinos
 				cost: E(1e6),
-				desc: `Cheapen Meta-Dimension Boosts.`,
+				desc: `Cheapen Meta-Dimension Boosts. (reduces itself outside of Big Rips)`,
 
 				eff() {
 					let x = 110
