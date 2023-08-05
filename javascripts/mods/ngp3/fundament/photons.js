@@ -7,8 +7,7 @@ let PHOTON = {
 	setup() {
 		let r = {
 			amt: E(0),
-			enlighten: 0,
-			range: [0, 0.5]
+			range: [0, 0]
 		}
 		return r
 	},
@@ -24,10 +23,6 @@ let PHOTON = {
 	//Calculation
 	calc(dt) {
 		ghSave.photons.amt = this.photon_prod().mul(dt).add(ghSave.photons.amt)
-		if (ghSave.photons.range[0] == 0 && ghSave.photons.range[1] == 8) {
-			ghSave.photons.range = [0, 0]
-			ghSave.photons.enlighten++
-		}
 	},
 	temp() {
 		if (!this.unlocked()) return
@@ -35,39 +30,41 @@ let PHOTON = {
 		let data = {}
 		tmp.funda.photon = data
 
-		let range = ghSave.photons.range
 		data.light = []
+		data.lighten = []
 		data.eff = []
-		data.dist = range[1] - range[0]
 
-		for (let [i, light] of Object.entries(this.light.data)) {
-			data.light[i] = Math.min(Math.max(range[1] - range[0] - i, 0), 1) + ghSave.photons.enlighten
-			data.light[i] = ghSave.photons.amt.add(1).pow(data.light[i]).sub(1)
+		let remain = 4
+		for (var r in this.lighten.names) {
+			data.lighten[r] = remain
 
-			data.eff[i] = light.eff(0) //will be determined soon
+			let total = 0
+			for (var i = r * 4; i < r * 4 + 4; i++) {
+				let light = this.light.data[i]
+				let size = light.size + (i - r * 4 - ghSave.photons.range[r] >= 0 && i - r * 4 - ghSave.photons.range[r] < 2 ? 1 : 0)
+				data.light[i] = Math.min(remain / size, 1)
+				total += size
+				remain = Math.max(remain - size, 0)
+			}
+			for (var i = r * 4; i < r * 4 + 4; i++) {
+				let light = this.light.data[i]
+				data.light[i] *= ghSave.photons.amt.add(1).log10() * (1 + remain / total)
+				data.eff[i] = light.eff(0) //will be determined soon
+			}
 		}
 	},
 
 	photon_prod: _ => E(1),
 
-	//Feature - Range
-	range: {
-		get() {
-			let r = quSave.breakEternity.eternalMatter.log10() / 200
-			r -= ghSave.photons.enlighten * 24
-			r -= ghSave.photons.range[1] * 2
-			r -= tmp.funda.photon.dist
-			return Math.max(r, 0)
+	//Feature - Enlightenments
+	lighten: {
+		names: ["Dark Essence", "Enlightenment"],
+		change(i) {
+			ghSave.photons.range[i] = Number(el("ph_lighten_range_"+i).value)
 		},
-		extend() {
-			ghSave.photons.range[0] -= this.getExtend()
+		update() {
+			for (let i in this.names) el("ph_lighten_range_" + i).value = ghSave.photons.range[i]
 		},
-		getExtend: _ => Math.min(ghSave.photons.range[0], PHOTON.range.get()),
-		move() {
-			let move = this.getMove()
-			for (let i = 0; i < 2; i++) ghSave.photons.range[i] += move
-		},
-		getMove: _ => Math.min(Math.min(0.5 - ghSave.photons.range[0], 8 - ghSave.photons.range[1]), PHOTON.range.get() / 2)
 	},
 
 	//Feature - Lights
@@ -75,18 +72,22 @@ let PHOTON = {
 		data: [
 			{
 				name: "infrared",
+				size: 2,
 				eff: a => E_pow(tmp.gal.ts || 1, -Math.min(Math.sqrt(a) / 10, 0.2)),
 				desc: e => `Tickspeed reduction multiplies per-ten multiplier by ${shorten(e)}x.`
 			}, {
 				name: "red",
+				size: 2,
 				eff: a => 1.5 - 0.5 / Math.log2(a + 2),
 				desc: e => `Starting at ^9, raise 2nd Neutrino Boost by ^${e.toFixed(3)}.`
 			}, {
 				name: "orange",
+				size: 2,
 				eff: a => Math.log2(a + 1) / 20,
 				desc: e => `Discharged Galaxies are ${(e*100).toFixed(1)}% effective.`
 			}, {
 				name: "yellow",
+				size: 2,
 				eff(a) {
 					if (a > 5) a = Math.log10(a * 2) + 4
 					return 1+a/1.5e3
@@ -94,18 +95,22 @@ let PHOTON = {
 				desc: e => `Gain ${shorten((e-1)*100)}% more Neutrinos per Big Rip galaxy.`
 			}, {
 				name: "green",
+				size: 2,
 				eff: a => Math.log10(a / 5 + 1) + 1,
 				desc: e => `Raise Replicate Slowdown by ^${shorten(e)}.`
 			}, {
 				name: "blue",
+				size: 2,
 				eff: a => Math.log10(a + 1) / 5 + 1,
 				desc: e => `Raise Emperor Dimensions by ^${shorten(e)}.`
 			}, {
 				name: "violet",
+				size: 2,
 				eff: a => Math.cbrt(a / 5 + 1),
 				desc: e => `Post-16 Nanoreward scaling scales ${shorten(e)}x slower.`
 			}, {
 				name: "ultraviolet",
+				size: 2,
 				eff: a => 1,
 				desc: e => `???`
 			}
@@ -118,10 +123,27 @@ let PHOTON = {
 	/* HTML */
 	setupTab() {
 		let html = ``
-		for (var [i, light] of Object.entries(PHOTON.light.data)) html += `<div class='light ${light.name}'>
-			<b style='font-size: 18px'><span id='ph_light_amt_${i}'>0</span> ${light.name} Light</b><br>
-			<span id='ph_light_eff_${i}'>Do something.</span>
-		</div>`
+		for (var [r, type] of Object.entries(this.lighten.names)) {
+			let row = ''
+			for (var i = r * 4; i < r * 4 + 4; i++) {
+				let light = this.light.data[i]
+				row += `<div class='light ${light.name}'>
+					<b style='font-size: 18px'>
+						<span id='ph_light_amt_${i}'>0</span> ${light.name}
+					</b><br>
+					<span id='ph_light_eff_${i}'></span>
+				</div>`
+			}
+			html += `<div class='table_flex'>
+				<div class='light'>
+					<b style='font-size: 18px'>
+						<span id='ph_lighten_${r}'></span> ${type}s
+					</b><br>
+					<input id='ph_lighten_range_${r}' type='range' max=2 onchange="PHOTON.lighten.change(${r})"><br>
+				</div>
+				${row}
+			</div>`
+		}
 		el('light_table').innerHTML = html
 	},
 	update() {
@@ -135,17 +157,14 @@ let PHOTON = {
 
 		el("ph_amt").textContent = shortenMoney(ghSave.photons.amt)
 		el("ph_prod").textContent = `(+${shorten(this.photon_prod())}/s)`
-		el("ph_emission").textContent = shorten(this.range.get())
 
-		el("ph_range").textContent = `${ghSave.photons.range[0].toFixed(2)} - ${ghSave.photons.range[1].toFixed(2)}`
-		el("ph_dist").textContent = tmp.funda.photon.dist.toFixed(2)
-		el("ph_move").textContent = `Move: +${this.range.getMove().toFixed(2)}`
-		el("ph_extend").textContent = `Extend: +${this.range.getExtend().toFixed(2)}`
-		el("ph_enlighten").textContent = getFullExpansion(ghSave.photons.enlighten)
-
-		for (const [i, light] of Object.entries(this.light.data)) {
-			el("ph_light_amt_" + i).textContent = shorten(tmp.funda.photon.light[i])
-			el("ph_light_eff_" + i).textContent = light.desc(lightEff(i))
+		for (var [r, type] of Object.entries(this.lighten.names)) {
+			el("ph_lighten_" + r).textContent = shorten(tmp.funda.photon.lighten[r])
+			for (var i = r * 4; i < r * 4 + 4; i++) {
+				let light = this.light.data[i]
+				el("ph_light_amt_" + i).textContent = shorten(tmp.funda.photon.light[i])
+				el("ph_light_eff_" + i).textContent = light.desc(lightEff(i))
+			}			
 		}
 	}
 }

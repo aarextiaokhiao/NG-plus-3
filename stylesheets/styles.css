@@ -2362,13 +2362,15 @@ td.grey {
 	color: #330;
 	cursor: pointer
 }
-#light_table td {
-	width: 210px;
+.table_flex {
+    display: flex;
+    justify-content: center;
+    flex-flow: row wrap;
+}
+.light {
+	width: 180px;
 	height: 150px;
-	padding: 4px;
-
 	border-radius: 3px;
-	text-align: center;
 }
 
 .bosonic_btn {

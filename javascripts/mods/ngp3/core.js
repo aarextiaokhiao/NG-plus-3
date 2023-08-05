@@ -37,7 +37,7 @@ function doNGP3Updates() {
 			beSave.upgrades = [1, 2, 3, 4, 5, 6]
 			ghSave.ghostParticles = E(1e20)
 		}
-		if (aarMod.ngp3_build < 20230728) {
+		if (aarMod.ngp3_build < 20230804) {
 			delete ghSave.wzb
 			delete ghSave.bl
 			delete ghSave.lab?.hf
