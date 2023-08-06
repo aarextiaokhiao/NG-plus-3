@@ -1,6 +1,6 @@
 //VERSION: 2.31
 let ngp3_ver = 2.31
-let ngp3_build = 20230730
+let ngp3_build = 20230805
 function doNGP3Updates() {
 	if (!aarMod.ngp3_build) aarMod.ngp3_build = 0
 	if (aarMod.ngp3_build < 20221230) quSave.multPower = 0
@@ -28,7 +28,7 @@ function doNGP3Updates() {
 			delete ghSave.disabledRewards
 			delete ghSave.reached
 		}
-		if (aarMod.ngp3_build < 20230727 && E(ghSave.ghostParticles).lt(1e20)) {
+		if (aarMod.ngp3_build < 20230727 && E(ghSave.ghostParticles).gte(1e20)) {
 			alert("Due to massive balancing changes, you will be pushed back to e20 Spectral Particles!")
 
 			resetGHPandNeutrinos()
@@ -37,7 +37,7 @@ function doNGP3Updates() {
 			beSave.upgrades = [1, 2, 3, 4, 5, 6]
 			ghSave.ghostParticles = E(1e20)
 		}
-		if (aarMod.ngp3_build < 20230804) {
+		if (aarMod.ngp3_build < 20230805) {
 			delete ghSave.wzb
 			delete ghSave.bl
 			delete ghSave.lab?.hf

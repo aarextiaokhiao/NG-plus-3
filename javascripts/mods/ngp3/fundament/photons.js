@@ -1,5 +1,5 @@
-function lightEff(x) {
-	return PHOTON.light.eff(x)
+function lightEff(x, def) {
+	return PHOTON.light.eff(x, def)
 }
 
 let PHOTON = {
@@ -28,66 +28,62 @@ let PHOTON = {
 		if (!this.unlocked()) return
 
 		let data = {}
+		let lights = this.light.data
 		tmp.funda.photon = data
 
+		data.emission = ghSave.photons.amt.div(100).max(1).log10()
 		data.light = []
-		data.lighten = []
+		data.harvest = [0,0]
 		data.eff = []
+		data.size = []
 
-		let remain = 4
-		for (var r in this.lighten.names) {
-			data.lighten[r] = remain
+		let harvest = 0.1
+		let total_size = lights.length - harvest * 6
+		let cycles = Math.floor(data.emission / total_size)
+		let remainder = data.emission % total_size
 
-			let total = 0
-			for (var i = r * 4; i < r * 4 + 4; i++) {
-				let light = this.light.data[i]
-				let size = light.size + (i - r * 4 - ghSave.photons.range[r] >= 0 && i - r * 4 - ghSave.photons.range[r] < 2 ? 1 : 0)
-				data.light[i] = Math.min(remain / size, 1)
-				total += size
-				remain = Math.max(remain - size, 0)
-			}
-			for (var i = r * 4; i < r * 4 + 4; i++) {
-				let light = this.light.data[i]
-				data.light[i] *= ghSave.photons.amt.add(1).log10() * (1 + remain / total)
-				data.eff[i] = light.eff(0) //will be determined soon
-			}
+		for (let [i, light] of Object.entries(lights)) {
+			let size = 1
+			for (let r of ghSave.photons.range) if (i - r >= 0 && i - r < 3) size -= harvest
+
+			data.light[i] = (cycles + Math.min(remainder / size, 1))
+			data.eff[i] = light.eff(0) //will be determined soon
+			data.size[i] = size
+			remainder = Math.max(remainder - size, 0)
+
+			for (let [ri, r] of Object.entries(ghSave.photons.range)) if (i - r >= 0 && i - r < 3) data.harvest[ri] += cycles + Math.min(remainder / size, 1)
 		}
 	},
 
-	photon_prod: _ => E(1),
-
-	//Feature - Enlightenments
-	lighten: {
+	/* Feature - Enharvestments */
+	harvest: {
 		names: ["Dark Essence", "Enlightenment"],
 		change(i) {
-			ghSave.photons.range[i] = Number(el("ph_lighten_range_"+i).value)
+			ghSave.photons.range[i] = Number(el("ph_harvest_range_"+i).value)
 		},
 		update() {
-			for (let i in this.names) el("ph_lighten_range_" + i).value = ghSave.photons.range[i]
+			for (let i in this.names) el("ph_harvest_range_" + i).value = ghSave.photons.range[i]
 		},
 	},
 
-	//Feature - Lights
+	/* Feature - Lights */
+	photon_prod: _ => E(1),
 	light: {
 		data: [
 			{
 				name: "infrared",
-				size: 2,
 				eff: a => E_pow(tmp.gal.ts || 1, -Math.min(Math.sqrt(a) / 10, 0.2)),
 				desc: e => `Tickspeed reduction multiplies per-ten multiplier by ${shorten(e)}x.`
 			}, {
 				name: "red",
-				size: 2,
 				eff: a => 1.5 - 0.5 / Math.log2(a + 2),
 				desc: e => `Starting at ^9, raise 2nd Neutrino Boost by ^${e.toFixed(3)}.`
 			}, {
 				name: "orange",
-				size: 2,
 				eff: a => Math.log2(a + 1) / 20,
 				desc: e => `Discharged Galaxies are ${(e*100).toFixed(1)}% effective.`
 			}, {
 				name: "yellow",
-				size: 2,
 				eff(a) {
 					if (a > 5) a = Math.log10(a * 2) + 4
 					return 1+a/1.5e3
@@ -95,22 +91,18 @@ let PHOTON = {
 				desc: e => `Gain ${shorten((e-1)*100)}% more Neutrinos per Big Rip galaxy.`
 			}, {
 				name: "green",
-				size: 2,
 				eff: a => Math.log10(a / 5 + 1) + 1,
 				desc: e => `Raise Replicate Slowdown by ^${shorten(e)}.`
 			}, {
 				name: "blue",
-				size: 2,
 				eff: a => Math.log10(a + 1) / 5 + 1,
 				desc: e => `Raise Emperor Dimensions by ^${shorten(e)}.`
 			}, {
 				name: "violet",
-				size: 2,
 				eff: a => Math.cbrt(a / 5 + 1),
 				desc: e => `Post-16 Nanoreward scaling scales ${shorten(e)}x slower.`
 			}, {
 				name: "ultraviolet",
-				size: 2,
 				eff: a => 1,
 				desc: e => `???`
 			}
@@ -123,11 +115,11 @@ let PHOTON = {
 	/* HTML */
 	setupTab() {
 		let html = ``
-		for (var [r, type] of Object.entries(this.lighten.names)) {
+		for (var [r, type] of Object.entries(this.harvest.names)) {
 			let row = ''
 			for (var i = r * 4; i < r * 4 + 4; i++) {
 				let light = this.light.data[i]
-				row += `<div class='light ${light.name}'>
+				row += `<div class='light ${light.name}' id='ph_light_${i}'>
 					<b style='font-size: 18px'>
 						<span id='ph_light_amt_${i}'>0</span> ${light.name}
 					</b><br>
@@ -135,11 +127,11 @@ let PHOTON = {
 				</div>`
 			}
 			html += `<div class='table_flex'>
-				<div class='light'>
+				<div class='light lEp'>
 					<b style='font-size: 18px'>
-						<span id='ph_lighten_${r}'></span> ${type}s
+						<span id='ph_harvest_${r}'></span> ${type}s
 					</b><br>
-					<input id='ph_lighten_range_${r}' type='range' max=2 onchange="PHOTON.lighten.change(${r})"><br>
+					<input id='ph_harvest_range_${r}' type='range' max=5 onchange="PHOTON.harvest.change(${r})"><br>
 				</div>
 				${row}
 			</div>`
@@ -158,13 +150,12 @@ let PHOTON = {
 		el("ph_amt").textContent = shortenMoney(ghSave.photons.amt)
 		el("ph_prod").textContent = `(+${shorten(this.photon_prod())}/s)`
 
-		for (var [r, type] of Object.entries(this.lighten.names)) {
-			el("ph_lighten_" + r).textContent = shorten(tmp.funda.photon.lighten[r])
-			for (var i = r * 4; i < r * 4 + 4; i++) {
-				let light = this.light.data[i]
-				el("ph_light_amt_" + i).textContent = shorten(tmp.funda.photon.light[i])
-				el("ph_light_eff_" + i).textContent = light.desc(lightEff(i))
-			}			
+		for (var r in this.harvest.names) el("ph_harvest_" + r).textContent = shorten(tmp.funda.photon.harvest[r])
+		for (var [i, light] of Object.entries(this.light.data)) {
+			el("ph_light_" + i).style["border-bottom-width"] = (1 - tmp.funda.photon.size[i]) * 150 + "px"
+			el("ph_light_" + i).style.height = tmp.funda.photon.size[i] * 150 + "px"
+			el("ph_light_amt_" + i).textContent = shorten(tmp.funda.photon.light[i])
+			el("ph_light_eff_" + i).textContent = light.desc(lightEff(i))
 		}
 	}
 }

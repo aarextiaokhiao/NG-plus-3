@@ -13,7 +13,7 @@ function getGalaxyTickSpeedMultiplier() {
 		if (player.currentChallenge == "postcngmm_3" || player.challenges.includes("postcngmm_3")) {
 			var base = inNGM(3) ? 0.9995 : 0.998
 			if (inNGM(4) && player.challenges.includes("postcngmm_3")) base = .9998
-			return E_pow(base, getGalaxyPower() * tmp.gal.str)
+			return E_pow(base, galPow)
 		}
 		return 1
 	}

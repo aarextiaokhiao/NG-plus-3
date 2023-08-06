@@ -2370,7 +2370,9 @@ td.grey {
 .light {
 	width: 180px;
 	height: 150px;
+	border: 0 solid;
 	border-radius: 3px;
+	transition-duration: 0.5s
 }
 
 .bosonic_btn {

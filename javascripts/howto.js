@@ -404,7 +404,11 @@ let HOW_TO = [
 
 		title: "Photons",
 		layer: "fundament",
-		desc: `Best Tachyon Particles produce Emissions and Photons. [more soon]`
+		desc: `Best Tachyon Particles produce Photons and hiddenly Emissions.<br>
+		Emissions give Lights repeatedly, going through a loop of 8 colors.<br><br>
+
+		You have 2 Harvests: Dark Essences and Enlightenments.<br>
+		Each one speeds up Light progress and gives the respective resource based on Light progress.`
 	}, {
 		mod: _ => ngp3,
 		req: _ => ghSave?.lab?.unl,

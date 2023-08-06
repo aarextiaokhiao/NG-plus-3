@@ -307,8 +307,8 @@ function drawQuarkAnimation(ts){
 		delta = (ts - lastTs) / 1000
 		lastTs = ts
 
-		qkctx.fillStyle = "#fff3"
-		qkctx.fillRect(0, 0, qkc.width, qkc.height)
+		qkctx.clearRect(0, 0, qkc.width, qkc.height)
+
 		let amt = Math.min(Math.log10(quantumWorth.add(1).log10() + 10) * 100, 300)
 		for (let i = 0; i < amt; i++) {
 			let data = quarks[i] ?? {

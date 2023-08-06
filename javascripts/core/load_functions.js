@@ -839,7 +839,6 @@ function doFundamentUpdates() {
 	}
 
 	//v2.1: Ghostly Photons
-	if (aarMod.newGame3PlusVersion < 2.1) skip++
 	if (aarMod.newGame3PlusVersion < 2.101) {
 		var newAch = []
 		for (var a of player.achievements) if (a != "ng3p67") newAch.push(a)
@@ -847,7 +846,6 @@ function doFundamentUpdates() {
 	}
 
 	//v2.2: Bosonic Lab
-	if (aarMod.newGame3PlusVersion < 2.2) skip++
 	if (aarMod.newGame3PlusVersion < 2.21) {
 		var oldBRUpg20Bought = brSave && brSave.upgrades.pop()
 		if (oldBRUpg20Bought != 20) brSave.upgrades.push(oldBRUpg20Bought)
