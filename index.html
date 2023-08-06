@@ -3326,9 +3326,9 @@
 		<div class='tab' id='tab_qu'>
 			<table id="tabs_qu"></table>
 			<div id="tab_aq">
-				<canvas id="quarkCanvas" style='opacity: 0.4'></canvas>
-				<span id="quarks2" style='font-size: 16px'>0</span>
-				<span id="quantumWorth1" style='font-size: 16px'>0</span>
+				<canvas id="quarkCanvas"></canvas>
+				<span id="quarks2" style='font-size: 16px'></span>
+				<span id="quantumWorth1" style='font-size: 16px'></span>
 				<div id='assign_options' class='qtable'>
 					<button class='storebtn' id="assignAllButton" onclick='assignAll()'>Distribute</button>
 					<button class='storebtn' id="autoAssign" onclick='toggleAutoAssign()'>Auto: OFF</button>
@@ -3619,7 +3619,7 @@
 			</div>
 			<div id="tab_ph">
 				<div id="gphUnl"></div>
-				<div id="gphDiv">
+				<div id="gphDiv" style='display: none'>
 					<b id='ph_amt' style='font-size: 25px'></b> Photons
 					<span id='ph_prod' style='font-size: 15px'></span><br>
 					<div id="light_table"></div>
@@ -3629,7 +3629,7 @@
 				</div>
 			</div>
 			<div id="tab_auto_ant">
-				<span id="quantumWorth2">0</span>
+				<span id="quantumWorth2"></span>
 				<table style="margin: auto">
 					<tr>
 						<td style="width: 200px">
@@ -3674,14 +3674,7 @@
 			</div>
 		</div>
 		<div id="tab_bl">
-			<table id="tabs_bl">
-				<tr>
-					<td><button class="secondarytabbtn" onclick='showBLTab("hypotheses")'>Hypotheses</button></td>
-					<td><button class="secondarytabbtn" onclick='showBLTab("weak_force")'>Weak Force</button></td>
-					<!-- <td><button class="secondarytabbtn" onclick='showBLTab("higgs")'>Higgs</button></td> -->
-					<td><button class="secondarytabbtn" onclick='showBLTab("bl_milestones")'>Milestones</button></td>
-				</tr>
-			</table>
+			<table id="tabs_bl"></table>
 			<div id="tab_bl_hy" style='display: none'>
 				<button class='storebtn' style='width: 120px; height: 36px' onclick="BL_HYPOTHESES.clear()">Clear</button>
 				<button class='storebtn' style='width: 120px; height: 36px' onclick="BL_HYPOTHESES.export()">Export</button>

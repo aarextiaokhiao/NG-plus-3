@@ -151,32 +151,29 @@ function setupHTMLAndData() {
 
 //Theme stuff
 function setTheme(name) {
-	document.querySelectorAll("link").forEach( function(e) {
+	document.querySelectorAll("link").forEach(e => {
 		if (e.href.includes("theme")) e.remove();
-	});
-	
-	player.options.theme=name
-	if(name !== undefined && name.length < 3) giveAchievement("Shhh... It's a secret")
-	var themeName=player.options.secretThemeKey
-	if(name === undefined) themeName="Normal"
-	else if (name !== "S6") themeName=name
+	})
 
-	el("theme").innerHTML="<p style='font-size:15px'>Themes</p>Current theme: " + themeName;
-	el("chosenTheme").textContent="Current theme: " + themeName;
-	
-	if (name === undefined) return;
-	if (name === "Aarex's Modifications") name = "Aarexs Modifications"
-	if (name === "Aarex's Mods II") name = "Aarexs Mods II"
-	if (name === "Aarex's Mods Tribus") name = "Aarexs Mods Tribus"
-	
-	var head = document.head;
-	var link = document.createElement('link');
-	
-	link.type = 'text/css';
-	link.rel = 'stylesheet';
-	link.href = "stylesheets/theme-" + name + ".css";
-	
-	head.appendChild(link);
+	var themeName = player.options.secretThemeKey
+	if (name === undefined) themeName = "Normal"
+	else if (name !== "S6") themeName = name
+	if(name !== undefined && name.length < 3) giveAchievement("Shhh... It's a secret")
+
+	el("theme").innerHTML="<p style='font-size:15px'>Themes</p>Current theme: " + themeName
+	el("chosenTheme").textContent="Current theme: " + themeName
+	player.options.theme = name
+
+	if (name === undefined) return
+	name = name.replace(`'`, ``)
+
+	var head = document.head
+	var link = document.createElement('link')
+
+	link.type = 'text/css'
+	link.rel = 'stylesheet'
+	link.href = "stylesheets/theme-" + name + ".css"
+	head.appendChild(link)
 }
 
 el("theme").onclick = function () {

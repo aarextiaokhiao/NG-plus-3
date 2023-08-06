@@ -5,11 +5,10 @@ function lightEff(x, def) {
 let PHOTON = {
 	/* CORE */
 	setup() {
-		let r = {
+		return {
 			amt: E(0),
 			range: [0, 0]
 		}
-		return r
 	},
 
 	//Unlock
@@ -46,12 +45,12 @@ let PHOTON = {
 			let size = 1
 			for (let r of ghSave.photons.range) if (i - r >= 0 && i - r < 3) size -= harvest
 
-			data.light[i] = (cycles + Math.min(remainder / size, 1))
+			data.light[i] = cycles + Math.min(remainder / size, 1)
 			data.eff[i] = light.eff(0) //will be determined soon
 			data.size[i] = size
 			remainder = Math.max(remainder - size, 0)
 
-			for (let [ri, r] of Object.entries(ghSave.photons.range)) if (i - r >= 0 && i - r < 3) data.harvest[ri] += cycles + Math.min(remainder / size, 1)
+			for (let [ri, r] of Object.entries(ghSave.photons.range)) if (i - r >= 0 && i - r < 3) data.harvest[ri] += data.light[i]
 		}
 	},
 
@@ -142,7 +141,7 @@ let PHOTON = {
 		let unl = this.unlocked()
 		el("gphUnl").style.display = unl ? "none" : ""
 		el("gphDiv").style.display = unl ? "" : "none"
-		if (!this.unlocked()) {
+		if (!unl) {
 			el("gphUnl").textContent = "Get "+shortenCosts(pow10(2.9e9))+" antimatter in Big Rip to unlock Photons."
 			return
 		}

@@ -5,15 +5,14 @@ const NEUTRINO = NT = {
 
 	//Calculation
 	setup() {
-		return {
-			electron: E(0),
-			mu: E(0),
-			tau: E(0),
+		let r = {
 			generationGain: 1,
 			boosts: 0,
 			multPower: 1,
 			upgrades: []
 		}
+		for (let type of NT_RES.types) r[type] = E(0)
+		return r
 	},
 	temp() {
 		if (!this.unlocked()) return
