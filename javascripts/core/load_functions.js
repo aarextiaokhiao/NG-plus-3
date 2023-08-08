@@ -753,8 +753,7 @@ function doQuantumUpdates(){
 			quSave.pairedChallenges.completions[Math.min(c1, c2) * 10 + Math.max(c1, c2)] = c
 		}
 	}
-
-	if (mod.ngp3 ? aarMod.newGame3PlusVersion < 1.999 || (quSave.emperorDimensions ? quSave.emperorDimensions[1] == undefined : false) : false) { 
+	if (aarMod.newGame3PlusVersion < 1.999 || !EDsave?.[1]) { 
 		var oldLength=player.masterystudies.length
 		var newMS=[]
 		for (var m=0;m<player.masterystudies.length;m++) {
@@ -769,9 +768,8 @@ function doQuantumUpdates(){
 		if (oldLength > newMS.length) forceToQuantumAndRemove = true
 		quSave.replicants.quantumFoodCost = Decimal.mul(quSave.replicants.quantumFoodCost, 2)
 		quSave.replicants.limitDim=1
-		quSave.emperorDimensions = {}
-		quSave.emperorDimensions[1] = {workers: quSave.replicants.workers, progress: quSave.replicants.workerProgress, perm: Math.round(parseFloat(quSave.replicants.workers))}
-		for (d=2;d<9;d++) quSave.emperorDimensions[d] = {workers: 0, progress: 0, perm: 0}
+		EDsave = quSave.emperorDimensions = setupEDSave()
+		EDsave[1] = { workers: E(quSave.replicants.workers), progress: E(quSave.replicants.workerProgress), perm: Math.round(parseFloat(quSave.replicants.workers)) }
 		player.dontWant = false
 		delete quSave.replicants.workers
 		delete quSave.replicants.workerProgress
@@ -780,7 +778,7 @@ function doQuantumUpdates(){
 		if (quSave.emperorDimensions[1].perm === undefined) {
 			quSave.replicants.quantumFood = 0
 			quSave.replicants.quantumFoodCost = 1e46
-			for (d=1;d<9;d++) quSave.emperorDimensions[d] = {workers: 0, progress: 0, perm: 0}
+			EDsave = quSave.emperorDimensions = setupEDSave()
 		}
 		player.meta.bestOverQuantums = player.meta.bestAntimatter
 		quSave.autobuyer.peakTime = 0
@@ -1853,12 +1851,7 @@ function conToDeciMS(){
 			quSave.replicants.babies = E(quSave.replicants.babies)
 			quSave.replicants.ageProgress = E(quSave.replicants.ageProgress)
 		}
-		if (quSave?.emperorDimensions?.[1]) {
-			for (d=1;d<9;d++) {
-				quSave.emperorDimensions[d].workers = Decimal.round(quSave.emperorDimensions[d].workers)
-				quSave.emperorDimensions[d].progress = Decimal.round(quSave.emperorDimensions[d].progress)
-			}
-		}
+		if (EDsave) EDsave = deepUndefinedAndDecimal(EDsave, setupEDSave())
 		if (nfSave) {
 			nfSave.charge = E(nfSave.charge)
 			nfSave.energy = E(nfSave.energy)

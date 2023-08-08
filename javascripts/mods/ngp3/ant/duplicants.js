@@ -222,14 +222,15 @@ function getWorkerAmount(tier) {
 	return EDsave[tier].workers
 }
 
-function getTotalWorkers(data) {
-	if (data) {
-		if (data.quantum.emperorDimensions == undefined) return E(data.quantum.duplicants.workers)
-		data = data.quantum.emperorDimensions
-	} else data = EDsave
-	var total = E(0)
-	for (var d = 1; d < 9; d++) total = total.add(data[d].workers)
-	return total.round()
+function getTotalWorkers(data = player) {
+	let qu = data.quantum
+	if (qu?.emperorDimensions != undefined) {
+		var total = E(0)
+		for (var d = 1; d <= 8; d++) total = total.add(qu.emperorDimensions[d].workers)
+		return total.round()
+	} else {
+		return E(qu?.duplicants?.workers ?? 0)
+	}
 }
 
 function buyMaxQuantumFood() {
@@ -490,4 +491,10 @@ function updatePostBM14Display() {
 	let bm14 = hasBraveMilestone(14)
 	el("foodCell").style.display = bm14 ? "none" : ""
 	el(bm14 ? "pilonsCellED" : "pilonsCell").appendChild(el("pilonsDiv"))
+}
+
+function setupEDSave() {
+	let r = {}
+	for (let d = 1; d <= 8; d++) r[d] = { workers: E(0), progress: E(0), perm: 0 }
+	return r
 }

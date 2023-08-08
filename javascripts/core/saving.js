@@ -872,8 +872,7 @@ function doNGPlusThreeNewPlayer() {
 		babies: 0,
 		ageProgress: 0
 	}
-	quSave.emperorDimensions = {}
-	for (d=1;d<9;d++) quSave.emperorDimensions[d] = {workers: 0, progress: 0, perm: 0}
+	quSave.emperorDimensions = setupEDSave()
 	quSave.nanofield = {
 		charge: 0,
 		energy: 0,
