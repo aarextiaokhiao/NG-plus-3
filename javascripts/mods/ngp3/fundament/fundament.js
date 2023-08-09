@@ -18,18 +18,17 @@ function setupFundament() {
 	}
 }
 
-function loadFundament() {
-	ghSave = player.ghostify
-	blSave = undefined
+function loadFundament(unl) {
+	unl = unl ?? player.ghostify != undefined
+	ghSave = player.ghostify = unl ? deepUndefinedAndDecimal(player.ghostify, setupFundament()) : undefined
+	blSave = ghSave?.lab
 	ghostified = ghSave?.times > 0
 
-	if (!mod.ngp3) return
-	player.meta.bestOverGhostifies = Decimal.max(player.meta.bestOverGhostifies, player.meta.bestOverQuantums)
-	player.dilation.bestTPOverGhostifies = Decimal.max(player.dilation.bestTPOverGhostifies, player.dilation.bestTP)
-
-	if (!ghSave) return
-	ghSave = deepUndefinedAndDecimal(ghSave, setupFundament())
-	blSave = ghSave?.lab
+	if (mod.ngp3) {
+		player.meta.bestOverGhostifies = Decimal.max(player.meta.bestOverGhostifies, player.meta.bestOverQuantums)
+		player.dilation.bestTPOverGhostifies = Decimal.max(player.dilation.bestTPOverGhostifies, player.dilation.bestTP)
+	}
+	if (!unl) return
 
 	updateBraveMilestones()
 	updateAutoGhosts(true)
@@ -38,8 +37,7 @@ function loadFundament() {
 }
 
 function unlockFundament() {
-	player.ghostify = setupFundament()
-	loadFundament()
+	loadFundament(true)
 	if (el("welcome").style.display != "flex") el("welcome").style.display = "flex"
 	el("welcomeMessage").innerHTML = "You are finally able to complete PC6+8 in Big Rip! However, because of the unstability of this universe, the only way to go further is to fundament. This allows to unlock new stuff in exchange for everything that you have."
 }

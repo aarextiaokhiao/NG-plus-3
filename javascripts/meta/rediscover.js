@@ -55,34 +55,27 @@ const REDISCOVER = {
 			unl: _ => hasBadge("p3_bl"),
 			goal: _ => LAB.unlocked(),
 			preload() {
-				doNGPlusFourPlayer()
-				player.ghostify = setupFundament()
-				player.ghostify.times = 1
-				loadFundament()
-				quantumed = true
-				doReset("funda")
+				player.ghostify = { times: 1 }
+				loadFundament(true)
 			},
-		}, {
+		}
+		/*, {
 			to: "End",
 			unl: _ => false,
 			goal: _ => false,
 			preload() {
-				doNGPlusFourPlayer()
 				player.masterystudies.push("d13")
 				beSave.unlocked = true
 				for (var x = 1; x <= 8; x++) beSave.upgrades.push(x)
 
-				player.ghostify = setupFundament()
-				player.ghostify.times = 20
-				loadFundament()
-
+				ghSave.times = 20
 				ghSave.milestones = 16
 				ghSave.neutrinos.boosts = 12
 				for (var x = 1; x <= 16; x++) ghSave.neutrinos.upgrades.push(x)
 				ghSave.photons.unl = true
 				blSave.unl = true
 			},
-		}
+		}*/
 	],
 	in: _ => meta.save.current == "rediscover",
 	start(x) {
@@ -95,7 +88,7 @@ const REDISCOVER = {
 		meta.save.current = "rediscover"
 		meta.mustSave = true
 		load_game(true, "start")
-		REDISCOVER.data[x].preload()
+		//Preloading is moved to load_functions.js to fix "rediscovery wiping" bug.
 
 		$.notify("Rediscovery started!")
 		el("welcomeMessage").innerHTML = "Welcome to Rediscovery! On the bottom-right, you'll see statistics about this Rediscovery. Get the goal to win!"

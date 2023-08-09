@@ -127,9 +127,9 @@ function changeSaveDesc(i, exit) {
 					msg+=", Challenge completions: "+completions
 				} else {
 					if (data.quantum.gluons.rg) msg+=", Gluons: "+shortenDimensions(Decimal.add(data.quantum.gluons.rg,data.quantum.gluons.gb).add(data.quantum.gluons.br))
-					if (data.masterystudies.includes('d7')) msg+=", Positrons: "+shortenDimensions(data.quantum.positrons.amount)
-					msg+=", Best quantum: "+timeDisplayShort(data.quantum.best)
+					if (data.masterystudies.includes('d7')) msg+=", Positrons: "+shortenDimensions(data.quantum.electrons.amount)
 				}
+				msg+=", Best quantum: "+timeDisplayShort(data.quantum.best)
 			}
 		} else if (data.exdilation && data.blackhole.unl) {
 			var datastart="Eternity Points: "+shortenDimensions(E(data.eternityPoints))
@@ -956,11 +956,11 @@ function doNGPlusFourPlayer(){
 	for (var c = 13; c < 15; c++) player.eternityChalls["eterc" + c] = 5
 
 	player.dilation.studies = [1, 2, 3, 4, 5, 6]
-	player.dilation.dilatedTime = 1e100
+	player.dilation.dilatedTime = E(1e100)
 	for (var u = 4; u < 11; u++) player.dilation.upgrades.push(u)
 	for (var u = 1; u < 7; u++) player.dilation.upgrades.push("ngpp" + u)
 
-	player.meta.antimatter = 1e25
+	player.meta.antimatter = E(1e25)
 	player.meta.resets = 4
 	quSave.times = 1
 	quSave.best = 10

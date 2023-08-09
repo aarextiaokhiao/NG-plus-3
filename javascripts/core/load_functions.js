@@ -415,7 +415,6 @@ function setSomeEterEraStuff() {
 	updateNotationOption()
 
 	if (player.infinitied == 0 && getEternitied() == 0) el("infinityPoints2").style.display = "none"
-
 	if (player.eternityChallUnlocked === null) player.eternityChallUnlocked = 0
 
 	if (getEternitied()<1) el("infmultbuyer").textContent="Max buy IP mult"
@@ -428,7 +427,7 @@ function setSomeEterEraStuff() {
 }
 
 function setSaveStuffHTML(){
-	el("save_name").textContent = "You are currently playing in " + (aarMod.save_name ? aarMod.save_name : "Save #" + (savePlacement+1))
+	el("save_name").textContent = "You are currently playing in " + (aarMod.save_name ? aarMod.save_name : meta.save.current == "rediscover" ? "Rediscovery" : "Save #" + (savePlacement + 1))
 	el("offlineSlider").value = aarMod.offline
 	el("offlineInterval").textContent = "Offline progress: " + (aarMod.offline ? (aarMod.offline * 100) + " ticks" : "OFF")
 
@@ -1618,12 +1617,12 @@ function onLoad(noOffline) {
 
 	if (player.totalTimePlayed < 1 || inflationCheck || forceToQuantumAndRemove) {
 		updateNGModeMessage()
+		if (meta.save.current == "rediscover") REDISCOVER.data[meta.save.rediscover.in].preload()
 		inflationCheck = false
 		infiniteCheck = false
 		showNextModeMessage()
 	} else showNextModeMessage()
 }
-
 
 /*
 END OF ONLOAD
