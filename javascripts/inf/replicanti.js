@@ -86,8 +86,7 @@ function getRGCost(offset = 0, costChange) {
 			if (player.replicanti.gal + offset > 399) {
 				if (mod.ngud) for (var g = Math.max(player.replicanti.gal, 399); g < player.replicanti.gal + offset; g++) increase += Math.pow(g - 389, 2)
 				if (mod.ngpp) {
-					var isReduced = false
-					if (hasMasteryStudy("t266")) isReduced = true
+					var isReduced = hasMasteryStudy("t266")
 					if (isReduced) {
 						increase += (offset - Math.max(399 - player.replicanti.gal, 0)) * (1500 * (offset - Math.max(399 - player.replicanti.gal, 0) + Math.max(player.replicanti.gal, 399) * 2) - 1183500)
 						if (player.replicanti.gal + offset > 2998) increase += (offset - Math.max(2998 - player.replicanti.gal, 0)) * (5e3 * (offset - Math.max(2998 - player.replicanti.gal, 0) + Math.max(player.replicanti.gal, 2998) * 2) - 29935e3)

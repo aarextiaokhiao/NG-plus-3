@@ -121,6 +121,8 @@ const TAB_CORE = {
 
 	//Open: Open the tab and subtabs.
 	open(x) {
+		if (tmp.tab.rev[x] == undefined) this.update_tmp()
+
 		let p = tmp.tab.rev[x] || "root"
 		if (p != "root") this.switch("root", p)
 		this.switch(p, x)

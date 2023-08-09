@@ -449,7 +449,7 @@ function eternityChallengeUnlockDisplay(){
 function mainTimeStudyDisplay(){
 	initialTimeStudyDisplay()
 	eternityChallengeUnlockDisplay()
-	el("dilstudy1").innerHTML = "Unlock Time Dilation" + (hasDilStudy(1) ? "" : "<span>Requirement: 5 EC11 and EC12 completions and " + getFullExpansion(getDilationTotalTTReq()) + " total Theorems")+"<span>Cost: " + getFullExpansion(5e3) + " Time Theorems"
+	el("dilstudy1").innerHTML = "Unlock Time Dilation" + (hasDilStudy(1) ? "" : "<span>Requirement: 5 EC11 and EC12 completions and " + getFullExpansion(13000) + " total Theorems")+"<span>Cost: " + getFullExpansion(5e3) + " Time Theorems"
 	if (mod.ngp3) {
 		el("221desc").textContent = "Currently: "+shorten(E_pow(1.0025, player.resets))+"x"
 		el("227desc").textContent = "Currently: "+shorten(Math.pow(tmp.sacPow.max(10).log10(), 10))+"x"

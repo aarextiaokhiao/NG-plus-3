@@ -66,7 +66,7 @@ function maxTheorems() {
 }
 
 function updateTheoremButtons() {
-	if (player.dilation.upgrades.includes(10)) {
+	if (player.dilation.upgrades.includes(10) && getPassiveTTGen() >= 10) {
 		el("theoremmax").style.display = "none"
 		el("theoremam").style.display = "none"
 		el("theoremip").style.display = "none"
@@ -119,14 +119,10 @@ function buyTimeStudy(name, check, quickBuy) {
 	}
 }
 
-function getDilationTotalTTReq() {
-	return 13000
-}
-
 function buyDilationStudy(name, cost) {
 	if (player.timestudy.theorem >= cost && !hasDilStudy(name) && (hasDilStudy(name - 1) || name < 2)) {
 		if (name < 2) {
-			if (ECComps("eterc11") + ECComps("eterc12") < 10 || getTotalTT(player) < getDilationTotalTTReq()) return
+			if (ECComps("eterc11") + ECComps("eterc12") < 10 || getTotalTT(player) < 13000) return
 			TAB_CORE.open('dil')
 			if (player.eternityUpgrades.length < 1) giveAchievement("Work harder.")
 		} else if (name > 5) {

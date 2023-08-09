@@ -34,7 +34,7 @@ const MTS = MASTERY_STUDIES = {
 			return quantumWorth.gte(50)
 		},
 		8: function() {
-			return quSave.electrons.amount >= 16750 && speedrunMilestonesReached < 16
+			return quSave.electrons.amount >= 16750 && speedrunMilestonesReached >= 16
 		},
 		9: function() {
 			return QCIntensity(8) >= 1
@@ -197,7 +197,6 @@ const MTS = MASTERY_STUDIES = {
 		},
 		431() {
 			var gals = player.dilation.freeGalaxies
-
 			var base = Math.max(gals / 5e3 - 1, 1)
 			var exp = Math.max(gals / 1e4 + Math.log10(gals) / 4, 1)
 			return E_pow(base, exp)
@@ -363,6 +362,8 @@ function updateMasteryStudyCosts() {
 		if (!MTS.unlocked.includes("ec"+id)) break
 		setMasteryStudyCost(id,"ec")
 		MTS.ecReqsStored[id] = MTS.ecReqs[id]()
+		console.log(player.eternityChallUnlocked)
+		if (player.eternityChallUnlocked == id) MTS.ttSpent += MTS.costs.ec[id]
 	}
 	for (let id = 7; id <= MTS.unlocksUpTo; id++) {
 		if (!MTS.unlocked.includes("d"+id)) break
@@ -549,32 +550,28 @@ function buyMasteryStudy(type, id, quick=false) {
 			ipMultPower = 2.2
 			player.infMult = player.infMult.div(otherMults).pow(Math.log10(getIPMultPower()) / Math.log10(old)).mul(otherMults)
 		}
-		if (id == 266 && player.replicanti.gal > 399) {
+		if (id == 266 && player.replicanti.gal >= 400) {
 			var gal = player.replicanti.gal
+			player.replicanti.galCost = E(inNGM(2) ? 1e110 : 1e170)
 			player.replicanti.galCost = getRGCost(gal)
-			player.replicanti.gal = gal
 		}
 		if (id == 312) player.meta.resets = 4
-		if (!hasNU(6) && (id == 251 || id == 252 || id == 253 || id == 301)) {
-			player.galaxies = 1
-		}
-		if (!inQC(5) && (id == 261 || id == 331)) {
-			player.resets = 4
-		}
+		if (!hasNU(6) && (id == 251 || id == 252 || id == 253 || id == 301)) player.galaxies = 1
+		if (!inQC(5) && (id == 261 || id == 331)) player.resets = 4
 	}
 	if (type=="d") {
 		buyingDilationStudy(id)
 		if (!ghostified) buyingDilationStudyFirstTime(id)
+
+		updateUnlockedMasteryStudies()
+		updateSpentableMasteryStudies()
 	}
 	if (!quick) {
 		if (type == "t") {
 			if (id == 302) fillAll()
 			MTS.bought++
-		} else if (type == "ec") TAB_CORE.open("chal_ec")
-		else if (type == "d") {
-			updateUnlockedMasteryStudies()
-			updateSpentableMasteryStudies()
 		}
+		if (type == "ec") TAB_CORE.open('chal_eter')
 		updateMasteryStudyCosts()
 		updateMasteryStudyButtons()
 		drawMasteryTree()
