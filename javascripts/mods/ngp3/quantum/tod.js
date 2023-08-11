@@ -19,7 +19,7 @@ function setupToDHTML() {
 	for (var [u, b] of Object.entries(branchUpgrades)) {
 		let i = parseInt(u) + 1
 		html += `<td>
-			<button class='qu_upg unavailablebtn' id='redupg${i}'>
+			<button class='qu_upg unavailablebtn' id='redupg${i}' onclick='buyBranchUpg("r", ${i})'>
 				${b}<br>
 				Currently: <span id='redupg${i}current'></span><br>
 				<span id='redupg${i}cost'></span>

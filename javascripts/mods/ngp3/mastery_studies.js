@@ -29,6 +29,7 @@ const MTS = MASTERY_STUDIES = {
 			return getFullExpansion(MTS.ecReqsStored[14]) + "% replicate chance"
 		}
 	},
+	unlocked: [],
 	unlockReqConditions: {
 		7: function() {
 			return quantumWorth.gte(50)
