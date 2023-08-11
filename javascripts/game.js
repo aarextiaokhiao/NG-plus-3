@@ -2214,6 +2214,10 @@ function updateDisplays() {
 	tickspeedDisplay()
 	galSacDisplay()
 	progressBarUpdating()
+	if (notify_feature_queue) {
+		onNotifyFeature(notify_feature_queue)
+		notify_feature_queue = ""
+	}
 
 	let msg = shortenDimensions(player.infinityPoints)
 	el("infinityPoints1").innerHTML = "You have <span class='IPAmount'>"+msg+"</span> Infinity Points."

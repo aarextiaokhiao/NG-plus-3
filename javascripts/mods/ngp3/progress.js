@@ -106,9 +106,7 @@ const NGP3_FEATURES = {
 	},
 	fu: {
 		name: "Fundament",
-		tab() {
-			TAB_CORE.open("funda")
-		},
+		tab: _ => TAB_CORE.open("funda"),
 
 		met: _ => (!bigRipped() || isQuantumReached()) && ghostified,
 		req: _ => getQCIdGoal([6,8],true),
@@ -148,7 +146,12 @@ const NGP3_FEATURES = {
 }
 const NGP3_FEATURE_LEN = Object.keys(NGP3_FEATURES).length
 
-function ngp3_feature_notify(k) {
+let notify_feature_queue
+function notifyFeature(k) {
+	notify_feature_queue = k
+}
+
+function onNotifyFeature(k) {
 	NGP3_FEATURES[k].tab?.()
 	$.notify("Congratulations! You unlocked " + NGP3_FEATURES[k].name + "!", "success")
 

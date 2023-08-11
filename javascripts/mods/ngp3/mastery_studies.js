@@ -362,7 +362,6 @@ function updateMasteryStudyCosts() {
 		if (!MTS.unlocked.includes("ec"+id)) break
 		setMasteryStudyCost(id,"ec")
 		MTS.ecReqsStored[id] = MTS.ecReqs[id]()
-		console.log(player.eternityChallUnlocked)
 		if (player.eternityChallUnlocked == id) MTS.ttSpent += MTS.costs.ec[id]
 	}
 	for (let id = 7; id <= MTS.unlocksUpTo; id++) {
@@ -516,14 +515,14 @@ function buyingDilationStudy(id){
 }
 
 function buyingDilationStudyFirstTime(id){
-	if (id == 7) ngp3_feature_notify("pos")
-	if (id == 8) ngp3_feature_notify("qc")
-	if (id == 9) ngp3_feature_notify("pc")
-	if (id == 10) ngp3_feature_notify("ant")
-	if (id == 11) ngp3_feature_notify("ed")
-	if (id == 12) ngp3_feature_notify("nf")
-	if (id == 13) ngp3_feature_notify("decay")
-	if (id == 14) ngp3_feature_notify("br")
+	if (id == 7) notifyFeature("pos")
+	if (id == 8) notifyFeature("qc")
+	if (id == 9) notifyFeature("pc")
+	if (id == 10) notifyFeature("ant")
+	if (id == 11) notifyFeature("ed")
+	if (id == 12) notifyFeature("nf")
+	if (id == 13) notifyFeature("decay")
+	if (id == 14) notifyFeature("br")
 }
 
 function buyMasteryStudy(type, id, quick=false) {

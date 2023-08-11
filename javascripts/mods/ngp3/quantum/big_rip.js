@@ -246,7 +246,7 @@ function setupBreakEternity() {
 
 function unlockBreakEternity() {
 	beSave.unlocked = true
-	if (!ghostified) ngp3_feature_notify("be")
+	if (!ghostified) notifyFeature("be")
 	$.notify("Congratulations! You have unlocked Break Eternity!", "success")
 }
 

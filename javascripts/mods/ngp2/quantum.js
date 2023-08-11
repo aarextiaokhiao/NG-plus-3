@@ -211,7 +211,7 @@ function doQuantum(force, auto, qc = {}) {
 		if (!inQC(6)) quSave.quarks = quSave.quarks.add(quarkGain()).round()
 		if (!quantumed) {
 			quantumed = true
-			ngp3_feature_notify("qu")
+			notifyFeature("qu")
 			el("quarks").style.display=""
 			el("bestAntimatterType").textContent = "Your best meta-antimatter for this Quantum"
 		}

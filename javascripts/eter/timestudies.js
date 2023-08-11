@@ -127,7 +127,7 @@ function buyDilationStudy(name, cost) {
 			if (player.eternityUpgrades.length < 1) giveAchievement("Work harder.")
 		} else if (name > 5) {
 			TAB_CORE.open('dim_meta')
-			ngp3_feature_notify("md")
+			notifyFeature("md")
 		}
 		player.dilation.studies.push(name)
 		player.timestudy.theorem -= cost

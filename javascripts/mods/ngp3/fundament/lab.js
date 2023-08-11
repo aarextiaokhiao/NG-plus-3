@@ -6,7 +6,7 @@ const BOSONIC_LAB = LAB = {
 	unlocked: _ => blSave?.unl,
 	unlock() {
 		blSave.unl = true
-		ngp3_feature_notify("bl")
+		notifyFeature("bl")
 	},
 
 	//Calculation

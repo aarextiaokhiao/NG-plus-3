@@ -88,7 +88,7 @@ function ghostifyReset(force, gain) {
 		ghSave.times++
 		if (!ghostified) {
 			ghostified = true
-			ngp3_feature_notify("fu")
+			notifyFeature("fu")
 			el("ghostparticles").style.display = ""
 			giveAchievement("Kee-hee-hee!")
 		} else if (ghSave.times > 2 && ghSave.times < 11) {

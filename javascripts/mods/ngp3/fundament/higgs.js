@@ -37,7 +37,7 @@ let HIGGS = {
 			let bulk = this.bulk(blSave.best_bosons)
 			if (!force && ghSave.hb.amt >= bulk) return
 
-			if (ghSave.hb.amt == 0) ngp3_feature_notify("hb")
+			if (ghSave.hb.amt == 0) notifyFeature("hb")
 			ghSave.hb.amt = Math.max(ghSave.hb.amt, bulk)
 			ghSave.hb.mass = E(0)
 			blSave.bosons = E(0)

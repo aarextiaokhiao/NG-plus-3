@@ -55,60 +55,9 @@ dev.cancerize = function() {
 	el("notation").textContent = "BEAUTIFUL"
 }
 
-dev.fixSave = function() {
-	var save = JSON.stringify(player, function(k, v) { return (v === Infinity) ? "Infinity" : v; })
-  
-	var fixed = save.replace(/NaN/gi, "10")
-	var stillToDo = JSON.parse(fixed)
-	for (var i = 0; i < stillToDo.autobuyers.length; i++) stillToDo.autobuyers[i].isOn = false
-	console.log(stillToDo)
-    
-	var save_data = stillToDo
-	if (!save_data || !verify_save(save_data)) {
-		alert('could not load the save..');
-		load_custom_game();
-		return;
-	}
-
-	player = save_data;
-	save_game();
-	reload();
-}
-
 dev.implode = function() {
 	el("body").style.animation = "implode 2s 1";
 	setTimeout(function(){ el("body").style.animation = ""; }, 2000)
-}
-
-dev.updateCosts = function() {
-	for (var i = 1; i < 9; i++) {
-		var dim = player["timeDimension"+i]
-		if (dim.cost.gte(Number.MAX_VALUE)) {
-			dim.cost = E_pow(timeDimCostMults[i]*1.5, dim.bought).mul(timeDimStartCosts[i])
-		}
-		if (dim.cost.gte("1e1300")) {
-			dim.cost = E_pow(timeDimCostMults[i]*2.2, dim.bought).mul(timeDimStartCosts[i])
-		}
-		if (i > 4) {
-			dim.cost = E_pow(timeDimCostMults[i]*100, dim.bought).mul(timeDimStartCosts[i])
-		}
-	}
-}
-
-dev.testTDCosts = function() {
-	for (var i=1; i<9; i++) {
-		var timeDimStartCosts = [null, 1, 5, 100, 1000, "1e2350", "1e2650", "1e2900", "1e3300"]
-		var dim = player["timeDimension"+i]
-		if (dim.cost.gte(Number.MAX_VALUE)) {
-			dim.cost = E_pow(timeDimCostMults[i]*1.5, dim.bought).mul(timeDimStartCosts[i])
-		}
-		if (dim.cost.gte("1e1300")) {
-			dim.cost = E_pow(timeDimCostMults[i]*2.2, dim.bought).mul(timeDimStartCosts[i])
-		}
-		if (i > 4) {
-			dim.cost = E_pow(timeDimCostMults[i]*100, dim.bought).mul(timeDimStartCosts[i])
-		}
-	}
 }
 
 dev.giveQuantumStuff = function(n){

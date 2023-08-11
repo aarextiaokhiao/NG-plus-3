@@ -16,7 +16,7 @@ let PHOTON = {
 	unlocked: _ => ghSave?.photons.unl,
 	unlock() {
 		ghSave.photons.unl = true
-		ngp3_feature_notify("ph")
+		notifyFeature("ph")
 	},
 
 	//Calculation
