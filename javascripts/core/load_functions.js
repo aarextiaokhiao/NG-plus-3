@@ -752,7 +752,7 @@ function doQuantumUpdates(){
 			quSave.pairedChallenges.completions[Math.min(c1, c2) * 10 + Math.max(c1, c2)] = c
 		}
 	}
-	if (aarMod.newGame3PlusVersion < 1.999 || !EDsave?.[1]) { 
+	if (aarMod.newGame3PlusVersion < 1.999 || mod.ngp3 && !EDsave?.[1]) { 
 		var oldLength=player.masterystudies.length
 		var newMS=[]
 		for (var m=0;m<player.masterystudies.length;m++) {

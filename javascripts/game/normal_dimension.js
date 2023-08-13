@@ -351,7 +351,7 @@ function getInfinitiedMult() {
 }
 
 function getPostBreakInfNDMult() {
-	mult = E(1)
+	let mult = E(1)
 	if (player.infinityUpgrades.includes("totalMult")) mult = mult.mul(totalMult)
 	if (player.infinityUpgrades.includes("currentMult")) mult = mult.mul(currentMult)
 	if (player.infinityUpgrades.includes("infinitiedMult")) mult = mult.mul(infinitiedMult)
@@ -408,7 +408,7 @@ function getNormalDimensionVanillaTimeStudyBonus(tier){
 	if (hasTimeStudy(161)) mult = mult.mul(Decimal.pow(10, (player.galacticSacrifice ? 6660 : 616) * (player.aarexModifications.newGameExpVersion ? 5 : 1)))
 	if (hasTimeStudy(234) && tier == 1) mult = mult.mul(tmp.sacPow)
 	if (hasTimeStudy(193)) mult = mult.mul(Decimal.pow(1.03, getEternitied()).min("1e13000"))
-	if (tier == 8 && hasTimeStudy(214)) mult = mult.mul((tmp.sacPow.pow(8)).min("1e46000").mul(tmp.sacPow.pow(1.1).min(new Decimal("1e125000"))))
+	if (tier == 8 && hasTimeStudy(214)) mult = mult.mul(tmp.sacPow.pow(8).min("1e46000").mul(tmp.sacPow.pow(1.1).min(new Decimal("1e125000"))))
 
 	return mult
 }
@@ -423,12 +423,15 @@ function getNormalDimensionGalaxyUpgradesBonus(mult){
 	return mult
 }
 
-function getAfterDefaultDilationLayerAchBonus(tier){
-	mult = E(1)
+function getTimeDimMult(tier) {
 	let timeAndDimMult = timeMult()
 	if (hasInfinityMult(tier) && !inNGM(3)) timeAndDimMult = dimMults().mul(timeAndDimMult)
+	return timeAndDimMult
+}
 
-	if (player.challenges.includes("postcngmm_1") || player.currentChallenge=="postcngmm_1") mult = mult.mul(timeAndDimMult)
+function getAfterDefaultDilationLayerAchBonus(tier){
+	mult = E(1)
+	if (player.challenges.includes("postcngmm_1") || player.currentChallenge=="postcngmm_1") mult = mult.mul(getTimeDimMult(tier))
 	if (inNGM(2)) return mult
 
 	if (hasAch("r56") && player.thisInfinityTime < 1800) mult = mult.mul(3600 / (player.thisInfinityTime + 1800));
@@ -453,33 +456,29 @@ function getStartingNDMult(tier) {
 }
 
 function getDimensionFinalMultiplier(tier) {
+	if (player.currentChallenge == "postcngm3_2") return E(1e100).max(tmp.inf_pow)
+	if (player.currentEternityChall == "eterc11") return player.infinityPower.pow(7).max(1).mul(getDimensionBoostPower().pow(player.resets - tier + 1).max(1))
+
 	let mult = getStartingNDMult(tier)
 	if (tier == 8) mult = mult.mul(getTotalSacrificeBoost())
 
-	if (player.currentChallenge == "postcngm3_2") return E(1e100).max(tmp.inf_pow)
-	if (player.currentEternityChall == "eterc11") return E_pow(getDimensionBoostPower(), player.resets - tier + 1).max(1).mul(tmp.inf_pow)
-	if ((inNC(7) || player.currentChallenge == "postcngm3_3") && inNGM(2)) {
+	if ((inNC(7) || player.currentChallenge == "postcngm3_3") && !inNGM(2)) {
 		if (tier == 4) mult = mult.pow(1.4)
 		if (tier == 2) mult = mult.pow(1.7)
 	}
 
 	if (player.currentEternityChall != "eterc9" && (!inNGM(3) || player.currentChallenge != "postc2")) mult = mult.mul(tmp.inf_pow)
-
 	mult = mult.mul(getPostBreakInfNDMult())
+	mult = mult.mul(player.achPow)
+	if (!player.challenges.includes("postcngmm_1") && player.currentChallenge!="postcngmm_1") mult = mult.mul(getTimeDimMult(tier))
 
-	let timeAndDimMult = timeMult()
-	if (hasInfinityMult(tier) && !inNGM(3)) timeAndDimMult = dimMults().mul(timeAndDimMult)
-	if (!inNGM(3)) mult = mult.mul(dimMults())
-	if (!player.challenges.includes("postcngmm_1") && player.currentChallenge!="postcngmm_1") mult = mult.mul(timeAndDimMult)
-	
 	if (tier == 1 && player.infinityUpgrades.includes("unspentBonus")) mult = mult.mul(unspentBonus);
 	mult = mult.mul(getNormalDimensionVanillaAchievementBonus(tier))
-	mult = mult.mul(player.achPow)
 	mult = mult.mul(getNormalDimensionVanillaTimeStudyBonus(tier))
 	if (inNGM(2)) mult = getNormalDimensionGalaxyUpgradesBonus(mult)
 
 	mult = mult.mul(player.postC3Reward)
-	if (player.challenges.includes("postc4") && inNGM(2)) mult = mult.pow(1.05);
+	if (player.challenges.includes("postc4")) mult = mult.pow(1.05);
 	if (player.challenges.includes("postc8") && tier < 8 && tier > 1) mult = mult.mul(mult18);
 
 	if (isADSCRunning() || (inNGM(2) && player.currentChallenge === "postc1")) mult = mult.mul(productAllTotalBought());

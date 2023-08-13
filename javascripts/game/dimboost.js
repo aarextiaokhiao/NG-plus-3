@@ -2,11 +2,12 @@ function getDimensionBoostPower(next, focusOn) {
 	if (inNC(11) || inNC(15) || player.currentChallenge == "postc1" || player.currentChallenge == "postcngm3_1") return Decimal.fromNumber(1);
 
 	var ret = 2
-	if (inNGM(2)) {
+	if (!inNGM(2)) {
 		if (player.infinityUpgrades.includes("resetMult")) ret = 2.5
 		if (player.challenges.includes("postc7")) ret = 4
 		if (player.currentChallenge == "postc7" || inQC(6) || hasTimeStudy(81)) ret = 10
 	}
+
 	if (mod.rs) ret += player.timestudy.ers_studies[4] + (next ? 1 : 0)
 	if (hasGSacUpg(23) && ((!inNC(14) && player.currentChallenge != "postcngm3_3") || !inNGM(3) || inNGM(4)) && player.currentChallenge != "postcngm3_4") ret *= galMults.u23()
 	if (player.infinityUpgrades.includes("resetMult") && inNGM(2)) ret *= 1.2 + 0.05 * player.infinityPoints.max(1).log(10)

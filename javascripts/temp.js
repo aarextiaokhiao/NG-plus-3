@@ -4,7 +4,7 @@ let tmp = {
 		bru: {},
 		beu: {},
 	},
-	tab: { open: {} }
+	tab: { in: [], open: {} }
 }
 
 function updateTemp() {
