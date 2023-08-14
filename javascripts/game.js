@@ -756,7 +756,7 @@ for (var i of Object.keys(autoBuyers)) autoBuyerKeys.push(i)
 
 function updateAutobuyers() {
 	var intervalUnits = player.infinityUpgrades.includes("autoBuyerUpgrade") ? 1/2000 : 1/1000
-	var maxedAutobuy
+	var maxedAutobuy = 0
 	var bulkMin = 1/0
 
 	for (let [i, key] of Object.entries(autoBuyerKeys)) {
@@ -835,9 +835,8 @@ function updateAutobuyers() {
 			startDilatedEternity(true)
 			return
 		}
+		if (quSave?.autobuyer) quSave.autobuyer.enabled = el("quantumison").checked
 	}
-
-	if (quSave?.autobuyer) quSave.autobuyer.enabled = el("quantumison").checked
 
 	loadAutoBuyerSettings()
 
@@ -2138,12 +2137,8 @@ function gameLoop(diff, quick) {
 	//Game
 	updateTemp()
 
-	var thisUpdate = new Date().getTime();
-	if (thisUpdate - player.lastUpdate >= 21600000) giveAchievement("Don't you dare sleep")
-		if (typeof diff === 'undefined') {
-		if (player.options.secrets && player.options.secrets.ghostlyNews) nextGhostlyNewsTickerMsg()
-		var diff = Math.min(thisUpdate - player.lastUpdate, 21600000);
-	}
+	var thisUpdate = Date.now()
+	if (diff == undefined) diff = thisUpdate - player.lastUpdate
 	player.lastUpdate = thisUpdate
 
 	diff = Math.max(diff / 1e3, 0)
@@ -2241,6 +2236,7 @@ function updateDisplays() {
 	el("eternityPoints2").innerHTML = msg
 
 	if (el("loadmenu").style.display == "block") changeSaveDesc(savePlacement)
+	if (player.options.secrets?.ghostlyNews) nextGhostlyNewsTickerMsg()
 }
 
 function simulateTime(seconds, amt, id) {
@@ -2255,6 +2251,7 @@ function simulateTime(seconds, amt, id) {
 		if (ticksDone % 10 == 0) updatePerSecond(true)
 		autoBuyerTick()
 	}
+	if (seconds >= 3600*6) giveAchievement("Don't you dare sleep")
 
 	var storageEnd = recordSimulationAmount()
 
