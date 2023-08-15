@@ -102,8 +102,8 @@ let PHOTON = {
 				desc: e => `Post-16 Nanoreward scaling scales ${shorten(e)}x slower.`
 			}, {
 				name: "ultraviolet",
-				eff: a => 1,
-				desc: e => `???`
+				eff: a => a / 1e4 + 1,
+				desc: e => `Boost Meta-Dimension Boosts by +${shorten((e-1)*100)}% per boost.`
 			}
 		],
 		eff(x, def = 1) {

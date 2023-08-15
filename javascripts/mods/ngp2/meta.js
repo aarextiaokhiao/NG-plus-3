@@ -95,6 +95,7 @@ function getMetaBoostPower() {
 	if (mod.ngp3) {
 		if (hasNanoReward("md_boost")) r = getNanorewardEff("md_boost")
 		if (hasMasteryStudy("t312")) exp = 1.045
+		exp *= lightEff(7)
 	}
 	if (hasAch("ngpp14")) r *= 1.01
 
