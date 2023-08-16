@@ -376,7 +376,7 @@ function replicantiDisplay() {
 			"Replicanti increases by " + (tmp.rep.est < Math.log10(2) ? "x2.00 per " + timeDisplayShort(Math.log10(2) / tmp.rep.est * 10) : shorten(pow10(tmp.rep.est.toNumber())) + "x per second") + ".<br>" +
 			"Replicanti Slowdown: " + tmp.rep.speeds.inc.toFixed(3) + "x slower per " + shorten(pow10(tmp.rep.speeds.exp)) + "x.<br>" +
 			"(10x slower per " + shorten(pow10(tmp.rep.speeds.exp / Math.log10(tmp.rep.speeds.inc))) + "x)<br>" +
-			(tmp.rep.warp ? "<b>Replicanti Warp: " + timeDisplayShort(tmp.rep.interval.div(tmp.rep.dupRate), true, 2) + " interval → ^" + shorten(tmp.rep.warp) + " slowdown!</b> (5x until " + shortenCosts(tmp.rep.warp_lim) + ")" : "") :
+			(tmp.rep.warp ? "<b>Replicanti Warp: " + timeDisplayShort(tmp.rep.interval.div(tmp.rep.dupRate), true, 2) + " interval → ^" + shorten(tmp.rep.warp) + " slowdown!</b> (10x until " + shortenCosts(tmp.rep.warp_lim) + ")" : "") :
 			"Approximately "+ timeDisplay(Math.max((Math.log(Number.MAX_VALUE) - tmp.rep.ln) / tmp.rep.est.toNumber(), 0) * 10) + " Until Infinite Replicanti"
 
 		el("replicantichance").className = (player.infinityPoints.gte(player.replicanti.chanceCost) && isChanceAffordable()) ? "storebtn" : "unavailablebtn"

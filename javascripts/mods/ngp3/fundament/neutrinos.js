@@ -292,7 +292,7 @@ const NEUTRINO = NT = {
 			}, {
 				unl: _ => PHOTON.unlocked(),
 				cost: E(1e35),
-				desc: `Unlock Replicanti Warp.`
+				desc: `Unlock Replicanti Warp. Replicanti interval cost scales slower.`
 			}, {
 				unl: _ => PHOTON.unlocked(),
 				cost: E(1e37),

@@ -259,12 +259,6 @@ function getReplSpeed() {
 	return {inc: inc, exp: exp}
 }
 
-function absorbReplication() {
-	tmp.rep.warp = hasNU(13) ? -tmp.rep.interval.div(tmp.rep.dupRate).min(1).log10() : 0
-	if (tmp.rep.warp > 0) tmp.rep.speeds.exp *= tmp.rep.warp
-	tmp.rep.warp_lim = E(10).pow(tmp.rep.speeds.exp / Math.log10(1.002))
-}
-
 function getReplicantiInterval() {
 	let interval = 1
 	if (hasTimeStudy(62)) interval /= tsMults[62]()
@@ -284,10 +278,14 @@ function getReplicantiFinalInterval() {
 	let speed = tmp.rep.speeds
 	let x = tmp.rep.interval.div(tmp.rep.dupRate)
 
-	if (tmp.rep.warp > 0) {
-		let speed2 = player.replicanti.amount.lt(tmp.rep.warp_lim)
-		x = 100 / speed.exp
-		if (speed2) x *= 60
+	tmp.rep.warp = 0
+	if (hasNU(13)) {
+		tmp.rep.warp = E(1000).div(x).log10() / 2
+		speed.exp *= tmp.rep.warp
+
+		tmp.rep.warp_lim = E(100).pow(speed.exp / Math.log10(speed.inc))
+		x = 100 / tmp.rep.warp
+		if (player.replicanti.amount.gt(tmp.rep.warp_lim)) x /= 10
 	}
 
 	if (player.replicanti.amount.gt(Number.MAX_VALUE)) x = mod.rs ? Math.pow(hasAch("r107") ? Math.max(player.replicanti.amount.log(2)/1024,1) : 1, -.25) * x.toNumber() : E_pow(speed.inc, Math.max(player.replicanti.amount.log10() / speed.exp - 1, 0)).mul(x)

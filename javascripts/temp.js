@@ -86,7 +86,6 @@ function updateReplicantiTemp() {
 	data.dupRate = (data.freq ? data.freq.mul(Math.log10(2) / Math.log10(Math.E)) : Decimal.add(data.chance, 1).log(Math.E))
 	data.interval = getReplicantiInterval()
 	data.speeds = getReplSpeed()
-	absorbReplication()
 
 	data.est = E(1e3).div(getReplicantiFinalInterval())
 	data.estLog = data.est.mul(Math.log10(Math.E))

@@ -66,7 +66,11 @@ let PHOTON = {
 	},
 
 	/* Feature - Lights */
-	photon_prod: _ => E(1),
+	photon_prod() {
+		let r = E(1)
+		if (hasNanoReward("photon")) ret = ret.mul(tmp.qu.nf.eff.photon)
+		return r
+	},
 	light: {
 		data: [
 			{
