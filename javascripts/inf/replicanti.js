@@ -284,8 +284,8 @@ function getReplicantiFinalInterval() {
 		speed.exp *= tmp.rep.warp
 
 		tmp.rep.warp_lim = E(100).pow(speed.exp / Math.log10(speed.inc))
-		x = 100 / tmp.rep.warp
-		if (player.replicanti.amount.gt(tmp.rep.warp_lim)) x /= 10
+		x = 1 / speed.exp
+		if (player.replicanti.amount.gt(tmp.rep.warp_lim)) x *= 10
 	}
 
 	if (player.replicanti.amount.gt(Number.MAX_VALUE)) x = mod.rs ? Math.pow(hasAch("r107") ? Math.max(player.replicanti.amount.log(2)/1024,1) : 1, -.25) * x.toNumber() : E_pow(speed.inc, Math.max(player.replicanti.amount.log10() / speed.exp - 1, 0)).mul(x)
