@@ -41,22 +41,30 @@ let PHOTON = {
 		let cycles = Math.floor(data.emission / total_size)
 		let remainder = data.emission % total_size
 
+		data.curr = -1
+		data.next = pow10(cycles * total_size).mul(100)
+
 		for (let [i, light] of Object.entries(lights)) {
 			let size = 1
 			for (let r of ghSave.photons.range) if (i - r >= 0 && i - r < 3) size -= harvest
-
 			data.light[i] = cycles + Math.min(remainder / size, 1)
-			data.eff[i] = light.eff(0) //will be determined soon
+			data.eff[i] = light.eff(data.light[i]) //will be determined soon
 			data.size[i] = size
-			remainder = Math.max(remainder - size, 0)
-
 			for (let [ri, r] of Object.entries(ghSave.photons.range)) if (i - r >= 0 && i - r < 3) data.harvest[ri] += data.light[i]
+
+			if (remainder > 0) {
+				data.curr = Number(i)
+				data.next = pow10(size).mul(data.next)
+				data.gain = remainder / size
+			}
+			remainder = Math.max(remainder - size, 0)
 		}
 	},
 
 	/* Feature - Enharvestments */
 	harvest: {
 		names: ["Dark Essence", "Enlightenment"],
+		classes: ["lDe", "lEp"],
 		change(i) {
 			ghSave.photons.range[i] = Number(el("ph_harvest_range_"+i).value)
 		},
@@ -75,38 +83,35 @@ let PHOTON = {
 		data: [
 			{
 				name: "infrared",
-				eff: a => E_pow(tmp.gal.ts || 1, -Math.min(Math.sqrt(a) / 10, 0.2)),
+				eff: a => E_pow(tmp.gal.ts || 1, -a/100),
 				desc: e => `Tickspeed reduction multiplies per-ten multiplier by ${shorten(e)}x.`
 			}, {
 				name: "red",
-				eff: a => 1.5 - 0.5 / Math.log2(a + 2),
+				eff: a => 1.5 - 0.5 / (a + 1),
 				desc: e => `Starting at ^9, raise 2nd Neutrino Boost by ^${e.toFixed(3)}.`
 			}, {
 				name: "orange",
-				eff: a => Math.log2(a + 1) / 20,
+				eff: a => a / 50,
 				desc: e => `Discharged Galaxies are ${(e*100).toFixed(1)}% effective.`
 			}, {
 				name: "yellow",
-				eff(a) {
-					if (a > 5) a = Math.log10(a * 2) + 4
-					return 1+a/1.5e3
-				},
+				eff: a => 1 + a / 100,
 				desc: e => `Gain ${shorten((e-1)*100)}% more Neutrinos per Big Rip galaxy.`
 			}, {
 				name: "green",
-				eff: a => Math.log10(a / 5 + 1) + 1,
+				eff: a => a / 2 + 1,
 				desc: e => `Raise Replicate Slowdown by ^${shorten(e)}.`
 			}, {
 				name: "blue",
-				eff: a => Math.log10(a + 1) / 5 + 1,
+				eff: a => a / 4 + 1,
 				desc: e => `Raise Emperor Dimensions by ^${shorten(e)}.`
 			}, {
 				name: "violet",
-				eff: a => Math.cbrt(a / 5 + 1),
+				eff: a => a / 10 + 1,
 				desc: e => `Post-16 Nanoreward scaling scales ${shorten(e)}x slower.`
 			}, {
 				name: "ultraviolet",
-				eff: a => a / 1e4 + 1,
+				eff: a => 1 + a / 1e4,
 				desc: e => `Boost Meta-Dimension Boosts by +${shorten((e-1)*100)}% per boost.`
 			}
 		],
@@ -122,18 +127,16 @@ let PHOTON = {
 			let row = ''
 			for (var i = r * 4; i < r * 4 + 4; i++) {
 				let light = this.light.data[i]
-				row += `<div class='light ${light.name}' id='ph_light_${i}'>
-					<b style='font-size: 18px'>
-						<span id='ph_light_amt_${i}'>0</span> ${light.name}
-					</b><br>
+				row += `<div id='ph_light_${i}'>
+					<b id='ph_light_amt_${i}' style='font-size: 18px'></b><br>
+					<b id='ph_light_size_${i}'></b><br>
 					<span id='ph_light_eff_${i}'></span>
 				</div>`
 			}
 			html += `<div class='table_flex'>
-				<div class='light lEp'>
-					<b style='font-size: 18px'>
-						<span id='ph_harvest_${r}'></span> ${type}s
-					</b><br>
+				<div id='ph_harvest_${r}'>
+					<b id='ph_harvest_amt_${r}' style='font-size: 18px'></b><br>
+					<b id='ph_harvest_gather_${r}'></b><br>
 					<input id='ph_harvest_range_${r}' type='range' max=5 onchange="PHOTON.harvest.change(${r})"><br>
 				</div>
 				${row}
@@ -150,14 +153,24 @@ let PHOTON = {
 			return
 		}
 
+		let pt = tmp.funda.photon
+		let lights = this.light.data
 		el("ph_amt").textContent = shortenMoney(ghSave.photons.amt)
 		el("ph_prod").textContent = `(+${shorten(this.photon_prod())}/s)`
 
-		for (var r in this.harvest.names) el("ph_harvest_" + r).textContent = shorten(tmp.funda.photon.harvest[r])
-		for (var [i, light] of Object.entries(this.light.data)) {
-			el("ph_light_" + i).style["border-bottom-width"] = (1 - tmp.funda.photon.size[i]) * 150 + "px"
-			el("ph_light_" + i).style.height = tmp.funda.photon.size[i] * 150 + "px"
-			el("ph_light_amt_" + i).textContent = shorten(tmp.funda.photon.light[i])
+		for (var [i, hav] of Object.entries(this.harvest.names)) {
+			let pos = ghSave.photons.range[i]
+			let on = [0,1,2].map(x => pos + x).includes(pt.curr)
+			el("ph_harvest_" + i).className = `light ${on ? this.harvest.classes[i] : ""}`
+			el("ph_harvest_amt_" + i).textContent = `${shorten(pt.harvest[i])} ${hav}s`
+			el("ph_harvest_gather_" + i).textContent = on ? `Gathering until ${lights[pos+2].name}` : `Gathers at ${lights[pos].name}`
+		}
+		for (var [i, light] of Object.entries(lights)) {
+			el("ph_light_" + i).className = `light ${light.name} ${pt.curr == i ? "" : "blank"}`
+			el("ph_light_" + i).style["border-bottom-width"] = (1 - pt.size[i]) * 150 + "px"
+			el("ph_light_" + i).style.height = pt.size[i] * 150 + "px"
+			el("ph_light_amt_" + i).textContent = `${shorten(pt.light[i])} ${light.name}`
+			el("ph_light_size_" + i).textContent = shiftDown ? `(${pt.size[i].toFixed(1)} size)` : (pt.curr + 1) % 8 == i ? `Next at: ${shortenDimensions(pt.next)} Photons` : pt.curr ==i ? `+${shorten(pt.gain)} / 1` : ""
 			el("ph_light_eff_" + i).textContent = light.desc(lightEff(i))
 		}
 	}

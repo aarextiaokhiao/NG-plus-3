@@ -1846,26 +1846,26 @@ br {
 }
 
 .infrared { color: #7f0000 }
-div.infrared {
+div.infrared:not(.blank) {
 	background: rgba(127, 0, 0, 0.25)
 }
 
 .red { color: #bf0000 }
-div.red {
+div.red:not(.blank) {
 	background: rgba(191, 0, 0, 0.25)
 }
 
 .orange {
 	color: #bf5f00
 }
-div.orange {
+div.orange:not(.blank) {
 	background: rgba(191, 95, 0, 0.25)
 }
 
 .yellow {
 	color: #bfbf00
 }
-div.yellow {
+div.yellow:not(.blank) {
 	background: rgba(191, 191, 0, 0.25)
 }
 
@@ -1873,35 +1873,28 @@ div.yellow {
 .l_green {
 	color: #007f00
 }
-div.green {
+div.green:not(.blank) {
 	background: rgba(0, 191, 0, 0.25)
 }
 
 .cyan { color: #00bfbf }
 
 .blue { color: #0000bf }
-div.blue {
+div.blue:not(.blank) {
 	background: rgba(0, 0, 191, 0.25)
-}
-
-.indigo {
-	color: #2f00bf
-}
-div.indigo {
-	background: rgba(47, 0, 191, 0.25)
 }
 
 .violet {
 	color: #5f00bf
 }
-div.violet {
+div.violet:not(.blank) {
 	background: rgba(95, 0, 191, 0.25)
 }
 
 .ultraviolet {
 	color: #8f00bf
 }
-div.ultraviolet {
+div.ultraviolet:not(.blank) {
 	background: rgba(143, 0, 191, 0.25)
 }
 
@@ -1913,7 +1906,17 @@ td.grey {
 }
 
 .lEp {
-	color: #bfaf5f
+	color: #bb5
+}
+div.lEp {
+	background: #bb53
+}
+
+.lDe {
+	color: #435
+}
+div.lDe {
+	background: #4353
 }
 
 #assign_options input {

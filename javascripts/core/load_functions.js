@@ -589,9 +589,9 @@ function doNGP2v2tov2302(){
 }
 
 function doQuantumRestore(){
-	var quantumRestore = aarMod.newGamePlusPlusVersion < 2.9 || (!quSave && aarMod.newGamePlusPlusVersion > 2.4)
+	var quantumRestore = aarMod.newGamePlusPlusVersion < 2.9 || (!player.quantum && aarMod.newGamePlusPlusVersion > 2.4)
 	if (quantumRestore) {
-		player.quantum={
+		player.quantum=quSave={
 			times: 0,
 			quarks: 0,
 			producedGluons: 0,
@@ -612,7 +612,6 @@ function doQuantumRestore(){
 			},
 			upgrades: []
 		}
-		quSave=player.quantum
 	}
 	if (quantumRestore || aarMod.newGamePlusPlusVersion < 2.901) {
 		quSave.time = player.totalTimePlayed
