@@ -95,15 +95,15 @@ let PHOTON = {
 				desc: e => `Discharged Galaxies are ${(e*100).toFixed(1)}% effective.`
 			}, {
 				name: "yellow",
-				eff: a => 1 + a / 100,
+				eff: a => 1 + a / 1e4,
 				desc: e => `Gain ${shorten((e-1)*100)}% more Neutrinos per Big Rip galaxy.`
 			}, {
 				name: "green",
-				eff: a => a / 2 + 1,
+				eff: a => a / 3 + 1,
 				desc: e => `Raise Replicate Slowdown by ^${shorten(e)}.`
 			}, {
 				name: "blue",
-				eff: a => a / 4 + 1,
+				eff: a => a / 3 + 1,
 				desc: e => `Raise Emperor Dimensions by ^${shorten(e)}.`
 			}, {
 				name: "violet",
@@ -163,7 +163,7 @@ let PHOTON = {
 			let on = [0,1,2].map(x => pos + x).includes(pt.curr)
 			el("ph_harvest_" + i).className = `light ${on ? this.harvest.classes[i] : ""}`
 			el("ph_harvest_amt_" + i).textContent = `${shorten(pt.harvest[i])} ${hav}s`
-			el("ph_harvest_gather_" + i).textContent = on ? `Gathering until ${lights[pos+2].name}` : `Gathers at ${lights[pos].name}`
+			el("ph_harvest_gather_" + i).textContent = on ? `Harvesting until ${lights[pos+2].name}` : `Harvests at ${lights[pos].name}`
 		}
 		for (var [i, light] of Object.entries(lights)) {
 			el("ph_light_" + i).className = `light ${light.name} ${pt.curr == i ? "" : "blank"}`
