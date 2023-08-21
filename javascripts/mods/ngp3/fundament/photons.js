@@ -12,7 +12,7 @@ let PHOTON = {
 	},
 
 	//Unlock
-	req: _ => bigRipped() && player.money.gte(pow10(2.9e9)),
+	req: _ => bigRipped() && player.money.gte(pow10(2e9)),
 	unlocked: _ => ghSave?.photons.unl,
 	unlock() {
 		ghSave.photons.unl = true
@@ -83,23 +83,23 @@ let PHOTON = {
 		data: [
 			{
 				name: "infrared",
-				eff: a => E_pow(tmp.gal.ts || 1, -a/100),
+				eff: a => E_pow(tmp.gal.ts || 1, -a/5),
 				desc: e => `Tickspeed reduction multiplies per-ten multiplier by ${shorten(e)}x.`
 			}, {
 				name: "red",
-				eff: a => 1.5 - 0.5 / (a + 1),
-				desc: e => `Starting at ^9, raise 2nd Neutrino Boost by ^${e.toFixed(3)}.`
+				eff: a => 1.5 - 0.5 / Math.pow(a + 1, 2),
+				desc: e => `Raise 2nd Neutrino Boost by ^${e.toFixed(3)}.`
 			}, {
 				name: "orange",
-				eff: a => a / 50,
+				eff: a => a / 10,
 				desc: e => `Discharged Galaxies are ${(e*100).toFixed(1)}% effective.`
 			}, {
 				name: "yellow",
-				eff: a => 1 + a / 1e4,
+				eff: a => 1 + a / 1e3,
 				desc: e => `Gain ${shorten((e-1)*100)}% more Neutrinos per Big Rip galaxy.`
 			}, {
 				name: "green",
-				eff: a => a / 3 + 1,
+				eff: a => a / 2 + 1,
 				desc: e => `Raise Replicate Slowdown by ^${shorten(e)}.`
 			}, {
 				name: "blue",
@@ -107,11 +107,11 @@ let PHOTON = {
 				desc: e => `Raise Emperor Dimensions by ^${shorten(e)}.`
 			}, {
 				name: "violet",
-				eff: a => a / 10 + 1,
+				eff: a => a / 3 + 1,
 				desc: e => `Post-16 Nanoreward scaling scales ${shorten(e)}x slower.`
 			}, {
 				name: "ultraviolet",
-				eff: a => 1 + a / 1e4,
+				eff: a => 1 + a / 1e3,
 				desc: e => `Boost Meta-Dimension Boosts by +${shorten((e-1)*100)}% per boost.`
 			}
 		],
@@ -149,7 +149,7 @@ let PHOTON = {
 		el("gphUnl").style.display = unl ? "none" : ""
 		el("gphDiv").style.display = unl ? "" : "none"
 		if (!unl) {
-			el("gphUnl").textContent = "Get "+shortenCosts(pow10(2.9e9))+" antimatter in Big Rip to unlock Photons."
+			el("gphUnl").textContent = "Get "+shortenCosts(pow10(2e9))+" antimatter in Big Rip to unlock Photons."
 			return
 		}
 

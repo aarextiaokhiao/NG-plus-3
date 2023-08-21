@@ -79,7 +79,7 @@ const MTS = MASTERY_STUDIES = {
 			return getFullExpansion(nfSave.rewards) + " / " + getFullExpansion(16) + " Nanorewards"
 		},
 		14: function() {
-			return ghostified ? "<s>24 Paired Challenge combinations</s> Free!" : getFullExpansion(tmp.qu.chal?.pc_comp?.normal) + " / " + getFullExpansion(24) + " Paired Challenge combinations"
+			return ghostified ? "<s>24 Paired Challenge combinations</s> Free!" : getFullExpansion(tmp.qu.chal?.pc_comp) + " / " + getFullExpansion(24) + " Paired Challenge combinations"
 		}
 	},
 	types: {t: "time", ec: "ec", d: "dil"},
@@ -187,9 +187,8 @@ const MTS = MASTERY_STUDIES = {
 		},
 		411() {
 			if (!tmp.qu.ant.total) return E(1)
-			var exp = tmp.qu.ant.total.div(1e24).add(1).log10() / 2
+			var exp = tmp.qu.ant.total.div(1e22).add(1).log10() / 6
 			if (mod.p3ep) exp += Math.pow((exp + 9) * 3, .2) * Math.log10(exp + 1)
-			if (exp > 5) exp = (exp + 5) / 2
 			return pow10(exp)
 		},
 		421() {

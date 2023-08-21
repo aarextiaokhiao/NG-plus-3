@@ -24,7 +24,11 @@ const NEUTRINO = NT = {
 		for (let type of NT_RES.types) data.amt.push(ghSave.neutrinos[type])
 
 		data.boost = {}
-		for (let i = 1; i <= ghSave.neutrinos.boosts; i++) data.boost[i] = this.boosts.data[i-1].eff(data.amt)
+		for (let i = 1; i <= ghSave.neutrinos.boosts; i++) {
+			let nt_eff = 0, nb = this.boosts.data[i-1]
+			for (let amt of data.amt) nt_eff += amt.add(1).log10() ** (nb.eff_exp || 1)
+			data.boost[i] = nb.eff(nt_eff)
+		}
 
 		data.upg = {}
 		for (let [i, upg] of Object.entries(NT.upgrades.data)) if (upg.eff) data.upg[parseInt(i)+1] = upg.eff()
@@ -90,110 +94,70 @@ const NEUTRINO = NT = {
 			{
 				//Cost: Ghost Particles
 				cost: E(1),
-				eff(nt) {
-					let nb1mult = .75
-					if (mod.p3ep) nb1mult = .8
-					let nb1neutrinos = nt[0].add(1).log10()+nt[1].add(1).log10()+nt[2].add(1).log10()
-					return Math.pow(nb1neutrinos / 5 + 1, 0.5) * nb1mult
-				},
+				eff: nt => Math.pow(nt / 5 + 1, 0.5) * (mod.p3ep ? .8 : .75),
 				effDesc: e => `Increase TP gain exponent by <b>+^${shorten(e)}</b>.`,
 			}, {
 				cost: E(2),
 				eff(nt) {
-					let nb2neutrinos = Math.pow(nt[0].add(1).log10(),2)+Math.pow(nt[1].add(1).log10(),2)+Math.pow(nt[2].add(1).log10(),2)
-					let nb2 = Math.pow(nb2neutrinos, .25) * 1.5
-					if (nb2 > 9) nb2 = Math.pow(nb2 / 9, lightEff(1)) * 3 + 6
-					return nb2
+					let nb2 = Math.pow(nt, .25) * 1.5
+					return Math.pow(nb2, lightEff(1))
 				},
 				effDesc: e => `Replicate chance boosts itself more. (<b>+^${shorten(e)}</b>)`,
 			}, {
-				cost: E(4),
-				eff(nt) {
-					let nb3neutrinos = Math.sqrt(
-						Math.pow(nt[0].max(1).log10(), 2) +
-						Math.pow(nt[1].max(1).log10(), 2) +
-						Math.pow(nt[2].max(1).log10(), 2)
-					)
-					let nb3 = Math.sqrt(nb3neutrinos + 625) / 25
-					return nb3
-				},
+				cost: E(4),				
+				exp_eff: 2,
+				eff: nt => Math.sqrt(Math.sqrt(nt)+625) / 25,
 				effDesc: e => `Uncap the Dilation Upgrade 14 and increase it by <b>${shorten(e)}x</b>.`,
 			}, {
 				cost: E(6),
 				eff(nt) {
-					var nb4neutrinos = Math.pow(nt[0].add(1).log10(),2)+Math.pow(nt[1].add(1).log10(),2)+Math.pow(nt[2].add(1).log10(),2)
-					var nb4 = Math.log10(nb4neutrinos*(bigRipped()||mod.p3ep?1:0.07)+1)/4+1
+					let nb4 = Math.log10(nt*(bigRipped()||mod.p3ep?1:0.06)+1)/4+1
 					if (!bigRipped()) nb4 = Math.sqrt(nb4)
 					return Math.min(nb4, 2)
 				},
 				effDesc: e => `Raise Infinite Time by <b>^${shorten(e)}</b>.`,
 			}, {
 				cost: E(15),
-				eff(nt) {
-					var nb5neutrinos = nt[0].max(1).log10()+nt[1].max(1).log10()+nt[2].max(1).log10()
-					return Math.min(nb5neutrinos / 33, 1)
-				},
+				eff: nt => Math.min(nt / 33, 1),
 				effDesc: e => `Red power softcap is <b>${shortenMoney(e*100)}%</b> weaker.`,
 			}, {
 				cost: E(50),
+				exp_eff: 2,
 				eff(nt) {
-					var nb6neutrinos = Math.pow(nt[0].add(1).log10(), 2) + Math.pow(nt[1].add(1).log10(), 2) + Math.pow(nt[2].add(1).log10(), 2)
-
-					var nb6exp = .25
-					if (mod.p3ep) nb6exp = .26
+					let nb6exp = mod.p3ep ? .26 : .25
 					if (bigRipped()) nb6exp /= 2
 
-					let nb6 = Math.pow(nb6neutrinos, nb6exp) * 0.525 + 1
-					return Math.min(nb6, 2)
+					let r = Math.pow(nt, nb6exp) * 0.25 + 1
+					return Math.min(r, 2)
 				},
 				effDesc: e => `Distant Antimatter Galaxies scale <b>${shorten(e)}x</b> slower.`,
 			}, {
 				cost: E(1e3),
-				eff(nt) {
-					let nb7exp = .5
-					let nb7neutrinos = nt[0].add(1).log10() + nt[1].add(1).log10() + nt[2].add(1).log10()
-					let nb7 = (Math.pow(Math.log10(nb7neutrinos + 10), nb7exp) - 1) * 5
-					return nb7
-				},
+				eff: nt => (Math.pow(Math.log10(nt + 10), .5) - 1) * 5,
 				effDesc: e => `Strengthen Tree Upgrades by <b>${shorten(e*100-1)}%</b>.`,
 			}, {
 				cost: E(1e9),
 				eff(nt) {
-					let neutrinos = nt[0].add(1).log10()+nt[1].add(1).log10()+nt[2].add(1).log10()
 					let exp = mod.p3ep ? .6 : .5
-					var nb8 = Math.pow(neutrinos / 30 + 1, exp)
-					return Math.min(nb8, 6)
+					let r = Math.pow(nt / 30 + 1, exp)
+					return Math.min(r, 6)
 				},
 				effDesc: e => `Strengthen Big Rip Upgrade 1 by <b>${shorten(e*100-1)}%</b>.`,
 			}, {
 				cost: E(2e15),
-				eff(nt) {
-					var nb9 = nt[0].add(1).log10()+nt[1].add(1).log10()+nt[2].add(1).log10()
-					nb9 = pow10(Math.pow(nb9 / 50, 2/3)).mul(nb9)
-					return nb9
-				},
+				eff: nt => pow10(Math.pow(nt / 50, 2/3)).mul(nt),
 				effDesc: e => `Increase IC3 multiplier base by <b>${shorten(e)}x</b>.`,
 			}, {
-				cost: E(1e27),
-				eff(nt) {
-					nt = nt[0].add(1).log10()+nt[1].add(1).log10()+nt[2].add(1).log10()
-					let r = Math.log2(Math.max(nt / 70, 1)) / 300
-					return r
-				},
+				cost: E(1e21),
+				eff: nt => Math.log2(Math.max(nt / 70, 1)) / 300,
 				effDesc: e => `Outside of Big Rip, TS232 regains <b>${shorten(e*100)}%</b> power.`,
 			}, {
-				cost: E(1e29),
-				eff(nt) {
-					nt = nt[0].add(1).log10()+nt[1].add(1).log10()+nt[2].add(1).log10()
-					return Math.log10(Math.max(nt / 100, 1)) + 1
-				},
+				cost: E(1/0),
+				eff: nt => Math.log10(Math.max(nt / 100, 1)) + 1,
 				effDesc: e => `2nd Infinite Time softcap starts <b>^${shorten(e)}</b> later.`,
 			}, {
 				cost: E(1/0),
-				eff(nt) {
-					nt = nt[0].add(1).log10()+nt[1].add(1).log10()+nt[2].add(1).log10()
-					return Math.min(Math.log10(nt / 100 + 1), 1)
-				},
+				eff: nt => Math.min(Math.log10(nt / 100 + 1), 1),
 				effDesc: e => `RG strength affects galaxies at <b>^${e.toFixed(3)}</b> rate.`,
 			}
 		]
@@ -291,7 +255,7 @@ const NEUTRINO = NT = {
 				effDesc: e => `(hover)`
 			}, {
 				unl: _ => PHOTON.unlocked(),
-				cost: E(1e35),
+				cost: E(1e27),
 				desc: `Unlock Replicanti Warp. Replicanti interval cost scales slower.`
 			}, {
 				unl: _ => PHOTON.unlocked(),

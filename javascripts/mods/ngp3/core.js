@@ -1,6 +1,6 @@
 //VERSION: 2.31
 let ngp3_ver = 2.31
-let ngp3_build = 20230818
+let ngp3_build = 20230820
 function doNGP3Updates() {
 	if (!aarMod.ngp3_build) aarMod.ngp3_build = 0
 	if (aarMod.ngp3_build < 20221230) quSave.multPower = 0
@@ -37,7 +37,7 @@ function doNGP3Updates() {
 			beSave.upgrades = [1, 2, 3, 4, 5, 6]
 			ghSave.ghostParticles = E(1e20)
 		}
-		if (aarMod.ngp3_build < 20230805) {
+		if (aarMod.ngp3_build < 20230820) {
 			delete ghSave.wzb
 			delete ghSave.bl
 			delete ghSave.lab?.hf
