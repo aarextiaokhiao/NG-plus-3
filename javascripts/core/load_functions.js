@@ -653,6 +653,7 @@ function doQuantumRestore(){
 
 function doQuantumUpdates(){
 	if (aarMod.newGame3PlusVersion < 1.511) if (player.autoEterMode !== undefined) player.autoEterMode = "amount"
+	if (mod.ngp3) quSave = player.quantum
 	if (mod.ngp3 && !quSave.electrons) {
 		quSave.electrons = {
 			amount: 0,
