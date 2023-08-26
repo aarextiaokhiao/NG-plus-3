@@ -396,7 +396,7 @@ let HOW_TO = [
 		desc: `There are 3 kinds of Neutrinos: Positrons, Mu, Tau. Getting a galaxy produces a Neutrino of a kind.<br>
 		Going Quantum switches which kind to produce. Fundamenting resets Neutrinos.
 		<br><br>
-		They boost things by spending Spectral Particles.<br>
+		Neutrinos boost things which can be boosted by spending Spectral Particles at first.<br>
 		You can also spend Neutrinos for upgrades.`
 	}, {
 		mod: _ => ngp3,
