@@ -156,7 +156,7 @@ let PHOTON = {
 		let pt = tmp.funda.photon
 		let lights = this.light.data
 		el("ph_amt").textContent = shortenMoney(ghSave.photons.amt)
-		el("ph_prod").textContent = `(+${shorten(this.photon_prod())}/s)`
+		el("ph_prod").textContent = `(+${shorten(this.photon_prod())}/s, based on Tachyon Particles)`
 
 		for (var [i, hav] of Object.entries(this.harvest.names)) {
 			let pos = ghSave.photons.range[i]
