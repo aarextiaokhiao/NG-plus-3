@@ -370,8 +370,7 @@ function giveAchievement(name, noUpdate) {
 	}
 	if (name == "Meta-Quintillion") beatNGP3()
 	if (!noUpdate) {
-		if (name == "A sound financial decision") localStorage.setItem(btoa("dsAM_asfd"),"")
-		else $.notify(name, "success");
+		$.notify(name, "success");
 		updateAchievements()
 	}
 }
