@@ -308,10 +308,10 @@ function breakNGm2UpgradeRow6Display(){
 }
 
 function eternityUpgradesDisplay(){
-	var eu2formula = "(x/200) ^ log4(2x)"
-	if (mod.rs) eu2formula = "x ^ log4(2x)"
-	else if (hasAch("ngpp15")) eu2formula = "x ^ log10(x) ^ 3.75"
-	el("eter1").innerHTML = "Infinity Dimension multiplier based on unspent EP (x + 1)<br>Currently: "+shortenMoney(player.eternityPoints.add(1))+"x<br>Cost: 5 EP"
+	var eu2formula = "(x/200)^log4(2x)"
+	if (mod.rs) eu2formula = "x^log4(2x)"
+	else if (hasAch("ngpp15")) eu2formula = "x^log10(x)^3.75"
+	el("eter1").innerHTML = "Infinity Dimension multiplier based on unspent EP (x+1)<br>Currently: "+shortenMoney(player.eternityPoints.add(1))+"x<br>Cost: 5 EP"
 	el("eter2").innerHTML = "Infinity Dimension multiplier based on Eternities (" + eu2formula + ")<br>Currently: "+shortenMoney(getEU2Mult())+"x<br>Cost: 10 EP"
 	el("eter3").innerHTML = "Infinity Dimension multiplier based on "+(mod.rs ? "Time Shards (x/"+shortenCosts(1e12)+"+1)":"sum of Infinity Challenge times")+"<br>Currently: "+shortenMoney(getEU3Mult())+"x<br>Cost: "+shortenCosts(50e3)+" EP"
 	el("eter4").innerHTML = "Your achievement bonus affects Time Dimensions"+"<br>Cost: "+shortenCosts(1e16)+" EP"
