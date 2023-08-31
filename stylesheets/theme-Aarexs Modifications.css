@@ -349,7 +349,7 @@ strong { color: #0072e5 }
 .QKAmount, #gatheredQuarks, #normalReplGatherRate, #workerReplGatherRate, #babyReplGatherRate, #growupRate, #gatherRate, .empQuarks, #quarksNanofield, #quarkLoss { color: #009900 !important }
 .red { color: #e50000 }
 .green, #quarkTranslation, #quarkCharge, #quarkChargeRate { color: #00e500 }
-.blue { color: #0000e5 }
+.blue { color: #0077e5 }
 .qu_upg.rg, .qu_upg.gb, .qu_upg.br {
 	background-color: #191919 !important;
 	box-shadow: none !important;

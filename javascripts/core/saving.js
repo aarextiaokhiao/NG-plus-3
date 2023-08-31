@@ -323,7 +323,7 @@ function import_save(i = savePlacement) {
 			setupSaveDisp()
 			meta.mustSave = true
 		} else {
-			set_save(meta.save.order[i], decoded_save_data)
+			set_save(meta.save.saveOrder[i], decoded_save_data)
 			changeSaveDesc(i)
 		}
 	}
