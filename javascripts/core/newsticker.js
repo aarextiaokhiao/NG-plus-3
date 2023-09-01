@@ -394,6 +394,7 @@ newsArray = [//always true
 ["Remember the good old days with no softcaps... well the new devs came in and put in too many!", true, "am193"],
 
 /* v2.31 */
+["There's now a NG+ Reality mod: https://toilet45.github.io/ADRedemption/", true, "am1"],
 ["Some got redacted for appropriately inconvenience of antimatter. Apparently, it comes from Ninth Dimension.", true, "am78"],
 ["AD: NG+3 Reality ending (for 2069): You turn Hevipelle into a ghost and use him to make your way to president of the country and eventually achieve world domination with antimatter bombs, and after for all by being the only country with only one leader, you get a REAL antimatter bomb delivered to your house with 5 pounds of pure antimatter!", "true", "am123"],
 ["After Aarex's life, NG+Pi is now finally released!", "mod.ngp3", "am159"],
@@ -486,7 +487,6 @@ newsArray = [//always true
 ["Number hell is my enemy ~ Aarex, Lightning Incrementalist", "mod.ngp3", "am289"],
 
 /* PLACEHOLDER
-["[placeholder]", false, "am1"],
 ["[placeholder]", false, "am6"],
 ["[placeholder]", false, "am142"],
 ["[placeholder]", false, "am149"],
