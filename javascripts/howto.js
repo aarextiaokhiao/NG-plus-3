@@ -278,7 +278,7 @@ let HOW_TO = [
 
 		title: "Black Hole",
 		layer: "eternity",
-		desc: `On spending e4K EP, several resources give Remnants which will be used later on. Your Black Hole generates hunger. Feeding with Remnants not only reduces hunger, but also unlocks various boosts based on power, which is a reward.`
+		desc: `On spending e4K EP, several resources can be exchanged for Remnants. Your Black Hole generates hunger. Feeding with Remnants not only reduces hunger, but also unlocks various boosts based on power, which is a reward.`
 	}, {
 		mod: _ => player.meta !== undefined,
 		req: _ => player.dilation.studies.includes(6),
