@@ -421,6 +421,7 @@ let RESETS = {
 			if (bm < 3) {
 				beSave.unlocked = false
 				beSave.break = false
+				beSave.did = false
 			}
 			if (bm < 7) beSave.upgrades = []
 			beSave.eternalMatter = E(0)

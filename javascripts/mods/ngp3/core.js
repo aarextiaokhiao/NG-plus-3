@@ -386,7 +386,7 @@ function ngP3AchieveCheck() {
 
 	if (!ghostified) return
 	let ableToGetRid8 = ableToGetRid7 && !beSave.did
-	if (brSave.spaceShards.log10() >= 33 && !beSave.did) giveAchievement("Finite Time")
+	if (brSave.spaceShards.e >= 33 && !beSave.did) giveAchievement("Finite Time")
 	if (beSave.eternalMatter.gte(9.999999e99)) giveAchievement("This achievement doesn't exist 4")
 	if (ghSave.milestones == 16) giveAchievement("I rather oppose the theory of everything")
 	if (inQC(6) && inQC(8) && !bigRipped() && player.money.e >= 4e7) giveAchievement("Really?")
