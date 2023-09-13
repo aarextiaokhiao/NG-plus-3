@@ -291,6 +291,7 @@ function updateNGP3Temp() {
 
 function doPerSecondNGP3Stuff(quick) {
 	if (!quick) {
+		el("respecMastery").style.display = MTS.unl() ? "block" : "none"
 		updateQuarkDisplay()
 		updateNetTop()
 		el('toggleautoquantummode').style.display = quSave?.reachedInfQK ? "" : "none"

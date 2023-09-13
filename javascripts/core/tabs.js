@@ -58,7 +58,7 @@ let TABS = {
 		updateTimeStudyButtons()
 		updateERSTTDesc()
 	} },
-	ts_master: { name: "Mastery Studies", unl: _ => mod.ngp3 && player.dilation.upgrades.includes("ngpp6"), update: _ => updateMasteryStudyButtons() },
+	ts_master: { name: "Mastery Studies", unl: _ => MTS.unl(), update: _ => updateMasteryStudyButtons() },
 	upg_eter: { name: "Upgrades", update() {
 		eternityUpgradesDisplay()
 		updateEternityUpgrades()

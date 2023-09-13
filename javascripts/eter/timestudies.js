@@ -1,7 +1,4 @@
-presets={}
-
 // Time studies
-
 function buyWithAntimatter() {
 	if (player.money.gte(player.timestudy.amcost)) {
 		player.money = player.money.minus(player.timestudy.amcost)
@@ -252,7 +249,7 @@ function updateTimeStudyButtons(changed, forceupdate = false) {
 	if (mod.ngp3) {
 		el("masteryportal").innerHTML = "<b style='font-size: 13px'>Mastery Portal</b>" +
 			"<span>" + (
-				player.dilation.upgrades.includes("ngpp6") ? "Find more knowledge... Advance to Mastery." :
+				MTS.unl() ? "Find more knowledge... Advance to Mastery." :
 				hasDilStudy(6) ? "66%: Purchase the last Dilation Upgrade" :
 				hasDilStudy(1) ? "33%: Unleash the Meta" :
 				"0%: Adjust the flow of time")
@@ -307,15 +304,16 @@ function respecTimeStudies(ecComp, load) {
 			if (temp > player.timestudy.theorem) gotAch = false
 			player.timestudy.ers_studies = [null,0,0,0,0,0,0]
 		} else {
-			var bru7activated = isBigRipUpgradeActive(7)
+			let keep = isBigRipUpgradeActive(7) ? [192] : []
 			for (var i = 0; i < all.length; i++) {
-				if (hasTimeStudy(all[i]) && (!bru7activated || all[i] !== 192)) {
+				if (hasTimeStudy(all[i]) && !keep.includes(all[i])) {
 					player.timestudy.theorem += studyCosts[i]
 					gotAch = false
 				}
 			}
 			if (mod.ngp3 && player.timestudy.studies.length) delete quSave.wasted
-			player.timestudy.studies = bru7activated ? [192] : []
+			player.timestudy.studies = keep
+
 			var ECCosts = [null, 30, 35, 40, 70, 130, 85, 115, 115, 415, 550, 1, 1]
 			player.timestudy.theorem += ECCosts[player.eternityChallUnlocked]
 		}
@@ -323,14 +321,14 @@ function respecTimeStudies(ecComp, load) {
 	}
 
 	var respecMastery = false
-	if (mod.ngp3) {
-		respecMastery = player.respecMastery || (ecComp && player.eternityChallUnlocked >= 13) || load
+	if (MTS.unl()) {
+		respecMastery = player.respecMastery || load || (ecComp && player.eternityChallUnlocked >= 13)
 		gotAch = gotAch && respecMastery
-		delete quSave.autoECN
 	}
-	if (respecMastery) MTS.respec(load)
+	if (respecMastery) gotAch = MTS.respec(load, true) && gotAch
 
 	player.eternityChallUnlocked = 0
+	if (mod.ngp3) delete quSave.autoECN
 	if (gotAch) giveAchievement("You do know how these work, right?")
 }
 

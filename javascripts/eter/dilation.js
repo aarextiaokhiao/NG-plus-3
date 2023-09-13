@@ -334,8 +334,6 @@ function buyDilationUpgrade(id, max) {
 		if (id == 4) player.dilation.freeGalaxies *= 2 // Double the current galaxies
 		if (id == 10 && mod.ngp3) delete quSave.wasted
 		if (id == "ngpp6" && mod.ngp3) {
-			el("respecMastery").style.display = "block"
-			el("respecMastery2").style.display = "block"
 			if (!quantumed) {
 				notifyFeature("ms")
 				$.notify("Congratulations for unlocking Mastery Studies! You can either click the 'mastery studies' button\nor 'continue to mastery studies' button in the Time Studies menu.")
@@ -466,7 +464,7 @@ function resetDilation(order = "qu") {
 	player.dilation.active = false
 
 	let unl = hasDilStudy(1)
-	let keepUpg = unl && (bigRip ? hasRipUpg(12) : speedrunMilestonesReached >= 6)
+	let keepUpg = unl && (bigRip ? hasRipUpg(12) : isRewardEnabled(6))
 	if (!keepUpg) player.dilation.upgrades = []
 	for (var i in player.dilation.rebuyables) player.dilation.rebuyables[i] = 0
 

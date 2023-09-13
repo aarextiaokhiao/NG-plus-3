@@ -286,6 +286,7 @@ let RESETS = {
 				epcost: E(1),
 				studies: [],
 			}
+			player.respec = false
 
 			if (bigRip ? !hasRipUpg(12) : !isRewardEnabled(3)) player.eternityUpgrades = []
 			player.epmult = E(1)
@@ -327,6 +328,7 @@ let RESETS = {
 			if (player.timestudy.theorem == 0 && !player.dilation.upgrades.includes(10)) quSave.wasted = true
 
 			if (!auto) {
+				updateRespecButtons()
 				updateMasteryStudyCosts()
 				updateHeaders()
 				updateBreakEternity()

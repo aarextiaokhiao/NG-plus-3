@@ -1329,9 +1329,6 @@ function setDisplaysStuff1(){
 	
 	el("bestAntimatterType").textContent = quantumed ? "Your best meta-antimatter for this Quantum" : "Your best-ever meta-antimatter"
 
-	el("respecMastery").style.display = player.dilation.upgrades.includes("ngpp6") && mod.ngp3 ? "block" : "none"
-	el("respecMastery2").style.display = player.dilation.upgrades.includes("ngpp6") && mod.ngp3 ? "block" : "none"
-
 	if (inNGM(2)) {
 		el("galaxy11").innerHTML = "Antimatter"+(inNGM(4)?" and Time D":" D")+"imensions are "+(player.infinitied>0||getEternitied()!==0||quantumed?"cheaper based on your Infinities.<br>Currently: <span id='galspan11'></span>x":"99% cheaper.")+"<br>Cost: 1 GP"
 		el("galaxy15").innerHTML = "Antimatter and Time Dimensions produce "+(player.infinitied>0||getEternitied()!==0||quantumed?"faster based on your Infinities.<br>Currently: <span id='galspan15'></span>x":"100x faster")+".<br>Cost: 1 GP"

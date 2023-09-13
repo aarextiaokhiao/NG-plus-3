@@ -301,27 +301,30 @@ const MTS = MASTERY_STUDIES = {
 		}
 	},
 
-	respec(load) {
-		var respecedMS = []
+	unl: _ => mod.ngp3 && player.dilation.upgrades.includes("ngpp6"),
+	respec(load, achCheck) {
+		var keep = []
 		player.timestudy.theorem += MTS.ttSpent
-		for (var id = 0; id < player.masterystudies.length; id++) {
-			var d = player.masterystudies[id].split("d")[1]
-			if (d) respecedMS.push(player.masterystudies[id])
-		}
-		if (player.masterystudies.length > respecedMS.length) delete quSave.wasted
-		if (!hasGluonUpg("gb", 3)) ipMultPower = 2
-		player.masterystudies = respecedMS
+		for (var id of player.masterystudies) if (id[0] == "d") keep.push(id)
+
+		if (player.masterystudies.length > keep.length) achCheck = false
+		player.masterystudies = keep
+
 		respecUnbuyableTimeStudies()
 		updateMasteryStudyCosts()
+		if (!hasGluonUpg("gb", 3)) ipMultPower = 2
 		if (!load) {
 			updateMasteryStudyButtons()
 			drawMasteryTree()
 		}
+
+		if (!achCheck) delete quSave.wasted
+		return achCheck
 	}
 }
 
 function enterMasteryPortal() {
-	if (!player.dilation.upgrades.includes("ngpp6")) return
+	if (!MTS.unl()) return
 	recordUpDown(1)
 	TAB_CORE.open("ts_master")
 }

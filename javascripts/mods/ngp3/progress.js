@@ -17,7 +17,7 @@ const NGP3_FEATURES = {
 		name: "Mastery Studies",
 		tab: _ => TAB_CORE.open("eter", "ts_master"),
 
-		met: _ => mod.ngp3 && player.dilation.upgrades.includes("ngpp6"),
+		met: _ => MTS.unl(),
 		req: _ => 1e100,
 		req_res: _ => player.timestudy.theorem,
 		req_log: true,
