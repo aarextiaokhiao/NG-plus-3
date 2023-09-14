@@ -194,7 +194,7 @@ function change_save_placement(i) {
 function export_save(i = savePlacement) {
 	let data
 	if (i == savePlacement) data = btoa(JSON.stringify(player, function(k, v) { return (v === Infinity) ? "Infinity" : v }))
-	else data = localStorage.getItem(btoa(savePrefix + meta.save.order[i]))
+	else data = localStorage.getItem(btoa(savePrefix + meta.save.saveOrder[i]))
 
 	exportData(data, "Exported save #" + (i + 1) + " to clipboard")
 }
