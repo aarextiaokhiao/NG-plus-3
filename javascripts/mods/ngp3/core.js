@@ -429,7 +429,7 @@ function doNGP3UnlockStuff() {
 		let DONEbool = !quSave.nonMAGoalReached.includes(chall)
 		let TIMEbool = quSave.time > 10
 
-		if (inAnyQC() && player.money.gt(pow10(getQCGoal())) && MAbool && DONEbool && TIMEbool) doReachAMGoalStuff(chall)
+		if (inAnyQC() && player.money.gt(getQCGoal()) && MAbool && DONEbool && TIMEbool) doReachAMGoalStuff(chall)
 		if (!beSave.unlocked && player.eternityPoints.gte("1e1200") && bigRipped()) unlockBreakEternity()
 		if (!ghSave && isQuantumReached() && bigRipped()) unlockFundament()
 
