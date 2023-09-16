@@ -23,7 +23,7 @@ function eligibleConvert() {
 
 function convertSave(conversion) {
 	if (conversion) {
-		if (!confirm("Upon converting to " + conversion + ", this save will no longer be able to be reverted back into its original state. It is recommended to export before converting, so that you don't lose anything upon conversion.")) return
+		if (!confirm("Upon converting to " + conversion + ", this save will no longer be able to be reverted back into its original state. It is recommended to backup before converting, so that you don't lose anything upon conversion.")) return
 		clearInterval(gameLoopIntervalId);
 
 		if (!player.meta) doNGPlusTwoNewPlayer();
