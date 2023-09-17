@@ -412,7 +412,7 @@ function initialTimeStudyDisplay(){
 	el("151desc").textContent = shortenCosts(1e4) + "x multiplier on all Time Dimensions"
 	el("161desc").textContent = shortenCosts(pow10((inNGM(2) ? 6660 : 616) * (mod.ngep ? 5 : 1))) + "x multiplier on all Antimatter Dimensions"
 	el("162desc").textContent = shortenCosts(pow10((inNGM(2) ? 234 : 11) * (mod.ngep ? 5 : 1))) + "x multiplier on all Infinity Dimensions"
-	el("192desc").textContent = "You can get beyond " + shortenMoney(Number.MAX_VALUE) + " replicantis, but the interval is increased the more you have"
+	el("192desc").textContent = "Replicantis can surpass " + shortenMoney(Number.MAX_VALUE) + ", but interval scales more you have"
 	el("193desc").textContent = "Currently: " + shortenMoney(E_pow(1.03, Decimal.min(1e7, getEternitied())).min("1e13000")) + "x"
 	el("212desc").textContent = "Currently: " + ((tsMults[212]() - 1) * 100).toFixed(2) + "%"
 	el("214desc").textContent = "Currently: " + shortenMoney(((tmp.sacPow.pow(8)).min("1e46000").mul(tmp.sacPow.pow(1.1)).div(tmp.sacPow)).max(1).min(E("1e125000"))) + "x"
