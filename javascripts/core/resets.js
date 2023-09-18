@@ -543,6 +543,7 @@ function completelyResetTimeDimensions() {
 	for (let dim = 1; dim <= 8; dim++) {
 		player["timeDimension"+dim] = {
 			cost: timeDimCost(dim, 0),
+			amount: E(0),
 			power: E(1),
 			bought: 0
 		}
