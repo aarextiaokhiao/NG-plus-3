@@ -80,34 +80,16 @@ dev.setReward = function(n){
 	nfSave.rewards = n
 }
 
-dev.addSpin = function(n){
-	todSave.r.spin = todSave.r.spin.add(pow10(n))
-	todSave.b.spin = todSave.b.spin.add(pow10(n))
-	todSave.g.spin = todSave.g.spin.add(pow10(n))
-}
-
-dev.addGHP = function(n){
-	ghSave.ghostParticles = ghSave.ghostParticles.add(pow10(n))
-}
-
 dev.setNeut = function(n){
 	ghSave.neutrinos.electron = pow10(n)
 	ghSave.neutrinos.mu = pow10(n)
 	ghSave.neutrinos.tau = pow10(n)
 }
 
-dev.addNeut = function(n){
+dev.addNeut = dev.giveNeutrinos = dev.addNeutrinos = function(n){
 	ghSave.neutrinos.electron = ghSave.neutrinos.electron.add(pow10(n))
 	ghSave.neutrinos.mu = ghSave.neutrinos.mu.add(pow10(n))
 	ghSave.neutrinos.tau = ghSave.neutrinos.tau.add(pow10(n))
-}
-
-dev.giveNeutrinos = function(n){
-	dev.addNeut(n)
-}
-
-dev.addNeutrinos = function(n){
-	dev.addNeut(n)
 }
 
 dev.enterTestZone = function() {
