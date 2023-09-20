@@ -552,9 +552,3 @@ function updateHeaders() {
 	el("emptiness").style.display = header ? "none" : ""
 	updateResetTierButtons()
 }
-
-/*function glowText(id) {
-	var text = el(id);
-	text.style.setProperty("-webkit-animation", "glow 1s");
-	text.style.setProperty("animation", "glow 1s");
-}*/
