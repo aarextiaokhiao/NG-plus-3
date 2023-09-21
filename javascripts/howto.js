@@ -408,7 +408,7 @@ let HOW_TO = [
 		Photons give Lights repeatedly, going through a loop of 8 colors.<br><br>
 
 		You have 2 Light Harvests: Dark Essences and Enlightenments.<br>
-		A Light Harvest "harvests" 3 Lights at respective thresholds which can be adjusted.<br>
+		A "Light Harvest" harvests 3 distinct Lights at respective thresholds which can be adjusted.<br>
 		While harvesting, gaining Light is faster and also gains the respective resource.`
 	}, {
 		mod: _ => ngp3,
