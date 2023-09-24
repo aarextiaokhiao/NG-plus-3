@@ -30,7 +30,7 @@ let PHOTON = {
 		let lights = this.light.data
 		tmp.funda.photon = data
 
-		data.emission = ghSave.photons.amt.div(100).max(1).log10()
+		data.emission = ghSave.photons.amt.div(500).max(1).log10()
 		data.light = []
 		data.harvest = [0,0]
 		data.eff = []
@@ -42,7 +42,7 @@ let PHOTON = {
 		let remainder = data.emission % total_size
 
 		data.curr = -1
-		data.next = pow10(cycles * total_size).mul(100)
+		data.next = pow10(cycles * total_size).mul(500)
 
 		for (let [i, light] of Object.entries(lights)) {
 			let size = 1
@@ -75,7 +75,7 @@ let PHOTON = {
 
 	/* Feature - Lights */
 	photon_prod() {
-		let r = E(1)
+		let r = E(player.dilation.tachyonParticles.e / 220).max(1).pow(5)
 		if (hasNanoReward("photon")) r = r.mul(tmp.qu.nf.eff.photon)
 		return r
 	},
