@@ -91,15 +91,15 @@ let PHOTON = {
 				desc: e => `Raise 2nd Neutrino Boost by ^${e.toFixed(3)}.`
 			}, {
 				name: "orange",
-				eff: a => a / 10,
+				eff: a => a / 100,
 				desc: e => `Discharged Galaxies are ${(e*100).toFixed(1)}% effective.`
 			}, {
 				name: "yellow",
-				eff: a => 1 + a / 1e3,
+				eff: a => 1 + a / 500,
 				desc: e => `Gain ${shorten((e-1)*100)}% more Neutrinos per Big Rip galaxy.`
 			}, {
 				name: "green",
-				eff: a => a / 2 + 1,
+				eff: a => a / 3 + 1,
 				desc: e => `Raise Replicate Slowdown by ^${shorten(e)}.`
 			}, {
 				name: "blue",
@@ -111,7 +111,7 @@ let PHOTON = {
 				desc: e => `Post-16 Nanoreward scaling scales ${shorten(e)}x slower.`
 			}, {
 				name: "ultraviolet",
-				eff: a => 1 + a / 1e3,
+				eff: a => 1 + a / 100,
 				desc: e => `Boost Meta-Dimension Boosts by +${shorten((e-1)*100)}% per boost.`
 			}
 		],
