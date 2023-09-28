@@ -11,74 +11,74 @@ const MTS = MASTERY_STUDIES = {
 		dil: {}
 	},
 	ecReqs: {
-		13: function() {
+		13() {
 			let comps = ECComps("eterc13")
 			return 728e3 + (1500 + 3e3 * comps) * comps
 		},
-		14: function() {
+		14() {
 			let comps = ECComps("eterc14")
 			return 255e5 + (4e6 + 2e6 * comps) * comps
 		}
 	},
 	ecReqsStored: {},
 	ecReqDisplays: {
-		13: function() {
+		13() {
 			return getFullExpansion(MTS.ecReqsStored[13]) + " Dimension Boosts"
 		},
-		14: function() {
+		14() {
 			return getFullExpansion(MTS.ecReqsStored[14]) + "% replicate chance"
 		}
 	},
 	unlocked: [],
 	unlockReqConditions: {
-		7: function() {
+		7() {
 			return quantumWorth.gte(50)
 		},
-		8: function() {
+		8() {
 			return quSave.electrons.amount >= 16750 && speedrunMilestonesReached >= 16
 		},
-		9: function() {
+		9() {
 			return QCIntensity(8) >= 1
 		},
-		10: function() {
+		10() {
 			return quSave.pairedChallenges.completed == 4
 		},
-		11: function() {
+		11() {
 			return EDsave[1].perm == 10
 		},
-		12: function() {
+		12() {
 			return EDsave[8].perm >= 10
 		},
-		13: function() {
+		13() {
 			return nfSave.rewards >= 16
 		},
-		14: function() {
+		14() {
 			return hasAch("ng3p34")
 		}
 	},
 	unlockReqDisplays: {
-		7: function() {
+		7() {
 			return shortenDimensions(quantumWorth) + " / " + shortenDimensions(50) + " net Quarks"
 		},
-		8: function() {
+		8() {
 			return getFullExpansion(quSave.electrons.amount) + " / " + getFullExpansion(16750) + " positrons and 5 minute Speedrun Milestone"
 		},
-		9: function() {
+		9() {
 			return "Complete Quantum Challenge 8"
 		},
-		10: function() {
+		10() {
 			return "Complete Paired Challenge 4"
 		},
-		11: function() {
+		11() {
 			return getFullExpansion(EDsave[1].perm) + " / " + getFullExpansion(10) + " worker limit"
 		},
-		12: function() {
+		12() {
 			return getFullExpansion(EDsave[8].perm) + " / " + getFullExpansion(10) + " Eighth Emperor Dimensions"
 		},
-		13: function() {
+		13() {
 			return getFullExpansion(nfSave.rewards) + " / " + getFullExpansion(16) + " Nanorewards"
 		},
-		14: function() {
+		14() {
 			return ghostified ? "<s>24 Paired Challenge combinations</s> Free!" : getFullExpansion(tmp.qu.chal?.pc_comp) + " / " + getFullExpansion(24) + " Paired Challenge combinations"
 		}
 	},
@@ -255,28 +255,28 @@ const MTS = MASTERY_STUDIES = {
 	},
 	hasStudyEffect: [251, 252, 253, 262, 263, 264, 273, 281, 282, 301, 303, 322, 332, 341, 344, 351, 361, 371, 372, 373, 381, 382, 383, 391, 392, 393, 401, 411, 421, 431],
 	studyEffectDisplays: {
-		251: function(x) {
+		251(x) {
 			return "+" + getFullExpansion(Math.floor(x))
 		},
-		252: function(x) {
+		252(x) {
 			return "+" + getFullExpansion(Math.floor(x))
 		},
-		253: function(x) {
+		253(x) {
 			return "+" + getFullExpansion(Math.floor(x))
 		},
-		273: function(x) {
+		273(x) {
 			return "^" + shorten(x)
 		},
-		301: function(x) {
+		301(x) {
 			return "+" + getFullExpansion(Math.floor(x))
 		},
-		332: function(x) {
+		332(x) {
 			return shortenDimensions(x) + "x"
 		},
-		344: function(x) {
+		344(x) {
 			return (x * 100 - 100).toFixed(2) + "%"
 		},
-		431: function(x) {
+		431(x) {
 			return shorten(x) + "x"
 		}
 	},
@@ -284,19 +284,19 @@ const MTS = MASTERY_STUDIES = {
 	unlocksUpTo: 14,
 	allConnections: {241: [251, 253, 252], 251: [261, 262], 252: [263, 264], 253: [265, 266], 261: ["ec13"], 262: ["ec13"], 263: ["ec13"], 264: ["ec14"], 265: ["ec14"], 266: ["ec14"], ec13: ["d7"], ec14: ["d7"], d7: [272], 271: [281], 272: [271, 273, 281, 282, "d8"], 273: [282], d8: ["d9"], d9: [291, 292, 302], 291: [301], 292: [303], 301: [311], 302: ["d10"], 303: [312], 311: [321], 312: [323], d10: [322], 322: [331, 332], 331: [342], 332: [343], 342: [341], 343: [344], 344: [351], 351: ["d11"], d11: [361, 362], 361: [371], 362: [373], 371: [372], 372: [381], 373: [382], 381: [391], 382: [383], 383: [393], 391: [392], 393: [392], 392: ["d12"], d12: [401, 402], 401: [411], 402: [412], 411: [421], 412: ["d13"], 421: ["d13"], d13: [431], 431: ["d14"]},
 	allUnlocks: {
-		d7: function() {
+		d7() {
 			return quantumed
 		},
-		322: function() {
+		322() {
 			return hasMasteryStudy("d10") || ghostified
 		},
-		361: function() {
+		361() {
 			return hasMasteryStudy("d11") || ghostified
 		},
-		r40: function() {
+		r40() {
 			return NF.unl() || ghostified
 		},
-		r43: function() {
+		r43() {
 			return hasMasteryStudy("d13") || ghostified
 		}
 	},
