@@ -30,7 +30,7 @@ let PHOTON = {
 		let lights = this.light.data
 		tmp.funda.photon = data
 
-		data.emission = ghSave.photons.amt.div(500).max(1).log10()
+		data.emission = ghSave.photons.amt.div(100).max(1).log(50)
 		data.light = []
 		data.harvest = [0,0]
 		data.eff = []
@@ -42,7 +42,7 @@ let PHOTON = {
 		let remainder = data.emission % total_size
 
 		data.curr = -1
-		data.next = pow10(cycles * total_size).mul(500)
+		data.next = E(50).pow(cycles * total_size).mul(100)
 
 		for (let [i, light] of Object.entries(lights)) {
 			let size = 1
@@ -54,7 +54,7 @@ let PHOTON = {
 
 			if (remainder > 0) {
 				data.curr = Number(i)
-				data.next = pow10(size).mul(data.next)
+				data.next = E(50).pow(size).mul(data.next)
 				data.gain = remainder / size
 			}
 			remainder = Math.max(remainder - size, 0)
