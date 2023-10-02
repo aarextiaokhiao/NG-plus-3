@@ -329,7 +329,7 @@ function updateBreakEternityUpgrade6Temp(){
 }
 
 function updateBreakEternityUpgrade8Temp(){
-	var x = Math.min(Math.max(player.dilation.tachyonParticles.max(1).log10() / 100 - 1.75, 1), 2)
+	var x = Math.min(Math.max(player.dilation.tachyonParticles.max(1).log10() / 60 - 3.5, 1), 2)
 	tmp.qu.beu[8] = x
 }
 
@@ -353,7 +353,7 @@ function getBEUnls() {
 	return x
 }
 
-var breakUpgCosts = [1, 1e3, 2e6, 2e11, 8e17, 1e45, null, 1/0, 1/0, 1/0]
+var breakUpgCosts = [1, 1e3, 2e6, 2e11, 8e17, 1e45, null, 1e153, 1/0, 1/0]
 function getBreakUpgCost(id) {
 	if (id == 7) return pow2(beSave.epMultPower).mul(1e5)
 	return breakUpgCosts[id - 1]

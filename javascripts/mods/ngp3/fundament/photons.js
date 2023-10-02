@@ -12,7 +12,7 @@ let PHOTON = {
 	},
 
 	//Unlock
-	req: _ => bigRipped() && player.money.gte(pow10(2e9)),
+	req: _ => bigRipped() && player.money.gte(pow10(17e8)),
 	unlocked: _ => ghSave?.photons.unl,
 	unlock() {
 		ghSave.photons.unl = true
@@ -30,7 +30,7 @@ let PHOTON = {
 		let lights = this.light.data
 		tmp.funda.photon = data
 
-		data.emission = ghSave.photons.amt.div(100).max(1).log(50)
+		data.emission = ghSave.photons.amt.div(100).max(1).log(30)
 		data.light = []
 		data.harvest = [0,0]
 		data.eff = []
@@ -42,7 +42,7 @@ let PHOTON = {
 		let remainder = data.emission % total_size
 
 		data.curr = -1
-		data.next = E(50).pow(cycles * total_size).mul(100)
+		data.next = E(30).pow(cycles * total_size).mul(100)
 
 		for (let [i, light] of Object.entries(lights)) {
 			let size = 1
@@ -54,7 +54,7 @@ let PHOTON = {
 
 			if (remainder > 0) {
 				data.curr = Number(i)
-				data.next = E(50).pow(size).mul(data.next)
+				data.next = E(30).pow(size).mul(data.next)
 				data.gain = remainder / size
 			}
 			remainder = Math.max(remainder - size, 0)
@@ -75,7 +75,8 @@ let PHOTON = {
 
 	/* Feature - Lights */
 	photon_prod() {
-		let r = E(player.dilation.tachyonParticles.e / 220).max(1).pow(5)
+		let r = player.dilation.tachyonParticles.max(1).pow(1/60).div(1e4)
+		r = E(ghSave.ghostParticles.max(1e18).log10() / 18).pow(5).mul(r)
 		if (hasNanoReward("photon")) r = r.mul(tmp.qu.nf.eff.photon)
 		return r
 	},
@@ -83,20 +84,20 @@ let PHOTON = {
 		data: [
 			{
 				name: "infrared",
-				eff: a => E_pow(tmp.gal.ts || 1, -a/5),
+				eff: a => E_pow(tmp.gal.ts || 1, -a/4),
 				desc: e => `Tickspeed reduction multiplies per-ten multiplier by ${shorten(e)}x.`
 			}, {
 				name: "red",
-				eff: a => 1.5 - 0.5 / Math.pow(a + 1, 2),
-				desc: e => `Raise 2nd Neutrino Boost by ^${e.toFixed(3)}.`
+				eff: a => [1 + Math.min(a, .5), a / 2 + 1],
+				desc: e => `Raise 2nd Neutrino Boost by ^${e[0].toFixed(3)}, x${shorten(e[1])}.`
 			}, {
 				name: "orange",
-				eff: a => a / 100,
-				desc: e => `Discharged Galaxies are ${(e*100).toFixed(1)}% effective.`
-			}, {
-				name: "yellow",
 				eff: a => 1 + a / 500,
 				desc: e => `Gain ${shorten((e-1)*100)}% more Neutrinos per Big Rip galaxy.`
+			}, {
+				name: "yellow",
+				eff: a => a / 100,
+				desc: e => `Discharged Galaxies are ${(e*100).toFixed(1)}% effective.`
 			}, {
 				name: "green",
 				eff: a => a / 3 + 1,
@@ -149,14 +150,14 @@ let PHOTON = {
 		el("gphUnl").style.display = unl ? "none" : ""
 		el("gphDiv").style.display = unl ? "" : "none"
 		if (!unl) {
-			el("gphUnl").textContent = "Get "+shortenCosts(pow10(2e9))+" antimatter in Big Rip to unlock Photons."
+			el("gphUnl").textContent = "Get "+shortenCosts(pow10(17e8))+" antimatter in Big Rip to unlock Photons."
 			return
 		}
 
 		let pt = tmp.funda.photon
 		let lights = this.light.data
 		el("ph_amt").textContent = shortenMoney(ghSave.photons.amt)
-		el("ph_prod").textContent = `(+${shorten(this.photon_prod())}/s, based on Tachyon Particles)`
+		el("ph_prod").textContent = `(+${shorten(this.photon_prod())}/s)`
 
 		for (var [i, hav] of Object.entries(this.harvest.names)) {
 			let pos = ghSave.photons.range[i]

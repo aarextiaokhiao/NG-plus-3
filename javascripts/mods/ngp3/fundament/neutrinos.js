@@ -53,7 +53,7 @@ const NEUTRINO = NT = {
 		},
 		gain() { 
 			let r = E_pow(getNeutrinoMultBase(), ghSave.neutrinos.multPower - 1)
-			r = E_pow(lightEff(3), brSave.bestGals).mul(r)
+			r = E_pow(lightEff(2), brSave.bestGals).mul(r)
 			if (mod.p3ep) r = r.mul(pow10(player.galaxies / 1e5))
 			return r
 		},
@@ -99,8 +99,8 @@ const NEUTRINO = NT = {
 			}, {
 				cost: E(2),
 				eff(nt) {
-					let nb2 = Math.pow(nt, .25) * 1.5
-					return Math.pow(nb2, lightEff(1))
+					let nb2 = Math.pow(nt, .25) * 1.5, ol = lightEff(1)
+					return Math.pow(nb2, ol[0]) * ol[1]
 				},
 				effDesc: e => `Replicate chance boosts itself more. (<b>+^${shorten(e)}</b>)`,
 			}, {
@@ -127,7 +127,7 @@ const NEUTRINO = NT = {
 					let nb6exp = mod.p3ep ? .26 : .25
 					if (bigRipped()) nb6exp /= 2
 
-					let r = Math.pow(nt, nb6exp) * 0.25 + 1
+					let r = Math.pow(nt, nb6exp) * .3 + 1
 					return Math.min(r, 2)
 				},
 				effDesc: e => `Distant Antimatter Galaxies scale <b>${shorten(e)}x</b> slower.`,
@@ -148,8 +148,8 @@ const NEUTRINO = NT = {
 				eff: nt => pow10(Math.pow(nt / 50, 2/3)).mul(nt),
 				effDesc: e => `Increase IC3 multiplier base by <b>${shorten(e)}x</b>.`,
 			}, {
-				cost: E(1e24),
-				eff: nt => Math.log2(Math.max(nt / 70, 1)) / 300,
+				cost: E(1e21),
+				eff: nt => Math.log2(Math.max(nt / 70, 1)) / 200,
 				effDesc: e => `Outside of Big Rip, TS232 regains <b>${shorten(e*100)}%</b> power.`,
 			}, {
 				cost: E(1/0),
@@ -255,7 +255,7 @@ const NEUTRINO = NT = {
 				effDesc: e => `(hover)`
 			}, {
 				unl: _ => PHOTON.unlocked(),
-				cost: E(1e33),
+				cost: E(1e28),
 				desc: `Unlock Replicanti Warp. Replicanti interval cost scales slower.`
 			}, {
 				unl: _ => PHOTON.unlocked(),
