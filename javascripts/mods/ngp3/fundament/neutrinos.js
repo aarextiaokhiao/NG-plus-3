@@ -259,21 +259,21 @@ const NEUTRINO = NT = {
 				desc: `Unlock Replicanti Warp. Replicanti interval cost scales slower.`
 			}, {
 				unl: _ => PHOTON.unlocked(),
-				cost: E(1e37),
+				cost: E(1/0),
 				desc: `Tachyonic Galaxies scale Positron softcap later.`,
 
 				eff: _ => player.dilation.freeGalaxies,
 				effDesc: e => `+${getFullExpansion(e)}`
 			}, {
 				unl: _ => PHOTON.unlocked(),
-				cost: E(1e42),
+				cost: E(1/0),
 				desc: `Galaxy strength raises Meta-Antimatter effect.`,
 
 				eff: _ => tmp.gal.str / 2,
 				effDesc: e => `+^${shorten(e)}`
 			}, {
 				unl: _ => PHOTON.unlocked(),
-				cost: E(1e48),
+				cost: E(1/0),
 				desc: `Unlock new Nanobenefits. 7th Nanobenefit gives more Nanocharge.`
 			}
 		]
