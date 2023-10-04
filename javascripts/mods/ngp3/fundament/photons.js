@@ -92,7 +92,7 @@ let PHOTON = {
 				desc: e => `Raise 2nd Neutrino Boost by ^${e[0].toFixed(3)}, x${shorten(e[1])}.`
 			}, {
 				name: "orange",
-				eff: a => 1 + a / 500,
+				eff: a => 1 + a / 1e3,
 				desc: e => `Gain ${shorten((e-1)*100)}% more Neutrinos per Big Rip galaxy.`
 			}, {
 				name: "yellow",
