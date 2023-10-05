@@ -405,7 +405,7 @@ let HOW_TO = [
 		title: "Photons",
 		layer: "fundament",
 		desc: `Best Tachyon Particles produce Photons.<br>
-		Photons give Lights repeatedly, going through a loop of 8 colors.<br><br>
+		Photons give Lights on a loop of 8 colors.<br><br>
 
 		You have 2 Light Harvests: Dark Essences and Enlightenments.<br>
 		A "Light Harvest" harvests 3 distinct Lights at respective thresholds which can be adjusted.<br>
