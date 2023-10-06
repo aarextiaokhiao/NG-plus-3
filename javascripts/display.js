@@ -304,7 +304,7 @@ function breakNGm2UpgradeRow6Display(){
 	el("postinfi60").innerHTML = "You gain more " + (inNGM(3) ? "Galaxy Points" : "antimatter") + " based on your galaxies." + (inNGM(3) ? "" : "<br>Currently: " + shorten(getNewB60Mult()) + "x") + "<br>Cost: " + shortenCosts(1e50) + " IP"
 	el("postinfi61").innerHTML = "g11 formula is better.<br>Cost: " + shortenCosts(E("1e450")) + " IP"
 	el("postinfi62").innerHTML = "Dimension Boosts make g13 stronger.<br>Cost: " + shortenCosts(E("1e700")) + " IP"
-	el("postinfi63").innerHTML = "Unlock 2 new rows of Galaxy Point upgrades.<br>Cost: " + shortenCosts(E("1e2000")) + " IP"
+	el("postinfi63").innerHTML = "Unlock 2 new rows of Galaxy upgrades.<br>Cost: " + shortenCosts(E("1e2000")) + " IP"
 }
 
 function eternityUpgradesDisplay(){
