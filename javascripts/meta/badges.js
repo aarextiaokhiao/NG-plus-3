@@ -42,7 +42,7 @@ let BADGE_TITLE = {
 	p3_qu: "Superposition",
 	p3_ant: "Colonist",
 	p3_fu: "Enlargement",
-	p3_bl: "Ghostly Lab",
+	p3_bl: "Arcanist",
 	tgr: "The Grand Run",
 
 	sp_qu: "Unreality Scale",
