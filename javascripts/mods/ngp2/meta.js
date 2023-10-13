@@ -418,7 +418,7 @@ function updateMetaDimensions () {
 		message += ", +" + shortenDimensions(GS) + " Spectral Particle" + (GS.lt(2) ? "" : "s")
 	} else if (reqGotten && !bigRip && quantumed) {
 		var QS = quarkGain()
-		message += ", +" + shortenDimensions(QS) + " quark" + (QS.lt(2) ? "" : "s")
+		message += ", +" + shortenDimensions(QS) + " anti-quark" + (QS.lt(2) ? "" : "s")
 	} else message += " for a new layer"
 	el("quantum").textContent = message
 	if (el("quantum").className !== newClassName) el("quantum").className = newClassName
