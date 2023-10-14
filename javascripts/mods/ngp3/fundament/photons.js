@@ -113,7 +113,7 @@ let PHOTON = {
 			}, {
 				name: "ultraviolet",
 				eff: a => 1 + a / 100,
-				desc: e => `Boost Meta-Dimension Boosts by +${shorten((e-1)*100)}% per boost.`
+				desc: e => `Strengthen Meta-Dimension Boosts by +${shorten((e-1)*100)}% per boost.`
 			}
 		],
 		eff(x, def = 1) {
