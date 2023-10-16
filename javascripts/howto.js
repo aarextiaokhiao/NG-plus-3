@@ -396,8 +396,8 @@ let HOW_TO = [
 		desc: `There are 3 kinds of Neutrinos: Electron, Mu, Tau. You gain Neutrinos of a single kind per 1 Antimatter Galaxy.<br>
 		Going Quantum switches which kind to produce. Fundamenting resets Neutrinos.
 		<br><br>
-		Neutrinos boost things which can be boosted by spending Spectral Particles at first.<br>
-		You can also spend Neutrinos for upgrades.`
+		Neutrinos boost things which can be boosted by spending Spectral Particles.<br>
+		You can also spend Neutrinos for upgrades and an repeatable that gives 3x SP per purchase.`
 	}, {
 		mod: _ => ngp3,
 		req: _ => ghSave?.photons?.unl,
