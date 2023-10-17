@@ -61,7 +61,7 @@ var automators = {
 	},
 	15: {
 		title: "Fundament",
-		html: `Seconds to wait until reset: <input id="autoGhost15a" onchange="changeAutoGhost('15a')"/>`,
+		html: `Seconds until reset: <input id="autoGhost15a" onchange="changeAutoGhost('15a')"/>`,
 		req: 8,
 		pow: 3,
 	},
@@ -74,7 +74,7 @@ var automators = {
 		title: "EC10 Challenger",
 		html: `(big rip only)<br>
 		Big Rip times: <input id="autoGhost2b" onchange="changeAutoGhost('2b')"/><br>
-		Ends in: <input id="autoGhost2t" onchange="changeAutoGhost('2t')"/>s`,
+		Duration: <input id="autoGhost2t" onchange="changeAutoGhost('2t')"/>s`,
 		req: 13,
 		pow: 1.5,
 	},
