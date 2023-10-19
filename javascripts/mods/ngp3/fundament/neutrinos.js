@@ -274,7 +274,7 @@ const NEUTRINO = NT = {
 			}, {
 				unl: _ => PHOTON.unlocked(),
 				cost: E(1/0),
-				desc: `Unlock new Nanobenefits. 7th Nanobenefit gives more Nanocharge.`
+				desc: `Replace some Nanobenefits. Improve 7th Nanobenefit.`
 			}
 		]
 	},
