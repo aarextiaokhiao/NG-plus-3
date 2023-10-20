@@ -34,7 +34,7 @@ function galaxyReqDisplay(){
 	el("secondResetLabel").innerHTML = msg
 }
 
-var galaxyScalings = ["", "Distant ", "Farther ", "Remote ", "Obscure ", "Dark ", "Spectre ", "Ethereal ", "Ethereal++ ", "Ethereal IV ", "Ethereal V "]
+var galaxyScalings = ["", "Distant ", "Farther ", "Remote ", "Obscure ", "Dark ", "Spectre ", "Vacuumic ", "Exotic ", "Ethereal "]
 function getGalaxyScaleName(x) {
 	return galaxyScalings[x]
 }
