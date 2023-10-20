@@ -17,45 +17,35 @@
 		}
 		
 		constructor(v) { 
-			if (v==null) {
-				this.l=Number.NEGATIVE_INFINITY
+			this.l = Number.NEGATIVE_INFINITY
+			if (v == null) return this
+
+			var type = typeof v
+			if (type == 'string') {
+				this.l = Decimal.fromString(v).l
+			} else if (type == 'number') {
+				this.l = Math.log10(v)
 			} else if (v instanceof Decimal) {
-				this.l=v.l
-			} else if (typeof(v)=='string') {
-				var findE=v.indexOf('e')
-				if (findE==-1) {
-					this.l=Math.log10(v)
-				} else if (findE==0) {
-					this.l=Number(v.slice(1,v.length))
-				} else {
-					var split=[v.slice(0,findE),v.slice(findE+1,v.length)]
-					if (split[0]==1) this.l=Number(split[1])
-					else this.l=Number(split[1])+Math.log10(split[0])
-				}
-			} else if (typeof(v)=='number') {
-				this.l=Math.log10(v)
-			} else {
-				this.l=Number.NEGATIVE_INFINITY
+				this.l = v.l
 			}
 		}
-		
+
 		static fromNumber(v) {
 			var tmp=new Decimal()
 			tmp.l=Math.log10(v)
 			return tmp
 		}
-		
+
 		static fromString(v) {
-			var tmp=new Decimal()
-			var findE=v.indexOf('e')
-			if (findE==-1) {
-				tmp.l=Math.log10(v)
-			} else if (findE==0) {
-				tmp.l=Number(v.slice(1,v.length))
-			} else {
-				var split=[v.slice(0,findE),v.slice(findE+1,v.length)]
-				tmp.l=Math.log10(split[0])+Number(split[1])
-			}
+			var tmp = new Decimal()
+			if (v == "") return tmp
+
+			var findE = v.indexOf('e')
+			var parts = findE == -1 ? [v] : [v.slice(0, findE), v.slice(findE+1, v.length)]
+
+			tmp.l = 0
+			if (parts[0] != "") tmp.l += Math.log10(Number(parts[0]))
+			if (findE > -1) tmp.l += Number(parts[1])
 			return tmp
 		}
 		
@@ -156,7 +146,7 @@
 		toExponential(dp) {
 			return Decimal.toExponential(this,dp)
 		}
-		
+
 		static add(v1,v2) {
 			v1=new Decimal(v1)
 			v2=new Decimal(v2)
@@ -166,19 +156,19 @@
 			v2.l=v2.l+Math.log10(1+Math.pow(10,expdiff))
 			return v2
 		}
-		
+
 		add(v) {
 			return Decimal.add(this,v)
 		}
-		
+
 		static plus(v1,v2) {
 			return Decimal.add(v1,v2)
 		}
-		
+
 		plus(v) {
 			return Decimal.add(this,v)
 		}
-		
+
 		static sub(v1,v2) {
 			v1=new Decimal(v1)
 			v2=new Decimal(v2)
