@@ -426,8 +426,8 @@ let HOW_TO = [
 		<b>W & Z Bosons</b><br>
 		There are 3 Capaciators which can be filled up to a total of 5 W+ and W- Bosons. On filling with all 5 W+ Bosons, you unlock the next Capaciator.<br><br>
 		Hypercharge must be at least 0 to activate boosts.<br>
-		- W+ = +1 Hypercharge if assigned, powers up Capaciators.<br>
-		- W- = -1 Hypercharge if assigned<br>
+		- W+ = If assigned, +1 Hypercharge and empowers an assigned Capaciator.<br>
+		- W- = If assigned, -1 Hyperchargebr>
 		- Z0 = -1 Hypercharge`
 	}, {
 		mod: _ => ngp3,
