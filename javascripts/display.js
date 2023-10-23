@@ -395,8 +395,8 @@ function replicantiDisplay() {
 
 function initialTimeStudyDisplay(){
 	el("11desc").textContent = "Currently: " + shortenMoney(tsMults[11]()) + "x"
-	el("32desc").textContent = "You gain " + getFullExpansion(tsMults[32]()) + "x more Infinities (based on Dimension Boosts)"
-	el("51desc").textContent = "You gain " + shortenCosts(mod.ngep ? 1e30 : 1e15) + "x more IP"
+	el("32desc").textContent = "Gain " + getFullExpansion(tsMults[32]()) + "x more Infinities (based on Dimension Boosts)"
+	el("51desc").textContent = "Gain " + shortenCosts(mod.ngep ? 1e30 : 1e15) + "x more IP"
 	el("71desc").textContent = "Currently: " + shortenMoney(tmp.sacPow.pow(0.25).max(1).min("1e210000")) + "x"
 	el("72desc").textContent = "Currently: " + shortenMoney(tmp.sacPow.pow(0.04).max(1).min("1e30000")) + "x"
 	el("73desc").textContent = "Currently: " + shortenMoney(tmp.sacPow.pow(0.005).max(1).min("1e1300")) + "x"
@@ -407,7 +407,7 @@ function initialTimeStudyDisplay(){
 	el("121desc").textContent = "Currently: " + ((253 - averageEp.dividedBy(player.epmult).dividedBy(10).min(248).max(3))/5).toFixed(1) + "x"
 	el("123desc").textContent = "Currently: " + Math.sqrt(1.39*player.thisEternity/10).toFixed(1) + "x"
 	el("141desc").textContent = "Currently: " + shortenMoney(E(1e45).dividedBy(E_pow(15, Math.log(player.thisInfinityTime)*Math.pow(player.thisInfinityTime, 0.125))).max(1)) + "x"
-	el("142desc").textContent = "You gain " + shortenCosts(1e25) + "x more IP"
+	el("142desc").textContent = "Gain " + shortenCosts(1e25) + "x more IP"
 	el("143desc").textContent = "Currently: " + shortenMoney(E_pow(15, Math.log(player.thisInfinityTime)*Math.pow(player.thisInfinityTime, 0.125))) + "x"
 	el("151desc").textContent = shortenCosts(1e4) + "x multiplier on all Time Dimensions"
 	el("161desc").textContent = shortenCosts(pow10((inNGM(2) ? 6660 : 616) * (mod.ngep ? 5 : 1))) + "x multiplier on all Antimatter Dimensions"
