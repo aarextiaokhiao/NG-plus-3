@@ -36,9 +36,9 @@ const GLUON = {
 			}, {
 				disp: "Distant Antimatter Galaxies scale 13.2% slower."
 			}, {
-				disp: "Slow down the Remote Antimatter Galaxy scaling by 10%."
+				disp: "Remote Antimatter Galaxies scale 10% slower."
 			}, {
-				disp: "RG gluons increase preon half-life.",
+				disp: "RG gluons increase free preons' half-life.",
 				eff: _ => getGU8Effect("rg"),
 				eff_desc: e => shorten(e) + "x"
 			}
@@ -65,7 +65,7 @@ const GLUON = {
 				eff: _ => 1 + Math.log10(1+player.infinityPoints.max(1).log10()) / 100,
 				eff_desc: e => "/" + shorten(e)
 			}, {
-				disp: "GB gluons increase preon half-life.",
+				disp: "GB gluons increase free preons' half-life.",
 				eff: _ => getGU8Effect("gb"),
 				eff_desc: e => shorten(e) + "x"
 			}
@@ -100,7 +100,7 @@ const GLUON = {
 				eff: _ => 1 + Math.log10(1+player.eternityPoints.max(1).log10()) / 80,
 				eff_desc: e => "/" + shorten(e)
 			}, {
-				disp: "BR gluons increase preon half-life.",
+				disp: "BR gluons increase free preons' half-life.",
 				eff: _ => getGU8Effect("br"),
 				eff_desc: e => shorten(e) + "x"
 			}
