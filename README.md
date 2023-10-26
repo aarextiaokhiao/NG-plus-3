@@ -1,6 +1,6 @@
 # Antimatter Dimensions - Aarex's Modifications
 
-This modification contains some ported mods and infinite save availability.
+This modification adds several mods and supports infinite saves.
 
 Mods implemented:
 - dan-simon's NG++
