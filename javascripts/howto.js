@@ -397,7 +397,7 @@ let HOW_TO = [
 		Going Quantum switches which kind to produce. Fundamenting resets Neutrinos.
 		<br><br>
 		Neutrinos boost things which can be boosted by spending Spectral Particles.<br>
-		You can also spend Neutrinos for upgrades and an repeatable that gives 3x SP per purchase.`
+		You can also spend Neutrinos for upgrades or a repeatable which gives 3x SP per purchase.`
 	}, {
 		mod: _ => ngp3,
 		req: _ => ghSave?.photons?.unl,
