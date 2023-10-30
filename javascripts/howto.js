@@ -60,8 +60,8 @@ let HOW_TO = [
 		<b>Dimension Boost:</b> A dimension shift, but you don't unlock a new dimension. This happens after 4 dimension shifts. Each one requires 20+(boosts*15) (base) eighth dimensions.
 		<br>
 		Each dimension shift and boost will provide a x2 (base) multiplier to first dimension, and each dimension after will have half (base) multiplier as the previous (min 1).
-				<br>
-			<b>Hotkey: D</b>
+		<br>
+		<b>Hotkey: D</b>
 		</div>`
 	}, {
 		mod: _ => true,
