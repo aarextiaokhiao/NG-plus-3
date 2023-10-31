@@ -486,12 +486,13 @@ newsArray = [//always true
 ["Fly on. Altar awaits your adventure- oh wait. Is Spectraglow coming to get me? Whatever...", "mod.ngp3", "am288"],
 ["Number hell is my enemy ~ Aarex, Lightning Incrementalist", "mod.ngp3", "am289"],
 
+["Softcaps are little compared to others. You can rebalance as much.", true, "am6"],
+["Co-developer of Incremental Mass: Rewritten here...", "mod.ngp3", "am142"],
+["Imagine Aarex happy after all of rebalancing...", "mod.ngp3", "am149"],
+["As we get closer, more ideas come up to him.", "mod.ngp3", "am151"],
+["How we suddenly got infinite ghosts?!", "ghostified", "am195"],
+
 /* PLACEHOLDER
-["[placeholder]", false, "am6"],
-["[placeholder]", false, "am142"],
-["[placeholder]", false, "am149"],
-["[placeholder]", false, "am151"],
-["[placeholder]", false, "am195"],
 ["[placeholder]", false, "am197"],
 ["[placeholder]", false, "am202"],
 ["[placeholder]", false, "am203"],
