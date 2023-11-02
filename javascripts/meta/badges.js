@@ -46,7 +46,7 @@ let BADGE_TITLE = {
 	tgr: "The Grand Run",
 
 	sp_qu: "Unreality Scale",
-	sp_ant: "Darkonist",
+	sp_ant: "Darkened Ants",
 	sp_fu: "Supermassive",
 
 	m2_gs: "Deformation",
