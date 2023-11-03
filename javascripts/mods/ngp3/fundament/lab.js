@@ -72,8 +72,8 @@ const BOSONIC_LAB = LAB = {
 		}, {
 			req: E(1.5e3),
 			desc: "Eternities boost Space Shards.",
-			eff: b => 1,
-			effDesc: e => 1 + "x",
+			eff: b => E(getEternitied()).add(1).pow(.1),
+			effDesc: e => shorten(e) + "x",
 		}, {
 			req: E(2e3),
 			desc: "Replicated Galaxies count in Intergalactic's formula outside of Big Rips.",
