@@ -97,7 +97,7 @@ let PHOTON = {
 			}, {
 				name: "yellow",
 				eff: a => a / 100,
-				desc: e => `Discharged Galaxies are ${(e*100).toFixed(1)}% effective.`
+				desc: e => `Discharged Galaxies are ${(e*100).toFixed(1)}% efficient.`
 			}, {
 				name: "green",
 				eff: a => a / 3 + 1,
