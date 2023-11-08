@@ -71,7 +71,7 @@ const QC = QUANTUM_CHALLENGE = {
 	6: {
 		cost: 28900,
 		goal: pow10(5.61e8),
-		desc: "You are stuck in Infinity Challenges 3 and 7. You can't gain Dimension Boosts. However, per-10 Meta Dimension effects are stronger.",
+		desc: "You are stuck in Infinity Challenges 3 and 7. You can't get Dimension Boosts. However, per-10 Meta Dimension effects are stronger.",
 
 		reward: "Achievement bonus boosts Meta Dimensions.",
 		reward_eff(comps) {
