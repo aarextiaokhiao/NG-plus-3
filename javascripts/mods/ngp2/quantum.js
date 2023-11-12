@@ -253,7 +253,7 @@ function doQuantum(force, auto, qc = {}) {
 			if (brokeEternity()) beSave.did = true
 		} else {
 			brSave.banked_replicanti = E(1)
-			if (hasBLMilestone(0)) brSave.banked_replicanti = player.replicanti.amount.pow(0.9)
+			if (hasBLMilestone(0)) brSave.banked_replicanti = player.replicanti.amount
 
 			if (!hasRipUpg(1)) {
 				player.infmultbuyer = true

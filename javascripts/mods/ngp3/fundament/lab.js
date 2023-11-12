@@ -54,7 +54,7 @@ const BOSONIC_LAB = LAB = {
 		{
 			//QOL
 			req: E(100),
-			desc: "[QOL] Bank ^0.9 of Replicantis upon exiting Big Rips."
+			desc: "[QOL] Bank Replicantis upon exiting Big Rips."
 		}, {
 			req: E(200),
 			desc: "Replicanti Absorb speeds up Replicanti.",
