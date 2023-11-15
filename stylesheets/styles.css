@@ -1091,7 +1091,6 @@ button b, button span {
     position: fixed;
     left: 50%;
     bottom: 5px;
-    z-index: 1;
     width: 170px;
     height: 70px;
 }
@@ -1420,7 +1419,7 @@ button b, button span {
 
 [ach-tooltip] {
     position: relative;
-    z-index: 2;
+    z-index: 1;
 }
 
 [ach-tooltip]:before,
@@ -1719,6 +1718,14 @@ br {
     margin: 0;
     margin-top: 20px;
     pointer-events:none;
+}
+
+#TTbuttons {
+	display: none;
+}
+
+#TTbuttons * {
+	z-index: 1;
 }
 
 #TTbuttons br {
