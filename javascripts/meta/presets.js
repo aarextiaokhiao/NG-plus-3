@@ -37,6 +37,11 @@ let PRESET_OPTION_NAMES = {
 	dil: "Dilation"
 }
 
+let PRESET_OPTION_UNLS = {
+	respec: _ => true,
+	dil: _ => hasDilStudy(1) || quantumed
+}
+
 let PRESET = {
 	get(loc) {
 		let d = (loc.global ? meta.save : aarMod).presets?.[loc.preset] ?? { main: [] }
@@ -91,7 +96,9 @@ let PRESET = {
 	layout() {
 		let i = PRESET.loaded
 		let options = ""
-		for (var opt of PRESET_DATA[PRESET.loc.preset].options) options += `<button class="storebtn" id="preset_${i}_${opt}" onclick='PRESET.toggle(${i}, "${opt}")'></button>`
+		for (var opt of PRESET_DATA[PRESET.loc.preset].options) {
+			if (PRESET_OPTION_UNLS[opt]()) options += `<button class="storebtn" id="preset_${i}_${opt}" onclick='PRESET.toggle(${i}, "${opt}")'></button>`
+		}
 
 		el("preset_list").insertRow(i).innerHTML = `<b id='preset_${i}_title'></b><br>
 			${options}<br>
