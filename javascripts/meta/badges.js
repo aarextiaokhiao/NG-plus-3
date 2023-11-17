@@ -1,5 +1,4 @@
 //META
-
 let BADGES = []
 const BADGE_LOOKUP = {
 	//Combinations: NGUdS', NG-x
