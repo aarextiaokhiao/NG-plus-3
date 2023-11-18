@@ -71,10 +71,10 @@ var automators = {
 		pow: 1,
 	},
 	2: {
-		title: "EC10 Challenger",
+		title: "Eternal Challenger",
 		html: `(big rip only)<br>
 		Big Rip times: <input id="autoGhost2b" onchange="changeAutoGhost('2b')"/><br>
-		Duration: <input id="autoGhost2t" onchange="changeAutoGhost('2t')"/>s`,
+		EC10 Duration: <input id="autoGhost2t" onchange="changeAutoGhost('2t')"/>s`,
 		req: 13,
 		pow: 1.5,
 	},
