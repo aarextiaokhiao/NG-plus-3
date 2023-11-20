@@ -563,7 +563,7 @@ const BL_JOKE = {
 	},
 	unlock() {
 		if (!ghSave.lab_real.key) {
-			$.notify("???: Ummm... Can you find the key? Hint: Keys save you from wasted clicks! Those keys are disablable at options.")
+			$.notify("???: Ummm... Can you find the key? Hint: Hotkeys save you.")
 			return
 		}
 		if (!LAB.req()) return
