@@ -184,22 +184,9 @@ function getNanoRewardReq(additional){
 	return getNanoRewardReqFixed(additional - 1 + nfSave.rewards)
 }
 
-function getActiveNanoScalings(){
-	ret = [true, true]
-	return ret
-}
-
-function getNanoScalingsStart(){
-	ret = [0, 15]
-	return ret
-}
-
 function getNanoRewardReqFixed(n){
-	let x = E(50)
-	let a = getActiveNanoScalings()
-	let s = getNanoScalingsStart()
-	if (n >= s[0] && a[0]) x = x.mul(E_pow(4.0, (n - s[0])))
-	if (n >= s[1] && a[1]) x = x.mul(E_pow(2.0, (n - s[1]) * (n - s[1] + 3) / lightEff(6)))
+	let x = E_pow(4, n).mul(50)
+	if (n >= 15) x = x.mul(E_pow(2.0, (n - 15) * (n - 12) / lightEff(6)))
 	return x
 }
 
