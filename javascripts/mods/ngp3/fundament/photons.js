@@ -164,6 +164,7 @@ let PHOTON = {
 			let on = [0,1,2].map(x => pos + x).includes(pt.curr)
 			el("ph_harvest_" + i).className = `light ${on ? this.harvest.classes[i] : ""}`
 			el("ph_harvest_amt_" + i).textContent = `${shorten(pt.harvest[i])} ${hav}s`
+			el("ph_harvest_range_" + i).style.display = pt.emission > 1.6 ? "" : "none"
 			el("ph_harvest_gather_" + i).textContent = on ? `Harvesting until ${lights[pos+2].name}` : `Harvests at ${lights[pos].name}`
 		}
 		for (var [i, light] of Object.entries(lights)) {
