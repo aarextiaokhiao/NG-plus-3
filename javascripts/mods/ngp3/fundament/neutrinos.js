@@ -259,11 +259,11 @@ const NEUTRINO = NT = {
 				desc: `Unlock Replicanti Warp. Replicanti interval cost scales slower.`
 			}, {
 				unl: _ => PHOTON.unlocked(),
-				cost: E(1/0),
+				cost: E(1e33),
 				desc: `Tachyonic Galaxies scale Positron softcap later.`,
 
-				eff: _ => player.dilation.freeGalaxies,
-				effDesc: e => `+${getFullExpansion(e)}`
+				eff: _ => player.dilation.freeGalaxies / 2,
+				effDesc: e => `+${getFullExpansion(Math.round(e))}`
 			}, {
 				unl: _ => PHOTON.unlocked(),
 				cost: E(1/0),
