@@ -152,8 +152,8 @@ const NEUTRINO = NT = {
 				eff: nt => Math.log2(Math.max(nt / 70, 1)) / 200,
 				effDesc: e => `Outside of Big Rip, TS232 regains <b>${shorten(e*100)}%</b> power.`,
 			}, {
-				cost: E(1/0),
-				eff: nt => Math.log10(Math.max(nt / 100, 1)) + 1,
+				cost: E(1e24),
+				eff: nt => Math.log10(Math.max(nt / 90, 1)) + 1,
 				effDesc: e => `2nd Infinite Time softcap starts <b>^${shorten(e)}</b> later.`,
 			}, {
 				cost: E(1/0),
