@@ -266,15 +266,15 @@ const NEUTRINO = NT = {
 				effDesc: e => `+${getFullExpansion(Math.round(e))}`
 			}, {
 				unl: _ => PHOTON.unlocked(),
+				cost: E(1e36),
+				desc: `Replace some Nanobenefits. Improve 7th Nanobenefit.`
+			}, {
+				unl: _ => PHOTON.unlocked(),
 				cost: E(1/0),
 				desc: `Galaxy strength raises Meta-Antimatter effect.`,
 
 				eff: _ => tmp.gal.str / 2,
 				effDesc: e => `+^${shorten(e)}`
-			}, {
-				unl: _ => PHOTON.unlocked(),
-				cost: E(1/0),
-				desc: `Replace some Nanobenefits. Improve 7th Nanobenefit.`
 			}
 		]
 	},

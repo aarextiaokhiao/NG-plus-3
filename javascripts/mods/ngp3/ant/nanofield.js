@@ -102,7 +102,7 @@ var nanoRewards = {
 			return x * 2150
 		},
 		pilon_charge: function(x) {
-			return pow2(x * (hasNU(16) ? 4 : 2))
+			return pow2(x * (hasNU(15) ? 4 : 2))
 		},
 		per_10_power: function(x) {
 			return x * 0.76
@@ -156,13 +156,13 @@ var nanoRewards = {
 		}
 	},
 	usage: {
-		1: _ => hasNU(16) ? ["photon"] : ["hatch_speed"],
+		1: _ => hasNU(15) ? ["photon"] : ["hatch_speed"],
 		2: _ => ["ma_eff_exp"],
 		3: _ => ["dil_gal_gain"],
 		4: _ => ["dt_to_ma_exp"],
 		5: _ => ["dil_exp"],
 		6: _ => ["md_boost"],
-		7: _ => hasNU(16) ? ["pilon_charge", "decay_exp"] : hasNU(6) ? ["pilon_charge"] : ["remote_start", "pilon_charge"],
+		7: _ => hasNU(15) ? ["pilon_charge", "decay_exp"] : hasNU(6) ? ["pilon_charge"] : ["remote_start", "pilon_charge"],
 		8: _ => ["per_10_power", "pilon_energy"],
 	},
 }

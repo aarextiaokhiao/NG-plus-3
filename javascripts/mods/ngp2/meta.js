@@ -358,7 +358,7 @@ function getExtraDimensionBoostPowerExponent(ma) {
 		power += getECReward(13)
 		if (hasNanoReward("ma_eff_exp") && !dev.testZone) power += getNanorewardEff("ma_eff_exp")
 		if (isDecayOn()) power += getTreeUpgradeEffect(8)
-		if (hasNU(15)) power += NT.eff("upg", 15)
+		if (hasNU(16)) power += NT.eff("upg", 16)
 	}
 	return power
 }
