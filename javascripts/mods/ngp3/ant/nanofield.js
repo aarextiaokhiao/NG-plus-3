@@ -114,7 +114,7 @@ var nanoRewards = {
 			return Math.min(Math.log10(Math.max(x + 8, 10)), 2)
 		},
 		photon: function(x) {
-			return Math.pow(x + 1, 1.5)
+			return pow2(x ** 0.5)
 		}
 	},
 	effDisp: {
