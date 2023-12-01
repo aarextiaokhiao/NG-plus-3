@@ -73,8 +73,8 @@ let HIGGS = {
 		data: {
 			1: {
 				req: 1,
-				eff: e => 1,
-				disp: e => "Do something.",
+				eff: e => e+1,
+				disp: e => "Boost Bosonic Matter.",
 			},
 			2: {
 				req: 2,
@@ -184,4 +184,8 @@ let HIGGS = {
 			}
 		}
 	},
+}
+
+function hbEff(x, def=E(1)) {
+	return tmp.funda?.hm_eff?.[x] ?? def
 }

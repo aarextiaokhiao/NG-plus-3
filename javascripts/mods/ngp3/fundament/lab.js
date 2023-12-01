@@ -48,6 +48,7 @@ const BOSONIC_LAB = LAB = {
 		if (isCapacitorsActive()) r = r.mul(capacitorEff(1))
 		if (hasBLMilestone(12)) r = r.mul(blEff(12))
 		if (hasBLMilestone(19)) r = r.mul(blEff(19))
+		if (HIGGS.unlocked()) r = r.mul(hbEff(0))
 		return r
 	},
 	milestones: [
