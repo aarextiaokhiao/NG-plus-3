@@ -266,7 +266,7 @@ const NEUTRINO = NT = {
 				effDesc: e => `+${getFullExpansion(Math.round(e))}`
 			}, {
 				unl: _ => PHOTON.unlocked(),
-				cost: E(1e36),
+				cost: E(1e35),
 				desc: `Replace some Nanobenefits. Improve 7th Nanobenefit.`
 			}, {
 				unl: _ => PHOTON.unlocked(),
