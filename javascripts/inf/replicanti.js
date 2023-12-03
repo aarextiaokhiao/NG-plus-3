@@ -216,7 +216,7 @@ function getTotalRG() {
 
 function getReplGalPower() {
 	let str = tmp.rep.gal_str
-	if (hasNB(12)) str = Math.pow(str, 1 - NT.eff("boost", 12, 0))
+	//if (hasNB(12)) str = Math.pow(str, 1 - NT.eff("boost", 12, 0))
 
 	let extra = 0
 	if (player.timestudy.studies.includes(133)) extra += player.replicanti.galaxies * 0.5

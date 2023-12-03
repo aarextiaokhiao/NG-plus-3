@@ -77,6 +77,7 @@ let PHOTON = {
 	photon_prod() {
 		let r = player.dilation.tachyonParticles.max(1).pow(1/60).div(1e4)
 		r = E(ghSave.ghostParticles.max(1e18).log10() / 18).pow(5).mul(r)
+		if (hasNB(12)) r = r.mul(NT.eff("boost", 12))
 		if (hasNanoReward("photon")) r = r.mul(tmp.qu.nf.eff.photon)
 		return r
 	},
