@@ -123,7 +123,6 @@ function updateAutoGhosts(load) {
 	}
 
 	isAutoGhostsSafe = data.power >= powerConsumed
-	el("consumedPower").textContent = powerConsumed.toFixed(2)
 	el("machineQuote").textContent = !isAutoGhostsSafe ? "Overloaded! Vacate some ants or seek more power to enable!" :
 		!powerConsumed ? "The machine is idle... Hire some ants to do work for you." : ""
 }
@@ -305,5 +304,8 @@ function setupAutomatorHTML() {
 function updateAutomatorHTML() {
 	if (hasBraveMilestone(8)) updateQuantumWorth("display")
 	el("automatorCharge").textContent=getAutoCharge().toFixed(2)
-	el("automatorPower").textContent=ghSave.automatorGhosts.power.toFixed(2)
+
+	let h = powerConsumed.toFixed(2) + "/" + ghSave.automatorGhosts.power.toFixed(2)
+	if (!isAutoGhostsSafe) h = `<b class='red'>${h}</b>`
+	el("automatorPower").innerHTML = h
 }
