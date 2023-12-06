@@ -41,16 +41,16 @@ var automators = {
 	},
 	11: {
 		title: "Nanocharger",
-		html: `Wait: <input id="autoGhost11pw" onchange="changeAutoGhost('11pw')"/>s<br>
-		Produce: <input id="autoGhost11cw" type="text" onchange="changeAutoGhost('11cw')"/>s`,
+		html: `Wait: <input id="autoAnt11pw" onchange="changeAutoGhost('11pw')"/>s<br>
+		Produce: <input id="autoAnt11cw" type="text" onchange="changeAutoGhost('11cw')"/>s`,
 		req: 6.5,
 		pow: 0.5,
 	},
 	13: {
 		title: "Big Rip",
-		html: `Rip in: <input id="autoGhost13t" onchange="changeAutoGhost('13t')"/>s<br>
-		Undo: <input id="autoGhost13u" onchange="changeAutoGhost('13u')"/>s<br>
-		Stop: <input id="autoGhost13o" onchange="changeAutoGhost('13o')"/> times<br>(0 = always)`,
+		html: `Rip in: <input id="autoAnt13t" onchange="changeAutoGhost('13t')"/>s<br>
+		Undo: <input id="autoAnt13u" onchange="changeAutoGhost('13u')"/>s<br>
+		Stop: <input id="autoAnt13o" onchange="changeAutoGhost('13o')"/> times<br>(0 = always)`,
 		req: 7,
 		pow: 3,
 	},
@@ -61,7 +61,7 @@ var automators = {
 	},
 	15: {
 		title: "Fundament",
-		html: `Seconds until reset: <input id="autoGhost15a" onchange="changeAutoGhost('15a')"/>`,
+		html: `Seconds until reset: <input id="autoAnt15a" onchange="changeAutoGhost('15a')"/>`,
 		req: 8,
 		pow: 3,
 	},
@@ -73,8 +73,8 @@ var automators = {
 	2: {
 		title: "Eternal Challenger",
 		html: `(big rip only)<br>
-		Big Rip times: <input id="autoGhost2b" onchange="changeAutoGhost('2b')"/><br>
-		EC10 Duration: <input id="autoGhost2t" onchange="changeAutoGhost('2t')"/>s`,
+		Big Rip times: <input id="autoAnt2b" onchange="changeAutoGhost('2b')"/><br>
+		EC10 Duration: <input id="autoAnt2t" onchange="changeAutoGhost('2t')"/>s`,
 		req: 13,
 		pow: 1.5,
 	},
@@ -106,20 +106,20 @@ function updateAutoGhosts(load) {
 	powerConsumed = 0
 	for (let [g, id] of Object.entries(automatorOrder)) {
 		if (load) {
-			el("autoGhost" + id).style.display = data.ghosts > g ? "table-cell" : "none"
+			el("autoAnt" + id).style.display = data.ghosts > g ? "table-cell" : "none"
 			loadAutoGhost(id)
 		}
 		if (data[id].on) powerConsumed += automators[id].pow
 	}
 	if (load) {
-		el("autoGhost11pw").value = data[11].pw
-		el("autoGhost11cw").value = data[11].cw
-		el("autoGhost13t").value = data[13].t
-		el("autoGhost13u").value = data[13].u
-		el("autoGhost13o").value = data[13].o
-		el("autoGhost15a").value = data[15].a
-		el("autoGhost2b").value = data[2].b
-		el("autoGhost2t").value = data[2].t
+		el("autoAnt11pw").value = data[11].pw
+		el("autoAnt11cw").value = data[11].cw
+		el("autoAnt13t").value = data[13].t
+		el("autoAnt13u").value = data[13].u
+		el("autoAnt13o").value = data[13].o
+		el("autoAnt15a").value = data[15].a
+		el("autoAnt2b").value = data[2].b
+		el("autoAnt2t").value = data[2].t
 	}
 
 	isAutoGhostsSafe = data.power >= powerConsumed
@@ -129,7 +129,7 @@ function updateAutoGhosts(load) {
 
 function loadAutoGhost(id) {
 	let data = ghSave.automatorGhosts
-	el("autoGhost" + id).className = "autoBuyerDiv " + (data[id].on ? "on" : "")
+	el("autoAnt" + id).className = "autoBuyerDiv " + (data[id].on ? "on" : "")
 	el("isAutoGhostOn" + id).textContent = data[id].on ? "Vacate" : "Hire"
 	el("isAutoGhostOn" + id).className = "storebtn " + (data[id].on ? "chosen" : "antbtn")
 }
@@ -143,28 +143,28 @@ function toggleAutoGhost(id) {
 
 function changeAutoGhost(o) {
 	if (o == "11pw") {
-		var num = parseFloat(el("autoGhost11pw").value)
+		var num = parseFloat(el("autoAnt11pw").value)
 		if (!isNaN(num) && num > 0) ghSave.automatorGhosts[11].pw = num
 	} else if (o == "11cw") {
-		var num = parseFloat(el("autoGhost11cw").value)
+		var num = parseFloat(el("autoAnt11cw").value)
 		if (!isNaN(num) && num > 0) ghSave.automatorGhosts[11].cw = num
 	} else if (o == "13t") {
-		var num = parseFloat(el("autoGhost13t").value)
+		var num = parseFloat(el("autoAnt13t").value)
 		if (!isNaN(num) && num >= 0) ghSave.automatorGhosts[13].t = num
 	} else if (o == "13u") {
-		var num = parseFloat(el("autoGhost13u").value)
+		var num = parseFloat(el("autoAnt13u").value)
 		if (!isNaN(num) && num > 0) ghSave.automatorGhosts[13].u = num
 	} else if (o == "13o") {
-		var num = parseInt(getEl("autoGhost13o").value)
+		var num = parseInt(getEl("autoAnt13o").value)
 		if (!isNaN(num) && num >= 0) ghSave.automatorGhosts[13].o = num
 	} else if (o == "15a") {
-		var num = parseFloat(el("autoGhost15a").value)
+		var num = parseFloat(el("autoAnt15a").value)
 		if (!isNaN(num) && num > 0) ghSave.automatorGhosts[13].u = num
 	} else if (o == "2t") {
-		var num = fromValue(el("autoGhost2t").value)
+		var num = fromValue(el("autoAnt2t").value)
 		if (!isNaN(num) && num > 0) ghSave.automatorGhosts[2].t = num
 	} else if (o == "2b") {
-		var num = fromValue(el("autoGhost2b").value)
+		var num = fromValue(el("autoAnt2b").value)
 		if (!isNaN(num) && num >= 0) ghSave.automatorGhosts[2].b = num
 	}
 }
@@ -194,11 +194,12 @@ function updateAutomatorStuff(mode) {
 
 	var order = automatorOrder
 	while (data.ghosts < automatorOrder.length && data.power >= getAutomatorReq()) {
-		el("autoGhost" + automatorOrder[data.ghosts]).style.display=""
+		el("autoAnt" + automatorOrder[data.ghosts]).style.display=""
 		data.ghosts++
 		updateAutomatorUnlocks()
 	}
 
+	el("autoAntWelcome").style.display = data.ghosts >= 10 ? "none" : ""
 }
 
 //AUTOMATION
@@ -277,7 +278,7 @@ function setupAutomatorHTML() {
 		let g = automators[id]
 		if (g.html) {
 			htmlCustomCount++
-			htmlCustom += `<td id="autoGhost${id}" class="autoBuyerDiv">
+			htmlCustom += `<td id="autoAnt${id}" class="autoBuyerDiv">
 				<div class='top'>
 					<b>${g.title}</b>: ${g.pow} Power<br>
 					<button class='storebtn' id="isAutoGhostOn${id}" onclick="toggleAutoGhost(${id})"></button>
@@ -289,7 +290,7 @@ function setupAutomatorHTML() {
 			if (htmlCustomCount % 3 == 0) htmlCustom += "</tr><tr>"
 		} else {
 			htmlCount++
-			html += `<td id="autoGhost${id}" class="autoBuyerDiv">
+			html += `<td id="autoAnt${id}" class="autoBuyerDiv">
 				<b>${g.title}</b><br>
 				${g.pow} Power<br>
 				<button class='storebtn' id="isAutoGhostOn${id}" onclick="toggleAutoGhost(${id})"></button>
