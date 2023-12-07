@@ -342,7 +342,7 @@ function updateDilation(){
 	el("dilatedTimePerSecond").textContent = "+" + shortenMoney(getDilTimeGainPerSecond()) + "/s"
 
 	var fgm = getFreeGalaxyGainMult()
-	el('freeGalaxyMult').textContent = fgm == 1 ? "Tachyonic Galaxy" : Math.round(fgm * 10) / 10 + " Tachyonic Galaxies"
+	el('freeGalaxyMult').textContent = fgm == 1 ? "Tachyonic Galaxy is" : Math.round(fgm * 10) / 10 + " Tachyonic Galaxies are"
 	el("galaxyThreshold").textContent = shortenMoney(player.dilation.nextThreshold)
 	el("dilatedGalaxies").textContent = getFullExpansion(Math.floor(player.dilation.freeGalaxies))
 }
