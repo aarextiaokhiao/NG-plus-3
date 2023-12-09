@@ -98,8 +98,8 @@ const BOSONIC_LAB = LAB = {
 		}, {
 			req: E(5e4),
 			desc: "Bosonic Matter multiplies Neutrino multiplier base.",
-			eff: b => Math.log10(b.max(1).log10() + 10),
-			effDesc: e => shorten(e) + "x"
+			eff: b => Math.log10(b.max(10).log10()),
+			effDesc: e => "+" + shorten(e) + "x"
 		}, {
 			//QOL
 			req: E(1e5),
