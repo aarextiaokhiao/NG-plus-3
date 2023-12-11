@@ -144,8 +144,8 @@ const BOSONIC_LAB = LAB = {
 			effDesc: e => shorten(e) + "x",
 		}, {
 			req: E(1e7),
-			desc: "Enlightenments boost Bosonic Matter.",
-			eff: b => ghSave.photons.lighten / 2 + 1,
+			desc: "??? boosts Bosonic Matter.",
+			eff: b => E(1),
 			effDesc: e => shorten(e) + "x"
 		}
 	],
