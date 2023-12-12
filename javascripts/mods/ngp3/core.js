@@ -503,7 +503,7 @@ function updateNetTop(toggle) {
 	if (toggle) aarMod.netQuarkTop = !aarMod.netQuarkTop
 
 	el("netQuarkTop").style.display = quantumed ? "" : "none"
-	el("netQuarkTop").textContent = "Show net Quarks in: " + (aarMod.netQuarkTop ? "Top" : "Anti-Quarks")
+	el("netQuarkTop").textContent = "Anti-quarks at top: " + (aarMod.netQuarkTop ? "Net" : "Current")
 
 	el("quarks2").style.display = aarMod.netQuarkTop ? "" : "none"
 	el("quantumWorth1").style.display = aarMod.netQuarkTop ? "none" : ""
