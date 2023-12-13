@@ -18,7 +18,7 @@ const GLUON = {
 			}, {
 				disp: "Tachyonic Galaxies strengthen Galaxies.",
 				eff: _ => Math.pow(player.dilation.freeGalaxies / 5e3 + 1, 0.25),
-				eff_desc: e => shorten(e) + "x"
+				eff_desc: e => formatPercentage(e-1)+"%"
 			}, {
 				disp: "Dimension Boosts boost 1st Meta Dimensions.",
 				eff() {
