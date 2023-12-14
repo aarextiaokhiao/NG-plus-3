@@ -134,7 +134,7 @@ var nanoRewards = {
 			return "in dilation, raise Normal Dimensions and Tickspeed by ^" + x.toFixed(2)
 		},
 		md_boost: function(x) {
-			return "Meta-Dimension Boost gives a " + x.toFixed(2) + "x boost"
+			return "Meta-Dimension Boosts give " + x.toFixed(2) + "x multiplier per boost."
 		},
 		remote_start: function(x) {
 			return "Remote Antimatter Galaxies scale " + getFullExpansion(Math.floor(x)) + " later"
