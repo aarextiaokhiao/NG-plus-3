@@ -156,7 +156,7 @@ const NEUTRINO = NT = {
 				eff: nt => Math.log10(Math.max(nt / 90, 1)) + 1,
 				effDesc: e => `2nd Infinite Time softcap starts <b>^${shorten(e)}</b> later.`,
 			}, {
-				cost: E(1/0),
+				cost: E(1e30),
 				eff: nt => nt + 1,
 				effDesc: e => `Gain <b>${shorten(e)}</b> more Photons.`,
 			}
