@@ -483,8 +483,7 @@ function getPilonEffect() {
 	if (hasMasteryStudy("t362")) exp = .4
 	if (hasMasteryStudy("t412")) exp = .5
 
-	let ret = Math.pow(quSave.replicants.quarks.add(1).log10(), exp) * 0.8
-	return ret
+	return Math.pow(quSave.replicants.quarks.add(1).log10(), exp) * 0.8
 }
 
 function updatePostBM14Display() {

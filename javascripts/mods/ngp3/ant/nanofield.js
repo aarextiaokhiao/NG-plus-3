@@ -33,7 +33,7 @@ function updateNanoverseTab() {
 		el("nfReward" + reward).textContent = wordizeList(tmp.qu.nf.reward[reward].map(x => nanoRewards.effDisp[x](tmp.qu.nf.eff[x])), true) + "."
 		el("nfRewardHeader" + reward).innerHTML = "<u>" + (amt % 8 + 1 == reward ? "Next" : dimNames[reward]) + " Nanobenefit</u>"
 		el("nfRewardHeader" + reward).className = (amt % 8 + 1 == reward ? "grey" : "") + " milestoneTextSmall"
-		el("nfRewardTier" + reward).textContent = "Tier " + getFullExpansion(Math.ceil((amt + 1 - reward) / 8)) + " / Power: " + tmp.qu.nf.power[reward].toFixed(1)
+		el("nfRewardTier" + reward).textContent = "Tier " + getFullExpansion(Math.ceil((amt + 1 - reward) / 8))
 	}
 }
 
@@ -175,11 +175,6 @@ function getNanorewardEff(x) {
 	return tmp.qu.nf?.eff?.[x]
 }
 
-function getNanoRewardPower(reward, rewards) {
-	let x = Math.ceil((rewards - reward + 1) / 8)
-	return x * tmp.qu.nf.str
-}
-
 function getNanoRewardReq(additional){
 	return getNanoRewardReqFixed(additional - 1 + nfSave.rewards)
 }
@@ -205,21 +200,17 @@ function updateNextPreonEnergyThreshold() {
 }
 
 function updateNanoEffectUsages() {
-	let data = {}
-	tmp.qu.nf.reward = data
+	let data = tmp.qu.nf.reward = {}
 	for (let x = 1; x <= 8; x++) data[x] = nanoRewards.usage[x]()
 }
 
 function updateNanoRewardPowers() {
-	let data = {}
-	tmp.qu.nf.power = data
-	for (let x = 1; x <= 8; x++) data[x] = getNanoRewardPower(x, tmp.qu.nf.rewards)
+	let data = tmp.qu.nf.power = {}
+	for (let x = 1; x <= 8; x++) data[x] = Math.ceil((tmp.qu.nf.rewards - x + 1) / 8)
 }
 
 function updateNanoRewardEffects() {
-	let data = {}
-	tmp.qu.nf.eff = data
-
+	let data = tmp.qu.nf.eff = {}
 	for (let x = 1; x <= 8; x++) {
 		let pow = tmp.qu.nf.power[x]
 		for (let r of tmp.qu.nf.reward[x]) data[r] = nanoRewards.eff[r](pow)
@@ -241,12 +232,10 @@ function setupNanoRewardTemp() {
 function updateNanofieldTemp() {
 	if (!NF.unl()) return
 	if (!tmp.qu.nf) setupNanoRewardTemp()
-	var x = 1 //getNanoRewardPowerEff()
-	var y = nfSave.rewards
-	if (tmp.qu.nf.str !== x || tmp.qu.nf.rewards !== y) {
-		tmp.qu.nf.str = x
-		tmp.qu.nf.rewards = y
 
+	var x = nfSave.rewards
+	if (tmp.qu.nf.rewards !== x) {
+		tmp.qu.nf.rewards = x
 		updateNanoRewardPowers()
 		updateNanoRewardEffects()
 	}
