@@ -212,8 +212,7 @@ function updateNanoRewardPowers() {
 function updateNanoRewardEffects() {
 	let data = tmp.qu.nf.eff = {}
 	for (let x = 1; x <= 8; x++) {
-		let pow = tmp.qu.nf.power[x]
-		for (let r of tmp.qu.nf.reward[x]) data[r] = nanoRewards.eff[r](pow)
+		for (let r of tmp.qu.nf.reward[x]) data[r] = nanoRewards.eff[r](tmp.qu.nf.power[x])
 	}
 }
 
