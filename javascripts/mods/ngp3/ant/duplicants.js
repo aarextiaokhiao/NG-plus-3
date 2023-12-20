@@ -275,7 +275,7 @@ function getNextLimitMsg() {
 }
 
 function getHatchSpeed() {
-	var speed = quSave.replicants.hatchSpeed
+	var speed = quSave.replicants.hatchSpeed * .2
 	if (hasMasteryStudy("t361")) speed /= getMTSMult(361)
 	if (hasMasteryStudy("t371")) speed /= getMTSMult(371)
 	if (hasMasteryStudy("t372")) speed /= getMTSMult(372)
@@ -283,7 +283,6 @@ function getHatchSpeed() {
 	if (hasMasteryStudy("t391")) speed /= getMTSMult(391)
 	if (hasMasteryStudy("t402")) speed /= 30
 	if (hasNanoReward("hatch_speed")) speed /= getNanorewardEff("hatch_speed")
-	speed /= 5
 	return speed
 }
 
