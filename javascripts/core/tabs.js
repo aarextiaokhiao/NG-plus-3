@@ -20,7 +20,7 @@ let TABS = {
 	opt_disp: { name: "Display" },
 	opt_key: { name: "Hotkeys" },
 	opt_other: { name: "Others" },
-	opt_sec: { name: "Secrets", unl: _ => aarMod.secrets != undefined },
+	opt_sec: { name: "Secrets", unl: _ => player.options.secrets != undefined },
 
 	dim: { name: "Dimensions", stab: [ "dim_am", "dim_inf", "dim_time", "dim_meta", "dim_emp" ] },
 	dim_am: { name: "Antimatter", update: _ => dimensionTabDisplay() },

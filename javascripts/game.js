@@ -298,11 +298,9 @@ function toggleChallengeRetry() {
 el("news").onclick = function () {
 	if (el("news").textContent === "Click this to unlock a secret achievement.") giveAchievement("Real news")
 	if (el("news").textContent === "If you are a ghost, try to click me!" && ghostified && (player.options.secrets === undefined || player.options.secrets.ghostlyNews === undefined)) {
-		if (player.options.secrets === undefined) {
-			player.options.secrets = {}
-			el("secretoptionsbtn").style.display = ""
-		}
+		if (player.options.secrets === undefined) player.options.secrets = {}
 		player.options.secrets.ghostlyNews = false
+
 		el("ghostlynewsbtn").style.display = ""
 		$.notify("You unlocked the ghostly news ticker option!", "success")
 		giveAchievement("News for other species")
