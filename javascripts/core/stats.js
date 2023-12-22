@@ -58,6 +58,7 @@ function displayQuantumStats() {
 function bestGhostifyDisplay(){
 	el("ghostified").textContent = "You have enlarged " + getFullExpansion(ghSave.times) + " time" + (ghSave.times == 1 ? "" : "s") +"."
 	el("thisGhostify").textContent = "You have spent " + timeDisplay(ghSave.time) + " in this Fundament."
+	el("lowestGhostify").textContent = "Your lowest Quantum times on any Fundament is " + getFullExpansion(ghSave.low) + "."
 	el("bestGhostify").textContent = "Your fastest Fundament is in " + timeDisplay(ghSave.best) + "."
 }
 

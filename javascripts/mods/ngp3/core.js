@@ -1,6 +1,6 @@
 //VERSION: 2.31
 let ngp3_ver = 2.31
-let ngp3_build = 20231216
+let ngp3_build = 20231221
 function doNGP3Updates() {
 	if (!aarMod.ngp3_build) aarMod.ngp3_build = 0
 	if (aarMod.ngp3_build < 20221230) quSave.multPower = 0
@@ -21,6 +21,10 @@ function doNGP3Updates() {
 	if (aarMod.ngp3_build < 20230215) player.dilation.freeGalaxies = 0
 	if (aarMod.ngp3_build < 20230514 && todSave) todSave.chosen = "r"
 	if (aarMod.ngp3_build < 20230721.01 && hasMasteryStudy("d8") && quSave.best > 3e3) alert("Quantum Challenges are locked until you get a 5-minute Speedrun Milestone!")
+	if (aarMod.ngp3_build < 20231221) {
+		if (ghSave.milestones) ghSave.low = BM_REQ[ghSave.milestones-1]
+		delete ghSave.milestones
+	}
 
 	if (ghSave !== undefined) {
 		if (aarMod.ngp3_build < 20230201) delete ghSave.ghostlyPhotons
@@ -320,7 +324,6 @@ function doPerSecondNGP3Stuff(quick) {
 	doNGP3UnlockStuff()	
 
 	if (quick) return
-	notifyGhostifyMilestones()
 	notifyQuantumMilestones()
 
 	updateMasteryStudyTextDisplay()
@@ -389,7 +392,7 @@ function ngP3AchieveCheck() {
 	let ableToGetRid8 = ableToGetRid7 && !beSave.did
 	if (brSave.spaceShards.e >= 33 && !beSave.did) giveAchievement("Finite Time")
 	if (beSave.eternalMatter.gte(9.999999e99)) giveAchievement("This achievement doesn't exist 4")
-	if (ghSave.milestones == 16) giveAchievement("I rather oppose the theory of everything")
+	if (braveMilestones == 16) giveAchievement("I rather oppose the theory of everything")
 	if (inQC(6) && inQC(8) && !bigRipped() && player.money.e >= 4e7) giveAchievement("Really?")
 	if (ableToGetRid8 && player.infinityPoints.log10() >= 9.5e5) giveAchievement("Please answer me why.")
 

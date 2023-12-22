@@ -431,7 +431,7 @@ let RESETS = {
 		},
 
 		doReset() {
-			let bm = ghSave?.milestones
+			let bm = braveMilestones
 
 			player.infinitiedBank = 0
 			player.eternitiesBank = ghostified ? 200 : 0

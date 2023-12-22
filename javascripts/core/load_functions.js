@@ -1597,10 +1597,7 @@ function onLoad(noOffline) {
 			else break
 		}
 	}
-	if (mod.ngp3) {
-		notifyId = speedrunMilestonesReached
-		notifyId2 = ghSave?.milestones || 0
-	}
+	if (mod.ngp3) notifyId = speedrunMilestonesReached
 
 	if (aarMod.offline && !noOffline) {
 		let diff = new Date().getTime() - player.lastUpdate

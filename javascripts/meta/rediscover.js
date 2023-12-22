@@ -69,7 +69,7 @@ const REDISCOVER = {
 				for (var x = 1; x <= 8; x++) beSave.upgrades.push(x)
 
 				ghSave.times = 20
-				ghSave.milestones = 16
+				ghSave.low = 0
 				ghSave.neutrinos.boosts = 12
 				for (var x = 1; x <= 16; x++) ghSave.neutrinos.upgrades.push(x)
 				ghSave.photons.unl = true

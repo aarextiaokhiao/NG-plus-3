@@ -5,7 +5,7 @@ function setupFundament() {
 		time: player.totalTimePlayed,
 		best: 9999999999,
 		last10: [[600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)]],
-		milestones: 0,
+		low: 9999999999,
 		automatorGhosts: setupAutomaticGhostsData(),
 
 		ghostParticles: E(0),
@@ -102,14 +102,12 @@ function ghostifyReset(force, gain) {
 
 	//Brave Milestones & Achievements
 	if (!force) {
-		while (quSave.times <= BM_REQ[ghSave.milestones]) ghSave.milestones++
-		updateBraveMilestones()
+		ghSave.low = Math.max(ghSave.low, quSave.times)
+		updateBraveMilestones(true)
 
 		giveAchievement("Kee-hee-hee!")
 		if (quSave.times >= 1e3 && hasBraveMilestone(16)) giveAchievement("Scared of ghosts?")
 	}
-
-	var bm = ghSave.milestones
 
 	doReset("funda")
 }
@@ -205,7 +203,7 @@ function setupBraveMilestones(){
 }
 
 function hasBraveMilestone(x) {
-	return ghSave?.milestones >= x
+	return braveMilestones >= x
 }
 
 //HTML
@@ -243,10 +241,21 @@ function updateLastTenGhostifies() {
 	} else el("averageGhostifyRun").textContent = ""
 }
 
-function updateBraveMilestones() {
+let braveMilestones = 0
+function updateBraveMilestones(onReset) {
+	var oldMilestones = braveMilestones
+	braveMilestones = 0
+
 	if (!ghSave) return
-	for (var m = 1; m <= 16; m++) el("braveMilestone" + m).className = "achievement achievement" + (ghSave.milestones < m ? "" : "un") + "locked"
-	for (var r = 1; r < 3; r++) el("braveRow" + r).className = ghSave.milestones < r * 8 ? "" : "completedrow"
+	while (quSave.times <= BM_REQ[braveMilestones]) braveMilestones++
+
+	if (onReset && braveMilestones > oldMilestones) {
+		$.notify("You fundamented with under "+getFullExpansion(BM_REQ[braveMilestones-1])+" Quantum resets!", "success")
+		setTimeout(() => $.notify(el("braveMilestone"+braveMilestones).getAttribute("ach-tooltip"), "info"), 2e3)
+	}
+
+	for (var m = 1; m <= 16; m++) el("braveMilestone" + m).className = "achievement achievement" + (braveMilestones < m ? "" : "un") + "locked"
+	for (var r = 1; r < 3; r++) el("braveRow" + r).className = braveMilestones < r * 8 ? "" : "completedrow"
 }
 
 TABS = Object.assign(TABS, {

@@ -1448,16 +1448,6 @@ function notifyQuantumMilestones(){
 	}
 }
 
-function notifyGhostifyMilestones(){
-	if (!ghostified) return
-	if (notifyId2 <= 0) notifyId2 = 0
-	if (ghSave.milestones > notifyId2) {
-		notifyId2 = ghSave.milestones
-		$.notify("You fundamented with under "+getFullExpansion(BM_REQ[notifyId2-1])+" Quantum resets!", "success")
-		setTimeout(() => $.notify(el("braveMilestone"+notifyId2).getAttribute("ach-tooltip"), "info"), 2e3)
-	}
-}
-
 function dilationStuffABTick(){
 	el('rebuyupgAuto').style.display = speedrunMilestonesReached>6?"":"none"
 	el('dilUpgsAuto').style.display = hasAch("ngpp13") && mod.udsp ? "" : "none"
