@@ -21,11 +21,6 @@ function doNGP3Updates() {
 	if (aarMod.ngp3_build < 20230215) player.dilation.freeGalaxies = 0
 	if (aarMod.ngp3_build < 20230514 && todSave) todSave.chosen = "r"
 	if (aarMod.ngp3_build < 20230721.01 && hasMasteryStudy("d8") && quSave.best > 3e3) alert("Quantum Challenges are locked until you get a 5-minute Speedrun Milestone!")
-	if (aarMod.ngp3_build < 20231221) {
-		if (ghSave.milestones) ghSave.low = BM_REQ[ghSave.milestones-1]
-		delete ghSave.milestones
-	}
-
 	if (ghSave !== undefined) {
 		if (aarMod.ngp3_build < 20230201) delete ghSave.ghostlyPhotons
 		if (aarMod.ngp3_build < 20230204) {
@@ -47,6 +42,10 @@ function doNGP3Updates() {
 			delete ghSave.lab?.hf
 			ghSave.photons = PHOTON.setup()
 			ghSave.hb = HIGGS.setupSave()
+		}
+		if (aarMod.ngp3_build < 20231221) {
+			if (ghSave.milestones) ghSave.low = BM_REQ[ghSave.milestones-1]
+			delete ghSave.milestones
 		}
 
 		if (!ghSave.reached && !ghSave.times) {

@@ -102,7 +102,7 @@ function ghostifyReset(force, gain) {
 
 	//Brave Milestones & Achievements
 	if (!force) {
-		ghSave.low = Math.max(ghSave.low, quSave.times)
+		ghSave.low = Math.min(ghSave.low, quSave.times)
 		updateBraveMilestones(true)
 
 		giveAchievement("Kee-hee-hee!")
