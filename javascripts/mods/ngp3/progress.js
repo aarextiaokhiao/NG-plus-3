@@ -86,7 +86,7 @@ const NGP3_FEATURES = {
 		name: "Big Rip",
 		tab() {
 			el("welcome").style.display = "flex"
-			el("welcomeMessage").innerHTML = "<h1>Your journey is not over...</h1>Anyways, welcome to NG+4, originally by Soul147! You have reached the NG+4 checkpoint. However, many features remain for you to dominate."
+			el("welcomeMessage").innerHTML = "<h1>Checkpoint reached!</h1><br>Welcome to NG+4, originally by Soul147! Many features remain for you..."
 		},
 
 		met: _ => hasMasteryStudy("d14"),
