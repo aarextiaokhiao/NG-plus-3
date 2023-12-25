@@ -73,7 +73,7 @@ const NGP3_FEATURES = {
 		met: _ => hasMasteryStudy("d12"),
 		req: _ => 10,
 		req_res: _ => EDsave[8].perm,
-		req_disp: (amt, req) => `${getFullExpansion(amt)} / ${getFullExpansion(req)} of 8th Emperor Dimensions to unlock Emperor Dimensions.`
+		req_disp: (amt, req) => `${getFullExpansion(amt)} / ${getFullExpansion(req)} of 8th Emperor Dimensions`
 	},
 	decay: {
 		name: "Decay",
