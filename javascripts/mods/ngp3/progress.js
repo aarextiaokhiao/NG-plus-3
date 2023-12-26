@@ -102,7 +102,7 @@ const NGP3_FEATURES = {
 		req: _ => E("1e100"),
 		req_res: _ => bigRipped() ? player.eternityPoints : 0,
 		req_log: true,
-		req_disp: (amt, req) => `Get ${shorten(amt)} / ${shorten(req)} Eternity Points while Big Ripped`
+		req_disp: (amt, req) => `${shorten(amt)} / ${shorten(req)} Eternity Points while Big Ripped`
 	},
 	fu: {
 		name: "Fundament",
@@ -119,7 +119,7 @@ const NGP3_FEATURES = {
 		tab: _ => TAB_CORE.open("ph"),
 
 		met: _ => PHOTON.unlocked(),
-		req: _ => pow10(1.9e9),
+		req: _ => pow10(17e8),
 		req_res: _ => bigRipped() ? player.money : 0,
 		req_log: true,
 		req_disp: (amt, req) => `${shorten(amt)} / ${shorten(req)} antimatter while Big Ripped`
