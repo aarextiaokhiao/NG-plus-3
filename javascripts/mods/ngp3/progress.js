@@ -11,7 +11,7 @@ const NGP3_FEATURES = {
 		req: _ => 1e24,
 		req_res: _ => player.dilation.dilatedTime,
 		req_log: true,
-		req_disp: (amt, req) => `${shortenDimensions(amt)} / ${shortenDimensions(req)} TT study`
+		req_disp: (amt, req) => `${shortenDimensions(amt)} / ${shortenDimensions(req)} Time Theorems`
 	},
 	ms: {
 		name: "Mastery Studies",
@@ -21,7 +21,7 @@ const NGP3_FEATURES = {
 		req: _ => 1e100,
 		req_res: _ => player.timestudy.theorem,
 		req_log: true,
-		req_disp: (amt, req) => `${shorten(amt)} / ${shorten(req)} DT upgrade`
+		req_disp: (amt, req) => `${shorten(amt)} / ${shorten(req)} dilated time`
 	},
 	qu: {
 		name: "Quantum",
@@ -31,7 +31,7 @@ const NGP3_FEATURES = {
 		req: _ => inAnyQC() ? getQCGoal() : getQuantumReq(),
 		req_res: _ => inAnyQC() ? player.money : player.meta.bestAntimatter,
 		req_log: true,
-		req_disp: (amt, req) => inAnyQC() ? `${shorten(amt)} / ${shorten(req)} antimatter` : `${shorten(amt)} / ${shorten(req)} meta-antimatter (+EC14 completion)`
+		req_disp: (amt, req) => inAnyQC() ? `${shorten(amt)} / ${shorten(req)} antimatter` : ECComps("eterc14") ? `${shorten(amt)} / ${shorten(req)} meta-antimatter` : `Complete Eternity Challenge 14 first`
 	},
 	pos: {
 		name: "Positrons",
