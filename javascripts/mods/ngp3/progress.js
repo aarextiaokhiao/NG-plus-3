@@ -129,9 +129,9 @@ const NGP3_FEATURES = {
 		tab: _ => TAB_CORE.open("bl_hy"),
 
 		met: _ => LAB.unlocked(),
-		req: _ => 0,
-		req_res: _ => 1,
-		req_disp: (amt, req) => `???`
+		req: _ => 1,
+		req_res: _ => tmp.funda.photon.light[7],
+		req_disp: (amt, req) => `${shorten(amt)} / ${shorten(req)} Ultraviolet Light`
 	},
 	hb: {
 		name: "Higgs Field",
@@ -213,7 +213,7 @@ function doNGP3ProgressBar() {
 		var p = Math.min((data.req_log ? amt.max(1).log(req) : amt.div(req).toNumber()) * 100, 100).toFixed(2) + "%"
 		el("progressbar").style.width = p
 		el("progresspercent").textContent = p
-		el("progress").setAttribute('ach-tooltip', `${data.name}: ${data.req_disp(amt, req)} (${tmp.progress.reached + 1} / ${NGP3_FEATURE_LEN})`)
+		el("progress").setAttribute('ach-tooltip', `${data.name}: ${data.req_disp(amt, req)} (Stage ${tmp.progress.reached + 1} / ${NGP3_FEATURE_LEN})`)
 	}
 }
 
