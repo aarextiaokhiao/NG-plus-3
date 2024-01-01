@@ -64,14 +64,10 @@ function getQKGain(){
 
 function getQCtotalTime(){
 	var temp = 0
-	var count = 0
 	for (var i = 1; i <= 8; i++){
-		if (quSave.challengeRecords[i]) {
-			temp += quSave.challengeRecords[i]
-			count ++
-		}
+		if (quSave.challengeRecords[i]) temp += quSave.challengeRecords[i]
+		else return Infinity
 	}
-	if (count < 8) return Infinity
 	return temp
 }
 
