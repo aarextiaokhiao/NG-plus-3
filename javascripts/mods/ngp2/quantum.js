@@ -28,7 +28,7 @@ function quantum(auto, force, qc, bigRip = false) {
 			}
 		} else {
 			if (QCIntensity(1) == 0 && !ghostified) conf = true
-			if (conf && !confirm("You will do a Quantum reset, but you will not gain quarks, you keep your positrons & sacrificed galaxies, and you can't buy positron upgrades. You have to reach the set goal of antimatter while getting the meta-antimatter requirement to Quantum to complete this challenge. Positrons and banked eternities have no effect in Quantum Challenges and your positrons and sacrificed galaxies don't reset until you end the challenge.")) return
+			if (conf && !confirm("You have to reach the set goal of antimatter while getting the meta-antimatter requirement to Quantum to complete this challenge. You keep Positrons & Discharged Galaxies, but you can't buy Positron Upgrades. Positrons and Banked Eternities have no effect in Quantum Challenges.")) return
 		}
 	}
 
