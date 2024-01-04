@@ -16,7 +16,7 @@ function getGSAmount(offset=0) {
 	ret = ret.mul(E_pow(1 + getAmount(8) / div2, exp))
 	
 	if (!player.galacticSacrifice.chall) ret = ret.mul(getGPMultipliers())
-	if (hasGSacUpg(16) && player.tdBoosts) ret = ret.mul(Math.max(player.tdBoosts, 1))
+	if (hasGSacUpg(16) && inNGM(4)) ret = ret.mul(Math.max(player.tdBoosts, 1))
 	if (inNGM(4)) {
 		var e = hasGSacUpg(46) ? galMults["u46"]() : 1
 		if (hasGSacUpg(41) && inNGM(4)) ret = ret.mul(Decimal.max(player.tickspeedBoosts, 1).pow(e))
