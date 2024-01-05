@@ -44,7 +44,7 @@ const NEUTRINO = NT = {
 
 	/* FEATURES */
 	resources: {
-		names: ["", "Muon ", "Tau "],
+		names: ["Electron ", "Muon ", "Tau "],
 		types: ["electron", "mu", "tau"],
 		total() {
 			let r = E(0)
