@@ -55,7 +55,7 @@ var automators = {
 		pow: 3,
 	},
 	14: {
-		title: "EP Multiplier",
+		title: "EP Multiplier II",
 		req: 7.5,
 		pow: 1,
 	},
