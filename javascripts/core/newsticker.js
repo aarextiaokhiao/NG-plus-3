@@ -429,7 +429,7 @@ newsArray = [//always true
 ["Alright. My news tickers have too many stuff made by Aarex. If you wish for a lucky moment, click me to split into 2.", true, "am225"],
 ["Alright. Time for you to become a ghost, kiddo. You have enough power in Big Rips. With the power of my permafrost bones, because I am Dry Bo- Wait. Why can't I use that anymore? *Looks at mirror.* You gonna kidding me... I got transformed permanently, yet again... When this transformation chaos has to stop?!?!", true, "am226"],
 ["With a lot of variations mixed up, the Replicanti disease begins to grow superexponentially. Our predictions were wrong. Replicantis will invade us in about a minute, causing a ZK-Type Omniverse Destruction scenario. We must hide into our bunkers.", "player.replicanti.unl", "am227"],
-["We the friendly scientists, declare independence on the antimatter colony.", true, "am221"],
+["We the people, declare independence on matters.", true, "am221"],
 ["Meta-antimatter decays particles for quantum energy. That means we can decay anything for quantum energy?", "hasMasteryStudy('d10')", "am229"],
 ["You have e3.523 DCe unmeta-antimatter, which causes a e1.762 DCex expansion to real-life.", "mod.ngp3", "am230"],
 ["You have unlocked infinite Microdimensions! That's cool, because Microdimensions expand Dimensions with Blueprint Particles!", true, "am231"],
