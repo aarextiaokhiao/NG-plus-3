@@ -262,7 +262,6 @@ function beatNGP3() {
 	<b class='red'>(but for now...)</b><br><br>
 	<h1>You have beaten ${modAbbs(mod, true)}!</h1>
 	This took you ${timeDisplayShort(player.totalTimePlayed)} with ${player.achievements.length} achievements.<br><br>
-	Post-game is coming soon!<br>
 	Thanks for playing!`
 	onObtainBadgeCheck("tgr")
 }
