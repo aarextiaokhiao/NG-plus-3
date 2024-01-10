@@ -258,8 +258,7 @@ function intergalacticDisplay() {
 function beatNGP3() {
 	el("welcome").style.display = "flex"
 	el("welcomeMessage").innerHTML = `
-	You reached the inner depths of lab...<br>
-	<b class='red'>(but for now...)</b><br><br>
+	Congratulations.<br><br>
 	<h1>You have beaten ${modAbbs(mod, true)}!</h1>
 	This took you ${timeDisplayShort(player.totalTimePlayed)} with ${player.achievements.length} achievements.<br><br>
 	Thanks for playing!`
