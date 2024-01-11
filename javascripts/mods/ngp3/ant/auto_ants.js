@@ -95,6 +95,9 @@ function setupAutomaticGhostsData() {
 	data[15].a = 1
 	data[2].b = 3
 	data[2].t = 5
+	data[13].o = 5
+	data[13].u = 5
+	data[13].t = 3
 	return data
 }
 
