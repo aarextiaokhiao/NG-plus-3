@@ -13,12 +13,13 @@ function updateConvertSave(convertMod) {
 }
 
 function eligibleConvert() {
-	if (mod.ngpp == 2 && !player.dilation.studies.includes(1)) convert = "NGUdS'"
-	if (!mod.ngp3 && !inEasierMode() && !aarMod.ersVersion) {
+	if (!inEasierMode() || mod.rs) return
+	if (mod.ngp3) {
+		if (!player.dilation.studies.includes(1)) return "NGUdS'"
+	} else {
 		if (mod.ngud) convert = "NGUdS'"
 		else convert = "NG+3"
-	} else convert = undefined
-	return convert
+	}
 }
 
 function convertSave(conversion) {
