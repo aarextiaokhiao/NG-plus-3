@@ -343,7 +343,7 @@ function updateBreakEternityUpgradesTemp() {
 	updateBreakEternityUpgrade8Temp()
 
 	//Upgrade 7: EP Mult
-	tmp.qu.beu[7] = E_pow(1e9, beSave.epMultPower * Math.pow(Math.max(beSave.epMultPower / 400, 1), 3))
+	tmp.qu.beu[7] = getBEEPMultBase().pow(beSave.epMultPower)
 }
 
 function getBEUnls() {
@@ -374,6 +374,10 @@ function buyBreakUpg(id) {
 
 function getBreakUpgMult(id) {
 	return tmp.qu.beu[id]
+}
+
+function getBEEPMultBase() {
+	return pow10(Math.pow(Math.max(beSave.epMultPower / 400, 1), 3) * 9)
 }
 
 function isBreakUpgActive(id) {
@@ -410,7 +414,7 @@ function updateBreakEternity() {
 	el("beShortcut").style.display = broke && !LAB.unlocked() ? "" : "none"
 	if (broke) {
 		for (var u = 1; u <= getBEUnls(); u++) el("breakUpg" + u + "Cost").textContent = shortenDimensions(getBreakUpgCost(u))
-		el("breakUpg7MultIncrease").textContent = shortenDimensions(1e9)
+		el("breakUpg7MultIncrease").textContent = shortenDimensions(getBEEPMultBase())
 	}
 }
 
