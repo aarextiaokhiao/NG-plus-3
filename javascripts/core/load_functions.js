@@ -1434,9 +1434,7 @@ function setTSDisplay(){
 	el("181desc").textContent = inOnlyNGM(2) ? "1% of your GP and IP gain on next reset" : "1% of your IP gained on crunch"
 	el("211desc").textContent=tsMults[211]()
 	el("213desc").textContent=tsMults[213]()
-	el("221").style["font-size"] = mod.ngp3 ? "0.45rem" : "0.55rem"
 	el("222desc").textContent=tsMults[222]()
-	el("231").style["font-size"] = mod.ngp3 ? "0.55rem" : "0.65rem"
 }
 
 function updateNGp3DisplayStuff(){
