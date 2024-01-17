@@ -35,7 +35,7 @@ const MTS = MASTERY_STUDIES = {
 			return quantumWorth.gte(50)
 		},
 		8() {
-			return quSave.electrons.amount >= 16750 && speedrunMilestonesReached >= 16
+			return quSave.electrons.amount >= 16750 && speedrunMilestones >= 16
 		},
 		9() {
 			return QCIntensity(8) >= 1

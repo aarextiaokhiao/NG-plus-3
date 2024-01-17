@@ -318,7 +318,7 @@ function buyDilationUpgrade(id, max) {
 		player.dilation.rebuyables[id] = (player.dilation.rebuyables[id] || 0) + 1
 
 		if (id == 2) {
-			if (speedrunMilestonesReached < 22) player.dilation.dilatedTime = E(0)
+			if (speedrunMilestones < 22) player.dilation.dilatedTime = E(0)
 			resetDilationGalaxies()
 		} else player.dilation.dilatedTime = player.dilation.dilatedTime.sub(cost)
 		
@@ -474,7 +474,7 @@ function resetDilation(order = "qu") {
 			if (bigRip ? hasRipUpg(11) : hasAch("ng3p37")) keepTP = 0.5
 			if (bigRip ? hasRipUpg(18) : notInQC() && hasBraveMilestone(4)) keepTP = 1
 		}
-		player.dilation.dilatedTime = !bigRip && speedrunMilestonesReached >= 22 && !dev.testZone ? E(1e100) : E(0)
+		player.dilation.dilatedTime = !bigRip && speedrunMilestones >= 22 && !dev.testZone ? E(1e100) : E(0)
 	}
 	if (mod.ngp3) {
 		if (order == "qu" && !hasBraveMilestone(2)) player.dilation.best = E(0)

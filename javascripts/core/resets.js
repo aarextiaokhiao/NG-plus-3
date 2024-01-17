@@ -112,7 +112,7 @@ let RESETS = {
 			let keepRep = hasAch("r95")
 			if (!keepRep) player.replicanti.amount = E(1)
 
-			let keepRepGal = (order == "eter" && hasAch("ng3p67")) || (order == "inf" && speedrunMilestonesReached >= 28)
+			let keepRepGal = (order == "eter" && hasAch("ng3p67")) || (order == "inf" && speedrunMilestones >= 28)
 			if (!keepRepGal) player.replicanti.galaxies = (order == "inf" && hasTimeStudy(33)) ? Math.floor(player.replicanti.galaxies / 2) : 0
 
 			if (isEmptiness) TAB_CORE.open("dim")
@@ -165,7 +165,7 @@ let RESETS = {
 			if (getEternitied() < 50) {
 				player.replicanti.amount = E(0)
 				player.replicanti.unl = false
-			} else if (order != "eter" || speedrunMilestonesReached < 24) {
+			} else if (order != "eter" || speedrunMilestones < 24) {
 				player.replicanti.amount = E(1)
 			}
 			if (order != "eter" || !hasAch("ng3p67")) {
@@ -263,7 +263,7 @@ let RESETS = {
 			let qc = inAnyQC()
 
 			if (order != "qu" || !hasAch("ng3p14")) player.infinitiedBank = 0
-			player.eternities = speedrunMilestonesReached ? 2e4 : quantumed ? 1 : 0
+			player.eternities = speedrunMilestones ? 2e4 : quantumed ? 1 : 0
 			player.bestEternity = 999999999
 			player.lastTenEternities = [[600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)]]
 			updateLastTenEternities()
@@ -298,7 +298,7 @@ let RESETS = {
 			this.resetMeta(order, qc)
 
 			//NG+3
-			if (speedrunMilestonesReached >= 4 && !isRewardEnabled(4)) {
+			if (speedrunMilestones >= 4 && !isRewardEnabled(4)) {
 				for (var s = 0; s < player.masterystudies.length; s++) {
 					if (player.masterystudies[s].indexOf("t") >= 0) player.timestudy.theorem += MTS.costs.time[player.masterystudies[s].split("t")[1]]
 					else player.timestudy.theorem += MTS.costs.dil[player.masterystudies[s].split("d")[1]]
@@ -309,13 +309,13 @@ let RESETS = {
 				else player.timestudy.theorem += ([0, 30, 35, 40, 70, 130, 85, 115, 115, 415, 550, 1, 1])[player.eternityChallUnlocked]
 			}
 
-			player.masterystudies = bigRip && !hasRipUpg(12) ? ["d7", "d8", "d9", "d10", "d11", "d12", "d13", "d14"] : speedrunMilestonesReached >= 16 && isRewardEnabled(11) ? player.masterystudies : []
+			player.masterystudies = bigRip && !hasRipUpg(12) ? ["d7", "d8", "d9", "d10", "d11", "d12", "d13", "d14"] : speedrunMilestones >= 16 && isRewardEnabled(11) ? player.masterystudies : []
 			player.respecMastery = false
 
 			ipMultPower = hasGluonUpg("gb", 3) ? 2.3 : hasMasteryStudy("t241") ? 2.2 : 2
 			quSave.electrons.amount = 0
 			quSave.electrons.sacGals = 0
-			if (speedrunMilestonesReached < 25 && player.quantum.autoOptions.sacrifice) toggleAutoQuantumContent('sacrifice')
+			if (speedrunMilestones < 25 && player.quantum.autoOptions.sacrifice) toggleAutoQuantumContent('sacrifice')
 			duplicantsResetOnQuantum(qc)
 			nanofieldResetOnQuantum()
 

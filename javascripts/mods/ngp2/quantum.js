@@ -185,7 +185,7 @@ function doQuantum(force, auto, qc = {}) {
 
 		if (quSave.best > quSave.time) {
 			quSave.best = quSave.time
-			updateSpeedruns()
+			updateSpeedruns(true)
 		}
 	
 		for (var i = quSave.last10.length - 1; i > 0; i--) {

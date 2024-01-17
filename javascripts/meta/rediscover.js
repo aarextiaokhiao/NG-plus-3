@@ -47,7 +47,7 @@ const REDISCOVER = {
 				quSave.best = 100
 				for (var i = 7; i <= 10; i++) player.masterystudies.push("d"+i)
 
-				speedrunMilestonesReached = 28
+				speedrunMilestones = 28
 				notifyId = 28
 			},
 		}, {
@@ -133,7 +133,7 @@ const REDISCOVER = {
 			delete meta.save.rediscover.in
 		}
 
-		el("rediscover_btn").innerHTML = "<b>Rediscover</b><br>" + (segData ? `(${segData.to})` : "(Redo a NG+3 segment)")
+		el("rediscover_btn").innerHTML = "<p style='font-size: 20px'>Rediscover</p>" + (segData ? `(${segData.to})` : "(Redo a NG+3 segment)")
 		el("rediscover_info").textContent = segData ? `Ongoing Rediscovery! (${segData.to}) Click 'Continue' to continue.` : "Click a segment to start a Rediscovery."
 		el('rediscover_options').style.display = segData ? "" : "none"
 		el('rediscover_stats').innerHTML = this.in() ? `Goal: ${segData.to}<br>${timeDisplayShort(player.totalTimePlayed)}` : ``

@@ -83,7 +83,7 @@ function updateTheoremButtons() {
 		el("theoremep").innerHTML = "Buy Time Theorems <br>Cost: " + shortenDimensions(player.timestudy.epcost) + " EP"
 		el("theoremip").innerHTML = "Buy Time Theorems <br>Cost: " + shortenCosts(player.timestudy.ipcost) + " IP"
 		el("theoremam").innerHTML = "Buy Time Theorems <br>Cost: " + shortenCosts(player.timestudy.amcost)
-		el("theoremmax").innerHTML = (speedrunMilestonesReached > 2 && player.masterystudies) ? ("Auto max: "+(player.autoEterOptions.tt ? "ON" : "OFF")) : "Buy max Theorems"
+		el("theoremmax").innerHTML = (speedrunMilestones > 2 && player.masterystudies) ? ("Auto max: "+(player.autoEterOptions.tt ? "ON" : "OFF")) : "Buy max Theorems"
 	}
 	var tt = player.timestudy.theorem
 	var html = "<span style='display:inline' class=\"TheoremAmount\">" + (tt >= 1e5 ? shortenMoney(tt) : getFullExpansion(Math.floor(tt))) + "</span> "
@@ -106,7 +106,7 @@ function buyTimeStudy(name, check, quickBuy) {
 		player.timestudy.theorem -= cost
 		updateTimeStudyClass(name, "bought")
 
-		if (name == 131 && speedrunMilestonesReached < 20) {
+		if (name == 131 && speedrunMilestones < 20) {
 			if (player.replicanti.galaxybuyer) el("replicantiresettoggle").textContent = "Auto galaxy ON (disabled)"
 			else el("replicantiresettoggle").textContent = "Auto galaxy OFF (disabled)"
 		}

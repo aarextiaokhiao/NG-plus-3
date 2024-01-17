@@ -23,6 +23,7 @@ function loadFundament(unl) {
 	ghSave = player.ghostify = unl ? deepUndefinedAndDecimal(player.ghostify, setupFundament()) : undefined
 	blSave = ghSave?.lab
 	ghostified = ghSave?.times > 0
+	braveMilestones = 0
 
 	if (mod.ngp3) {
 		player.meta.bestOverGhostifies = Decimal.max(player.meta.bestOverGhostifies, player.meta.bestOverQuantums)
@@ -57,11 +58,11 @@ function ghostify(auto, force) {
 		return
 	}
 
-	var gain = getGHPGain()
-	var implode = !auto && !force && isAnimationOn("ghostify")
+	let gain = getGHPGain()
+	let implode = !auto && !force && isAnimationOn("ghostify")
 	if (implode) {
-		var amt = ghSave.ghostParticles.add(gain).round()
-		var seconds = ghostified ? 4 : 10
+		let amt = ghSave.ghostParticles.add(gain).round()
+		let seconds = ghostified ? 4 : 10
 		implosionCheck = 1
 		ghostifyAni(gain, amt, seconds)
 		setTimeout(function(){
@@ -95,7 +96,7 @@ function ghostifyReset(force, gain) {
 			$.notify("You unlocked " + (ghSave.times + 2) + "th Neutrino upgrade!", "success")
 		}
 
-		for (var i=ghSave.last10.length-1; i>0; i--) ghSave.last10[i] = ghSave.last10[i-1]
+		for (let i=ghSave.last10.length-1; i>0; i--) ghSave.last10[i] = ghSave.last10[i-1]
 		ghSave.last10[0] = [ghSave.time, gain]
 		ghSave.best = Math.min(ghSave.best, ghSave.time)
 	}
@@ -116,7 +117,7 @@ function canGhostify() {
 	return isQuantumReached() && bigRipped()
 }
 
-var ghostifyDenied
+let ghostifyDenied
 function denyGhostify() {
 	ghostifyDenied++
 	if (ghostifyDenied >= 15) giveAchievement("You are supposed to become a ghost!")
@@ -188,8 +189,8 @@ function getGHPMult() {
 	return x
 }
 
-var averageGHP = E(0)
-var bestGHP
+let averageGHP = E(0)
+let bestGHP
 function getGHPRate(num) {
 	if (num.lt(1 / 60)) return (num * 1440).toFixed(1) + " SP/day"
 	if (num.lt(1)) return (num * 60).toFixed(1) + " SP/hr"
@@ -199,7 +200,7 @@ function getGHPRate(num) {
 //Brave Milestones
 const BM_REQ = [200,175,150,100,50,40,30,25,20,15,10,5,4,3,2,1]
 function setupBraveMilestones(){
-	for (var m = 1; m <= 16; m++) el("braveMilestone" + m).textContent=BM_REQ[m - 1]+"x quantumed or lower"
+	for (let m = 1; m <= 16; m++) el("braveMilestone" + m).textContent=BM_REQ[m - 1]+"x quantumed or lower"
 }
 
 function hasBraveMilestone(x) {
@@ -214,15 +215,15 @@ function toggleGhostifyConf() {
 
 function updateLastTenGhostifies() {
 	if (!ghostified) return
-	var listed = 0
-	var tempTime = E(0)
-	var tempGHP = E(0)
-	for (var i=0; i<10; i++) {
+	let listed = 0
+	let tempTime = E(0)
+	let tempGHP = E(0)
+	for (let i=0; i<10; i++) {
 		if (ghSave.last10[i][1].gt(0)) {
-			var qkpm = ghSave.last10[i][1].dividedBy(ghSave.last10[i][0]/600)
-			var tempstring = shorten(qkpm) + " SP/min"
+			let qkpm = ghSave.last10[i][1].dividedBy(ghSave.last10[i][0]/600)
+			let tempstring = shorten(qkpm) + " SP/min"
 			if (qkpm<1) tempstring = shorten(qkpm*60) + " SP/hour"
-			var msg = "The Fundament " + (i+1) + " ago took " + timeDisplayShort(ghSave.last10[i][0], false, 3) + " and gave " + shortenDimensions(ghSave.last10[i][1]) +" SP. "+ tempstring
+			let msg = "The Fundament " + (i+1) + " ago took " + timeDisplayShort(ghSave.last10[i][0], false, 3) + " and gave " + shortenDimensions(ghSave.last10[i][1]) +" SP. "+ tempstring
 			el("ghostifyrun"+(i+1)).textContent = msg
 			tempTime = tempTime.add(ghSave.last10[i][0])
 			tempGHP = tempGHP.add(ghSave.last10[i][1])
@@ -233,8 +234,8 @@ function updateLastTenGhostifies() {
 	if (listed > 1) {
 		tempTime = tempTime.dividedBy(listed)
 		tempGHP = tempGHP.dividedBy(listed)
-		var qkpm = tempGHP.dividedBy(tempTime/600)
-		var tempstring = shorten(qkpm) + " SP/min"
+		let qkpm = tempGHP.dividedBy(tempTime/600)
+		let tempstring = shorten(qkpm) + " SP/min"
 		averageGHP = tempGHP
 		if (qkpm<1) tempstring = shorten(qkpm*60) + " SP/hour"
 		el("averageGhostifyRun").textContent = "Last " + listed + " Fundaments average time: "+ timeDisplayShort(tempTime, false, 3)+" Average SP gain: "+shortenDimensions(tempGHP)+" SP. "+tempstring
@@ -243,7 +244,7 @@ function updateLastTenGhostifies() {
 
 let braveMilestones = 0
 function updateBraveMilestones(onReset) {
-	var oldMilestones = braveMilestones
+	let oldMilestones = braveMilestones
 	braveMilestones = 0
 
 	if (!ghSave) return
@@ -254,8 +255,8 @@ function updateBraveMilestones(onReset) {
 		setTimeout(() => $.notify(el("braveMilestone"+braveMilestones).getAttribute("ach-tooltip"), "info"), 2e3)
 	}
 
-	for (var m = 1; m <= 16; m++) el("braveMilestone" + m).className = "achievement achievement" + (braveMilestones < m ? "" : "un") + "locked"
-	for (var r = 1; r < 3; r++) el("braveRow" + r).className = braveMilestones < r * 8 ? "" : "completedrow"
+	for (let m = 1; m <= 16; m++) el("braveMilestone" + m).className = "achievement achievement" + (braveMilestones < m ? "" : "un") + "locked"
+	for (let r = 1; r < 3; r++) el("braveRow" + r).className = braveMilestones < r * 8 ? "" : "completedrow"
 }
 
 TABS = Object.assign(TABS, {

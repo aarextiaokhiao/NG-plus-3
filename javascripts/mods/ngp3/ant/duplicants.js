@@ -298,7 +298,7 @@ function setupEmpDimensionHTML() {
 		row.style["font-size"] = "15px"
 		row.innerHTML = `<td id="empD${d}" width="41%"></td>
 		<td id="empAmount${d}"></td>
-		<td><span class="empQuarks" id="empQuarks${d}">0</span> pilons/s</td>
+		<td id="empQuarks${d}"></td>
 		<td width="2.5%"><button id="empFeedMax${d}" style="color:black; width:70px; font-size:10px" class="storebtn" onclick="feedReplicant(${d}, true)">Max</button></td>
 		<td width="7.5%"><button id="empFeed${d}" style="color:black; width:195px; font-size:10px" class="storebtn" onclick="feedReplicant(${d})"></button></td>`
 	}
@@ -306,26 +306,32 @@ function setupEmpDimensionHTML() {
 
 
 function updateEmperorDimensions() {
-	let production = getGatherRate()
-	let mults = {}
+	let production = getGatherRate(), mults = {}
 	let limitDim = quSave.replicants.limitDim
+	let showDetails = !hasBraveMilestone(14)
+
 	el("rgEDs").textContent = shortenDimensions(quSave.gluons.rg)
 	el("gbEDs").textContent = shortenDimensions(quSave.gluons.gb)
 	el("brEDs").textContent = shortenDimensions(quSave.gluons.br)
-	el("replicantAmountED").textContent=shortenDimensions(quSave.replicants.amount)
-	for (var d = 1; d <= 8; d++) mults[d] = getEmperorDimensionMultiplier(d)
+	el("replicantAmountED").textContent = shortenDimensions(quSave.replicants.amount)
+
+	for (var d = 1; d <= limitDim; d++) mults[d] = getEmperorDimensionMultiplier(d)
 	for (var d = 1; d <= 8; d++) {
 		if (d > limitDim) el("empRow" + d).style.display = "none"
 		else {
 			el("empRow" + d).style.display = ""
 			el("empD" + d).textContent = dimNames[d] + " Emperor Dimension x" + formatValue(player.options.notation, mults[d], 2, 1)
 			el("empAmount" + d).textContent = d < limitDim ? shortenDimensions(EDsave[d].workers) + " (+" + shorten(getEmperorDimensionRateOfChange(d)) + dimDescEnd : getFullExpansion(EDsave[limitDim].perm)
-			el("empQuarks" + d).textContent = shorten(production.workers[d])
 			el("empFeed" + d).className = (canFeedReplicant(d) ? "stor" : "unavailabl") + "ebtn"
 			el("empFeed" + d).textContent = hasBraveMilestone(14) ? "Feed" : "Feed (" + (d == limitDim || mults[d + 1].mul(EDsave[d + 1].workers).div(20).lt(1e3) ? Math.round(EDsave[d].progress.toNumber() * 100) + "%, " : "") + getFullExpansion(EDsave[d].perm) + " kept)"
 			el("empFeedMax" + d).className = (canFeedReplicant(d) ? "stor" : "unavailabl") + "ebtn"
+
+			el("empQuarks" + d).style.display = showDetails ? "" : "none"
+			if (showDetails) el("empQuarks" + d).textContent = shorten(production.workers[d]) + "pilons/s"
 		}
 	}
+
+	el("totalAntStats").style.display = showDetails ? "" : "none"
 	el("totalWorkers").textContent = shortenDimensions(tmp.qu.ant.workers)
 	el("totalQuarkProduction").textContent = shorten(production.workersTotal)
 }

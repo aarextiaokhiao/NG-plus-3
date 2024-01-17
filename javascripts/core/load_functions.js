@@ -4,7 +4,6 @@ var prefix = betaId + "ds"
 var savePrefix = prefix + "AM_"
 var presetPrefix = prefix + "AM_ST_"
 var metaSaveId = betaId + "AD_aarexModifications"
-var notifyId = 0
 var forceToQuantumAndRemove = false
 
 function setOptionsIfUndefined(){
@@ -1579,23 +1578,21 @@ function onLoad(noOffline) {
 	if (mod.rs) updateGalaxyControl()
 	poData=meta.save["presetsOrder"+(mod.rs?"_ers":"")]
 
-	el("maxTimeDimensions").style.display=removeMaxTD?"none":""
-	el("metaMaxAll").style.display=removeMaxMD?"none":""
-	var removeMaxTD=false
-	var removeMaxMD=false
+	var removeMaxTD=false, removeMaxMD=false
 	if (hasAch("ngpp17")) {
 		for (d=1;d<9;d++) {
 			if (player.autoEterOptions["td"+d]) if (d>7) removeMaxTD=true
 			else break
 		}
 	}
-	if (speedrunMilestonesReached > 27) {
+	if (speedrunMilestones > 27) {
 		for (d=1;d<9;d++) {
 			if (player.autoEterOptions["md"+d]) if (d>7) removeMaxMD=true
 			else break
 		}
 	}
-	if (mod.ngp3) notifyId = speedrunMilestonesReached
+	el("maxTimeDimensions").style.display=removeMaxTD?"none":""
+	el("metaMaxAll").style.display=removeMaxMD?"none":""
 
 	if (aarMod.offline && !noOffline) {
 		let diff = new Date().getTime() - player.lastUpdate

@@ -205,7 +205,7 @@ function drawBlackhole(ts) {
 function resetBlackhole(full) {
 	let oldSave = player.blackhole
 	player.blackhole = {
-		unl: speedrunMilestonesReached >= 5,
+		unl: speedrunMilestones >= 5,
 		upgrades: { dilatedTime: 0, bankedInfinities: 0, replicanti: 0, total: 0 },
 		power: E(0)
 	}

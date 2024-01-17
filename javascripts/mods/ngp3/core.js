@@ -1,6 +1,6 @@
 //VERSION: 2.31
 let ngp3_ver = 2.31
-let ngp3_build = 20240107
+let ngp3_build = 20240117
 function doNGP3Updates() {
 	if (!aarMod.ngp3_build) aarMod.ngp3_build = 0
 	if (aarMod.ngp3_build < 20221230) quSave.multPower = 0
@@ -60,9 +60,9 @@ function doNGP3Updates() {
 
 //v1.5
 function toggleAutoTT() {
-	if (speedrunMilestonesReached < 2) maxTheorems()
+	if (speedrunMilestones < 2) maxTheorems()
 	else player.autoEterOptions.tt = !player.autoEterOptions.tt
-	el("theoremmax").innerHTML = speedrunMilestonesReached > 2 ? ("Auto max: "+(player.autoEterOptions.tt ? "ON" : "OFF")) : "Buy max Theorems"
+	el("theoremmax").innerHTML = speedrunMilestones > 2 ? ("Auto max: "+(player.autoEterOptions.tt ? "ON" : "OFF")) : "Buy max Theorems"
 }
 
 //v1.8
@@ -70,28 +70,28 @@ const MAX_DIL_UPG_PRIORITIES = [4, 3, 1, 2]
 function doAutoMetaTick() {
 	if (!mod.ngp3) return
 
-	if (player.autoEterOptions.rebuyupg && speedrunMilestonesReached > 6) {
-		if (speedrunMilestonesReached > 25) maxAllDilUpgs()
+	if (player.autoEterOptions.rebuyupg && speedrunMilestones > 6) {
+		if (speedrunMilestones > 25) maxAllDilUpgs()
 		else for (var i = 0; i < MAX_DIL_UPG_PRIORITIES.length; i++) {
 			var id = "r" + MAX_DIL_UPG_PRIORITIES[i]
 			buyDilationUpgrade(id)
 		}
 	}
-	for (var d = 1; d <= 8; d++) if (player.autoEterOptions["md" + d] && speedrunMilestonesReached >= 6 + d) buyMaxMetaDimension(d)
-	if (player.autoEterOptions.metaboost && speedrunMilestonesReached > 14) metaBoost()
+	for (var d = 1; d <= 8; d++) if (player.autoEterOptions["md" + d] && speedrunMilestones >= 6 + d) buyMaxMetaDimension(d)
+	if (player.autoEterOptions.metaboost && speedrunMilestones > 14) metaBoost()
 }
 
 function toggleAllMetaDims() {
 	var turnOn
 	var id = 1
-	var stop = Math.min(speedrunMilestonesReached - 5, 9)
+	var stop = Math.min(speedrunMilestones - 5, 9)
 	while (id < stop&&turnOn === undefined) {
 		if (!player.autoEterOptions["md" + id]) turnOn = true
 		else if (id > stop-2) turnOn = false
 		id++
 	}
 	for (id = 1; id < stop; id++) player.autoEterOptions["md" + id] = turnOn
-	el("metaMaxAll").style.display = turnOn && stop > 7 && speedrunMilestonesReached > 27 ? "none" : ""
+	el("metaMaxAll").style.display = turnOn && stop > 7 && speedrunMilestones > 27 ? "none" : ""
 }
 
 //v1.99799
@@ -149,7 +149,7 @@ function maxAllDilUpgs() {
 
 		let amt = player.dilation.rebuyables[i] || 0
 		let start = Math.floor(getRebuyableDilUpgScaleStart(i))
-		if ((i != 2 || speedrunMilestonesReached >= 22) && amt < start) {
+		if ((i != 2 || speedrunMilestones >= 22) && amt < start) {
 			let cost = getRebuyableDilUpgCost(i)
 			let scale = DIL_UPG_COSTS[id][1]
 			if (player.dilation.dilatedTime.lt(cost)) continue
@@ -296,11 +296,11 @@ function doPerSecondNGP3Stuff(quick) {
 		updateQuarkDisplay()
 		updateNetTop()
 		el('toggleautoquantummode').style.display = quSave?.reachedInfQK ? "" : "none"
-		el('dilationmode').style.display=speedrunMilestonesReached > 4?"":"none"
-		el('rebuyupgmax').style.display=speedrunMilestonesReached < 26?"":"none"
-		el('toggleallmetadims').style.display=speedrunMilestonesReached > 7?"":"none"
-		el('metaboostAuto').style.display=speedrunMilestonesReached > 14?"":"none"
-		el("autoBuyerQuantum").style.display = speedrunMilestonesReached >= 23 ? "" : "none"
+		el('dilationmode').style.display=speedrunMilestones > 4?"":"none"
+		el('rebuyupgmax').style.display=speedrunMilestones < 26?"":"none"
+		el('toggleallmetadims').style.display=speedrunMilestones > 7?"":"none"
+		el('metaboostAuto').style.display=speedrunMilestones > 14?"":"none"
+		el("autoBuyerQuantum").style.display = speedrunMilestones >= 23 ? "" : "none"
 		updateBreakEternity()
 		BL_JOKE.updateHTML()
 	}
@@ -321,8 +321,6 @@ function doPerSecondNGP3Stuff(quick) {
 	doNGP3UnlockStuff()	
 
 	if (quick) return
-	notifyQuantumMilestones()
-
 	updateMasteryStudyTextDisplay()
 	updateAssortOptions()
 	updateQuantumWorth()
@@ -371,8 +369,8 @@ function ngP3AchieveCheck() {
 	if (player.replicanti.amount.log10() >= (mod.udp ? 268435456 : 36e6)) giveAchievement("Will it be enough?")
 	if (player.options.secrets && player.options.secrets.ghostlyNews && !player.options.newsHidden) giveAchievement("Two tickers")
 	if (tmp.qu.chal.pc_comp >= 24) giveAchievement("The Challenging Day")
-	if (speedrunMilestonesReached >= 24) giveAchievement("And the winner is...")
-	if (speedrunMilestonesReached >= 28) giveAchievement("Special Relativity")
+	if (speedrunMilestones >= 24) giveAchievement("And the winner is...")
+	if (speedrunMilestones >= 28) giveAchievement("Special Relativity")
 	if (hasMasteryStudy("d13")) giveAchievement("Do protons decay?")
 	if (quantumed) giveAchievement("Sub-atomic")
 
@@ -469,9 +467,9 @@ function quantumOverallUpdating(diff){
 		brSave.bestGals = Math.max(brSave.bestGals, player.galaxies)
 	}
 	
-	if (speedrunMilestonesReached>5) {
+	if (speedrunMilestones>5) {
 		quSave.metaAutobuyerWait+=diff*10
-		var speed=speedrunMilestonesReached>20?10/3:10
+		var speed=speedrunMilestones>20?10/3:10
 		if (quSave.metaAutobuyerWait>speed) {
 			quSave.metaAutobuyerWait=quSave.metaAutobuyerWait%speed
 			doAutoMetaTick()
@@ -489,7 +487,7 @@ TABS = Object.assign(TABS, {
 	aq: { name: "Anti-Quarks", update: _ => updateQuarksTab() },
 	gl: { name: "Gluons", update: _ => GLUON.update() },
 	pos: { name: "Positrons", unl: _ => hasMasteryStudy("d7") && !inAnyQC(), update: _ => updatePositronsTab() },
-	chal_qu: { name: "Quantum", class: "quantumbtn", unl: _ => hasMasteryStudy("d8") && speedrunMilestonesReached >= 16, update() {
+	chal_qu: { name: "Quantum", class: "quantumbtn", unl: _ => hasMasteryStudy("d8") && speedrunMilestones >= 16, update() {
 		el("qcDisclaimer").innerHTML = (isQCFree() ? "" : "Spend Positrons to start Quantum Challenges.<br>You have " + getFullExpansion(Math.round(quSave.electrons.amount)) + " Positrons.<br>") + "<b class='red'>Positrons are disabled in Quantum Challenges!</b>"
 		for (var c = 1; c <= 8; c++) el("qc" + c + "reward").textContent = QC[c].reward_eff_disp(tmp.qu.chal.reward[c])
 	} },

@@ -39,7 +39,7 @@ function toggleAutoEterMode() {
 	else if (player.autoEterMode == "relativebest" && player.dilation.upgrades.includes("ngpp3") && getEternitied() >= 4e11 && aarMod.newGame3PlusVersion) player.autoEterMode = "replicanti"
 	else if (player.autoEterMode == "replicanti" && getEternitied() >= 1e13) player.autoEterMode = "peak"
 	else if (player.autoEterMode == "peak" && hasAch("ng3p51")) player.autoEterMode = "eternitied"
-	else if ((player.autoEterMode == "peak" || player.autoEterMode == "eternitied") && speedrunMilestonesReached > 24) player.autoEterMode = "manual"
+	else if ((player.autoEterMode == "peak" || player.autoEterMode == "eternitied") && speedrunMilestones > 24) player.autoEterMode = "manual"
 	else if (player.autoEterMode) player.autoEterMode = "amount"
 	updateAutoEterMode()
 }
@@ -68,5 +68,5 @@ function doAutoEterTick() {
 			feedBlackholeMax()
 		}
 	}
-	if (player.autoEterOptions.tt && !player.dilation.upgrades.includes(10) && speedrunMilestonesReached > 1) maxTheorems()
+	if (player.autoEterOptions.tt && !player.dilation.upgrades.includes(10) && speedrunMilestones > 1) maxTheorems()
 }

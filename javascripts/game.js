@@ -1309,7 +1309,7 @@ function gainEternitiedStat() {
 function gainBankedInf() {
 	let ret = 0 
 	let numerator = player.infinitied
-	if (speedrunMilestonesReached > 27 || hasAch("ng3p73")) numerator = nA(getInfinitiedGain(), player.infinitied)
+	if (speedrunMilestones > 27 || hasAch("ng3p73")) numerator = nA(getInfinitiedGain(), player.infinitied)
 	let frac = 0.05
 	if (hasTimeStudy(191)) ret = nM(numerator, frac)
 	if (hasAch("r131")) ret = nA(nM(numerator, frac), ret)
@@ -1440,16 +1440,8 @@ function updateNGpp16Reward(){
 	el('replicantibulkmodetoggle').style.display=hasAch("ngpp16")?"inline-block":"none"
 }
 
-function notifyQuantumMilestones(){
-	if (typeof notifyId == "undefined") notifyId = 24
-	if (speedrunMilestonesReached > notifyId) {
-		$.notify("You have unlocked the "+timeDisplayShort(speedrunMilestones[notifyId + 1]*10)+" speedrun milestone! "+(["You now start with 20,000 eternities when going Quantum","You unlocked the Time Theorem autobuyer","You now start with all Eternity Challenges completed and\nEternity Upgrades bought","You now start with Dilation unlocked","You unlocked the Dilation option for the Eternity autobuyer","You now start with all dilation studies and\nnon-rebuyable dilation upgrades before Meta Dimensions unlocked, except the passive TT gen upgrade","You unlocked the First Meta Dimension autobuyer","You unlocked the Second Meta Dimension autobuyer","You unlocked the Third Meta Dimension autobuyer","You unlocked the Fourth Meta Dimension autobuyer","You unlocked the Fifth Meta Dimension autobuyer, and you now keep Time Studies","You unlocked the Sixth Meta Dimension autobuyer","You unlocked the Seventh Meta Dimension autobuyer","You unlocked Eighth Meta Dimension autobuyer, and\nall non-rebuyable dilation upgrades","You unlocked the Meta-Dimension Boost autobuyer","You now keep your Mastery Studies","All Meta Dimensions are instantly available for purchase on Quantum","You now start with "+shortenCosts(1e13)+" eternities","You now start with "+shortenCosts(1e25)+" meta-antimatter on reset","You can now turn on automatic Replicated Galaxies regardless of your second Time Study split path","Rebuyable Dilation upgrade and Meta Dimension autobuyers are 3x faster","You now start with "+shortenCosts(1e100)+" dilated time on Quantum, and dilated time only resets on Quantum","You unlocked the Quantum autobuyer","You now keep your Replicanti on Eternity","You unlocked the manual mode for the Eternity autobuyer and got the sacrifice galaxy autobuyer","Your rebuyable dilation upgrade autobuyer can now buy the maximum upgrades possible","You now can buy max Meta-Dimension Boosts and start with 4 Meta-Dimension Boosts","From now on, you can gain banked infinities based on your post-crunch infinitied stat"])[notifyId]+".","success")
-		notifyId++
-	}
-}
-
 function dilationStuffABTick(){
-	el('rebuyupgAuto').style.display = speedrunMilestonesReached>6?"":"none"
+	el('rebuyupgAuto').style.display = speedrunMilestones>6?"":"none"
 	el('dilUpgsAuto').style.display = hasAch("ngpp13") && mod.udsp ? "" : "none"
 	el('distribEx').style.display = hasAch("ngud14") ? "" : "none"
 	if (player?.autoEterOptions?.dilUpgs) autoBuyDilUpgs()
@@ -2109,7 +2101,7 @@ function TTpassiveGain(diff){
 }
 
 function thisQuantumTimeUpdating(){
-	setAndMaybeShow("quantumClock", (quSave.times >= 2 || ghostified) && speedrunMilestonesReached < 28, '"Quantum time: <b class=\'QKAmount\'>"+timeDisplayShort(quSave.time)+"</b>"')
+	setAndMaybeShow("quantumClock", (quSave.times >= 2 || ghostified) && speedrunMilestones < 28, '"Quantum time: <b class=\'QKAmount\'>"+timeDisplayShort(quSave.time)+"</b>"')
 }
 
 function fixInfinityTimes(){
@@ -2513,7 +2505,7 @@ function dimBoostABTick(){
 
 var timer = 0
 function autoBuyerTick() {
-	if (mod.ngp3 && speedrunMilestonesReached>22&&quSave.autobuyer.enabled&&!bigRipped()) autoQuantumABTick()
+	if (mod.ngp3 && speedrunMilestones>22&&quSave.autobuyer.enabled&&!bigRipped()) autoQuantumABTick()
 	
 	if (getEternitied() >= 100 && isEterBuyerOn()) autoEternityABTick()
 
@@ -2741,7 +2733,7 @@ window.addEventListener('keydown', function(event) {
 				var maxmeta=true
 				for (d = 1; d < 9; d++) {
 					if (player.autoEterOptions["meta" + d]) {
-						if (d > 7 && speedrunMilestonesReached < 28) maxmeta = false
+						if (d > 7 && speedrunMilestones < 28) maxmeta = false
 					} else break
 				}
 				if (maxmeta) el("metaMaxAll").onclick()
