@@ -250,7 +250,7 @@ const MTS = MASTERY_STUDIES = {
 		402: "Emperor Dimensions and hatch speed are 30x faster.",
 		411: "Duplicants boost Nanoenergy.",
 		412: "Further reduce the softcap of pilon boost.",
-		421: "Tickspeed boosts nanocharge.",
+		421: "Tickspeed boosts Nanocharge.",
 		431: "Tachyonic Galaxies speed up Branches."
 	},
 	hasStudyEffect: [251, 252, 253, 262, 263, 264, 273, 281, 282, 301, 303, 322, 332, 341, 344, 351, 361, 371, 372, 373, 381, 382, 383, 391, 392, 393, 401, 411, 421, 431],
