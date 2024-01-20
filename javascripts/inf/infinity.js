@@ -345,7 +345,7 @@ function startChallenge(name) {
 		if (player.postChallUnlocked < checkICID(name)) return
 		var target = getGoal(name)
 	} else var target = E(Number.MAX_VALUE)
-	if (player.options.challConf && name != "") if (!confirm("You will start over with just your Infinity upgrades, and achievements. You need to reach " + (name.includes("post") ? "a set goal" : "infinity") + " with special conditions. The 4th Infinity upgrade column doesn't work on challenges.")) return
+	if (player.options.challConf && name != "") if (!confirm("You will start over with just your Infinity upgrades, statistics, and achievements. You need to reach " + (name.includes("post") ? "a set goal" : "Infinity") + " with special conditions. The 4th Infinity upgrade column doesn't work on challenges.")) return
 	if (inNGM(3)) player.tickspeedBoosts = 0
 	if (name == "postc1" && player.currentEternityChall != "" && inQC(4) && inQC(6)) giveAchievement("The Ultimate Challenge")
 
