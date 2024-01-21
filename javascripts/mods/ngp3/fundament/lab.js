@@ -248,6 +248,11 @@ const BL_HYPOTHESES = {
 			power: 2,
 			sym: "φ",
 			unl: _ => blSave.best_bosons.gte(1e3),
+		}, {
+			name: "Fundament",
+			power: 2,
+			sym: "?",
+			unl: _ => false,
 		}
 	],
 
@@ -302,6 +307,22 @@ const BL_HYPOTHESES = {
 		["2;3"]: {
 			eff: x => x,
 			disp: e => `On 2 bonds, double Z0 Bosons. <b>(${e}/2)</b>`,
+		},
+		["0;4"]: {
+			eff: x => x,
+			disp: e => `Placeholder.`,
+		},
+		["1;4"]: {
+			eff: x => x,
+			disp: e => `Placeholder.`,
+		},
+		["2;4"]: {
+			eff: x => x,
+			disp: e => `Placeholder.`,
+		},
+		["3;4"]: {
+			eff: x => x,
+			disp: e => `Placeholder.`,
 		}
 	},
 
