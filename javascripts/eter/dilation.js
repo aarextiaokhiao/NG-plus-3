@@ -444,7 +444,6 @@ function resetDilationGalaxies() {
 function getDilGalPower() {
 	let r = 1
 	if (hasMasteryStudy("t343")) r *= tmp.rep.gal_str
-	//if (hasNB(12)) r = Math.pow(r, 1 - NT.eff("boost", 12, 0))
 	return r * Math.floor(player.dilation.freeGalaxies)
 }
 

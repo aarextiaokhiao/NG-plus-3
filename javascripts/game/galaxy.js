@@ -183,7 +183,6 @@ function getGalaxyEff(bi) {
 		if (hasGluonUpg("rg", 2)) eff *= gluonEff("rg", 2)
 		if (hasGluonUpg("rg", 4)) eff *= 1.5
 		if (tmp.qu.be) eff *= 0.4
-		//if (hasNB(12)) eff *= Math.pow(tmp.rep.gal_str, NT.eff("boost", 12, 0))
 	}
 	return eff
 }
