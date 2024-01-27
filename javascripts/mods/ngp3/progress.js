@@ -198,8 +198,7 @@ function updateNGP3Progress() {
 }
 
 function doNGP3ProgressBar() {
-	let names = Object.keys(NGP3_FEATURES)
-	let data = Object.values(NGP3_FEATURES)
+	let names = Object.keys(NGP3_FEATURES), data = Object.values(NGP3_FEATURES)
 
 	if (NGP3_FEATURE_LEN == tmp.progress.reached - 1) {
 		el("progressbar").style.width = "100%"
