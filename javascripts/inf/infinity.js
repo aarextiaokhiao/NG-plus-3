@@ -319,19 +319,15 @@ function updateChallenges() {
 	}
 
 	el("challenge7").parentElement.parentElement.style.display = player.infinitied < 1 && player.eternities < 1 && !quantumed ? "none" : ""
-	if (inQC(4)) {
-		el("challenge7").className = "onchallengebtn";
-		el("challenge7").textContent = "Trapped in"
-	}
 
-	if (isIC3Trapped()) {
-		el("postc3").className = "onchallengebtn";
-		el("postc3").textContent = "Trapped in"
-	}
+	let traps = []
+	if (inQC(4)) traps.push("challenge7")
+	if (isIC3Trapped()) traps.push("postc3")
+	if (inQC(6)) traps.push("postc7")
 
-	if (inQC(6)) {
-		el("postc7").className = "onchallengebtn";
-		el("postc7").textContent = "Trapped in"
+	for (let trap of traps) {
+		el(trap).className = "onchallengebtn";
+		el(trap).textContent = "Trapped in"
 	}
 
 	for (c=0;c<order.length;c++) el(order[c]).parentElement.parentElement.style.display=player.postChallUnlocked<c+1?"none":""
