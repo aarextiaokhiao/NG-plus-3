@@ -472,8 +472,8 @@ let RESETS = {
 		}
 	}
 }
-let RESET_ORDER, RESET_INDEX
 
+let RESET_ORDER, RESET_INDEX
 function setupResetData() {
 	RESET_ORDER = Object.keys(RESETS)
 	RESET_INDEX = {}
