@@ -720,7 +720,7 @@ function hasGSacUpg(x) {
 function updateNGM2RewardDisplay(){
 	el("postcngmm_1reward").innerHTML = "Reward: Infinity upgrades based on time " + (inNGM(4) ? "" : "or Infinities ") + "are applied post-dilation, and make the GP formula better based on galaxies."
 	el("postcngm3_1description").innerHTML = "Multiplier per ten Dimensions is 1x, Dimension Boosts have no effect," + (inNGM(4) ? " have a much lower Time Dimension cost limit," : "") + " and Tickspeed Boost effect softcap starts immediately."
-	el("postcngm3_1reward").innerHTML = "Reward: Tickspeed boost effect softcap is softer" + (inNGM(4) ? ", remote galaxy scaling starts 0.5 galaxies later and triple GP per IC completion" : "") + "."
+	el("postcngm3_1reward").innerHTML = "Reward: Weaken tickspeed boost softcap" + (inNGM(4) ? ", Remote Galaxies scale 0.5 galaxies later, and triple GP per IC completion" : "") + "."
 }
 
 function displayGalSacStats(){
