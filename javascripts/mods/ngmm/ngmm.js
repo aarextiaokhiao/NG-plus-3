@@ -748,10 +748,9 @@ function galSacBtnUpdating(){
 			el("sacrificebtn").style.display = ""
 			var currentGPmin = getGSAmount().dividedBy(player.galacticSacrifice.time / 600)
 			if (currentGPmin.gt(GPminpeak)) GPminpeak = currentGPmin
-			var notationOkay = (GPminpeak.gt("1e300000") && player.options.theme != "Aarex's Modifications") || player.options.notation == "Morse code" || player.options.notation == 'Spazzy'
-			var notation2okay = (GPminpeak.gt("1e3000") && player.options.theme != "Aarex's Modifications") || player.options.notation == "Morse code" || player.options.notation == 'Spazzy'
-			el("sacrificebtn").innerHTML = (notationOkay ? "Gain " : "Galactic Sacrifice for ") + shortenDimensions(getGSAmount()) + " Galaxy points." +
-				(notation2okay ? "" : "<br>" + shortenMoney(currentGPmin) + " GP/min" + "<br>Peaked at " + shortenMoney(GPminpeak) + " GP/min")
+
+			el("sacrificebtn").innerHTML = (GPminpeak.gt("1e3000") ? "Gain " : "Galactic Sacrifice for ") + shortenDimensions(getGSAmount()) + " Galaxy points." +
+				(GPminpeak.gt("1e3000") ? "" : "<br>" + shortenMoney(currentGPmin) + " GP/min" + "<br>Peaked at " + shortenMoney(GPminpeak) + " GP/min")
 		} else el("gSacrifice").className = "unavailablebtn"
 	}
 }
