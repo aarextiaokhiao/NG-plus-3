@@ -599,6 +599,7 @@ function updateNewPlayer(mode, preset) {
 			eternityconfirm: true,
 			commas: "Commas",
 			updateRate: 50,
+			tabAmount: true,
 			animations: {
 				floatingText: true,
 				bigCrunch: true,
