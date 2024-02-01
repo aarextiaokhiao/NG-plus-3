@@ -692,8 +692,8 @@ function drawMasteryBranch(id1, id2) {
 
 function drawMasteryTree() {
 	msctx.clearRect(0, 0, msc.width, msc.height);
-	if (player === undefined) return
 	if (!isTabShown("ts_master")) return
+
 	drawMasteryBranch("back", "timestudy241")
 	for (let id of MTS.unlocked) {
 		let paths = getMasteryStudyConnections(id)
