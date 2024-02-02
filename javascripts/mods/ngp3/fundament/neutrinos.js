@@ -119,7 +119,7 @@ const NEUTRINO = NT = {
 			}, {
 				cost: E(15),
 				eff: nt => Math.min(nt / 33, 1),
-				effDesc: e => `Red power softcap is <b>${shortenMoney(e*100)}%</b> weaker.`,
+				effDesc: e => `Red power softcaps <b>${shortenMoney(e*100)}%</b> weaker.`,
 			}, {
 				cost: E(50),
 				exp_eff: 2,
