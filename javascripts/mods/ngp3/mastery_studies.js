@@ -84,15 +84,9 @@ const MTS = MASTERY_STUDIES = {
 	},
 	types: {t: "time", ec: "ec", d: "dil"},
 	timeStudyEffects: {
-		251() {
-			return Math.floor(player.resets / 3e3)
-		},
-		252() {
-			return Math.floor(player.dilation.freeGalaxies / 7)
-		},
-		253() {
-			return Math.floor(getTotalRG() / 4)
-		},
+		251: () => Math.floor(player.resets / 3e3),
+		252: () => Math.floor(player.dilation.freeGalaxies / 7),
+		253: () => Math.floor(getTotalRG() / 4),
 		262() {
 			let r = Math.max(player.resets / 5e4 - 10, 1)
 
@@ -115,27 +109,19 @@ const MTS = MASTERY_STUDIES = {
 			if (uses.includes("intensity")) return intensity
 			return Decimal.max(Math.log10(player.replicanti.chance + 1), 1).pow(intensity)
 		},
-		281() {
-			return pow10(Math.pow(E(tmp.rep?.eff || 1).max(1).log10(), 0.25) / 10 * (mod.p3ep ? 2 : 1))
-		},
-		282() {
-			return pow10(Math.pow(E(tmp.rep?.eff || 1).max(1).log10(), 0.25) / 15 * (mod.p3ep ? 2 : 1))
-		},
+		281: () => pow10(Math.pow(E(tmp.rep?.eff || 1).max(1).log10(), 0.25) / 10 * (mod.p3ep ? 2 : 1)),
+		282: () => pow10(Math.pow(E(tmp.rep?.eff || 1).max(1).log10(), 0.25) / 15 * (mod.p3ep ? 2 : 1)),
 		301() {
 			if (hasNU(6)) return 0
 			return Math.floor(tmp.rep.extra / 4.15)
 		},
-		303() {
-			return E_pow(4.7, Math.pow(Math.log10(Math.max(player.galaxies, 1)), 1.5))
-		},
+		303: () => E_pow(4.7, Math.pow(Math.log10(Math.max(player.galaxies, 1)), 1.5)),
 		322() {
 			let log = Math.sqrt(Math.max(3 - getTickspeed().log10(), 0)) / 2e4
 			if (log > 110) log = Math.sqrt(log * 27.5) + 55
 			return pow10(log)
 		},
-		332() {
-			return Math.max(player.galaxies, 1)
-		},
+		332: () => Math.max(player.galaxies, 1),
 		341() {
 			var exp = Math.sqrt(quSave.replicants.quarks.add(1).log10())
 			return E_pow(mod.p3ep ? 3 : 2, exp)
@@ -150,33 +136,15 @@ const MTS = MASTERY_STUDIES = {
 			if (log > 1e3) log = Math.sqrt(log * 1e3)
 			return E_pow(mod.p3ep ? 12 : 10, log)
 		},
-		361() {
-			return player.dilation.tachyonParticles.max(1).pow(0.015)
-		},
-		371() {
-			return Math.pow(tmp.rep.extra+1,mod.p3ep?.5:.3)
-		},
-		372() {
-			return Math.sqrt(player.timeShards.add(1).log10())/20+1
-		},
-		373() {
-			return Math.pow(player.galaxies+1,0.55)
-		},
-		381() {
-			return Decimal.min(tmp.gal.ts, 1).log10() / -135 + 1
-		},
-		382() {
-			return player.eightAmount.max(1).pow(Math.PI)
-		},
-		383() {
-			return E(tmp.qu.color_eff.b || 1).max(1).pow(.5)
-		},
-		391() {
-			return player.meta.antimatter.max(1).pow(8e-4)
-		},
-		392() {
-			return E_pow(mod.p3ep ? 1.7 : 1.6, Math.sqrt(quSave.replicants.quarks.add(1).log10())).add(1)
-		},
+		361: () => player.dilation.tachyonParticles.max(1).pow(0.015),
+		371: () =>  Math.pow(tmp.rep.extra+1,mod.p3ep?.5:.3),
+		372: () => Math.sqrt(player.timeShards.add(1).log10())/20+1,
+		373: () => Math.pow(player.galaxies+1,0.55),
+		381: () => Decimal.min(tmp.gal.ts, 1).log10() / -135 + 1,
+		382: () => player.eightAmount.max(1).pow(Math.PI),
+		383: () => E(tmp.qu.color_eff.b || 1).max(1).pow(.5),
+		391: () => player.meta.antimatter.max(1).pow(8e-4),
+		392: () =>  E_pow(mod.p3ep ? 1.7 : 1.6, Math.sqrt(quSave.replicants.quarks.add(1).log10())).add(1),
 		393() {
 			if (!tmp.qu.ant.workers) return E(1)
 			return E_pow(4e5, Math.sqrt(tmp.qu.ant.workers.add(1).log10()))
@@ -191,10 +159,7 @@ const MTS = MASTERY_STUDIES = {
 			if (mod.p3ep) exp += Math.pow((exp + 9) * 3, .2) * Math.log10(exp + 1)
 			return pow10(exp)
 		},
-		421() {
-			let ret = pow10(Math.pow(-getTickspeed().log10() / 1e13 + 1, 1/3) - 1)
-			return ret
-		},
+		421: () => pow10(Math.pow(-getTickspeed().log10() / 1e13 + 1, 1/3) - 1),
 		431() {
 			var gals = player.dilation.freeGalaxies
 			var base = Math.max(gals / 5e3 - 1, 1)
