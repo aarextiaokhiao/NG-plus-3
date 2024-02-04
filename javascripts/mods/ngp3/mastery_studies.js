@@ -144,7 +144,7 @@ const MTS = MASTERY_STUDIES = {
 		382: () => player.eightAmount.max(1).pow(Math.PI),
 		383: () => E(tmp.qu.color_eff.b || 1).max(1).pow(.5),
 		391: () => player.meta.antimatter.max(1).pow(8e-4),
-		392: () =>  E_pow(mod.p3ep ? 1.7 : 1.6, Math.sqrt(quSave.replicants.quarks.add(1).log10())).add(1),
+		392: () => E_pow(mod.p3ep ? 1.7 : 1.6, Math.sqrt(quSave.replicants.quarks.add(1).log10())).add(1),
 		393() {
 			if (!tmp.qu.ant.workers) return E(1)
 			return E_pow(4e5, Math.sqrt(tmp.qu.ant.workers.add(1).log10()))
