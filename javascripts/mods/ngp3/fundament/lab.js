@@ -129,12 +129,12 @@ const BOSONIC_LAB = LAB = {
 			effDesc: e => "+" + shorten(e)
 		}, {
 			req: E(1.5e6),
-			desc: "Scaling Remote Galaxies later also scales Distant Galaxies.",
+			desc: "Scaling Remote Galaxies also scales Distant Galaxies.",
 			eff: b => getRemoteScalingStart() / 100,
 			effDesc: e => "+" + shortenDimensions(e),
 		}, {
 			req: E(2e6),
-			desc: "Galaxy strength raises Replicated Galaxy bonus to replicantis.",
+			desc: "Galaxy strength raises Replicated Galaxy bonus to Replicantis.",
 			eff: b => Math.max(tmp.gal.str / 3, 1),
 			effDesc: e => "^" + shorten(e)
 		}, {
