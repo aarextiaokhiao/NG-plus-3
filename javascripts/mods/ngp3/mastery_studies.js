@@ -190,7 +190,7 @@ const MTS = MASTERY_STUDIES = {
 		303: "Galaxies strengthen Meta Dimensions.",
 		311: "Replicanti boost to all Infinity Dimensions is 17.3x stronger.",
 		312: "Meta-dimension boosts are 4.5% stronger and cost scale by 1 less.",
-		321: () => `Buff multiplier per 10 normal Dimensions to ${shortenCosts(E("1e430"))} if it is 1x.`,
+		321: () => `Increase multiplier per 10 normal Dimensions to ${shortenCosts(E("1e430"))} if it is 1x.`,
 		322: "Tickspeed boosts Dilated Time.",
 		323: "Cancel dilation penalty for the Normal Dimension boost from replicanti.",
 		331: "Dimension Supersonic scales 240,000 later, and the cost increase is reduced by 3.",
