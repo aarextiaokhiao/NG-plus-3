@@ -134,7 +134,7 @@ const REDISCOVER = {
 		}
 
 		el("rediscover_btn").innerHTML = "<p style='font-size: 20px'>Rediscover</p>" + (segData ? `(${segData.to})` : "(Redo a NG+3 segment)")
-		el("rediscover_info").textContent = segData ? `Ongoing Rediscovery! (${segData.to}) Click 'Continue' to continue.` : "Click a segment to start a Rediscovery."
+		el("rediscover_info").textContent = segData ? `Ongoing Rediscovery! (${segData.to}) Click 'Continue' to continue.` : "Select one to speedrun."
 		el('rediscover_options').style.display = segData ? "" : "none"
 		el('rediscover_stats').innerHTML = this.in() ? `Goal: ${segData.to}<br>${timeDisplayShort(player.totalTimePlayed)}` : ``
 	}
