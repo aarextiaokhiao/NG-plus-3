@@ -34,8 +34,8 @@ function setupInfUpgHTMLandData(){
 			col.innerHTML = "<button id='infi" + (c * 10 + r) + "' class='infinistorebtn" + c + "'></button>"
 		}
 	}
-	el("infi14").innerHTML = "Decrease the number of Dimensions needed for Dimension Boosts and Galaxies by 9<br>Cost: 1 IP"
-	el("infi24").innerHTML = "Antimatter Galaxies are twice as effective<br>Cost: 2 IP"
+	el("infi14").innerHTML = "Dimension Boosts and Galaxies require 9 less<br>Cost: 1 IP"
+	el("infi24").innerHTML = "Galaxies are 2x stronger<br>Cost: 2 IP"
 	el("infi11").onclick = function () {
 		buyInfinityUpgrade("timeMult", 1);
 	}
