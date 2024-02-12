@@ -196,12 +196,11 @@ function buyTimeDimension(tier, am) {
 	dim.amount = dim.amount.add(1);
 	dim.bought += 1
 	if (inNGM(4)) {
-		dim.cost = dim.cost.mul(timeDimCostMults[1][tier])
 		if (inNC(2) || player.currentChallenge == "postc1") player.chall2Pow = 0
 	} else {
 		dim.power = dim.power.mul(mod.rs ? 3 : 2)
-		dim.cost = timeDimCost(tier, dim.bought)
 	}
+	dim.cost = timeDimCost(tier, dim.bought)
 	return true
 }
 
@@ -264,11 +263,10 @@ function buyMaxTimeDimension(tier, bulk) {
 	dim.bought += toBuy
 	if (inNGM(4)) {
 		dim.power = E(getDimensionPowerMultiplier()).sqrt().mul(dim.power)
-		dim.cost = dim.cost.mul(E_pow(timeDimCostMults[1][tier], toBuy))
 	} else {
-		dim.cost = timeDimCost(tier, dim.bought)
 		dim.power = dim.power.mul(E_pow(mod.rs ? 3 : 2, toBuy))
 	}
+	dim.cost = timeDimCost(tier, dim.bought)
 }
 
 function buyMaxTimeDimensions() {
