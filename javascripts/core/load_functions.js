@@ -1520,6 +1520,8 @@ function onLoad(noOffline) {
 
 	tmp.tickUpdate = true
 	updateCheckBoxes()
+	toggleTabAmount()
+	toggleTabAmount()
 	toggleChallengeRetry()
 	toggleChallengeRetry()
 	toggleBulk()
