@@ -23,7 +23,7 @@ function resetNGM4TDs() {
 	completelyResetTimeDimensions()
 	for (var d = 1; d <= 8; d++) {
 		var dim = player["timeDimension" + d]
-		dim.cost = E(timeDimStartCosts[1][d])
+		dim.cost = E(getTimeDimStartCost(d))
 		dim.power = E(power).pow((player.tdBoosts - d + 1) / 2).max(1)
 	}
 	player.timeShards = E(0)

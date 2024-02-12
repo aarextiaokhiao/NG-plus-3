@@ -160,12 +160,20 @@ function updateTimeShards() {
 var timeDimCostMults = [[null, 3, 9, 27, 81, 243, 729, 2187, 6561], [null, 1.5, 2, 3, 20, 150, 1e5, 3e6, 1e8]]
 var timeDimStartCosts = [[null, 1, 5, 100, 1000, "1e2350", "1e2650", "1e3000", "1e3350"], [null, 10, 20, 40, 80, 160, 1e8, 1e12, 1e18]]
 
+function getTimeDimCostMult(tier) {
+	return inNGM(4) ? timeDimCostMults[1][tier] : timeDimCostMults[0][tier]
+}
+
+function getTimeDimStartCost(tier) {
+	return inNGM(4) ? timeDimStartCosts[1][tier] : timeDimStartCosts[0][tier]
+}
+
 function timeDimCost(tier, bought) {
-	var cost = E_pow(timeDimCostMults[0][tier], bought).mul(timeDimStartCosts[0][tier])
+	var cost = E_pow(getTimeDimCostMult(tier), bought).mul(getTimeDimStartCost(tier))
 	if (inNGM(2)) return cost
-	if (cost.gte(Number.MAX_VALUE)) cost = E_pow(timeDimCostMults[0][tier]*1.5, bought).mul(timeDimStartCosts[0][tier])
-	if (cost.gte("1e1300")) cost = E_pow(timeDimCostMults[0][tier]*2.2, bought).mul(timeDimStartCosts[0][tier])
-	if (tier > 4) cost = E_pow(timeDimCostMults[0][tier]*100, bought).mul(timeDimStartCosts[0][tier])
+	if (cost.gte(Number.MAX_VALUE)) cost = E_pow(getTimeDimCostMult(tier)*1.5, bought).mul(getTimeDimStartCost(tier))
+	if (cost.gte("1e1300")) cost = E_pow(getTimeDimCostMult(tier)*2.2, bought).mul(getTimeDimStartCost(tier))
+	if (tier > 4) cost = E_pow(getTimeDimCostMult(tier)*100, bought).mul(getTimeDimStartCost(tier))
 	if (cost.gte(tier > 4 ? "1e300000" : "1e20000")) {
 		// rather than fixed cost scaling as before, quadratic cost scaling
 		// to avoid exponential growth
