@@ -183,9 +183,6 @@ el("theme").onclick = function () {
 
 
 function updateMoney() {
-	let abbs = modAbbs(mod, true)
-	if (player.options.tabAmount)
-		el("z").textContent = (abbs.length > 8 ? "" : "AD: ") + abbs + " | " + shortenMoney(player.money) + (player.money.e >= 1e6 ? "" : " antimatter")
 	el("coinAmount").textContent = formatQuick(player.money, 2, inNGM(3) ? Math.min(Math.max(3 - player.money.e, 0), 3) : 2)
 
 	var element2 = el("matter");
@@ -299,8 +296,6 @@ function toggleChallengeRetry() {
 function toggleTabAmount() {
 	player.options.tabAmount = !player.options.tabAmount
 	el("tabAmount").textContent = "Show Antimatter amount in tab title: O" + (player.options.tabAmount ? "N" : "FF")
-	let abbs = modAbbs(mod, true)
-	if (!player.options.tabAmount) el("z").textContent = (abbs.length > 8 ? "" : "AD: ") + abbs
 }
 
 el("news").onclick = function () {
@@ -2189,6 +2184,10 @@ function gameLoop(diff, quick) {
 }
 
 function updateDisplays() {
+	//Tab Title
+	let abbs = modAbbs(mod, true)
+	el("z").textContent = (abbs.length > 8 ? "" : "AD: ") + abbs + (player.options.tabAmount ? " | " + shortenMoney(player.money) + (player.money.e >= 1e6 ? "" : " antimatter") : "")
+
 	//Display
 	chall23PowerUpdating()
 	updateMoney()
