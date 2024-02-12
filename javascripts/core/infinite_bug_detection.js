@@ -16,7 +16,7 @@ function isInfiniteDetected() { // todo: make better infinite detection system
 		reload()
 		infiniteDetected = false
 		if (el("welcome").style.display != "flex") el("welcome").style.display = "flex"
-		// below may be controversial
+		// below IS controversial
 		if (infiniteCheck2) el("welcomeMessage").innerHTML = "I'm terribly sorry, but there has been a strong presence of an Infinite bug detected within your save file, which is why said save file will get reset. Luckily, you can export your save before this reset. Thanks! :)"
 		else {
 			el("welcomeMessage").innerHTML = "I'm sorry, but you got an Infinite bug. Because of this, your save is reverted to your last saved progress. It is recommended to post how did you got this bug. Thanks! :)"

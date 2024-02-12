@@ -293,6 +293,7 @@ let RESETS = {
 			player.epmultCost = E(5)
 
 			this.resetEC()
+			
 			this.resetDil(order)
 			if (mod.ngud) this.resetNGUd()
 			this.resetMeta(order, qc)
@@ -429,7 +430,21 @@ let RESETS = {
 			beSave.eternalMatter = E(0)
 			beSave.epMultPower = 0
 		},
-
+		doTOUSOnGhostify(bm){
+			if (hasAch("ng3p77")) { //thry of ultimate studies
+				player.timestudy.studies=[]
+				player.masterystudies=[]
+				for (var t = 0; t < all.length; t++) player.timestudy.studies.push(all[t])
+				for (var c = 1; c <= 14; c++) player.eternityChalls["eterc" + c] = 5
+				for (var t = 0; t < masteryStudies.timeStudies.length; t++) player.masterystudies.push("t" + masteryStudies.timeStudies[t])
+				for (var d = 1; d < 7; d++) player.dilation.studies.push(d)
+				for (var d = 7; d < 15; d++) player.masterystudies.push("d" + d)
+				if (bm < 2) {
+					player.dimensionMultDecrease = 2
+					player.tickSpeedMultDecrease = 1.65
+				}
+			}
+		},
 		doReset() {
 			let bm = braveMilestones
 
@@ -439,9 +454,13 @@ let RESETS = {
 			player.dilation.bestTP = E(0)
 			player.meta.bestOverQuantums = E(0)
 			if (bm < 3) {
-				var keepMS = []
-				for (var i of player.masterystudies) if (i[0] != "d") keepMS.push(i)
-				player.masterystudies = keepMS
+				if (hasAch("ng3p77") && aarMod.toggleTOUS == true) {
+					doTOUSOnGhostify(bm)
+				} else {
+					var keepMS = []
+					for (var i of player.masterystudies) if (i[0] != "d") keepMS.push(i)
+					player.masterystudies = keepMS
+				}
 			}
 
 			this.resetQuantums(bm)

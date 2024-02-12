@@ -86,7 +86,7 @@ const NGP3_FEATURES = {
 		name: "Big Rip",
 		tab() {
 			el("welcome").style.display = "flex"
-			el("welcomeMessage").innerHTML = "<h1>Checkpoint reached!</h1><br>Welcome to NG+4, originally by Soul147! Many features remain for you..."
+			el("welcomeMessage").innerHTML = "Welcome to NG+4, made by Soul147! This mod doesn't do much other than start you with features up to Big Rip."
 		},
 
 		met: _ => hasMasteryStudy("d14"),

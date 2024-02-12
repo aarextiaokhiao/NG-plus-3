@@ -154,7 +154,7 @@ function updateTimeShards() {
 	el("timeShardAmount").textContent = shortenMoney(player.timeShards)
 	el("tickThreshold").textContent = shortenMoney(player.tickThreshold)
 	if (player.currentEternityChall == "eterc7") el("timeShardsPerSec").textContent = "You are getting " + shortenDimensions(p) + " Eighth Infinity Dimensions per second."
-	else el("timeShardsPerSec").textContent = "You are getting " + shortenDimensions(p) + " Time Shards per second."
+	else el("timeShardsPerSec").textContent = "You are getting " + formatQuick(p, 2, inNGM(4) ? Math.min(Math.max(3 - p.e, 1), 3) : 0) + " Time Shards per second."
 }
 
 var timeDimCostMults = [[null, 3, 9, 27, 81, 243, 729, 2187, 6561], [null, 1.5, 2, 3, 20, 150, 1e5, 3e6, 1e8]]

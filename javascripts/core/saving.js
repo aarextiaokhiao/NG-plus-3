@@ -894,6 +894,8 @@ function doNGPlusThreeNewPlayer() {
 		upgrades: [],
 		epMultPower: 0
 	}
+
+	aarMod.toggleTOUS = true
 	aarMod.ghostifyConf = true
 }
 

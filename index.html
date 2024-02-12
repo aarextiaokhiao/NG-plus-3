@@ -18,7 +18,7 @@
 		<button class="storebtn" style="font-size: 15px" onclick="import_save()">Import</button><br>
 		<button class="storebtn" style="font-size: 15px" onclick="load_saves()">Load</button>
 		<button class="storebtn" style="font-size: 15px" onclick="reset_game()">Reset</button><br>
-		You may want to check the console for errors (press F12 to view them). If there are any errors, the game won't load. Please hard reload (Ctrl+F5) if a new patch appears.
+		An error may have been outputted in the console (press F12 to view them). If there are any errors, the game won't load. Please hard reload (Ctrl+F5) if a new patch appears.
 	</div>
 	<script type="text/javascript" src="javascripts/stuck.js"></script>
 
@@ -113,17 +113,17 @@
 					<tr id="dimReset" style="font-size: 15px">
 						<td id="resetLabel"></td>
 						<td>
-							<button id="softReset" style="color:black; width: 200px; height: 25px; font-size: 9px" class="storebtn">Reset the game for a new Dimension</button>
+							<button id="softReset" style="color:black; width: 200px; height: 35px; font-size: 9px" class="storebtn">Reset Antimatter and Dimensions for a new Dimension</button>
 						</td>
 					</tr><tr id="tickReset" style="font-size: 15px">
 						<td id="tickResetLabel"></td>
 						<td>
-							<button id="tickResetBtn" style="color:black; width: 200px; height: 35px; font-size: 9px" class="storebtn" onclick="manualTickspeedBoost()">Lose dimension boosts for better tickspeed multiplier</button>
+							<button id="tickResetBtn" style="color:black; width: 200px; height: 35px; font-size: 9px" class="storebtn" onclick="manualTickspeedBoost()">Reset Dimension Boosts for a better tickspeed multiplier</button>
 						</td>
 					</tr><tr style="font-size: 15px">
 						<td id="secondResetLabel"></td>
 						<td>
-							<button id="secondSoftReset" style="color:black; width: 200px; height: 35px; font-size: 9px" class="storebtn">Lose Dimension Boosts for a tickspeed boost</button>
+							<button id="secondSoftReset" style="color:black; width: 200px; height: 35px; font-size: 9px" class="storebtn">Reset Dimension Boosts for a tickspeed boost</button>
 						</td>
 					</tr><tr style="font-size: 15px">
 						<td id="intergalacticLabel" colspan=2></td>
@@ -459,6 +459,9 @@
 			<div id="tab_ach_n">
 				<div id="achmultlabel" style="font-size: 140%">Current achievement multiplier on each Dimension: 1x</div>
 				<div id="metaAchMultLabel" style="font-size: 140%">Achievement multiplier to Meta Dimensions: 1x</div>
+				<div id="tousToggleDiv">
+					<button id="toggleUltimateStudyReward" class="storebtn" onclick="toggleTOUS()" style="display: block; width: 450px">Toggle "The Theory of Ultimate Studies" reward: ON</button>
+				</div>
 				<div>
 					<button id="showAchRowNums" onclick="toggleAchRowNums()" class="storebtn" style="width: 180px"></button>
 					<button id="hideCompletedAchs" onclick="toggleCompletedAchs()" class="storebtn" style="width: 180px"></button>
@@ -1028,7 +1031,7 @@
 							<div id="Running through Big Rips" class="achievement achievementlocked" style="background-image: url(images/164.png)" ach-tooltip="Fundament in 3 seconds."></div>
 						</td>
 						<td>
-							<div id="The Theory of Ultimate Studies" class="achievement achievementlocked" style="background-image: url(images/165.png)" ach-tooltip="Have at least 48 Mastery Studies. Reward: Start with all Time Studies and Eternity Challenges on Fundament."></div>
+							<div id="The Theory of Ultimate Studies" class="achievement achievementlocked" style="background-image: url(images/165.png)" ach-tooltip="Have at least 48 Mastery Studies. Reward: Start with all Time Studies, Mastery Studies, and Eternity Challenges on Fundament."></div>
 						</td>
 						<td>
 							<div id="Here comes the light" class="achievement achievementlocked" style="background-image: url(images/placeholder.png)" ach-tooltip="Enlighten all your Lights. Reward: Spectral Particles add Automator Charge.">Here comes the light</div>

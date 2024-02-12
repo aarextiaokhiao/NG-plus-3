@@ -556,3 +556,13 @@ function metaAchMultLabelUpdate() {
 	el("metaAchMultLabel").style.display = "inline-block"
 	el("metaAchMultLabel").textContent = "Achievement multiplier to Meta Dimensions: " + shorten(tmp.qu.chal.reward[6]) + "x"
 }
+
+function toggleTOUS() {
+	aarMod.toggleTOUS = !aarMod.toggleTOUS;
+	tousToggleUpdate()
+}
+
+function tousToggleUpdate() {
+	el("tousToggleDiv").style.display = hasAch("ng3p77") ? "inline-block" : "none"
+	el("toggleUltimateStudyReward").textContent = "Toggle \"The Theory of Ultimate Studies\" reward: " + (aarMod.toggleTOUS ? "ON" : "OFF")
+}

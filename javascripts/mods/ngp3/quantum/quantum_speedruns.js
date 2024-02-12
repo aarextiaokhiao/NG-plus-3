@@ -6,7 +6,9 @@ function updateSpeedruns(onReset) {
 	speedrunMilestones = hasBraveMilestone(1) ? 28 : 0
 
 	if (!mod.ngp3) return
-	while (quSave.best <= SM_REQ[i] * 10) speedrunMilestones++
+	for (let i = 1; i <= 28; i++) {
+        if (quSave.best <= SM_REQ[i] * 10) speedrunMilestones++
+    }
 
 	if (onReset && speedrunMilestones > oldMilestones) {
 		$.notify("You quantumed in under "+timeDisplay(SM_REQ[speedrunMilestones-1])+"!", "success")

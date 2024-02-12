@@ -774,6 +774,7 @@ function getFullExpansion(num) {
 	return Math.round(num).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
 }
 
+// i am thinking to consolidate this - usavictor
 shorten = function (money) {
 	return formatQuick(money, 2, 2);
 };
@@ -800,7 +801,7 @@ shortenMoney = function (money) {
 };
 
 shortenND = function (money) {
-	return formatQuick(money, 2, inNGM(3) ? Math.min(Math.max(3 - money.e, 0), 3) : 0)
+	return formatQuick(money, 2, 2, inNGM(3) ? Math.min(Math.max(3 - money.e, 0), 3) : 3)
 }
 
 formatSci = function (x) {

@@ -537,7 +537,7 @@ function doInitNGp2NOT3Stuff(){
 				aarMod.quantumConf = true
 			}
 			aarMod.newGamePlusVersion = 1
-			if (confirm("Do you want to migrate your NG++ save into new NG+++ mode?")) doNGPlusThreePlayerStuff()
+			if (confirm("Do you want to migrate your NG++ save into new NG+++ mode?")) doNGPlusThreeNewPlayer()
 			player.dilation.upgrades=migratedUpgrades
 			resetDilationGalaxies()
 		}
@@ -1488,7 +1488,7 @@ function updateNGModeMessage(){
 		ngModeMessages = ["Due to balancing changes, you are forced to Quantum and reset your TT and your best TP, but you are given	" + shorten(setTTAfterQuantum) + " TT as compensation."]
 		player.timestudy.theorem = setTTAfterQuantum
 		player.dilation.bestTP = E(0)
-		el('bestTP').textContent = "Your best ever Tachyon Particles was 0."
+		el('bestTP').textContent = "Your best ever Tachyon Particles is 0."
 	}
 }
 
@@ -1554,7 +1554,10 @@ function onLoad(noOffline) {
 	setReplAutoDisplay()
 	setSomeQuantumAutomationDisplay()
 
-	if (mod.ngp3) updateNGp3DisplayStuff()
+	if (mod.ngp3) {
+		updateNGp3DisplayStuff()
+		tousToggleUpdate()
+	}
 	hideDimensions()
 	updateChallenges()
 	updateNCVisuals()

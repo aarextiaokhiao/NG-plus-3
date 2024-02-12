@@ -4,7 +4,7 @@ function dimShiftDisplay(){
 	var shiftRequirement = getShiftRequirement(0);
 	var isShift = getNormalDimensions() < getMaxNormalDimensions()
 	el("resetLabel").textContent = 'Dimension ' + (isShift ? "Shift" : player.resets < getSupersonicStart() ? "Boost" : "Supersonic") + ' ('+ getFullExpansion(Math.ceil(player.resets)) +'): requires ' + getFullExpansion(Math.ceil(shiftRequirement.amount)) + " " + dimNames[shiftRequirement.tier] + " Dimensions"
-	el("softReset").textContent = "Reset prior features for a " + (isShift ? "new Dimension" : "Boost")
+	el("softReset").textContent = "Reset antimatter and ADs for a " + (isShift ? "new Dimension" : "Boost")
 }
 
 function tickspeedBoostDisplay(){
@@ -369,7 +369,7 @@ function replicantiDisplay() {
 		let replGalName = player.replicanti.gal < 100 ? "Max Replicated Galaxies" : getGalaxyScaleName(player.replicanti.gal < 400 ? 1 : player.replicanti.gal < 2999 ? 2 : player.replicanti.gal < 5e4 ? 3 : 4) + " Replicated Galaxies"
 		let replGalCostPortion = player.infinityPoints.lt(pow10(1e9)) ? "<br>+1 Cost: " + shortenCosts(getRGCost()) + " IP" : ""
 		el("replicantimax").innerHTML = replGalName + ": " + getFullExpansion(player.replicanti.gal) + (replGalOver > 1 ? "+" + getFullExpansion(replGalOver) : "") + replGalCostPortion
-		el("replicantireset").innerHTML = (hasAch("ng3p67") ? "Get " : hasAch("ngpp16") ? "Divide replicanti by " + shorten(Number.MAX_VALUE) + " for" : "Reset replicanti amount for") + " 1 galaxy.<br>" + getFullExpansion(player.replicanti.galaxies) + getExtraReplGalaxyDisp() + " Replicated Galax" + (getTotalRG() == 1 ? "y" : "ies") + " created."
+		el("replicantireset").innerHTML = (hasAch("ng3p67") ? "Get " : (hasAch("ngpp16") || hasAch("r126")) ? "Divide replicanti by " + shorten(Number.MAX_VALUE) + " for" : "Reset replicanti amount for") + " 1 galaxy.<br>" + getFullExpansion(player.replicanti.galaxies) + getExtraReplGalaxyDisp() + " Replicated Galax" + (getTotalRG() == 1 ? "y" : "ies") + " created."
 		el("replicantiapprox").innerHTML = mod.ngp3 && player.dilation.upgrades.includes("ngpp1") && hasTimeStudy(192) && player.replicanti.amount.gte(Number.MAX_VALUE) ? 
 			"Replicanti increases by " + (tmp.rep.est < Math.log10(2) ? "x2.00 per " + timeDisplayShort(Math.log10(2) / tmp.rep.est * 10) : shorten(pow10(tmp.rep.est.toNumber())) + "x per second") + ".<br>" +
 			"Replicanti Slowdown: " + tmp.rep.speeds.inc.toFixed(3) + "x slower per " + shorten(pow10(tmp.rep.speeds.exp)) + "x.<br>" +

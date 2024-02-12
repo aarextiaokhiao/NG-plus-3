@@ -92,8 +92,8 @@ function setupDimensionHTML() {
 		html += `<tr id='${d}Row' style='font-size:15px'>
 			<td id="D${d}" width="32%" style='position: relative'> </td>
 			<td id="A${d}"></td>
-			<td width="10%"><button id="B${d}" style="color:black; height: 25px; font-size: 10px; width: 125px" class="storebtn" onclick="buyOneDimension(${d})"></button></td>
-			<td width="10%"><button id="M${d}" style="color:black; height: 25px; font-size: 10px; width: 165px" class="storebtn" onclick="buyManyDimension(${d})"></button></td>
+			<td width="10%"><button id="B${d}" style="color:black; height: 30px; font-size: 10px; width: 140px" class="storebtn" onclick="buyOneDimension(${d})"></button></td>
+			<td width="10%"><button id="M${d}" style="color:black; height: 30px; font-size: 10px; width: 180px" class="storebtn" onclick="buyManyDimension(${d})"></button></td>
 		</tr>`
 	}
 	el("dimTable").innerHTML = html
@@ -186,7 +186,7 @@ function updateMoney() {
 	let abbs = modAbbs(mod, true)
 	if (player.options.tabAmount)
 		el("z").textContent = (abbs.length > 8 ? "" : "AD: ") + abbs + " | " + shortenMoney(player.money) + (player.money.e >= 1e6 ? "" : " antimatter")
-	el("coinAmount").textContent = formatQuick(player.money, 2, inNGM(3) ? Math.min(Math.max(3 - player.money.e, 0), 3) : 0)
+	el("coinAmount").textContent = formatQuick(player.money, 2, inNGM(3) ? Math.min(Math.max(3 - player.money.e, 0), 3) : 2)
 
 	var element2 = el("matter");
 	if (inNC(12) || player.currentChallenge == "postc1" || player.currentChallenge == "postc6") element2.textContent = "There is " + formatValue(player.options.notation, player.matter, 2, 1) + " matter."; //TODO
