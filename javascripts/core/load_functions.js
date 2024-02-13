@@ -1701,7 +1701,7 @@ function conToDeciTD(){
 	for (let dim = 1; dim <= 8; dim++) {
 		const data = player["timeDimension"+dim]
 		data.amount = E(data.amount)
-		data.cost = isNaN(data.cost) ? timeDimCost(dim, data.bought) : E(data.cost)
+		data.cost = isNaN(E(data.cost).e) ? timeDimCost(dim, data.bought) : E(data.cost)
 		data.power = E(data.power)
 	}
 }
