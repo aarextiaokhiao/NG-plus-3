@@ -408,24 +408,24 @@ function updateNCVisuals() {
 var infchallengeTimes = 999999999
 function updateChallengeTimes() {
 	for (c=2;c<17;c++) setAndMaybeShow("challengetime"+c,player.challengeTimes[challOrder[c]-2]<600*60*24*31,'"'+challNames[c]+' time record: "+timeDisplayShort(player.challengeTimes['+(challOrder[c]-2)+'], false, 3)')
-	var temp=0
-	var tempcounter=0
+	var sumTimeOfCompletedChallenges=0
+	var completedChallenges=0
 	for (var i=0;i<player.challengeTimes.length;i++) if (player.challenges.includes("challenge"+(i+2))&&player.challengeTimes[i]<600*60*24*31) {
-		temp+=player.challengeTimes[i]
-		tempcounter++
+		sumTimeOfCompletedChallenges+=player.challengeTimes[i]
+		completedChallenges++
 	}
-	setAndMaybeShow("challengetimesum",tempcounter>1,'"Sum of completed Normal Challenge time records is " + timeDisplayShort('+temp+', false, 3) + "."')
+	setAndMaybeShow("challengetimesum",completedChallenges>1,'"Sum of completed Normal Challenge time records is " + timeDisplayShort('+sumTimeOfCompletedChallenges+', false, 3) + "."')
 
-	var temp=0
-	var tempcounter=0
+	var sumTimeOfCompletedChallenges=0
+	var completedChallenges=0
 	for (var i=0;i<14;i++) {
 		setAndMaybeShow("infchallengetime"+(i+1),player.infchallengeTimes[i]<600*60*24*31,'"Infinity Challenge '+(i+1)+' time record: "+timeDisplayShort(player.infchallengeTimes['+i+'], false, 3)')
 		if (player.infchallengeTimes[i]<600*60*24*31) {
-			temp+=player.infchallengeTimes[i]
-			tempcounter++
+			sumTimeOfCompletedChallenges+=player.infchallengeTimes[i]
+			completedChallenges++
 		}
 	}
-	setAndMaybeShow("infchallengetimesum",tempcounter>1,'"Sum of completed Infinity Challenge time records is " + timeDisplayShort('+temp+', false, 3) + "."')
+	setAndMaybeShow("infchallengetimesum",completedChallenges>1,'"Sum of completed Infinity Challenge time records is " + timeDisplayShort('+sumTimeOfCompletedChallenges+', false, 3) + "."')
 	updateWorstChallengeBonus();
 }
 

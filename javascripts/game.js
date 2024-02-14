@@ -1084,17 +1084,17 @@ function updateHotkeys() {
 var bestECTime
 function updateEterChallengeTimes() {
 	bestECTime=0
-	var temp=0
-	var tempcounter=0
+	var sumOfCompletedChallengeTimes=0
+	var completedChallenges=0
 	for (var i=1;i<15;i++) {
 		setAndMaybeShow("eterchallengetime"+i,aarMod.eternityChallRecords[i],'"Eternity Challenge '+i+' time record: "+timeDisplayShort(aarMod.eternityChallRecords['+i+'], false, 3)')
 		if (aarMod.eternityChallRecords[i]) {
 			bestECTime=Math.max(bestECTime, aarMod.eternityChallRecords[i])
-			temp+=aarMod.eternityChallRecords[i]
-			tempcounter++
+			sumOfCompletedChallengeTimes+=aarMod.eternityChallRecords[i]
+			completedChallenges++
 		}
 	}
-	setAndMaybeShow("eterchallengetimesum",tempcounter>1,'"The sum of your completed Eternity Challenge time records is "+timeDisplayShort('+temp+', false, 3)+"."')
+	setAndMaybeShow("eterchallengetimesum",completedChallenges>1,'"The sum of your completed Eternity Challenge time records is "+timeDisplayShort('+sumOfCompletedChallengeTimes+', false, 3)+"."')
 }
 
 var averageEp = E(0)
