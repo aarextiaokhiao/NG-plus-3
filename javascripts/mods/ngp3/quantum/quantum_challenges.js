@@ -217,13 +217,16 @@ function updateQCTimes() {
 	if (!mod.ngp3) return
 	var sumOfCompletedChallengeTimes = 0
 	var completedChallenges = 0
+	let showQuantumChallengeStatsGroup = false
 	for (var i = 1; i < 9; i++) {
 		setAndMaybeShow("qctime" + i, quSave.challengeRecords[i], '"Quantum Challenge ' + i + ' time record: "+timeDisplayShort(quSave.challengeRecords[' + i + '], false, 3)')
 		if (quSave.challengeRecords[i]) {
 			sumOfCompletedChallengeTimes+=quSave.challengeRecords[i]
 			completedChallenges++
+			showQuantumChallengeStatsGroup = true
 		}
 	}
+	el("stats_qctime").style.display = showQuantumChallengeStatsGroup ? null : "none"
 	setAndMaybeShow("qctimesum", completedChallenges > 1, '"The sum of your completed Quantum Challenge time records is " + timeDisplayShort(' + sumOfCompletedChallengeTimes + ', false, 3) + "."')
 }
 

@@ -1086,14 +1086,17 @@ function updateEterChallengeTimes() {
 	bestECTime=0
 	var sumOfCompletedChallengeTimes=0
 	var completedChallenges=0
+	let showEterChallengeStatsGroup = false
 	for (var i=1;i<15;i++) {
 		setAndMaybeShow("eterchallengetime"+i,aarMod.eternityChallRecords[i],'"Eternity Challenge '+i+' time record: "+timeDisplayShort(aarMod.eternityChallRecords['+i+'], false, 3)')
 		if (aarMod.eternityChallRecords[i]) {
 			bestECTime=Math.max(bestECTime, aarMod.eternityChallRecords[i])
 			sumOfCompletedChallengeTimes+=aarMod.eternityChallRecords[i]
 			completedChallenges++
+			showEterChallengeStatsGroup = true
 		}
 	}
+	el("stats_eterchallengetime").style.display = showEterChallengeStatsGroup ? null : "none"
 	setAndMaybeShow("eterchallengetimesum",completedChallenges>1,'"The sum of your completed Eternity Challenge time records is "+timeDisplayShort('+sumOfCompletedChallengeTimes+', false, 3)+"."')
 }
 
