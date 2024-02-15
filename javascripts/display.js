@@ -40,15 +40,20 @@ function getGalaxyScaleName(x) {
 }
 
 function dimensionTabDisplay() {
-	var shown
+	let shown = false
 	for (let tier = 8; tier > 0; tier--) {
-		shown = shown || canBuyDimension(tier)
-		var name = dimTiers[tier];
-		if (shown) {
-			el(tier + "Row").style.display = ""
-			el("D" + tier).childNodes[0].nodeValue = dimNames[tier] + " Dimension x" + formatValue(player.options.notation, getDimensionFinalMultiplier(tier), 2, 1)
-			el("A" + tier).textContent = getDimensionDescription(tier)
+		if (
+			   shown
+			|| canBuyDimension(tier)
+			|| (player.resets > 0 && tier < player.resets + 4)
+		) {
+			el(tier + "Row").style.display = null
+			shown = true
 		}
+		if (el(tier + "Row").style.display == "none") continue
+		el("D" + tier).childNodes[0].nodeValue = dimNames[tier] + " Dimension x" + formatValue(player.options.notation, getDimensionFinalMultiplier(tier), 2, 1)
+		el("A" + tier).textContent = getDimensionDescription(tier)
+		el(tier + "Row").style.opacity = canBuyDimension(tier) ? null : .42
 	}
 
 	setAndMaybeShow("mp10d", mod.ngmu, "'Multiplier per 10 Dimensions: '+shorten(getDimensionPowerMultiplier(\"non-random\"))+'x'")
