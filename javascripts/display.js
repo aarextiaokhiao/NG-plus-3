@@ -57,7 +57,10 @@ function dimensionTabDisplay() {
 		if (el(tier + "Row").style.display == "none") continue
 		el("D" + tier).childNodes[0].nodeValue = dimNames[tier] + " Dimension x" + formatValue(player.options.notation, getDimensionFinalMultiplier(tier), 2, 1)
 		el("A" + tier).textContent = getDimensionDescription(tier)
-		el(tier + "Row").style.opacity = canBuyDimension(tier) ? null : .42
+		if (canBuyDimension(tier))
+			el(tier + "Row").classList.remove("locked")
+		else
+			el(tier + "Row").classList.add("locked")
 	}
 
 	setAndMaybeShow("mp10d", mod.ngmu, "'Multiplier per 10 Dimensions: '+shorten(getDimensionPowerMultiplier(\"non-random\"))+'x'")

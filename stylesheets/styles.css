@@ -234,6 +234,10 @@ button b, button span {
     background: #5AC467;
 }
 
+#tab_dim .locked {
+    opacity: .42;
+}
+
 .longbtn {
 	width: 180px
 }
