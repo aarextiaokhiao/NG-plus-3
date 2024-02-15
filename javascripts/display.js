@@ -39,14 +39,18 @@ function getGalaxyScaleName(x) {
 	return galaxyScalings[x]
 }
 
+function antimatterDimensionShouldBeHidden(tier) {
+	if (tier > getMaxNormalDimensions()) return true
+	return !(
+		   canBuyDimension(tier)
+		|| (player.resets > 0 && tier < getNormalDimensions(true))
+	)
+}
+
 function dimensionTabDisplay() {
 	let shown = false
 	for (let tier = 8; tier > 0; tier--) {
-		if (
-			   shown
-			|| canBuyDimension(tier)
-			|| (player.resets > 0 && tier < player.resets + 4)
-		) {
+		if ( shown || !antimatterDimensionShouldBeHidden(tier)) {
 			el(tier + "Row").style.display = null
 			shown = true
 		}
