@@ -403,7 +403,7 @@ function ngP3AchieveCheck() {
 	if (LAB.unlocked()) giveAchievement("Even Ghostlier than before")
 	if (nG(getEternitied(), Number.MAX_VALUE)) giveAchievement("Everlasting Eternities")
 
-	//if (ghSave.hb.higgs >= 1) giveAchievement("The Holy Particle")
+	if (HIGGS.unlocked()) giveAchievement("The Holy Particle")
 	//if (ghSave.ghostlyPhotons.enpowerments >= 25) giveAchievement("Bright as the Anti-Sun") -- will be back
 	if (quSave.quarks.log10() >= 40000) giveAchievement("Are these another...")
 	if (ghSave.reference && getRadioactiveDecays() >= 2) giveAchievement("... references to EC8?")
