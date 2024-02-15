@@ -69,9 +69,9 @@ function updateCosts() {
 	for (var i=1; i<9; i++) {
 		var cost = player[dimTiers[i] + "Cost"]
 		var resource = getOrSubResource(i)
-		el('B'+i).className = cost.lte(resource) ? 'storebtn' : 'unavailablebtn'
+		el('B'+i).className = canBuyDimension(i) && cost.lte(resource) ? 'storebtn' : 'unavailablebtn'
 		el('B'+i).textContent = costPart + shortenPreInfCosts(cost)
-		el('M'+i).className = cost.mul(10 - dimBought(i)).lte(resource) ? 'storebtn' : 'unavailablebtn'
+		el('M'+i).className = canBuyDimension(i) && cost.mul(10 - dimBought(i)).lte(resource) ? 'storebtn' : 'unavailablebtn'
 		el('M'+i).textContent = until10CostPart + shortenPreInfCosts(cost.mul(10 - dimBought(i)));
 	}
 }
