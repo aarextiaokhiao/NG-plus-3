@@ -41,10 +41,16 @@ function getGalaxyScaleName(x) {
 
 function antimatterDimensionShouldBeHidden(tier) {
 	if (tier > getMaxNormalDimensions()) return true
-	return !(
-		   canBuyDimension(tier)
-		|| (player.resets > 0 && tier < getNormalDimensions(true))
-	)
+	if (player.currentChallenge == "") {
+		if (tier <= 4 && player.infinityUpgrades.includes('skipReset1')) return false;
+		if (tier <= 5 && player.resets >= 1 && player.infinityUpgrades.includes('skipReset1')) return false;
+		if (tier <= 6 && player.resets >= 2 && player.infinityUpgrades.includes('skipReset2')) return false;
+		if (tier <= 7 && player.resets >= 3 && player.infinityUpgrades.includes('skipReset3')) return false;
+		if (tier <= 8 && player.resets >= 4 && player.infinityUpgrades.includes('skipResetGalaxy')) return false;
+	}
+	if (canBuyDimension(tier)) return false
+	if (player.resets > 0 && tier < getNormalDimensions(true)) return false
+	return true
 }
 
 function dimensionTabDisplay() {
