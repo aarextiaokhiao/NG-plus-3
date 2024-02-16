@@ -103,7 +103,7 @@ function DimensionPower(tier) {
 
 	if (hasAch("r94") && tier == 1) mult = mult.mul(2);
 	if (hasAch("r75") && !mod.rs) mult = mult.mul(player.achPow);
-	if (hasAch("r66") && inNGM(2)) mult = mult.mul(Math.max(1, Math.abs(player.tickspeed.log10()) / 29))
+	if (hasAch("r66") && inNGM(2)) mult = mult.mul(Math.max(1, Math.abs(player.postC3Reward.div(1e3).log10()) / 29))
 	if (player.replicanti.unl && player.replicanti.amount.gt(1) && !inNGM(2)) mult = mult.mul(getIDReplMult())
 
 	mult = mult.mul(getInfDimPathIDMult(tier))
