@@ -418,7 +418,7 @@ let HOW_TO = [
 		tab: "bl",
 		layer: "fundament",
 		desc: `<b>Hypotheses</b><br>
-		You have a 5x5 grid where you can place down Hypotheses. A pair of adjacent Hypotheses boosts things depending on their types.
+		You can place down Hypotheses in a 5x5 grid. A pair of adjacent Hypotheses boosts things depending on their types.
 		<br><br>
 		<b>Bosonic Milestones</b><br>
 		At a specific amount of best Bosonic Matter, you'll unlock a Bosonic Milestone. Best Bosonic Matter strengthens some milestones.
