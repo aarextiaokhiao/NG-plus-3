@@ -553,7 +553,7 @@ function doNGP2v2tov2302(){
 	if (aarMod.newGamePlusPlusVersion < 2) {
 		for (dim=1;dim<5;dim++) {
 			var dim = player["timeDimension" + dim]
-			if (Decimal.gte(dim.cost, "1e20000")) dim.cost = E_pow(timeDimCostMults[dim]*2.2, dim.bought).mul(timeDimStartCosts[dim]).mul(E_pow(E('1e1000'),Math.pow(dim.cost.log(10) / 1000 - 20, 2)))
+			if (Decimal.gte(dim.cost, "1e20000")) dim.cost = E_pow(getTimeDimCostMult(dim)*2.2, dim.bought).mul(getTimeDimStartCost(dim)).mul(E_pow(E('1e1000'),Math.pow(dim.cost.log(10) / 1000 - 20, 2)))
 		}
 		player.meta = {resets: 0, antimatter: 10, bestAntimatter: 10}
 		for (dim=1;dim<9;dim++) player.meta[dim] = {amount: 0, bought: 0, cost: initCost[dim]}
@@ -561,7 +561,7 @@ function doNGP2v2tov2302(){
 	if (aarMod.newGamePlusPlusVersion < 2.2) {
 		for (dim=1;dim<5;dim++) {
 			var dim = player["timeDimension" + dim]
-			if (Decimal.gte(dim.cost, "1e100000")) dim.cost = E_pow(timeDimCostMults[dim]*100, dim.bought).mul(timeDimStartCosts[dim]).mul(E_pow(E('1e1000'),Math.pow(dim.cost.log(10) / 1000 - 100, 2)))
+			if (Decimal.gte(dim.cost, "1e100000")) dim.cost = E_pow(getTimeDimCostMult(dim)*100, dim.bought).mul(getTimeDimStartCost(dim)).mul(E_pow(E('1e1000'),Math.pow(dim.cost.log(10) / 1000 - 100, 2)))
 		}
 		
 		player.autoEterMode == "amount"
@@ -1199,7 +1199,7 @@ function dov12tov122(){
 	if (player.version < 12) {
 		for (i=1; i<5; i++) {
 			if (player["timeDimension"+i].cost.gte("1e1300")) {
-				player["timeDimension"+i].cost = E_pow(timeDimCostMults[i]*2.2, player["timeDimension"+i].bought).mul(timeDimStartCosts[i])
+				player["timeDimension"+i].cost = E_pow(getTimeDimCostMult(i)*2.2, player["timeDimension"+i].bought).mul(getTimeDimStartCost(i))
 			}
 		}
 		if (player.bestEternity <= 0.01 || player.bestInfinityTime <= 0.01) giveAchievement("Less than or equal to 0.001");
@@ -1701,7 +1701,7 @@ function conToDeciTD(){
 	for (let dim = 1; dim <= 8; dim++) {
 		const data = player["timeDimension"+dim]
 		data.amount = E(data.amount)
-		data.cost = isNaN(data.cost.e) ? timeDimCost(dim, data.bought) : E(data.cost)
+		data.cost = isNaN(E(data.cost).e) ? timeDimCost(dim, data.bought) : E(data.cost)
 		data.power = E(data.power)
 	}
 }
