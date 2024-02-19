@@ -1084,17 +1084,20 @@ function updateHotkeys() {
 var bestECTime
 function updateEterChallengeTimes() {
 	bestECTime=0
-	var temp=0
-	var tempcounter=0
+	var sumOfCompletedChallengeTimes=0
+	var completedChallenges=0
+	let showEterChallengeStatsGroup = false
 	for (var i=1;i<15;i++) {
 		setAndMaybeShow("eterchallengetime"+i,aarMod.eternityChallRecords[i],'"Eternity Challenge '+i+' time record: "+timeDisplayShort(aarMod.eternityChallRecords['+i+'], false, 3)')
 		if (aarMod.eternityChallRecords[i]) {
 			bestECTime=Math.max(bestECTime, aarMod.eternityChallRecords[i])
-			temp+=aarMod.eternityChallRecords[i]
-			tempcounter++
+			sumOfCompletedChallengeTimes+=aarMod.eternityChallRecords[i]
+			completedChallenges++
+			showEterChallengeStatsGroup = true
 		}
 	}
-	setAndMaybeShow("eterchallengetimesum",tempcounter>1,'"The sum of your completed Eternity Challenge time records is "+timeDisplayShort('+temp+', false, 3)+"."')
+	el("stats_eterchallengetime").style.display = showEterChallengeStatsGroup ? null : "none"
+	setAndMaybeShow("eterchallengetimesum",completedChallenges>1,'"The sum of your completed Eternity Challenge time records is "+timeDisplayShort('+sumOfCompletedChallengeTimes+', false, 3)+"."')
 }
 
 var averageEp = E(0)
@@ -1692,23 +1695,31 @@ function bigCrunchButtonUpdating(){
 
 function nextICUnlockUpdating(){
 	var nextUnlock = getNextAt(order[player.postChallUnlocked])
-	if (nextUnlock == undefined) el("nextchall").textContent = " "
-	else if (!hasAch("r133")) {
-		el("nextchall").textContent = "Next challenge unlocks at "+ shortenCosts(nextUnlock) + " antimatter."
-		while (player.money.gte(nextUnlock) && nextUnlock != undefined) {
-			if (getEternitied() > 6) {
-				player.challenges.push(order[player.postChallUnlocked])
-				tmp.ic_power++
-			}
-			player.postChallUnlocked++
-			nextUnlock = getNextAt(order[player.postChallUnlocked])
-			updateChallenges()
+
+	// unlock Infinity Challenges
+	while (nextUnlock != undefined && player.money.gte(nextUnlock)) {
+		if (getEternitied() >= 7) {
+			player.challenges.push(order[player.postChallUnlocked])
+			tmp.ic_power++
 		}
-		if (getEternitied() > 6 && player.postChallUnlocked >= 8) {
-			ndAutobuyersUsed = 0
-			for (i = 0; i <= 8; i++) if (player.autobuyers[i] % 1 !== 0 && player.autobuyers[i].isOn) ndAutobuyersUsed++
-			el("maxall").style.display = ndAutobuyersUsed > 8 && player.challenges.includes("postc8") ? "none" : ""
-		}
+		player.postChallUnlocked++
+		updateChallenges()
+		nextUnlock = getNextAt(order[player.postChallUnlocked])
+	}
+
+	// update next unlock text
+	let hideNextUnlockDisplay = !hasAch("r51") || nextUnlock == undefined
+	if (!hideNextUnlockDisplay)
+		el("nextchall").textContent = `Next challenge unlocks at ${shortenCosts(nextUnlock)} antimatter.`
+	el("nextchall").style.display = hideNextUnlockDisplay ? "none" : null
+
+	// hide max all button on Antimatter Dimensions tab
+	// if all dimension 1-8 + tickspeed autobuyers are enabled
+	// and player completed Infinity Challenge 8
+	if (getEternitied() >= 7 && player.postChallUnlocked >= 8) {
+		ndAutobuyersUsed = 0
+		for (i = 0; i <= 8; i++) if (player.autobuyers[i] % 1 !== 0 && player.autobuyers[i].isOn) ndAutobuyersUsed++
+		el("maxall").style.display = ndAutobuyersUsed > 8 && player.challenges.includes("postc8") ? "none" : ""
 	}
 }
 
