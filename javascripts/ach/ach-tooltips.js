@@ -251,7 +251,7 @@ function setR13Tooltip(){
 
 	//ACHIEVEMENT ROW 13
 	unique.setAttribute('ach-tooltip', "Have 540 galaxies without having any Replicated Galaxies." + (NGP3andVanillaCheck() ? " Reward: Gain a multiplier to Tachyon Particle and Dilated Time gain based on Antimatter Galaxies." : ""))
-	potato3.setAttribute('ach-tooltip', "Get more than "+shortenCosts(E("1e8296262"))+" ticks per second." + (inNGM(2) ? " Reward: The Galaxy boost to Galaxy Points gain is buffed based on a specific value (~663 galaxies)." : ""))
+	potato3.setAttribute('ach-tooltip', "Get more than "+ (inNGM(2) ? shortenCosts(E("1e8296265")) + " multiplier from tickspeed upgrades. Reward: The Galaxy boost to Galaxy Points gain is buffed based on a specific value (~663 galaxies)." : shortenCosts(E("1e8296262")) + " ticks per second."))
 	infstuff.setAttribute('ach-tooltip', "Reach "+shortenCosts(E("1e140000"))+" IP without buying IDs or IP multipliers. Reward: Start Eternities with all Infinity Challenges completed instantly" + (mod.ngpp ? " and multiply Infinities gain by Dilated Time^(1/4)." : "."))
 	when.setAttribute('ach-tooltip', "Reach "+shortenCosts(E("1e20000"))+" replicanti. Reward: You gain Replicanti 2 times faster under " + shortenMoney(Number.MAX_VALUE) + " replicanti.")
 	thinking.setAttribute('ach-tooltip', "Eternity for " + shortenCosts(E("1e600")) + " EP in 1 minute or less while Dilated." + (thinking != "" ? " Reward: " + thinkingReward + "." : ""))
