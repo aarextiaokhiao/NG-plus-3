@@ -141,9 +141,10 @@ function checkInfPowerReqAchieve(){
 }
 
 function checkTickspeedReqAchieve(){
-	if (player.tickspeed.lt(1e-26)) giveAchievement("Faster than a potato");
-	if (player.tickspeed.lt(1e-55)) giveAchievement("Faster than a squared potato");
-	if (player.tickspeed.log10() < -8296262) giveAchievement("Faster than a potato^286078")
+	let tickspeed = inNGM(2) ? player.postC3Reward.pow(-1).mul(1e3) : player.tickspeed
+	if (tickspeed.lt(1e-26)) giveAchievement("Faster than a potato");
+	if (tickspeed.lt(1e-55)) giveAchievement("Faster than a squared potato");
+	if (tickspeed.log10() < -8296262) giveAchievement("Faster than a potato^286078")
 	if (player.totalTickGained >= 308) giveAchievement("Infinite time");
 	if (player.totalTickGained>=1e6) giveAchievement("GAS GAS GAS")
 }

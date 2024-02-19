@@ -68,7 +68,7 @@ function setR4Tooltip(){
 	nerd.setAttribute('ach-tooltip', "Buy ten Galaxies in total while using Emoji notation."+(inOnlyNGM(2)?" Reward: Double Infinity Points.":""))
 	sanic.setAttribute('ach-tooltip', "Get over " + formatValue(player.options.notation, 1e63, 0, 0) + " antimatter" + (inNGM(4) ? " and unlock new Galaxy upgrades at " + formatValue(player.options.notation, 1e666, 0, 0) + " antimatter" : "") + ".") // take out ng-4 message from this achievement and show it in Galaxy tab when necessary
 	zero.setAttribute('ach-tooltip',"Big Crunch without Dimension Shifts, Boosts or Galaxies in a challenge. Reward: Dimensions 1-4 are 25% stronger"+(inOnlyNGM(2) ? " and you get 1.25x more IP" : "") + (inNGM(4) ? " and gain more passive GP gain based on GP." : "."))
-	potato.setAttribute('ach-tooltip', "Get more than " + formatValue(player.options.notation, 1e29, 0, 0) + " ticks per second. Reward: Reduce the starting tick interval by 2%.");
+	potato.setAttribute('ach-tooltip', "Get more than " + (inNGM(2) ? formatValue(player.options.notation, 1e32, 0, 0) + " multiplier from tickspeed upgrades. Reward: Galaxies are 2% stronger." : formatValue(player.options.notation, 1e29, 0, 0) + " ticks per second. Reward: Reduce the starting tick interval by 2%."));
 	dimensional.setAttribute('ach-tooltip', "Reach " + formatValue(player.options.notation, 1e12, 0, 0) + " of all Antimatter Dimensions, except for the 8th Dimension.");
 	anti.setAttribute('ach-tooltip', "Complete all the challenges. Reward: All Antimatter Dimensions are 10% stronger"+(inOnlyNGM(2) ? ", and the tickspeed cost is also reduced based on your Dimension cost reduction." : "."))
 }
@@ -103,7 +103,7 @@ function setR6Tooltip(){
 	let right = el("You did this again just for the achievement right?")
 
 	//ACHIEVEMENT ROW 6
-	potato2.setAttribute('ach-tooltip', "Get more than " + formatValue(player.options.notation, 1e58, 0, 0) + " ticks per second. Reward: Reduces starting tick interval by 2%.");
+	potato2.setAttribute('ach-tooltip', "Get more than " + (inNGM(2) ? formatValue(player.options.notation, 1e61, 0, 0) + " multiplier from tickspeed upgrades. Reward: Multiplier to infinity dimensions based on multiplier from tickspeed upgrades." : formatValue(player.options.notation, 1e58, 0, 0) + " ticks per second. Reward: Reduce starting tick interval by 2%."))
 	oh.setAttribute('ach-tooltip', "Reach " + shortenCosts(1e8) + " IP per minute."+(inOnlyNGM(2) ? " Reward: Gain a multiplier to GP based on the logarithm of your IP.":""))
 	mil.setAttribute('ach-tooltip',"Reach " + shortenCosts(1e6) + " Infinity Power." + (inNGM(2) ? " Reward: First Antimatter Dimensions are " + shortenCosts(1e6) + " times stronger":"") + (inNGM(4) ? " and each IC boosts g32 by 2%." : "."))
 	right.setAttribute('ach-tooltip',"Complete the Third Dimension Autobuyer challenge in 10 seconds or less. Reward: First Dimensions are 5"+(inNGM(2)?"x":"0%")+" stronger.")
