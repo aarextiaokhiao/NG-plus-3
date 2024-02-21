@@ -217,7 +217,9 @@ function getEternitied() {
 
 //DISPLAY FUNCTIONS
 function hideDimensions() {
-	for (var d = 2; d < 9; d++) if (!canBuyDimension(d)) el(d + "Row").style.display = "none"
+	for (var d = 2; d < 9; d++)
+		if (antimatterDimensionShouldBeHidden(d))
+			el(d + "Row").style.display = "none"
 }
 
 function floatText(id, text, leftOffset = 150) {

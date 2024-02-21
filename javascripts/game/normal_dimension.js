@@ -5,8 +5,10 @@ var initCost
 var costMults
 
 //Dimensions
-function getNormalDimensions() {
-	return Math.min(player.resets + 4, getMaxNormalDimensions())
+function getNormalDimensions(uncapped = false) {
+	let rvalue = player.resets + 4
+	if (!uncapped) rvalue = Math.min(rvalue, getMaxNormalDimensions())
+	return rvalue
 }
 
 function getMaxNormalDimensions() {

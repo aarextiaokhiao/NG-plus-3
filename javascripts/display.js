@@ -39,16 +39,34 @@ function getGalaxyScaleName(x) {
 	return galaxyScalings[x]
 }
 
+function antimatterDimensionShouldBeHidden(tier) {
+	if (tier > getMaxNormalDimensions()) return true
+	if (player.currentChallenge == "") {
+		if (tier <= 4 && player.infinityUpgrades.includes('skipReset1')) return false;
+		if (tier <= 5 && player.resets >= 1 && player.infinityUpgrades.includes('skipReset1')) return false;
+		if (tier <= 6 && player.resets >= 2 && player.infinityUpgrades.includes('skipReset2')) return false;
+		if (tier <= 7 && player.resets >= 3 && player.infinityUpgrades.includes('skipReset3')) return false;
+		if (tier <= 8 && player.resets >= 4 && player.infinityUpgrades.includes('skipResetGalaxy')) return false;
+	}
+	if (canBuyDimension(tier)) return false
+	if (player.resets > 0 && tier < getNormalDimensions(true)) return false
+	return true
+}
+
 function dimensionTabDisplay() {
-	var shown
+	let shown = false
 	for (let tier = 8; tier > 0; tier--) {
-		shown = shown || canBuyDimension(tier)
-		var name = dimTiers[tier];
-		if (shown) {
-			el(tier + "Row").style.display = ""
-			el("D" + tier).childNodes[0].nodeValue = dimNames[tier] + " Dimension x" + formatValue(player.options.notation, getDimensionFinalMultiplier(tier), 2, 1)
-			el("A" + tier).textContent = getDimensionDescription(tier)
+		if ( shown || !antimatterDimensionShouldBeHidden(tier)) {
+			el(tier + "Row").style.display = null
+			shown = true
 		}
+		if (el(tier + "Row").style.display == "none") continue
+		el("D" + tier).childNodes[0].nodeValue = dimNames[tier] + " Dimension x" + formatValue(player.options.notation, getDimensionFinalMultiplier(tier), 2, 1)
+		el("A" + tier).textContent = getDimensionDescription(tier)
+		if (canBuyDimension(tier))
+			el(tier + "Row").classList.remove("locked")
+		else
+			el(tier + "Row").classList.add("locked")
 	}
 
 	setAndMaybeShow("mp10d", mod.ngmu, "'Multiplier per 10 Dimensions: '+shorten(getDimensionPowerMultiplier(\"non-random\"))+'x'")
@@ -69,9 +87,9 @@ function updateCosts() {
 	for (var i=1; i<9; i++) {
 		var cost = player[dimTiers[i] + "Cost"]
 		var resource = getOrSubResource(i)
-		el('B'+i).className = cost.lte(resource) ? 'storebtn' : 'unavailablebtn'
+		el('B'+i).className = canBuyDimension(i) && cost.lte(resource) ? 'storebtn' : 'unavailablebtn'
 		el('B'+i).textContent = costPart + shortenPreInfCosts(cost)
-		el('M'+i).className = cost.mul(10 - dimBought(i)).lte(resource) ? 'storebtn' : 'unavailablebtn'
+		el('M'+i).className = canBuyDimension(i) && cost.mul(10 - dimBought(i)).lte(resource) ? 'storebtn' : 'unavailablebtn'
 		el('M'+i).textContent = until10CostPart + shortenPreInfCosts(cost.mul(10 - dimBought(i)));
 	}
 }
