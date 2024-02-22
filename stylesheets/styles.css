@@ -2248,7 +2248,7 @@ div.lDe {
 	left: 50%;
 	top: 50%;
 	overflow: hidden;
-	transform: rotateZ(-180deg);
+	transform: rotateZ(-120deg);
 	z-index: 3;
 	transition-duration: 1s;
 	box-shadow: 0px 0px 240px white

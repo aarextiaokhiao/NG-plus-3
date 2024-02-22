@@ -156,14 +156,14 @@ ghostifyAni = function(gain, amount, seconds=4) {
 		el("ghostifyani").style.height = "0%"
 		el("ghostifyani").style.left = "50%"
 		el("ghostifyani").style.top = "50%"
-		el("ghostifyani").style.transform = "rotateZ(360deg)"
+		el("ghostifyani").style.transform = "rotateZ(240deg)"
 	}, seconds * 625)
 	setTimeout(function() {
 		el("ghostifyani").style.width = "0%"
 		el("ghostifyani").style.height = "0%"
 		el("ghostifyani").style.left = "50%"
 		el("ghostifyani").style.top = "50%"
-		el("ghostifyani").style.transform = "rotateZ(-180deg)"
+		el("ghostifyani").style.transform = "rotateZ(-120deg)"
 		el("ghostifyani").style["transition-duration"] = "0s"
 		el("ghostifyanitext").style.left = "-100%"
 		el("ghostifyanitext").style["transition-duration"] = "0s"
