@@ -134,7 +134,7 @@ const BOSONIC_LAB = LAB = {
 			effDesc: e => "+" + shortenDimensions(e),
 		}, {
 			req: E(2e6),
-			desc: "Galaxy strength raises Replicated Galaxy bonus to Replicantis.",
+			desc: "Galaxy strength raises Time Study 102.",
 			eff: b => Math.max(tmp.gal.str / 3, 1),
 			effDesc: e => "^" + shorten(e)
 		}, {

@@ -3462,11 +3462,11 @@
 				</table>
 			</div>
 			<div id='tab_pos'>
-				You have <span id="normalGalaxies">0</span> Antimatter Galaxies.<br>
-				You discharged <span id='sacrificedGals'>0</span> galaxies.<br>
 				<button class='gluonupgrade storebtn' id='sacrificeGal' onclick='sacrificeGalaxy()'>Discharge <span id='sacrificeGals'>0</span> for <span id="positronsGain"></span> Positrons<br>(+<span id='positronsGainMult'>2</span> per galaxy)</button><br>
 				<button class='storebtn' id='sacrificeAuto' onclick='toggleAutoQuantumContent("sacrifice")' style='height: 24px'></button><br>
+
 				<span id="positronsAmount" style="font-size:35px">0</span> Positrons<br>
+				<span id='sacrificedGals'>0</span> / <span id="normalGalaxies">0</span> Antimatter Galaxies discharged<br>
 				Multiplier per ten dimensions: <span id="linearPerTenMult" style="font-size:15px">2.00</span>, <span id="positronsTranslation" style="font-size:15px">1.00</span> → <span id="positronsEffect" style="font-size:25px">2.00</span>
 				<table class="table" style="margin: auto">
 					<tr>
@@ -3599,13 +3599,13 @@
 				You have <span id="quarksNanofield"></span> pilons.<br>
 				<table class="qtable"><tr><td id="quarkChargeDiv">
 					<span id="quarkCharge" style="font-size:25px"></span> Nanocharge<br>
-					<button class="antbtn" id="produceQuarkCharge" onclick="startProduceQuarkCharge()"></button><br>
-					(<span id="quarkChargeRate"></span> charge/s, -<span id="quarkLoss"></span> pilons/s)
+					<span id="quarkChargeRate"></span><br>
+					<button class="antbtn" id="produceQuarkCharge" onclick="startProduceQuarkCharge()"></button>
 				</td><td>
-					<span id="preonEnergy" style="font-size:25px"></span> Nanoenergy (<span id="quarkEnergyRate"></span>/s)<br>
+					<span id="preonEnergy" style="font-size:25px"></span> Nanoenergy (+<span id="quarkEnergyRate"></span>/s)<br>
 				</td><td id="quarkAntienergyDiv">
-					<span id="quarkAntienergy" style="font-size:25px"></span> anti-Nanoenergy (<span id="quarkAntienergyRate"></span>/s)<br>
-					Stops producing at <span id="quarkChargeProductionCap" style="font-size:25px"></span>
+					<span id="quarkAntienergy" style="font-size:25px"></span> anti-Nanoenergy (+<span id="quarkAntienergyRate"></span>/s)<br>
+					<span id="quarkChargeProductionCap"></span>
 				</td></tr></table>
 				<span id="nanorewards" style="font-size:35px"></span> Nanorewards <br>
 				(Next: <span id="nanorewardThreshold" style="font-size:15px"></span> Energy)
@@ -3778,7 +3778,7 @@
 			<br>
 
 			<b>(NG+3 v2.31: Ghostify Respecced)</b><br>
-			<b class="red">(Beta: 2/23/24 Build)</b><br>
+			<b class="red">(Beta: 2/24/24 Build)</b><br>
 			By <a href="https://aarextiaokhiao.github.io/">Aarex</a>, pg132, and usavictor.
 			<br><br>
 

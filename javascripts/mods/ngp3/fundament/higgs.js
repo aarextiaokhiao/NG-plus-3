@@ -135,6 +135,16 @@ let HIGGS = {
 			c1: { req: 999 },
 			c2: { req: 999 },
 			c3: { req: 999 },
+
+			/*
+			AAREX'S IDEAS
+			- Meta-Antimatter effect boosts tickspeed reduction.
+			- Antimatter Galaxies contribute to 3rd Nanobenefit but weaker.
+			- Antimatter Galaxies scale Positron effect later.
+			- Replicantis add extra galaxies but not multiplied.
+			- Dilation rebuyables scale later.
+			- Meta-Dimensions scale later. (Meta-Dimension Boosts should recieve another cost scaling)
+			*/
 		}
 	},
 

@@ -23,7 +23,7 @@ function updatePositrons() {
 		var cost = getPositronUpgCost(u)
 		el("positronupg" + u).innerHTML = "+" + (getPositronGainMult() / 4).toFixed(2) + "x Positrons " +
 			"(" + getFullExpansion(quSave.electrons.rebuyables[u-1]) + ")<br>" +
-			"Requires: " + ((u == 4 ? getFullExpansion : shortenCosts)(cost)) + " " + [null, "Time Theorems", "dilated time", "meta-Antimatter", "meta-Dimension Boosts"][u]
+			((u == 4 ? getFullExpansion : shortenCosts)(cost)) + " " + [null, "Time Theorems", "dilated time", "meta-Antimatter", "meta-Dimension Boosts"][u]
 	}
 }
 

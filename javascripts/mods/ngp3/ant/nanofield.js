@@ -13,12 +13,16 @@ function updateNanoverseTab() {
 	el("quarkChargeDiv").style.display = noCharge ? "none" : ""
 	el("quarkAntienergyDiv").style.display = noCharge ? "none" : ""
 	if (!noCharge) {
-		el("quarkCharge").textContent = shortenMoney(nfSave.charge)
-		el("quarkChargeRate").textContent = shortenDimensions(getQuarkChargeProduction())
-		el("quarkLoss").textContent = shortenDimensions(getQuarkLossProduction())
-		el("quarkAntienergy").textContent = shortenMoney(nfSave.antienergy)
-		el("quarkAntienergyRate").textContent = shortenMoney(getQuarkAntienergyProduction())
-		el("quarkChargeProductionCap").textContent = shortenMoney(getQuarkChargeProductionCap())
+		el("quarkCharge").textContent = shorten(nfSave.charge)
+		el("quarkChargeRate").textContent = nfSave.producingCharge ?
+			`(+${shortenDimensions(getQuarkChargeProduction())} charge/s, -${shortenDimensions(getQuarkLossProduction())} preons/s)` :
+			`(+${shortenDimensions(getQuarkChargeProduction())} charge/s on production)`
+	
+		el("quarkAntienergy").textContent = shorten(nfSave.antienergy)
+		el("quarkAntienergyRate").textContent = shorten(getQuarkAntienergyProduction())
+		el("quarkChargeProductionCap").textContent = nfSave.antienergy.gte(getQuarkChargeProductionCap()) ?
+			`Charge can't produce anything at ${shorten(getQuarkChargeProductionCap())}!` :
+			`Energy is currently produced until ${shorten(getQuarkChargeProductionCap())}`
 	}
 
 	el("produceQuarkCharge").innerHTML = (nfSave.producingCharge ? "Stop" : "Start") + " producing nanocharge." + (nfSave.producingCharge ? "" : "<br>(You'll stop producing Pilons)")
@@ -78,82 +82,36 @@ function getQuarkChargeProductionCap() {
 
 var nanoRewards = {
 	eff: {
-		hatch_speed: function(x) {
-			return E_pow(30, x)
-		},
-		ma_eff_exp: function(x) {
-			return x * 6.8
-		},
-		dil_gal_gain: function(x) {
-			return x / 1e3 + 1
-		},
-		dt_to_ma_exp: function(x) {
-			return Math.sqrt(x) * 0.021 + 1
-		},
-		dil_exp: function(x) {
-			return Math.min(x * 0.36 + 1, 2)
-		},
-		md_boost: function(x) {
+		hatch_speed: (x) => E_pow(30, x),
+		ma_eff_exp: (x) => x * 6.8,
+		dil_gal_gain: (x) => x / 1e3 + 1,
+		dt_to_ma_exp: (x) => Math.sqrt(x) * 0.021 + 1,
+		dil_exp: (x) => Math.min(x * 0.36 + 1, 2), 
+		md_boost: (x) => {
 			let y = 2
 			if (player.dilation.upgrades.includes("ngpp4")) y = getDil15Bonus()
 			return x * 1.34 + y
 		},
-		remote_start: function(x) {
-			return x * 2150
-		},
-		pilon_charge: function(x) {
-			return pow2(x * (hasNU(15) ? 4 : 2))
-		},
-		per_10_power: function(x) {
-			return x * 0.76
-		},
-		pilon_energy: function(x) {
-			return pow2(x)
-		},
-		decay_exp: function(x) {
-			return Math.min(Math.log10(Math.max(x + 8, 10)), 2)
-		},
-		photon: function(x) {
-			return pow2(x ** 0.5)
-		}
+		remote_start: (x) => x * 2150,
+		pilon_charge: (x) => pow2(x * (hasNU(15) ? 4 : 2)),
+		per_10_power: (x) => x * 0.76,
+		pilon_energy: (x) => pow2(x),
+		decay_exp: (x) => Math.min(Math.log10(Math.max(x + 8, 10)), 2),
+		photon: (x) => pow2(x ** 0.5),
 	},
 	effDisp: {
-		hatch_speed: function(x) {
-			return "eggons hatch " + shorten(x) + "x faster"
-		},
-		ma_eff_exp: function(x) {
-			return "meta-antimatter effect is ^" + x.toFixed(2)
-		},
-		dil_gal_gain: function(x) {
-			return "each Replicated Galaxy gives " + x.toFixed(3) + "x more Dilated Time"
-		},
-		dt_to_ma_exp: function(x) {
-			return "Dilated Time raises the Meta Dimensions boost to ^" + x.toFixed(3)
-		},
-		dil_exp: function(x) {
-			return "in dilation, raise Normal Dimensions and Tickspeed by ^" + x.toFixed(2)
-		},
-		md_boost: function(x) {
-			return "Meta-Dimension Boosts give " + x.toFixed(2) + "x multiplier per boost."
-		},
-		remote_start: function(x) {
-			return "Remote Antimatter Galaxies scale " + getFullExpansion(Math.floor(x)) + " later"
-		},
-		pilon_charge: function(x) {
-			return "produce nanocharge " + shorten(x) + "x faster"
-		},
-		per_10_power: function(x) {
-			return "before Positrons, add " + shorten(x) + "x to multiplier per 10 Dimensions"
-		},
-		pilon_energy: function(x) {
-			return "produce nanoenergy " + shorten(x) + "x faster"
-		},
-		decay_exp: function(x) {
-			return "raise Decay speed to ^" + shorten(x)
-		},
-		photon: function(x) {
-			return "gain " + shorten(x) + "x more Photons"
-		}
+		hatch_speed: (x) => "eggons hatch " + shorten(x) + "x faster",
+		ma_eff_exp: (x) => "meta-antimatter effect is ^" + x.toFixed(2),
+		dil_gal_gain: (x) => "each Replicated Galaxy gives " + x.toFixed(3) + "x more Dilated Time",
+		dt_to_ma_exp: (x) => "Dilated Time boosts Meta Dimensions by ^" + x.toFixed(3) + " more",
+		dil_exp: (x) => "Raise Normal Dimension production by ^" + x.toFixed(2) + " in dilation",
+		md_boost: (x) => "Meta-Dimension Boosts give " + x.toFixed(2) + "x multiplier per boost",
+		remote_start: (x) =>"Remote Antimatter Galaxies scale " + getFullExpansion(Math.floor(x)) + " later",
+		pilon_charge: (x) => "produce nanocharge " + shorten(x) + "x faster",
+		per_10_power: (x) => "+" + shorten(x) + "x to pre-Positrons effect",
+		pilon_energy: (x) => "produce nanoenergy " + shorten(x) + "x faster",
+		decay_exp: (x) => "raise Decay speed to ^" + shorten(x),
+		photon: (x) => "gain " + shorten(x) + "x more Photons",
 	},
 	usage: {
 		1: _ => hasNU(15) ? ["photon"] : ["hatch_speed"],
@@ -267,9 +225,8 @@ function setupNanofieldHTML() {
 }
 
 function nanofieldUpdating(diff){
-	if (hasBLMilestone(3)) {
-		nfSave.energy = nfSave.energy.add(getQuarkEnergyProduction().mul(diff))
-	} else {
+	if (hasBLMilestone(3)) nfSave.energy = nfSave.energy.add(getQuarkEnergyProduction().mul(diff))
+	else {
 		var AErate = getQuarkAntienergyProduction()
 		var toAddAE = AErate.mul(diff).min(getQuarkChargeProductionCap().sub(nfSave.antienergy))
 		if (nfSave.producingCharge) nanofieldProducingChargeUpdating(diff)

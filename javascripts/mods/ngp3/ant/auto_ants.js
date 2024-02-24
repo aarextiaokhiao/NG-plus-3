@@ -44,7 +44,7 @@ var automators = {
 		html: `Wait: <input id="autoAnt11pw" onchange="changeAutoGhost('11pw')"/>s<br>
 		Produce: <input id="autoAnt11cw" type="text" onchange="changeAutoGhost('11cw')"/>s`,
 		req: 6.5,
-		pow: 0.5,
+		pow: 0.5
 	},
 	13: {
 		title: "Big Rip",
