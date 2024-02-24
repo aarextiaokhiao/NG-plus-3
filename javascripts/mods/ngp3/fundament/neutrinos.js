@@ -160,11 +160,6 @@ const NEUTRINO = NT = {
 				eff: nt => nt + 1,
 				effDesc: e => `Gain <b>${shorten(e)}x</b> more Photons.`,
 			}
-			/*, {
-				cost: E(1/0),
-				eff: nt => Math.min(Math.log10(nt / 100 + 1), 1),
-				effDesc: e => `RG strength affects galaxies at <b>^${e.toFixed(3)}</b> rate.`,
-			}*/
 		]
 	},
 	upgrades: {

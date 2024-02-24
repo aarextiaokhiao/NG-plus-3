@@ -17,17 +17,11 @@ const GLUON = {
 				disp: "Remote Antimatter Galaxies scale approximately 2x slower."
 			}, {
 				disp: "Tachyonic Galaxies strengthen Galaxies.",
-				eff: _ => Math.pow(player.dilation.freeGalaxies / 5e3 + 1, 0.25),
+				eff: _ => Math.min(Math.pow(player.dilation.freeGalaxies / 5e3 + 1, 0.25), 1.7),
 				eff_desc: e => formatPercentage(e-1)+"%"
 			}, {
 				disp: "Dimension Boosts boost 1st Meta Dimensions.",
-				eff() {
-					return player.resets
-
-					let exp = Math.sqrt(player.meta.resets)
-					if (exp > 36) exp = 6 * Math.sqrt(exp)
-					return E_pow(player.resets, exp)
-				},
+				eff: () => E_pow(player.resets, player.resets / 1e6 + .25),
 				eff_desc: e => shorten(e) + "x"
 			}, {
 				disp: "Galaxies are 50% stronger, but positrons are 30% weaker and disable Time Study 232."

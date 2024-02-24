@@ -1832,7 +1832,7 @@ function doQuantumButtonDisplayUpdating(diff){
 		el("quantumbtnPeak").textContent = ''
 	}
 
-	if (bigRip) el("quantumbtn").removeAttribute('ach-tooltip')
+	if (!showPeak) el("quantumbtn").removeAttribute('ach-tooltip')
 	else {
 		let gluons = getGluonGains()
 		el("quantumbtn").setAttribute('ach-tooltip', `More information:

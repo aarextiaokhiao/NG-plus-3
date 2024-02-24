@@ -328,11 +328,6 @@ function updateBreakEternityUpgrade6Temp(){
 	tmp.qu.beu[6] = pow10(exp)
 }
 
-function updateBreakEternityUpgrade8Temp(){
-	var x = Math.min(Math.max(player.dilation.tachyonParticles.max(1).log10() / 60 - 3.5, 1), 2)
-	tmp.qu.beu[8] = x
-}
-
 function updateBreakEternityUpgradesTemp() {
 	updateBreakEternityUpgrade1Temp()
 	updateBreakEternityUpgrade2Temp()
@@ -340,14 +335,13 @@ function updateBreakEternityUpgradesTemp() {
 	updateBreakEternityUpgrade4Temp()
 	updateBreakEternityUpgrade5Temp()
 	updateBreakEternityUpgrade6Temp()
-	updateBreakEternityUpgrade8Temp()
+	tmp.qu.beu[8] = Math.min(Math.max(player.dilation.tachyonParticles.e - 200, 100) / 100, 2)
 
 	//Upgrade 7: EP Mult
 	tmp.qu.beu[7] = getBEEPMultBase().pow(beSave.epMultPower)
 }
 
 function getBEUnls() {
-	//Upgrades
 	let x = 7
 	if (PHOTON.unlocked()) x += 3
 	return x

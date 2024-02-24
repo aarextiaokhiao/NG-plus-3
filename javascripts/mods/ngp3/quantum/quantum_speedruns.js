@@ -6,7 +6,7 @@ function updateSpeedruns(onReset) {
 	speedrunMilestones = hasBraveMilestone(1) ? 28 : 0
 
 	if (!mod.ngp3) return
-	for (let i = 1; i <= 28; i++) {
+	for (let i = speedrunMilestones + 1; i <= 28; i++) {
         if (quSave.best <= SM_REQ[i] * 10) speedrunMilestones++
     }
 

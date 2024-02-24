@@ -126,11 +126,7 @@ const MTS = MASTERY_STUDIES = {
 			var exp = Math.sqrt(quSave.replicants.quarks.add(1).log10())
 			return E_pow(mod.p3ep ? 3 : 2, exp)
 		},
-		344() {
-			var ret = Math.pow(quSave.replicants.quarks.div(1e7).add(1).log10(), 0.25) * 0.17 + 1
-			if (ret > 2) ret = Math.log2(ret) + 1
-			return ret
-		},
+		344: () => Math.pow(quSave.replicants.quarks.div(1e7).add(1).log10(), 0.25) * 0.17 + 1,
 		351() { //maybe use softcap.js
 			let log = player.timeShards.max(1).log10() * 14e-7
 			if (log > 1e3) log = Math.sqrt(log * 1e3)
