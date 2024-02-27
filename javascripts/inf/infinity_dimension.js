@@ -247,7 +247,7 @@ function getEU2Mult() {
 
 	var cap = e.min(1e5).toNumber()
 	var soft = e.max(cap).sub(cap)
-	return E_pow(cap/200 + 1, Math.log(cap * 2 + 1) / Math.log(4)).mul(soft.div(200).add(1).mul(soft.mul(2).add(1).log(4)).max(1)).max(achReward)
+	return E_pow(cap/200 + 1, Math.log(cap * 2 + 1) / Math.log(4)).mul(soft.div(200).add(1).mul(soft.mul(2).add(1).log(4)).max(1))
 }
 
 function getEU3Mult() {
