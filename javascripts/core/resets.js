@@ -108,6 +108,7 @@ let RESETS = {
 
 			if (inNGM(2)) player.galacticSacrifice = newGalacticDataOnInfinity(order != "inf")
 			player.infinityPower = E(1)
+			resetInfinityDimensionsAmount()
 
 			let keepRep = hasAch("r95")
 			if (!keepRep) player.replicanti.amount = E(1)
@@ -535,6 +536,13 @@ function nanofieldResetOnQuantum(){
 	nfSave.antienergy = E(0)
 	nfSave.power = 0
 	nfSave.powerThreshold = E(50)
+}
+
+function resetInfinityDimensionsAmount() {
+	for (let i = 1; i <= 8; i++) {
+		const dim = player["infinityDimension" + 1]
+		dim.amount = E(dim.baseAmount)
+	}
 }
 
 function completelyResetInfinityDimensions() {
