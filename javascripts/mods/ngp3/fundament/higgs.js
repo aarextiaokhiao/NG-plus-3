@@ -143,7 +143,8 @@ let HIGGS = {
 			- Antimatter Galaxies scale Positron effect later.
 			- Replicantis add extra galaxies but not multiplied.
 			- Dilation rebuyables scale later.
-			- Meta-Dimensions scale later. (Meta-Dimension Boosts should recieve another cost scaling)
+			- Meta-Dimensions scale later. (Meta-Dimension Boosts might recieve another cost scaling)
+			- Increase Orange Light effect percentage.
 			*/
 		}
 	},
