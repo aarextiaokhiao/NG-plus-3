@@ -2232,7 +2232,9 @@ function updateDisplays() {
 
 	msg = "<span class='EPAmount2'>"+shortenDimensions(player.eternityPoints)+"</span> Eternity Points"
 	if (tmp.qu.be) msg += "<br><span class='EPAmount2'>"+shortenDimensions(beSave.eternalMatter)+"</span> Eternal Matter"
-	else if (mod.ngp3 && hasDilStudy(6)) msg += "<br><span class='EPAmount2'>"+shortenDimensions(getEternitied())+"</span> Eternities"
+	else if (mod.ngp3 && hasDilStudy(6)) msg += `<br><span class='EPAmount2'>${shortenDimensions(getEternitied())}</span>
+		${nG(player.eternitiesBank, 0) ? "total" : ""}
+		Eternities`
 	else msg = "You have " + msg + "."
 	el("eternityPoints2").innerHTML = msg
 
