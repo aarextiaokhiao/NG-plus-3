@@ -164,16 +164,24 @@ function setTheme(name) {
 	el("chosenTheme").textContent="Current theme: " + themeName
 	player.options.theme = name
 
-	if (name === undefined) return
-	name = name.replace(`'`, ``)
+	if (name !== undefined) {
+		name = name.replace(`'`, ``)
 
-	var head = document.head
-	var link = document.createElement('link')
+		var head = document.head
+		var link = document.createElement('link')
 
-	link.type = 'text/css'
-	link.rel = 'stylesheet'
-	link.href = "stylesheets/theme-" + name + ".css"
-	head.appendChild(link)
+		link.type = 'text/css'
+		link.rel = 'stylesheet'
+		link.href = "stylesheets/theme-" + name + ".css"
+		head.appendChild(link)
+	}
+
+	updatePaddingForFooter()
+}
+
+function updatePaddingForFooter() {
+	const footerHeight = el("footer").getBoundingClientRect().height
+	el("container").style.paddingBottom = `calc(${footerHeight}px + var(--container-padding-bottom))`
 }
 
 el("theme").onclick = function () {
@@ -2652,6 +2660,7 @@ function initGame() {
 	setTimeout(function(){
 		el("container").style.display = "block"
 		el("loading").style.display = "none"
+		updatePaddingForFooter()
 		resizeCanvas()
 	}, 100)
 	clearInterval(stuckTimeout)

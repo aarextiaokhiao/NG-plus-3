@@ -66,6 +66,10 @@ button b, button span {
     font-weight: bold
 }
 
+#container {
+    --container-padding-bottom: 1em;
+}
+
 .challengesbtn {
     width:150px;
     height: 30px;
