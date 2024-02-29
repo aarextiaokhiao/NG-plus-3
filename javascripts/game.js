@@ -181,7 +181,9 @@ function setTheme(name) {
 
 function updatePaddingForFooter() {
 	const footerHeight = el("footer").getBoundingClientRect().height
-	el("container").style.paddingBottom = `calc(${footerHeight}px + var(--container-padding-bottom))`
+	const progressHeight = el("progress").getBoundingClientRect().height
+	const containerPadding = footerHeight + progressHeight
+	el("container").style.paddingBottom = `calc(${containerPadding}px + var(--container-padding-bottom))`
 }
 
 el("theme").onclick = function () {
