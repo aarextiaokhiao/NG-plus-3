@@ -154,8 +154,7 @@ var ecExpData = {
 		eterc9_ngmm: 2250,
 		eterc10_ngmm: 2205,
 		eterc11_ngmm: 35000,
-		eterc12_ngmm: 17000,
-		eterc13_legacy: 38000000,
+		eterc12_ngmm: 17000
 	},
 	increases: {
 		eterc1: 200,
@@ -182,9 +181,7 @@ var ecExpData = {
 		eterc9_ngmm: 300,
 		eterc10_ngmm: 175,
 		eterc11_ngmm: 3250,
-		eterc12_ngmm: 1500,
-		eterc13_legacy: 1200000,
-		eterc14_legacy: 250000
+		eterc12_ngmm: 1500
 	}
 }
 function getECGoal(x) {
