@@ -110,7 +110,7 @@ var nanoRewards = {
 		pilon_charge: (x) => "produce nanocharge " + shorten(x) + "x faster",
 		per_10_power: (x) => "+" + shorten(x) + "x to pre-Positrons effect",
 		pilon_energy: (x) => "produce nanoenergy " + shorten(x) + "x faster",
-		decay_exp: (x) => "raise Decay speed to ^" + shorten(x),
+		decay_exp: (x) => "raise Decay speed by ^" + shorten(x),
 		photon: (x) => "gain " + shorten(x) + "x more Photons",
 	},
 	usage: {
