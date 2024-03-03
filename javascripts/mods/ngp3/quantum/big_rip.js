@@ -335,7 +335,6 @@ function updateBreakEternityUpgradesTemp() {
 	updateBreakEternityUpgrade4Temp()
 	updateBreakEternityUpgrade5Temp()
 	updateBreakEternityUpgrade6Temp()
-	tmp.qu.beu[8] = Math.min(Math.max(player.dilation.tachyonParticles.e - 200, 100) / 100, 2)
 
 	//Upgrade 7: EP Mult
 	tmp.qu.beu[7] = getBEEPMultBase().pow(beSave.epMultPower)
@@ -347,7 +346,7 @@ function getBEUnls() {
 	return x
 }
 
-var breakUpgCosts = [1, 1e3, 2e6, 2e11, 8e17, 1e45, null, 1e153, 1/0, 1/0]
+var breakUpgCosts = [1, 1e3, 2e6, 2e11, 8e17, 1e45, null, 1/0, 1/0, 1/0]
 function getBreakUpgCost(id) {
 	if (id == 7) return pow2(beSave.epMultPower).mul(1e5)
 	return breakUpgCosts[id - 1]
@@ -419,8 +418,7 @@ function breakEternityDisplay(){
 	el("eternalMatter").innerHTML = shortenDimensions(beSave.eternalMatter)
 	for (var u = 1; u <= getBEUnls(); u++) {
 		el("breakUpg" + u).className = beSave.upgrades.includes(u) ? "eternityupbtnbought" : beSave.eternalMatter.gte(getBreakUpgCost(u)) ? "eternityupbtn" : "eternityupbtnlocked"
-		if (u == 8) el("breakUpg8Mult").textContent = (getBreakUpgMult(8) * 100 - 100).toFixed(1)
-		else if (u != 7 && el("breakUpg" + u + "Mult")) el("breakUpg" + u + "Mult").textContent = shortenMoney(getBreakUpgMult(u))
+		if (u < 8 && el("breakUpg" + u + "Mult")) el("breakUpg" + u + "Mult").textContent = shortenMoney(getBreakUpgMult(u))
 	}
 	if (bigRipped()) {
 		el("eterShortcutEM").textContent=shortenDimensions(beSave.eternalMatter)

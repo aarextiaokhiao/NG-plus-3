@@ -41,7 +41,7 @@ function displayEternityStats() {
 }
 
 function displayQuantumStats() {
-	el("quantumed").textContent = "You have gone Quantum " + getFullExpansion(quSave.times) + " times."
+	el("quantumed").textContent = "You have gone Quantum " + getFullExpansion(quSave.times) + " time" + (quSave.times == 1 ? "" : "s") + (ghostified ? " this Fundament." : ".")
 	el("thisQuantum").textContent = "You have spent " + timeDisplay(quSave.time) + " in this Quantum."
 	el("bestQuantum").textContent = quSave.best < 9999999999 ? "Your fastest Quantum is in " + timeDisplay(quSave.best) + "." : ""
 
@@ -51,7 +51,7 @@ function displayQuantumStats() {
 		setAndMaybeShow("bigRipped", brSave.times, '"You have big ripped the universe " + getFullExpansion(brSave.times) + " time" + (brSave.times == 1 ? "" : "s") + "."')
 		setAndMaybeShow("bestmoneythisrip", bigRipped(), "'Your best antimatter for this Big Rip is ' + shortenMoney(brSave.bestThisRun) + '.'")
 		el("totalmoneybigrip").textContent = 'You have made a total of ' + shortenMoney(brSave.totalAntimatter) + ' antimatter in all Big Rips.'
-		el("bestgalsbigrip").textContent = 'Your best amount of Antimatter Galaxies for all Big Rips is ' + getFullExpansion(brSave.bestGals) + "."
+		el("bestgalsbigrip").textContent = `You reformed a best-ever of ${getFullExpansion(brSave.bestGals)} Antimatter Galaxies in Big Rips.`
 	}
 }
 

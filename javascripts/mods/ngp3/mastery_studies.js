@@ -117,7 +117,7 @@ const MTS = MASTERY_STUDIES = {
 		},
 		303: () => E_pow(4.7, Math.pow(Math.log10(Math.max(player.galaxies, 1)), 1.5)),
 		322() {
-			let log = Math.sqrt(Math.max(3 - getTickspeed().log10(), 0)) / 2e4
+			let log = Math.sqrt(Math.max(3 - getTickspeed().log10(), 0)) / (isBreakUpgActive(8) ? 500 : 2e4)
 			if (log > 110) log = Math.sqrt(log * 27.5) + 55
 			return pow10(log)
 		},

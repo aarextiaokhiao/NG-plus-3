@@ -111,11 +111,15 @@ const NEUTRINO = NT = {
 			}, {
 				cost: E(6),
 				eff(nt) {
-					let nb4 = Math.log10(nt*(bigRipped()||mod.p3ep?1:0.06)+1)/4+1
-					if (!bigRipped()) nb4 = Math.sqrt(nb4)
-					return Math.min(nb4, 2)
+					let a = Math.log10(nt*(bigRipped()||mod.p3ep?1:0.06)+1)/4+1
+					if (!bigRipped()) a = Math.sqrt(a)
+					a = Math.min(a, 1.1)
+
+					let b = Math.max((nt - 90) / 10, 1)
+					return [a, b]
 				},
-				effDesc: e => `Raise Infinite Time by <b>^${shorten(e)}</b>.`,
+				effDesc: e => `Raise Infinite Time by <b>^${shorten(e[0])}</b>.
+					${PHOTON.unlocked() ? `<br>Raise its 2nd softcap start by <b>^${shorten(e[1])}</b>.` : ""}`,
 			}, {
 				cost: E(15),
 				eff: nt => Math.min(nt / 33, 1),
@@ -153,12 +157,12 @@ const NEUTRINO = NT = {
 				effDesc: e => `Outside of Big Rip, TS232 regains <b>${shorten(e*100)}%</b> power.`,
 			}, {
 				cost: E(1e24),
-				eff: nt => Math.log10(Math.max(nt / 90, 1)) + 1,
-				effDesc: e => `2nd Infinite Time softcap starts <b>^${shorten(e)}</b> later.`,
-			}, {
-				cost: E(1e30),
-				eff: nt => nt + 1,
+				eff: nt => (nt / 100 + 1) ** 3,
 				effDesc: e => `Gain <b>${shorten(e)}x</b> more Photons.`,
+			}, {
+				cost: E(1/0),
+				eff: nt => 1,
+				effDesc: e => `Placeholder.`,
 			}
 		]
 	},

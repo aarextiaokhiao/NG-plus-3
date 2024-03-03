@@ -1,6 +1,6 @@
 //VERSION: 2.31
 let ngp3_ver = 2.31
-let ngp3_build = 20240227
+let ngp3_build = 20240303
 function doNGP3Updates() {
 	if (!aarMod.ngp3_build) aarMod.ngp3_build = 0
 	if (aarMod.ngp3_build < 20221230) quSave.multPower = 0
@@ -392,7 +392,7 @@ function ngP3AchieveCheck() {
 	if (ableToGetRid8 && player.infinityPoints.log10() >= 9.5e5) giveAchievement("Please answer me why.")
 
 	if (PHOTON.unlocked()) giveAchievement("Progressing as a Ghost")
-	if (bigRipped() && player.eternityPoints.e >= 1e5) giveAchievement("Underchallenged")
+	if (bigRipped() && player.eternityPoints.e >= 1e4) giveAchievement("Underchallenged")
 	if (nG(getInfinitied(), Number.MAX_VALUE)) giveAchievement("Meta-Infinity confirmed?")
 	if (todSave.r.quarks.gte(pow10(1e12)) && !brSave.times) giveAchievement("Weak Decay")	
 	if (getRadioactiveDecays() >= 1) giveAchievement("Radioactive Decaying to the max!")

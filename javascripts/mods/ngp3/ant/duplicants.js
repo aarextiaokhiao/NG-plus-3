@@ -27,7 +27,7 @@ function getGrowupRatePerMinute(){
 function growupRateUpdating(){
 	if (!hasNU(2)) {
 		el("eggonAmount").textContent = shortenDimensions(quSave.replicants.eggons)
-		el("hatchProgress").textContent = Math.round(quSave.replicants.babyProgress.toNumber() * 100)+"%"
+		el("hatchProgress").textContent = `(${Math.round(quSave.replicants.babyProgress.toNumber() * 100)}%)`
 	}
 	var growupRate = getGrowupRatePerMinute()
 	if (quSave.replicants.babies.eq(0)) growupRate = growupRate.min(eggonRate)
@@ -84,8 +84,8 @@ function updateDuplicants() {
 		el("gbRepl").textContent = shortenDimensions(quSave.gluons.gb)
 		el("brRepl").textContent = shortenDimensions(quSave.gluons.br)
 
-		el("buyQuantumFood").innerHTML = "Buy 1 quantum food<br>Cost: "+shortenDimensions(quSave.replicants.quantumFoodCost)+" for all 3 gluons"
-		el("buyQuantumFoodED").innerHTML = "Buy 1 quantum food<br>Cost: "+shortenDimensions(quSave.replicants.quantumFoodCost)+" for all 3 gluons"
+		el("buyQuantumFood").innerHTML = "+1 Quantum Food<br>Cost: "+shortenDimensions(quSave.replicants.quantumFoodCost)+" for all 3 gluons"
+		el("buyQuantumFoodED").innerHTML = "+1 Quantum Food<br>Cost: "+shortenDimensions(quSave.replicants.quantumFoodCost)+" for all 3 gluons"
 		el("breakLimit").innerHTML = "Limit of workers: " + getLimitMsg() + (isLimitUpgAffordable() ? " → " + getNextLimitMsg() + "<br>Cost: " + shortenDimensions(quSave.replicants.limitCost) + " of all 3 gluons":"")
 		el("breakLimitED").innerHTML = "Limit of workers: " + getLimitMsg() + (isLimitUpgAffordable() ? " → " + getNextLimitMsg() + "<br>Cost: " + shortenDimensions(quSave.replicants.limitCost) + " of all 3 gluons":"")
 	} else {
@@ -93,8 +93,8 @@ function updateDuplicants() {
 		el("gbRepl").textContent = "many"
 		el("brRepl").textContent = "tons of"
 
-		el("buyQuantumFood").innerHTML = "Buy 1 quantum food"
-		el("buyQuantumFoodED").innerHTML = "Buy 1 quantum food"
+		el("buyQuantumFood").innerHTML = "+1 Quantum Food"
+		el("buyQuantumFoodED").innerHTML = "+1 Quantum Food"
 		el("breakLimit").innerHTML = "Limit of workers: " + getLimitMsg()
 		el("breakLimitED").innerHTML = "Limit of workers: " + getLimitMsg()
 	}

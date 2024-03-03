@@ -43,9 +43,8 @@ function updateInfiniteTimeTemp() {
 	var x = (3 - getTickspeed().log10()) * 0.000005
 	if (mod.ngp3) {
 		if (hasAch("ng3p56")) x *= 1.03
-		if (hasNB(4)) x *= NT.eff("boost", 4)
-		if (isBreakUpgActive(8) && !player.dilation.active) x *= tmp.qu.beu[8]
-		x = softcap(x, "inf_time_log_1")
+		if (hasNB(4)) x *= NT.eff("boost", 4)[0]
+		x = softcap(x, "inf_time_log")
 	}
 	tmp.inf_time = pow10(x)
 }

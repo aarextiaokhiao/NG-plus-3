@@ -145,6 +145,8 @@ let HIGGS = {
 			- Dilation rebuyables scale later.
 			- Meta-Dimensions scale later. (Meta-Dimension Boosts might recieve another cost scaling)
 			- Increase Orange Light effect percentage.
+			- Improve Mastery Study 373.
+			- Improve Mastery Study 383.
 			*/
 		}
 	},

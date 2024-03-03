@@ -31,7 +31,7 @@ var softcap_data = {
 			derv: true
 		}
 	},
-	inf_time_log_1: {
+	inf_time_log: {
 		1: {
 			func: "pow",
 			start: 12e4,
@@ -42,14 +42,14 @@ var softcap_data = {
 			func: "pow",
 			start() {
 				let r = 1.2e7
-				if (hasNB(11)) r *= NT.eff("boost", 11)
+				if (hasNB(4)) r *= NT.eff("boost", 4)[1]
 				return r
 			},
 			pow: 2/3,
 			derv: false
 		}
 	},
-	inf_time_log_1_big_rip: {
+	inf_time_log_big_rip: {
 		1: {
 			func: "pow",
 			start: 100,
