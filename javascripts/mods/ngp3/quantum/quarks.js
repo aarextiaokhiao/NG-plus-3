@@ -227,7 +227,7 @@ function updateColorPowers(log) {
 		if (hasNB(5)) exp += NT.eff("boost", 5, 0) / 2
 		if (exp < 1) red = Math.pow(red / 2.3, exp) * 2.3
 	}
-	tmp.qu.color_eff.r = red
+	tmp.qu.color_eff.r = Math.min(red, 4)
 
 	//Green
 	let mult = 2
@@ -241,6 +241,8 @@ function updateColorPowers(log) {
 	//Blue
 	var bLog = Math.sqrt(log.b + 1.5) - Math.sqrt(1.5)
 	if (bLog > 3) bLog = Math.sqrt(bLog * 3)
+	if (dev.testZone) bLog = Math.pow(log.b, 2/3) / 5
+
 	tmp.qu.color_eff.b = pow10(bLog)
 }
 

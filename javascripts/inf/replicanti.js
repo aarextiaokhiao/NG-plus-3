@@ -171,31 +171,19 @@ function updateExtraReplGalaxies() {
 }
 
 function getExtraReplGalaxyBase() {
-	let ss_speed = tmp.qu.chal.reward[8] * 2
-	let ts225Eff = 0
-	let ts226Eff = 0
-	if (hasTimeStudy(225)) {
-		ts225Eff = Math.floor(player.replicanti.amount.e / 1e3)
-		if (ts225Eff >= 100 && mod.ngp3) ts225Eff = Math.floor(Math.sqrt(0.25 + (ts225Eff - 99) * ss_speed) + 98.5)
-	}
-	if (hasTimeStudy(226)) {
-		ts226Eff = Math.floor(player.replicanti.gal / 15)
-		if (ts226Eff >= 100 && mod.ngp3) ts226Eff = Math.floor(Math.sqrt(0.25 + (ts226Eff - 99) * ss_speed) + 98.5)
-	}
+	let amt = 0
+	if (hasTimeStudy(225)) amt += tsMults[225]()
+	if (hasTimeStudy(226)) amt += tsMults[226]()
 
-	let amt = ts225Eff + ts226Eff
-	if (mod.ngp3) {
-		if (amt > 325) amt = (Math.sqrt(0.9216+0.16*(amt-324))-0.96)/0.08+324
-		if (amt > 700) amt = 700
-	}
-	return amt
+	if (mod.ngp3 && amt > 325 && !dev.testZone) amt = (Math.sqrt(0.9216+0.16*(amt-324))-0.96)/0.08+324
+	return Math.floor(amt)
 }
 
 function getExtraReplGalaxyMult() {
 	let mult = 1
 	if (quantumed) mult = tmp.qu.color_eff.g
 	if (hasMasteryStudy("d10")) mult += tmp.qu.ant.preon_eff
-	return mult
+	return Math.min(mult, 50)
 }
 
 function getExtraReplGalaxyDisp() {
@@ -252,15 +240,14 @@ function getReplSpeed() {
 	}
 	inc = inc + 1
 	if (hasGluonUpg("gb", 2)) exp *= 2
-	exp *= lightEff(4)
-	return {inc: inc, exp: exp}
+	return { inc, exp }
 }
 
 function getReplicantiInterval() {
 	let interval = 1
 	if (hasTimeStudy(62)) interval /= tsMults[62]()
 	if (player.replicanti.amount.gt(Number.MAX_VALUE)||hasTimeStudy(133)) interval *= 10
-	if (hasTimeStudy(213)) interval /= tsMults[213]()
+	if (hasTimeStudy(213)) interval /= 20
 	if (hasGluonUpg("gb", 1)) interval /= gluonEff("gb", 1)
 	if (player.replicanti.amount.lt(Number.MAX_VALUE) && hasAch("r134")) interval /= 2
 	if (isBigRipUpgradeActive(4)) interval /= 10

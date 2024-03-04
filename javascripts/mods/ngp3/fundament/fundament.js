@@ -248,7 +248,7 @@ function updateBraveMilestones(onReset) {
 	braveMilestones = 0
 
 	if (!ghSave) return
-	while (quSave.times <= BM_REQ[braveMilestones]) braveMilestones++
+	while (ghSave.low <= BM_REQ[braveMilestones]) braveMilestones++
 
 	if (onReset && braveMilestones > oldMilestones) {
 		$.notify("You fundamented with under "+getFullExpansion(BM_REQ[braveMilestones-1])+" Quantum resets!", "success")

@@ -84,7 +84,7 @@ var nanoRewards = {
 	eff: {
 		hatch_speed: (x) => E_pow(30, x),
 		ma_eff_exp: (x) => x * 6.8,
-		dil_gal_gain: (x) => x / 1e3 + 1,
+		dil_gal_gain: (x) => E(x / 1e3 + 1),
 		dt_to_ma_exp: (x) => Math.sqrt(x) * 0.021 + 1,
 		dil_exp: (x) => Math.min(x * 0.36 + 1, 2), 
 		md_boost: (x) => {

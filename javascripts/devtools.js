@@ -92,15 +92,21 @@ dev.addNeut = dev.giveNeutrinos = dev.addNeutrinos = function(n){
 	ghSave.neutrinos.tau = ghSave.neutrinos.tau.add(pow10(n))
 }
 
+/*
+TEST ZONE
+- Antimatter Galaxies scale Dilation rebuyables later.
+- Antimatter Galaxies contribute to 3rd Nanobenefit but weaker.
+
+- Improve TS226.
+- Improve Mastery Study 373.
+- Improve Blue Power Effect.
+
+- Unsoftcap extra RGs.
+- Remove the last EP multiplier scaling.
+*/
+
 dev.enterTestZone = function() {
-	/* 
-	Test the Fundament Challenge:
-	- Start with 0 best Antimatter in Dilation and 0 Dilated Time.
-	- Mastery Studies 273, 322, 351, 393 are disabled.
-	- No Positrons.
-	- No Extra TP Exponents.
-	- No Decay.
-	*/
-	dev.testZone = !dev.testZone
-	doReset("funda")
+	dev.testZone = true
+	noSave = true
+	$.notify("Entered the test zone. You'll recieve experimental effects.")
 }

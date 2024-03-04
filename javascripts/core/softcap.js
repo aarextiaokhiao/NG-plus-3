@@ -64,14 +64,6 @@ var softcap_data = {
 			pow: 0.8,
 			derv: true
 		}
-	},
-	qc3reward: {
-		1: {
-			func: "pow",
-			start: 1331,
-			pow: 9/16,
-			derv: false
-		}
 	}
 }
 

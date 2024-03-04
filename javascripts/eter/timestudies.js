@@ -439,35 +439,27 @@ let tsMults = {
 		if (bigRip) log = softcap(log, "ts11_log_big_rip", 1)
 		return pow10(log)
 	},
-	32() {
-		return Math.pow(Math.max(player.resets, 1), mod.ngmu ? 4 : 1)
-	},
-	41() {
-		return mod.ngep ? 1.5 : 1.2
-	},
-	42() {
-		return (mod.ngep ? 12 : 13) / 15
-	},
-	61() {
-		return mod.ngep ? 100 : 10
-	},
-	62() {
-		let r = mod.ngep ? 4 : 3
-		return r
-	},
-	211() {
-		return !inNGM(2) ? 5 : 1
-	},
+	32: () => Math.pow(Math.max(player.resets, 1), mod.ngmu ? 4 : 1),
+	41: () => mod.ngep ? 1.5 : 1.2,
+	42: () => (mod.ngep ? 12 : 13) / 15,
+	61: () => mod.ngep ? 100 : 10,
+	62: () => mod.ngep ? 4 : 3,
+	211: () => !inNGM(2) ? 5 : 1,
 	212() {
 		let r = player.timeShards.max(2).log2()
 		if (mod.ngep) return Math.min(Math.pow(r, 0.006), 1.15)
 		return Math.min(Math.pow(r, 0.005), 1.1)
 	},
-	213() {
-		return 20
+	222: () => !inNGM(2) ? 2 : .5,
+	225() {
+		let r = Math.floor(player.replicanti.amount.e / 1e3)
+		if (r >= 100 && mod.ngp3) r = Math.sqrt(0.25 + (r - 99) * tmp.qu.chal.reward[8] * 2) + 98.5
+		return r
 	},
-	222() {
-		return !inNGM(2) ? 2 : .5
+	226() {
+		let r = Math.floor(player.replicanti.gal / 15)
+		if (r >= 100 && mod.ngp3) r = dev.testZone ? (r + 300) / 8 : Math.sqrt(0.25 + (r - 99) * tmp.qu.chal.reward[8] * 2) + 98.5
+		return r
 	},
 	232() {
 		let pow = 0.001

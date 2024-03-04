@@ -28,8 +28,7 @@ function getDilatedTimeGainPerSecond(){
 }
 
 function getDTGainExp(){
-	let exp = hasGluonUpg("br", 3) ? 1.1 : 1
-	return exp
+	return hasGluonUpg("br", 3) ? 1.1 : 1
 }
 
 function getEternitiesAndDTBoostExp() {
@@ -46,14 +45,18 @@ function getDTMultNGP3() {
 		if (hasAch("ng3p11")) gain = gain.mul(Math.max(player.galaxies / 600 + 0.5, 1))
 		if (hasAch("ng3p41")) gain = gain.mul(E_pow(4, Math.sqrt(nfSave.rewards)))
 		if (hasMasteryStudy("t263")) gain = gain.mul(getMTSMult(263))
-		if (hasMasteryStudy("t322") && !dev.testZone) gain = gain.mul(getMTSMult(322))
+		if (hasMasteryStudy("t322")) gain = gain.mul(getMTSMult(322))
 		if (hasMasteryStudy("t341")) gain = gain.mul(getMTSMult(341))
 
 		gain = gain.mul(tmp.qu.color_eff.b)
 		if (hasGluonUpg("br", 2)) gain = gain.mul(gluonEff("br", 2))
 		gain = gain.mul(tmp.qu.chal.reward[1])
-		if (hasNanoReward("dil_gal_gain")) gain = E(getNanorewardEff("dil_gal_gain")).pow(player.replicanti.galaxies).mul(gain)
 		gain = gain.mul(getReplDilBonus())
+
+		if (hasNanoReward("dil_gal_gain")) gain = getNanorewardEff("dil_gal_gain").pow(
+				player.replicanti.galaxies +
+				(dev.testZone ? player.galaxies / 3 : 0)
+			).mul(gain)
 	}
 	if (hasAch("ngpp13")) gain = gain.mul(2)
 	return gain
@@ -113,7 +116,7 @@ function getDilExp(disable) {
 	let ret = 1.5
 	if (mod.ngep) ret += .001
 	if (mod.ngpp) ret += getDilUpgPower(4) / 4
-	if (mod.ngp3 && !dev.testZone) {
+	if (mod.ngp3) {
 		if ((!bigRipped() || hasRipUpg(11)) && isDecayOn() && disable != "TU3") ret += getTreeUpgradeEffect(2)
 		if (hasNB(1)) ret += NT.eff("boost", 1, 0)
 	}
@@ -301,7 +304,9 @@ function getRebuyableDilUpgScaleStart(id, add=0) {
 	if (mod.udsp) scale[2] = exDilationUpgradeStrength(id, add).mul(id == 4 ? 1e8 : 1e20).min(scale[2])
 
 	let r = E(scale[2]).div(scale[0]).log(scale[1])
+
 	if (!mod.udsp) r = Math.floor(r)
+	if (dev.testZone) r += player.galaxies / 5e4
 	return r
 }
 
@@ -473,11 +478,11 @@ function resetDilation(order = "qu") {
 			if (bigRip ? hasRipUpg(11) : hasAch("ng3p37")) keepTP = 0.5
 			if (bigRip ? hasRipUpg(18) : notInQC() && hasBraveMilestone(4)) keepTP = 1
 		}
-		player.dilation.dilatedTime = !bigRip && speedrunMilestones >= 22 && !dev.testZone ? E(1e100) : E(0)
+		player.dilation.dilatedTime = !bigRip && speedrunMilestones >= 22 ? E(1e100) : E(0)
 	}
 	if (mod.ngp3) {
 		if (order == "qu" && !hasBraveMilestone(2)) player.dilation.best = E(0)
-		if (order == "funda" && (dev.testZone || !hasBraveMilestone(12))) player.dilation.best = E(0)
+		if (order == "funda" && !hasBraveMilestone(12)) player.dilation.best = E(0)
 	}
 	player.dilation.tachyonParticles = keepTP == 0 ? E(0) : player.dilation.bestTP.pow(keepTP)
 	player.dilation.totalTachyonParticles = player.dilation.tachyonParticles

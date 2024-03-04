@@ -1432,7 +1432,6 @@ function setTSDisplay(){
 	el("81desc").textContent=inNGM(2)?"is cubed":"becomes 10x"
 	el("181desc").textContent = inOnlyNGM(2) ? "1% of your GP and IP gain on next reset" : "1% of your IP gained on crunch"
 	el("211desc").textContent=tsMults[211]()
-	el("213desc").textContent=tsMults[213]()
 	el("222desc").textContent=tsMults[222]()
 }
 

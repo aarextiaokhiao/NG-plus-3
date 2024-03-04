@@ -149,7 +149,7 @@ const NEUTRINO = NT = {
 				effDesc: e => `Raise Big Rip Upgrade 1 by <b>^${shorten(e)}</b>.`,
 			}, {
 				cost: E(2e15),
-				eff: nt => pow10(Math.pow(nt / 50, 2/3)).mul(nt),
+				eff: nt => pow10(Math.pow(nt / 40, 1.5)).max(nt),
 				effDesc: e => `Increase IC3 multiplier base by <b>${shorten(e)}x</b>.`,
 			}, {
 				cost: E(1e21),

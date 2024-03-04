@@ -58,11 +58,11 @@ function getMetaDimensionGlobalMultiplier() {
 		if (hasMasteryStudy("t262")) ret = ret.mul(getMTSMult(262))
 		if (hasMasteryStudy("t282")) ret = ret.mul(getMTSMult(282))
 		if (hasMasteryStudy("t303")) ret = ret.mul(getMTSMult(303))
-		if (hasMasteryStudy("t351") && !dev.testZone) ret = ret.mul(getMTSMult(351))
+		if (hasMasteryStudy("t351")) ret = ret.mul(getMTSMult(351))
 		if (hasMasteryStudy("t373")) ret = ret.mul(getMTSMult(373))
 		if (hasMasteryStudy("t382")) ret = ret.mul(getMTSMult(382))
 		if (hasMasteryStudy("t383")) ret = ret.mul(getMTSMult(383))
-		if (hasMasteryStudy("t393") && !dev.testZone) ret = ret.mul(getMTSMult(393))
+		if (hasMasteryStudy("t393")) ret = ret.mul(getMTSMult(393))
 
 		//Quantum Upgrades
 		if (hasGluonUpg("br", 4)) ret = ret.mul(gluonEff("br", 4))
@@ -356,7 +356,7 @@ function getExtraDimensionBoostPowerExponent(ma) {
 	if (player.dilation.upgrades.includes("ngpp5")) power++
 	if (mod.ngp3) {
 		power += getECReward(13)
-		if (hasNanoReward("ma_eff_exp") && !dev.testZone) power += getNanorewardEff("ma_eff_exp")
+		if (hasNanoReward("ma_eff_exp")) power += getNanorewardEff("ma_eff_exp")
 		if (isDecayOn()) power += getTreeUpgradeEffect(8)
 		if (hasNU(16)) power += NT.eff("upg", 16)
 	}

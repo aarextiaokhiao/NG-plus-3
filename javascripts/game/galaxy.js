@@ -139,7 +139,7 @@ function initialGalaxies() {
 		g *= Math.max(Math.min(10 - (quSave.electrons.amount + g * getPositronGainFinalMult()) / 16857, 1), 0)
 		g += Math.min(sac, player.galaxies) * lightEff(3, 0)
 	}
-	if ((inAnyQC() || dev.testZone) && !tmp.qu.be) g = 0
+	if (inAnyQC() && !tmp.qu.be) g = 0
 	if ((inNC(15) || player.currentChallenge == "postc1") && inOnlyNGM(3)) g = 0
 	return g
 }

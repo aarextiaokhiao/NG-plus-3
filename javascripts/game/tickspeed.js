@@ -31,9 +31,8 @@ function getGalaxyTickSpeedMultiplier() {
 		if (mod.rs && player.galaxies == 0) ret = 0.89
 		else if (gal == 0) ret = 0.89
 		if (inNC(6, 1) || player.currentChallenge == "postc1") ret = 0.93
-		if (mod.rs) {
-			ret -= linearGalaxies * 0.02
-		} else {
+		if (mod.rs) ret -= linearGalaxies * 0.02
+		else {
 			let perGalaxy = 0.02 * tmp.gal.str
 			return Math.max(ret - (gal * perGalaxy), 0.83)
 		}

@@ -34,10 +34,11 @@ const QC = QUANTUM_CHALLENGE = {
 		reward_eff(comps) {
 			if (comps == 0) return 1
 			let ipow = player.infinityPower.add(1).log10()
-			let log = Math.sqrt(ipow / 2e8) 
-			if (comps >= 2) log += Math.pow(ipow / 1e9, 4/9 + comps/9)
 
-			log = softcap(log, "qc3reward")
+			let log = Math.sqrt(ipow / 2e8)
+			if (comps >= 2) log += Math.pow(ipow / 1e9, 4/9 + comps/9)
+			if (log > 1e3) log = Math.sqrt(log * 250) + 500
+
 			return pow10(log)
 		},
 		reward_eff_disp: e => shorten(e) + "x"

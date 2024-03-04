@@ -412,8 +412,15 @@ function buyEternityUpgrade(name, cost) {
 }
 
 function getEPCost(bought) {
-	if (inNGM(2)) return E_pow(50,bought).mul(500)
-	return E_pow(bought > 481 ? 1e3 : bought > 153 ? 500 : bought > 58 ? 100 : 50, bought + Math.pow(Math.max(bought - 1334, 0), 1.2)).mul(500)	
+	let exp = bought, base = 50
+	if (!inNGM(2)) {
+		if (bought > 58) base = 100
+		if (bought > 153) base = 500
+		if (bought > 481) base = 1e3
+		if (bought > 1334 && !dev.testZone) exp += Math.pow(Math.max(bought - 1334, 0), 1.2)
+	}
+
+	return E_pow(base, exp).mul(500)	
 }
 
 function buyEPMult() {

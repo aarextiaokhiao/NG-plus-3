@@ -472,6 +472,9 @@ function mainTimeStudyDisplay(){
 		el("231desc").textContent = "Currently: "+shorten(E_pow(Math.max(player.resets, 1), 0.3))+"x more power"
 		el("232desc").textContent = "Currently: "+shortenMoney(tsMults[232]() * 100 - 100)+"%"
 	}
+
+	el("225desc").textContent = mod.ngp3 ? "Currently: +"+getFullExpansion(tsMults[225]()) : ""
+	el("226desc").textContent = mod.ngp3 ? "Currently: +"+getFullExpansion(tsMults[226]()) : ""
 }
 
 function ABTypeDisplay(){

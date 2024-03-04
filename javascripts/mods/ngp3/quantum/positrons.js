@@ -1,5 +1,5 @@
 function isPositronsOn() {
-	return hasMasteryStudy("d7") && notInQC() && !dev.testZone
+	return hasMasteryStudy("d7") && notInQC()
 }
 
 function updatePositronsTab() {

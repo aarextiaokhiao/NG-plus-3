@@ -39,7 +39,7 @@ let TABS = {
 		galacticUpgradeButtonTypeDisplay()
 	} },
 
-	inf: { name: "Infinity", class: "infinitybtn", stab: [ "upg_inf", "auto_buy", "break", "rep" ], unl: _ => infinitied() && !dev.rem },
+	inf: { name: "Infinity", class: "infinitybtn", stab: [ "upg_inf", "auto_buy", "break", "rep" ], unl: _ => infinitied() },
 	upg_inf: { name: "Upgrades", update: _ => preBreakUpgradeDisplay() },
 	auto_buy: { name: "Autobuyers", unl: _ => inNGM(4) ? gSacrificed() : infinitied()  },
 	break: { name: "Break Infinity", update() {
@@ -47,7 +47,7 @@ let TABS = {
 	} },
 	rep: { name: "Replicanti", update: _ => replicantiDisplay() },
 
-	eter: { name: "Eternity", class: "eternitybtn", stab: [ "ts", "ts_respec", "ts_master", "upg_eter", "dil", "bh", "mil_eter" ], unl: _ => eternitied() && !dev.rem, update() {
+	eter: { name: "Eternity", class: "eternitybtn", stab: [ "ts", "ts_respec", "ts_master", "upg_eter", "dil", "bh", "mil_eter" ], unl: _ => eternitied(), update() {
 		if (el("TTbuttons").style.display !== "none") updateTheoremButtons()
 	} },
 	ts: { name: "Time Studies", unl: _ => !mod.rs, update() {

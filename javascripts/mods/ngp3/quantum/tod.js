@@ -1,5 +1,5 @@
 function isDecayOn() {
-	return hasMasteryStudy("d13") && !dev.testZone
+	return hasMasteryStudy("d13")
 }
 
 function getLogTotalSpin() {

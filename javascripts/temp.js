@@ -76,7 +76,7 @@ function updateReplicantiTemp() {
 
 	data.ln = player.replicanti.amount.ln()
 	data.chance = player.replicanti.chance
-	if (hasMasteryStudy("t273") && !dev.testZone) {
+	if (hasMasteryStudy("t273")) {
 		let ms273 = getMTSMult(273)
 		data.chance = E_pow(data.chance, ms273)
 		if (data.chance.gte("1e9999998")) data.freq = ms273.mul(Math.log10(player.replicanti.chance + 1) / Math.log10(2))

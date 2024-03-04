@@ -101,8 +101,8 @@ let PHOTON = {
 				desc: e => `Discharged Galaxies are ${(e*100).toFixed(1)}% efficient.`
 			}, {
 				name: "green",
-				eff: a => a / 3 + 1,
-				desc: e => `Raise Replicate Slowdown by ^${shorten(e)}.`
+				eff: a => 1,
+				desc: e => `Placeholder.`
 			}, {
 				name: "blue",
 				eff: a => a / 3 + 1,
