@@ -155,7 +155,7 @@ const MTS = MASTERY_STUDIES = {
 			if (mod.p3ep) exp += Math.pow((exp + 9) * 3, .2) * Math.log10(exp + 1)
 			return pow10(exp)
 		},
-		421: () => pow10(Math.pow(-getTickspeed().log10() / 1e13 + 1, 1/3) - 1),
+		421: () => pow10((Math.pow(1 - getTickspeed().e / 1e13, 1/3) - 1) * (dev.testZone ? 3 : 1)),
 		431() {
 			var gals = player.dilation.freeGalaxies
 			var base = Math.max(gals / 5e3 - 1, 1)

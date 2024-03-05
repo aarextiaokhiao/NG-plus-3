@@ -243,7 +243,7 @@ function breakInfinityUpgradeDisplay(){
 	el("postinfi32").innerHTML = "Antimatter Dimensions gain a multiplier based on your slowest Normal Challenge time<br>Currently: "+shorten(worstChallengeBonus)+"x<br>Cost: " + shortenCosts(1e7) + " IP"
 	el("postinfi13").innerHTML = "You generate Infinities based on your fastest Infinity.<br>1 Infinity every " + timeDisplay(player.bestInfinityTime * 5) + " <br>Cost: " + shortenCosts(2e7) + " IP"
 	el("postinfi23").innerHTML = "Unlock the option to bulk buy Dimension" + (!inNGM(3) ? "" : " and Tickspeed") + " Boosts <br>Cost: " + shortenCosts(inNGM(3) ? 2e4 : inNGM(2) ? 5e6 : 5e9) + " IP"
-	el("postinfi33").innerHTML = "Autobuyers work twice as fast <br>Cost: " + shortenCosts(1e15) + " IP"
+	el("postinfi33").innerHTML = "Autobuyers work twice as fast<br>Cost: " + shortenCosts(1e15) + " IP"
 	if (player.dimensionMultDecrease > 3) el("postinfi42").innerHTML = "Decrease the Dimension cost multiplier post-e308<br>Currently: " + player.dimensionMultDecrease + "x → " + (player.dimensionMultDecrease - 1) + "x<br>Cost: " + shortenCosts(player.dimensionMultDecreaseCost) +" IP"
 	else el("postinfi42").innerHTML = "Decrease the Dimension cost multiplier post-e308<br>Currently: "+player.dimensionMultDecrease.toFixed(ECComps("eterc6") % 5 > 0 ? 1 : 0) + "x"
 	el("offlineProd").innerHTML = "Generate " + player.offlineProd + "% > " + Math.max(Math.max(5, player.offlineProd + 5), Math.min(50, player.offlineProd + 5)) + "% of your best IP/min from the last 10 Infinities, works offline<br>Currently: " + shortenMoney(bestRunIppm.mul(player.offlineProd / 100)) + " IP/min<br> Cost: " + shortenCosts(player.offlineProdCost) + " IP"

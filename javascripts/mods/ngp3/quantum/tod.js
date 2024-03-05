@@ -19,7 +19,7 @@ function setupToDHTML() {
 	for (var [u, b] of Object.entries(branchUpgrades)) {
 		let i = parseInt(u) + 1
 		html += `<td>
-			<button class='qu_upg unavailablebtn' id='redupg${i}' onclick='buyBranchUpg("r", ${i})'>
+			<button class='qu_upg unavailablebtn' id='redupg${i}' onclick='buyBranchUpg(${i})'>
 				${b}<br>
 				Currently: <span id='redupg${i}current'></span><br>
 				<span id='redupg${i}cost'></span>
@@ -78,8 +78,8 @@ function updateBranchUpgrade(u) {
 	var start = extra ? "" : "Cost: "
 
 	el("redupg" + u + "current").innerHTML = u == 2 ? shortenDimensions(eff.mult) + "x, ^" + shortenDimensions(eff.exp) : shortenDimensions(eff) + "x"
-	el("redupg" + u + "cost").innerHTML = start + shortenMoney(getBranchUpgCost("red", u)) + " preonic spin"
-	el("redupg" + u).className = "qu_upg " + (bData.spin.lt(getBranchUpgCost("red", u)) ? "unavailablebtn" : "r")
+	el("redupg" + u + "cost").innerHTML = start + shortenMoney(getBranchUpgCost(u)) + " preonic spin"
+	el("redupg" + u).className = "qu_upg " + (bData.spin.lt(getBranchUpgCost(u)) ? "unavailablebtn" : "r")
 }
 
 function getUnstableGain() {
@@ -137,7 +137,6 @@ function getBranchSpeed() {
 	x = x.mul(getTreeUpgradeEffect(5))
 	if (hasNU(4)) x = x.mul(NT.eff("upg", 4))
 	if (hasAch("ng3p48")) x = x.mul(Math.sqrt(player.meta.resets + 1))
-	if (hasNanoReward("decay_exp")) x = x.pow(getNanorewardEff("decay_exp"))
 	return x
 }
 
@@ -156,16 +155,16 @@ function getQuarkSpinProduction(branch) {
 	return ret
 }
 
-function getTreeUpgradeCost(upg,add) {
-	let lvl = getTreeUpgradeLevel(upg)
-	if (add !== undefined) lvl += add
-	if (upg == 1) return pow2(lvl * 2 + Math.max(lvl - 35, 0) * (lvl - 34) / 2).mul(50)
-	if (upg == 2) return E_pow(4, lvl * (lvl + 3) / 2).mul(600)
-	if (upg == 3) return E_pow(32, lvl).mul(3e9)
+function getTreeUpgradeCost(upg, add=0) {
+	let lvl = getTreeUpgradeLevel(upg) + add
+
+	if (upg == 1) return pow2(lvl * 2).mul(50)
+	if (upg == 2) return pow2(lvl * (lvl + 3)).mul(600)
+	if (upg == 3) return pow2(lvl * 5).mul(3e9)
 	if (upg == 4) return pow2(lvl).mul(1e12)
 	if (upg == 5) return pow2(lvl).mul(4e12)
 	if (upg == 6) return E_pow(6, lvl).mul(1e21)
-	if (upg == 7) return E_pow(16, lvl).mul(4e22)
+	if (upg == 7) return pow2(lvl * 4).mul(4e22)
 	if (upg == 8) return pow2(lvl).mul(3e23)
 	return 0
 }
@@ -217,24 +216,28 @@ function getTreeUpgradeEffectDesc(upg) {
 }
 
 var branchUpgCostScales = [[300, 15, 2], [50, 8, 1], [4e7, 7, 1]]
-function getBranchUpgCost(branch, upg, lvl) {
+function getBranchUpgCost(upg, lvl) {
 	var lvl = lvl || getBranchUpgLevel(upg)
 	var scale = branchUpgCostScales[upg-1]
-	return pow2(lvl * upg + Math.max(lvl - scale[1], 0) * scale[2]).mul(scale[0])
+	return pow2(lvl * upg + Math.max(lvl - getBranchUpgScaleStart(upg), 0) * scale[2]).mul(scale[0])
 }
 
-function buyBranchUpg(branch, upg) {
-	var bData = todSave[branch]
-	if (bData.spin.lt(getBranchUpgCost(branch,upg))) return
-	bData.spin = bData.spin.sub(getBranchUpgCost(branch, upg))
-	if (bData.upgrades[upg] == undefined) bData.upgrades[upg] = 0
-	bData.upgrades[upg]++
+function getBranchUpgScaleStart(upg) {
+	var r = branchUpgCostScales[upg-1][1]
+	if (hasNanoReward("decay_scale")) r += getNanorewardEff("decay_scale")
+	return r
+}
+
+function buyBranchUpg(upg) {
+	var bData = todSave.r
+
+	if (bData.spin.lt(getBranchUpgCost(upg))) return
+	bData.spin = bData.spin.sub(getBranchUpgCost(upg))
+	bData.upgrades[upg] = getBranchUpgLevel(upg) + 1
 }
 
 function getBranchUpgLevel(upg) {
-	upg = todSave.r.upgrades[upg]
-	if (upg) return upg
-	return 0
+	return todSave.r.upgrades[upg] ?? 0
 }
 
 function rotateAutoAssign() {
@@ -362,13 +365,13 @@ function maxTreeUpg() {
 function maxBranchUpg(branch, weak) {
 	var bData = todSave[branch]
 	for (var u = (weak ? 2 : 1); u <= 3; u++) {
-		var scales = branchUpgCostScales[u - 1]
+		var scales = branchUpgCostScales[u - 1], scaleStart = getBranchUpgScaleStart(u)
 		var ret = bData.spin.div(scales[0]).log(2) / u
-		if (ret > scales[1]) ret = scales[1] + (ret - scales[1]) / (u + scales[2]) * u
+		if (ret > scaleStart) ret = scaleStart + (ret - scaleStart) / (u + scales[2]) * u
 		ret = Math.floor(ret) + 1
 
 		if (getBranchUpgLevel(u) >= ret) continue
-		bData.spin = bData.spin.sub(getBranchUpgCost(branch, u, ret - 1))
+		bData.spin = bData.spin.sub(getBranchUpgCost(u, ret - 1))
 		bData.upgrades[u] = ret
 	}
 }

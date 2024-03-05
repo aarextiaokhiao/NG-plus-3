@@ -151,7 +151,7 @@ let HOW_TO = [
 		<br>
 		<b>Sacrifice Autobuyer:</b> This autobuyer has a maxed timer from the start. You can set how much multiplier it waits for before sacrificing. It accepts e notation.
 		<br>
-		The double autobuyer tick speed upgrade will have all autobuyers buy twice as fast.<br>
+		The double autobuyer tickspeed upgrade will have all autobuyers buy twice as fast.<br>
 		<b>Toggle All Autobuyers:</b> This button will turn all of your autobuyers on or off.
 		<br>
 		<b>Hotkey: A</b> (for toggle all autobuyers)`

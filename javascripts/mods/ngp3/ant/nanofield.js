@@ -96,7 +96,7 @@ var nanoRewards = {
 		pilon_charge: (x) => pow2(x * (hasNU(15) ? 4 : 2)),
 		per_10_power: (x) => x * 0.76,
 		pilon_energy: (x) => pow2(x),
-		decay_exp: (x) => Math.min(Math.log10(Math.max(x + 8, 10)), 2),
+		decay_scale: (x) => x,
 		photon: (x) => pow2(x ** 0.5),
 	},
 	effDisp: {
@@ -110,7 +110,7 @@ var nanoRewards = {
 		pilon_charge: (x) => "produce nanocharge " + shorten(x) + "x faster",
 		per_10_power: (x) => "+" + shorten(x) + "x to pre-Positrons effect",
 		pilon_energy: (x) => "produce nanoenergy " + shorten(x) + "x faster",
-		decay_exp: (x) => "raise Decay speed by ^" + shorten(x),
+		decay_scale: (x) => "+" + shorten(x) + " to branch upgrade scaling",
 		photon: (x) => "gain " + shorten(x) + "x more Photons",
 	},
 	usage: {
@@ -120,7 +120,7 @@ var nanoRewards = {
 		4: _ => ["dt_to_ma_exp"],
 		5: _ => ["dil_exp"],
 		6: _ => ["md_boost"],
-		7: _ => hasNU(15) ? ["pilon_charge", "decay_exp"] : hasNU(6) ? ["pilon_charge"] : ["remote_start", "pilon_charge"],
+		7: _ => hasNU(15) ? ["pilon_charge", "decay_scale"] : hasNU(6) ? ["pilon_charge"] : ["remote_start", "pilon_charge"],
 		8: _ => ["per_10_power", "pilon_energy"],
 	},
 }

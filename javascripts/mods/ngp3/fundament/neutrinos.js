@@ -177,7 +177,7 @@ const NEUTRINO = NT = {
 			NT_RES.spend(NT.upgrades.data[x-1].cost)
 			ghSave.neutrinos.upgrades.push(x)
 
-			if (x == 16) resetNanoRewardEffects()
+			if (x == 15) resetNanoRewardEffects()
 		},
 		has(x) {
 			return ghSave?.neutrinos.upgrades.includes(x)
