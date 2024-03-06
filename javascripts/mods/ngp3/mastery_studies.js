@@ -103,10 +103,10 @@ const MTS = MASTERY_STUDIES = {
 			if (mod.ngep) return Math.pow(r, 2)
 			return r
 		},
-		273(uses){
+		273(){
 			var intensity = 5
 			if (hasNB(2)) intensity += NT.eff("boost", 2, 0)
-			if (uses.includes("intensity")) return intensity
+
 			return Decimal.max(Math.log10(player.replicanti.chance + 1), 1).pow(intensity)
 		},
 		281: () => pow10(Math.pow(E(tmp.rep?.eff || 1).max(1).log10(), 0.25) / 10 * (mod.p3ep ? 2 : 1)),
@@ -216,30 +216,12 @@ const MTS = MASTERY_STUDIES = {
 	},
 	hasStudyEffect: [251, 252, 253, 262, 263, 264, 273, 281, 282, 301, 303, 322, 332, 341, 344, 351, 361, 371, 372, 373, 381, 382, 383, 391, 392, 393, 401, 411, 421, 431],
 	studyEffectDisplays: {
-		251(x) {
-			return "+" + getFullExpansion(Math.floor(x))
-		},
-		252(x) {
-			return "+" + getFullExpansion(Math.floor(x))
-		},
-		253(x) {
-			return "+" + getFullExpansion(Math.floor(x))
-		},
-		273(x) {
-			return "^" + shorten(x)
-		},
-		301(x) {
-			return "+" + getFullExpansion(Math.floor(x))
-		},
-		332(x) {
-			return shortenDimensions(x) + "x"
-		},
-		344(x) {
-			return (x * 100 - 100).toFixed(2) + "%"
-		},
-		431(x) {
-			return shorten(x) + "x"
-		}
+		251: x => "+" + getFullExpansion(Math.floor(x)),
+		252: x => "+" + getFullExpansion(Math.floor(x)),
+		253: x => "+" + getFullExpansion(Math.floor(x)),
+		273: x => "^" + shorten(x),
+		301: x => "+" + getFullExpansion(Math.floor(x)),
+		344: x => formatPercentage(x-1)+"%"
 	},
 	ecsUpTo: 14,
 	unlocksUpTo: 14,

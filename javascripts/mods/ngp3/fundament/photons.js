@@ -89,8 +89,8 @@ let PHOTON = {
 				desc: e => `Tickspeed reduction multiplies per-ten multiplier by ${shorten(e)}x.`
 			}, {
 				name: "red",
-				eff: a => [1 + Math.min(a, .5), Math.min(a / 2 + 1, 3)],
-				desc: e => `Raise 2nd Neutrino Boost by ^${e[0].toFixed(3)}, x${shorten(e[1])}.`
+				eff: a => Math.min(1 + Math.sqrt(a), 3),
+				desc: e => `Raise 2nd Neutrino Boost by ^${e.toFixed(3)}.`
 			}, {
 				name: "orange",
 				eff: a => 1 + a / 500,

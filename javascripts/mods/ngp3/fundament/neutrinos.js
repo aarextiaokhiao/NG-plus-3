@@ -26,7 +26,7 @@ const NEUTRINO = NT = {
 		data.boost = {}
 		for (let i = 1; i <= ghSave.neutrinos.boosts; i++) {
 			let nt_eff = 0, nb = this.boosts.data[i-1]
-			for (let amt of data.amt) nt_eff += amt.add(1).log10() ** (nb.eff_exp || 1)
+			for (let amt of data.amt) nt_eff += amt.add(1).log10()
 			data.boost[i] = nb.eff(nt_eff)
 		}
 
@@ -98,15 +98,11 @@ const NEUTRINO = NT = {
 				effDesc: e => `Increase TP gain exponent by <b>+^${shorten(e)}</b>.`,
 			}, {
 				cost: E(2),
-				eff(nt) {
-					let nb2 = Math.pow(nt, .25) * 1.5, ol = lightEff(1)
-					return Math.pow(nb2, ol[0]) * ol[1]
-				},
+				eff: nt => Math.pow(nt, .25 * lightEff(1)) * 1.5,
 				effDesc: e => `Replicate chance boosts itself more. (<b>+^${shorten(e)}</b>)`,
 			}, {
-				cost: E(4),				
-				exp_eff: 2,
-				eff: nt => Math.sqrt(Math.sqrt(nt)+625) / 25,
+				cost: E(4),
+				eff: nt => Math.log10(Math.max(nt / 5, 10)),
 				effDesc: e => `Uncap the Dilation Upgrade 14 and increase it by <b>${shorten(e)}x</b>.`,
 			}, {
 				cost: E(6),
