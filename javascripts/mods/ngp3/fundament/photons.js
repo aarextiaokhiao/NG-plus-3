@@ -110,7 +110,7 @@ let PHOTON = {
 			}, {
 				name: "violet",
 				eff: a => a / 3 + 1,
-				desc: e => `Nanoreward scaling scales ${shorten(e)}x slower.`
+				desc: e => `Nanoreward scaling is ${shorten(e)}x slower.`
 			}, {
 				name: "ultraviolet",
 				eff: a => 1 + a / 100,
