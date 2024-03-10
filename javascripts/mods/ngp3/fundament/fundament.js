@@ -143,7 +143,7 @@ ghostifyAni = function(gain, amount, seconds=4) {
 	el("ghostifyani").style["transition-duration"] = (seconds / 4) + "s"
 	el("ghostifyanitext").style["transition-duration"] = (seconds / 8) + "s"
 	setTimeout(function() {
-		el("ghostifyanigained").innerHTML = ghostified ? "You now have <b>" + shortenDimensions(amount) + "</b> Spectral Particles. (+" + shortenDimensions(gain) + ")" : "We started from small. A spectral realm..."
+		el("ghostifyanigained").innerHTML = ghostified ? "You now have <b>" + shortenDimensions(amount) + "</b> Spectral Particles. (+" + shortenDimensions(gain) + ")" : "A spectral realm... Kee-hee-hee!"
 		el("ghostifyanitext").style.left = "0%"
 		el("ghostifyanitext").style.opacity = 1
 	}, seconds * 125)
