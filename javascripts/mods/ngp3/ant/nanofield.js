@@ -138,8 +138,8 @@ function getNanoRewardReq(additional){
 }
 
 function getNanoRewardReqFixed(n){
-	let x = E_pow(4, n).mul(50)
-	if (n >= 15) x = x.mul(E_pow(2.0, (n - 15) * (n - 12) / lightEff(6)))
+	let x = E_pow(4, n).mul(50), s = 15 + lightEff(6, 0)
+	if (n > s) x = x.mul(E_pow(2.0, (n - s) * (n - s + 3)))
 	return x
 }
 

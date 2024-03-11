@@ -109,8 +109,8 @@ let PHOTON = {
 				desc: e => `Raise Emperor Dimensions by ^${shorten(e)}.`
 			}, {
 				name: "violet",
-				eff: a => a / 3 + 1,
-				desc: e => `Nanoreward scaling is ${shorten(e)}x slower.`
+				eff: a => a,
+				desc: e => `Nanoreward scales +${shorten(e)} later.`
 			}, {
 				name: "ultraviolet",
 				eff: a => 1 + a / 100,
