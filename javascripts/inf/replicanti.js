@@ -240,6 +240,7 @@ function getReplSpeed() {
 	}
 	inc = inc + 1
 	if (hasGluonUpg("gb", 2)) exp *= 2
+	if (PHOTON.unlocked()) exp *= lightEff(4)
 	return { inc, exp }
 }
 

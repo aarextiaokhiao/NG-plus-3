@@ -101,8 +101,8 @@ let PHOTON = {
 				desc: e => `Discharged Galaxies are ${(e*100).toFixed(1)}% efficient.`
 			}, {
 				name: "green",
-				eff: a => 1,
-				desc: e => `Placeholder.`
+				eff: a => Math.min(quSave.time, 1e4) * a / 2e3 + 1,
+				desc: e => `Quantum time slows down Replicanti Slowdown by ^${shorten(e)}.`
 			}, {
 				name: "blue",
 				eff: a => a / 3 + 1,
