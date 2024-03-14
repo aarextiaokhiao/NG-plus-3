@@ -136,6 +136,7 @@ function getBranchSpeed() {
 	x = x.mul(getTreeUpgradeEffect(3))
 	x = x.mul(getTreeUpgradeEffect(5))
 	if (hasNU(4)) x = x.mul(NT.eff("upg", 4))
+	if (hasNB(12)) x = x.mul(NT.eff("boost", 12))
 	if (hasAch("ng3p48")) x = x.mul(Math.sqrt(player.meta.resets + 1))
 	return x
 }

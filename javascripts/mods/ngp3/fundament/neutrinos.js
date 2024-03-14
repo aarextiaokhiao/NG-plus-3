@@ -157,8 +157,8 @@ const NEUTRINO = NT = {
 				effDesc: e => `Gain <b>${shorten(e)}x</b> more Photons.`,
 			}, {
 				cost: E(1/0),
-				eff: nt => 1,
-				effDesc: e => `Placeholder.`,
+				eff: nt => (nt / 100 + 1),
+				effDesc: e => `Decay Speed is <b>${shorten(e)}x</b> faster.`,
 			}
 		]
 	},
