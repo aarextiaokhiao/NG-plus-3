@@ -158,7 +158,7 @@ const NEUTRINO = NT = {
 			}, {
 				cost: E(1/0),
 				eff: nt => (nt / 100 + 1),
-				effDesc: e => `Decay Speed is <b>${shorten(e)}x</b> faster.`,
+				effDesc: e => `Quark Decay is <b>${shorten(e)}x</b> faster.`,
 			}
 		]
 	},
