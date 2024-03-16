@@ -157,7 +157,7 @@ const NEUTRINO = NT = {
 				effDesc: e => `Gain <b>${shorten(e)}x</b> more Photons.`,
 			}, {
 				cost: E(1/0),
-				eff: nt => (nt / 100 + 1),
+				eff: nt => (nt / 200 + 1) ** 3,
 				effDesc: e => `Quark Decay is <b>${shorten(e)}x</b> faster.`,
 			}
 		]
