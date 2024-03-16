@@ -149,6 +149,7 @@ const TAB_CORE = {
 
 function onTabSwitch() {
 	el("progress").style.display = aarMod.progressBar && isTabShown("dim") ? "block" : "none"
+	updatePaddingForFooter()
 
 	let study_tree = isTabShown('ts') || isTabShown('ts_respec') || isTabShown('ts_master')
 	el("TTbuttons").style.display = study_tree ? "block" : "none"
