@@ -273,7 +273,7 @@ const NEUTRINO = NT = {
 				cost: E(1/0),
 				desc: `Galaxy strength raises Meta-Antimatter effect.`,
 
-				eff: _ => tmp.gal.str / 2,
+				eff: _ => tmp.gal.str / 3,
 				effDesc: e => `+^${shorten(e)}`
 			}
 		]
