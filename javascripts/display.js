@@ -69,7 +69,7 @@ function dimensionTabDisplay() {
 			el(tier + "Row").classList.add("locked")
 	}
 
-	setAndMaybeShow("mp10d", mod.ngmu, "'Multiplier per 10 Dimensions: '+shorten(getDimensionPowerMultiplier(\"non-random\"))+'x'")
+	setAndMaybeShow("mp10d", mod.ngmu || hasMasteryStudy("d7"), "'Multiplier per 10 Dimensions: '+shorten(getDimensionPowerMultiplier(\"non-random\"))+'x'")
 	updateCosts()
 	dimShiftDisplay()
 	tickspeedBoostDisplay()
