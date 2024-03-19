@@ -195,8 +195,10 @@ function getInfinityPowerEffect() {
 
 function getInfinityPowerEffectExp() {
 	let x = 7
-	let galaxies = Math.max(player.galaxies, 0)
+
+	if (PHOTON.unlocked()) x += lightEff(4, 0)
 	if (inNGM(2)) {
+		let galaxies = Math.max(player.galaxies, 0)
 		x = Math.pow(galaxies, 0.7)
 		if (player.currentChallenge === "postcngm3_2" || (inNGM(3) && player.currentChallenge === "postc1")) {
 			x = galaxies
@@ -205,9 +207,11 @@ function getInfinityPowerEffectExp() {
 				if (x > 7) x += 1
 			}
 		} else if (player.challenges.includes("postcngm3_2")) x = Math.pow(galaxies + (player.resets + player.tickspeedBoosts) / 30, 0.7)
+
 		x = Math.max(x, 7)
+		if (x > 100) x = 50 * Math.log10(x)
 	}
-	if (x > 100) x = 50 * Math.log10(x)
+
 	return x
 }
 

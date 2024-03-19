@@ -101,15 +101,15 @@ let PHOTON = {
 				desc: e => `Discharged Galaxies are ${(e*100).toFixed(1)}% efficient.`
 			}, {
 				name: "green",
-				eff: a => Math.min(quSave.time, 1e4) * a / 2e3 + 1,
-				desc: e => `Quantum time slows down Replicanti Slowdown by ^${shorten(e)}.`
+				eff: a => Math.min(a, 3),
+				desc: e => `Increase Infinity Power effect by +^${shorten(e)}.`
 			}, {
 				name: "blue",
 				eff: a => a / 3 + 1,
 				desc: e => `Raise Emperor Dimensions by ^${shorten(e)}.`
 			}, {
 				name: "violet",
-				eff: a => a,
+				eff: a => a * 4,
 				desc: e => `Nanoreward scales +${shorten(e)} later.`
 			}, {
 				name: "ultraviolet",

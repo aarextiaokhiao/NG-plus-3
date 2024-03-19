@@ -240,7 +240,7 @@ function getReplSpeed() {
 	}
 	inc = inc + 1
 	if (hasGluonUpg("gb", 2)) exp *= 2
-	if (PHOTON.unlocked()) exp *= lightEff(4)
+	if (hasNB(12) && !bigRipped()) exp *= NT.eff("boost", 12)
 	return { inc, exp }
 }
 

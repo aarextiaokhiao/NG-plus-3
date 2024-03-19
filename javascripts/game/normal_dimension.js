@@ -275,7 +275,8 @@ function getDimensionPowerMultiplier(focusOn, debug) {
 }
 	
 function getMPTBase(focusOn) {
-	if (((inQC(5) || inQC(7)) && focusOn != "linear") || (((inNC(13) && !inNGM(3)) || player.currentChallenge == "postc1" || player.currentChallenge == "postcngm3_1") && inNGM(2))) return hasMasteryStudy("t321") ? E("1e430") : 1
+	if ((inQC(5) || inQC(7)) && focusOn != "linear") return hasMasteryStudy("t321") ? E("1e430") : E(1)
+	if ((((inNC(13) && !inNGM(3)) || player.currentChallenge == "postc1" || player.currentChallenge == "postcngm3_1") && inNGM(2))) return E(1)
 
 	let ret = 2
 	if (inNGM(3)) ret = 1

@@ -103,10 +103,29 @@ TEST ZONE
 
 - Unsoftcap extra RGs.
 - Remove the last EP multiplier scaling.
+- Get unobtainable upgrades.
 */
 
 dev.enterTestZone = function() {
 	dev.testZone = true
 	noSave = true
+
+	ghSave.neutrinos.boosts = 12
+	ghSave.neutrinos.upgrades.push(15, 16)
+	beSave.upgrades.push(8, 9, 10)
+
 	$.notify("Entered the test zone. You'll recieve experimental effects.")
+	dev.quickZone()
+}
+
+dev.quickZone = function() {
+	setInterval(function() {
+		updatePerSecond()
+
+		NT_RES.addAll(NT_RES.gain().mul(player.galaxies))
+		quSave.time = 1e4
+		player.replicanti.amount = pow10(tmp.rep.speeds.exp / Math.log10(tmp.rep.speeds.inc) * 3).max(player.replicanti.amount)
+
+		if (bigRipped()) ghSave.ghostParticles = ghSave.ghostParticles.max(getGHPGain())
+	}, 100)
 }

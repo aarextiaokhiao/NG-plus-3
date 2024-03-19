@@ -157,8 +157,8 @@ const NEUTRINO = NT = {
 				effDesc: e => `Gain <b>${shorten(e)}x</b> more Photons.`,
 			}, {
 				cost: E(1/0),
-				eff: nt => (nt / 200 + 1) ** 3,
-				effDesc: e => `Quark Decay is <b>${shorten(e)}x</b> faster.`,
+				eff: nt => Math.min(quSave.time / 1e3, nt / 100) + 1,
+				effDesc: e => `Outside of Big Rip, Quantum time slows down Replicanti Slowdown by <b>^${shorten(e)}</b>.`
 			}
 		]
 	},
