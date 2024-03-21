@@ -111,7 +111,7 @@ const NEUTRINO = NT = {
 					if (!bigRipped()) a = Math.sqrt(a)
 					a = Math.min(a, 1.1)
 
-					let b = Math.max((nt - 90) / 10, 1)
+					let b = Math.max((nt - 80) / 20, 1)
 					return [a, b]
 				},
 				effDesc: e => `Raise Infinite Time by <b>^${shorten(e[0])}</b>.
