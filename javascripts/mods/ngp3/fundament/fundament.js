@@ -33,7 +33,6 @@ function loadFundament(unl) {
 
 	updateBraveMilestones()
 	updateAutoGhosts(true)
-	PHOTON.harvest.update()
 	delete BL_HYPOTHESES.hypo_chosen
 }
 

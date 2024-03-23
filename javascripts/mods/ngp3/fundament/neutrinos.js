@@ -140,7 +140,7 @@ const NEUTRINO = NT = {
 				eff(nt) {
 					let exp = mod.p3ep ? .6 : .5
 					let r = Math.pow(nt / 30 + 1, exp)
-					return Math.min(r, 6)
+					return Math.min(r, 3)
 				},
 				effDesc: e => `Raise Big Rip Upgrade 1 by <b>^${shorten(e)}</b>.`,
 			}, {
@@ -203,7 +203,7 @@ const NEUTRINO = NT = {
 				},
 				effDesc: e => `${shorten(e)}x`
 			}, {
-				unl: _ => ghSave.times >= 2,
+				unl: _ => ghSave.neutrinos.boosts > 1,
 				cost: E(2e8),
 				desc: `Tickspeed speeds up Decay.`,
 
@@ -271,9 +271,9 @@ const NEUTRINO = NT = {
 			}, {
 				unl: _ => PHOTON.unlocked(),
 				cost: E(1/0),
-				desc: `Galaxy strength raises Meta-Antimatter effect.`,
+				desc: `Galaxies raise Meta-Antimatter effect.`,
 
-				eff: _ => tmp.gal.str / 3,
+				eff: _ => player.galaxies / 1e4,
 				effDesc: e => `+^${shorten(e)}`
 			}
 		]
@@ -317,7 +317,7 @@ const NEUTRINO = NT = {
 		for (var [i, upg] of Object.entries(NT.upgrades.data)) {
 			i = parseInt(i)+1
 			el("nt_upg_cost_"+i).textContent = shorten(upg.cost)
-			el("nt_upg_"+i).className = (hasNU(i) ? "qu_upg_bought neutrinoupg" : NT.upgrades.can(i) ? "qu_upg neutrinoupg" : "qu_upg unavailablebtn") + " condensed"
+			el("nt_upg_"+i).className = (hasNU(i) ? "qu_upg_bought neutrinoupg" : NT.upgrades.can(i) ? "qu_upg neutrinoupg" : "qu_upg unavailablebtn")
 			if (upg.eff) el("nt_upg_eff_"+i).textContent = upg.effDesc(tmp.funda.neutrino.upg[i])
 			if (upg.unl) el("nt_upg_"+i).style.display = upg.unl() ? "" : "none"
 		}

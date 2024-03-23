@@ -147,7 +147,6 @@ function galacticSacrifice(auto, force, chall) {
 		}
 		if (!chall && (force || !player.options.retryChallenge)) delete player.galacticSacrifice.chall
 		el("challengeconfirmation").style.display = "inline-block"
-		updateChallenges()
 		updateChallengeTimes()
 		updateAutobuyers()
 	}
@@ -178,7 +177,7 @@ function newGalacticDataOnInfinity(eternity) {
 }
 
 function isIC3Trapped() {
-	return player.galacticSacrifice || player.currentEternityChall === "eterc14" || inQC(6)
+	return inNGM(4) || player.currentEternityChall === "eterc14" || inQC(6)
 }
 
 //v1.2
@@ -212,9 +211,7 @@ let galCosts = {
 }
 
 function getGalaxyUpgradeCost(i){
-	if (mod.ngmX==4){
-		if (galCosts[i+"ngm4"]) return E(galCosts[i+"ngm4"])
-	}
+	if (mod.ngmX==4) if (galCosts[i+"ngm4"]) return E(galCosts[i+"ngm4"])
 	return galCosts[i]
 }
 
@@ -338,10 +335,6 @@ function galacticUpgradeButtonTypeDisplay() {
 }
 
 //v1.295
-function resetTotalBought() { //uhh what does this do?
-	if (inNGM(2)) return {}
-}
-
 function productAllTotalBought() {
 	var ret = 1;
 	var mult = getProductBoughtMult()

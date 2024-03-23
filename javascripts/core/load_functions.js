@@ -920,7 +920,6 @@ function doPostNGP3Versions() {
 			player.postC4Tier=player.postC6Tier
 			delete player.postC6Tier
 			aarMod.newGameMinusMinusVersion = 1.5
-			updateChallenges()
 		}
 		if (E_pow(1e15, player.replicanti.chance*100).mul(1e135).div(player.replicanti.chanceCost).gte(1e59)) aarMod.newGameMinusMinusVersion = 2
 		if (aarMod.newGameMinusMinusVersion) updateAchievements()

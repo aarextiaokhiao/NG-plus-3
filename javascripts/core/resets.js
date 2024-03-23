@@ -24,7 +24,6 @@ let RESETS = {
 				player[name + "Cost"] = E(costs[d - 1])
 				player.costMultipliers[d - 1] = E(costMults[d - 1])
 			}
-			player.totalBoughtDims = resetTotalBought()
 		},
 		startingTickspeed() {
 			player.tickspeed = E(mod.ngep ? 500 : 1000)
@@ -89,6 +88,7 @@ let RESETS = {
 
 		doReset() {
 			player.galaxies = 0
+			updateChallenges()
 			updateNCVisuals()
 			if (inNGM(2)) {
 				player.galacticSacrifice.time = 0
@@ -201,8 +201,8 @@ let RESETS = {
 			}
 
 			if (!auto) {
-				updateChallenges()
 				updateAutobuyers()
+				updateEternityChallenges()
 				updateMilestones()
 				hideMaxIDButton()
 			}
@@ -216,10 +216,8 @@ let RESETS = {
 
 		resetEC(order) {
 			let bigRip = bigRipped()
-			if (bigRip ? !hasRipUpg(2) : !isRewardEnabled(3)) {
-				player.eternityChalls = {}
-				updateEternityChallenges()
-			}
+			if (bigRip ? !hasRipUpg(2) : !isRewardEnabled(3)) player.eternityChalls = {}
+
 			player.eternityChallGoal = E(Number.MAX_VALUE)
 			player.currentEternityChall = ""
 			player.eternityChallUnlocked = isRewardEnabled(11) ? player.eternityChallUnlocked : 0
@@ -329,6 +327,7 @@ let RESETS = {
 			quSave.notrelative = true
 			if (player.timestudy.theorem == 0 && !player.dilation.upgrades.includes(10)) quSave.wasted = true
 
+			updateInQCs()
 			if (!auto) {
 				updateRespecButtons()
 				updateMasteryStudyCosts()
@@ -430,6 +429,8 @@ let RESETS = {
 			if (bm < 7) beSave.upgrades = []
 			beSave.eternalMatter = E(0)
 			beSave.epMultPower = 0
+
+			delete brSave.phantoms
 		},
 		doTOUSOnGhostify(bm){
 			if (hasAch("ng3p77")) { //thry of ultimate studies
@@ -489,6 +490,9 @@ let RESETS = {
 			ghSave.another = 10
 			ghSave.reference = 10
 			ghSave.photons.amt = E(0)
+
+			ghSave.photons.sel[1] = -1
+			for (var i of ghSave.photons.slots) if (i[0]) i[1] = true
 		}
 	}
 }
@@ -560,9 +564,10 @@ function completelyResetInfinityDimensions() {
 }
 
 function resetInfDimUnlocked() {
-	let data = []
-	let value = getEternitied() >= 25 && hasAch("ng3p21")
-	for (var d = 1; d <= 8; d++) data.push(value)
+	let data = Array(8).fill(false)
+	if (getEternitied() >= 25 && hasAch("ng3p21")) {
+		for (var d = 0; d < Math.max(8 - PHANTOM.amt, 1); d++) data[d] = true
+	}
 	player.infDimensionsUnlocked = data
 }
 

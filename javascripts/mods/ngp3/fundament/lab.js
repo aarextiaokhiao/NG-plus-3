@@ -2,7 +2,7 @@
 const BOSONIC_LAB = LAB = {
 	/* CORE */
 	//Unlock
-	req: _ => tmp.funda.photon.light[7] >= 1,
+	req: _ => tmp.funda.photon?.light[7] >= 1,
 	unlocked: _ => blSave?.unl,
 	unlock() {
 		blSave.unl = true

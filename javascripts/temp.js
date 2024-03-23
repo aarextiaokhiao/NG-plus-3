@@ -1,5 +1,6 @@
 let tmp = {
 	qu: {
+		phantoms: 0,
 		chal: { in: [0], reward: {} },
 		bru: {},
 		beu: {},

@@ -2372,14 +2372,23 @@ div.lDe {
 
 .photon {
 	background: #ff7;
-	border-color: #bb3;
+	border: 1px solid #bb3;
 	box-shadow: inset 0px 0px 20px 0px #ffb;
-	color: black;
+	transition-duration: 0.5s
+}
+.photon.slot {
+	width: 90px;
+	height: 90px;
 }
 .photon:hover {
 	background: white;
 	color: #330;
 	cursor: pointer
+}
+.photon.choosed {
+	background: #7f7;
+	border: 1px solid #3b3;
+	box-shadow: inset 0px 0px 20px 0px #bfb
 }
 .table_flex {
     display: flex;
@@ -2387,8 +2396,8 @@ div.lDe {
     flex-flow: row wrap;
 }
 .light {
-	width: 180px;
-	height: 150px;
+	width: 300px;
+	height: 120px;
 	border: 0 solid;
 	border-radius: 3px;
 	transition-duration: 0.5s

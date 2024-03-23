@@ -7,7 +7,8 @@ let PHOTON = {
 	setup() {
 		return {
 			amt: E(0),
-			range: [0, 0]
+			sel: [0, -1],
+			slots: [[0, false], [0, false], [0, false], [0, false], [0, false]]
 		}
 	},
 
@@ -21,7 +22,8 @@ let PHOTON = {
 
 	//Calculation
 	calc(dt) {
-		ghSave.photons.amt = this.photon_prod().mul(dt).add(ghSave.photons.amt)
+		ghSave.photons.amt = this.photon_prod().mul(dt * PHOTON.checkSpeed(0)).add(ghSave.photons.amt)
+		if (ghSave.photons.sel[1] != -1) ghSave.photons.slots[ghSave.photons.sel[1]][0] += dt
 	},
 	temp() {
 		if (!this.unlocked()) return
@@ -30,62 +32,54 @@ let PHOTON = {
 		let lights = this.light.data
 		tmp.funda.photon = data
 
-		data.emission = ghSave.photons.amt.div(100).max(1).log(30)
+		data.emission = ghSave.photons.amt.max(1).log(10)
 		data.light = []
-		data.harvest = [0,0]
 		data.eff = []
-		data.size = []
 
-		let harvest = 0.1
-		let total_size = lights.length - harvest * 6
-		let cycles = Math.floor(data.emission / total_size)
-		let remainder = data.emission % total_size
+		let cycles = Math.floor(data.emission / 8)
+		let remainder = data.emission % 8
 
 		data.curr = -1
-		data.next = E(30).pow(cycles * total_size).mul(100)
+		data.next = E(10).pow(cycles * 8)
 
 		for (let [i, light] of Object.entries(lights)) {
-			let size = 1
-			for (let r of ghSave.photons.range) if (i - r >= 0 && i - r < 3) size -= harvest
-			data.light[i] = cycles + Math.min(remainder / size, 1)
+			data.light[i] = cycles + Math.min(remainder, 1)
 			data.eff[i] = light.eff(data.light[i]) //will be determined soon
-			data.size[i] = size
-			for (let [ri, r] of Object.entries(ghSave.photons.range)) if (i - r >= 0 && i - r < 3) data.harvest[ri] += data.light[i]
 
 			if (remainder > 0) {
 				data.curr = Number(i)
-				data.next = E(30).pow(size).mul(data.next)
-				data.gain = remainder / size
+				data.next = E(10).mul(data.next)
+				data.gain = remainder
 			}
-			remainder = Math.max(remainder - size, 0)
+			remainder = Math.max(remainder - 1, 0)
 		}
 	},
 
-	/* Feature - Enharvestments */
-	harvest: {
-		names: ["Dark Essence", "Enlightenment"],
-		classes: ["lDe", "lEp"],
-		change(i) {
-			ghSave.photons.range[i] = Number(el("ph_harvest_range_"+i).value)
-		},
-		update() {
-			for (let i in this.names) el("ph_harvest_range_" + i).value = ghSave.photons.range[i]
-		},
+	/* Feature - Time */
+	sel(i) {
+		if (ghSave.photons.slots[i][1]) {
+			if (ghSave.photons.sel[0] == 0) ghSave.photons.amt = this.photon_prod().mul(ghSave.photons.slots[i][0]).add(ghSave.photons.amt)
+			if (ghSave.photons.sel[0] == 1) replicantiIncrease(ghSave.photons.slots[i][0] * 10)
+			if (ghSave.photons.sel[0] == 2) treeOfDecayUpdating(ghSave.photons.slots[i][0])
+			ghSave.photons.slots[i] = [0, false]
+		} else ghSave.photons.sel[1] = i
 	},
 
 	/* Feature - Lights */
 	photon_prod() {
-		let r = player.dilation.tachyonParticles.max(1).pow(1/60).div(1e4)
-		r = E(ghSave.ghostParticles.max(1e18).log10() / 18).pow(5).mul(r)
-		if (hasNB(12)) r = r.mul(NT.eff("boost", 12))
+		let r = pow10(player.dilation.freeGalaxies / 2e4 - 3)
+
+		if (hasNB(11))               r = r.mul(NT.eff("boost", 11))
 		if (hasNanoReward("photon")) r = r.mul(tmp.qu.nf.eff.photon)
+		if (PHANTOM.amt >= 1)        r = r.mul(2 ** PHANTOM.amt)
 		return r
 	},
+	checkSpeed(x) { return PHOTON.unlocked() && ghSave.photons.sel[0] == x && ghSave.photons.sel[1] != -1 ? .1 : 1 },
 	light: {
 		data: [
 			{
 				name: "infrared",
-				eff: a => E_pow(tmp.gal.ts || 1, -a/4),
+				eff: a => E_pow(tmp.gal.ts || 1, -Math.min(2**a-1,16) / 4),
 				desc: e => `Tickspeed reduction multiplies per-ten multiplier by ${shorten(e)}x.`
 			}, {
 				name: "red",
@@ -101,7 +95,7 @@ let PHOTON = {
 				desc: e => `Discharged Galaxies are ${(e*100).toFixed(1)}% efficient.`
 			}, {
 				name: "green",
-				eff: a => Math.min(a, 3),
+				eff: a => Math.min(Math.min(a, a ** 0.2), 1.5),
 				desc: e => `Increase Infinity Power effect by +^${shorten(e)}.`
 			}, {
 				name: "blue",
@@ -125,23 +119,12 @@ let PHOTON = {
 	/* HTML */
 	setupTab() {
 		let html = ``
-		for (var [r, type] of Object.entries(this.harvest.names)) {
-			let row = ''
-			for (var i = r * 4; i < r * 4 + 4; i++) {
-				let light = this.light.data[i]
-				row += `<div id='ph_light_${i}'>
-					<b id='ph_light_amt_${i}' style='font-size: 18px'></b><br>
-					<b id='ph_light_size_${i}'></b><br>
-					<span id='ph_light_eff_${i}'></span>
-				</div>`
-			}
-			html += `<div class='table_flex'>
-				<div id='ph_harvest_${r}'>
-					<b id='ph_harvest_amt_${r}' style='font-size: 18px'></b><br>
-					<b id='ph_harvest_gather_${r}'></b><br>
-					<input id='ph_harvest_range_${r}' type='range' max=5 onchange="PHOTON.harvest.change(${r})"><br>
-				</div>
-				${row}
+		for (var i = 0; i < 8; i++) {
+			let light = this.light.data[i]
+			html += `<div id='ph_light_${i}'>
+				<b id='ph_light_amt_${i}' style='font-size: 18px'></b><br>
+				<b id='ph_light_size_${i}'></b><br>
+				<span id='ph_light_eff_${i}'></span>
 			</div>`
 		}
 		el('light_table').innerHTML = html
@@ -155,25 +138,24 @@ let PHOTON = {
 			return
 		}
 
-		let pt = tmp.funda.photon
+		let pt = tmp.funda.photon, ps = ghSave.photons
 		let lights = this.light.data
 		el("ph_amt").textContent = shortenMoney(ghSave.photons.amt)
 		el("ph_prod").textContent = `(+${shorten(this.photon_prod())}/s)`
 
-		for (var [i, hav] of Object.entries(this.harvest.names)) {
-			let pos = ghSave.photons.range[i]
-			let on = [0,1,2].map(x => pos + x).includes(pt.curr)
-			el("ph_harvest_" + i).className = `light ${on ? this.harvest.classes[i] : ""}`
-			el("ph_harvest_amt_" + i).textContent = `${shorten(pt.harvest[i])} ${hav}s`
-			el("ph_harvest_range_" + i).style.display = pt.emission > 1.6 ? "" : "none"
-			el("ph_harvest_gather_" + i).textContent = on ? `Harvesting until ${lights[pos+2].name}` : `Harvests at ${lights[pos].name}`
+		for (var i = 0; i < 3; i++) el("ph_fea_" + i).className = "photon " + (ps.sel[0] == i ? "choosed" : "")
+		for (var i = 0; i < 5; i++) {
+			el("ph_slot_" + i).innerHTML = ps.slots[i][0] ? (
+				(ps.slots[i][1] ? "Jump<br>+" : "Generating<br>") +
+				`${shorten(ps.slots[i][0])}s`
+			) : `Generate time`
+			el("ph_slot_" + i).className = "photon slot " + (ps.sel[1] == i ? "choosed" : "")
 		}
+
 		for (var [i, light] of Object.entries(lights)) {
 			el("ph_light_" + i).className = `light ${light.name} ${pt.curr == i ? "" : "blank"}`
-			el("ph_light_" + i).style["border-bottom-width"] = (1 - pt.size[i]) * 150 + "px"
-			el("ph_light_" + i).style.height = pt.size[i] * 150 + "px"
 			el("ph_light_amt_" + i).textContent = `${shorten(pt.light[i])} ${light.name}`
-			el("ph_light_size_" + i).textContent = shiftDown ? `(${pt.size[i].toFixed(1)} size)` : (pt.curr + 1) % 8 == i ? `Next at: ${shortenDimensions(pt.next)} Photons` : pt.curr ==i ? `+${shorten(pt.gain)} / 1` : ""
+			el("ph_light_size_" + i).textContent = (pt.curr + 1) % 8 == i ? `Next at: ${shortenDimensions(pt.next)} Photons` : pt.curr ==i ? `+${shorten(pt.gain)} / 1` : ""
 			el("ph_light_eff_" + i).textContent = light.desc(lightEff(i))
 		}
 	}

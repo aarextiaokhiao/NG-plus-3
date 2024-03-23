@@ -24,6 +24,7 @@ function getDimensionProductionPerSecond(tier) {
 		else if (tier == 2) ret = ret.pow(1.5)
 	}
 	ret = ret.mul(getDimensionFinalMultiplier(tier))
+
 	if (inNC(2) || player.currentChallenge == "postc1") ret = ret.mul(player.chall2Pow)
 	if (tier == 1 && (inNC(3) || player.currentChallenge == "postc1")) ret = ret.mul(player.chall3Pow)
 	if (inNGM(3)) ret = ret.div(10)
@@ -109,19 +110,22 @@ function canQuickBuyDim(tier) {
 
 function buyOneDimension(tier) {
 	if (!canBuyDimension(tier)) return false
-	let name = dimTiers[tier]
+
+	let name = dimTiers[tier], resource = getOrSubResource(tier)
 	let cost = player[name + 'Cost']
-	let resource = getOrSubResource(tier)
 	if (!cost.lte(resource)) return false
+
 	getOrSubResource(tier, cost)
 	player[name + "Amount"] = player[name + "Amount"].add(1)
 	recordBought(name, 1)
+
 	if (dimBought(tier) == 0) {
 		if (player.currentChallenge == "postc5" && !inNGM(3)) multiplyIC5Costs(player[name + 'Cost'], tier)
 		else if (inNC(5) && !inNGM(3)) multiplySameCosts(player[name + 'Cost'])
 		else player[name + "Cost"] = player[name + "Cost"].mul(getDimensionCostMultiplier(tier))
-		if (costIncreaseActive(player[name + "Cost"])) player.costMultipliers[tier - 1] = player.costMultipliers[tier - 1].mul(getDimensionCostMultiplierIncrease())
+		if (costIncreaseActive(player[name + "Cost"], tier)) player.costMultipliers[tier - 1] = player.costMultipliers[tier - 1].mul(getDimensionCostMultiplierIncrease())
 	}
+
 	if (tier == 1 && getAmount(1) >= 1e150) giveAchievement("There's no point in doing that")
 	if (getAmount(8) == 99) giveAchievement("The 9th Dimension is a lie");
 	onBuyDimension(tier)
@@ -130,10 +134,9 @@ function buyOneDimension(tier) {
 
 function buyManyDimension(tier, quick) {
 	if (!canBuyDimension(tier)) return false
-	let name = dimTiers[tier]
-	let toBuy = 10 - dimBought(tier)
-	let cost = player[name + 'Cost'].mul(toBuy)
-	let resource = getOrSubResource(tier)
+
+	let name = dimTiers[tier], resource = getOrSubResource(tier)
+	let toBuy = 10 - dimBought(tier), cost = player[name + 'Cost'].mul(toBuy)
 	if (!cost.lte(resource)) return false
 
 	getOrSubResource(tier, cost)
@@ -143,7 +146,7 @@ function buyManyDimension(tier, quick) {
 	if (player.currentChallenge == "postc5" && !inNGM(3)) multiplyIC5Costs(player[name + 'Cost'], tier)
 	else if (inNC(5) && !inNGM(3)) multiplySameCosts(player[name + 'Cost'])
 	else player[name + "Cost"] = player[name + "Cost"].mul(getDimensionCostMultiplier(tier))
-	if (costIncreaseActive(player[name + "Cost"])) player.costMultipliers[tier - 1] = player.costMultipliers[tier - 1].mul(getDimensionCostMultiplierIncrease())
+	if (costIncreaseActive(player[name + "Cost"], tier)) player.costMultipliers[tier - 1] = player.costMultipliers[tier - 1].mul(getDimensionCostMultiplierIncrease())
 
 	if (!quick) {
 		floatText("D" + tier, "x" + shortenMoney(getDimensionPowerMultiplier()))
@@ -159,23 +162,26 @@ function buyBulkDimension(tier, bulk, auto) {
 		if (!buyManyDimension(tier, true)) return
 		bought++
 	}
-	let name = dimTiers[tier]
+
+	let name = dimTiers[tier], resource = getOrSubResource(tier)
 	let cost = player[name + 'Cost'].mul(10)
-	let resource = getOrSubResource(tier)
 	if (!cost.lte(resource)) return
-	if (((!inNC(5) && player.currentChallenge != "postc5") || inNGM(3)) && !inNC(9) && !costIncreaseActive(player[name + "Cost"])) {
+
+	if (((!inNC(5) && player.currentChallenge != "postc5") || inNGM(3)) && !inNC(9) && !costIncreaseActive(player[name + "Cost"], tier)) {
 		let mult = getDimensionCostMultiplier(tier)
 		let max = Number.POSITIVE_INFINITY
-		if (!inNC(10) && player.currentChallenge != "postc1") max = Math.ceil(Decimal.div(Number.MAX_VALUE, cost).log(mult) + 1)
+		if (!inNC(10) && player.currentChallenge != "postc1" && !PHANTOM.boosted(tier)) max = Math.ceil(Decimal.div(Number.MAX_VALUE, cost).log(mult) + 1)
+	
 		var toBuy = Math.min(Math.min(Math.floor(resource.div(cost).mul(mult-1).add(1).log(mult)), bulk-bought), max)
 		getOrSubResource(tier, E_pow(mult, toBuy).sub(1).div(mult-1).mul(cost))
 		player[name + "Amount"] = player[name + "Amount"].add(toBuy * 10)
 		recordBought(name, toBuy*10)
 		player[name + "Cost"] = player[name + "Cost"].mul(E_pow(mult, toBuy))
-		if (costIncreaseActive(player[name + "Cost"])) player.costMultipliers[tier - 1] = player.costMultipliers[tier - 1].mul(getDimensionCostMultiplierIncrease())
+		if (costIncreaseActive(player[name + "Cost"], tier)) player.costMultipliers[tier - 1] = player.costMultipliers[tier - 1].mul(getDimensionCostMultiplierIncrease())
 		bought += toBuy
 	}
-	let stopped = !costIncreaseActive(player[name + "Cost"])
+
+	let stopped = !costIncreaseActive(player[name + "Cost"], tier)
 	let failsafe = 0
 	while (!canQuickBuyDim(tier)) {
 		stopped = true
@@ -186,6 +192,7 @@ function buyBulkDimension(tier, bulk, auto) {
 		if (failsafe > 149) break
 		stopped = false
 	}
+
 	while (!stopped) {
 		stopped = true
 		let mi = getDimensionCostMultiplierIncrease()
@@ -251,13 +258,15 @@ function getDimensionCostMultiplierIncrease() {
 	return ret;
 }
 
-function costIncreaseActive(cost) {
-	if (inNC(10) || player.currentChallenge == "postc1") return false
+function costIncreaseActive(cost, tier) {
+	if (inNC(10) || player.currentChallenge == "postc1" || PHANTOM.boosted(tier)) return false
 	return cost.gte(Number.MAX_VALUE) || player.currentChallenge === 'postcngmm_2';
 }
 
 //Per-purchase bonuses	
 function getDimensionPowerMultiplier(focusOn, debug) {
+	if (focusOn == "phantomal") return bigRipped() ? 2 : 3.3
+
 	let ret = focusOn || inNC(9) || player.currentChallenge=="postc1" ? getMPTBase(focusOn) : tmp.mptb
 	if (focusOn == "linear") return ret
 
@@ -452,7 +461,7 @@ function getAfterDefaultDilationLayerAchBonus(tier){
 
 function getStartingNDMult(tier) {
 	let dbMult = player.resets < tier ? E(1) : E_pow(getDimensionBoostPower(), player.resets - tier + 1)
-	let mptMult = E_pow(getDimensionPowerMultiplier(), Math.floor(player[dimTiers[tier] + "Bought"] / 10))
+	let mptMult = E_pow(getDimensionPowerMultiplier(PHANTOM.boosted(tier) ? "phantomal" : ""), Math.floor(player[dimTiers[tier] + "Bought"] / 10))
 	return mptMult.mul(dbMult)
 }
 

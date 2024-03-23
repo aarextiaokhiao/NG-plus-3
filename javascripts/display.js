@@ -16,7 +16,7 @@ function tickspeedBoostDisplay(){
 	} else el("tickReset").style.display = "none"
 }
 
-function galaxyReqDisplay(){
+function galaxyDisplay(){
 	var nextGal = getGalaxyRequirement(0, true)
 	var totalRepl = getTotalRG()
 	var dil = Math.floor(player.dilation.freeGalaxies)
@@ -31,6 +31,9 @@ function galaxyReqDisplay(){
 	msg += "): "
 	if (totalTypes >= 3) msg += "<br>"
 	msg += 'requires ' + getFullExpansion(nextGal.amount) + ' ' + dimNames[inNC(4) ? 6 : 8] + ' Dimensions'
+
+	var igMsg = intergalacticDisplay()
+	if (igMsg != "") msg += '<br><b style="font-size: 8px">' + igMsg + '</b>'
 	el("secondResetLabel").innerHTML = msg
 }
 
@@ -61,7 +64,7 @@ function dimensionTabDisplay() {
 			shown = true
 		}
 		if (el(tier + "Row").style.display == "none") continue
-		el("D" + tier).childNodes[0].nodeValue = dimNames[tier] + " Dimension x" + formatValue(player.options.notation, getDimensionFinalMultiplier(tier), 2, 1)
+		el("D" + tier).childNodes[0].nodeValue = dimNames[tier] + (PHANTOM.boosted(tier) ? " Omnium" : "") + " Dimension x" + formatValue(player.options.notation, getDimensionFinalMultiplier(tier), 2, 1)
 		el("A" + tier).textContent = getDimensionDescription(tier)
 		if (canBuyDimension(tier))
 			el(tier + "Row").classList.remove("locked")
@@ -69,12 +72,15 @@ function dimensionTabDisplay() {
 			el(tier + "Row").classList.add("locked")
 	}
 
-	setAndMaybeShow("mp10d", mod.ngmu || hasMasteryStudy("d7"), "'Multiplier per 10 Dimensions: '+shorten(getDimensionPowerMultiplier(\"non-random\"))+'x'")
+	setAndMaybeShow("mp10d", mod.ngmu || hasMasteryStudy("d7"))
+	el("mp10d").innerHTML = `Multiplier per 10 ${PHANTOM.amt >= 8 ? "of Eighth Dimensions" : PHANTOM.amt > 1 ? "non-Omnium Dimensions" : "Dimensions"}: ${shorten(getDimensionPowerMultiplier("non-random"))}x`
+
 	updateCosts()
 	dimShiftDisplay()
+	PHANTOM.html()
 	tickspeedBoostDisplay()
-	galaxyReqDisplay()
-	intergalacticDisplay()
+	galaxyDisplay()
+
 	normalSacDisplay()
 	d8SacDisplay()
 	dimboostBtnUpdating()

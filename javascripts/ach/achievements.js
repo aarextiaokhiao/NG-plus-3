@@ -182,8 +182,8 @@ const allAchievements = {
 	ng3p78 : "Here comes the light",
 
 	ng3p81 : "Even Ghostlier than before",
-	ng3p82 : "ng3p82",
-	ng3p83 : "ng3p83",
+	ng3p82 : "Here lies dimensions",
+	ng3p83 : "Impending Doom",
 	ng3p84 : "Big Rip isn't enough",
 	ng3p85 : "Everlasting Eternities",
 	ng3p86 : "Back to Challenge One",

@@ -426,3 +426,32 @@ function breakEternityDisplay(){
 		el("eterShortcutTP").textContent=shortenMoney(player.dilation.tachyonParticles)
 	}
 }
+
+/* PHANTOMAL PARADIGMS */
+let PHANTOM = {
+	get amt() { return tmp.qu.phantoms },
+	get req() { return this.amt == 7 ? 1e50 : 1.15 ** this.amt * 1.5e6 },
+	get can() { return bigRipped() && ghostified && this.amt < 8 && player.eightBought >= this.req },
+
+	dim_power: 2,
+	boosted(dim) { return dim != 8 && dim > 8 - this.amt },
+
+	click() {
+		if (!PHANTOM.can) return
+		brSave.phantoms = PHANTOM.amt + 1
+		doReset("qu")
+	},
+	html() {
+		var unl = this.amt || bigRipped() && PHOTON.unlocked()
+		el("phantomReset").style.display = unl ? "" : "none"
+		if (!unl) return
+
+		let msg = `Phantomal Paradigms (${getFullExpansion(this.amt)}): `
+		if (this.amt >= 8)    msg += `Maxed!`
+		else if (bigRipped()) msg += `requires ${getFullExpansion(this.req)} Eighth Dimensions`
+		else                  msg += `requires in Big Rip`
+
+		el("phantomResetLabel").innerHTML = msg
+		el("phantomResetBtn").className = this.can ? 'storebtn' : 'unavailablebtn'
+	}
+}

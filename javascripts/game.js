@@ -706,7 +706,7 @@ function getTotalSacrificeBoost(next){
 }
 
 function calcTotalSacrificeBoost(next) {
-	if (player.resets < 5) return E(1)
+	if (player.resets < 5 || PHANTOM.amt) return E(1)
 	let ret
 	let pow
 	if (player.challenges.includes("postc2") || (inNGM(3) && player.currentChallenge == "postc2")) {
@@ -727,7 +727,7 @@ function calcTotalSacrificeBoost(next) {
 
 function sacrifice(auto) {
 	if (getAmount(8) == 0) return false
-	if (player.resets < 5) return false
+	if (player.resets < 5 || PHANTOM.amt) return false
 	if (player.currentEternityChall == "eterc3") return false
 
 	if (!auto && player.options.sacrificeConfirmation && !confirm("Dimensional Sacrifice will remove all of your First to Seventh Dimensions (with the cost and multiplier unchanged) for a boost to the Eighth Dimension. It will take time to regain production.")) return
@@ -1269,7 +1269,6 @@ function eternity(force, auto, dil, presetLoad) {
 	var forceRespec = doCheckECCompletionStuff()
 	player.currentEternityChall = ""
 	player.eternityChallGoal = E(Number.MAX_VALUE)
-	updateEternityChallenges()
 
 	//Dilation
 	if (player.dilation.active && (!force || player.infinityPoints.gte(Number.MAX_VALUE))) {
@@ -1349,17 +1348,12 @@ function exitChallenge() {
 		galacticSacrifice(false, true)
 		TAB_CORE.open("dim")
 	} else if (player.currentChallenge !== "") {
-		startChallenge("");
-		updateChallenges();
-		return
+		startChallenge("")
 	} else if (player.currentEternityChall !== "") {
 		player.currentEternityChall = ""
 		player.eternityChallGoal = E(Number.MAX_VALUE)
 		eternity(true)
-		updateEternityChallenges();
-		return
-	}
-	if (mod.ngp3 && inAnyQC()) quantum(false, true, 0)
+	} else if (inAnyQC()) quantum(false, true, 0)
 }
 
 function quickReset() {
@@ -1757,6 +1751,7 @@ function freeTickspeedUpdating(){
 
 function replicantiIncrease(diff) {
 	if (!player.replicanti.unl) return
+
 	if (diff > 5 || tmp.rep.chance > 1 || tmp.rep.interval < 50 || tmp.rep.est.gt(50) || hasTimeStudy(192)) continuousReplicantiUpdating(diff)
 	else notContinuousReplicantiUpdating()
 	if (player.replicanti.amount.gt(0)) replicantiTicks += diff
@@ -1882,7 +1877,7 @@ function doGhostifyButtonDisplayUpdating(diff){
 }
 
 function normalSacDisplay() {
-	let unl = (player.resets > 4 || player.infinitied > 0 || player.eternities !== 0 || quantumed) && !inQC(6)
+	let unl = (player.resets > 4 || player.infinitied > 0 || player.eternities !== 0 || quantumed) && PHANTOM.amt < 1 && !inQC(6)
 	el("confirmation").style.display = unl ? "inline-block" : "none"
 	el("sacrifice").style.display = unl ? "inline-block" : "none"
 	if (!unl) return
@@ -2187,7 +2182,7 @@ function gameLoop(diff, quick) {
 		gainDilationGalaxies()
 	}
 
-	replicantiIncrease(diff * 10)
+	replicantiIncrease(diff * 10 * PHOTON.checkSpeed(1))
 	passiveIPperMUpdating(diff)
 	passiveIPupdating(diff)
 	passiveInfinitiesUpdating(diff)

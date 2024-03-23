@@ -25,7 +25,7 @@ let TABS = {
 	dim: { name: "Dimensions", stab: [ "dim_am", "dim_inf", "dim_time", "dim_meta", "dim_emp" ] },
 	dim_am: { name: "Antimatter", update: _ => dimensionTabDisplay() },
 	dim_inf: { name: "Infinity", class: "infinitybtn", unl: _ => (player.infDimensionsUnlocked[0] || eternitied()) && !inQC(8), update: _ => updateInfinityDimensions() },
-	dim_time: { name: "Time", class: "eternitybtn", unl: _ => (inNGM(4) || eternitied()) && (!inQC(8) || brokeEternity()), update: _ => updateTimeDimensions() },
+	dim_time: { name: "Time", class: "eternitybtn", unl: _ => (inNGM(4) || eternitied()) && (!inQC(8) || brokeEternity()) && PHANTOM.amt < 8, update: _ => updateTimeDimensions() },
 	dim_meta: { name: "Meta", class: "quantumbtn", unl: _ => player.dilation.studies.includes(6), update: _ => updateMetaDimensions() },
 
 	chal: { name: "Challenges", stab: [ "chal_n", "chal_inf", "chal_eter", "chal_qu", "rip" ], unl: _ => inNGM(4) ? gSacrificed() : infinitied() },

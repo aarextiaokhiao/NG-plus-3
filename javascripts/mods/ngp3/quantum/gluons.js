@@ -17,7 +17,7 @@ const GLUON = {
 				disp: "Remote Antimatter Galaxies scale approximately 2x slower."
 			}, {
 				disp: "Tachyonic Galaxies strengthen Galaxies.",
-				eff: _ => Math.min(Math.pow(player.dilation.freeGalaxies / 5e3 + 1, 0.25), 1.7),
+				eff: _ => Math.pow(player.dilation.freeGalaxies / 5e3 + 1, 0.25),
 				eff_desc: e => formatPercentage(e-1)+"%"
 			}, {
 				disp: "Dimension Boosts boost 1st Meta Dimensions.",

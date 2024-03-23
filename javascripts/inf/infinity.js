@@ -97,7 +97,6 @@ function checkChallengesOnCrunch() {
 
 	if (!player.options.retryChallenge) player.currentChallenge = ""
 
-	updateChallenges()
 	updateChallengeTimes()
 }
 
@@ -299,49 +298,33 @@ var challNames = [null, null, "Second Dimension Autobuyer Challenge", "Third Dim
 var challOrder = [null, 1, 2, 3, 8, 6, 10, 9, 11, 5, 4, 12, 7, 13, 14, 15, 16]
 
 function updateChallenges() {
-	var buttons = Array.from(el("tab_chal_n").getElementsByTagName("button")).concat(Array.from(el("tab_chal_inf").getElementsByTagName("button")))
-	for (var i=0; i < buttons.length; i++) {
-		buttons[i].className = "challengesbtn";
-		buttons[i].textContent = "Start"
-	}
-
-	tmp.ic_power = 0
-	for (var i=0; i < player.challenges.length; i++) {
-		el(player.challenges[i]).className = "completedchallengesbtn";
-		el(player.challenges[i]).textContent = "Completed"
-		if (player.challenges[i].search("postc")==0) tmp.ic_power++
-	}
-	
-	var challengeRunning
-	if (player.currentChallenge === "") {
-		if (!player.challenges.includes("challenge1")) challengeRunning="challenge1"
-	} else challengeRunning=player.currentChallenge
-	if (challengeRunning!==undefined) {
-		el(challengeRunning).className = "onchallengebtn";
-		el(challengeRunning).textContent = "Running"
-	}
-
-	if (inNGM(4)) {
-		var chall=player.galacticSacrifice.chall
-		if (chall) {
-			chall="challenge"+chall
-			el(chall).className = "onchallengebtn";
-			el(chall).textContent = "Running"
-		}
-	}
-
-	el("challenge7").parentElement.parentElement.style.display = player.infinitied < 1 && player.eternities < 1 && !quantumed ? "none" : ""
+	var challengeRunning = player.currentChallenge
+	if (challengeRunning == "" && !player.challenges.includes("challenge1")) challengeRunning = "challenge1"
 
 	let traps = []
 	if (inQC(4)) traps.push("challenge7")
 	if (isIC3Trapped()) traps.push("postc3")
 	if (inQC(6)) traps.push("postc7")
 
-	for (let trap of traps) {
-		el(trap).className = "onchallengebtn";
-		el(trap).textContent = "Trapped in"
+	var buttons = Array.from(el("tab_chal_n").getElementsByTagName("button")).concat(Array.from(el("tab_chal_inf").getElementsByTagName("button")))
+	for (var i of buttons) {
+		if (traps.includes(i.id))                  { i.className = "onchallengebtn";         i.textContent = "Trapped in" }
+		else if (challengeRunning == i.id)         { i.className = "onchallengebtn";         i.textContent = "Running" }
+		else if (player.challenges.includes(i.id)) { i.className = "completedchallengesbtn"; i.textContent = "Completed" }
+		else                                       { i.className = "challengesbtn";          i.textContent = "Start" }
 	}
 
+	tmp.ic_power = 0
+	for (var i of player.challenges) if (i.search("postc") == 0) tmp.ic_power++
+
+	var chall = player.galacticSacrifice?.chall
+	if (chall) {
+		chall="challenge"+chall
+		el(chall).className = "onchallengebtn";
+		el(chall).textContent = "Running"
+	}
+
+	el("challenge7").parentElement.parentElement.style.display = player.infinitied < 1 && player.eternities < 1 && !quantumed ? "none" : ""
 	for (c=0;c<order.length;c++) el(order[c]).parentElement.parentElement.style.display=player.postChallUnlocked<c+1?"none":""
 }
 

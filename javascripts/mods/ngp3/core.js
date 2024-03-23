@@ -1,6 +1,6 @@
 //VERSION: 2.31
 let ngp3_ver = 2.31
-let ngp3_build = 20240320
+let ngp3_build = 20240322
 function doNGP3Updates() {
 	if (!aarMod.ngp3_build) aarMod.ngp3_build = 0
 	if (aarMod.ngp3_build < 20221230) quSave.multPower = 0
@@ -27,7 +27,12 @@ function doNGP3Updates() {
 			delete ghSave.disabledRewards
 			delete ghSave.reached
 		}
-		if (aarMod.ngp3_build < 20230727 && E(ghSave.ghostParticles).gte(1e20)) {
+		if (aarMod.ngp3_build < 20231221) {
+			if (ghSave.milestones) ghSave.low = BM_REQ[ghSave.milestones-1]
+			delete ghSave.milestones
+		}
+
+		if (aarMod.ngp3_build < 20240322 && E(ghSave.ghostParticles).gte(1e20)) {
 			alert("Due to massive balancing changes, you will be pushed back to e20 Spectral Particles!")
 
 			resetGHPandNeutrinos()
@@ -36,16 +41,13 @@ function doNGP3Updates() {
 			beSave.upgrades = [1, 2, 3, 4, 5, 6]
 			ghSave.ghostParticles = E(1e20)
 		}
-		if (aarMod.ngp3_build < 20230820) {
+		if (aarMod.ngp3_build < 20240322) {
 			delete ghSave.wzb
 			delete ghSave.bl
 			delete ghSave.lab?.hf
+
 			ghSave.photons = PHOTON.setup()
 			ghSave.hb = HIGGS.setupSave()
-		}
-		if (aarMod.ngp3_build < 20231221) {
-			if (ghSave.milestones) ghSave.low = BM_REQ[ghSave.milestones-1]
-			delete ghSave.milestones
 		}
 
 		if (!ghSave.reached && !ghSave.times) {
@@ -242,17 +244,17 @@ function NGP3andVanillaCheck() {
 
 //v2.4: Moved from old functions...
 function intergalacticDisplay() {
+	let r = ""
+
 	if (tmp.qu.intergal && getNormalDimensions() == 8) {
-		el("intergalacticLabel").parentElement.style.display = ""
-		let nanopart = 1
-		if (hasNanoReward("dil_exp")) nanopart = getNanorewardEff("dil_exp")
-		el("intergalacticLabel").innerHTML = 
-			'Intergalactic ' + 
+		let nanopart = hasNanoReward("dil_exp") ? getNanorewardEff("dil_exp") : 1
+		r = 'Intergalactic ' + 
 			'(' + getFullExpansion(Math.floor(tmp.qu.intergal.gal)) + ')' +
 			(player.dilation.active || inNGM(2) ? ": (estimated)" : ": ") +
 			shorten(dilates(tmp.qu.intergal.eff).pow(player.dilation.active ? nanopart : 1)) + 
 			'x to Eighth Dimensions'
-	} else el("intergalacticLabel").parentElement.style.display = "none"
+	}
+	return r
 }
 
 function beatNGP3() {
@@ -270,6 +272,7 @@ function updateNGP3Temp() {
 	tmp.qu.be = brokeEternity()
 	updateGhostifyTempStuff()
 	if (quantumed) {
+		tmp.qu.phantoms = brSave.phantoms || 0
 		if (beSave && beSave.unlocked) updateBreakEternityUpgradesTemp()
 		if (hasMasteryStudy("d14")) updateBigRipUpgradesTemp()
 		if (isDecayOn()) tmp.qu.tree_str = getTreeUpgradeEfficiency()
@@ -398,9 +401,11 @@ function ngP3AchieveCheck() {
 	if (getRadioactiveDecays() >= 1) giveAchievement("Radioactive Decaying to the max!")
 	if (ghSave.best <= 30) giveAchievement("Running through Big Rips")
 	if (MTS.bought >= 48) giveAchievement("The Theory of Ultimate Studies")
-	if (tmp.funda.photon.light[6] > 0) giveAchievement("Here comes the light")
+	if (tmp.funda.photon?.light[6] > 0) giveAchievement("Here comes the light")
 
 	if (LAB.unlocked()) giveAchievement("Even Ghostlier than before")
+	if (PHANTOM.amt >= 7) giveAchievement("Here lies dimensions")
+	if (PHANTOM.amt >= 8) giveAchievement("Impending Doom")
 	if (nG(getEternitied(), Number.MAX_VALUE)) giveAchievement("Everlasting Eternities")
 
 	if (HIGGS.unlocked()) giveAchievement("The Holy Particle")
@@ -460,7 +465,7 @@ function quantumOverallUpdating(diff){
 	if (hasMasteryStudy("d10")) replicantOverallUpdating(diff)
 	if (hasMasteryStudy("d11")) emperorDimUpdating(diff)
 	if (NF.unl()) nanofieldUpdating(diff)
-	if (isDecayOn()) treeOfDecayUpdating(diff)
+	if (isDecayOn()) treeOfDecayUpdating(diff * PHOTON.checkSpeed(2))
 	if (bigRipped()) {
 		brSave.totalAntimatter = brSave.totalAntimatter.max(player.money)
 		brSave.bestThisRun = brSave.bestThisRun.max(player.money)

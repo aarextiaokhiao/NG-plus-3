@@ -380,13 +380,24 @@ let HOW_TO = [
 
 		title: "Fundament",
 		layer: "fundament",
-		desc: `This is a prestige layer beyond Quantum that unlocks on reaching the goal in Big Rip. This resets all previous progress, and gives you Spectral Particles based on your antimatter in Big Rips.
-		<br><br>
-		<b>Brave Milestones</b><br>
-		Brave Milestones can be achieved by Fundamenting while under a certain amount of Quantums. Likewise, each Brave Milestone provides you with a reward that greatly boosts progress and makes Fundaments much faster and more efficient.
-		<br><br>
-		<b>Automators</b><br>
-		Automator Charge is based on net Quarks, and you unlock an Automator on passing a certain threshold. Automator Power is your best-ever Automator Charge, but is used up on enabling an Automator. Automators automate various features such as Nanofield and Big Rips, as long Automator Power doesn't exceed the cap.`
+		desc() {
+			let msg = `
+				This is a prestige layer beyond Quantum that unlocks on reaching the goal in Big Rip. This resets all previous progress, and gives you Spectral Particles based on your antimatter in Big Rips.
+				<br><br>
+				<b>Brave Milestones</b><br>
+				Brave Milestones can be achieved by Fundamenting while under a certain amount of Quantums. Likewise, each Brave Milestone provides you with a reward that greatly boosts progress and makes Fundaments much faster and more efficient.
+				<br><br>
+				<b>Automators</b><br>
+				Automator Charge is based on net Quarks, and you unlock an Automator on passing a certain threshold. Automator Power is your best-ever Automator Charge, but is used up on enabling an Automator. Automators automate various features such as Nanofield and Big Rips, as long Automator Power doesn't exceed the cap.
+				<br><br>
+			`
+
+			if (ghSave?.photons?.unl || SPOILERS) msg += `<b>Phantomal Paradigms</b><br>
+				Phantomal Paradigms are a Big Rip replacement to Dimensional Shifts, in which exchange some Dimensions for boosts. Some of these even unlock new upgrades. However, these reset on Fundament.`
+			else msg += `<b>Unlock Photons to see the next feature.</b>`
+
+			return msg
+		}
 	}, {
 		mod: _ => ngp3,
 		req: _ => ghSave?.times,
@@ -404,12 +415,9 @@ let HOW_TO = [
 
 		title: "Photons",
 		layer: "fundament",
-		desc: `Best Tachyon Particles produce Photons.<br>
-		Photons give Lights on a loop of 8 colors.<br><br>
-
-		You have 2 Light Harvests: Dark Essences and Enlightenments.<br>
-		A "Light Harvest" harvests 3 distinct Lights at respective thresholds which can be adjusted.<br>
-		While harvesting, gaining Light is faster and also gains the respective resource.`
+		desc: `Tachyonic Galaxies generate Photons, which strengthen Light Boosts.<br><br>
+		Photons, Replicantis, and Decay can be time-jumped by selecting any emission.<br>
+		However, to power up a emission: One must slow down one of these features above by 10x to generate time on next Fundament runs.`
 	}, {
 		mod: _ => ngp3,
 		req: _ => ghSave?.lab?.unl,
@@ -541,7 +549,10 @@ function updateDisplays() {
 let OPENED = {}
 function openPage(x) {
 	OPENED[x] = !OPENED[x]
+	updatePage(x)
+}
 
+function updatePage(x) {
 	let r = HOW_TO[x].desc
 	el("how_to_"+x).innerHTML = !OPENED[x] ? "" : typeof r == "function" ? r() : r || "Placeholder."
 }
@@ -567,6 +578,8 @@ function showSpoilers() {
 	SPOILERS = !SPOILERS
 	el("showspoilers").innerHTML = (SPOILERS ? "Avoid" : "Show") + " spoilers"
 	updateDisplays()
+
+	for (var x in OPENED) if (OPENED[x]) updatePage(x)
 }
 
 let LAYER_COLORS = false

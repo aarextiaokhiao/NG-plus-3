@@ -86,9 +86,7 @@ function getInfDimPathIDMult(tier){
 }
 
 function getStartingIDPower(tier){
-	var dim = player["infinityDimension" + tier]
-	var mult = dim.power
-	return mult
+	return player["infinityDimension" + tier].power
 }
 
 function DimensionPower(tier) {
@@ -271,7 +269,7 @@ function updateInfPower() {
 }
 
 function getNewInfReq() {
-	let reqs = [E("1e1100"), E("1e1900"), E("1e2400"), E("1e10500"), E("1e30000"), E("1e45000"), E("1e54000")]
+	let reqs = [E("1e1100"), E("1e1900"), E("1e2400"), E("1e10500"), E("1e30000"), E("1e45000"), E("1e54000"), E("1e60000")]
 	if (inNGM(2)) {
 		if (!inNGM(3)) {
 			reqs[1] = E("1e1500")
@@ -281,11 +279,9 @@ function getNewInfReq() {
 			reqs[1] = E("1e2400")
 			reqs[2] = E("1e4000")
 		}
-		if (inNGM(4)){
-			reqs[0] = E("1e1777")
-		}
+		if (inNGM(4)) reqs[0] = E("1e1777")
 	}
-	for (var tier = 0; tier < 7; tier++) if (!player.infDimensionsUnlocked[tier]) return {money: reqs[tier], tier: tier+1}
-	return {money: E("1e60000"), tier: 8}
+	for (var tier = 0; tier < Math.max(8 - PHANTOM.amt, 1); tier++) if (!player.infDimensionsUnlocked[tier]) return {money: reqs[tier], tier: tier+1}
+	return { money: E(1/0) }
 }
 

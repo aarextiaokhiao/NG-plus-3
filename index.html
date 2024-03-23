@@ -115,6 +115,11 @@
 						<td>
 							<button id="softReset" style="color:black; width: 200px; height: 35px; font-size: 9px" class="storebtn">Reset Antimatter and Dimensions for a new Dimension</button>
 						</td>
+					</tr><tr id="phantomReset" style="font-size: 15px">
+						<td id="phantomResetLabel">Phantomal Paradigms (0): requires ??? Eighth Dimensions</td>
+						<td>
+							<button id="phantomResetBtn" style="color:black; width: 200px; height: 35px; font-size: 9px" class="storebtn" onclick="PHANTOM.click()">Force Quantum and remove some Dimensions for boosts</button>
+						</td>
 					</tr><tr id="tickReset" style="font-size: 15px">
 						<td id="tickResetLabel"></td>
 						<td>
@@ -125,8 +130,6 @@
 						<td>
 							<button id="secondSoftReset" style="color:black; width: 200px; height: 35px; font-size: 9px" class="storebtn">Reset Dimension Boosts for a tickspeed boost</button>
 						</td>
-					</tr><tr style="font-size: 15px">
-						<td id="intergalacticLabel" colspan=2></td>
 					</tr>
 				</table>
 				<button id="quickReset" style="color:black; width: 200px; height: 50px; font-size: 12px; display: none" class="storebtn" onclick="quickReset()">Lose a reset, returning to the start of the reset</button>
@@ -1062,10 +1065,10 @@
 							<div id="Even Ghostlier than before" class="achievement achievementlocked" style="background-image: url(images/167.png)"></div>
 						</td>
 						<td>
-							<div id="ng3p82" class="achievement achievementlocked" style="background-image: url(images/placeholder.png)" ach-tooltip="Placeholder."></div>
+							<div id="Here lies dimensions" class="achievement achievementlocked" style="background-image: url(images/placeholder.png)" ach-tooltip="Get 7 Phantomal Paradigms.">Here lies dimensions</div>
 						</td>
 						<td>
-							<div id="ng3p83" class="achievement achievementlocked" style="background-image: url(images/placeholder.png)" ach-tooltip="Placeholder."></div>
+							<div id="Impending Doom" class="achievement achievementlocked" style="background-image: url(images/placeholder.png)" ach-tooltip="Get 8 Phantomal Paradigms.">Impending Doom</div>
 						</td>
 						<td>
 							<div id="Big Rip isn't enough" class="achievement achievementlocked" style="background-image: url(images/170.png)" ach-tooltip="Complete a Paired Challenge with Quantum Challenges 6 and 8 combinations."></div>
@@ -2802,8 +2805,8 @@
 						<td><button class="dilationupg" id="masteryportal" onclick="enterMasteryPortal()"></button></td>
 					</tr>
 				</table>
-				<div style="height: 60px;"></div>
 				<button class="qu_upg storebtn" id="bl_portion_2" onclick='BL_JOKE.find(2)' style='opacity: 0.1'>You agree that your interior knowledge is shared to ours.</button>
+				<div style="height: 150px;"></div>
 			</div>
 			<div id="tab_ts_respec">
 				<button class="storebtn" onclick="exportStudyTree()" style="width:150px; height: 40px; font-size: 10px; margin: auto">Export spec</button>
@@ -3030,7 +3033,7 @@
 					<b style='font-size: 13px'>Break Dilation</b><br>
 					(requires ??? TT and ??? Higgs)
 				</button>-->
-				<div style="height: 60px;"></div>
+				<div style="height: 150px;"></div>
 			</div>
 			<div id="tab_upg_eter">
 				<div id="breakEternityReq"></div>
@@ -3636,9 +3639,23 @@
 			<div id="tab_ph">
 				<div id="gphUnl"></div>
 				<div id="gphDiv" style='display: none'>
+					<b id='bl_req'>Get 1 Ultraviolet Light to unlock Bosonic Lab.</b><br><br>
+
 					<b id='ph_amt' style='font-size: 25px'></b> Photons
-					<span ach-tooltip="Based on Tachyon Particles and Spectral Particles" id='ph_prod' style='font-size: 15px'></span><br>
-					<b id='bl_req'>Get 1 Ultraviolet Light to unlock Bosonic Lab.</b>
+					<span ach-tooltip="Based on Tachyonic Galaxies" id='ph_prod' style='font-size: 15px'></span><br>
+
+					Select one feature:
+					<button class='photon' id="ph_fea_0" onclick="ghSave.photons.sel[0] = 0">Photons</button>
+					<button class='photon' id="ph_fea_1" onclick="ghSave.photons.sel[0] = 1">Replicantis</button>
+					<button class='photon' id="ph_fea_2" onclick="ghSave.photons.sel[0] = 2">Decay</button><br><br>
+
+					<div class='table_flex'>
+						<button class='photon slot' id="ph_slot_0" onclick="PHOTON.sel(0)"></button>
+						<button class='photon slot' id="ph_slot_1" onclick="PHOTON.sel(1)"></button>
+						<button class='photon slot' id="ph_slot_2" onclick="PHOTON.sel(2)"></button>
+						<button class='photon slot' id="ph_slot_3" onclick="PHOTON.sel(3)"></button>
+						<button class='photon slot' id="ph_slot_4" onclick="PHOTON.sel(4)"></button>
+					</div><br>
 					<div id="light_table"></div>
 
 					<i style="opacity: 0.1">You were too spectral. Tributes to Ghostify!</i><br>
@@ -3780,7 +3797,7 @@
 			<br>
 
 			<b>(NG+3 v2.31: Ghostify Respecced)</b><br>
-			<b class="red">(Beta: 3/20/24 Build)</b><br>
+			<b class="red">(Beta: 3/22/24 Build)</b><br>
 			By <a href="https://aarextiaokhiao.github.io/">Aarex</a>, pg132, and usavictor.
 			<br><br>
 

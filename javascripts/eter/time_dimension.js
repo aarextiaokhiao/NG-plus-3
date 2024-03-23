@@ -69,9 +69,7 @@ function getTimeDimensionPower(tier) {
 	ret = dilates(ret, 2)
 	if (inNGM(2)) ret = ret.mul(ret2)
 
-	ret = dilates(ret, 1)
-
-	return ret
+	return dilates(ret, 1)
 }
 
 function getTimeDimensionProduction(tier) {
@@ -102,7 +100,7 @@ function getIC3EffFromFreeUpgs() {
 }
 
 function isTDUnlocked(t) {
-	if (t > 8) return
+	if (t > (8 - PHANTOM.amt)) return
 	if (inNGM(4)) {
 		if ((inNC(4) || player.currentChallenge == "postc1") && t > 6) return
 		return player.tdBoosts > t - 2
