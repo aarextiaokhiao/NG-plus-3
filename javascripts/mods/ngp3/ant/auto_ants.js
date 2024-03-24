@@ -19,11 +19,6 @@ var automators = {
 		req: 4.5,
 		pow: 0.5,
 	},
-	18: {
-		title: "Positron Upgrader",
-		req: 4.5,
-		pow: 1,
-	},
 	8: {
 		title: "Food Giver",
 		req: 5,
@@ -65,9 +60,9 @@ var automators = {
 		req: 8,
 		pow: 3,
 	},
-	16: {
-		title: "Neutrino Upgrader",
-		req: 12,
+	18: {
+		title: "Positron Upgrader",
+		req: 10,
 		pow: 1,
 	},
 	2: {
@@ -75,29 +70,45 @@ var automators = {
 		html: `(big rip only)<br>
 		Big Rip times: <input id="autoAnt2b" onchange="changeAutoGhost('2b')"/><br>
 		EC10 Duration: <input id="autoAnt2t" onchange="changeAutoGhost('2t')"/>s`,
-		req: 13,
+		req: 12,
 		pow: 1.5,
+	},
+	16: {
+		title: "Neutrino Upgrader",
+		req: 13.5,
+		pow: 1,
 	},
 	12: {
 		title: "Radioactive Decay",
-		req: 15,
+		req: 1e4,
 		pow: 2,
 	},
+	17: {
+		title: "Paradigmic",
+		html: `Get Phantomal Paradigms at Big Rip run
+		<input id="autoAnt17t" onchange="changeAutoGhost('17t')"/><br>
+		(disables Big Rip automator)`,
+		req: 1e4,
+		pow: 1,
+	},
+	19: {
+		title: "Photons",
+		html: `Generates Emissions: <input id="autoAnt19t" onchange="changeAutoGhost('19t')"/>s`,
+		req: 1e4,
+		pow: 1,
+	},
 }
-const automatorOrder = [1,5,6,7,18,8,9,10,11,13,14,15,16,2,12]
+const automatorOrder = [1,5,6,7,8,9,10,11,13,14,15,18,2,16,12,17,19]
 
 function setupAutomaticGhostsData() {
 	var data = {power: 0, ghosts: 3}
 	for (var g of automatorOrder) data[g] = {}
-	data[11].pw = 1
-	data[11].lw = 1
-	data[11].cw = 1
+	data[11].pw = 1, data[11].lw = 1, data[11].cw = 1
 	data[15].a = 1
-	data[2].b = 3
-	data[2].t = 5
-	data[13].o = 5
-	data[13].u = 5
-	data[13].t = 3
+	data[2].b = 3,   data[2].t = 5
+	data[13].o = 5,  data[13].u = 5,  data[13].t = 3
+	data[17].t = 5
+	data[19].t = 5
 	return data
 }
 
@@ -123,6 +134,8 @@ function updateAutoGhosts(load) {
 		el("autoAnt15a").value = data[15].a
 		el("autoAnt2b").value = data[2].b
 		el("autoAnt2t").value = data[2].t
+		el("autoAnt17t").value = data[17].t
+		el("autoAnt19t").value = data[19].t
 	}
 
 	isAutoGhostsSafe = data.power >= powerConsumed
@@ -169,6 +182,12 @@ function changeAutoGhost(o) {
 	} else if (o == "2b") {
 		var num = fromValue(el("autoAnt2b").value)
 		if (!isNaN(num) && num >= 0) ghSave.automatorGhosts[2].b = num
+	} else if (o == "17t") {
+		var num = fromValue(el("autoAnt17t").value)
+		if (!isNaN(num) && num > 0) ghSave.automatorGhosts[17].t = num
+	} else if (o == "19t") {
+		var num = fromValue(el("autoAnt19t").value)
+		if (!isNaN(num) && num > 0) ghSave.automatorGhosts[19].t = num
 	}
 }
 

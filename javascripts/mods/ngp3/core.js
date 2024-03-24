@@ -1,6 +1,6 @@
 //VERSION: 2.31
 let ngp3_ver = 2.31
-let ngp3_build = 20240322
+let ngp3_build = 20240323
 function doNGP3Updates() {
 	if (!aarMod.ngp3_build) aarMod.ngp3_build = 0
 	if (aarMod.ngp3_build < 20221230) quSave.multPower = 0
@@ -401,7 +401,7 @@ function ngP3AchieveCheck() {
 	if (getRadioactiveDecays() >= 1) giveAchievement("Radioactive Decaying to the max!")
 	if (ghSave.best <= 30) giveAchievement("Running through Big Rips")
 	if (MTS.bought >= 48) giveAchievement("The Theory of Ultimate Studies")
-	if (tmp.funda.photon?.light[6] > 0) giveAchievement("Here comes the light")
+	if (tmp.funda.photon?.unls >= 6) giveAchievement("Here comes the light")
 
 	if (LAB.unlocked()) giveAchievement("Even Ghostlier than before")
 	if (PHANTOM.amt >= 7) giveAchievement("Here lies dimensions")

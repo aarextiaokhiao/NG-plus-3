@@ -415,9 +415,11 @@ let HOW_TO = [
 
 		title: "Photons",
 		layer: "fundament",
-		desc: `Tachyonic Galaxies generate Photons, which strengthen Light Boosts.<br><br>
-		Photons, Replicantis, and Decay can be time-jumped by selecting any emission.<br>
-		However, to power up a emission: One must slow down one of these features above by 10x to generate time on next Fundament runs.`
+		desc: `Tachyonic Galaxies generate Photons, which strengthen Light Boosts.<br>		
+		You can emit any Emissions to skip time on Photons, Replicantis, and Decay.<br><br>
+
+		However, before you could emit: You must slow down one of respective mechanics to generate time.<br>
+		On going Fundament, any emission with stored time will be ready to emit.`
 	}, {
 		mod: _ => ngp3,
 		req: _ => ghSave?.lab?.unl,

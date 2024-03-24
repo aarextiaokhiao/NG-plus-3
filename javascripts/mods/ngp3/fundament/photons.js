@@ -28,30 +28,13 @@ let PHOTON = {
 	temp() {
 		if (!this.unlocked()) return
 
-		let data = {}
+		let data = tmp.funda.photon = {}
 		let lights = this.light.data
-		tmp.funda.photon = data
 
-		data.emission = ghSave.photons.amt.max(1).log(10)
-		data.light = []
-		data.eff = []
-
-		let cycles = Math.floor(data.emission / 8)
-		let remainder = data.emission % 8
-
-		data.curr = -1
-		data.next = E(10).pow(cycles * 8)
-
+		data.unls = 0, data.eff = []
 		for (let [i, light] of Object.entries(lights)) {
-			data.light[i] = cycles + Math.min(remainder, 1)
-			data.eff[i] = light.eff(data.light[i]) //will be determined soon
-
-			if (remainder > 0) {
-				data.curr = Number(i)
-				data.next = E(10).mul(data.next)
-				data.gain = remainder
-			}
-			remainder = Math.max(remainder - 1, 0)
+			if (ghSave.photons.amt.gte(light.req)) data.unls++
+			data.eff[i] = light.eff(data.unls > i ? ghSave.photons.amt.div(light.req).log10() : 0)
 		}
 	},
 
@@ -79,41 +62,47 @@ let PHOTON = {
 		data: [
 			{
 				name: "infrared",
-				eff: a => E_pow(tmp.gal.ts || 1, -Math.min(2**a-1,16) / 4),
+				req: 1,
+				eff: exp => E_pow(tmp.gal.ts || 1, -exp / 4),
 				desc: e => `Tickspeed reduction multiplies per-ten multiplier by ${shorten(e)}x.`
 			}, {
 				name: "red",
-				eff: a => Math.min(1 + Math.sqrt(a), 3),
+				req: 1e100,
+				eff: exp => Math.min(1 + Math.sqrt(exp), 3),
 				desc: e => `Raise 2nd Neutrino Boost by ^${e.toFixed(3)}.`
 			}, {
 				name: "orange",
-				eff: a => 1 + a / 500,
+				req: 1e100,
+				eff: exp => 1 + exp / 500,
 				desc: e => `Gain ${shorten((e-1)*100)}% more Neutrinos per Big Rip galaxy.`
 			}, {
 				name: "yellow",
-				eff: a => a / 100,
+				req: 1e100,
+				eff: exp => exp / 100,
 				desc: e => `Discharged Galaxies are ${(e*100).toFixed(1)}% efficient.`
 			}, {
 				name: "green",
-				eff: a => Math.min(Math.min(a, a ** 0.2), 1.5),
+				req: 1e100,
+				eff: exp => Math.min(Math.min(exp, exp ** 0.2), 1.5),
 				desc: e => `Increase Infinity Power effect by +^${shorten(e)}.`
 			}, {
 				name: "blue",
-				eff: a => a / 3 + 1,
+				req: 1e100,
+				eff: exp => exp / 3 + 1,
 				desc: e => `Raise Emperor Dimensions by ^${shorten(e)}.`
 			}, {
 				name: "violet",
-				eff: a => a * 4,
+				req: 1e100,
+				eff: exp => exp * 4,
 				desc: e => `Nanorewards scale +${shorten(e)} later.`
 			}, {
 				name: "ultraviolet",
-				eff: a => 1 + a / 100,
+				req: 1e100,
+				eff: exp => 1 + exp / 100,
 				desc: e => `Strengthen Meta-Dimension Boosts by +${shorten((e-1)*100)}% per boost.`
 			}
 		],
-		eff(x, def = 1) {
-			return tmp.funda.photon?.eff[x] ?? def
-		},
+		eff: (x, def = 1) => tmp.funda.photon?.eff[x] ?? def,
 	},
 
 	/* HTML */
@@ -122,8 +111,7 @@ let PHOTON = {
 		for (var i = 0; i < 8; i++) {
 			let light = this.light.data[i]
 			html += `<div id='ph_light_${i}'>
-				<b id='ph_light_amt_${i}' style='font-size: 18px'></b><br>
-				<b id='ph_light_size_${i}'></b><br>
+				<b style='font-size: 18px'>${light.name[0].toUpperCase() + light.name.slice(1, light.name.length)}</b><br>
 				<span id='ph_light_eff_${i}'></span>
 			</div>`
 		}
@@ -146,17 +134,15 @@ let PHOTON = {
 		for (var i = 0; i < 3; i++) el("ph_fea_" + i).className = "photon " + (ps.sel[0] == i ? "choosed" : "")
 		for (var i = 0; i < 5; i++) {
 			el("ph_slot_" + i).innerHTML = ps.slots[i][0] ? (
-				(ps.slots[i][1] ? "Jump<br>+" : "Generating<br>") +
+				(ps.slots[i][1] ? "Emit<br>+" : "Energizing<br>") +
 				`${shorten(ps.slots[i][0])}s`
-			) : `Generate time`
+			) : `Energize`
 			el("ph_slot_" + i).className = "photon slot " + (ps.sel[1] == i ? "choosed" : "")
 		}
 
 		for (var [i, light] of Object.entries(lights)) {
-			el("ph_light_" + i).className = `light ${light.name} ${pt.curr == i ? "" : "blank"}`
-			el("ph_light_amt_" + i).textContent = `${shorten(pt.light[i])} ${light.name}`
-			el("ph_light_size_" + i).textContent = (pt.curr + 1) % 8 == i ? `Next at: ${shortenDimensions(pt.next)} Photons` : pt.curr ==i ? `+${shorten(pt.gain)} / 1` : ""
-			el("ph_light_eff_" + i).textContent = light.desc(lightEff(i))
+			el("ph_light_" + i).className = `light ${light.name} ${pt.unls > i ? "" : "blank"}`
+			el("ph_light_eff_" + i).textContent = pt.unls > i ? light.desc(lightEff(i)) : `(Requires ${shorten(light.req)} Photons)`
 		}
 	}
 }
