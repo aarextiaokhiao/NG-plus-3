@@ -1,13 +1,13 @@
 //VERSION: 2.31
 let ngp3_ver = 2.31
-let ngp3_build = 20240323
+let ngp3_build = 20240324
 function doNGP3Updates() {
 	if (!aarMod.ngp3_build) aarMod.ngp3_build = 0
 	if (aarMod.ngp3_build < 20221230) quSave.multPower = 0
 	if (aarMod.ngp3_build < 20230201) delete aarMod.leNoConf
 	if (aarMod.ngp3_build < 20230204) {
-		delete quSave.tod.g
-		delete quSave.tod.b
+		delete todSave.g
+		delete todSave.b
 	}
 	if (aarMod.ngp3_build < 20230208) {
 		delete brSave.savedAutobuyersBR
@@ -275,7 +275,10 @@ function updateNGP3Temp() {
 		tmp.qu.phantoms = brSave.phantoms || 0
 		if (beSave && beSave.unlocked) updateBreakEternityUpgradesTemp()
 		if (hasMasteryStudy("d14")) updateBigRipUpgradesTemp()
-		if (isDecayOn()) tmp.qu.tree_str = getTreeUpgradeEfficiency()
+		if (hasMasteryStudy("d13")) {
+			tmp.qu.tree_unls = Math.min(8 + getRadioactiveDecays(), 12)
+			tmp.qu.tree_str = getTreeUpgradeEfficiency()
+		}
 		if (hasMasteryStudy("d12")) updateNanofieldTemp()
 		if (hasMasteryStudy("d10")) {
 			tmp.qu.ant.preon_eff = getPilonEffect()
@@ -465,7 +468,7 @@ function quantumOverallUpdating(diff){
 	if (hasMasteryStudy("d10")) replicantOverallUpdating(diff)
 	if (hasMasteryStudy("d11")) emperorDimUpdating(diff)
 	if (NF.unl()) nanofieldUpdating(diff)
-	if (isDecayOn()) treeOfDecayUpdating(diff * PHOTON.checkSpeed(2))
+	if (hasMasteryStudy("d13")) treeOfDecayUpdating(diff * PHOTON.checkSpeed(2))
 	if (bigRipped()) {
 		brSave.totalAntimatter = brSave.totalAntimatter.max(player.money)
 		brSave.bestThisRun = brSave.bestThisRun.max(player.money)

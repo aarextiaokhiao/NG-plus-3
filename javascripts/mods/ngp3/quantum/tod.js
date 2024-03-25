@@ -1,7 +1,3 @@
-function isDecayOn() {
-	return hasMasteryStudy("d13")
-}
-
 function getLogTotalSpin() {
 	return todSave.r.spin.add(1).log10()
 }
@@ -57,7 +53,10 @@ function updateTreeOfDecayTab(){
 
 	//Tree Upgrades
 	var start = getLogTotalSpin() > 200 ? "" : "Cost: "
-	for (var u = 1; u <= 8; u++) {
+	for (var u = 1; u <= 12; u++) {
+		el("treeupg" + u).style.display = tmp.qu.tree_unls >= u ? "" : "none"
+		if (tmp.qu.tree_unls < u) continue
+
 		var lvl = getTreeUpgradeLevel(u)
 		el("treeupg" + u).className = "qu_upg " + (canBuyTreeUpg(u) ? "r" : "unavailablebtn")
 		el("treeupg" + u + "current").innerHTML = getTreeUpgradeEffectDesc(u)
@@ -166,7 +165,10 @@ function getTreeUpgradeCost(upg, add=0) {
 	if (upg == 6) return E_pow(6, lvl).mul(1e21)
 	if (upg == 7) return pow2(lvl * 4).mul(4e22)
 	if (upg == 8) return pow2(lvl).mul(3e23)
-	return 0
+	if (upg == 9) return pow10(lvl).mul(1e50)
+	if (upg == 10) return pow10(lvl).mul(1e60)
+	if (upg == 11) return pow10(lvl).mul(1e70)
+	return E(1/0)
 }
 
 function canBuyTreeUpg(upg) {
@@ -185,12 +187,6 @@ function getTreeUpgradeLevel(upg) {
 	return todSave.upgrades[upg] || 0
 }
 
-function getTotalNumOfToDUpgrades(){
-	let power = 0
-	for (var upg = 1; upg <= 8; upg++) power += getTreeUpgradeLevel(upg)
-	return power
-}
-
 function getTreeUpgradeEffect(upg) {
 	let lvl = getTreeUpgradeLevel(upg) * tmp.qu.tree_str
 	if (upg == 1) return Math.floor(lvl * 30)
@@ -204,15 +200,20 @@ function getTreeUpgradeEffect(upg) {
 	if (upg == 6) return pow10(lvl / 2)
 	if (upg == 7) return lvl ? pow2(Math.sqrt(tmp.rep.eff.max(1).log10()) / 20 * Math.log10(lvl + 9)) : E(1)
 	if (upg == 8) return Math.log10(Decimal.add(player.meta.bestAntimatter, 1).log10() + 1) * Math.sqrt(lvl)
+	if (upg == 9) return lvl * 10
+	if (upg == 10) return lvl * 1e4
+	if (upg == 11) return lvl / 200 + 1
 	return 0
 }
 
 function getTreeUpgradeEffectDesc(upg) {
-	if (upg == 1) return getFullExpansion(getTreeUpgradeEffect(upg))
+	let eff = getTreeUpgradeEffect(upg)
+
+	if (upg == 1) return getFullExpansion(eff)
 	if (upg == 2) return getDilExp("TU3").toFixed(2) + " → " + getDilExp().toFixed(2)
 	if (upg == 4) return "^" + getFullExpansion(Math.round(getPositronBoost("noTree"))) + " → ^" + getFullExpansion(Math.round(tmp.mpte))
-	if (upg == 8) return getTreeUpgradeEffect(8).toFixed(2)
-	return shortenMoney(getTreeUpgradeEffect(upg))
+	if (upg == 8) return eff.toFixed(2)
+	return shortenMoney(eff)
 }
 
 var branchUpgCostScales = [[300, 15, 2], [50, 8, 1], [4e7, 7, 1]]
@@ -328,7 +329,7 @@ function getUQName(shorthand) {
 function maxTreeUpg() {
 	var update = false
 	var todData = todSave
-	for (var u = 1; u <= 8; u++) {
+	for (var u = 1; u <= tmp.qu.tree_unls; u++) {
 		var cost = getTreeUpgradeCost(u)
 		var lvl = getTreeUpgradeLevel(u)
 		var min = todData.r.spin

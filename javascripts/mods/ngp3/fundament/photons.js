@@ -23,7 +23,7 @@ let PHOTON = {
 	//Calculation
 	calc(dt) {
 		ghSave.photons.amt = this.photon_prod().mul(dt * PHOTON.checkSpeed(0)).add(ghSave.photons.amt)
-		if (ghSave.photons.sel[1] != -1) ghSave.photons.slots[ghSave.photons.sel[1]][0] += dt
+		if (ghSave.photons.sel[1] != -1) ghSave.photons.slots[ghSave.photons.sel[1]][0] = Math.max(ghSave.photons.slots[ghSave.photons.sel[1]][0] + dt, getTreeUpgradeEffect(9))
 	},
 	temp() {
 		if (!this.unlocked()) return

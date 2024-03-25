@@ -267,7 +267,7 @@ function getReplicantiFinalInterval() {
 		tmp.rep.warp = E(1000).div(x).max(10).log10() / 2
 		speed.exp *= tmp.rep.warp
 
-		tmp.rep.warp_lim = E(100).pow(speed.exp / Math.log10(speed.inc))
+		tmp.rep.warp_lim = E(100).pow(speed.exp / Math.log10(speed.inc) * getTreeUpgradeEffect(11))
 		x = 1 / speed.exp
 		if (player.replicanti.amount.gt(tmp.rep.warp_lim)) x *= 10
 	}

@@ -308,7 +308,7 @@ function selectPC(loc, bigRip) {
 	let pc = quSave.pairedChallenges.order[loc] || []
 	if (pc.length == 2) {
 		if (bigRip && (!pc.includes(6) || !pc.includes(8))) return
-		quantum(false, true, { qc: pc, pc: loc, br: bigRip })
+		quantum(true, false, { qc: pc, pc: loc, br: bigRip })
 		return
 	} else if (pcFocus == loc) pcFocus = 0
 	else {

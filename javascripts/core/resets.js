@@ -37,7 +37,7 @@ let RESETS = {
 			divideTickspeedIC5()
 		},
 		doReset(order) {
-			let resetDims = !(order == "db" || order == "gal") || !postBoostMilestone()
+			let resetDims = order != "db" && order != "gal" || !postBoostMilestone()
 			if (resetDims) {
 				this.startingAM()
 				this.startingDims()
@@ -45,7 +45,6 @@ let RESETS = {
 				if (inNGM(4)) resetNGM4TDs()
 				if (inNGM(2)) reduceDimCosts()
 			}
-			if (resetDims) resetPowers()
 			this.startingTickspeed()
 			setInitialDimensionPower()
 			player.chall3Pow = E(0.01)
@@ -55,6 +54,8 @@ let RESETS = {
 			player.postC8Mult = E(1)
 			skipResets()
 			Marathon = 0
+
+			if (resetDims) resetPowers()
 
 			//UPDATE DISPLAYS
 			hideDimensions()
@@ -328,7 +329,7 @@ let RESETS = {
 			if (player.timestudy.theorem == 0 && !player.dilation.upgrades.includes(10)) quSave.wasted = true
 
 			updateInQCs()
-			if (!auto) {
+			if (!auto || bigRip) {
 				updateRespecButtons()
 				updateMasteryStudyCosts()
 				updateHeaders()

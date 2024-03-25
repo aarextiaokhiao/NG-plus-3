@@ -87,7 +87,7 @@ var automators = {
 		title: "Paradigmic",
 		html: `Get Phantomal Paradigms at Big Rip run
 		<input id="autoAnt17t" onchange="changeAutoGhost('17t')"/><br>
-		(disables Big Rip automator)`,
+		(auto-forces Big Rip)`,
 		req: 1e4,
 		pow: 1,
 	},
@@ -230,19 +230,29 @@ function automatorTick(diff) {
 
 	//Ghostify Layer
 	if (isAutoGhostActive(15) && ghSave.time >= ghSave.automatorGhosts[15].a * 10) ghostify(true)
+	if (isAutoGhostActive(19)) {
+		for (var [i, s] of Object.entries(ghSave.photons.slots)) {
+			if (!s[1] && s[0] < ghSave.automatorGhosts[19].t) {
+				ghSave.photons.sel[1] = parseInt(i)
+				break
+			}
+		}
+	}
 
 	//Quantum Layer
-	let limit = ghSave.automatorGhosts[13].o || 1 / 0
-	if (bigRipped() && isAutoGhostActive(2) && brSave.times >= ghSave.automatorGhosts[2].b) {
-		if (quSave.time < ghSave.automatorGhosts[2].t * 10 && player.currentEternityChall != "eterc10") {
-			startEC10()
+	let inRip = bigRipped(), paradigmalOn = isAutoGhostActive(17) && brSave.times > ghSave.automatorGhosts[17].t
+	if (inRip) {
+		if (paradigmalOn) PHANTOM.click()
+		if (isAutoGhostActive(2) && brSave.times >= ghSave.automatorGhosts[2].b) {
+			if (quSave.time < ghSave.automatorGhosts[2].t * 10 && player.currentEternityChall != "eterc10") startEC10()
+			if (quSave.time >= ghSave.automatorGhosts[2].t * 10 && player.currentEternityChall == "eterc10") eternity(true)
 		}
-		if (quSave.time >= ghSave.automatorGhosts[2].t * 10 && player.currentEternityChall == "eterc10") eternity(true)
 	}
 	if (hasMasteryStudy("d14") && isAutoGhostActive(13)) {
-		if (bigRipped()) {
-			if (quSave.time >= ghSave.automatorGhosts[13].u * 10 && brSave.times <= limit) doQuantum(true, true)
-		} else if (quSave.time >= ghSave.automatorGhosts[13].t * 10 && brSave.times < limit) bigRip(true)
+		let limit = ghSave.automatorGhosts[13].o || 1 / 0
+		if (inRip) {
+			if (quSave.time >= ghSave.automatorGhosts[13].u * 10 && !paradigmalOn && brSave.times <= limit) doQuantum(true, true)
+		} else if (quSave.time >= ghSave.automatorGhosts[13].t * 10 && (brSave.times < limit || paradigmalOn)) bigRip(true)
 	}
 	if (NF.unl()) {
 		if (isAutoGhostActive(1) && quSave.usedQuarks.r.gt(0)) unstableQuarks("r")
