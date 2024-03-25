@@ -411,8 +411,6 @@ function setAarexModIfUndefined(){
 }
 
 function setSomeEterEraStuff() {
-	updateNotationOption()
-
 	if (player.infinitied == 0 && getEternitied() == 0) el("infinityPoints2").style.display = "none"
 	if (player.eternityChallUnlocked === null) player.eternityChallUnlocked = 0
 
@@ -441,8 +439,6 @@ function setSomeEterEraStuff2(){
 	}
 	for (var a = updatedLTR.length; a < 10; a++) updatedLTR.push([26784000, E(0)])
 	player.lastTenRuns = updatedLTR
-	updateLastTenRuns()
-	updateLastTenEternities()
 }
 
 function dov7tov10(){
@@ -1486,7 +1482,6 @@ function updateNGModeMessage(){
 		ngModeMessages = ["Due to balancing changes, you are forced to Quantum and reset your TT and your best TP, but you are given	" + shorten(setTTAfterQuantum) + " TT as compensation."]
 		player.timestudy.theorem = setTTAfterQuantum
 		player.dilation.bestTP = E(0)
-		el('bestTP').textContent = "Your best ever Tachyon Particles is 0."
 	}
 }
 
@@ -1552,10 +1547,7 @@ function onLoad(noOffline) {
 	setReplAutoDisplay()
 	setSomeQuantumAutomationDisplay()
 
-	if (mod.ngp3) {
-		updateNGp3DisplayStuff()
-		tousToggleUpdate()
-	}
+	if (mod.ngp3) updateNGp3DisplayStuff()
 	hideDimensions()
 	updateChallenges()
 	updateNCVisuals()
@@ -1566,17 +1558,12 @@ function onLoad(noOffline) {
 	updateRespecButtons()
 	updateEternityChallenges()
 	updateEterChallengeTimes()
-	setAchieveTooltip()
 	updateAnimationBtns(true)
-
-	//This should be moved
-	updateLastTenQuantums()
 	updateSpeedruns()
-	updateBankedEter()
-	updateQuantumChallenges()
-	updateQCTimes()
-	updatePCCompletions()
-	updateLastTenGhostifies()
+	tousToggleUpdate()
+
+	//call onNotationChange to save code length
+	onNotationChange()
 
 	if (mod.rs) updateGalaxyControl()
 	poData=meta.save["presetsOrder"+(mod.rs?"_ers":"")]

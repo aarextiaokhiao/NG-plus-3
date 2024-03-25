@@ -156,8 +156,11 @@ function setTachyonParticles(x) {
 }
 
 function updateBestTachyonParticles() {
-	el('bestTP').textContent = "Your best" + (ghostified ? "" : " ever")+" Tachyon Particles" + (ghostified ? " in this Fundament" : "") + " is " + shorten(player.dilation.bestTP) + "."
-	setAndMaybeShow('bestTPOverGhostifies', ghostified, '"Your best-ever Tachyon Particles is "+shorten(player.dilation.bestTPOverGhostifies)+"."')
+	let msg = ""
+	if (hasAch("ng3p18")) msg += `Your ${(ghostified ? "best" : "best-ever")} Tachyon Particles${ghostified ? " in this Fundament" : ""} is ${shorten(player.dilation.bestTP)}.`
+	if (hasAch("ng3p37")) msg += `<br>Your best-ever Tachyon Particles is ${shorten(player.dilation.bestTPOverGhostifies)}.`
+
+	el('bestTP').innerHTML = msg
 }
 
 function dilates(x, m) {

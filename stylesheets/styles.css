@@ -1764,6 +1764,17 @@ br {
 	text-align: right
 }
 
+#ts_preset_menu td {
+	padding: 2px
+}
+
+#ts_preset_menu button {
+	width: 150px;
+	height: 40px;
+	font-size: 10px;
+	margin: auto
+}
+
 #preset_buttons {
 	background: #E0E0E0;
 	border: 2px solid black;
@@ -1780,12 +1791,10 @@ br {
 	font-size: 10px;
 	text-align: center
 }
-
 #preset_buttons button {
 	width: 80px;
 	height: 30px;
 }
-
 #preset_bulk_str {
 	width: 450px;
 	max-width: 600px;

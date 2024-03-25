@@ -1,6 +1,6 @@
 //VERSION: 2.31
 let ngp3_ver = 2.31
-let ngp3_build = 20240324
+let ngp3_build = 20240325
 function doNGP3Updates() {
 	if (!aarMod.ngp3_build) aarMod.ngp3_build = 0
 	if (aarMod.ngp3_build < 20221230) quSave.multPower = 0
@@ -41,7 +41,7 @@ function doNGP3Updates() {
 			beSave.upgrades = [1, 2, 3, 4, 5, 6]
 			ghSave.ghostParticles = E(1e20)
 		}
-		if (aarMod.ngp3_build < 20240322) {
+		if (aarMod.ngp3_build < 20240325) {
 			delete ghSave.wzb
 			delete ghSave.bl
 			delete ghSave.lab?.hf
@@ -120,14 +120,11 @@ function respecMasteryToggle() {
 //v1.9987
 var bankedEterGain
 function updateBankedEter(updateHtml = true) {
-	bankedEterGain = 0
-	if (!hasAch("ng3p15")) return
+	bankedEterGain = hasAch("ng3p15") ? nD(player.eternities, 20) : 0
+	if (!updateHtml) return
 
-	bankedEterGain = nD(player.eternities, 20)
-	if (updateHtml) {
-		setAndMaybeShow("bankedEterGain", bankedEterGain > 0, '"You will gain "+getFullExpansion(bankedEterGain)+" banked Eternities on next Quantum."')
-		setAndMaybeShow("eternitiedBank", player.eternitiesBank, '"You have "+getFullExpansion(player.eternitiesBank)+" banked Eternities."')
-	}
+	setAndMaybeShow("bankedEterGain", bankedEterGain > 0, '"You will gain "+getFullExpansion(bankedEterGain)+" banked Eternities on next Quantum."')
+	setAndMaybeShow("eternitiedBank", player.eternitiesBank, '"You have "+getFullExpansion(player.eternitiesBank)+" banked Eternities."')
 }
 
 //v1.99871
@@ -165,13 +162,6 @@ function maxAllDilUpgs() {
 		while (buyDilationUpgrade(id, true)) update = true
 	}
 	if (update) updateDilationUpgradeButtons()
-}
-
-//v1.99874
-function maybeShowFillAll() {
-	var display = hasMasteryStudy("t302") ? "block" : "none"
-	el("fillAll").style.display = display
-	el("fillAll2").style.display = display
 }
 
 //v1.9995

@@ -154,10 +154,9 @@ function onTabSwitch() {
 	let study_tree = isTabShown('ts') || isTabShown('ts_respec') || isTabShown('ts_master')
 	el("TTbuttons").style.display = study_tree ? "block" : "none"
 
-	resizeCanvas()
-	if (isTabShown("dil")) requestAnimationFrame(drawAnimations)
-	if (isTabShown("bh")) requestAnimationFrame(drawBlackhole)
-	if (isTabShown("aq")) requestAnimationFrame(drawQuarkAnimation)
+	if (isTabShown("ts"))        el("ts_preset_div_1").appendChild(el("ts_preset_menu"))
+	if (isTabShown("ts_respec")) el("ts_preset_div_2").appendChild(el("ts_preset_menu"))
+	if (isTabShown("ts_master")) el("ts_preset_div_3").appendChild(el("ts_preset_menu"))
 
 	var oldEmpty = isEmptiness
 	isEmptiness = !aarMod.tabs.root
@@ -165,6 +164,13 @@ function onTabSwitch() {
 
 	showHideFooter()
 	PRESET_DIAL.detect()
+
+
+	//Canvases
+	resizeCanvas()
+	if (isTabShown("dil")) requestAnimationFrame(drawAnimations)
+	if (isTabShown("bh")) requestAnimationFrame(drawBlackhole)
+	if (isTabShown("aq")) requestAnimationFrame(drawQuarkAnimation)
 }
 
 function isTabShown(x) {

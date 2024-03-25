@@ -482,9 +482,6 @@
 			<div id="tab_ach_n">
 				<div id="achmultlabel" style="font-size: 140%">Current achievement multiplier on each Dimension: 1x</div>
 				<div id="metaAchMultLabel" style="font-size: 140%">Achievement multiplier to Meta Dimensions: 1x</div>
-				<div id="tousToggleDiv">
-					<button id="toggleUltimateStudyReward" class="storebtn" onclick="toggleTOUS()" style="display: block; width: 450px">Toggle "The Theory of Ultimate Studies" reward: ON</button>
-				</div>
 				<div>
 					<button id="showAchRowNums" onclick="toggleAchRowNums()" class="storebtn" style="width: 180px"></button>
 					<button id="hideCompletedAchs" onclick="toggleCompletedAchs()" class="storebtn" style="width: 180px"></button>
@@ -2591,13 +2588,20 @@
 			<table id="tabs_eter"></table>
 			<div id="tab_ts">
 				<canvas id="studyTreeCanvas"></canvas>
-				<tr>
-					<td><button class="storebtn" onclick="exportStudyTree()" style="width:150px; height: 40px; font-size: 10px; margin: auto">Export tree</button><td>
-					<td><button class="storebtn" onclick="respecToggle()" id="respec" style="width:150px; height: 40px; font-size: 10px; margin: auto">Respec time studies on next Eternity</button><td>
-					<td><button class="storebtn" onclick="importStudyTree()" style="width:150px; height: 40px; font-size: 10px; margin: auto">Import tree</button><td>
-				</tr>
-				<button class="storebtn" onclick="respecMasteryToggle()" id="respecMastery" style="width:150px; height: 40px; font-size: 10px; margin: auto">Respec mastery studies on next Eternity</button>
-				<button class="storebtn" onclick="fillAll()" id="fillAll" style="width:150px; height: 40px; font-size: 10px; margin: auto">Buy all time studies</button>
+				<div id="ts_preset_div_1">
+					<table id="ts_preset_menu">
+						<tr>
+							<td><button class="storebtn" onclick="exportStudyTree()">Export tree</button></td>
+							<td><button class="storebtn" id="respec" onclick="respecToggle()">Respec time studies on next Eternity</button></td>
+							<td><button class="storebtn" onclick="importStudyTree()">Import tree</button></td>
+						</tr><tr>
+							<td><button class="storebtn" id="tousKeep" onclick="toggleTOUS()">Get all studies and challenges on Fundament</button></td>
+							<td><button class="storebtn" id="respecMastery" onclick="respecMasteryToggle()">Respec mastery studies on next Eternity</button></td>
+							<td><button class="storebtn" onclick="fillAll()" id="fillAll">Buy all time studies</button></td>
+						</tr>
+					</table>
+				</div>
+
 				<table class="table" id="studytable" style="margin-top: 15px;">
 					<tr>
 						<td style="opacity: 0;"><button class="timestudylocked"></button></td>
@@ -2809,9 +2813,8 @@
 				<div style="height: 150px;"></div>
 			</div>
 			<div id="tab_ts_respec">
-				<button class="storebtn" onclick="exportStudyTree()" style="width:150px; height: 40px; font-size: 10px; margin: auto">Export spec</button>
-				<button class="storebtn" onclick="respecToggle()" id="respec2" style="width:150px; height: 40px; font-size: 10px; margin: auto">Respec time studies on next Eternity</button>
-				<button class="storebtn" onclick="importStudyTree()" style="width:150px; height: 40px; font-size: 10px; margin: auto">Import spec</button>
+				<div id="ts_preset_div_2"></div>
+
 				<p id="nextstudy" style="margin: 0 auto;"></p>
 				<table class="table" style="margin: 0 auto;">
 					<tr id="tsrow1">
@@ -2856,16 +2859,11 @@
 			</div>
 			<div id="tab_ts_master">
 				<canvas id="studyTreeCanvas2"></canvas>
+				<div id="ts_preset_div_3"></div>
+
 				Mastery study cost multiplier: <text id='costmult'></text>x<br>
 				Total normal mastery studies bought: <text id='totalmsbought'></text><br>
 				Total TT spent to mastery studies: <text id='totalttspent'></text><br>
-				<tr>
-					<td><button class="storebtn" onclick="exportStudyTree()" style="width:150px; height: 40px; font-size: 10px; margin: auto">Export tree</button><td>
-					<td><button class="storebtn" onclick="respecToggle()" id="respec3" style="width:150px; height: 40px; font-size: 10px; margin: auto">Respec time studies on next Eternity</button><td>
-					<td><button class="storebtn" onclick="importStudyTree()" style="width:150px; height: 40px; font-size: 10px; margin: auto">Import tree</button><td>
-				</tr>
-				<button class="storebtn" onclick="respecMasteryToggle()" id="respecMastery2" style="width:150px; height: 40px; font-size: 10px; margin: auto; display: block">Respec mastery studies on next Eternity</button>
-				<button class="storebtn" onclick="fillAll()" id="fillAll2" style="width:150px; height: 40px; font-size: 10px; margin: auto">Buy all time studies</button>
 				<table class="table" id="studytable">
 					<tr>
 						<td><button class="dilationupg" id="back" onclick="exitMasteryPortal()">Return to time studies.</button></td>
@@ -3233,7 +3231,6 @@
 					<p id="xdp">You have <span id="exDilationAmount" style="font-size:35px; color: black">0</span> ex-dilation, <span id="exDilationDesc"></span></p>
 				</div>
 				<p id='bestTP'></p>
-				<p id='bestTPOverGhostifies'></p>
 				<table>
 					<tr>
 						<td>
@@ -3802,7 +3799,7 @@
 			<br>
 
 			<b>(NG+3 v2.31: Ghostify Respecced)</b><br>
-			<b class="red">(Beta: 3/24/24 Build)</b><br>
+			<b class="red">(Beta: 3/25/24 Build)</b><br>
 			By <a href="https://aarextiaokhiao.github.io/">Aarex</a>, pg132, and usavictor.
 			<br><br>
 

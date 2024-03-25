@@ -941,23 +941,18 @@ function updateNotationOption() {
 function onNotationChange() {
 	el_class("hideInMorse").display = player.options.notation == "Morse code" || player.options.notation == 'Spazzy' ? "none" : ""
 	updateNotationOption()
-	updateLastTenRuns();
-	updateLastTenEternities();
-	tmp.tickUpdate = true;
+	updateLastTenRuns()
+	updateLastTenEternities()
+	updateBankedEter(true)
 	setAchieveTooltip()
 	if (mod.ngp3) {
 		updateLastTenQuantums()
 		updateLastTenGhostifies()
 		updateQuarksTabOnUpdate()
 		updateQuantumWorth("notation")
-		updateBankedEter()
 		updateQuantumChallenges()
 	}
-	el("achmultlabel").textContent = "Current achievement multiplier on each Dimension: " + shortenMoney(player.achPow) + "x"
-	if (hasAch("ng3p18") || hasAch("ng3p37")) {
-		el('bestTP').textContent="Your best"+(ghostified ? "" : " ever")+" Tachyon Particles"+(ghostified ? " in this Fundament" : "")+" was "+shorten(player.dilation.bestTP)+"."
-		setAndMaybeShow('bestTPOverGhostifies',ghostified,'"Your best-ever Tachyon Particles was "+shorten(player.dilation.bestTPOverGhostifies)+"."')
-	}
+	tmp.tickUpdate = true;
 }
 
 function setNotation(id) {

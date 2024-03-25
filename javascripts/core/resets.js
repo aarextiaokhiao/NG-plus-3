@@ -267,6 +267,7 @@ let RESETS = {
 			player.bestEternity = 999999999
 			player.lastTenEternities = [[600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)], [600*60*24*31, E(0)]]
 			updateLastTenEternities()
+			updateBankedEter()
 
 			player.eternityPoints = E(0)
 			if (getEternitied() < 100) player.eternityBuyer.isOn = false
@@ -453,7 +454,6 @@ let RESETS = {
 
 			player.infinitiedBank = 0
 			player.eternitiesBank = ghostified ? 200 : 0
-			updateBankedEter()
 			player.dilation.bestTP = E(0)
 			player.meta.bestOverQuantums = E(0)
 			if (bm < 3) {

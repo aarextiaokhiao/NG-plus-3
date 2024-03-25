@@ -361,9 +361,9 @@ function updateDilation(){
 	else el("enabledilation").textContent = "Dilate time."+((player.eternityBuyer.isOn&&player.eternityBuyer.dilationMode?!isNaN(player.eternityBuyer.statBeforeDilation):false) ? " "+player.eternityBuyer.statBeforeDilation+ " left before dilation." : "")
 
 	el("tachyonParticleAmount").textContent = shortenMoney(player.dilation.tachyonParticles)
-	updateBestTachyonParticles()
 	el("dilatedTimeAmount").textContent = shortenMoney(player.dilation.dilatedTime)
 	el("dilatedTimePerSecond").textContent = "+" + shortenMoney(getDilTimeGainPerSecond()) + "/s"
+	updateBestTachyonParticles()
 
 	var fgm = getFreeGalaxyGainMult()
 	el('freeGalaxyMult').textContent = fgm == 1 ? "Tachyonic Galaxy is" : Math.round(fgm * 10) / 10 + " Tachyonic Galaxies are"

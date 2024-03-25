@@ -244,7 +244,7 @@ function updateTimeStudyButtons(changed, forceupdate = false) {
 	el("dilstudy6").style.display = mod.ngpp ? "" : "none"
 
 	//NG+3
-	maybeShowFillAll()
+	el("fillAll").style.display = hasMasteryStudy("t302") ? "block" : "none"
 	el("masteryportal").style.display = mod.ngp3 ? "" : "none"
 	if (mod.ngp3) {
 		el("masteryportal").innerHTML = "<b style='font-size: 13px'>Mastery Portal</b>" +

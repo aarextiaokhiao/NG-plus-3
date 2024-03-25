@@ -178,7 +178,6 @@ function doQuantum(force, auto, qc = {}) {
 	if (!force) {
 		//Stats
 		player.eternitiesBank = nA(player.eternitiesBank, bankedEterGain)
-		updateBankedEter()
 
 		quSave.times++
 		if (quSave.times >= 1e4) giveAchievement("Prestige No-lifer")

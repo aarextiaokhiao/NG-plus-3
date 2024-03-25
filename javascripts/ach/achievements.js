@@ -348,11 +348,9 @@ function giveAchievement(name, noUpdate) {
 	if (name == "It will never be enough") el('replicantibulkmodetoggle').style.display="inline-block"
 	if (name == "Stop blocking me!") el('autoReset').style.display = ""
 	if (name == "To the new dimension!") brSave.bestGals = 1
-	if (name == "Quantum doesn't take so long") {
-		updateAutobuyers()
-	}
+	if (name == "Quantum doesn't take so long") updateAutobuyers()
+
 	if (name == "Kee-hee-hee!") {
-		setAndMaybeShow('bestTPOverGhostifies', true, '"Your best-ever Tachyon Particles was "+shorten(player.dilation.bestTPOverGhostifies)+"."')
 		dev.giveAllNGAchievements()
 		for (let i = 1; i <= 8; i++){
 			if (!hasAch("ngpp1" + i)) player.achievements.push("ngpp1" + i)
@@ -368,6 +366,7 @@ function giveAchievement(name, noUpdate) {
 			if (!hasAch("ng3p6" + i)) player.achievements.push("ng3p6" + i)
 		}
 	}
+	if (name == "The Theory of Ultimate Studies") tousToggleUpdate()
 	if (name == "Meta-Quintillion") beatNGP3()
 	if (!noUpdate) {
 		$.notify(name, "success");
@@ -563,6 +562,6 @@ function toggleTOUS() {
 }
 
 function tousToggleUpdate() {
-	el("tousToggleDiv").style.display = hasAch("ng3p77") ? "inline-block" : "none"
-	el("toggleUltimateStudyReward").textContent = "Toggle \"The Theory of Ultimate Studies\" reward: " + (aarMod.toggleTOUS ? "ON" : "OFF")
+	el("tousKeep").style.display = hasAch("ng3p77") ? "inline-block" : "none"
+	el("tousKeep").className = aarMod.toggleTOUS ? "timestudybought" : "storebtn"
 }

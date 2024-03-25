@@ -1184,14 +1184,8 @@ function respecToggle() {
 }
 
 function updateRespecButtons() {
-	var className = player.respec ? "timestudybought" : "storebtn"
-	el("respec").className = className
-	el("respec2").className = className
-	el("respec3").className = className
-
-	className = player.respecMastery ? "timestudybought" : "storebtn"
-	el("respecMastery").className = className
-	el("respecMastery2").className = className
+	el("respec").className        = player.respec        ? "timestudybought" : "storebtn"
+	el("respecMastery").className = player.respecMastery ? "timestudybought" : "storebtn"
 }
 
 function doCheckECCompletionStuff(){

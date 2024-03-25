@@ -63,7 +63,7 @@ let PHOTON = {
 			{
 				name: "infrared",
 				req: 1,
-				eff: exp => E_pow(tmp.gal.ts || 1, -exp / 4),
+				eff: exp => E_pow(tmp.gal.ts || 1, -exp / 10),
 				desc: e => `Tickspeed reduction multiplies per-ten multiplier by ${shorten(e)}x.`
 			}, {
 				name: "red",
@@ -78,7 +78,7 @@ let PHOTON = {
 			}, {
 				name: "yellow",
 				req: 1e100,
-				eff: exp => exp / 100,
+				eff: exp => exp / 1e3,
 				desc: e => `Discharged Galaxies are ${(e*100).toFixed(1)}% efficient.`
 			}, {
 				name: "green",
