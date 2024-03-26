@@ -57,10 +57,10 @@ function updateTreeOfDecayTab(){
 		el("treeupg" + u).style.display = tmp.qu.tree_unls >= u ? "" : "none"
 		if (tmp.qu.tree_unls < u) continue
 
-		var lvl = getTreeUpgradeLevel(u)
+		var lvl = getTreeUpgradeLevel(u), str = getTreeUpgradeStrength(u)
 		el("treeupg" + u).className = "qu_upg " + (canBuyTreeUpg(u) ? "r" : "unavailablebtn")
 		el("treeupg" + u + "current").innerHTML = getTreeUpgradeEffectDesc(u)
-		el("treeupg" + u + "lvl").innerHTML = getFullExpansion(lvl) + (tmp.qu.tree_str > 1 && u < 12 ? " → " + getFullExpansion(Math.floor(lvl * tmp.qu.tree_str)) : "")
+		el("treeupg" + u + "lvl").innerHTML = getFullExpansion(lvl) + (str == 1 ? "" : shiftDown ? " → " + getFullExpansion(Math.floor(lvl * str)) : " (x" + shorten(str) + ")")
 		el("treeupg" + u + "cost").innerHTML = start + shortenMoney(getTreeUpgradeCost(u)) + " preonic spin"
 	}
 	el("treeUpgradeEff").style.display = ghostified ? "" : "none"
@@ -188,11 +188,17 @@ function getTreeUpgradeLevel(upg) {
 	return todSave.upgrades[upg] || 0
 }
 
-function getTreeUpgradeEffect(upg) {
-	let lvl = getTreeUpgradeLevel(upg)
-	if (upg == 12) return lvl / 3
+function getTreeUpgradeStrength(upg) {
+	let min = 1/0
+	if (upg == 12) return 1
+	if (upg == 1)  min =  4
+	if (upg == 6)  min =  4
+	return Math.min(tmp.qu.tree_str, min)
+}
 
-	lvl *= tmp.qu.tree_str
+function getTreeUpgradeEffect(upg) {
+	let lvl = getTreeUpgradeLevel(upg) * getTreeUpgradeStrength(upg)
+
 	if (upg == 1) return Math.floor(lvl * 30)
 	if (upg == 2) return lvl * 0.25
 	if (upg == 3) return pow2(Math.sqrt(Math.max(lvl, 0) * 2))
@@ -203,10 +209,11 @@ function getTreeUpgradeEffect(upg) {
 	}
 	if (upg == 6) return pow10(lvl / 2)
 	if (upg == 7) return lvl ? pow2(Math.sqrt(tmp.rep.eff.max(1).log10()) / 20 * Math.log10(lvl + 9)) : E(1)
-	if (upg == 8) return Math.log10(Decimal.add(player.meta.bestAntimatter, 1).log10() + 1) * Math.sqrt(lvl)
+	if (upg == 8) return Math.log10(player.meta.bestAntimatter.add(10).log10()) * Math.sqrt(lvl)
 	if (upg == 9) return lvl * 10
 	if (upg == 10) return lvl * 1e4
 	if (upg == 11) return lvl / 200 + 1
+	if (upg == 12) return lvl / 3
 	return 0
 }
 
@@ -401,6 +408,7 @@ function getTreeUpgradeEfficiencyText(){
 		if (hasBLMilestone(14)) text += "Bosonic Milestone 15: " + shorten(blEff(14)) + "x to prior, "
 	}
 	if (getTreeUpgradeLevel(12) > 0) text += "Tree Upgrade 12: +" + shorten(getTreeUpgradeEffect(12)) + "x, "
+	if (PHANTOM.amt > 0) text += "Phantomal Paradigms: +" + shorten(PHANTOM.amt / 3) + "x, "
 	if (hasNB(7)) text += "Neutrino Boost 7: +" + shorten(NT.eff("boost", 7)) + "x, "
 	if (hasAch("ng3p62")) text += "'Finite Time' Reward: +0.1x, "
 
@@ -409,8 +417,10 @@ function getTreeUpgradeEfficiencyText(){
 }
 
 function getTreeUpgradeEfficiency(mod) {
-	let r = getRadioactiveDecays() / 3 + getTreeUpgradeEffect(12)
+	let r = getRadioactiveDecays() / 3
+	r += getTreeUpgradeEffect(12)
 
+	r += PHANTOM.amt / 3
 	if (hasBLMilestone(14)) r *= blEff(14)
 	if (hasNB(7) && mod != "noNB") r += NT.eff("boost", 7, 0)
 	if (hasAch("ng3p62")) r += 0.1

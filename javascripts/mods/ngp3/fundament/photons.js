@@ -54,7 +54,7 @@ let PHOTON = {
 
 		if (hasNB(11))               r = r.mul(NT.eff("boost", 11))
 		if (hasNanoReward("photon")) r = r.mul(tmp.qu.nf.eff.photon)
-		if (PHANTOM.amt >= 1)        r = r.mul(2 ** PHANTOM.amt)
+		if (PHANTOM.amt >= 1)        r = r.mul(pow2(PHANTOM.amt))
 		return r
 	},
 	checkSpeed(x) { return PHOTON.unlocked() && ghSave.photons.sel[0] == x && ghSave.photons.sel[1] != -1 ? .1 : 1 },

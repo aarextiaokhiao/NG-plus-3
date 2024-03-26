@@ -2286,15 +2286,25 @@ let simulateParts = {
 		name: "Antimatter",
 		color: "red"
 	},
+	inf: {
+		amt: _ => player.infinities,
+		name: "Infinities",
+		color: "#d90"
+	},
 	ip: {
 		amt: _ => player.infinityPower,
 		name: "Infinity Power",
-		color: "gold"
+		color: "#d90"
 	},
 	rep: {
 		amt: _ => player.replicanti.amount,
 		name: "Replicantis",
-		color: "orange"
+		color: "#d90"
+	},
+	eter: {
+		amt: _ => player.eternities,
+		name: "Eternities",
+		color: "#b7f"
 	},
 	ts: {
 		amt: _ => player.timeShards,
@@ -2324,12 +2334,12 @@ let simulateParts = {
 	ma: {
 		amt: _ => player.meta?.antimatter,
 		name: "Meta-Antimatter",
-		color: "cyan"
+		color: "#0bf"
 	},
 	pos: {
 		amt: _ => quSave?.electrons.amount,
 		name: "Positrons",
-		color: "gold"
+		color: "#bb0"
 	},
 	ant: {
 		amt: _ => quSave?.replicants.amount,
@@ -2346,30 +2356,15 @@ let simulateParts = {
 		name: "Preonic Spin",
 		color: "brown"
 	},
-	rd: {
-		amt: _ => todSave?.r.decays,
-		name: "Radioactive Decays",
-		color: "brown"
-	},
 	le: {
-		amt: _ => PHOTON.unlocked(),
-		name: "Light Emissions",
-		color: "#b97"
+		amt: _ => ghSave?.photons?.amt,
+		name: "Photons",
+		color: "#bb7"
 	},
 	bm: {
 		amt: _ => blSave?.bosons,
 		name: "Bosonic Matter",
 		color: "#f70"
-	},
-	inf: {
-		amt: _ => player.infinities,
-		name: "Infinities",
-		color: "gold"
-	},
-	eter: {
-		amt: _ => player.eternities,
-		name: "Eternities",
-		color: "#b7f"
 	}
 }
 
