@@ -96,8 +96,8 @@ var nanoRewards = {
 		pilon_charge: (x) => pow2(x * (hasNU(15) ? 4 : 2)),
 		per_10_power: (x) => x * 0.76,
 		pilon_energy: (x) => pow2(x),
-		decay_scale: (x) => x,
-		photon: (x) => pow2(x ** 0.5),
+		decay_scale: (x) => Math.max(x * 5 - 20, 0),
+		photon: (x) => pow2(x * 2 - 10).max(1),
 	},
 	effDisp: {
 		hatch_speed: (x) => "eggons hatch " + shorten(x) + "x faster",

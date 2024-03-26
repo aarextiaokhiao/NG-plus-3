@@ -73,12 +73,12 @@ let PHOTON = {
 			}, {
 				name: "orange",
 				req: 1e100,
-				eff: exp => 1 + exp / 500,
+				eff: exp => 1 + exp / 200,
 				desc: e => `Gain ${shorten((e-1)*100)}% more Neutrinos per Big Rip galaxy.`
 			}, {
 				name: "yellow",
 				req: 1e100,
-				eff: exp => exp / 1e3,
+				eff: exp => Math.min(exp / 1e3, .05),
 				desc: e => `Discharged Galaxies are ${(e*100).toFixed(1)}% efficient.`
 			}, {
 				name: "green",
@@ -142,7 +142,7 @@ let PHOTON = {
 
 		for (var [i, light] of Object.entries(lights)) {
 			el("ph_light_" + i).className = `light ${light.name} ${pt.unls > i ? "" : "blank"}`
-			el("ph_light_eff_" + i).textContent = pt.unls > i ? light.desc(lightEff(i)) : `(Requires ${shorten(light.req)} Photons)`
+			el("ph_light_eff_" + i).innerHTML = (pt.unls > i ? "" : `(Requires ${shorten(light.req)} Photons)<br>`) + light.desc(lightEff(i))
 		}
 	}
 }

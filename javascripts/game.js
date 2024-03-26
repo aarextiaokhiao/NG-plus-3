@@ -559,13 +559,8 @@ function updateMilestones() {
 	var moreUnlocked = mod.ngp3
 	var milestoneRequirements = [1, 2, 3, 4, 5, 7, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 20, 25, 30, 40, 50, 60, 80, 100, 1e9, 2e10, 4e11, 1e13]
 	for (i=0; i< (moreUnlocked ? 28 : 24); i++) {
-		var name = "reward" + i;
-		if (i > 23) el("milestone" + i).textContent = shortenMoney(milestoneRequirements[i]) + " Eternities:"
-		if (getEternitied() >= milestoneRequirements[i]) {
-			el(name).className = "milestonereward"
-		} else {
-			el(name).className = "milestonerewardlocked"
-		}
+		if (i >= 24) el("milestone" + i).textContent = shortenMoney(milestoneRequirements[i]) + " Eternities:"
+		el("reward" + i).className = getEternitied() >= milestoneRequirements[i] ? "milestonereward" : "milestonerewardlocked"
 	}
 	el("mdmilestones").style.display = moreUnlocked ? "" : "none"
 }

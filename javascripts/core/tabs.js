@@ -50,14 +50,8 @@ let TABS = {
 	eter: { name: "Eternity", class: "eternitybtn", stab: [ "ts", "ts_respec", "ts_master", "upg_eter", "dil", "bh", "mil_eter" ], unl: _ => eternitied(), update() {
 		if (el("TTbuttons").style.display !== "none") updateTheoremButtons()
 	} },
-	ts: { name: "Time Studies", unl: _ => !mod.rs, update() {
-		updateTimeStudyButtons()
-		mainTimeStudyDisplay()
-	} },
-	ts_respec: { name: "Time Studies", unl: _ => mod.rs, update() {
-		updateTimeStudyButtons()
-		updateERSTTDesc()
-	} },
+	ts: { name: "Time Studies", unl: _ => !mod.rs, update: _ => mainTimeStudyDisplay() },
+	ts_respec: { name: "Time Studies", unl: _ => mod.rs, update: _ => updateERSTTDesc() },
 	ts_master: { name: "Mastery Studies", unl: _ => MTS.unl(), update: _ => updateMasteryStudyButtons() },
 	upg_eter: { name: "Upgrades", update() {
 		eternityUpgradesDisplay()

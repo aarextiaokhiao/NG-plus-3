@@ -60,7 +60,7 @@ function updateTreeOfDecayTab(){
 		var lvl = getTreeUpgradeLevel(u)
 		el("treeupg" + u).className = "qu_upg " + (canBuyTreeUpg(u) ? "r" : "unavailablebtn")
 		el("treeupg" + u + "current").innerHTML = getTreeUpgradeEffectDesc(u)
-		el("treeupg" + u + "lvl").innerHTML = getFullExpansion(lvl) + (tmp.qu.tree_str > 1 ? " → " + getFullExpansion(Math.floor(lvl * tmp.qu.tree_str)) : "")
+		el("treeupg" + u + "lvl").innerHTML = getFullExpansion(lvl) + (tmp.qu.tree_str > 1 && u < 12 ? " → " + getFullExpansion(Math.floor(lvl * tmp.qu.tree_str)) : "")
 		el("treeupg" + u + "cost").innerHTML = start + shortenMoney(getTreeUpgradeCost(u)) + " preonic spin"
 	}
 	el("treeUpgradeEff").style.display = ghostified ? "" : "none"
@@ -168,6 +168,7 @@ function getTreeUpgradeCost(upg, add=0) {
 	if (upg == 9) return pow10(lvl).mul(1e50)
 	if (upg == 10) return pow10(lvl).mul(1e60)
 	if (upg == 11) return pow10(lvl).mul(1e70)
+	if (upg == 12) return pow10((lvl + 5) * (lvl + 15))
 	return E(1/0)
 }
 
@@ -188,7 +189,10 @@ function getTreeUpgradeLevel(upg) {
 }
 
 function getTreeUpgradeEffect(upg) {
-	let lvl = getTreeUpgradeLevel(upg) * tmp.qu.tree_str
+	let lvl = getTreeUpgradeLevel(upg)
+	if (upg == 12) return lvl / 3
+
+	lvl *= tmp.qu.tree_str
 	if (upg == 1) return Math.floor(lvl * 30)
 	if (upg == 2) return lvl * 0.25
 	if (upg == 3) return pow2(Math.sqrt(Math.max(lvl, 0) * 2))
@@ -393,9 +397,10 @@ function getTreeUpgradeEfficiencyText(){
 
 	let text = ""
 	if (todSave.r.decays) {
-		text += "Radioactive Decays: +" + (todSave.r.decays / 5).toFixed(1) + "x, "
+		text += "Radioactive Decays: +" + (todSave.r.decays / 3).toFixed(1) + "x, "
 		if (hasBLMilestone(14)) text += "Bosonic Milestone 15: " + shorten(blEff(14)) + "x to prior, "
 	}
+	if (getTreeUpgradeLevel(12) > 0) text += "Tree Upgrade 12: +" + shorten(getTreeUpgradeEffect(12)) + "x, "
 	if (hasNB(7)) text += "Neutrino Boost 7: +" + shorten(NT.eff("boost", 7)) + "x, "
 	if (hasAch("ng3p62")) text += "'Finite Time' Reward: +0.1x, "
 
@@ -404,7 +409,8 @@ function getTreeUpgradeEfficiencyText(){
 }
 
 function getTreeUpgradeEfficiency(mod) {
-	let r = (todSave.r.decays || 0) / 5
+	let r = getRadioactiveDecays() / 3 + getTreeUpgradeEffect(12)
+
 	if (hasBLMilestone(14)) r *= blEff(14)
 	if (hasNB(7) && mod != "noNB") r += NT.eff("boost", 7, 0)
 	if (hasAch("ng3p62")) r += 0.1
@@ -412,9 +418,7 @@ function getTreeUpgradeEfficiency(mod) {
 }
 
 function getRDNerf() {
-	let x = getRadioactiveDecays()
-	let y = Math.max(x - 5, 0)
-	return x * 25 + (Math.pow(y, 2) + y) * 1.25
+	return getRadioactiveDecays() * 20
 }
 
 function getBU1Power() {

@@ -153,7 +153,7 @@ const NEUTRINO = NT = {
 				effDesc: e => `Outside of Big Rip, TS232 regains <b>${shorten(e*100)}%</b> power.`,
 			}, {
 				cost: E(1e24),
-				eff: nt => (nt / 100 + 1) ** 3,
+				eff: nt => (nt / 100 + 1) ** 2,
 				effDesc: e => `Gain <b>${shorten(e)}x</b> more Photons.`,
 			}, {
 				cost: E(1/0),
@@ -273,7 +273,7 @@ const NEUTRINO = NT = {
 				cost: E(1/0),
 				desc: `Galaxies raise Meta-Antimatter effect.`,
 
-				eff: _ => player.galaxies / 1e4,
+				eff: _ => player.galaxies / 8e3,
 				effDesc: e => `+^${shorten(e)}`
 			}
 		]

@@ -562,6 +562,5 @@ function toggleTOUS() {
 }
 
 function tousToggleUpdate() {
-	el("tousKeep").style.display = hasAch("ng3p77") ? "inline-block" : "none"
 	el("tousKeep").className = aarMod.toggleTOUS ? "timestudybought" : "storebtn"
 }

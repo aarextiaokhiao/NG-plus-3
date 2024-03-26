@@ -217,6 +217,10 @@ var studyCosts = [1, 3, 2, 2, 3, 2, 4, 6, 3, 3, 3, 4, 6, 5, 4, 6, 5, 4, 5, 7, 4,
 var performedTS
 function updateTimeStudyButtons(changed, forceupdate = false) {
 	if (!forceupdate && (changed ? player.dilation.upgrades.includes(10) : performedTS && !player.dilation.upgrades.includes(10))) return
+
+	el("fillAll").style.display = hasMasteryStudy("t302") ? "block" : "none"
+	el("tousKeep").style.display = hasAch("ng3p77") ? "inline-block" : "none"
+
 	performedTS = true
 	if (mod.rs) { // eternity
 		var locked = getTotalTT(player) < 60
@@ -244,7 +248,6 @@ function updateTimeStudyButtons(changed, forceupdate = false) {
 	el("dilstudy6").style.display = mod.ngpp ? "" : "none"
 
 	//NG+3
-	el("fillAll").style.display = hasMasteryStudy("t302") ? "block" : "none"
 	el("masteryportal").style.display = mod.ngp3 ? "" : "none"
 	if (mod.ngp3) {
 		el("masteryportal").innerHTML = "<b style='font-size: 13px'>Mastery Portal</b>" +
