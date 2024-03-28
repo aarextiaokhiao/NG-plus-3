@@ -145,7 +145,7 @@ function getMetaShiftRequirement() {
 		if (hasMasteryStudy("t312")) data.mult -= 1
 	}
 	data.amount += data.mult * Math.max(mdb - 4, 0)
-	if (hasMasteryStudy("d13")) data.amount -= getTreeUpgradeEffect(1)
+	if (hasDecay()) data.amount -= getTreeUpgradeEffect(1)
 	if (hasNU(1)) data.amount -= NT.eff("upg", 1, 0)
 
 	data.scalingStart = inQC4 ? 55 : 15
@@ -357,7 +357,7 @@ function getExtraDimensionBoostPowerExponent(ma) {
 	if (mod.ngp3) {
 		power += getECReward(13)
 		if (hasNanoReward("ma_eff_exp")) power += getNanorewardEff("ma_eff_exp")
-		if (hasMasteryStudy("d13")) power += getTreeUpgradeEffect(8)
+		if (hasDecay()) power += getTreeUpgradeEffect(8)
 		if (hasNU(16)) power += NT.eff("upg", 16)
 	}
 	return power

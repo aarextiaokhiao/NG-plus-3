@@ -378,7 +378,7 @@ function replicantiDisplay() {
 
 	if (unl) {
 		let time = mod.ngp3 && player.dilation.upgrades.includes(6)
-		let dil = hasMasteryStudy("t281") || hasMasteryStudy("d13")
+		let dil = hasMasteryStudy("t281") || hasDecay()
 		el("replicantiamount").textContent = shortenDimensions(player.replicanti.amount) + (hasTimeStudy(192) ? "" : " / " + shortenDimensions(getReplicantiLimit()))
 		el("replicantieff").textContent = shiftDown ? "Efficiency: " + shorten(tmp.rep.eff) + "x" : ""
 		el("replicantimult").textContent = shorten(dil ? getReplDilBonus() : time ? tmp.rep.eff.pow(0.1) : getIDReplMult()) + "x"

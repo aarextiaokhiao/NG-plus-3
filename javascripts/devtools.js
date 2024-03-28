@@ -118,6 +118,12 @@ dev.enterTestZone = function() {
 	dev.quickZone()
 }
 
+dev.enterTestChal = function() {
+	if (!confirm("On entering this experimental challenge, Decay will be disabled. Proceed?")) return
+	dev.testChal = true
+	doReset("funda")
+}
+
 dev.quickZone = function() {
 	setInterval(function() {
 		updatePerSecond()

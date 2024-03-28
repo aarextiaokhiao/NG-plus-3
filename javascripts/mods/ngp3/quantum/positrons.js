@@ -56,7 +56,7 @@ function getPositronBoost(mod) {
 	if (r > ss) r = Math.sqrt((r - ss + ss_speed) * ss_speed) + ss - ss_speed
 
 	if (hasGluonUpg("rg", 4) && mod != "no-rg4") r *= 0.7
-	if (hasMasteryStudy("d13") && mod != "noTree") r *= getTreeUpgradeEffect(4)
+	if (hasDecay() && mod != "noTree") r *= getTreeUpgradeEffect(4)
 	return r + 1
 }
 

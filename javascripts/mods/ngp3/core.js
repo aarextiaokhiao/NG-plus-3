@@ -1,6 +1,6 @@
 //VERSION: 2.31
 let ngp3_ver = 2.31
-let ngp3_build = 20240326
+let ngp3_build = 20240327
 function doNGP3Updates() {
 	if (!aarMod.ngp3_build) aarMod.ngp3_build = 0
 	if (aarMod.ngp3_build < 20221230) quSave.multPower = 0
@@ -265,7 +265,7 @@ function updateNGP3Temp() {
 		tmp.qu.phantoms = brSave.phantoms || 0
 		if (beSave && beSave.unlocked) updateBreakEternityUpgradesTemp()
 		if (hasMasteryStudy("d14")) updateBigRipUpgradesTemp()
-		if (hasMasteryStudy("d13")) {
+		if (hasDecay()) {
 			tmp.qu.tree_unls = Math.min(8 + getRadioactiveDecays(), 12)
 			tmp.qu.tree_str = getTreeUpgradeEfficiency()
 		}
@@ -367,7 +367,7 @@ function ngP3AchieveCheck() {
 	if (tmp.qu.chal.pc_comp >= 24) giveAchievement("The Challenging Day")
 	if (speedrunMilestones >= 24) giveAchievement("And the winner is...")
 	if (speedrunMilestones >= 28) giveAchievement("Special Relativity")
-	if (hasMasteryStudy("d13")) giveAchievement("Do protons decay?")
+	if (hasDecay()) giveAchievement("Do protons decay?")
 	if (quantumed) giveAchievement("Sub-atomic")
 
 	//New format
@@ -400,6 +400,11 @@ function ngP3AchieveCheck() {
 	if (PHANTOM.amt >= 7) giveAchievement("Here lies dimensions")
 	if (PHANTOM.amt >= 8) giveAchievement("Impending Doom")
 	if (nG(getEternitied(), Number.MAX_VALUE)) giveAchievement("Everlasting Eternities")
+	if (ghSave.time < 6000 && player.money.e > 1/0) giveAchievement("That's a Mach!")
+
+	let underCircum = true
+	for (var i = 1; i < 12; i++) if (getTreeUpgradeLevel(i) > 1) underCircum = false
+	if (underCircum && player.money.e > 1/0) giveAchievement("Under Circumstances")
 
 	if (HIGGS.unlocked()) giveAchievement("The Holy Particle")
 	//if (ghSave.ghostlyPhotons.enpowerments >= 25) giveAchievement("Bright as the Anti-Sun") -- will be back
@@ -458,7 +463,7 @@ function quantumOverallUpdating(diff){
 	if (hasMasteryStudy("d10")) replicantOverallUpdating(diff)
 	if (hasMasteryStudy("d11")) emperorDimUpdating(diff)
 	if (NF.unl()) nanofieldUpdating(diff)
-	if (hasMasteryStudy("d13")) treeOfDecayUpdating(diff * PHOTON.checkSpeed(2))
+	if (hasDecay()) treeOfDecayUpdating(diff * PHOTON.checkSpeed(2))
 	if (bigRipped()) {
 		brSave.totalAntimatter = brSave.totalAntimatter.max(player.money)
 		brSave.bestThisRun = brSave.bestThisRun.max(player.money)
@@ -489,7 +494,7 @@ TABS = Object.assign(TABS, {
 		el("qcDisclaimer").innerHTML = (isQCFree() ? "" : "Spend Positrons to start Quantum Challenges.<br>You have " + getFullExpansion(Math.round(quSave.electrons.amount)) + " Positrons.<br>") + "<b class='red'>Positrons are disabled in Quantum Challenges!</b>"
 		for (var c = 1; c <= 8; c++) el("qc" + c + "reward").textContent = QC[c].reward_eff_disp(tmp.qu.chal.reward[c])
 	} },
-	decay: { name: "Decay", unl: _ => hasMasteryStudy("d13"), update: _ => updateTreeOfDecayTab() },
+	decay: { name: "Decay", unl: _ => hasDecay(), update: _ => updateTreeOfDecayTab() },
 	rip: { name: "Big Rip", class: "bigrip", unl: _ => hasMasteryStudy("d14"), update: _ => updateBigRipTab() },
 	mil_time: { name: "Speedrun Milestones" }
 })

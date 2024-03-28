@@ -1,3 +1,5 @@
+hasDecay = _ => hasMasteryStudy("d13") && !dev.testChal
+
 function getLogTotalSpin() {
 	return todSave.r.spin.add(1).log10()
 }

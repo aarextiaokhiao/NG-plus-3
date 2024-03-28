@@ -65,7 +65,7 @@ function getDTMultNGP3() {
 function getReplDilBonus() {
 	let gain = E(1)
 	if (hasMasteryStudy("t281")) gain = gain.mul(getMTSMult(281))
-	if (hasMasteryStudy("d13")) gain = gain.mul(getTreeUpgradeEffect(7))
+	if (hasDecay()) gain = gain.mul(getTreeUpgradeEffect(7))
 	return gain
 }
 
@@ -117,7 +117,7 @@ function getDilExp(disable) {
 	if (mod.ngep) ret += .001
 	if (mod.ngpp) ret += getDilUpgPower(4) / 4
 	if (mod.ngp3) {
-		if ((!bigRipped() || hasRipUpg(11)) && hasMasteryStudy("d13") && disable != "TU3") ret += getTreeUpgradeEffect(2)
+		if ((!bigRipped() || hasRipUpg(11)) && hasDecay() && disable != "TU3") ret += getTreeUpgradeEffect(2)
 		if (hasNB(1)) ret += NT.eff("boost", 1, 0)
 	}
 	return ret

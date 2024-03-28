@@ -240,7 +240,7 @@ const MTS = MASTERY_STUDIES = {
 			return NF.unl() || ghostified
 		},
 		r43() {
-			return hasMasteryStudy("d13") || ghostified
+			return hasDecay() || ghostified
 		}
 	},
 

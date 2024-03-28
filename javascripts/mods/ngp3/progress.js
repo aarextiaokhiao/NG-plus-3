@@ -77,7 +77,7 @@ const NGP3_FEATURES = {
 	},
 	decay: {
 		name: "Decay",
-		met: _ => hasMasteryStudy("d13"),
+		met: _ => hasDecay(),
 		req: _ => 16,
 		req_res: _ => nfSave.rewards,
 		req_disp: (amt, req) => `${getFullExpansion(amt)} / ${getFullExpansion(req)} Nanorewards`
