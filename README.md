@@ -12,4 +12,4 @@ Mods implemented:
 - Soul147's NG+4 (but modified)
 
 Mods will be implemented:
-- loader3229's NG-4 Respecced v3 (I've accidentally pushed changes for pre-galsac update but maybe it will be fine... however I might have to make some changes to fix stuff)
+- loader3229's NG-4 Respecced v3 (I've accidentally pushed changes for pre-galsac update but maybe it will be fine... however I might have to make some changes to fix stuff - usavictor)
