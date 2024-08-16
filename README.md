@@ -1,7 +1,6 @@
 # Antimatter Dimensions - Aarex's Modifications
 
 This modification adds several mods, adds more options, and supports infinite saves. It is also the home of New Game Plus 3.
-This repository is for testing new versions of NG-4 Respecced v3
 
 Mods implemented:
 - dan-simon's NG++ (archive)
