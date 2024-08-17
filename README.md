@@ -7,8 +7,8 @@ Mods implemented:
 - dan-simon's NG Update (archive)
 - e666666's NG-- (continued)
 - Aarex's NG-3
-- Aarex's NG-4 (pre-Respec, original)
-- Aarex's NG+3 (pre-Respec, retiring)
+- Aarex's NG-4 (pre-Respec, retiring)
+- Aarex's NG+3
 - Soul147's NG+4 (but modified)
 
 Mods will be implemented:
