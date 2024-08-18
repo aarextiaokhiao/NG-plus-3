@@ -427,7 +427,7 @@ let HOW_TO = [
 		title: "W & Z Bosons",
 		layer: "fundament",
 		desc: `
-			You can place down W+/- and Z Chargers in a 7x7 grid.<br>
+			You can place down W+, W-, and Z Chargers on a 7x7 grid.<br>
 			W+ increases strength to adjacent Chargers and W- decreass strength to adjacent Chargers.<br>
 			Chargers with positive strength only provide positive hypercharge while ones with negative strength provide negative hypercharge.<br>
 			These hypercharges are separate resources that do not add each other.
