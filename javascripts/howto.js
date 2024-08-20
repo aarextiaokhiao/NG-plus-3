@@ -295,43 +295,43 @@ let HOW_TO = [
 		desc: `Mastery Studies are a new type of Time & Dilation Studies, but the cost will rise for each purchase. Respeccing will reset costs of all Mastery Studies.`
 	}, {
 		mod: _ => ngp3,
-		req: _ => player.quantum?.times,
+		req: _ => player.Quantum?.times,
 
-		title: "Quantum",
+		title: "quantum",
 		layer: "quantum",
-		desc: `When you reach 9.32e446 meta-antimatter and completed EC14 for the first time, you will able to go quantum. Quantum will reset everything eternity resets, and also eternity features. You will gain a quark and unlock various upgrades.
+		desc: `When you reach 9.32e446 meta-antimatter and completed EC14 for the first time, you will able to go Quantum. Quantum will reset everything eternity resets, and also eternity features. You will gain a quark and unlock various upgrades.
 		<br><br>
-		You will also unlock speedrun milestones where you must do fast quantums to get QoL rewards, and even quantum autobuyer.`
+		You will also unlock speedrun milestones where you must do fast Quantums to get QoL rewards, and even Quantum autobuyer.`
 	}, {
 		mod: _ => ngp3,
-		req: _ => player.quantum?.times,
+		req: _ => player.Quantum?.times,
 
 		title: "Quarks & Gluons",
 		layer: "quantum",
-		desc: `When you go quantum, you receive a number of quarks based on meta-antimatter. At any time, you can assign all your quarks to be either red, green, or blue quarks. Your quarks will produce an amount of color power based on the difference between the color quarks you have the most of and the color you have the second-most of. So, if you had 4 red quarks and 1 blue quark, you would get 3 red charge, producing 3 red power per second. Each color power provides a boost: red provides stronger galaxies, green provides more Replicated Galaxies, and blue provide faster dilated time production. Note that even if you aren't generating a particular color power, the color power you have already generated is still effective.
+		desc: `When you go Quantum, you receive a number of quarks based on meta-antimatter. At any time, you can assign all your quarks to be either red, green, or blue quarks. Your quarks will produce an amount of color power based on the difference between the color quarks you have the most of and the color you have the second-most of. So, if you had 4 red quarks and 1 blue quark, you would get 3 red charge, producing 3 red power per second. Each color power provides a boost: red provides stronger galaxies, green provides more Replicated Galaxies, and blue provide faster dilated time production. Note that even if you aren't generating a particular color power, the color power you have already generated is still effective.
 		<br>
-		If you have two or more quark colors, upon quantum some quarks will fuse to become gluons. There are three types of gluons: red-green, green-blue, and blue-red. T form them you must have both of the specified colors; when you quantum, only the first color in the gluon's name will be removed, however. For example, if you had 4 green quarks and 2 blue quarks, two green-blue gluons would form, and you'd have 2 green quarks left over. If you had 4 red, 3 green, and 2 blue, you'd end up with 3 red-green gluons, 2 green-blue gluons and 2 blue-red gluons, with 1 red and 1 green quark left. You can spend your accumulated gluons on various upgrades to increase your production further, as well as an upgrade that doubles the amount of quarks you gain on quantum.`
+		If you have two or more quark colors, upon Quantum some quarks will fuse to become gluons. There are three types of gluons: red-green, green-blue, and blue-red. T form them you must have both of the specified colors; when you Quantum, only the first color in the gluon's name will be removed, however. For example, if you had 4 green quarks and 2 blue quarks, two green-blue gluons would form, and you'd have 2 green quarks left over. If you had 4 red, 3 green, and 2 blue, you'd end up with 3 red-green gluons, 2 green-blue gluons and 2 blue-red gluons, with 1 red and 1 green quark left. You can spend your accumulated gluons on various upgrades to increase your production further, as well as an upgrade that doubles the amount of quarks you gain on Quantum.`
 	}, {
 		mod: _ => ngp3,
 		req: _ => player.masterystudies.includes("d7"),
 
 		title: "Positrons",
 		layer: "quantum",
-		desc: `You unlock positrons by purchasing the first new dilation study under mastery studies that costs 2e82 time theorems. positrons provide a boost to your multiplier per 10 dimensions bought, but in order to use them, you have to sacrifice your regular galaxies. The number of positrons you get is equal to the number of galaxies you sacrificed times the number of positrons per galaxy you currently have. This number starts at 2 positrons per galaxy, and can be upgraded using either time theorems, dilated time, meta-antimatter, or meta-dimension boosts. Each upgrade increases the positrons per galaxy by 0.25.`
+		desc: `You unlock Positrons by purchasing the first new dilation study under mastery studies that costs 2e82 time theorems. Positrons provide a boost to your multiplier per 10 dimensions bought, but in order to use them, you have to sacrifice your regular galaxies. The number of Positrons you get is equal to the number of galaxies you sacrificed times the number of Positrons per galaxy you currently have. This number starts at 2 Positrons per galaxy, and can be upgraded using either time theorems, dilated time, meta-antimatter, or meta-dimension boosts. Each upgrade increases the Positrons per galaxy by 0.25.`
 	}, {
 		mod: _ => ngp3,
 		req: _ => player.masterystudies.includes("d8"),
 
 		title: "Quantum Challenges",
 		layer: "quantum",
-		desc: `Like infinity challenges, there are quantum challenges where you must reach a certain amount of antimatter and then do a quantum reset (you must also reach 9.31e446 meta-antimatter). To start a QC, you must spend a certain number of positrons, increasing from one challenge to the next. In addition to the conditions of each individual challenge, positrons don't do anything during quantum challenges.`
+		desc: `Like infinity challenges, there are Quantum challenges where you must reach a certain amount of antimatter and then do a Quantum reset (you must also reach 9.31e446 meta-antimatter). To start a QC, you must spend a certain number of Positrons, increasing from one challenge to the next. In addition to the conditions of each individual challenge, Positrons don't do anything during Quantum challenges.`
 	}, {
 		mod: _ => ngp3,
 		req: _ => player.masterystudies.includes("d9"),
 
 		title: "Paired Challenges",
 		layer: "quantum",
-		desc: `Paired Challenges consist of two quantum challenges whose conditions are applied at once. You can assign each of the four paired challenges to any pair of quantum challenges, though the same challenge can't be used twice. The cost to start a PC is based on the sum of costs for the component challenges, and the goal is also based on the goals of the component challenges. You can respec PC assignments at any time, though you will lose the PCs you already completed.`
+		desc: `Paired Challenges consist of two Quantum challenges whose conditions are applied at once. You can assign each of the four paired challenges to any pair of Quantum challenges, though the same challenge can't be used twice. The cost to start a PC is based on the sum of costs for the component challenges, and the goal is also based on the goals of the component challenges. You can respec PC assignments at any time, though you will lose the PCs you already completed.`
 	}, {
 		mod: _ => ngp3,
 		req: _ => player.masterystudies.includes("d10"),
@@ -341,7 +341,7 @@ let HOW_TO = [
 		layer: "quantum",
 		desc: `Upon buying the appropriate mastery study, you can make duplicants to gather preons which provide a boost to extra Replicated Galaxies. To get a duplicant you have to reset your replicanti amount after reaching certain requirements (starts at e3,000,000, increases e100,000 each time).
 		<br>
-		You can spend gluons to buy quantum food, which, when used, turns normal duplicants into worker duplicants. Worker duplicants gather more preons, and also produce eggons, which turn into baby duplicants. Baby duplicants will eventually become normal duplicants. You can also spend gluons to make eggons hatch faster.`
+		You can spend gluons to buy Quantum food, which, when used, turns normal duplicants into worker duplicants. Worker duplicants gather more preons, and also produce eggons, which turn into baby duplicants. Baby duplicants will eventually become normal duplicants. You can also spend gluons to make eggons hatch faster.`
 	}, {
 		mod: _ => ngp3,
 		req: _ => player.masterystudies.includes("d11"),
@@ -349,7 +349,7 @@ let HOW_TO = [
 		title: "Emperor Dimensions",
 		tab: "ant",
 		layer: "quantum",
-		desc: `As with other types of dimensions, each emperor dimension produces the one below it, and there are 8 total emperor dimensions. First emperor dimensions are the same as worker duplicants, second emperor dimensions produce worker duplicants, etc. To get the highest emperor dimension available, you must spend quantum food, similar to promoting a normal duplicant to a worker duplicant. You increase the amount of the highest dimension you can get, as well as unlocking the ability to buy higher dimensions, by spending gluons.`
+		desc: `As with other types of dimensions, each emperor dimension produces the one below it, and there are 8 total emperor dimensions. First emperor dimensions are the same as worker duplicants, second emperor dimensions produce worker duplicants, etc. To get the highest emperor dimension available, you must spend Quantum food, similar to promoting a normal duplicant to a worker duplicant. You increase the amount of the highest dimension you can get, as well as unlocking the ability to buy higher dimensions, by spending gluons.`
 	}, {
 		mod: _ => ngp3,
 		req: _ => player.masterystudies.includes("d12"),
@@ -357,7 +357,7 @@ let HOW_TO = [
 		title: "Nanofield",
 		tab: "ant",
 		layer: "quantum",
-		desc: `Nanofield allows you to gain further bonuses by getting preon energy, produced by preon charge. You can enable the production of preon charge, which produces preon energy, but also preon anti-energy. Preon anti-energy slows down preon energy production until a cap of anti-energy is reached, where preon energy production completely stops.. When this happens, the only way to get more preon energy is to get more preon charge. You can get rewards from your preon energy, with the first one requiring 50 preon energy, and each subsequent one requiring 4 times as much preon energy. Note: Preon charge, energy, and anti-energy reset on quantum, but you keep whatever rewards you have already earned on previous quantums.`
+		desc: `Nanofield allows you to gain further bonuses by getting preon energy, produced by preon charge. You can enable the production of preon charge, which produces preon energy, but also preon anti-energy. Preon anti-energy slows down preon energy production until a cap of anti-energy is reached, where preon energy production completely stops.. When this happens, the only way to get more preon energy is to get more preon charge. You can get rewards from your preon energy, with the first one requiring 50 preon energy, and each subsequent one requiring 4 times as much preon energy. Note: Preon charge, energy, and anti-energy reset on Quantum, but you keep whatever rewards you have already earned on previous Quantums.`
 	}, {
 		mod: _ => ngp3,
 		req: _ => player.masterystudies.includes("d13"),
@@ -371,7 +371,7 @@ let HOW_TO = [
 
 		title: "Big Rip",
 		layer: "quantum",
-		desc: `Once you unlock this feature by buying a mastery study, you can big rip the universe. To do this, you must have one of your paired challenges assigned to be QC6+QC8, which is the hardest paired challenge to complete. When you big rip, You start a new quantum inside PC6+8, with only your quantum mechanics working (from quarks and gluons on), but nothing before that (it all comes back upon exiting the big rip). At any time, you can exit the big rip to gain an amount of space shards based on your best antimatter amount while big ripped. You can spend space shards to buy various upgrades that make big rips easier, either by giving a boost that only applies in big rips, or letting you keep something inside big rips.
+		desc: `Once you unlock this feature by buying a mastery study, you can big rip the universe. To do this, you must have one of your paired challenges assigned to be QC6+QC8, which is the hardest paired challenge to complete. When you big rip, You start a new Quantum inside PC6+8, with only your Quantum mechanics working (from quarks and gluons on), but nothing before that (it all comes back upon exiting the big rip). At any time, you can exit the big rip to gain an amount of space shards based on your best antimatter amount while big ripped. You can spend space shards to buy various upgrades that make big rips easier, either by giving a boost that only applies in big rips, or letting you keep something inside big rips.
 		<br><br>
 		There is also a mini-feature called Break Eternity, unlocks at e1,215 EP. While eternity is broken, time dimensions will work in big rips, as well as galaxies (though galaxy costs scale much faster in big rips). When you eternity, you gain eternal matter based on your time shards. You can spend Eternal Matter to buy 7 new big-rip-exclusive upgrades (one of which is repeatable).`
 	}, {
