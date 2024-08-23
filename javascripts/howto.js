@@ -120,7 +120,7 @@ let HOW_TO = [
 
 		title: "Challenges",
 		layer: "infinity",
-		desc: `Challenges are unlocked after first infinity; they change in-game mechanics in different ways to create more difficult infinity circumstances.
+		desc: `Challenges are unlocked after first Infinity; they change in-game mechanics in different ways to create more difficult infinity circumstances.
 		<br>
 		Each completed challenge will award an auto buyer.	You can run them multiple times (though only the first time grants a reward), and they can be exited at any time via the "Exit Challenge" button on the challenge tab.
 		<br>
