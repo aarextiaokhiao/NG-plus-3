@@ -122,9 +122,9 @@ let HOW_TO = [
 		layer: "infinity",
 		desc: `Challenges are unlocked after first Infinity; they change in-game mechanics in different ways to create more difficult infinity circumstances.
 		<br>
-		Each completed challenge will award an auto buyer.	You can run them multiple times (though only the first time grants a reward), and they can be exited at any time via the "Exit Challenge" button on the challenge tab.
+		Each completed challenge will award an auto buyer. You can run them multiple times (though only the first time grants a reward), and they can be exited at any time via the "Exit Challenge" button on the challenge tab.
 		<br>
-		The rightmost row of Infinity Upgrades does not work in challenges.`
+		The rightmost row of Infinity Upgrades does not work in Challenges.`
 	}, {
 		mod: _ => true,
 		req: _ => player.infinitied > 0,
