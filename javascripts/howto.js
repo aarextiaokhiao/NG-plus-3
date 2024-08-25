@@ -370,7 +370,15 @@ let HOW_TO = [
 
 		title: "Decay",
 		layer: "quantum",
-		desc: `You can turn all your Colored Quarks for Free Preons, which eventually decay in exchange of Preonic Spin. Preonic Spins can be spent on a big set of upgrades.`
+		desc() {
+			let msg = `You can turn all your Colored Quarks for Free Preons, which eventually decay in exchange of Preonic Spin. Preonic Spins can be spent on a big set of upgrades.`
+
+			if (ghSave?.times || SPOILERS) msg += `<b>Radioactive Decays</b><br>
+				When you have enough Free Preons, you will be able to sacrifice some upgrades in order to buff. However, each Decay nerfs Decay severally except the upgrades on the bottom!`
+			else msg += `<b>Unlock Fundament to see the next feature.</b>`
+
+			return msg
+		}
 	}, {
 		mod: _ => ngp3,
 		req: _ => player.masterystudies.includes("d14"),
