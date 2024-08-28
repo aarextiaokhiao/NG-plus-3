@@ -433,7 +433,7 @@ let HOW_TO = [
 
 		You must choose one of three features  (Photons, Replicantis, and Decay) to slow down in exchange of time generation.<br>
 		On going Fundament, any emission with stored time will be ready to emit.<br>
-		You can emit any Emissions to skip time in a feature you recently chose.`
+		You can emit any Emissions to skip time to a feature you recently chose.`
 	}, {
 		mod: _ => ngp3,
 		req: _ => ghSave?.lab?.unl,
