@@ -457,7 +457,7 @@ let HOW_TO = [
 		desc: `
 			At ??? Bosons, you can reset Bosons and ??? for Higgs. You'll unlock Higgs Field where you can swap boosts between different rows.
 			<br>
-			You generate Higgs Mass which strengthens Higgs Field. However, later rows are weaker. Don't worry, these can be gradually closer to be effective as earlier rows.
+			You generate Higgs Mass which strengthens Higgs Field. However, later rows are weaker. Don't worry, these can be gradually to be effective as earlier rows.
 		`,
 	}/*, {
 		mod: _ => ngp3,
