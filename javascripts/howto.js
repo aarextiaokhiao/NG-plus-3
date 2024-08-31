@@ -444,9 +444,7 @@ let HOW_TO = [
 			You can place down W+, W-, and Z Chargers on a 7x7 grid.<br>
 			W+ increases strength to adjacent Chargers and W- decreass strength to adjacent Chargers.<br>
 			Chargers with positive strength only provide positive hypercharge while ones with negative strength provide negative hypercharge.<br>
-			Hypercharges are separate resources that do not add each other.
-			<br><br>
-			There are milestones of each hypercharge type that provide independent effects.
+			Hypercharges are separate resources that do not add and generate each other. Instead, they provide milestones that are independent of these.
 		`
 	}, {
 		mod: _ => ngp3,
