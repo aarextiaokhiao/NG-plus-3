@@ -375,7 +375,7 @@ let HOW_TO = [
 
 			if (ghSave?.times || SPOILERS) msg += `<b>Radioactive Decays</b><br>
 				When you have enough Free Preons, you will be able to sacrifice some upgrades in order to buff. However, each Decay nerfs Decay severally except the upgrades on the bottom!`
-			else msg += `<b>Unlock Fundament to see the next feature.</b>`
+			else msg += `<b>Get Fundament to unlock a subfeature.</b>`
 
 			return msg
 		}
@@ -408,7 +408,7 @@ let HOW_TO = [
 
 			if (ghSave?.photons?.unl || SPOILERS) msg += `<b>Phantomal Paradigms</b><br>
 				Phantomal Paradigms are a Big Rip replacement to Dimensional Shifts, in which remove some Dimensions for boosts. For example, any Phantomal Paradigm removes the cost scaling of a Antimatter Dimension tier (except the 8th), but however has a fixed per-ten bonus.  However, these reset on Fundament.`
-			else msg += `<b>Unlock Photons to see the next feature.</b>`
+			else msg += `<b>Get Photons to unlock a subfeature.</b>`
 
 			return msg
 		}
