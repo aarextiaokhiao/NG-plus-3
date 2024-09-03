@@ -324,14 +324,14 @@ let HOW_TO = [
 
 		title: "Quantum Challenges",
 		layer: "quantum",
-		desc: `Like infinity challenges, there are Quantum challenges where you must reach a certain amount of antimatter and then do a Quantum reset (you must also reach 9.31e446 meta-antimatter). To start a QC, you must spend a certain number of Positrons, increasing from one challenge to the next. In addition to the conditions of each individual challenge, Positrons don't do anything during Quantum challenges.`
+		desc: `Like infinity challenges, there are Quantum Challenges where you must reach a certain amount of antimatter and then do a Quantum reset (you must also reach 9.31e446 meta-antimatter). To start a QC, you must spend a certain number of Positrons, increasing from one challenge to the next. In addition to the conditions of each individual challenge, Positrons don't do anything during Quantum Challenges.`
 	}, {
 		mod: _ => ngp3,
 		req: _ => player.masterystudies.includes("d9"),
 
 		title: "Paired Challenges",
 		layer: "quantum",
-		desc: `Paired Challenges consist of two Quantum challenges whose conditions are applied at once. You can assign each of the four paired challenges to any pair of Quantum challenges, though the same challenge can't be used twice. The cost to start a PC is based on the sum of costs for the component challenges, and the goal is also based on the goals of the component challenges. You can respec PC assignments at any time, though you will lose the PCs you already completed.`
+		desc: `Paired Challenges consist of two Quantum Challenges whose conditions are applied at once. You can assign each of the four paired challenges to any pair of Quantum Challenges, though the same challenge can't be used twice. The cost to start a PC is based on the sum of costs for the component challenges, and the goal is also based on the goals of the component challenges. You can respec PC assignments at any time, though you will lose the PCs you already completed.`
 	}, {
 		mod: _ => ngp3,
 		req: _ => player.masterystudies.includes("d10"),
