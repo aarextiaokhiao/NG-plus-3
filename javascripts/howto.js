@@ -396,7 +396,7 @@ let HOW_TO = [
 		layer: "fundament",
 		desc() {
 			let msg = `
-				This is the 4th major layer of NG+3 that unlocks on reaching the goal in Big Rip. This resets all prior progress as well as all Quantum features, and gives you Spectral Particles based on your antimatter in Big Rips.
+				This is the 4th major layer of NG+3 that unlocks on reaching the goal in Big Rip. This resets all prior progress as well as all Quantum features and Speedrun Milestones, and gives you Spectral Particles based on your antimatter in Big Rips.
 				<br><br>
 				<b>Brave Milestones</b><br>
 				Brave Milestones can be achieved by Fundamenting while under a certain amount of Quantums. Likewise, each Brave Milestone provides you with a reward that greatly boosts progress and makes Fundaments much faster and more efficient.
