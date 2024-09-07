@@ -324,7 +324,7 @@ let HOW_TO = [
 
 		title: "Quantum Challenges",
 		layer: "quantum",
-		desc: `Like infinity challenges, there are Quantum Challenges where you must reach a certain amount of antimatter and then do a Quantum reset (you must also reach 9.31e446 meta-antimatter). To start a QC, you must spend a certain number of Positrons, increasing from one challenge to the next. In addition to the conditions of each individual challenge, Positrons don't do anything during Quantum Challenges.`
+		desc: `You must reach a certain amount of antimatter and then do a Quantum reset (you must also reach 9.31e446 meta-antimatter) to complete a Quantum Challenge. To start a QC, you must spend a certain number of Positrons, increasing from one challenge to the next. In addition to the conditions of each individual challenge, Positrons don't do anything during Quantum Challenges.`
 	}, {
 		mod: _ => ngp3,
 		req: _ => player.masterystudies.includes("d9"),
