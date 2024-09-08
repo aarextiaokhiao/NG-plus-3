@@ -419,9 +419,9 @@ let HOW_TO = [
 		title: "Neutrinos",
 		layer: "fundament",
 		desc: `There are 3 kinds of Neutrinos: Electron, Mu, Tau. You gain Neutrinos of a single kind per 1 Antimatter Galaxy.<br>
-		On going Quantum, you'll generate a different kind of Neutrinos. However, Fundamenting resets all Neutrinos.
+		On going Quantum, you'll generate a different kind of Neutrinos. However, Fundamenting resets Neutrinos of every kind.
 		<br><br>
-		You can spend Spectral Particles to boost Neutrinos.<br>
+		You can spend Spectral Particles to boost Neutrinos of any kind.<br>
 		Neutrinos are used to boost things dependent on 3 types, and can be spent for upgrades or a repeatable which gives 3x SP per purchase.`
 	}, {
 		mod: _ => ngp3,
