@@ -15,7 +15,8 @@ function showNextModeMessage() {
 		el("welcome").style.display = "flex"
 		el("welcomeMessage").innerHTML = ngModeMessages[ngModeMessages.length-1]
 		ngModeMessages.pop()
-	} else if (!ngm4retire) ngm4retiremsg()
+	} else if (ngm4retire) ngm4retiremsg()
+
 	else el("welcome").style.display = "none"
 }
 

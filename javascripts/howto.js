@@ -385,33 +385,37 @@ let HOW_TO = [
 
 		title: "Big Rip",
 		layer: "quantum",
-		desc: `Once you unlock this feature by buying a mastery study, you can big rip the universe. To do this, you must have one of your paired challenges assigned to be QC6+QC8, which is the hardest paired challenge to complete. When you big rip, You start a new Quantum inside PC6+8, with only your Quantum mechanics working (from quarks and gluons on), but nothing before that (it all comes back upon exiting the big rip). At any time, you can exit the big rip to gain an amount of space shards based on your best antimatter amount while big ripped. You can spend space shards to buy various upgrades that make big rips easier, either by giving a boost that only applies in big rips, or letting you keep something inside big rips.
-		<br><br>
-		There is also a mini-feature called Break Eternity, unlocks at e1,215 EP. While eternity is broken, time dimensions will work in big rips, as well as galaxies (though galaxy costs scale much faster in big rips). When you eternity, you gain eternal matter based on your time shards. You can spend Eternal Matter to buy 7 new big-rip-exclusive upgrades (one of which is repeatable).`
+		desc() {
+			let msg = `Once you unlock this feature by buying a mastery study, you can big rip the universe. To do this, you must have one of your paired challenges assigned to be QC6+QC8, which is the hardest paired challenge to complete. When you big rip, You start a new Quantum inside PC6+8, with only your Quantum mechanics working (from quarks and gluons on), but nothing before that (it all comes back upon exiting the big rip). At any time, you can exit the big rip to gain an amount of space shards based on your best antimatter amount while big ripped. You can spend space shards to buy various upgrades that make big rips easier, either by giving a boost that only applies in big rips, or letting you keep something inside big rips.<br><br>`
+
+			let feature = ghSave?.photons?.unl || SPOILERS ? 2 : player.achievements.includes("ng3p65") ? 1 : 0
+
+			if (feature >= 1) msg += `<b>Break Eternity</b><br>
+				While eternity is broken, time dimensions will work in big rips, as well as galaxies (though galaxy costs scale much faster in big rips). When you eternity, you gain eternal matter based on your time shards. You can spend Eternal Matter to buy 7 new big-rip-exclusive upgrades (one of which is repeatable).<br><br>`
+			else msg += `<b>Get e1,215 EP in Big Rip to unlock Break Eternity.</b>`
+
+			if (feature == 2) msg += `<b>Phantomal Paradigms</b><br>
+				Phantomal Paradigms are a Big Rip replacement to Dimensional Shifts, in which remove some Dimensions for scaling changes. For example, any Phantomal Paradigm removes the cost scaling of a Antimatter Dimension tier (except the 8th), but however has a fixed per-ten bonus. These only reset on Fundament, not exiting the Big Rip.`
+			else if (feature == 1) msg += `<b>Get Photons to unlock a new subfeature.</b>`
+
+			return msg
+		}
 	}, {
 		mod: _ => ngp3,
 		req: _ => ghSave?.times,
 
 		title: "Fundament",
 		layer: "fundament",
-		desc() {
-			let msg = `
-				This is the 4th major layer of NG+3 that unlocks on reaching the goal in Big Rip. This resets all prior progress as well as all Quantum features and Speedrun Milestones, and gives you Spectral Particles based on your antimatter in Big Rips.
-				<br><br>
-				<b>Brave Milestones</b><br>
-				Brave Milestones can be achieved by Fundamenting while under a certain amount of Quantums. Likewise, each Brave Milestone provides you with a reward that greatly boosts progress and makes Fundaments much faster and more efficient.
-				<br><br>
-				<b>Automators</b><br>
-				Automator Charge is based on net Quarks, and you unlock an Automator on passing a certain threshold. Automator Power is your best-ever Automator Charge, but is used up on enabling an Automator. Automators automate various features such as Nanofield and Big Rips, as long Automator Power doesn't exceed the cap.
-				<br><br>
-			`
-
-			if (ghSave?.photons?.unl || SPOILERS) msg += `<b>Phantomal Paradigms</b><br>
-				Phantomal Paradigms are a Big Rip replacement to Dimensional Shifts, in which remove some Dimensions for scaling changes. For example, any Phantomal Paradigm removes the cost scaling of a Antimatter Dimension tier (except the 8th), but however has a fixed per-ten bonus. These only reset on Fundament, not exiting the Big Rip.`
-			else msg += `<b>Get Photons to unlock a subfeature.</b>`
-
-			return msg
-		}
+		desc: `
+			This is the 4th major layer of NG+3 that unlocks on reaching the goal in Big Rip. This resets all prior progress as well as all Quantum features and Speedrun Milestones, and gives you Spectral Particles based on your antimatter in Big Rips.
+			<br><br>
+			<b>Brave Milestones</b><br>
+			Brave Milestones can be achieved by Fundamenting while under a certain amount of Quantums. Likewise, each Brave Milestone provides you with a reward that greatly boosts progress and makes Fundaments much faster and more efficient.
+			<br><br>
+			<b>Automators</b><br>
+			Automator Charge is based on net Quarks, and you unlock an Automator on passing a certain threshold. Automator Power is your best-ever Automator Charge, but is used up on enabling an Automator. Automators automate various features such as Nanofield and Big Rips, as long Automator Power doesn't exceed the cap.
+			<br><br>
+		`
 	}, {
 		mod: _ => ngp3,
 		req: _ => ghSave?.times,
