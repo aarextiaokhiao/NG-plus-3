@@ -388,15 +388,15 @@ let HOW_TO = [
 		desc() {
 			let msg = `Once you unlock this feature by buying a mastery study, you can big rip the universe. To do this, you must have one of your paired challenges assigned to be QC6+QC8, which is the hardest paired challenge to complete. When you big rip, You start a new Quantum inside PC6+8, with only your Quantum mechanics working (from quarks and gluons on), but nothing before that (it all comes back upon exiting the big rip). At any time, you can exit the big rip to gain an amount of space shards based on your best antimatter amount while big ripped. You can spend space shards to buy various upgrades that make big rips easier, either by giving a boost that only applies in big rips, or letting you keep something inside big rips.<br><br>`
 
-			let feature = ghSave?.photons?.unl || SPOILERS ? 2 : player.achievements.includes("ng3p65") ? 1 : 0
+			let feature = ghSave?.photons?.unl || SPOILERS ? 3 : ghSave?.times ? 2 : player.achievements.includes("ng3p65") ? 1 : 0
 
 			if (feature >= 1) msg += `<b>Break Eternity</b><br>
 				While eternity is broken, time dimensions will work in big rips, as well as galaxies (though galaxy costs scale much faster in big rips). When you eternity, you gain eternal matter based on your time shards. You can spend Eternal Matter to buy 7 new big-rip-exclusive upgrades (one of which is repeatable).<br><br>`
 			else msg += `<b>Get e1,215 EP in Big Rip to unlock Break Eternity.</b>`
 
-			if (feature == 2) msg += `<b>Phantomal Paradigms</b><br>
+			if (feature == 3) msg += `<b>Phantomal Paradigms</b><br>
 				Phantomal Paradigms are a Big Rip replacement to Dimensional Shifts, in which remove some Dimensions for scaling changes. For example, any Phantomal Paradigm removes the cost scaling of a Antimatter Dimension tier (except the 8th), but however has a fixed per-ten bonus. These only reset on Fundament, not exiting the Big Rip.`
-			else if (feature == 1) msg += `<b>Get Photons to unlock a new subfeature.</b>`
+			else if (feature == 2) msg += `<b>Get Photons to unlock a new subfeature.</b>`
 
 			return msg
 		}
