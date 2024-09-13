@@ -610,23 +610,20 @@ var metaSaveId = betaId + "AD_aarexModifications"
 
 function loadSave() {
 	let metaSave = localStorage.getItem(metaSaveId)
-	if (metaSave == null) {
-		let err = "Save not found. Go to the game and reload this page."
-		alert(err)
-		throw err
-	}
+	if (metaSave == null) throwError()
 	metaSave = JSON.parse(atob(metaSave))
 
 	player = localStorage.getItem(btoa(prefix+metaSave.current))
-	if (player == null) {
-		let err = "Save not found. Go to the game and reload this page."
-		alert(err)
-		throw err
-	}
+	if (player == null) throwError()
 	player = JSON.parse(atob(player))
 
 	ngp3 = player.masterystudies !== undefined
 	ghSave = player.ghostify
+}
+
+function throwError() {
+	el("how_to_div").innerHTML = "Save not found. <a href='index.html'>Go to the game</a> and reload this page."
+	throw "Save not found."
 }
 
 //On Load
