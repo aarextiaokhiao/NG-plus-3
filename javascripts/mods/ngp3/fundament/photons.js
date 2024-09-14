@@ -74,7 +74,7 @@ let PHOTON = {
 				name: "infrared",
 				req: 1,
 				eff: exp => Math.min(Math.min(exp, exp ** 0.2) / 5, 1.5),
-				desc: e => `Increase Infinity Power effect by +^${shorten(e)}.`
+				desc: e => `Raise Infinity Power effect by +^${shorten(e)}.`
 			}, {
 				name: "red",
 				req: 50,
