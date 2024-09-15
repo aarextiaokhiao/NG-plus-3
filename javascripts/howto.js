@@ -295,7 +295,7 @@ let HOW_TO = [
 		desc: `Mastery Studies are a new type of Time Studies, but all costs will rise for each purchase. There are also Eternity Challenges and feature unlocks like in the Time Study tree. Respeccing will reset costs of all Mastery Studies.`
 	}, {
 		mod: _ => ngp3,
-		req: _ => player.Quantum?.times,
+		req: _ => player.quantum?.times,
 
 		title: "quantum",
 		layer: "quantum",
@@ -304,7 +304,7 @@ let HOW_TO = [
 		You will also unlock speedrun milestones where you must do fast Quantums to get QoL rewards, and even Quantum autobuyer.`
 	}, {
 		mod: _ => ngp3,
-		req: _ => player.Quantum?.times,
+		req: _ => player.quantum?.times,
 
 		title: "Quarks & Gluons",
 		layer: "quantum",
