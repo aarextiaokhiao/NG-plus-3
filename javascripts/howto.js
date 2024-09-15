@@ -349,7 +349,7 @@ let HOW_TO = [
 		title: "Emperor Dimensions",
 		tab: "ant",
 		layer: "quantum",
-		desc: `As with other types of dimensions, each emperor dimension produces the one below it, and there are 8 total emperor dimensions. First emperor dimensions are the same as worker duplicants, second emperor dimensions produce worker duplicants, etc. To get the highest emperor dimension available, you must spend Quantum food, similar to promoting a normal duplicant to a worker duplicant. You increase the amount of the highest dimension you can get, as well as unlocking the ability to buy higher dimensions, by spending gluons.`
+		desc: `Each emperor dimension produces the one below it, but however each dimension works like Workers. First emperor dimensions are the same as worker duplicants, second emperor dimensions produce worker duplicants, etc. To get the highest emperor dimension available, you must spend Quantum Food, similar to promoting a normal duplicant to a worker duplicant. You increase the amount of the highest dimension you can get, as well as unlocking the ability to buy higher dimensions, by spending Gluons.`
 	}, {
 		mod: _ => ngp3,
 		req: _ => player.masterystudies.includes("d12"),
