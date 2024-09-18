@@ -435,7 +435,7 @@ let HOW_TO = [
 		layer: "fundament",
 		desc: `Tachyonic Galaxies generate Photons, which strengthen Lights.<br><br>
 
-		You must choose one of three features  (Photons, Replicantis, and Decay) to slow down in exchange of time generation.<br>
+		You must choose one of three features (Photons, Replicantis, and Decay) to slow down in exchange of time generation.<br>
 		On going Fundament, any emission with stored time will be ready to emit.<br>
 		You can emit any Emissions to skip time to a feature you recently chose.`
 	}, {
