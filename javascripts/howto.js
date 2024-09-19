@@ -409,12 +409,13 @@ let HOW_TO = [
 		desc: `
 			This is the 4th major layer of NG+3 that unlocks on reaching the goal in Big Rip. This resets all prior progress as well as all Quantum features and Speedrun Milestones, and gives you Spectral Particles based on your antimatter in Big Rips.
 			<br><br>
+
 			<b>Brave Milestones</b><br>
 			Brave Milestones can be achieved by Fundamenting while under a certain amount of Quantums. Likewise, each Brave Milestone provides you with a reward that greatly boosts progress and makes Fundaments much faster and more efficient.
 			<br><br>
+
 			<b>Automators</b><br>
 			Automator Charge is based on net Quarks, and you unlock an Automator on passing a certain threshold. Automator Power is your best-ever Automator Charge, but is used up on enabling an Automator. Automators automate various features such as Nanofield and Big Rips, as long Automator Power doesn't exceed the cap.
-			<br><br>
 		`
 	}, {
 		mod: _ => ngp3,
@@ -422,22 +423,28 @@ let HOW_TO = [
 
 		title: "Neutrinos",
 		layer: "fundament",
-		desc: `There are 3 kinds of Neutrinos: Electron, Mu, Tau. You gain Neutrinos of a single kind per 1 Antimatter Galaxy.<br>
-		On going Quantum, you'll generate a different kind of Neutrinos. However, Fundamenting resets Neutrinos of every kind.
-		<br><br>
-		You can spend Spectral Particles to boost Neutrinos of any kind.<br>
-		Neutrinos are used to boost things dependent on 3 types, and can be spent for upgrades or a repeatable which gives 3x SP per purchase.`
+		desc: `
+			There are 3 kinds of Neutrinos: Electron, Mu, Tau. You gain Neutrinos of a single kind per 1 Antimatter Galaxy.<br>
+			On going Quantum, you'll generate a different kind of Neutrinos. However, Fundamenting resets Neutrinos of every kind.
+			<br><br>
+
+			You can spend Spectral Particles to boost Neutrinos of any kind.<br>
+			Neutrinos are used to boost things dependent on 3 types, and can be spent for upgrades or a repeatable which gives 3x SP per purchase.
+		`
 	}, {
 		mod: _ => ngp3,
 		req: _ => ghSave?.photons?.unl,
 
 		title: "Photons",
 		layer: "fundament",
-		desc: `Tachyonic Galaxies generate Photons, which strengthen Lights.<br><br>
+		desc: `
+			Tachyonic Galaxies generate Photons, which strengthen Lights.
+			<br><br>
 
-		You must choose one of three features (Photons, Replicantis, and Decay) to slow down in exchange of time generation.<br>
-		On going Fundament, any emission with stored time will be ready to emit.<br>
-		You can emit any Emissions to skip time to a feature you recently chose.`
+			You must choose one of three features (Photons, Replicantis, and Decay) to slow down in exchange of time generation.<br>
+			On going Fundament, any emission with stored time will be ready to emit.<br>
+			You can emit any Emissions to skip time to a feature you recently chose.
+		`
 	}, {
 		mod: _ => ngp3,
 		req: _ => ghSave?.lab?.unl,
