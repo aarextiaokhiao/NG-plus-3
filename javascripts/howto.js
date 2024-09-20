@@ -441,8 +441,8 @@ let HOW_TO = [
 			Tachyonic Galaxies generate Photons, which strengthen Lights.
 			<br><br>
 
-			You must choose one of three features (Photons, Replicantis, and Decay) to slow down in exchange of time generation.<br>
-			On going Fundament, any emission with stored time will be ready to emit.<br>
+			You must choose one of three features (Photons, Replicantis, and Decay) to slow down in exchange of stored timewarp generation.<br>
+			On going Fundament, stored time will be ready to emit after a click.<br>
 			You can emit any Emissions to skip time to a feature you recently chose.
 		`
 	}, {
