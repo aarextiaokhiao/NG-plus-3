@@ -251,7 +251,7 @@ let HOW_TO = [
 		<br>
 		<b>Respecs:</b> A Respec allows you to reset the upgrades you have in the tree to retrieve the Time Theorems spent on them. It can be done for free on eternity.
 		<br>
-		<b>Costs:</b> (1e20000^times bought) for antimatter, (1e100^times bought) for IP, (2^times bought) for EP.`
+		<b>Cost Multiplers:</b> For each Time Theorem purchase: 1e20,000x for antimatter, 1e100x for IP, 2x for EP.`
 	}, {
 		mod: _ => true,
 		req: _ => player.eternities >= 1e4,
