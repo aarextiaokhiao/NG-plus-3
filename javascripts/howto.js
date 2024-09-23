@@ -386,7 +386,13 @@ let HOW_TO = [
 		title: "Big Rip",
 		layer: "quantum",
 		desc() {
-			let msg = `Once you buy the last Mastery Study at the very bottom, you can big rip the universe. To do this, you must have one of your paired challenges assigned to be QC6+QC8, which is the hardest paired challenge to complete. When you big rip, You start a new Quantum inside PC6+8, with only your Quantum mechanics working (from quarks and gluons on), but nothing before that (it all comes back upon exiting the big rip). At any time, you can exit the big rip to gain an amount of space shards based on your best antimatter amount while big ripped. You can spend space shards to buy various upgrades that make big rips easier, either by giving a boost that only applies in big rips, or letting you keep something inside big rips.<br><br>`
+			let msg = `Once you beat 24 Paired Challenges and buy the last Mastery Study at the very bottom, you can big rip the universe.<br><br>
+			
+			To do this, you must have one of your paired challenges assigned to be QC6+QC8, which is the hardest paired challenge to complete.<br>
+			
+			When you big rip, You start a new Quantum inside PC6+8, with only your Quantum mechanics working (from quarks and gluons on), but nothing before that (it all comes back upon exiting the big rip).<br>
+			
+			At any time, you can exit the big rip to gain an amount of space shards based on your best antimatter amount while big ripped. You can spend space shards to buy various upgrades that make big rips easier, either by giving a boost that only applies in big rips, or letting you keep something inside big rips.<br><br>`
 
 			let feature = ghSave?.photons?.unl || SPOILERS ? 3 : ghSave?.times ? 2 : player.achievements.includes("ng3p65") ? 1 : 0
 
