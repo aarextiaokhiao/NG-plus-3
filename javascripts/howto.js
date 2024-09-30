@@ -460,7 +460,7 @@ let HOW_TO = [
 		layer: "fundament",
 		desc: `
 			You can place down W+, W-, and Z Chargers on a 7x7 grid.<br>
-			W+ increases strength to adjacent Chargers and W- decreases strength to adjacent Chargers.<br>
+			W+ increases strength to adjacent Chargers but W- decreases strength.<br>
 			Chargers with positive strength only provide positive hypercharge while ones with negative strength provide negative hypercharge.<br>
 			Hypercharges are separate resources that do not add and generate each other. Instead, they provide milestones that are independent of these.
 		`
