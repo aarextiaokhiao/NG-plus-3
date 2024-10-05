@@ -446,10 +446,10 @@ let HOW_TO = [
 		title: "Photons",
 		layer: "fundament",
 		desc: `
-			Tachyonic Galaxies generate Photons, which strengthen Lights.
+			Tachyonic Galaxies generate Photons, which strengthen Lights. To boost more Lights at the same time, you must gain more Photons.
 			<br><br>
 
-			You must choose one of three features (Photons, Replicantis, and Decay) to slow down in exchange of  timewarp generation stored until next Fundament.<br>
+			You must choose one of three features (Photons, Replicantis, and Decay) to slow down in exchange of timewarp generation stored until next Fundament.<br>
 			On Fundament, stored time will be ready to emit after a click, to skip time on a feature you pick.
 		`
 	}, {
