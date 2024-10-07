@@ -88,7 +88,7 @@ let PHOTON = {
 			}, {
 				name: "yellow",
 				req: 1e3,
-				eff: exp => exp / 6 + 1,
+				eff: exp => exp / 4 + 1,
 				desc: e => `Raise Emperor Dimensions by ^${shorten(e)}.`
 			}, {
 				name: "green",
