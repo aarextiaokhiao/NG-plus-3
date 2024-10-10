@@ -314,6 +314,7 @@ const NEUTRINO = NT = {
 	update() {
 		for (var type of NT_RES.types) el(type + "Neutrinos").textContent = shortenDimensions(ghSave.neutrinos[type])
 		el("neutrinosGain").textContent = "+" + shortenDimensions(NT_RES.gain()) + " " + NT_RES.names[ghSave.neutrinos.generationGain - 1] + "Neutrinos per Antimatter Galaxy (+" + shortenDimensions(ntProd.average) + " per sec)"
+		el("neutrinosNext").textContent = "(" + NT_RES.names[ghSave.neutrinos.generationGain % 3] + "Neutrinos on next Quantum)"
 
 		for (var [i, bst] of Object.entries(NT.boosts.data)) {
 			i = parseInt(i)+1
