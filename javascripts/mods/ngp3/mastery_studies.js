@@ -173,7 +173,7 @@ const MTS = MASTERY_STUDIES = {
 		321: () => `In QC5 or 7, multiplier per 10 Antimatter Dimensions is ${shortenCosts(E("1e430"))}x.`,
 		322: "Tickspeed boosts Dilated Time.",
 		323: "Cancel dilation penalty for the Antimatter Dimension boost from replicanti.",
-		331: "Dimension Supersonic scales 240,000 later, and reduce the interval scaling by -3.",
+		331: "Dimension Supersonic scales 75% weaker and 240,000 later.",
 		332: "Gain replicanti faster based on your Antimatter Galaxies.",
 		341: "Pilons boost dilated time production at reduced rate.",
 		342: "All Replicated Galaxies are stronger and use the same formula.",
