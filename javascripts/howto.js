@@ -388,9 +388,8 @@ let HOW_TO = [
 		title: "Big Rip",
 		layer: "quantum",
 		desc() {
-			let msg = `Once you beat 24 Paired Challenges and buy the last Mastery Study at the very bottom, you can big rip the universe.<br><br>
-			
-			To do this, you must have one of your paired challenges assigned to be QC6+QC8, which is the hardest paired challenge to complete.<br>
+			let msg = `Once you beat 24 Paired Challenges and buy the last Mastery Study at the very bottom, you can big rip the universe.<br>
+			To do this, you must have one of your paired challenges assigned to be QC6+QC8, which is the hardest paired challenge to complete.<br><br>
 			
 			When you big rip, You start a new Quantum inside PC6+8, with only your Quantum mechanics working (from quarks and gluons on), but nothing before that (it all comes back upon exiting the big rip).<br>
 			
