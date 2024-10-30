@@ -581,7 +581,7 @@ function openPage(x) {
 
 function updatePage(x) {
 	let r = HOW_TO[x].desc
-	el("how_to_"+x).innerHTML = !OPENED[x] ? "" : typeof r == "function" ? r() : r || "Placeholder."
+	el("how_to_"+x).innerHTML = !OPENED[x] ? "" : typeof r == "function" ? r() : r || "It seems there is no text! Come back when this section is filled out."
 }
 
 //Options
