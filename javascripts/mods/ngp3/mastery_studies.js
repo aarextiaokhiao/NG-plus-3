@@ -167,7 +167,7 @@ const MTS = MASTERY_STUDIES = {
 		292: "Gain Tachyon Particles based on best antimatter in dilation.",
 		301: "Extra Replicated Galaxies scale Remote Galaxies later.",
 		302: "You can buy all Time Studies.",
-		303: "Galaxies strengthen Meta Dimensions.",
+		303: "Galaxies boost Meta Dimensions.",
 		311: "Replicanti boost to all Infinity Dimensions is 17.3x stronger.",
 		312: "Meta-dimension boosts are 4.5% stronger and cost scale by 1 less.",
 		321: () => `In QC5 or 7, multiplier per 10 Antimatter Dimensions is ${shortenCosts(E("1e430"))}x.`,
