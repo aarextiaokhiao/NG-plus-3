@@ -435,7 +435,8 @@ let HOW_TO = [
 			<br><br>
 
 			You can spend Spectral Particles to boost Neutrinos in all 3 kinds.<br>
-			Neutrinos are used to boost things dependent on 3 kinds, and can be spent for upgrades or a repeatable which gives 3x SP per purchase.
+			Neutrinos are used to boost things dependent on 3 kinds, and can be spent for upgrades or a repeatable which gives 3x SP per purchase.<br>
+			More upgrades can be unlocked for each Fundament from 3rd Fundament to 10th Fundament reset.
 		`
 	}, {
 		mod: _ => ngp3,
