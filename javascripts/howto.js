@@ -359,7 +359,7 @@ let HOW_TO = [
 		title: "Nanofield",
 		tab: "ant",
 		layer: "quantum",
-		desc: `Nanofield allows you to gain further bonuses by getting preon energy, produced by preon charge. You can enable the production of preon charge, which produces preon energy, but also preon anti-energy.<br>		
+		desc: `Nanofield allows you to gain bonuses by getting preon energy, produced by preon charge. You can enable the production of preon charge, which produces preon energy, but also preon anti-energy.<br>		
 		You can get rewards from your preon energy, with the first one requiring 50 preon energy.<br><br>
 		
 		Preon anti-energy slows down preon energy production until a cap of anti-energy is reached, where preon energy production completely stops. When this happens, the only way to get more preon energy is to get more preon charge.<br><br>
