@@ -271,7 +271,7 @@ let HOW_TO = [
 		<br> 
 		Tachyon Particles generate another currency, Dilated Time. Dilated time is translated into free galaxies by reaching a certain threshold. These galaxies are permanent except when you buy a certain Dilation Upgrade. 
 		<br> 
-		Dilation Upgrades are upgrades that are purchasable with Dilated Time. Some upgrades improve the amount of Dilated Time you gain or reset your free galaxies but decrease the threshold required to get to them. In addition, there is also a TT generator as one of the Dilation upgrades. The first row of dilation upgrades is purchasable as many times as possible, but the rest cannot. `
+		Dilation Upgrades are upgrades that are purchasable with Dilated Time. Some upgrades improve the amount of Dilated Time you gain or reset your free galaxies but decrease the threshold required to get to them. In addition, there is also a TT generator as one of the Dilation upgrades. The first row of dilation upgrades is purchasable as many times as possible, but the rest cannot.`
 	}, {
 		mod: _ => player.aarexModifications?.nguspV,
 		req: _ => player.blackhole.unl,
