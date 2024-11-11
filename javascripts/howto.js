@@ -339,7 +339,9 @@ let HOW_TO = [
 		title: "Duplicants",
 		tab: "ant",
 		layer: "quantum",
-		desc: `Upon buying the appropriate mastery study, you can make Duplicants to gather preons which provide a boost to extra Replicated Galaxies (additive to Green Power effect). To get a Duplicant, you have to reset your Replicanti amount after reaching certain requirements (starts at e3,000,000, increases e100,000 each time).
+		desc: `You can make Duplicants by resetting your Replicanti amount after reaching certain requirements (starts at e3,000,000, increases e100,000 each time).<br><br>
+		
+		Duplicants gather preons which provide a boost to extra Replicated Galaxies (additive to Green Power effect).
 		<br>
 		You can spend Gluons to buy Quantum Food, which, when used few times, turns normal Duplicants into worker Duplicants. Worker Duplicants gather more preons, and also produce eggons, which turn into baby Duplicants. Baby Duplicants will eventually become normal Duplicants. You can also spend gluons to make eggons hatch faster.`
 	}, {
