@@ -447,7 +447,7 @@ let HOW_TO = [
 		title: "Photons",
 		layer: "fundament",
 		desc: `
-			Tachyonic Galaxies generate Photons, which strengthen Lights. To boost more Lights, you must gain more Photons.
+			Tachyonic Galaxies generate Photons, which strengthen Lights. To provide more colors of Lights, you must gain more Photons.
 			<br><br>
 
 			You must choose one of three features (Photons, Replicantis, and Decay) to slow down while generating stored time for next Fundament.<br>
