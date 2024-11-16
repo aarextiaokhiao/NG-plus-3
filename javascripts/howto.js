@@ -436,8 +436,8 @@ let HOW_TO = [
 			On going Quantum, you'll generate a different kind of Neutrinos. You'll keep prior Neutrinos you generated. However, Fundamenting resets Neutrinos of every kind.
 			<br><br>
 
-			You can spend Spectral Particles to boost Neutrinos in all 3 kinds.<br>
-			Neutrinos are used to boost things dependent on 3 kinds, and can be spent for upgrades or a repeatable which gives 3x SP per purchase.<br>
+			You can spend Spectral Particles to boost all 3 kinds of Neutrinos.<br>
+			Neutrinos are used to boost things dependent on all kinds, and can be spent for upgrades or a repeatable which gives 3x SP per purchase.<br>
 			More Neutrino upgrades can be unlocked for each Fundament from 3rd Fundament to 10th Fundament reset.
 		`
 	}, {
