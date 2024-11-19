@@ -576,6 +576,8 @@ function setupDisplays() {
 		<hr>
 	</div>`
 	el("how_to_div").innerHTML = r
+
+	el("title").innerHTML = "HOW TO PLAY" + (ngp3 ? " - NEW GAME PLUS 3" : "")
 }
 
 function updateDisplays() {
@@ -645,7 +647,8 @@ function loadSave() {
 }
 
 function throwError() {
-	el("how_to_div").innerHTML = "Save not found. <a href='index.html'>Go to the game</a> and reload this page."
+	el("title").innerHTML = "Save not found."
+	el("how_to_div").innerHTML = "<a href='index.html'>Go to the game</a> and reload this page."
 	throw "Save not found."
 }
 
