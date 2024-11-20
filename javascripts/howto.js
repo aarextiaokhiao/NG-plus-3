@@ -577,7 +577,7 @@ function setupDisplays() {
 	</div>`
 	el("how_to_div").innerHTML = r
 
-	el("title").innerHTML = "HOW TO PLAY" + (ngp3 ? " - NEW GAME PLUS 3" : "")
+	el("title").innerHTML = "HOW TO PLAY" + (player.aarexModifications?.nguspV ? " - NEW GAME UPDATE SEMIPRIME" : ngp3 ? " - NEW GAME PLUS 3" : "")
 }
 
 function updateDisplays() {
