@@ -468,7 +468,7 @@ let HOW_TO = [
 		desc: `
 			You can place down W+, W-, and Z Chargers on a 7x7 grid.<br>
 			W+ increases strength to adjacent Chargers but W- decreases strength.<br>
-			Chargers with positive strength only provide positive hypercharge while ones with negative strength provide negative hypercharge.<br><br>
+			Chargers with positive strength provide positive hypercharge separately, but chargers with negative strength provide negative hypercharge separately.<br><br>
 
 			Hypercharges are separate resources that don't increase each other. Instead, they provide independent milestones.<br>			
 			Some milestones boost Bosons, so make sure to setup presets! You definitely need at least two to progress.
