@@ -384,7 +384,7 @@ let HOW_TO = [
 
 			if (ghSave?.times || SPOILERS) msg += `<b>Radioactive Decays</b><br>
 				When you have enough Free Preons, you will be able to sacrifice some upgrades in order to provide some boosts. However, each Decay nerfs Decay severally except the upgrades on the bottom!`
-			else msg += `<b>Get Fundament to unlock a subfeature.</b>`
+			else msg += `<b>Go Fundament to unlock a subfeature.</b>`
 
 			return msg
 		}
