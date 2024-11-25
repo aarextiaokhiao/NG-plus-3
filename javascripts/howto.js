@@ -470,7 +470,7 @@ let HOW_TO = [
 			W+ increases strength to adjacent Chargers but W- decreases strength.<br>
 			Chargers with positive strength provide positive hypercharge separately, but chargers with negative strength provide negative hypercharge separately.<br><br>
 
-			Hypercharges are separate resources that don't increase each other. Instead, they provide independent milestones.<br>			
+			Hypercharges are separate resources that don't increase each other. Instead, they provide  milestones independent to hypercharges.<br>
 			Some milestones boost Bosons, so make sure to setup presets! You definitely need at least two to progress.
 		`
 	}, {
