@@ -466,11 +466,13 @@ let HOW_TO = [
 		title: "W & Z Bosons",
 		layer: "fundament",
 		desc: `
-			You can place down W+, W-, and Z Chargers on a 7x7 grid.<br>
-			W+ increases strength to adjacent Chargers but W- decreases strength.<br>
-			Chargers with positive strength provide positive hypercharge separately, but chargers with negative strength provide negative hypercharge separately.<br><br>
+			You can place down W+, W-, and Z Chargers on a 7x7 grid.
+			<br><br>
 
-			Hypercharges are separate resources that don't increase each other. Instead, they provide  milestones independent to hypercharges.<br>
+			W+ Chargers increase the strength to adjacent chargers and W- Chargers decrease the strength to adjacent chargers.<br>
+			Chargers with positive strength provide positive hypercharge, but chargers with negative strength provide negative hypercharge.<br><br>
+
+			Hypercharges are separate resources that don't increase each other. Instead, they provide milestones independent to hypercharges.<br>
 			Some milestones boost Bosons, so make sure to setup presets! You definitely need at least two to progress.
 		`
 	}, {
