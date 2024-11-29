@@ -380,7 +380,7 @@ let HOW_TO = [
 		title: "Decay",
 		layer: "quantum",
 		desc() {
-			let msg = `You can turn all your Colored Quarks for Free Preons, which gradually decay exponentially while generating Preonic Spin. Preonic Spins can be spent on a big set of upgrades.`
+			let msg = `You can turn one color of Colored Quarks into Free Preons, which gradually decay exponentially while generating Preonic Spin. Preonic Spins can be spent on a big set of upgrades.`
 
 			if (ghSave?.times || SPOILERS) msg += `<b>Radioactive Decays</b><br>
 				When you have enough Free Preons, you will be able to sacrifice some upgrades in order to provide some boosts. However, each Decay nerfs Decay severally except the upgrades on the bottom!`
