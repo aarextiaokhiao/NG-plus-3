@@ -169,7 +169,7 @@ const NEUTRINO = NT = {
 			}, {
 				cost: E(1e50),
 				eff: nt => Math.min(quSave.time / 1e3, nt / 100) + 1,
-				effDesc: e => `Outside of Big Rip, Quantum time slows down Replicanti Slowdown by <b>^${shorten(e)}</b>.`
+				effDesc: e => `Outside of Big Rip, Quantum time scales Replicanti Slowdown by <b>^${shorten(e)}</b>.`
 			}
 		]
 	},
