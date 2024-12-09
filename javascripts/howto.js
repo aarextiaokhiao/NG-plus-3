@@ -308,7 +308,7 @@ let HOW_TO = [
 
 		title: "Quarks & Gluons",
 		layer: "quantum",
-		desc: `This is the 3rd major layer of NG+3 that unlocks on reaching e446 meta-antimatter and completing Eternity Challenge 14. This layer resets all prior progress as well as all Eternity features.<br><br>
+		desc: `This is the 3rd major layer of NG+3 that unlocks on reaching e446 meta-antimatter and completing Eternity Challenge 14. This layer resets all prior progress as well as all Eternity features. It is also the first layer where you keep a bit.<br><br>
 
 		When you go Quantum, you receive a number of quarks based on meta-antimatter. At any time, you can assign all your quarks to be either red, green, or blue quarks. Your quarks will produce an amount of color power based on the difference between the color quarks you have the most of and the color you have the second-most of. So, if you had 4 red quarks and 1 blue quark, you would get 3 red charge, producing 3 red power per second. Each color power provides a boost: red provides stronger galaxies, green provides more Replicated Galaxies, and blue provide faster dilated time production. Note that even if you aren't generating a particular color power, the color power you have already generated is still effective.
 		<br><br>
