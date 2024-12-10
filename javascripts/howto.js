@@ -299,18 +299,17 @@ let HOW_TO = [
 
 		title: "quantum",
 		layer: "quantum",
-		desc: `When you reach 9.32e446 meta-antimatter and completed EC14 for the first time, you will able to go Quantum. Quantum will reset everything eternity resets, and also eternity features. You will gain a quark and unlock various upgrades.
-		<br><br>
-		You will also unlock speedrun milestones where you must do fast Quantums to get QoL rewards, and even Quantum autobuyer.`
+		desc: `This is the 3rd major layer of NG+3 that unlocks on reaching 9.32e446 meta-antimatter and completing Eternity Challenge 14. This layer resets all prior progress as well as all Eternity features. It is also the first layer where you keep a bit.<br><br>
+
+		You gain Anti-Quarks based on your best meta-antimatter.<br>
+		You also unlock speedrun milestones where you must do fast Quantums to get QoL rewards, and even Quantum autobuyer.`
 	}, {
 		mod: _ => ngp3,
 		req: _ => player.quantum?.times,
 
 		title: "Quarks & Gluons",
 		layer: "quantum",
-		desc: `This is the 3rd major layer of NG+3 that unlocks on reaching e446 meta-antimatter and completing Eternity Challenge 14. This layer resets all prior progress as well as all Eternity features. It is also the first layer where you keep a bit.<br><br>
-
-		When you go Quantum, you receive a number of quarks based on meta-antimatter. At any time, you can assign all your quarks to be either red, green, or blue quarks. Your quarks will produce an amount of color power based on the difference between the color quarks you have the most of and the color you have the second-most of. So, if you had 4 red quarks and 1 blue quark, you would get 3 red charge, producing 3 red power per second. Each color power provides a boost: red provides stronger galaxies, green provides more Replicated Galaxies, and blue provide faster dilated time production. Note that even if you aren't generating a particular color power, the color power you have already generated is still effective.
+		desc: `When you go Quantum, you receive a number of quarks based on meta-antimatter. At any time, you can assign all your quarks to be either red, green, or blue quarks. Your quarks will produce an amount of color power based on the difference between the color quarks you have the most of and the color you have the second-most of. So, if you had 4 red quarks and 1 blue quark, you would get 3 red charge, producing 3 red power per second. Each color power provides a boost: red provides stronger galaxies, green provides more Replicated Galaxies, and blue provide faster dilated time production. Note that even if you aren't generating a particular color power, the color power you have already generated is still effective.
 		<br><br>
 
 		If you have two or more quark colors, some quarks will fuse to become gluons on next Quantum. There are three types of gluons: red-green, green-blue, and blue-red. T form them you must have both of the specified colors; when you Quantum, only the first color in the gluon's name will be removed, however.
