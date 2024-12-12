@@ -368,12 +368,12 @@ let HOW_TO = [
 		title: "Nanofield",
 		tab: "ant",
 		layer: "quantum",
-		desc: `Nanofield allows you to gain bonuses by getting preon energy, produced by preon charge. You can enable the production of preon charge, which produces preon energy, but also preon anti-energy.<br>		
-		You can get rewards from your preon energy, with the first one requiring 50 preon energy.<br><br>
+		desc: `Nanofield allows you to gain bonuses by getting pilon energy, produced by pilon charge. You can enable the production of pilon charge, which produces pilon energy, but also pilon anti-energy.<br>		
+		You can get rewards from your pilon energy, with the first one requiring 50 pilon energy.<br><br>
 		
-		Preon anti-energy slows down preon energy production until a cap of anti-energy is reached, where preon energy production completely stops. When this happens, the only way to get more preon energy is to get more preon charge.<br><br>
+		Pilon anti-energy slows down pilon energy production until a cap of anti-energy is reached, where pilon energy production completely stops. When this happens, the only way to get more pilon energy is to get more pilon charge.<br><br>
 		
-		Note: Preon charge, energy, and anti-energy reset on Quantum, but you keep whatever rewards you have already earned on previous Quantums.`
+		Note: Pilon charge, energy, and anti-energy reset on Quantum, but you keep whatever rewards you have already earned on previous Quantums.`
 	}, {
 		mod: _ => ngp3,
 		req: _ => player.masterystudies.includes("d13"),
@@ -381,10 +381,10 @@ let HOW_TO = [
 		title: "Decay",
 		layer: "quantum",
 		desc() {
-			let msg = `You can turn one color of Colored Quarks into Free Preons, which gradually decay exponentially while generating Preonic Spin. Preonic Spins can be spent on a big set of upgrades.`
+			let msg = `You can turn one color of Colored Quarks into Free Pilons, which gradually decay exponentially while generating Preonic Spin. Preonic Spins can be spent on a big set of upgrades.`
 
 			if (ghSave?.times || SPOILERS) msg += `<b>Radioactive Decays</b><br>
-				When you have enough Free Preons, you will be able to sacrifice some upgrades in order to provide some boosts. However, each Decay nerfs Decay severally except the upgrades on the bottom!`
+				When you have enough Free Pilons, you will be able to sacrifice some upgrades in order to provide some boosts. However, each Decay nerfs Decay severally except the upgrades on the bottom!`
 			else msg += `<b>Go Fundament to unlock a subfeature.</b>`
 
 			return msg
@@ -512,7 +512,7 @@ let HOW_TO = [
 		mod: _ => ngp3,
 		req: _ => ghSave?.hb.unl,
 
-		title: "Anti-Preonius",
+		title: "Anti-Pilonius",
 		tab: "ant",
 		layer: "fundament",
 		desc: `A nerf feature coming back from NG+3.1...`
@@ -530,7 +530,7 @@ let HOW_TO = [
 		title: "Duplicant Expansion",
 		tab: "ant",
 		layer: "fundament",
-		desc: `If Anti-Preonius is an ant feature, as it is to Ghost Challenges... Why not make it another ant feature?`
+		desc: `If Anti-Pilonius is an ant feature, as it is to Ghost Challenges... Why not make it another ant feature?`
 	}, {
 		mod: _ => ngp3,
 		req: _ => ghSave?.hb.unl,
