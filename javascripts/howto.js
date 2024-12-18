@@ -324,7 +324,11 @@ let HOW_TO = [
 
 		title: "Positrons",
 		layer: "quantum",
-		desc: `You unlock Positrons by purchasing the first new dilation study under mastery studies that costs 2e82 time theorems. Positrons provide a boost to your multiplier per 10 dimensions bought, but in order to use them, you have to sacrifice your regular galaxies. The number of Positrons you get is equal to the number of galaxies you sacrificed times the number of Positrons per galaxy you currently have. This number starts at 2 Positrons per galaxy, and can be upgraded using either time theorems, dilated time, meta-antimatter, or meta-dimension boosts. Each upgrade increases the Positrons per galaxy by 0.25.`
+		desc: `You unlock Positrons by purchasing the first new dilation study under mastery studies that costs 2e82 time theorems.<br><br>
+		
+		Positrons provide a boost to your multiplier per 10 dimensions bought, but in order to use them, you have to sacrifice your regular galaxies.<br><br>
+		
+		The number of Positrons you get is equal to the number of galaxies you sacrificed times the number of Positrons per galaxy you currently have. This number starts at 2 Positrons per galaxy, and can be upgraded using either time theorems, dilated time, meta-antimatter, or meta-dimension boosts. Each upgrade increases the Positrons per galaxy by 0.25.`
 	}, {
 		mod: _ => ngp3,
 		req: _ => player.masterystudies.includes("d8"),
