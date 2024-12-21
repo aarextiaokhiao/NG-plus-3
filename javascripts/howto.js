@@ -297,7 +297,7 @@ let HOW_TO = [
 		mod: _ => ngp3,
 		req: _ => player.quantum?.times,
 
-		title: "quantum",
+		title: "Quantum",
 		layer: "quantum",
 		desc: `This is the 3rd major layer of NG+3 that unlocks on reaching 9.32e446 meta-antimatter and completing Eternity Challenge 14. This layer resets all prior progress as well as all Eternity features. It is also the first layer where you keep a bit.<br><br>
 
@@ -346,7 +346,10 @@ let HOW_TO = [
 
 		title: "Paired Challenges",
 		layer: "quantum",
-		desc: `Paired Challenges consist of two Quantum Challenges whose conditions are applied at once. You can assign each of the four paired challenges to any pair of Quantum Challenges, though the same challenge can't be used twice. The cost to start a PC is based on the sum of costs for the component challenges, and the goal is also based on the goals of the component challenges. You can respec PC assignments at any time, though you will lose the PCs you already completed.`
+		desc: `Paired Challenges consist of two Quantum Challenges whose conditions are applied at once.<br>
+		You can assign each of the four paired challenges to any pair of Quantum Challenges, though the same challenge can't be used twice. You can respec PC assignments at any time, though you will lose the PCs you already completed.<br><br>
+		
+		The cost to start a PC is based on the sum of costs for the component challenges, and the goal is also based on the goals of the component challenges. `
 	}, {
 		mod: _ => ngp3,
 		req: _ => player.masterystudies.includes("d10"),
