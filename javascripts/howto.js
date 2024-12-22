@@ -439,7 +439,7 @@ let HOW_TO = [
 			<br><br>
 
 			<b>Brave Milestones</b><br>
-			Brave Milestones can be achieved by Fundamenting while under a certain amount of Quantums. Likewise, each Brave Milestone provides you with a reward that greatly boosts progress and makes Fundaments much faster and more efficient.
+			Brave Milestones can be achieved by Fundamenting while under a specific amount of Quantums. Likewise, each Brave Milestone provides you with a reward that greatly boosts progress and makes Fundaments much faster and more efficient.
 			<br><br>
 
 			<b>Automators</b><br>
