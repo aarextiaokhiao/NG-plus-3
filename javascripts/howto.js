@@ -496,7 +496,7 @@ let HOW_TO = [
 		title: "Higgs Field",
 		layer: "fundament",
 		desc: `
-			At ??? Bosons, you can reset ??? for Higgs. The first Higgs reset unlocks Higgs Field.
+			At ??? Bosons, you can reset Bosons and W & Z Bosons for Higgs. The first Higgs reset unlocks Higgs Field. Further Higgs resets require more Higgs. It can be performed multiple times in one click.
 			<br>
 			Higgs Field has rows of boosts that you can swap. You also produce Higgs Mass which strengthens Higgs Field. However, later rows are weaker. Don't worry, these can be gradually to be effective as earlier rows.
 		`,
