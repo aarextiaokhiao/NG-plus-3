@@ -487,7 +487,7 @@ let HOW_TO = [
 			Chargers with positive strength provide positive hypercharge, but chargers with negative strength provide negative hypercharge.<br><br>
 
 			Hypercharges are separate quantities that don't boost each other. Instead, each hypercharge provide milestones that are independent to both hypercharges.<br>
-			Some milestones boost Bosons, so make sure to setup presets! You definitely need at least two to progress.
+			Some milestones boost Bosons, so make sure to setup presets! At least two presets are recommended for progression.
 		`
 	}, {
 		mod: _ => ngp3,
