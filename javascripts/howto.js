@@ -423,7 +423,7 @@ let HOW_TO = [
 			else msg += `<b>Get e1,215 Eternity Points while Big Rip to unlock Break Eternity.</b>`
 
 			if (feature == 3) msg += `<b>Phantomal Paradigms</b><br>
-				Phantomal Paradigms are a Big Rip replacement to Dimensional Shifts, in which remove some Dimensions for scaling changes. For example, any Phantomal Paradigm removes the cost scaling of a Antimatter Dimension tier (except the 8th), but however has a fixed per-ten bonus. These only reset on Fundament, not exiting the Big Rip.`
+				Phantomal Paradigms are a Big Rip replacement to Dimensional Shifts that cause scaling changes. Any Phantomal Paradigm removes the cost scaling of a Antimatter Dimension tier (except the 8th), but however has a fixed per-ten bonus. These only reset on Fundament.`
 			else if (feature == 2) msg += `<b>Get Photons to unlock a new subfeature.</b>`
 
 			return msg
