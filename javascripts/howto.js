@@ -453,7 +453,7 @@ let HOW_TO = [
 		layer: "fundament",
 		desc: `
 			There are 3 kinds of Neutrinos: Electron, Mu, and Tau. You gain Neutrinos of a single kind per 1 Antimatter Galaxy gained.<br>
-			On going Quantum will switch a generating kind of Neutrinos. You'll keep prior Neutrinos you generated. However, Fundamenting resets Neutrinos of every kind.
+			Going Quantum will switch to generate a other kind of Neutrinos. Fundamenting resets Neutrinos of all 3 kinds.
 			<br><br>
 
 			You can spend Spectral Particles to boost all 3 kinds of Neutrinos.<br>
