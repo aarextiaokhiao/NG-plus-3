@@ -484,7 +484,8 @@ let HOW_TO = [
 			<br><br>
 
 			W+ Chargers add the strength to adjacent chargers, but W- Chargers decrease the strength to adjacent chargers.<br>
-			Chargers with positive strength provide positive hypercharge, but chargers with negative strength provide negative hypercharge.<br><br>
+			Chargers with positive strength provide positive hypercharge, but chargers with negative strength provide negative hypercharge.
+			<br><br>
 
 			Hypercharges are separate quantities that don't boost each other. Instead, each hypercharge provide milestones that are independent to both hypercharges.<br>
 			Some milestones boost Bosons, so make sure to setup presets! At least two presets are recommended for progression.
