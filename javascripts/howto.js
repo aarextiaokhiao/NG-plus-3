@@ -299,10 +299,10 @@ let HOW_TO = [
 
 		title: "Quantum",
 		layer: "quantum",
-		desc: `This is the 3rd major layer of NG+3 that unlocks on reaching 9.32e446 meta-antimatter and completing Eternity Challenge 14. This layer resets all prior progress as well as all Eternity features. It is also the first layer where you keep a bit.<br><br>
+		desc: `This is the 3rd major layer of NG+3 that unlocks on reaching 9.32e446 meta-antimatter and completing Eternity Challenge 14 once. This layer resets all prior progress as well as all Eternity features. It is also the first layer where you keep a bit.<br><br>
 
-		You gain Anti-Quarks based on your best meta-antimatter.<br>
-		You also unlock speedrun milestones where you must do fast Quantums to get QoL rewards, and even Quantum autobuyer.`
+		You gain Anti-Quarks based on your best meta-antimatter on this Quantum.<br>
+		You also unlock Speedrun Milestones where you must do fast Quantums to get QoL rewards, and even Quantum autobuyer.`
 	}, {
 		mod: _ => ngp3,
 		req: _ => player.quantum?.times,
