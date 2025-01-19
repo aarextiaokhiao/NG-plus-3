@@ -8,7 +8,7 @@ let HOW_TO = [
 		desc: `<b>Dimensions:</b>
 		Dimensions are your production units in game. The first Dimension produces your Antimatter. Each consecutive dimension produces the previous one, allowing you to have steady growth. There are eight dimensions total.
 		<br>
-		<b>Dimension Multiplier:</b> Beside the dimension there is a multiplier (example: First Dimension x1.0). The base production of each dimension is multiplied by this number. This multiplier increases by 2x(Base) for every 10 of that dimension purchased. Each time this occurs, the price of the dimension will increase.
+		<b>Dimension Multiplier:</b> Beside the dimension there is a multiplier (example: First Dimension x1.0). The base production of each dimension is multiplied by this number. This multiplier increases by 2x for every 10 of that dimension purchased. Each time this occurs, the price of the dimension will increase.
 		<br>
 		<b>Accumulated Dimension Quantity:</b> The next column is your current amount of that dimension you own. This is a combination of how many you have purchased with antimatter, as well as produced from the higher dimension.
 		<br>
