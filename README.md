@@ -8,7 +8,7 @@ Mods implemented:
 - e666666's NG-- (continued)
 - Aarex's NG-3
 - Aarex's NG-4 (pre-Respec, retiring)
-- Aarex's NG+3
+- Aarex's NG+3 (on development)
 - Soul147's NG+4 (but modified)
 
 Mods will be implemented:
