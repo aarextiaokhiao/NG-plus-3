@@ -487,7 +487,7 @@ let HOW_TO = [
 			Chargers with positive strength provide positive hypercharge, but chargers with negative strength provide negative hypercharge.
 			<br><br>
 
-			Hypercharges are separate quantities. Each hypercharge type provides a set of milestones that are independent to both hypercharges.<br>
+			Both hypercharges are separate quantities. Each hypercharge type provides a set of milestones that are independent to those.<br>
 			Some milestones boost Bosons, so make sure to setup presets! At least two presets are recommended for progression.
 		`
 	}, {
