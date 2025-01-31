@@ -274,6 +274,7 @@ function updateMasteryStudyCosts() {
 	MTS.costMult = 1
 	MTS.bought = 0
 	MTS.ttSpent = 0
+
 	for (let id of player.masterystudies) {
 		var t = id.split("t")[1]
 		if (t) {
@@ -288,6 +289,7 @@ function updateMasteryStudyCosts() {
 		if (!MTS.unlocked.includes(name)) break
 		if (!hasMasteryStudy("t"+name)) setMasteryStudyCost(name,"t")
 	}
+
 	for (let id = 13; id <= MTS.ecsUpTo; id++) {
 		if (!MTS.unlocked.includes("ec"+id)) break
 		setMasteryStudyCost(id,"ec")
@@ -298,6 +300,7 @@ function updateMasteryStudyCosts() {
 		if (!MTS.unlocked.includes("d"+id)) break
 		setMasteryStudyCost(id,"d")
 	}
+
 	if (oldBought != MTS.bought) updateSpentableMasteryStudies()
 	if (player.eternityChallUnlocked > 12) MTS.ttSpent += MTS.costs.ec[player.eternityChallUnlocked]
 	updateMasteryStudyTextDisplay()
