@@ -472,7 +472,8 @@ let HOW_TO = [
 			<br><br>
 
 			You must choose one of three features (Photons, Replicantis, and Decay) to slow down while generating stored time for next Fundament.<br>
-			After going Fundament, you can click the same button again to emit stored time, which causes a chosen feature to time skip. This only works for ones that stored timewarp before.
+			After going Fundament, you can click the same button again to emit stored time, which causes a chosen feature to time skip.<br>
+			This only works if you stored time before this FUndament.
 		`
 	}, {
 		mod: _ => ngp3,
