@@ -413,7 +413,7 @@ let HOW_TO = [
 			let msg = `Once you beat 24 Paired Challenges and buy the last Mastery Study at the very bottom, you can big rip the universe.<br>
 			To do this, you must have one of your paired challenges assigned to be QC6+QC8, which is the hardest paired challenge to complete.<br><br>
 
-			When you big rip, You start a new Quantum, but trapping you inside QC6 and QC8 with only your Quantum mechanics working (from quarks and gluons on), but nothing before that (it all comes back upon exiting the big rip). Additionally, many Speedrun Milestones do not work in Big Rips unless reactivated.<br>
+			When you Big Rip the universe: You start a new Quantum, but trapping you inside QC6 and QC8 with only your Quantum mechanics working (from quarks and gluons on), but nothing before that (it all comes back upon exiting the big rip). Additionally, many Speedrun Milestones do not work in Big Rips unless reactivated.<br>
 
 			At any time, you can exit the Big Rip to gain Space Shards based on your best antimatter amount while big ripped. You can spend Space Shards to buy various progression upgrades, either by giving a boost that only applies in Big Rips, or letting you keep something inside Big Rips.<br><br>`
 
