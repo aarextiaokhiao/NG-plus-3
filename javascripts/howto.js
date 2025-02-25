@@ -485,7 +485,7 @@ let HOW_TO = [
 			You can place down W+, W-, and Z Chargers on a customizible 7x7 grid.
 			<br><br>
 
-			A W Charger provide strength onto chargers adjacent to it. W+ Chargers add strength, but W- Chargers decrease strength.<br>
+			A W Charger provide strength onto chargers adjacent to it. W+ Chargers add strength, but W- Chargers reduce strength.<br>
 			Chargers with positive strength provide positive hypercharge, but chargers with negative strength provide negative hypercharge.
 			<br><br>
 
