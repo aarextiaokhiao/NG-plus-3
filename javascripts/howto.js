@@ -71,7 +71,7 @@ let HOW_TO = [
 		layer: "",
 		desc: `You unlock Dimensional Sacrifice after your first dimensional boost.
 		<br>
-		Sacrificing will immediately reduce the owned quantity of dimensions 1 through 7 to zero. This does not reduce the multiplier or the current cost.	In return, it will multiply the Eighth Dimension Multiplier by the shown value. It will take time to get back to the production you previously had, but you will end up with a net increase.
+		Sacrificing will immediately reduce the owned quantity of dimensions 1 through 7 to zero. This does not reduce the multiplier or the current cost. In return, it will multiply the Eighth Dimension Multiplier by the shown value. It will take time to get back to the production you previously had, but you will end up with a net increase.
 		<br>
 		<b>When should I sacrifice?</b> Depends on your percentages (+%/s), but if they are over ~2% and the multiplier is over 2x, I'd say it's worth it. The lower the percentage, the longer it takes to gain back your dimensions.
 		<br>
