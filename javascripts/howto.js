@@ -561,13 +561,6 @@ let HOW_TO = [
 		title: "Annihilation",
 		layer: "fundament",
 		desc: `Nullify features for Exotic Matter.`
-	}, {
-		mod: _ => true,
-		req: _ => true,
-
-		title: "",
-		layer: "",
-		desc: ``
 	}*/
 ]
 
