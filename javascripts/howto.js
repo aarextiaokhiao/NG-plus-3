@@ -302,7 +302,9 @@ let HOW_TO = [
 		layer: "quantum",
 		desc: `This is the 3rd major layer of NG+3 that unlocks on reaching 9.32e446 meta-antimatter and completing Eternity Challenge 14 once. This layer resets all prior progress as well as all Eternity features. It is also the first layer where you keep a bit of pre-Quantum content.<br><br>
 
-		You gain Anti-Quarks based on your best meta-antimatter on this Quantum.<br>
+		You gain Anti-Quarks based on your best meta-antimatter on this Quantum.<br><br>
+
+		<b>Speedrun Milestones</b><br>
 		On going Quantum under a specific time, you also unlock Speedrun Milestones. Speedrun Milestones provide you with a reward that greatly boosts progress and makes Quantums much faster and more efficient.`
 	}, {
 		mod: _ => ngp3,
