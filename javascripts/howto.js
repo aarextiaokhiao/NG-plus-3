@@ -376,7 +376,7 @@ let HOW_TO = [
 		layer: "quantum",
 		desc: `Each Emperor Dimension produces the one below it, but however each Dimension works like Workers. Second Emperor Dimensions produce Worker Duplicants, Third Emperor Dimensions produce Second Emperor Dimensions, etc.<br><br>
 		
-		To get the highest Emperor Dimension available, you must spend Quantum Food, similar to promoting a normal duplicant to a worker duplicant. You increase the amount of the highest dimension you can get, as well as unlocking the ability to buy higher dimensions, by spending Gluons.`
+		To get the highest Emperor Dimension available, you must spend Quantum Food (similar to promoting a normal duplicant to a worker). You can increase the amount of the highest dimension you can attain, as well as unlocking the ability to buy higher dimensions, by spending Gluons.`
 	}, {
 		mod: _ => ngp3,
 		req: _ => player.masterystudies.includes("d12"),
