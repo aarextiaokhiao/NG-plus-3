@@ -92,7 +92,7 @@ let PHOTON = {
 				desc: e => `Raise Emperor Dimensions by ^${shorten(e)}.`
 			}, {
 				name: "green",
-				req: 5e4,
+				req: 2e3,
 				eff: exp => E_pow(tmp.gal.ts || 1, Math.min(-exp / 5, 1)),
 				desc: e => `Tickspeed reduction multiplies per-ten Antimatter Dimension bonus by ${shorten(e)}x.`
 			}, {

@@ -305,15 +305,12 @@ function getOrSubResourceTD(tier, ngm4, sub) {
 function buyMaxTimeDimension(tier, ngm4 = false, bulk) {
 	var dim = player['timeDimension' + tier]
 	var res = getOrSubResourceTD(tier, inNGM(4))
-	console.log(aarMod.maxHighestTD)
+
 	if (inNGM(4) && getAmount(1) < 1) return
-	console.log(tier + " 2")
 	if (aarMod.maxHighestTD && tier < 8 && (player["timeDimension" + (tier + 1)].bought > 0 || player["timeDimension" + (tier + 1)].boughtAntimatter > 0 && inNGM4Respec())) return
-	console.log(tier + " 3")
 	if (!isTDUnlocked(tier)) return
-	console.log(tier + " 4")
 	if (res.lt(dim.cost) && !inNGM(4) || res.lt(dim.costAntimatter) && inNGM(4)) return
-	console.log(tier + " 5")
+
 	if (inNGM(4)) {
 		var costMultSelect = inNGM4Respec ? 2 : 1
 		var toBuy = Math.max(Math.floor(res.div(dim.costAntimatter).mul(timeDimCostMults[costMultSelect][tier] - 1).add(1).log(timeDimCostMults[costMultSelect][tier])), 0)
