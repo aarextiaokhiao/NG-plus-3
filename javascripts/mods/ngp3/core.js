@@ -1,6 +1,6 @@
 //VERSION: 2.31
 let ngp3_ver = 2.31
-let ngp3_build = 20250313
+let ngp3_build = 20250313.01
 function doNGP3Updates() {
 	if (!aarMod.ngp3_build) aarMod.ngp3_build = 0
 	if (aarMod.ngp3_build < 20221230) quSave.multPower = 0
@@ -264,6 +264,7 @@ function updateNGP3Temp() {
 	updateGhostifyTempStuff()
 	if (quantumed) {
 		tmp.qu.phantoms = brSave.phantoms || 0
+
 		if (beSave && beSave.unlocked) updateBreakEternityUpgradesTemp()
 		if (hasMasteryStudy("d14")) updateBigRipUpgradesTemp()
 		if (hasDecay()) {

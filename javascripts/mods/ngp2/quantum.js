@@ -1,15 +1,22 @@
 // v2.9
 quantumed = false
 function quantum(auto, force, qc, bigRip = false) {
+	// Force variables
 	if (bigRipped()) force = true
-	if (!force && !isQuantumReached()) return
-	if (implosionCheck) return
+	if (tmp.qu.phantoms) qc = {
+		qc: [6,8],
+		br: true
+	}
 
+	// Check conditions
+	if (!force && !isQuantumReached()) return
 	if (!mod.ngp3) {
 		alert("You've reached the end of NG++. To continue playing, please convert your save to NG+++ in Options > Save tab.")
 		return
 	}
+	if (implosionCheck) return
 
+	// Confirmations
 	var headstart = aarMod.newGamePlusVersion > 0 && !mod.ngp3
 	if (!(auto||force) && aarMod.quantumConf && !confirm("Quantum will reset everything up to and including Eternity features will be reset, in exchange of anti-quarks. Ready?")) return
 	if (!quantumed && !confirm("Are you sure you want to do this? You will lose everything you have!")) return
@@ -32,6 +39,7 @@ function quantum(auto, force, qc, bigRip = false) {
 		}
 	}
 
+	// Do reset
 	var implode = !auto && !force && isAnimationOn("quantum")
 	if (implode) {
 		quantumAni(_ => doQuantum(force, auto, qc))

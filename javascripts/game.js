@@ -1820,6 +1820,7 @@ function doQuantumButtonDisplayUpdating(diff){
 	if (inAnyQC()) flavor = "Embrace the quantum... " + flavor
 	if (ghostified) flavor = "Go quantum."
 	if (bigRipped()) flavor = (ghostified ? "" : "This isn't potential... ") + "Restore the rift."
+	if (tmp.qu.phantoms) flavor = "You can't escape if you've gone Phantom!"
 	el("quantumbtnFlavor").textContent = flavor
 
 	var showGain = quantumed && notInQC() ? "QK" : ""

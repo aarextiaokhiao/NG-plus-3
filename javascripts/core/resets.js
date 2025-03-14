@@ -507,7 +507,7 @@ let RESETS = {
 
 			let emit = PHOTON.emits()
 			ghSave.photons.sel[1] = -1
-			for (var i of ghSave.photons.slots) if (i[0]) i[1] = emit
+			for (var i of ghSave.photons.slots) if (i[0] && i[1] == 0) i[1] = emit
 		}
 	}
 }
