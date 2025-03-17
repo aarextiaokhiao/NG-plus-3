@@ -491,7 +491,7 @@ let HOW_TO = [
 			Chargers with positive strength provide positive hypercharge, but chargers with negative strength provide negative hypercharge.
 			<br><br>
 
-			Both hypercharges are separate quantities. Each hypercharge type provides a set of milestones that are independent to those.<br>
+			Both hypercharges are separate quantities. Each type provides a set of milestones that are independent to those.<br>
 			Some milestones can boost Bosons, so make sure to setup presets! I recommend joining the NG+3 Discord server for further help. At least two presets are recommended for progression.
 		`
 	}, {
