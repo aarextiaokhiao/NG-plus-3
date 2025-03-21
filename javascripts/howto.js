@@ -541,7 +541,7 @@ let HOW_TO = [
 
 		title: "Endless Mirrors",
 		layer: "fundament",
-		desc: `???`
+		desc: `NG+5 stuff.`
 	}, {
 		mod: _ => ngp3,
 		req: _ => ghSave?.hb.unl,
