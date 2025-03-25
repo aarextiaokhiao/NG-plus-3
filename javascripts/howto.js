@@ -293,7 +293,7 @@ let HOW_TO = [
 
 		title: "Mastery Studies",
 		layer: "eternity",
-		desc: `Mastery Studies are a new type of Time Studies, but all costs will increase on each purchase. There are also Eternity Challenges and feature unlocks like in the Time Study tree. Respeccing will reset costs of all Mastery Studies.`
+		desc: `Mastery Studies are a new type of Time Studies, but all costs increase on each purchase. There are also Eternity Challenges and feature unlocks like in the Time Study tree. Respeccing will reset costs of all Mastery Studies.`
 	}, {
 		mod: _ => ngp3,
 		req: _ => player.quantum?.times,
