@@ -422,7 +422,7 @@ let HOW_TO = [
 			let feature = ghSave?.photons?.unl || SPOILERS ? 3 : ghSave?.times ? 2 : player.achievements.includes("ng3p65") ? 1 : 0
 
 			if (feature >= 1) msg += `<b>Break Eternity</b><br>
-				 If you broke Eternity and are currently in Big Rip, Galaxies and Time Dimensions will work, but scale faster. On Eternity, you gain eternal matter based on your time shards. You can spend Eternal Matter to buy 7 new big-rip-exclusive upgrades (one of which is repeatable).<br><br>`
+				 If you break Eternity while currently in Big Rip, Galaxies and Time Dimensions will work, but scale faster. On Eternity, you gain eternal matter based on your time shards. You can spend Eternal Matter to buy 7 new big-rip-exclusive upgrades (one of which is repeatable).<br><br>`
 			else msg += `<b>Get e1,215 Eternity Points while Big Rip to unlock Break Eternity.</b>`
 
 			if (feature == 3) msg += `<b>Phantomal Paradigms</b><br>
