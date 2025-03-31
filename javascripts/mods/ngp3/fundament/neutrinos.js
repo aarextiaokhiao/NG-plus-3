@@ -161,7 +161,7 @@ const NEUTRINO = NT = {
 			}, {
 				cost: E(1e22),
 				eff: nt => Math.min(Math.max(nt / 90 - 1, 0), .5) / 100,
-				effDesc: e => `Outside of Big Rip, TS232 regains <b>${shorten(e*100)}%</b> power.`,
+				effDesc: e => `Outside of Big Rip, TS232 regains <b>${shorten(e*100)}%</b> of power.`,
 			}, {
 				cost: E(1e27),
 				eff: nt => Math.max((nt - 90) / 30, 1) ** 5,
