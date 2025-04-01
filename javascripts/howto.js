@@ -492,7 +492,7 @@ let HOW_TO = [
 			<br><br>
 
 			Both hypercharges are separate quantities. Each type provides a set of milestones that are independent to those.<br>
-			Some milestones can boost Bosons, so make sure to setup presets! I recommend joining the NG+3 Discord server for further help. At least couple presets are recommended for progression.
+			Some milestones can boost Bosons, so I recommend having some presets for progression! I recommend joining the NG+3 Discord server for further help.
 		`
 	}, {
 		mod: _ => ngp3,
