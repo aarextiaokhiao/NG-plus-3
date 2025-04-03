@@ -260,9 +260,9 @@ function updateNGP3ProgressTab() {
 		if (data.layer) onType = data.layer
 
 		el("ngp3_progress_"+i).style.display = i <= tmp.progress.max + 1 ? "block" : ""
-		el("ngp3_progress_"+i).style.opacity = i != tmp.progress.max ? 0.3 : 1
-		el("ngp3_progress_"+i).className = i <= tmp.progress.max ? "autoBuyerDiv " + onType : "autoBuyerDiv"
-		el("ngp3_progress_"+i+"_next").innerHTML = i == tmp.progress.max ? "Current<br>" : ""
+		el("ngp3_progress_"+i).style.opacity = i != tmp.progress.max ? 0.6 : 1
+		el("ngp3_progress_"+i).className = i < tmp.progress.max ? "autoBuyerDiv " + onType : "autoBuyerDiv"
+		el("ngp3_progress_"+i+"_next").innerHTML = i == tmp.progress.max ? "You're here!" : "Completed!"
 
 		if (i == tmp.progress.max + 1) {
 			let amt = E(data.req_res()) 
