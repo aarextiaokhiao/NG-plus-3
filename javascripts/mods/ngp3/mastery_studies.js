@@ -169,7 +169,7 @@ const MTS = MASTERY_STUDIES = {
 		302: "You can buy all normal Time Studies.",
 		303: "Galaxies boost Meta Dimensions.",
 		311: "Replicanti boost to all Infinity Dimensions is 17.3x stronger.",
-		312: "Meta-dimension boosts are 4.5% stronger and cost scale by 1 less.",
+		312: "Meta-Dimension Boosts are 4.5% stronger. They cost scale 1 less per MDB.",
 		321: () => `In QC5 or 7, multiplier per 10 Antimatter Dimensions is ${shortenCosts(E("1e430"))}x.`,
 		322: "Tickspeed boosts Dilated Time.",
 		323: "Cancel dilation penalty for the Antimatter Dimension boost from replicanti.",
