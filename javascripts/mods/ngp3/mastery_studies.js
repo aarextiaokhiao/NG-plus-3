@@ -174,7 +174,7 @@ const MTS = MASTERY_STUDIES = {
 		322: "Tickspeed boosts Dilated Time.",
 		323: "Cancel dilation penalty for the Antimatter Dimension boost from replicanti.",
 		331: "Dimension Supersonic scales 75% weaker and 240,000 later.",
-		332: "Gain replicanti faster based on your Antimatter Galaxies.",
+		332: "Antimatter Galaxies speed up Replicantis.",
 		341: "Pilons boost dilated time production at reduced rate.",
 		342: "All Replicated Galaxies boost equivalently.",
 		343: "Tachyonic Galaxies are strong as normal Replicated Galaxies.",
