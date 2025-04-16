@@ -492,7 +492,7 @@ let HOW_TO = [
 			<br><br>
 
 			Both hypercharges are separate quantities. Each type provides a set of milestones that are independent to those.<br>
-			Because milestones come with variety of effects, I recommend joining <a href="http://discord.gg/KsjcgskgTj" target="_newtab">the NG+3 Discord server</a> for further help and sharing presets.
+			Because all milestones provide with variety of effects, I recommend joining <a href="http://discord.gg/KsjcgskgTj" target="_newtab">the NG+3 Discord server</a> for further help and sharing presets.
 		`
 	}, {
 		mod: _ => ngp3,
