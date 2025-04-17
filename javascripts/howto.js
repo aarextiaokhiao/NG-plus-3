@@ -491,7 +491,7 @@ let HOW_TO = [
 			Chargers with positive strength provide positive hypercharge, but chargers with negative strength provide negative hypercharge.
 			<br><br>
 
-			Both hypercharges are separate quantities. Each type provides a set of milestones that are independent to those.<br>
+			Each type of a hypercharge provides a set of milestones that are independent to those.<br>
 			Because all milestones provide with variety of effects, I recommend joining <a href="http://discord.gg/KsjcgskgTj" target="_newtab">the NG+3 Discord server</a> for further help and sharing presets.
 		`
 	}, {
