@@ -349,10 +349,10 @@ let HOW_TO = [
 
 		title: "Paired Challenges",
 		layer: "quantum",
-		desc: `Paired Challenges consist of two Quantum Challenges whose conditions are applied at once.<br>
-		You can assign each of the four paired challenges to any pair of Quantum Challenges, though the same challenge can't be used twice. You can respec PC assignments at any time, though you will lose the PCs you already completed.<br><br>
+		desc: `Paired Challenges consist of two Quantum Challenges whose their conditions are applied at once.<br>
+		You can assign each of the four paired challenges to any pair of Quantum Challenges, though the same challenge can't be used twice. You can respec the assignments at any time, though you will lose the Paired Challenges you already completed.<br><br>
 		
-		The cost to start a PC is based on the sum of costs for the component challenges, and the goal is also based on the goals of the component challenges. `
+		The cost to start a Paired Challenge is based on the sum of costs for the component challenges, and the goal is also based on the goals of the component challenges. `
 	}, {
 		mod: _ => ngp3,
 		req: _ => player.masterystudies.includes("d10"),
