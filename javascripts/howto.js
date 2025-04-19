@@ -365,7 +365,7 @@ let HOW_TO = [
 		<br><br>
 
 		You can spend Gluons to buy Quantum Food, which, when used few times, turns normal Duplicants into worker Duplicants.<br>
-		Worker Duplicants gather more Pilons, and also produce eggons, which turn into baby Duplicants.<br>
+		Worker Duplicants gather more Pilons and produce eggons, which will later hatch into baby Duplicants.<br>
 		Baby Duplicants will eventually become normal Duplicants. You can also spend gluons to make eggons hatch faster.`
 	}, {
 		mod: _ => ngp3,
