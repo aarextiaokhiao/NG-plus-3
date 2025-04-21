@@ -239,12 +239,12 @@ const MTS = MASTERY_STUDIES = {
 
 		respecUnbuyableTimeStudies()
 		updateMasteryStudyCosts()
-		if (!hasGluonUpg("gb", 3)) ipMultPower = 2
 		if (!load) {
 			updateMasteryStudyButtons()
 			drawMasteryTree()
 		}
 
+		if (!hasGluonUpg("gb", 3)) ipMultPower = 2
 		if (!achCheck) delete quSave.wasted
 		return achCheck
 	}
