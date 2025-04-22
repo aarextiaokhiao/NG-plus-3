@@ -484,7 +484,7 @@ let HOW_TO = [
 		title: "W & Z Bosons",
 		layer: "fundament",
 		desc: `
-			You can place down W+, W-, and Z Chargers on a customizible 7x7 grid.
+			You can place down W+, W-, and Z Chargers on an customizible 7x7 grid.
 			<br><br>
 
 			An W Charger provides strength onto chargers adjacent to it. W+ Chargers add strength, but W- Chargers reduce strength.<br>
