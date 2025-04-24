@@ -473,7 +473,7 @@ let HOW_TO = [
 			Tachyonic Galaxies generate Photons, which strengthen Lights. To unlock more colors of Lights, you must gain more Photons. However, going Fundament resets all Photons and Lights.
 			<br><br>
 
-			You must choose one of three features (Photons, Replicantis, and Decay) to slow down while generating stored time for next Fundament.<br>
+			You must choose one of three features (Photons, Replicantis, and Decay) to slow down a feature while generating stored time for next Fundament.<br>
 			After going Fundament: You can click a respective button again, which causes a chosen feature to time skip.<br>
 			This only works if you stored time before this Fundament.
 		`
