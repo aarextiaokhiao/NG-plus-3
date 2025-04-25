@@ -417,7 +417,7 @@ let HOW_TO = [
 
 			When you Big Rip the universe: You start a new Quantum run, but trapping you inside QC6 and QC8 with only your Quantum mechanics working (from quarks and gluons on), but nothing before that (it all comes back upon exiting the big rip). Additionally, many Speedrun Milestones do not work in Big Rips unless reactivated.<br>
 
-			You can exit Big Rip anytime to gain Space Shards based on antimatter gained during your current run. You can spend Space Shards to buy various progression upgrades for boosts, keepings, and QoL features exclusive to Big Rips.<br><br>`
+			You can exit Big Rip anytime to gain Space Shards based on antimatter during your current run. You can spend Space Shards to buy various progression upgrades for boosts, keepings, and QoL features exclusive to Big Rips.<br><br>`
 
 			let feature = ghSave?.photons?.unl || SPOILERS ? 3 : ghSave?.times ? 2 : player.achievements.includes("ng3p65") ? 1 : 0
 
