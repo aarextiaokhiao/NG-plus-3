@@ -184,7 +184,7 @@ const MTS = MASTERY_STUDIES = {
 		362: () => "Pilon effect softcaps weaker"+(aarMod.ngumuV?", but reduce the efficiency.":"."),
 		371: "Extra Replicated Galaxies speed up hatching.",
 		372: "Tachyon Particles speed up hatching.",
-		373: "Galaxies boost Pilons.",
+		373: "Antimatter Galaxies boost Pilons.",
 		381: "Tickspeed reduction multiplier speeds up hatching.",
 		382: "Eighth Antimatter Dimensions boost Meta Dimensions.",
 		383: "Blue power boosts Meta Dimensions.",
