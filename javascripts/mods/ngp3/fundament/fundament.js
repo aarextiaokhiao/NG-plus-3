@@ -52,7 +52,7 @@ function ghostify(auto, force) {
 		denyGhostify()
 		return
 	}
-	if (!ghostified && !confirm("Are you really sure? Do you want to enlarge yourself for particles, in exchange of everything?")) {
+	if (!ghostified && !confirm("Are you really sure? Do you want to enlarge into the new realm, in exchange of everything?")) {
 		denyGhostify()
 		return
 	}
