@@ -185,7 +185,7 @@ const MTS = MASTERY_STUDIES = {
 		371: "Extra Replicated Galaxies speed up hatching.",
 		372: "Tachyon Particles speed up hatching.",
 		373: "Antimatter Galaxies boost Pilons.",
-		381: "Tickspeed reduction multiplier speeds up hatching.",
+		381: "Tickspeed reduction speeds up hatching.",
 		382: "Eighth Antimatter Dimensions boost Meta Dimensions.",
 		383: "Blue power boosts Meta Dimensions.",
 		391: "Meta-antimatter speeds up hatching.",
