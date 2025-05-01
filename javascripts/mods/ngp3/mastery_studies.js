@@ -175,7 +175,7 @@ const MTS = MASTERY_STUDIES = {
 		323: "Cancel dilation penalty for the Antimatter Dimension boost from replicanti.",
 		331: "Dimension Supersonic scales 75% weaker and 240,000 later.",
 		332: "Antimatter Galaxies speed up Replicantis.",
-		341: "Pilons boost dilated time production at reduced rate.",
+		341: "Pilons boost Dilated Time.",
 		342: "All Replicated Galaxies are equally strong.",
 		343: "Tachyonic Galaxies are strong as normal Replicated Galaxies.",
 		344: "Pilons strengthen Replicated Galaxies.",
