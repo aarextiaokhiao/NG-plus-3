@@ -135,9 +135,10 @@ const NGP3_FEATURES = {
 		tab: _ => TAB_CORE.open("wz"),
 
 		met: _ => WZ_FIELD.unlocked(),
-		req: _ => 1,
-		req_res: _ => 0,
-		req_disp: (amt, req) => `???`
+		req: _ => PHOTON.light.data[7].req,
+		req_res: _ => ghSave.photons.amt,
+		req_log: true,
+		req_disp: (amt, req) => `${getFullExpansion(amt)} / ${getFullExpansion(req)} Photons`
 	},
 	hb: {
 		name: "Higgs Field",
@@ -261,7 +262,7 @@ function updateNGP3ProgressTab() {
 
 		el("ngp3_progress_"+i).style.display = i <= tmp.progress.max + 1 ? "block" : ""
 		el("ngp3_progress_"+i).style.opacity = i != tmp.progress.max ? 0.6 : 1
-		el("ngp3_progress_"+i).className = i < tmp.progress.max ? "autoBuyerDiv " + onType : "autoBuyerDiv"
+		el("ngp3_progress_"+i).className = i <= tmp.progress.max ? "autoBuyerDiv " + onType : "autoBuyerDiv"
 		el("ngp3_progress_"+i+"_next").innerHTML = i == tmp.progress.max ? "You're here!" : "Completed!"
 
 		if (i == tmp.progress.max + 1) {
@@ -269,10 +270,10 @@ function updateNGP3ProgressTab() {
 			let req = E(data.req())
 
 			var p = Math.min((data.req_log ? amt.max(1).log(req) : amt.div(req).toNumber()) * 100, 100).toFixed(2) + "%"
-			el("ngp3_progress_"+i+"_next").innerHTML = `<b>Next (${p})</b><br>${data.req_disp(amt, req)}<br>`
+			el("ngp3_progress_"+i+"_next").innerHTML = `<b>Next (${p})</b><br>${data.req_disp(amt, req)}`
 		}
 
-		if (data.badge_id) el("ngp3_progress_"+i+"_next").innerHTML += hasBadge(data.badge_id) ? "<b class='yellow'>Badge unlocked!</b>" : canGetBadge(data.badge_id) ? `Reward: "${BADGE_TITLE[data.badge_id]}" badge` : ""
+		if (data.badge_id) el("ngp3_progress_"+i+"_next").innerHTML += hasBadge(data.badge_id) ? "<br><b class='yellow'>Badge unlocked!</b>" : canGetBadge(data.badge_id) ? `<br>Reward: "${BADGE_TITLE[data.badge_id]}" badge` : ""
 	}
 }
 
