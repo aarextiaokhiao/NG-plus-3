@@ -478,7 +478,7 @@ function setR23Tooltip(){
 
 	//ACHIEVEMENT ROW 23
 	ghostliest.setAttribute('ach-tooltip', "Get " + shorten(Math.pow(Number.MAX_VALUE, 1/4)) + " Fundaments. Reward: Fundaments boost Spectral Particles.")
-	metae18.setAttribute('ach-tooltip', "Get " + shortenCosts(pow10(1e18)) + " antimatter. Reward: Weaken Distant Antimatter Galaxies scaling by 10%.")
+	metae18.setAttribute('ach-tooltip', "Get " + shortenCosts(pow10(1e18)) + " antimatter. Reward: Distant Antimatter Galaxies scale 10% weaker.")
 	aretheseanother.setAttribute('ach-tooltip', "Reach " + shortenCosts(pow10(40000)) + " Quarks. Reward: Gain 500x more Quarks and Spectral Particles.")
 }
 
