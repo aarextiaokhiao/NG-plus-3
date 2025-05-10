@@ -607,7 +607,7 @@ function openPage(x) {
 
 function updatePage(x) {
 	let r = HOW_TO[x].desc
-	el("how_to_"+x).innerHTML = !OPENED[x] ? "" : typeof r == "function" ? r() : r || "It is not filled yet! Come back when this section is filled out."
+	el("how_to_"+x).innerHTML = !OPENED[x] ? "" : typeof r == "function" ? r() : r || "This section is not completed yet. You can help out in <a href='http://discord.gg/KsjcgskgTj'>NG+3 Discord server.</a>"
 }
 
 //Options
