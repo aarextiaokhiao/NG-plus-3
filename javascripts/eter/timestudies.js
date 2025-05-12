@@ -298,7 +298,7 @@ function studiesUntil(id) {
 }
 
 function respecTimeStudies(ecComp, load) {
-	var respecTime = player.respec || (ecComp && player.eternityChallUnlocked <= 12) || load
+	var respecTime = player.respec || (ecComp && ecComp <= 12) || load
 	var gotAch = respecTime || player.timestudy.studies.length < 1
 
 	if (respecTime) {
@@ -326,7 +326,7 @@ function respecTimeStudies(ecComp, load) {
 
 	var respecMastery = false
 	if (MTS.unl()) {
-		respecMastery = player.respecMastery || load || (ecComp && player.eternityChallUnlocked >= 13)
+		respecMastery = player.respecMastery || load || (ecComp && ecComp >= 13)
 		gotAch = gotAch && respecMastery
 	}
 	if (respecMastery) gotAch = MTS.respec(load, true) && gotAch

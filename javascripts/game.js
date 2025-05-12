@@ -1191,32 +1191,26 @@ function updateRespecButtons() {
 }
 
 function doCheckECCompletionStuff(){
-	var forceRespec = false
-	if (player.currentEternityChall !== "") {
-		if (player.eternityChalls[player.currentEternityChall] === undefined) {
-			player.eternityChalls[player.currentEternityChall] = 1
-		} else if (player.eternityChalls[player.currentEternityChall] < 5) {
-			player.eternityChalls[player.currentEternityChall] += 1
-		}
-		else if (aarMod.eternityChallRecords[player.eternityChallUnlocked] === undefined) aarMod.eternityChallRecords[player.eternityChallUnlocked] = player.thisEternity
-		else aarMod.eternityChallRecords[player.eternityChallUnlocked] = Math.min(player.thisEternity, aarMod.eternityChallRecords[player.eternityChallUnlocked])
-		if (player.currentEternityChall === "eterc12" && hasAch("ng3p51")) {
-			if (player.eternityChalls.eterc11 === undefined) player.eternityChalls.eterc11 = 1
-			else if (player.eternityChalls.eterc11 < 5) player.eternityChalls.eterc11++
-		}
-		if (mod.ngp3 ? quSave.autoEC && player.eternityChalls[player.currentEternityChall] < 5 : false) {
-			if (player.etercreq > 12) player.timestudy.theorem += MTS.costs.ec[player.etercreq]
-			else player.timestudy.theorem += ([0, 30, 35, 40, 70, 130, 85, 115, 115, 415, 550, 1, 1])[player.etercreq]
-			player.eternityChallUnlocked = 0
-			quSave.autoECN = player.etercreq
-		} else if (hasBraveMilestone(2)) {
-			if (player.etercreq > 12) player.timestudy.theorem += MTS.costs.ec[player.etercreq]
-			else player.timestudy.theorem += ([0, 30, 35, 40, 70, 130, 85, 115, 115, 415, 550, 1, 1])[player.etercreq]
-			player.eternityChallUnlocked = 0
-		} else forceRespec = true
-		player.etercreq = 0
-	} else if (mod.ngp3) delete quSave.autoECN
-	return forceRespec
+	var respecKey = 0
+	var ec = player.currentEternityChall
+	var ec_num = player.etercreq
+	var ecs = player.eternityChalls
+
+	if (ec !== "") {
+		//Record completions
+		ecs[ec] = Math.min((ecs[ec] || 0) + 1, 5)
+		if (ec_num == 12 && hasAch("ng3p51")) ecs.eterc11 = Math.min((ecs.eterc11 || 0) + 1, 5)
+		if (ecs[ec] == 5) aarMod.eternityChallRecords[ec_num] = Math.max(aarMod.eternityChallRecords[ec_num] || 1e10, player.thisEternity)
+
+		//Refund
+		if (ec_num > 12) player.timestudy.theorem += MTS.costs.ec[ec_num]
+		else player.timestudy.theorem += ([0, 30, 35, 40, 70, 130, 85, 115, 115, 415, 550, 1, 1])[ec_num]
+		player.eternityChallUnlocked = player.etercreq = 0
+		
+		if (!mod.ngp3 || !quSave.autoEC || ecs[ec] == 5) respecKey = ec_num
+	}
+
+	return respecKey
 }
 
 function canEternity() {
@@ -1257,12 +1251,11 @@ function eternity(force, auto, dil, presetLoad) {
 		addEternityTime(array)
 	}
 
-	//Challenges - Fixed by valence  
-	if (player.currentEternityChall !== "" && player.infinityPoints.lt(player.eternityChallGoal)) return false
+	//Challenges - Fixed by valence
 	if (player.currentEternityChall == "eterc6" && ECComps("eterc6") < 5 && player.dimensionMultDecrease < 4) player.dimensionMultDecrease = Math.max(parseFloat((player.dimensionMultDecrease - 0.2).toFixed(1)),2)
 	if (!hasGluonUpg("gb", 4)) if ((player.currentEternityChall == "eterc11" || (player.currentEternityChall == "eterc12" && ghostified)) && ECComps("eterc11") < 5) player.tickSpeedMultDecrease = Math.max(parseFloat((player.tickSpeedMultDecrease - 0.07).toFixed(2)), 1.65)
-	
-	var forceRespec = doCheckECCompletionStuff()
+
+	var respecKey = doCheckECCompletionStuff()
 	player.currentEternityChall = ""
 	player.eternityChallGoal = E(Number.MAX_VALUE)
 
@@ -1298,7 +1291,7 @@ function eternity(force, auto, dil, presetLoad) {
 	if (gainedEternityPoints().gte(player.eternityPoints) && player.eternityPoints.gte("1e1185") && (mod.ngp3 ? player.dilation.active && bigRipped() : false)) giveAchievement("Gonna go fast")
 
 	//Presets
-	if (player.respec || player.respecMastery || forceRespec || presetLoad) respecTimeStudies(forceRespec, presetLoad)
+	if (player.respec || player.respecMastery || respecKey || presetLoad) respecTimeStudies(respecKey, presetLoad)
 	if (player.respec) respecToggle()
 	if (player.respecMastery) respecMasteryToggle()
 

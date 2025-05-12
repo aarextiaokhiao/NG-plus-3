@@ -446,20 +446,16 @@ let RESETS = {
 
 			delete brSave.phantoms
 		},
-		doTOUSOnGhostify(bm){
-			if (hasAch("ng3p77")) { //thry of ultimate studies
-				player.timestudy.studies=[]
-				player.masterystudies=[]
-				for (var t = 0; t < all.length; t++) player.timestudy.studies.push(all[t])
-				for (var c = 1; c <= 14; c++) player.eternityChalls["eterc" + c] = 5
-				for (var t = 0; t < masteryStudies.timeStudies.length; t++) player.masterystudies.push("t" + masteryStudies.timeStudies[t])
-				for (var d = 1; d < 7; d++) player.dilation.studies.push(d)
-				for (var d = 7; d < 15; d++) player.masterystudies.push("d" + d)
-				if (bm < 2) {
-					player.dimensionMultDecrease = 2
-					player.tickSpeedMultDecrease = 1.65
-				}
-			}
+		doTOUS(bm){
+			player.dimensionMultDecrease = 2
+			player.tickSpeedMultDecrease = 1.65
+			player.timestudy.studies=[]
+			player.masterystudies=[]
+			for (var t of all) player.timestudy.studies.push(t)
+			for (var c = 1; c <= 14; c++) player.eternityChalls["eterc" + c] = 5
+			for (var t of MTS.timeStudies) player.masterystudies.push("t" + t)
+			for (var d = 1; d < 7; d++) player.dilation.studies.push(d)
+			for (var d = 7; d < 15; d++) player.masterystudies.push("d" + d)
 		},
 		doReset() {
 			let bm = braveMilestones
@@ -468,14 +464,11 @@ let RESETS = {
 			player.eternitiesBank = ghostified ? (hasAch("ng3p71") ? 200 : 100) : 0
 			player.dilation.bestTP = E(0)
 			player.meta.bestOverQuantums = E(0)
-			if (bm < 3) {
-				if (hasAch("ng3p77") && aarMod.toggleTOUS == true) {
-					doTOUSOnGhostify(bm)
-				} else {
-					var keepMS = []
-					for (var i of player.masterystudies) if (i[0] != "d") keepMS.push(i)
-					player.masterystudies = keepMS
-				}
+			if (hasAch("ng3p77") && aarMod.toggleTOUS == true) this.doTOUS(bm)
+			else if (bm < 3) {
+				var keepMS = []
+				for (var i of player.masterystudies) if (i[0] != "d") keepMS.push(i)
+				player.masterystudies = keepMS
 			}
 
 			this.resetQuantums(bm)
