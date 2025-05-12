@@ -361,7 +361,7 @@ let HOW_TO = [
 		tab: "ant",
 		layer: "quantum",
 		desc: `You can make Duplicants by resetting your Replicanti amount after reaching certain requirements (starts at e3,000,000, increases by e100,000x per purchase).<br>
-		Duplicants gather Pilons which provide a boost to extra Replicated Galaxies (additive to Green Power effect).
+		Duplicants gather Pilons which provide an additive boost to Green Power effect (allowing to gain more extra Replicated Galaxies).
 		<br><br>
 
 		You can spend Gluons to buy Quantum Food, which, when used few times, turns normal Duplicants into worker Duplicants.<br>
