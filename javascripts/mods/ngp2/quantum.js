@@ -244,8 +244,8 @@ function doQuantum(force, auto, qc = {}) {
 			boughtI: player.timestudy.ipcost.log("1e100"),
 			boughtE: Math.round(player.timestudy.epcost.log(2))
 		}
-		if (player.eternityChallUnlocked > 12) brSave.storedTS.tt += MTS.costs.ec[player.eternityChallUnlocked]
-		else brSave.storedTS.tt += ([0, 30, 35, 40, 70, 130, 85, 115, 115, 415, 550, 1, 1])[player.eternityChallUnlocked]
+		brSave.storedTS.tt += getTTSpentToECs()
+
 		for (var s = 0; s < player.masterystudies.length; s++) if (player.masterystudies[s].indexOf("t") == 0) brSave.storedTS.studies.push(parseInt(player.masterystudies[s].split("t")[1]))
 	}
 	if (bigRip != oldBigRip) {

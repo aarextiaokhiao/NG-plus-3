@@ -5,16 +5,9 @@ function onChallengeFail() {
 	if (failureCount > 9) giveAchievement("You're a failure")
 }
 
-function unlockEChall(idx, auto) {
-	if (player.eternityChallUnlocked != 0) return
-	player.eternityChallUnlocked = idx
-	updateEternityChallenges()
-
-	if (idx < 12) {
-		updateTimeStudyButtons(true)
-		player.etercreq = idx
-	}
-	if (mod.ngp3) delete quSave.autoECN
+function onUnlockEChall(id, quick) {
+	player.eternityChallUnlocked = player.etercreq = id
+	if (!quick) TAB_CORE.open('chal_eter')
 }
 
 function ECComps(name) {
@@ -97,6 +90,14 @@ function canUnlockECFromNum(n){
 	return false
 }
 
+function unlockEC(ecnum, quick) {
+	if (!canUnlockECFromNum(ecnum)) return
+	player.timestudy.theorem -= ECCosts[ecnum]
+	onUnlockEChall(ecnum, quick)
+	drawStudyTree()
+}
+for (let ecnum = 1; ecnum <= 12; ecnum ++) el("ec" + ecnum + "unl").onclick = () => unlockEC(ecnum)
+
 function updateECUnlockButtons() {
 	for (let ecnum = 1; ecnum <= 12; ecnum ++){
 		let s = "ec" + ecnum + "unl"
@@ -106,20 +107,11 @@ function updateECUnlockButtons() {
 	if (player.eternityChallUnlocked !== 0) el("ec" + player.eternityChallUnlocked + "unl").className = "eternitychallengestudybought"
 }
 
-var ECCosts = [null, 
+var ECCosts = [0, 
 		30,	35,	40,
 		70,	130, 85,
 		115, 115, 415,
 		550, 1,	 1]
-
-for (let ecnum = 1; ecnum <= 12; ecnum ++){
-	el("ec" + ecnum + "unl").onclick = function(){
-		if (!canUnlockECFromNum(ecnum)) return
-		player.timestudy.theorem -= ECCosts[ecnum]
-		unlockEChall(ecnum)
-		drawStudyTree()
-	}
-}
 
 function getEC12TimeLimit() {
 	//In the multiple of 0.1 seconds

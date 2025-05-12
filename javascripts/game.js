@@ -1203,8 +1203,7 @@ function doCheckECCompletionStuff(){
 		if (ecs[ec] == 5) aarMod.eternityChallRecords[ec_num] = Math.max(aarMod.eternityChallRecords[ec_num] || 1e10, player.thisEternity)
 
 		//Refund
-		if (ec_num > 12) player.timestudy.theorem += MTS.costs.ec[ec_num]
-		else player.timestudy.theorem += ([0, 30, 35, 40, 70, 130, 85, 115, 115, 415, 550, 1, 1])[ec_num]
+		player.timestudy.theorem += getTTSpentToECs()
 		player.eternityChallUnlocked = player.etercreq = 0
 		
 		if (!mod.ngp3 || !quSave.autoEC || ecs[ec] == 5) respecKey = ec_num

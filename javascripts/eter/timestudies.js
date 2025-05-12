@@ -317,9 +317,6 @@ function respecTimeStudies(ecComp, load) {
 			}
 			if (mod.ngp3 && player.timestudy.studies.length) delete quSave.wasted
 			player.timestudy.studies = keep
-
-			var ECCosts = [null, 30, 35, 40, 70, 130, 85, 115, 115, 415, 550, 1, 1]
-			player.timestudy.theorem += ECCosts[player.eternityChallUnlocked]
 		}
 		if (!load) updateTimeStudyButtons(true)
 	}
@@ -331,7 +328,9 @@ function respecTimeStudies(ecComp, load) {
 	}
 	if (respecMastery) gotAch = MTS.respec(load, true) && gotAch
 
+	player.timestudy.theorem += getTTSpentToECs()
 	player.eternityChallUnlocked = 0
+
 	if (mod.ngp3) delete quSave.autoECN
 	if (gotAch) giveAchievement("You do know how these work, right?")
 }
@@ -353,13 +352,18 @@ function respecUnbuyableTimeStudies() {
 	player.timestudy.studies=respecedTS
 }
 
+function getTTSpentToECs() {
+	return (player.eternityChallUnlocked > 12 ? MTS.costs.ec : ECCosts)[player.eternityChallUnlocked]
+}
+
 function getTotalTT(tree) {
 	tree = tree.timestudy
 
 	var result = tree.theorem
-	var ecCosts = [null, 30, 35, 40, 70, 130, 85, 115, 115, 415, 550, 1, 1]
 	for (var id = 0; id < all.length; id++) if (tree.studies.includes(all[id])) result += studyCosts[id]
-	return result + ecCosts[player.eternityChallUnlocked]
+	if (player.eternityChallUnlocked <= 12) result += getTTSpentToECs()
+
+	return result
 }
 
 function getStudyTreeStr() {
@@ -410,15 +414,13 @@ function importStudyTree(input) {
 		}
 		for (var i=0; i < laterSecondSplits.length; i++) buyTimeStudy(laterSecondSplits[i], 0, true)
 		for (var i=0; i < laterDLStudies.length; i++) buyTimeStudy(laterDLStudies[i], 0, true)
+
 		var ec = parseInt(input.split("|")[1])
-		if (ec > 0) {
-			justImported = true;
-			if (ec > 12) {
-				buyMasteryStudy("ec", ec, true)
-				changeMS = true
-			} else el("ec" + parseInt(input.split("|")[1]) + "unl").click();
-			setTimeout(function(){ justImported = false; }, 100);
-		}
+		if (ec > 12) {
+			buyMasteryStudy("ec", ec, true)
+			changeMS = true
+		} else unlockEC(ec, true)
+
 		if (player.masterystudies.length > oldLengthMS) {
 			updateMasteryStudyCosts()
 			updateMasteryStudyButtons()

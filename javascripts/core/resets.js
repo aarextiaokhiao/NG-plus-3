@@ -234,8 +234,7 @@ let RESETS = {
 
 			player.eternityChallGoal = E(Number.MAX_VALUE)
 			player.currentEternityChall = ""
-			player.eternityChallUnlocked = isRewardEnabled(11) ? player.eternityChallUnlocked : 0
-			player.etercreq = 0
+			player.eternityChallUnlocked = player.etercreq = 0
 		},
 		resetDil(order) {
 			let bigRip = bigRipped()
@@ -319,10 +318,7 @@ let RESETS = {
 					else player.timestudy.theorem += MTS.costs.dil[player.masterystudies[s].split("d")[1]]
 				}
 			}
-			if (isRewardEnabled(11) && (bigRip && !hasRipUpg(12))) {
-				if (player.eternityChallUnlocked > 12) player.timestudy.theorem += MTS.costs.ec[player.eternityChallUnlocked]
-				else player.timestudy.theorem += ([0, 30, 35, 40, 70, 130, 85, 115, 115, 415, 550, 1, 1])[player.eternityChallUnlocked]
-			}
+			if (isRewardEnabled(11) && (bigRip && !hasRipUpg(12))) player.timestudy.theorem += getTTSpentToECs()
 
 			player.masterystudies = bigRip && !hasRipUpg(12) ? ["d7", "d8", "d9", "d10", "d11", "d12", "d13", "d14"] : speedrunMilestones >= 16 && isRewardEnabled(11) ? player.masterystudies : []
 			player.respecMastery = false

@@ -239,6 +239,8 @@ const MTS = MASTERY_STUDIES = {
 
 		respecUnbuyableTimeStudies()
 		updateMasteryStudyCosts()
+		MTS.ttSpent = 0
+
 		if (!load) {
 			updateMasteryStudyButtons()
 			drawMasteryTree()
@@ -294,15 +296,14 @@ function updateMasteryStudyCosts() {
 		if (!MTS.unlocked.includes("ec"+id)) break
 		setMasteryStudyCost(id,"ec")
 		MTS.ecReqsStored[id] = MTS.ecReqs[id]()
-		if (player.eternityChallUnlocked == id) MTS.ttSpent += MTS.costs.ec[id]
 	}
+
 	for (let id = 7; id <= MTS.unlocksUpTo; id++) {
 		if (!MTS.unlocked.includes("d"+id)) break
 		setMasteryStudyCost(id,"d")
 	}
 
 	if (oldBought != MTS.bought) updateSpentableMasteryStudies()
-	if (player.eternityChallUnlocked > 12) MTS.ttSpent += MTS.costs.ec[player.eternityChallUnlocked]
 	updateMasteryStudyTextDisplay()
 }
 
@@ -450,12 +451,10 @@ function buyMasteryStudy(type, id, quick=false) {
 	if (quick) setMasteryStudyCost(id, type)
 	if (!canBuyMasteryStudy(type, id)) return
 	player.timestudy.theorem -= MTS.costs[MTS.types[type]][id]
-	if (type == 'ec') {
-		player.eternityChallUnlocked = id
-		player.etercreq = id
-		updateEternityChallenges()
-		delete quSave.autoECN
-	} else player.masterystudies.push(type + id)
+
+	if (type == 'ec') onUnlockEChall(id, quick)
+	else player.masterystudies.push(type + id)
+
 	if (type == "t") {
 		addSpentableMasteryStudies(id)
 		if (quick) {
@@ -500,22 +499,20 @@ function buyMasteryStudy(type, id, quick=false) {
 }
 
 function canBuyMasteryStudy(type, id) {
-	if (type == 't') {
-		if (player.timestudy.theorem < MTS.costs.time[id] || hasMasteryStudy('t' + id) || player.eternityChallUnlocked > 12 || !MTS.timeStudies.includes(id)) return false
-		if (player.eternityChallUnlocked > 12) return false
-		if (MTS.latestBoughtRow > Math.floor(id / 10)) return false
-		if (!MTS.spentable.includes(id)) return false
-	} else if (type == 'd') {
-		if (player.timestudy.theorem < MTS.costs.dil[id] || hasMasteryStudy('d' + id)) return false
-		if (!hasBraveMilestone(3) && !MTS.unlockReqConditions[id]()) return false
-		if (!MTS.spentable.includes("d" + id)) return false
-	} else {
-		if (player.timestudy.theorem < MTS.costs.ec[id]) return false
-		if (player.eternityChallUnlocked) return false
-		if (player.etercreq == id) return true
+	if (player.timestudy.theorem < MTS.costs[MTS.types[type]][id]) return false
+	if (!MTS.spentable.includes(type == "t" ? id : type + id)) return false
+
+	if (type == 't' && MTS.latestBoughtRow > Math.floor(id / 10)) return false
+
+	if (type == 'd' && !hasBraveMilestone(3) && !MTS.unlockReqConditions[id]()) return false
+	if (type != 'd' && player.eternityChallUnlocked > 12) return false
+
+	if (type == 'ec' && player.etercreq != id) {
 		if (id == 13) return player.resets >= MTS.ecReqsStored[13]
 		return Math.round(player.replicanti.chance * 100) >= MTS.ecReqsStored[14]
 	}
+	if (type != 'ec' && player.masterystudies.includes(type + id)) return false
+
 	return true
 }
 
