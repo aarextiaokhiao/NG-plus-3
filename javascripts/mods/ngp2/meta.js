@@ -141,9 +141,8 @@ function getMetaShiftRequirement() {
 	var data = {tier: Math.min(8, mdb + 4), amount: 20}
 	var inQC4 = inQC(4)
 	data.mult = inQC4 ? 5.5 : 15
-	if (mod.ngp3) {
-		if (hasMasteryStudy("t312")) data.mult -= 1
-	}
+	if (hasMasteryStudy("t312")) data.mult -= 1
+
 	data.amount += data.mult * Math.max(mdb - 4, 0)
 	if (hasDecay()) data.amount -= getTreeUpgradeEffect(1)
 	if (hasNU(1)) data.amount -= NT.eff("upg", 1, 0)
