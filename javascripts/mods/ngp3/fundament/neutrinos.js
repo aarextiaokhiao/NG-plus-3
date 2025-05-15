@@ -210,7 +210,7 @@ const NEUTRINO = NT = {
 
 				eff() {
 					let bLog = quSave.colorPowers.b.max(1).log10()
-					return E_pow(2, Math.pow(bLog / 400 + 1, 3 / 4) - 1)
+					return E_pow(3, Math.pow(bLog / 400 + 1, 3 / 4) - 1)
 				},
 				effDesc: e => `${shorten(e)}x`
 			}, {
@@ -278,7 +278,7 @@ const NEUTRINO = NT = {
 			}, {
 				unl: _ => PHOTON.unlocked(),
 				cost: E(1e45),
-				desc: `Replace some Nanobenefits. Improve 7th Nanobenefit.`
+				desc: `Unlock new Nanobenefits. Improve 7th Nanobenefit.`
 			}, {
 				unl: _ => PHOTON.unlocked(),
 				cost: E(1e70),

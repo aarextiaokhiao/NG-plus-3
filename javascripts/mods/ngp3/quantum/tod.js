@@ -112,13 +112,14 @@ function unstableQuarks() {
 
 function getBranchSpeedText(){
 	let text = ""
-	if (getBranchUpgMult(1).gt(1)) text += "Branch Upgrade 1: " + shorten(getBranchUpgMult(1)) + "x, "
 	if (hasMasteryStudy("t431") && getMTSMult(431).gt(1)) text += "Mastery Study 431: " + shorten(getMTSMult(431)) + "x, "
 	if (E(getTreeUpgradeEffect(3)).gt(1)) text += "Tree Upgrade 3: " + shorten(getTreeUpgradeEffect(3)) + "x, "
 	if (E(getTreeUpgradeEffect(5)).gt(1)) text += "Tree Upgrade 5: " + shorten(getTreeUpgradeEffect(5)) + "x, "
 	if (hasNU(4)) text += "Neutrino Upgrade 4: " + shorten(NT.eff("upg", 4)) + "x, "
 	if (hasAch("ng3p48") && player.meta.resets) text += "'Is this really worth it?' reward: " + shorten(Math.sqrt(player.meta.resets + 1)) + "x, "
-	if (hasNanoReward("decay_exp")) text += "7th Nanobenefit: ^" + shorten(getNanorewardEff("decay_exp")) + ", "
+	if (PHOTON.unlocked()) text += "Yellow Light: ^" + shorten(lightEff(3, 1)) + ", "
+
+	if (getBranchUpgMult(1).gt(1)) text += "Branch Upgrade 1: " + shorten(getBranchUpgMult(1)) + "x, "
 	if (text == "") return "No multipliers currently"
 	return text.slice(0, text.length-2)
 }
@@ -132,12 +133,15 @@ function getGluonBranchSpeed() {
 }
 
 function getBranchSpeed() {
-	let x = getBranchUpgMult(1)
+	let x = E(1)
 	if (hasMasteryStudy("t431")) x = x.mul(getMTSMult(431))
 	x = x.mul(getTreeUpgradeEffect(3))
 	x = x.mul(getTreeUpgradeEffect(5))
 	if (hasNU(4)) x = x.mul(NT.eff("upg", 4))
 	if (hasAch("ng3p48")) x = x.mul(Math.sqrt(player.meta.resets + 1))
+	if (PHOTON.unlocked()) x = x.pow(lightEff(3, 1))
+
+	x = x.mul(getBranchUpgMult(1))
 	return x
 }
 

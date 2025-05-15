@@ -61,7 +61,10 @@ let PHOTON = {
 
 	/* Feature - Lights */
 	photon_prod() {
-		let r = pow10(player.dilation.freeGalaxies / 2e3 - 18)
+		let r = player.dilation.freeGalaxies / 1.5e3 - 27
+		if (r < 0) r /= 1.5
+		
+		r = pow10(r)
 		if (hasNB(11))               r = r.mul(NT.eff("boost", 11))
 		if (hasNanoReward("photon")) r = r.mul(tmp.qu.nf.eff.photon)
 		if (PHANTOM.amt >= 1)        r = r.mul(pow2(PHANTOM.amt))
@@ -88,12 +91,12 @@ let PHOTON = {
 			}, {
 				name: "yellow",
 				req: 1e3,
-				eff: exp => exp / 4 + 1,
-				desc: e => `Raise Emperor Dimensions by ^${shorten(e)}.`
+				eff: exp => Math.min(exp / 15 + 1, 2),
+				desc: e => `Raise all non-Decay multipliers that speed up Decay by ^${shorten(e)}.`
 			}, {
 				name: "green",
 				req: 5e3,
-				eff: exp => E_pow(tmp.gal.ts || 1, Math.min(-exp / 5, 1)),
+				eff: exp => E_pow(tmp.gal.ts || 1, Math.min(-exp / 10, 1)),
 				desc: e => `Tickspeed reduction multiplies per-ten Antimatter Dimension bonus by ${shorten(e)}x.`
 			}, {
 				name: "blue",
