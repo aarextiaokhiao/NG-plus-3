@@ -504,7 +504,7 @@ let HOW_TO = [
 			At ??? Bosons, you can reset W & Z Bosons for Higgs. The first Higgs reset unlocks Higgs Field. Further Higgs resets require more Bosons. Unlike Dimensional Boosts and Galaxies, Higgs can be increased by any amount in one run.
 			<br><br>
 
-			Higgs Field has a grid of swappable boosts. You produce Higgs Mass which strengthens all boosts from Higgs Field. Lowermost rows start as weak with low amounts of Higgs Mass, but gradually increase to be effective as the first row.
+			Higgs Field has a grid of swappable boosts. You produce Higgs Mass which strengthens all boosts from Higgs Field. Lowermost rows start as weak with low amounts of Higgs Mass, but gradually increase to be effective as the first row on gaining more.
 		`,
 	}/*, {
 		mod: _ => ngp3,
