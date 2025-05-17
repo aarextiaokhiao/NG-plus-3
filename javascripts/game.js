@@ -602,7 +602,7 @@ function gainedEternityPoints() {
 	var ret = E_pow(5, player.infinityPoints.add(getIPGain()).e / (hasAch("ng3p23") ? 307.8 : 308) - 0.7).mul(player.epmult)
 	if (mod.ngep) ret = ret.mul(10)
 	if (hasTimeStudy(61)) ret = ret.mul(tsMults[61]())
-	if (hasTimeStudy(121)) ret = ret.mul(((253 - averageEp.dividedBy(player.epmult).dividedBy(10).min(248).max(3))/5)) //x300 if tryhard, ~x60 if not
+	if (hasTimeStudy(121)) ret = ret.mul(tsMults[121]()) //x300 if tryhard, ~x60 if not
 	else if (hasTimeStudy(122)) ret = ret.mul(35)
 	else if (hasTimeStudy(123)) ret = ret.mul(Math.sqrt(1.39*player.thisEternity/10))
 	if (hasGSacUpg(51)) ret = ret.mul(galMults.u51())

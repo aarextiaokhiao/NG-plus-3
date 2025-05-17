@@ -1,6 +1,6 @@
 //VERSION: 2.31
 let ngp3_ver = 2.31
-let ngp3_build = 20250514
+let ngp3_build = 20250516
 function doNGP3Updates() {
 	if (!aarMod.ngp3_build) aarMod.ngp3_build = 0
 	if (aarMod.ngp3_build < 20221230) quSave.multPower = 0
@@ -453,7 +453,7 @@ function doQuantumUnlockStuff(){
 }
 
 function postBoostMilestone() {
-	return mod.ngp3 && (getEternitied() >= 1e9 || hasAch("ng3p71"))
+	return mod.ngp3 && getEternitied() >= 1e9
 }
 
 function quantumOverallUpdating(diff){

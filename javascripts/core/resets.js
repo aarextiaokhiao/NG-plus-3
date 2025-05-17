@@ -29,6 +29,7 @@ let RESETS = {
 		},
 		startingTickspeed() {
 			player.tickspeed = E(mod.ngep ? 500 : aarMod.newGame4MinusRespeccedVersion ? 1e4 : 1000)
+			player.tickSpeedPurchases = 0
 			player.tickSpeedCost = E(1e3)
 			player.tickspeedMultiplier = E(10)
 
@@ -39,8 +40,8 @@ let RESETS = {
 			divideTickspeedIC5()
 		},
 		doReset(order) {
-			let resetDims = order != "db" && order != "gal" || !postBoostMilestone()
-			if (resetDims) {
+			let mustReset = order != "db" && order != "gal" || !postBoostMilestone()
+			if (mustReset) {
 				// reset a bunch of resources
 				this.startingAM()
 				this.startingDims()
@@ -48,7 +49,7 @@ let RESETS = {
 				if (inNGM(4)) resetNGM4TDs()
 				if (inNGM(2)) reduceDimCosts()
 			}
-			this.startingTickspeed()
+			if (mustReset || isNaN(player.tickSpeedPurchases)) this.startingTickspeed()
 
 			// this function ends up setting tickspeed right after it is set
 			// ...it is a little odd but applies more appropriate calculations
@@ -61,7 +62,7 @@ let RESETS = {
 			skipResets()
 			Marathon = 0
 
-			if (resetDims) resetPowers()
+			if (mustReset) resetPowers()
 
 			//UPDATE DISPLAYS
 			hideDimensions()

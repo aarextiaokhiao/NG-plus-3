@@ -450,6 +450,8 @@ let tsMults = {
 	42: () => (mod.ngep ? 12 : 13) / 15,
 	61: () => mod.ngep ? 100 : 10,
 	62: () => mod.ngep ? 4 : 3,
+	121: () => (speedrunMilestones >= 4 ? 50 : (253 - averageEp.div(player.epmult).div(10).min(248).max(3)) / 5),
+	141: () => (speedrunMilestones >= 4 ? E(1e45) : E(1e45).dividedBy(E_pow(15, Math.log(player.thisInfinityTime)*Math.pow(player.thisInfinityTime, 0.125))).max(1)),
 	211: () => !inNGM(2) ? 5 : 1,
 	212() {
 		let r = player.timeShards.max(2).log2()
