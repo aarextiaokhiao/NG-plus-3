@@ -470,7 +470,7 @@ let HOW_TO = [
 		title: "Photons",
 		layer: "fundament",
 		desc: `
-			Tachyonic Galaxies generate Photons, which strengthen Lights. To unlock more colors of Lights, you must gain more Photons. However, going Fundament resets all Photons and Lights.
+			Tachyonic Galaxies generate Photons, which strengthen all 8 colors of Lights. To unlock more colors, you must gain more Photons. However, going Fundament resets all Photons and Lights.
 			<br><br>
 
 			You must choose one of three features (Photons, Replicantis, and Decay) to slow down a feature while generating stored time for next Fundament.<br>
