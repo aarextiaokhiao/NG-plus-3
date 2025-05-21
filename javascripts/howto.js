@@ -455,7 +455,7 @@ let HOW_TO = [
 		title: "Neutrinos",
 		layer: "fundament",
 		desc: `
-			There are 3 kinds of Neutrinos: Electron, Mu, and Tau. You gain Neutrinos per 1 Antimatter Galaxy you gained, but only of the kind you are generating.<br>
+			There are 3 kinds of Neutrinos: Electron, Mu, and Tau. You gain Neutrinos for each Antimatter Galaxy you gain, but in only of the kind you are generating.<br>
 			Going Quantum will switch the kind of Neutrinos for generation. Going Fundament resets all Neutrinos.
 			<br><br>
 
