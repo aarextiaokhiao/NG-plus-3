@@ -416,10 +416,7 @@ function importStudyTree(input) {
 		for (var i=0; i < laterDLStudies.length; i++) buyTimeStudy(laterDLStudies[i], 0, true)
 
 		var ec = parseInt(input.split("|")[1])
-		if (ec > 12) {
-			buyMasteryStudy("ec", ec, true)
-			changeMS = true
-		} else unlockEC(ec, true)
+		if (ec != null) unlockEC(ec, true)
 
 		if (player.masterystudies.length > oldLengthMS) {
 			updateMasteryStudyCosts()

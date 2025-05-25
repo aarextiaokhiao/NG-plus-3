@@ -147,12 +147,13 @@ function updateLastTenQuantums() {
 	for (var i = 0; i < 10; i++) {
 		if (quSave.last10[i][1].gt(0)) {
 			var qkpm = quSave.last10[i][1].dividedBy(quSave.last10[i][0] / 600)
+			var qcdata = quSave.last10[i][2]
 			var tempstring = shorten(qkpm) + " aQ/min"
 			if (qkpm<1) tempstring = shorten(qkpm*60) + " aQ/hour"
 			var msg = "The quantum " + (i == 0 ? '1 quantum' : (i + 1) + ' quantums') + " ago took " + timeDisplayShort(quSave.last10[i][0], false, 3)
-			if (quSave.last10[i][2]) {
-				if (typeof(quSave.last10[i][2]) == "number") " in Quantum Challenge " + quSave.last10[i][2]
-				else msg += " in Paired Challenge " + quSave.last10[i][2][0] + " (QC" + quSave.last10[i][2][1][0] + "+" + quSave.last10[i][2][1][1] + ")"
+			if (qcdata != undefined) {
+				if (typeof(qcdata) == "number") msg += " in Quantum Challenge " + qcdata
+				else msg += " in Paired Challenge " + qcdata[0] + " (QC" + qcdata[1][0] + "+" + qcdata[1][1] + ")"
 			}
 			msg += " and gave " + shortenDimensions(quSave.last10[i][1]) +" anti-Quarks. "+ tempstring
 			el("quantumrun"+(i+1)).textContent = msg
@@ -270,29 +271,24 @@ function doQuantum(force, auto, qc = {}) {
 	// Paired Challenges
 	let qcs = tmp.qu.chal.in
 	let intensity = qcs.length
-	let oldMoney = player.money
-	var oldTime = quSave.time
 	if (hasMasteryStudy("d9")) {
-		if (!force && intensity == 2) {
-			let qc1 = Math.min(qcs[0], qcs[0])
-			let qc2 = Math.max(qcs[1], qcs[1])
-			var pcid = qc1 * 10 + qc2
-			if (qc1 == qc2) {
-				console.log("There is an issue, you have assigned a QC twice (QC" + qc1 + ")")
-				$.notify("Somehow, you have assigned the same Quantum Challenge twice; this Paired Challenge attempt will not count.", "error")
-			} else {
-				quSave.pairedChallenges.completed = Math.max(quSave.pairedChallenges.completed, quSave.pairedChallenges.current)
-				var in68 = pcid == 68 || pcid == 86 // each pair will work
-
-				if (in68 && quSave.pairedChallenges.current == 1 && oldMoney.e >= 1.65e9) giveAchievement("Back to Challenge One")
-				if (quSave.pairedChallenges.current == 4) giveAchievement("Twice in a row")
-	
-				quSave.pairedChallenges.completions[pcid] = Math.min(quSave.pairedChallenges.completions[pcid] || 1/0, quSave.pairedChallenges.current)
-				quSave.pairedChallenges.fastest[pcid] = Math.min(quSave.pairedChallenges.fastest[pcid] || 1/0, oldTime)
-
-				if (inQC(6) && inQC(8) && !bigRipped()) quSave.pairedChallenges.pc68best = player.money.max(quSave.pairedChallenges.pc68best)
-			}
+		if (qcs[0] == qcs[1]) {
+			intensity = 1
+			$.notify("Somehow, you have assigned the same Quantum Challenge twice; this Paired Challenge attempt will not count.", "error")
 		}
+
+		var pcid = qcs[0] * 10 + qcs[1]
+		var in68 = pcid == 68
+		if (!force && intensity == 2) {
+			quSave.pairedChallenges.completed = Math.max(quSave.pairedChallenges.completed, quSave.pairedChallenges.current)
+			quSave.pairedChallenges.completions[pcid] = Math.min(quSave.pairedChallenges.completions[pcid] || 1/0, quSave.pairedChallenges.current)
+			quSave.pairedChallenges.fastest[pcid] = Math.min(quSave.pairedChallenges.fastest[pcid] || 1/0, quSave.time)
+
+			if (quSave.pairedChallenges.current == 4) giveAchievement("Twice in a row")
+			if (in68 && quSave.pairedChallenges.current == 1 && player.money.e >= 1.65e9) giveAchievement("Back to Challenge One")
+		}
+
+		if (in68 && !bigRipped()) quSave.pairedChallenges.pc68best = player.money.max(quSave.pairedChallenges.pc68best)
 		quSave.pairedChallenges.current = qc.pc || 0
 	}
 

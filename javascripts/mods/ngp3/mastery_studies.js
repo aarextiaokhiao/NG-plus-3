@@ -507,6 +507,7 @@ function canBuyMasteryStudy(type, id) {
 	if (type == 'd' && !hasBraveMilestone(3) && !MTS.unlockReqConditions[id]()) return false
 	if (type != 'd' && player.eternityChallUnlocked > 12) return false
 
+	if (type == 'ec' && player.eternityChallUnlocked > 0) return false
 	if (type == 'ec' && player.etercreq != id) {
 		if (id == 13) return player.resets >= MTS.ecReqsStored[13]
 		return Math.round(player.replicanti.chance * 100) >= MTS.ecReqsStored[14]

@@ -1,6 +1,6 @@
 //VERSION: 2.31
 let ngp3_ver = 2.31
-let ngp3_build = 20250516
+let ngp3_build = 20250524
 function doNGP3Updates() {
 	if (!aarMod.ngp3_build) aarMod.ngp3_build = 0
 	if (aarMod.ngp3_build < 20221230) quSave.multPower = 0
@@ -305,12 +305,7 @@ function doPerSecondNGP3Stuff(quick) {
 
 	//Automators
 	if (ghostified) automatorPerSec()
-	if (quSave.autoECN !== undefined) {
-		justImported = true
-		if (quSave.autoECN > 12) buyMasteryStudy("ec", quSave.autoECN,true)
-		else el("ec" + quSave.autoECN + "unl").onclick()
-		justImported = false
-	}
+	if (quSave.autoECN !== undefined) unlockEC(quSave.autoECN, true)
 	if (quSave.autoOptions.assignQK) assignAll(true) 
 
 	//Others

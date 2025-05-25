@@ -187,7 +187,7 @@ function updateInQCs() {
 	data = quSave.challenge
 	if (typeof(data) == "number") data = [data]
 	if (!data.length) data = [0]
-	tmp.qu.chal.in = data
+	tmp.qu.chal.in = data.sort()
 }
 
 function getQCIdGoal(qcs, bigRip) {
@@ -284,13 +284,13 @@ function updatePairedChallenges() {
 		if (subChalls) for (var qc of subChalls) assignPC(pc, qc)
 
 		var property = "pc" + pc
-		var sc1 = quSave.pairedChallenges.order[pc] ? quSave.pairedChallenges.order[pc][0] : 0
-		var sc2 = (sc1 ? quSave.pairedChallenges.order[pc].length > 1 : false) ? quSave.pairedChallenges.order[pc][1] : 0
+		var sc1 = subChalls ? subChalls[0] : 0
+		var sc2 = (sc1 ? subChalls.length > 1 : false) ? subChalls[1] : 0
 		el(property+"desc").textContent = "Paired Challenge "+pc+": Both Quantum Challenge " + (sc1 ? sc1 : "?") + " and " + (sc2 ? sc2 : "?") + " are applied."
 		el(property+"cost").textContent = isQCFree() ? "" : "Req: " + (sc2 ? getFullExpansion(getQCCost(pc + 8)) : "???") + " Positrons"
 		el(property+"goal").textContent = "Goal: " + (sc2 ? shortenCosts(getQCGoal(pc + 8, false)) : "???") + " antimatter"
-		el(property).textContent = pcFocus == pc ? "Cancel" : (quSave.pairedChallenges.order[pc] ? quSave.pairedChallenges.order[pc].length < 2 : true) ? "Assign" : quSave.pairedChallenges.completed >= pc ? "Completed" : quSave.pairedChallenges.completed + 1 < pc ? "Locked" : quSave.pairedChallenges.current == pc ? "Running" : "Start"
-		el(property).className = pcFocus == pc ? "onchallengebtn" : (quSave.pairedChallenges.order[pc] ? quSave.pairedChallenges.order[pc].length < 2 : true) ? "challengesbtn" : quSave.pairedChallenges.completed >= pc ? "completedchallengesbtn" : quSave.pairedChallenges.completed + 1 <pc ? "lockedchallengesbtn" : quSave.pairedChallenges.current == pc ? "onchallengebtn" : "challengesbtn"
+		el(property).textContent = pcFocus == pc ? "Cancel" : (subChalls ? subChalls.length < 2 : true) ? "Assign" : quSave.pairedChallenges.completed >= pc ? "Completed" : quSave.pairedChallenges.completed + 1 < pc ? "Locked" : quSave.pairedChallenges.current == pc ? "Running" : "Start"
+		el(property).className = pcFocus == pc ? "onchallengebtn" : (subChalls ? subChalls.length < 2 : true) ? "challengesbtn" : quSave.pairedChallenges.completed >= pc ? "completedchallengesbtn" : quSave.pairedChallenges.completed + 1 <pc ? "lockedchallengesbtn" : quSave.pairedChallenges.current == pc ? "onchallengebtn" : "challengesbtn"
 
 		var sc1t = Math.min(sc1, sc2)
 		var sc2t = Math.max(sc1, sc2)
@@ -388,16 +388,19 @@ function updatePCCompletions() {
 
 	var r = 0
 	tmp.qu.chal.pc_comp = 0 // PC Completion counters
-	for (var c1 = 2; c1 < 9; c1++) for (var c2 = 1; c2 < c1; c2++) {
-		var rankingPart = 0
-		if (quSave.pairedChallenges.completions[c2 * 10 + c1]) {
-			rankingPart = 5 - quSave.pairedChallenges.completions[c2 * 10 + c1]
-			tmp.qu.chal.pc_comp++
-		} else if (c2 * 10 + c1 == 68 && ghostified) {
-			rankingPart = 0.5
-			tmp.qu.chal.pc_comp++
+	for (var c2 = 2; c2 <= 8; c2++) {
+		for (var c1 = 1; c1 < c2; c1++) {
+			var pcid = c1 * 10 + c2
+			var rankingPart = 0
+			if (quSave.pairedChallenges.completions[pcid]) {
+				rankingPart = 5 - quSave.pairedChallenges.completions[pcid]
+				tmp.qu.chal.pc_comp++
+			} else if (pcid == 68 && ghostified) {
+				rankingPart = 0.5
+				tmp.qu.chal.pc_comp++
+			}
+			r += Math.sqrt(rankingPart)
 		}
-		r += Math.sqrt(rankingPart)
 	}
 
 	tmp.qu.chal.pc_rank = r // its global
@@ -422,50 +425,37 @@ function setupPCTable() {
 		for (let c = 0; c <= r; c++) {
 			var col = row.insertCell(c)
 			if (c < 1) col.textContent = "#" + r
-			else if (c == r) {
-				col.id = "qcC" + r
-			} else col.id = "pc" + r + c
+			else col.id = "pc" + c + r
 		}
 	}
 }
 
 function updatePCTable() {
-	for (r = 1; r < 9; r++) for (c = 1; c <= r; c++) {
+	for (var c = 1; c <= 8; c++) for (var r = 1; r <= c; r++) {
+		var pcid = r * 10 + c
+		var elm = el("pc" + pcid)
 		if (r != c) {
-			var divid = "pc" + (r * 10 + c)
-			var pcid = r * 10 + c
-			if (r > c) pcid = c * 10 + r
 			var comp = quSave.pairedChallenges.completions[pcid]
-			if (comp !== undefined) {
-				el(divid).textContent = "PC" + comp
-				el(divid).className = "pc" + comp + "completed"
-				var achTooltip = 'Fastest time: ' + (quSave.pairedChallenges.fastest[pcid] ? timeDisplayShort(quSave.pairedChallenges.fastest[pcid]) : "N/A")
-				el(divid).setAttribute('ach-tooltip', achTooltip)
+			if (comp) {
+				elm.textContent = "PC" + comp
+				elm.className = "pc" + comp + "completed"
+				elm.setAttribute('ach-tooltip', 'Fastest time: ' + (quSave.pairedChallenges.fastest[pcid] ? timeDisplayShort(quSave.pairedChallenges.fastest[pcid]) : "N/A"))
 
-				var clear38 = (divid == "pc83" || pcid == 38)
-				if (clear38) giveAchievement("Hardly marked")
+				if (pcid == 38) giveAchievement("Hardly marked")
+				if (pcid == 68) giveAchievement("Big Rip isn't enough")
 			} else if (pcid == 68 && ghostified) {
-				el(divid).textContent = "BR"
-				el(divid).className = "brCompleted"
-				el(divid).removeAttribute('ach-tooltip')
-				if (quSave.pairedChallenges.completions[86] > 0) {
-					el(divid).setAttribute('ach-tooltip', 'Fastest BR time from start of Fundament: ' + timeDisplayShort(ghSave.best) + ', fastest QC6+8 time: ' + timeDisplayShort(quSave.pairedChallenges.fastest[86] ? quSave.pairedChallenges.fastest[86] : "N/A"))
-				} else {
-					el(divid).setAttribute('ach-tooltip', 'Fastest BR time from start of Fundament: ' + timeDisplayShort(ghSave.best))
-				}
-
-				var clear68 = (divid == "pc86" || pcid == 68)
-				if (clear68) giveAchievement("Big Rip isn't enough")
+				elm.textContent = "BR"
+				elm.className = "brCompleted"
+				elm.setAttribute('ach-tooltip', 'Fastest BR time from start of Fundament: ' + timeDisplayShort(ghSave.best))
 			} else {
-				el(divid).textContent = ""
-				el(divid).className = ""
-				el(divid).removeAttribute('ach-tooltip')
+				elm.textContent = ""
+				elm.className = ""
+				elm.removeAttribute('ach-tooltip')
 			}
 		} else { // r == c
-			var divid = "qcC" + r
-			el(divid).textContent = "QC"+r
-			el(divid).className = "pc1completed"
-			el(divid).removeAttribute('ach-tooltip')
+			elm.textContent = "QC"+r
+			elm.className = "pc1completed"
+			elm.removeAttribute('ach-tooltip')
 		}
 	}
 }

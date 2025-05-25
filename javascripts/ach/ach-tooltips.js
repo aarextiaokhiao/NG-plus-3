@@ -380,7 +380,7 @@ function setR18Tooltip(){
 	let dying = el("Is this really worth it?")
 
 	//ACHIEVEMENT ROW 18
-	notrelative.setAttribute('ach-tooltip', "Get " + shorten(pow10(411))+" Dilated Time without gaining Tachyon Particles. Reward: You gain more DT based on the amount of Nanorewards.")
+	notrelative.setAttribute('ach-tooltip', "Have " + shorten(pow10(411)) + " Dilated Time without entering Dilation in this Quantum. Reward: You gain more DT based on the amount of Nanorewards.")
 	error404.setAttribute('ach-tooltip', "Get " + shorten(pow10(1.6e12))+" antimatter while having only the 1st Dimensions of each type of Dimension and at least 2 Antimatter Galaxies.")
 	ie.setAttribute('ach-tooltip', "Get " + shorten(pow10(8e6)) + " antimatter in a paired challenge with the PC6+8 combination. Reward: Automatically buy the Quark multiplier to dimensions every second if you have the 8th brave milestone.")
 	wasted.setAttribute('ach-tooltip', "Gain " + shorten(1.1e7) + " TT without respeccing studies and preserving studies. Reward: While you have less than 1 hour worth of TT production, you gain 10x as much TT.")

@@ -7,7 +7,10 @@ function onChallengeFail() {
 
 function onUnlockEChall(id, quick) {
 	player.eternityChallUnlocked = player.etercreq = id
-	if (!quick) TAB_CORE.open('chal_eter')
+	if (quantumed) quSave.autoECN = id
+
+	if (quick) $.notify(`Eternity Challenge ${id} has unlocked! Check in Eternity Challenges tab.`)
+	else TAB_CORE.open('chal_eter')
 }
 
 function ECComps(name) {
@@ -91,7 +94,12 @@ function canUnlockECFromNum(n){
 }
 
 function unlockEC(ecnum, quick) {
+	if (ecnum > 13) {
+		buyMasteryStudy("ec", ecnum, quick)
+		return
+	}
 	if (!canUnlockECFromNum(ecnum)) return
+
 	player.timestudy.theorem -= ECCosts[ecnum]
 	onUnlockEChall(ecnum, quick)
 	drawStudyTree()
