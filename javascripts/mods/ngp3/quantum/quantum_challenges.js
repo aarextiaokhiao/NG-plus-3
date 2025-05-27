@@ -361,7 +361,7 @@ PRESET_DATA.pc = {
 	},
 
 	options: [],
-	load(str, options) {
+	load(str="", options) {
 		let check = {}
 		let has = []
 		str = str.split("+")

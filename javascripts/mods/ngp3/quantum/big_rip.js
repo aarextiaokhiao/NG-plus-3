@@ -255,11 +255,7 @@ function breakEternity() {
 	beSave.break = !beSave.break
 	beSave.did = true
 	updateBreakEternity()
-	if (!player.dilation.active && isSmartPeakActivated) {
-		EPminpeakType = 'normal'
-		EPminpeak = E(0)
-		player.peakSpent = 0
-	}
+	doReset("eter")
 }
 
 function brokeEternity() {

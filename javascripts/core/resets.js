@@ -81,7 +81,7 @@ let RESETS = {
 		}
 	},
 	tsb: {
-		doReset(order) {
+		doReset() {
 			if (inNGM(4)) player.tdBoosts = hasAch("r27") && player.currentChallenge == "" ? 3 : 0
 		}
 	},
@@ -435,11 +435,11 @@ let RESETS = {
 			if (bm < 3) {
 				beSave.unlocked = false
 				beSave.break = false
-				beSave.did = false
 			}
 			if (bm < 7) beSave.upgrades = []
 			beSave.eternalMatter = E(0)
 			beSave.epMultPower = 0
+			beSave.did = false
 
 			delete brSave.phantoms
 		},

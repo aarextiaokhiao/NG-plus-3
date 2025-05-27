@@ -9,7 +9,7 @@ const NGP3_FEATURES = {
 		name: "Meta Dimensions",
 		met: _ => hasDilStudy(6),
 		req: _ => 1e24,
-		req_res: _ => player.dilation.dilatedTime,
+		req_res: _ => player.timestudy.theorem,
 		req_log: true,
 		req_disp: (amt, req) => `${shortenDimensions(amt)} / ${shortenDimensions(req)} Time Theorems`
 	},
