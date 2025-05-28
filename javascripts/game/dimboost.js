@@ -46,10 +46,12 @@ function setInitialMoney() {
 }
 
 function setInitialDimensionPower() {
-	var tickspeedPower = player.totalTickGained + (player.tickSpeedPurchases || 0)
-	player.tickspeed = E_pow(tmp.gal.ts, tickspeedPower).mul(mod.ngep ? 500 : aarMod.newGame4MinusRespeccedVersion ? 1e4 : 1e3)
+	var free = player.totalTickGained
+	var bought = player.tickSpeedPurchases
+	player.tickspeed = E_pow(tmp.gal.ts, free + bought)
+	player.tickspeed = player.tickspeed.mul(mod.ngep ? 500 : aarMod.newGame4MinusRespeccedVersion ? 1e4 : 1e3)
 
-	var ic3Power = tickspeedPower * getIC3EffFromFreeUpgs()
+	var ic3Power = free * getIC3EffFromFreeUpgs() + bought
 	if (inNGM(3) && player.currentChallenge != "postc5") ic3Power += getTickspeedBoostPower()
 	if ((inNC(15) || player.currentChallenge == "postc1" || player.currentChallenge == "postcngm3_3") && inNGM(4)) ic3Power -= (player.resets + player.tdBoosts) * 10
 

@@ -227,7 +227,7 @@ function updateColorPowers(log) {
 		if (hasNB(5)) exp += NT.eff("boost", 5, 0) / 2
 		if (exp < 1) red = Math.pow(red / 2.3, exp) * 2.3
 	}
-	tmp.qu.color_eff.r = Math.min(red, 4)
+	tmp.qu.color_eff.r = red
 
 	//Green
 	let mult = 2
