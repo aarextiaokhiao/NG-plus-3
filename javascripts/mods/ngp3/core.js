@@ -1,6 +1,6 @@
 //VERSION: 2.31
 let ngp3_ver = 2.31
-let ngp3_build = 20250527
+let ngp3_build = 20250607
 function doNGP3Updates() {
 	if (!aarMod.ngp3_build) aarMod.ngp3_build = 0
 	if (aarMod.ngp3_build < 20221230) quSave.multPower = 0
@@ -386,7 +386,7 @@ function ngP3AchieveCheck() {
 	if (PHOTON.unlocked()) giveAchievement("Progressing as a Ghost")
 	if (bigRipped() && player.eternityPoints.e >= 1e4) giveAchievement("Underchallenged")
 	if (nG(getInfinitied(), Number.MAX_VALUE)) giveAchievement("Meta-Infinity confirmed?")
-	if (todSave.r.quarks.gte(pow10(1e12)) && !brSave.times) giveAchievement("Weak Decay")	
+	if (todSave.r.quarks.gte(pow10(1e9)) && !brSave.times) giveAchievement("Weak Decay")	
 	if (getRadioactiveDecays() >= 1) giveAchievement("Radioactive Decaying to the max!")
 	if (ghSave.best <= 30) giveAchievement("Running through Big Rips")
 	if (MTS.bought >= 48) giveAchievement("The Theory of Ultimate Studies")

@@ -2605,7 +2605,7 @@ function autoBuyerTick() {
 	if (getEternitied() >= 100 && isEterBuyerOn()) autoEternityABTick()
 
 	if (player.autobuyers[11]%1 !== 0) {
-		if (player.autobuyers[11].ticks*100 >= player.autobuyers[11].interval && player.money !== undefined && player.money.gte(player.currentChallenge == "" ? Number.MAX_VALUE : player.challengeTarget)) {
+		if (player.autobuyers[11].ticks*100 >= player.autobuyers[11].interval && tmp.ri) {
 			if (player.autobuyers[11].isOn) {
 				if ((!player.autobuyers[11].requireIPPeak || IPminpeak.gt(getIPGain().div(player.thisInfinityTime/600))) && player.autobuyers[11].priority) {
 					if (player.autoCrunchMode == "amount") {

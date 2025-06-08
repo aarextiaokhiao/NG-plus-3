@@ -132,6 +132,7 @@ el("tickSpeed").onclick = function () {
 
 function getTickSpeedCostMultiplierIncrease() {
 	if (inQC(7)) return Number.MAX_VALUE
+
 	let ret = player.tickSpeedMultDecrease;
 	let exp = .9 - .02 * ECComps("eterc11")
 	if (player.currentChallenge === 'postcngmm_2') ret = Math.pow(ret, .5)
@@ -177,9 +178,8 @@ function buyMaxTickSpeed() {
 	if (player.tickSpeedCost.gt(player.money)) return false
 	let cost = player.tickSpeedCost
 	if (((!inNC(5) && player.currentChallenge != "postc5") || inNGM(3)) && !inNC(9) && !costIncreaseActive(player.tickSpeedCost)) {
-		let max = Number.POSITIVE_INFINITY
-		if (!inNC(10) && player.currentChallenge != "postc1") max = Math.ceil(Decimal.div(Number.MAX_VALUE, cost).log(10))
-		var toBuy = Math.min(Math.floor(player.money.div(cost).mul(9).add(1).log(10)), max)
+		let max = Math.ceil(Decimal.div(costIncreaseStart(), cost).log10() + 1)
+		let toBuy = Math.min(Math.floor(player.money.div(cost).mul(9).add(1).log10()), max)
 		getOrSubResource(1, pow10(toBuy).sub(1).div(9).mul(cost))
 		if (!tmp.qu.be || player.currentEternityChall == "eterc10") {
 			player.tickSpeedPurchases += toBuy
@@ -193,7 +193,8 @@ function buyMaxTickSpeed() {
 	var mult = tmp.gal.ts
 	if (inNC(2) || player.currentChallenge == "postc1") player.chall2Pow = 0
 	if (cannotUsePostInfTickSpeed()) {
-		while (player.money.gt(player.tickSpeedCost) && (player.tickSpeedCost.lt(Number.MAX_VALUE) || player.tickSpeedMultDecrease > 2 || (player.currentChallenge == "postc5" && !inNGM(3)))) {
+		let failsafe = 0
+		while (player.money.gt(player.tickSpeedCost) && failsafe < 150 && (player.tickSpeedCost.lt(Number.MAX_VALUE) || player.tickSpeedMultDecrease > 2 || (player.currentChallenge == "postc5" && !inNGM(3)))) {
 			getOrSubResource(1, player.tickSpeedCost)
 			if (!inNC(5) && player.currentChallenge != "postc5") player.tickSpeedCost = player.tickSpeedCost.mul(player.tickspeedMultiplier);
 			else multiplySameCosts(player.tickSpeedCost)
@@ -203,6 +204,7 @@ function buyMaxTickSpeed() {
 				player.tickspeed = player.tickspeed.mul(mult);
 				if (player.challenges.includes("postc3") || player.currentChallenge == "postc3" || isIC3Trapped()) player.postC3Reward = player.postC3Reward.mul(getIC3Mult())
 			}
+			failsafe++
 			player.postC8Mult = E(1)
 			if (!cannotUsePostInfTickSpeed()) buyMaxPostInfTickSpeed(mult);
 		}

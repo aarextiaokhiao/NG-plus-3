@@ -69,8 +69,8 @@ function getDimensionDescription(tier) {
 		return shortenND(player[name + 'Amount']) + ' (' + getFullExpansion(player[name + 'Bought']) + ') (+' + formatValue(player.options.notation, getDimensionRateOfChange(tier), 2, 2) + dimDescEnd;
 	}
 	if (tier == getNormalDimensions()) return getFullExpansion(inNC(11) ? getAmount(tier) : player[name + 'Bought']) + ' (' + dimBought(tier) + ')';
-	else if (player.money.l > 1e9) return shortenND(player[name + 'Amount'])
-	else if (player.money.l > 1e6) return shortenND(player[name + 'Amount']) + ' (+' + formatValue(player.options.notation, getDimensionRateOfChange(tier), 2, 2) + dimDescEnd;
+	else if (player.money.e > 1e9) return shortenND(player[name + 'Amount'])
+	else if (player.money.e > 1e6) return shortenND(player[name + 'Amount']) + ' (+' + formatValue(player.options.notation, getDimensionRateOfChange(tier), 2, 2) + dimDescEnd;
 	else return shortenND(player[name + 'Amount']) + ' (' + dimBought(tier) + ') (+' + formatValue(player.options.notation, getDimensionRateOfChange(tier), 2, 2) + dimDescEnd;
 }
 
@@ -179,8 +179,7 @@ function buyBulkDimension(tier, bulk, auto) {
 
 	if (((!inNC(5) && player.currentChallenge != "postc5") || inNGM(3)) && !inNC(9) && !costIncreaseActive(player[name + "Cost"], tier)) {
 		let mult = getDimensionCostMultiplier(tier)
-		let max = Number.POSITIVE_INFINITY
-		if (!inNC(10) && player.currentChallenge != "postc1" && !PHANTOM.boosted(tier)) max = Math.ceil(Decimal.div(Number.MAX_VALUE, cost).log(mult) + 1)
+		let max = Math.ceil(Decimal.div(costIncreaseStart(tier), cost).log(mult) + 1)
 	
 		var toBuy = Math.min(Math.min(Math.floor(resource.div(cost).mul(mult-1).add(1).log(mult)), bulk-bought), max)
 		getOrSubResource(tier, E_pow(mult, toBuy).sub(1).div(mult-1).mul(cost))
@@ -211,7 +210,7 @@ function buyBulkDimension(tier, bulk, auto) {
 		let c = player[name + "Cost"].mul(10).log10() - player.money.log10()
 		let d = b * b - 4 * a * c
 		if (d < 0) break
-		let toBuy = Math.min(Math.floor(( -b + Math.sqrt(d)) / (2 * a)) + 1, bulk - bought)
+		let toBuy = Math.min(Math.floor((-b + Math.sqrt(d)) / (2 * a)) + 1, bulk - bought)
 		if (toBuy < 1) break
 		let newCost = player[name + "Cost"].mul(E_pow(player.costMultipliers[tier - 1], toBuy - 1).mul(E_pow(mi, (toBuy - 1) * (toBuy - 2) / 2)))
 		let newMult = player.costMultipliers[tier - 1].mul(E_pow(mi, toBuy - 1))
@@ -256,6 +255,7 @@ function getDimensionCostMultiplier(tier) {
 
 function getDimensionCostMultiplierIncrease() {
 	if (inQC(7)) return Number.MAX_VALUE
+
 	let ret = player.dimensionMultDecrease;
 	if (inNGM(4) && !inNGM4Respec()) ret = Math.pow(ret, 1.25)
 	if (player.currentChallenge === 'postcngmm_2') {
@@ -268,9 +268,15 @@ function getDimensionCostMultiplierIncrease() {
 	return ret;
 }
 
+function costIncreaseStart(tier) {
+	if (player.currentChallenge === 'postcngmm_2') return 1
+	if (inNC(10) || player.currentChallenge == "postc1") return mod.ngp3 ? pow10(1e3) : pow10(1e100)
+	if (PHANTOM.boosted(tier)) return pow10(1e100)
+	return Number.MAX_VALUE
+}
+
 function costIncreaseActive(cost, tier) {
-	if (inNC(10) || player.currentChallenge == "postc1" || PHANTOM.boosted(tier)) return false
-	return cost.gte(Number.MAX_VALUE) || player.currentChallenge === 'postcngmm_2';
+	return cost.gte(costIncreaseStart(tier))
 }
 
 //Per-purchase bonuses	
@@ -278,7 +284,7 @@ function getDimensionPowerMultiplier(focusOn, debug) {
 	if (player.tickspeedBoosts !== undefined && aarMod.newGame4MinusRespeccedVersion && inNC(9)) return 10/(Math.random()*30+1);
 	if (focusOn == "phantomal") return bigRipped() ? 2 : 3.3
 
-	let ret = focusOn || inNC(9) || player.currentChallenge=="postc1" ? getMPTBase(focusOn) : tmp.mptb
+	let ret = focusOn || inNC(9) || player.currentChallenge == "postc1" ? getMPTBase(focusOn) : tmp.mptb
 	if (focusOn == "linear") return ret
 
 	let exp = 1
@@ -546,14 +552,14 @@ function multiplyIC5Costs(cost, tier) {
 		for (var i = 1; i <= 8; i++) {
 			if (player[dimTiers[i] + "Cost"].e <= cost.e) {
 				player[dimTiers[i] + "Cost"] = player[dimTiers[i] + "Cost"].mul(player.costMultipliers[i-1])
-				if (player[dimTiers[i] + "Cost"].gte(Number.MAX_VALUE)) player.costMultipliers[i-1] = player.costMultipliers[i-1].mul(10)
+				if (costIncreaseActive(player[dimTiers[i] + "Cost"], i)) player.costMultipliers[i-1] = player.costMultipliers[i-1].mul(10)
 			}
 		}
 	} else {
 		for (var i = 1; i <= 8; i++) {
 			if (player[dimTiers[i] + "Cost"].e >= cost.e) {
 				player[dimTiers[i] + "Cost"] = player[dimTiers[i] + "Cost"].mul(player.costMultipliers[i-1])
-				 if (player[dimTiers[i] + "Cost"].gte(Number.MAX_VALUE)) player.costMultipliers[i-1] = player.costMultipliers[i-1].mul(10)
+				 if (costIncreaseActive(player[dimTiers[i] + "Cost"], i)) player.costMultipliers[i-1] = player.costMultipliers[i-1].mul(10)
 			}
 		}
 	}

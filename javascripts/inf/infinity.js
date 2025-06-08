@@ -1,17 +1,7 @@
 var isEmptiness=false
 
-function canBigCrunch() {
-	return (
-		!player.currentChallenge.startsWith("post") &&
-		player.money.gte(Number.MAX_VALUE)
-	) || (
-		player.currentChallenge !== "" &&
-		player.money.gte(player.challengeTarget)
-	)
-}
-
 function bigCrunch(auto) {
-	if (!canBigCrunch()) return
+	if (!tmp.ri) return
 	if (implosionCheck) return
 
 	if (!auto && player.options.animations.bigCrunch) {
@@ -173,7 +163,7 @@ function updateAutoCrunchMode() {
 		el("togglecrunchmode").textContent = "Auto crunch mode: amount"
 		el("limittext").textContent = "Amount of IP to wait until reset:"
 	} else if (mode == "time"){
-		el("togglecrunchmode").textContent = "Auto crunch mode: Time"
+		el("togglecrunchmode").textContent = "Auto crunch mode: time"
 		el("limittext").textContent = "Seconds between crunches:"
 	} else if (mode == "relative"){
 		el("togglecrunchmode").textContent = "Auto crunch mode: X times last crunch"
