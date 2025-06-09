@@ -23,7 +23,7 @@ function getDimensionBoostPower(next, focusOn) {
 }
 
 function dimBoost(bulk = 1) {
-	if (tmp.ri) return
+	if (tmp.inf_force) return
 
 	player.resets += bulk;
 	if (mod.ngp3 && player.resets > 4) player.old = false
@@ -156,7 +156,7 @@ el("softReset").onclick = function () {
 	if (inQC(6)) return
 	if (cantReset()) return
 	var req = getShiftRequirement(0)
-	if (tmp.ri || getAmount(req.tier) < req.amount) return;
+	if (tmp.inf_force || getAmount(req.tier) < req.amount) return;
 	auto = false;
 	var pastResets = player.resets
 	if ((player.infinityUpgrades.includes("bulkBoost") || (hasAch("r28") && inNGM(3)) || player.autobuyers[9].bulkBought) && player.resets > (inNC(4) ? 1 : 3) && (!inNC(14) || !inNGM(4))) maxBuyDimBoosts(true);

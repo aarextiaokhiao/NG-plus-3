@@ -118,7 +118,7 @@ function getD8Exp(){
 
 function galacticSacrifice(auto, force, chall) {
 	if (getGSAmount().eq(0) && !force) return
-	if (tmp.ri) return
+	if (tmp.inf_force) return
 	if (player.options.gSacrificeConfirmation && !auto && !force) if (!confirm("Galactic Sacrifice will act like a Galaxy reset, but will remove all your Galaxies in exchange for Galaxy Points to buy powerful upgrades. It will take a lot of time to recover initially. Are you sure you want to do this?")) return
 	if (player.options.challConf && chall) if (!confirm("You will Galactic Sacrifice without gaining anything. You need to Galactic Sacrifice with special conditions to complete this challenge. Some Galaxy Points gain multipliers won't work in this challenge.")) return
 	if (!force) {

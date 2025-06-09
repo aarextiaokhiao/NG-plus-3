@@ -100,9 +100,9 @@ let PHOTON = {
 				desc: e => `Tickspeed reduction multiplies per-ten Antimatter Dimension bonus by ${shorten(e)}x.`
 			}, {
 				name: "blue",
-				req: 1e100,
-				eff: exp => 1 + exp / 100,
-				desc: e => `Strengthen Meta-Dimension Boosts by ${shorten((e-1)*100)}%.`
+				req: 1,
+				eff: exp => 1 + exp / 10,
+				desc: e => `Weaken Meta Dimension cost scaling by ${shorten((e-1)*100)}%.`
 			}, {
 				name: "violet",
 				req: 1e100,

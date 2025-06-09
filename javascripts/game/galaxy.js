@@ -1,5 +1,5 @@
 function galaxyReset(bulk) {
-	if (tmp.ri) return
+	if (tmp.inf_force) return
 
 	if (autoS) auto = false;
 	autoS = true;
@@ -33,7 +33,7 @@ el("secondSoftReset").onclick = function() {
 	let bool3 = player.currentChallenge != "postc5" || !inNGM(3)
 	let bool4 = player.currentChallenge != "postc7"
 	let bool5 = (player.currentEternityChall == "eterc6" || inQC(6)) && !tmp.qu.be
-	var bool = bool1 && bool2  && bool3 && bool4 && !bool5 && !tmp.ri && !cantReset()
+	var bool = bool1 && bool2  && bool3 && bool4 && !bool5 && !tmp.inf_force && !cantReset()
 	if (getAmount(inNC(4) ? 6 : 8) >= getGalaxyRequirement() && bool) {
 		if ((getEternitied() >= 7 || player.autobuyers[10].bulkBought) && !shiftDown && (!inNC(14) || !inNGM(3))) maxBuyGalaxies(true);
 		else galaxyReset(1)

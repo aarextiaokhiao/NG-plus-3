@@ -112,7 +112,7 @@ let RESETS = {
 	},
 	inf: {
 		modReq: _ => true,
-		reached: _ => tmp.ri,
+		reached: _ => tmp.inf_force,
 		got: _ => player.infinitied > 0 || eternitied(),
 
 		doReset(order) {

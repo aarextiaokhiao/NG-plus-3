@@ -13,10 +13,8 @@ function updateTemp() {
 	tmp.mod = mod
 
 	if (typeof player != "undefined" && player.money != undefined) {
-		var lim = E(player.currentChallenge != "" ? player.challengeTarget :
-			onPostBreak() ? 1/0 :
-			Number.MAX_VALUE)
-		tmp.ri = player.money.gte(lim)
+		tmp.inf_reach = player.money.gte(player.currentChallenge != "" ? player.challengeTarget : Number.MAX_VALUE)
+		tmp.inf_force = tmp.inf_reach && (player.currentChallenge != "" || !onPostBreak())
 	}
 
 	tmp.sacPow = calcTotalSacrificeBoost()

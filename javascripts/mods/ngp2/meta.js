@@ -95,7 +95,6 @@ function getMetaBoostPower() {
 	if (mod.ngp3) {
 		if (hasNanoReward("md_boost")) r = getNanorewardEff("md_boost")
 		if (hasMasteryStudy("t312")) exp = 1.045
-		exp *= lightEff(5)
 	}
 	if (hasAch("ngpp14")) r *= 1.01
 
@@ -215,8 +214,12 @@ function metaBuyOneDimension(tier) {
 
 function getMetaCost(tier, boughtTen) {
 	let cost = Decimal.mul(initCost[tier], costMults[tier].pow(boughtTen))
+
 	let scalingStart = Math.ceil(Decimal.div(getMetaCostScalingStart(), initCost[tier]).log(costMults[tier]))
-	if (boughtTen >= scalingStart) cost = cost.mul(pow10((boughtTen - scalingStart + 1) * (boughtTen-scalingStart + 2) / 2))
+	let scalingStr = 1
+	if (PHOTON.unlocked()) scalingStr /= lightEff(5, 0)
+	if (boughtTen >= scalingStart) cost = cost.mul(pow10((boughtTen - scalingStart + 1) * (boughtTen-scalingStart + 2) / 2 * scalingStr))
+
 	return cost
 }
 

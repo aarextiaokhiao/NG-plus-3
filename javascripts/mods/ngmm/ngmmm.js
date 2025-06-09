@@ -51,7 +51,7 @@ function getProductBoughtMult() {
 function isTickspeedBoostPossible() {
 	if (!inNGM(3)) return
 	if (inNC(5) || player.currentChallenge == "postcngm3_3") return
-	return !tmp.ri
+	return !tmp.inf_force
 }
 
 el("challenge15").onclick = function () {

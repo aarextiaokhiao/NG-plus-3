@@ -106,7 +106,7 @@ function getOrSubResource(tier, sub) {
 }
 	
 function canBuyDimension(tier) {
-	if (tmp.ri) return false
+	if (tmp.inf_force) return false
 	if (tier > getNormalDimensions()) return false
 	if (tier > 1 && getAmount(tier - 1) == 0 && getEternitied() < 30) return false
 

@@ -352,7 +352,7 @@ el("The first one's always free").onclick = function () {
 };
 
 el("maxall").onclick = function () {
-	if (tmp.ri) return false
+	if (tmp.inf_force) return false
 	if (player.currentChallenge !== 'challenge14' || !inOnlyNGM(2)) buyMaxTickSpeed()
 	for (var tier=1; tier<9;tier++) buyBulkDimension(tier, 1/0)
 	if (inNGM(4)) buyMaxTimeDimensions()
@@ -1618,7 +1618,7 @@ function incrementTimesUpdating(diffStat){
 }
 
 function preInfinityUpdating(diff){
-	if (tmp.ri) return
+	if (tmp.inf_force) return
 
 	let offset = inNC(7) || player.currentChallenge == "postcngm3_3" || inQC(4) ? 2 : 1
 	for (let tier = getNormalDimensions() - offset; tier > 0; --tier) {
@@ -1677,7 +1677,7 @@ function otherDimsUpdating(diff){
 function bigCrunchButtonUpdating(){
 	el("bigcrunch").style.display = 'none'
 	el("postInfinityButton").style.display = 'none'
-	if (tmp.ri) {
+	if (tmp.inf_force) {
 		el("bigcrunch").style.display = 'inline-block';
 		if ((!inNC(0) || !player.break) && player.bestInfinityTime > 600) TAB_CORE.open("")
 	} else if (player.break && player.currentChallenge == "") {
@@ -2605,7 +2605,7 @@ function autoBuyerTick() {
 	if (getEternitied() >= 100 && isEterBuyerOn()) autoEternityABTick()
 
 	if (player.autobuyers[11]%1 !== 0) {
-		if (player.autobuyers[11].ticks*100 >= player.autobuyers[11].interval && tmp.ri) {
+		if (player.autobuyers[11].ticks*100 >= player.autobuyers[11].interval && tmp.inf_force) {
 			if (player.autobuyers[11].isOn) {
 				if ((!player.autobuyers[11].requireIPPeak || IPminpeak.gt(getIPGain().div(player.thisInfinityTime/600))) && player.autobuyers[11].priority) {
 					if (player.autoCrunchMode == "amount") {

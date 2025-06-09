@@ -1,7 +1,7 @@
 var isEmptiness=false
 
 function bigCrunch(auto) {
-	if (!tmp.ri) return
+	if (!tmp.inf_reach) return
 	if (implosionCheck) return
 
 	if (!auto && player.options.animations.bigCrunch) {
