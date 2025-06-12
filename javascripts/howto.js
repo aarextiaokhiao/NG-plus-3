@@ -390,7 +390,7 @@ let HOW_TO = [
 		title: "Nanofield",
 		tab: "ant",
 		layer: "quantum",
-		desc: `Nanofield allows you to gain bonuses by getting pilon energy, produced by pilon charge. You can enable the production of pilon charge, which produces pilon energy, but also pilon anti-energy.<br>		
+		desc: `Nanofield allows you to gain bonuses by getting pilon energy, produced by pilon charge. You can enable the production of pilon charge, but also pilon anti-energy will be produced and pilons will be stalled.<br>	
 		You can get rewards from your pilon energy, with the first one requiring 50 pilon energy.<br><br>
 
 		Pilon anti-energy slows down pilon energy production until a cap of anti-energy is reached, where pilon energy production completely stops. When this happens, the only way to get more pilon energy is to get more pilon charge or go quantum.<br><br>
