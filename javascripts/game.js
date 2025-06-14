@@ -2592,7 +2592,7 @@ function dimBoostABTick(){
 	if (player.autobuyers[9].isOn && dimBoolean()) {
 		if (player.resets < 4) dimBoost(1)
 		else if (getEternitied() < 10 && !player.autobuyers[9].bulkBought) dimBoost(player.autobuyers[9].bulk)
-		else if ((Math.round(timer * 100))%(Math.round(player.autobuyers[9].bulk * 100)) == 0 && getAmount(8) >= getShiftRequirement(0).amount) maxBuyDimBoosts()
+		else if ((Math.round(timer * 100)) % (Math.round(player.autobuyers[9].bulk * 100)) == 0 && getAmount(8) >= getShiftRequirement(0).amount) maxBuyDimBoosts()
 		player.autobuyers[9].ticks = 0
 	}
 	player.autobuyers[9].ticks += 1;
@@ -2605,7 +2605,7 @@ function autoBuyerTick() {
 	if (getEternitied() >= 100 && isEterBuyerOn()) autoEternityABTick()
 
 	if (player.autobuyers[11]%1 !== 0) {
-		if (player.autobuyers[11].ticks*100 >= player.autobuyers[11].interval && tmp.inf_force) {
+		if (player.autobuyers[11].ticks*100 >= player.autobuyers[11].interval && tmp.inf_reach) {
 			if (player.autobuyers[11].isOn) {
 				if ((!player.autobuyers[11].requireIPPeak || IPminpeak.gt(getIPGain().div(player.thisInfinityTime/600))) && player.autobuyers[11].priority) {
 					if (player.autoCrunchMode == "amount") {
