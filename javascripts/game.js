@@ -2600,6 +2600,7 @@ function dimBoostABTick(){
 
 var timer = 0
 function autoBuyerTick() {
+	if (tmp.onReset) return
 	if (mod.ngp3 && speedrunMilestones>22&&quSave.autobuyer.enabled&&!bigRipped()) autoQuantumABTick()
 	
 	if (getEternitied() >= 100 && isEterBuyerOn()) autoEternityABTick()

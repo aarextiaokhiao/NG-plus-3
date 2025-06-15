@@ -31,6 +31,7 @@ function updateTemp() {
 	tmp.gal.init = initialGalaxies()
 	tmp.gal.str = getGalaxyEff(true)
 	tmp.gal.ts = getTickSpeedMultiplier()
+	tmp.onReset = false
 
 	updatePowers()
 	updateInfinityPowerEffects()
@@ -132,7 +133,7 @@ function resetPowers() {
 	mult18 = E(1)
 	tmp.sacPow = E(1)
 	tmp.gal = { str: 1 }
-	tmp.rep = { extra: 0, eff: E(1), gal_str: 1 }
+	tmp.rep = { extra: 0, eff: E(1), gal_str: getReplGalEff() }
 	tmp.mts = {}
 	tmp.qu.color_eff = { r: 1, g: 1, b: 1 }
 	tmp.qu.chal.reward = {}

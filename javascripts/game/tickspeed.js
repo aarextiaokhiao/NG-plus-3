@@ -122,6 +122,7 @@ function buyTickSpeed() {
 	player.postC8Mult = E(1)
 	if (inNC(14) && !inNGM(3)) player.tickBoughtThisInf.current++
 	player.why = player.why + 1
+
 	tmp.tickUpdate = true
 	return true
 }

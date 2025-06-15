@@ -28,7 +28,6 @@ let RESETS = {
 			}
 		},
 		startingTickspeed() {
-			player.tickspeed = getStartingTickspeed()
 			player.tickSpeedPurchases = 0
 			player.tickSpeedCost = E(1e3)
 			player.tickspeedMultiplier = E(10)
@@ -36,21 +35,27 @@ let RESETS = {
 		doReset(order) {
 			let firstReset = order == "db" || order == "gal"
 			let mustReset = !firstReset || !postBoostMilestone()
-			if (mustReset) {
-				// reset antimatter
-				if (!firstReset || !hasAch("r111")) this.startingAM()
 
+			// Reset Antimatter
+			let am = player.money
+			this.startingAM()
+			if (firstReset && hasAch("r111")) player.money = player.money.max(am)
+
+			// Reset Tickspeed
+			if (mustReset || isNaN(player.tickSpeedPurchases)) this.startingTickspeed()
+			setInitialDimensionPower()
+
+			// Reset Dimensions
+			if (mustReset) {
 				// reset a bunch of resources
 				this.startingDims()
 				player.sacrificed = E(0)
 				if (inNGM(4)) resetNGM4TDs()
 				if (inNGM(2)) reduceDimCosts()
+			} else {
+				player.money = player.money.max(am)
 			}
-			if (mustReset || isNaN(player.tickSpeedPurchases)) this.startingTickspeed()
 
-			// this function ends up setting tickspeed right after it is set
-			// ...it is a little odd but applies more appropriate calculations
-			setInitialDimensionPower()
 			player.chall3Pow = E(0.01)
 			player.matter = E(0)
 			player.chall11Pow = E(1)
@@ -59,11 +64,12 @@ let RESETS = {
 			skipResets()
 			Marathon = 0
 
+			// Takes Priority
 			if (mustReset) resetPowers()
+			tmp.onReset = true
 
 			//UPDATE DISPLAYS
 			hideDimensions()
-			tmp.tickUpdate = true
 		}
 	},
 	tdb: {
