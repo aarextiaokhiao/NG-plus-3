@@ -38,12 +38,17 @@ let RESETS = {
 			if (hasAch("r66")) player.tickspeed = player.tickspeed.mul(0.98);
 			if (hasAch("r83")) player.tickspeed = player.tickspeed.mul(E_pow(0.95,player.galaxies));
 			divideTickspeedIC5()
+
+			tmp.autoTickspeedPatch = true
 		},
 		doReset(order) {
-			let mustReset = order != "db" && order != "gal" || !postBoostMilestone()
+			let firstReset = order == "db" || order == "gal"
+			let mustReset = !firstReset || !postBoostMilestone()
 			if (mustReset) {
+				// reset antimatter
+				if (!firstReset || !hasAch("r111")) this.startingAM()
+
 				// reset a bunch of resources
-				this.startingAM()
 				this.startingDims()
 				player.sacrificed = E(0)
 				if (inNGM(4)) resetNGM4TDs()

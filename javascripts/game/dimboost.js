@@ -29,9 +29,7 @@ function dimBoost(bulk = 1) {
 	if (mod.ngp3 && player.resets > 4) player.old = false
 	if (inNC(14) && !inNGM(3)) player.tickBoughtThisInf.pastResets.push({resets: player.resets, bought: player.tickBoughtThisInf.current})
 
-	let am = player.money
 	doReset("db")
-	if (hasAch("r111")) player.money = am
 }
 
 function setInitialMoney() {
@@ -49,7 +47,6 @@ function setInitialDimensionPower() {
 	var free = player.totalTickGained
 	var bought = player.tickSpeedPurchases
 	player.tickspeed = E_pow(tmp.gal.ts, free + bought)
-	player.tickspeed = player.tickspeed.mul(mod.ngep ? 500 : aarMod.newGame4MinusRespeccedVersion ? 1e4 : 1e3)
 
 	var ic3Power = free * getIC3EffFromFreeUpgs() + bought
 	if (inNGM(3) && player.currentChallenge != "postc5") ic3Power += getTickspeedBoostPower()

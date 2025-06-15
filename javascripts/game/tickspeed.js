@@ -176,6 +176,7 @@ function buyMaxTickSpeed() {
 	if (inNC(14) && !inNGM(3)) return false
 	if (!canBuyTickSpeed()) return false
 	if (player.tickSpeedCost.gt(player.money)) return false
+
 	let cost = player.tickSpeedCost
 	if (((!inNC(5) && player.currentChallenge != "postc5") || inNGM(3)) && !inNC(9) && !costIncreaseActive(player.tickSpeedCost)) {
 		let max = Math.ceil(Decimal.div(costIncreaseStart(), cost).log10() + 1)

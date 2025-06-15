@@ -245,7 +245,7 @@ function timeDimCost(tier, bought, ngm4) {
 
 function buyTimeDimension(tier, ngm4) {
 	var dim = player["timeDimension"+tier]
-	if (getAmount(1) < 1) {
+	if (getAmount(1) < 1 && ngm4) {
 		// I should just make a message system just like the modal message system
 		el("welcome").style.display = "flex"
 		el("welcomeMessage").innerHTML = "You need to buy a first Antimatter Dimension to be able to buy Time Dimensions."

@@ -11,9 +11,7 @@ function galaxyReset(bulk) {
 		if (hasNB(1)) NT.onGalaxy(bulk)
 	}
 
-	let am = player.money
 	doReset("gal")
-	if (hasAch("r111") && am.gte(player.money)) player.money = am
 }
 
 function checkOnGalaxyReset() {
