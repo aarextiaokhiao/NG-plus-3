@@ -87,12 +87,6 @@ function manualTickspeedBoost() {
 	else tickspeedBoost(1)
 }
 
-//v3.2
-function divideTickspeedIC5() {
-	if (player.currentChallenge != "postc5" || !inNGM(3)) return
-	player.tickspeed = player.tickspeed.div(pow2(Math.pow(player.tickspeedBoosts, 1.5)))
-}
-
 //Others
 function getTickspeedBoostPower() {
 	let mult = 30

@@ -28,18 +28,10 @@ let RESETS = {
 			}
 		},
 		startingTickspeed() {
-			player.tickspeed = E(mod.ngep ? 500 : aarMod.newGame4MinusRespeccedVersion ? 1e4 : 1000)
+			player.tickspeed = getStartingTickspeed()
 			player.tickSpeedPurchases = 0
 			player.tickSpeedCost = E(1e3)
 			player.tickspeedMultiplier = E(10)
-
-			if (hasAch("r36")) player.tickspeed = player.tickspeed.mul(0.98);
-			if (hasAch("r45")) player.tickspeed = player.tickspeed.mul(0.98);
-			if (hasAch("r66")) player.tickspeed = player.tickspeed.mul(0.98);
-			if (hasAch("r83")) player.tickspeed = player.tickspeed.mul(E_pow(0.95,player.galaxies));
-			divideTickspeedIC5()
-
-			tmp.autoTickspeedPatch = true
 		},
 		doReset(order) {
 			let firstReset = order == "db" || order == "gal"

@@ -2648,8 +2648,7 @@ function autoBuyerTick() {
 		if (priority[i].ticks * 100 >= priority[i].interval || priority[i].interval == 100) {
 			if (priority[i].isOn) {
 				if (priority[i] == player.autobuyers[8]) {
-					if (tmp.autoTickspeedPatch) tmp.autoTickspeedPatch = false
-					else if (!inNC(14) || inNGM(3)) {
+					if (!inNC(14) || inNGM(3)) {
 						if (priority[i].target == 10) buyMaxTickSpeed()
 						else buyTickSpeed()
 					}

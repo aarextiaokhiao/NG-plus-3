@@ -216,6 +216,18 @@ function buyMaxTickSpeed() {
 	tmp.tickUpdate = true
 }
 
+function getStartingTickspeed() {
+	var tick = E(mod.ngep ? 500 : aarMod.newGame4MinusRespeccedVersion ? 1e4 : 1000)
+
+	if (hasAch("r36")) tick = tick.mul(0.98)
+	if (hasAch("r45")) tick = tick.mul(0.98)
+	if (hasAch("r66")) tick = tick.mul(0.98)
+	if (hasAch("r83")) tick = tick.mul(E_pow(0.95,player.galaxies))
+	if (player.currentChallenge == "postc5" && inNGM(3)) tick = tick.mul(pow2(Math.pow(player.tickspeedBoosts, 1.5)))
+
+	return tick
+}
+
 function getTickspeed() {
 	let r = player.tickspeed
 	if (tmp.qu.be && player.currentEternityChall == "eterc10") r = r.max(pow10(-1e8))

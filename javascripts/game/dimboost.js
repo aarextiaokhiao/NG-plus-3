@@ -47,6 +47,7 @@ function setInitialDimensionPower() {
 	var free = player.totalTickGained
 	var bought = player.tickSpeedPurchases
 	player.tickspeed = E_pow(tmp.gal.ts, free + bought)
+		.mul(getStartingTickspeed())
 
 	var ic3Power = free * getIC3EffFromFreeUpgs() + bought
 	if (inNGM(3) && player.currentChallenge != "postc5") ic3Power += getTickspeedBoostPower()
