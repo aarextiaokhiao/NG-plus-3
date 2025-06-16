@@ -10,7 +10,10 @@ function onUnlockEChall(id, quick) {
 	if (quantumed) quSave.autoECN = id
 
 	if (quick) $.notify(`Eternity Challenge ${id} has unlocked! Check in Eternity Challenges tab.`)
-	else TAB_CORE.open('chal_eter')
+	else {
+		TAB_CORE.open('chal_eter')
+		updateEternityChallenges()
+	}
 }
 
 function ECComps(name) {
