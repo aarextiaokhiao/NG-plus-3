@@ -65,7 +65,7 @@ function doNGP3Updates() {
 function toggleAutoTT() {
 	if (speedrunMilestones < 2) maxTheorems()
 	else player.autoEterOptions.tt = !player.autoEterOptions.tt
-	el("theoremmax").innerHTML = speedrunMilestones > 2 ? ("Auto max: "+(player.autoEterOptions.tt ? "ON" : "OFF")) : "Buy max Theorems"
+	el("theoremmax").innerHTML = speedrunMilestones > 1 ? ("Auto max: "+(player.autoEterOptions.tt ? "ON" : "OFF")) : "Buy max Theorems"
 }
 
 //v1.8
