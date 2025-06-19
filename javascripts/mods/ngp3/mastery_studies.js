@@ -634,7 +634,7 @@ function getMasteryStudyMultiplier(id, uses = ""){
 }
 
 function getMTSMult(id, uses = "") {
-	return (!uses && tmp.mts[id]) ?? MTS.timeStudyEffects[id](uses)
+	return (!uses && tmp.mts?.[id]) ?? MTS.timeStudyEffects[id](uses)
 }
 
 function updateMasteryStudyTemp() {

@@ -1,5 +1,5 @@
 function hasWZMilestone(type, i) {
-	return tmp.funda.wz && tmp.funda.wz.mil[type] > i
+	return tmp.funda.wz !== undefined && tmp.funda.wz.mil[type] > i
 }
 
 function wzEff(type, i) {
