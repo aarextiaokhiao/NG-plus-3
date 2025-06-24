@@ -27,7 +27,7 @@ let HOW_TO = [
 		<b>Hotkeys: 1, 2, 3, 4, 5, 6, 7, 8</b> for buy until 10 []th dimension, <b>M</b> for Max all`
 	}, {
 		mod: _ => true,
-		req: _ => player.firstBought,
+		req: _ => player.firstBought > 0,
 
 		title: "Achievements",
 		layer: "",
@@ -36,7 +36,7 @@ let HOW_TO = [
 		You will receive a x1.5 multiplier to all dimensions for each completed row. In addition, some achievements have their own rewards.`
 	}, {
 		mod: _ => true,
-		req: _ => player.secondBought,
+		req: _ => player.secondBought > 0,
 
 		title: "Ticks",
 		layer: "",
