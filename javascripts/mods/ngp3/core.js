@@ -328,10 +328,9 @@ function ngP3AchieveCheck() {
 	let ableToGetRid4 = ableToGetRid2 && inQC(2)
 	let ableToGetRid5 = ableToGetRid4 && player.dontWant
 	let ableToGetRid6 = ableToGetRid2 && inQC(6) && inQC(8)
-	let noTree = false
-	for (var u = 1; u < 9; u++) {
-		if (todSave.upgrades[u]) break
-		else noTree = true
+	let noTree = true
+	for (var u = 1; u <= 8; u++) {
+		if (todSave.upgrades[u] > 0) noTree = false
 	}
 	if (player.meta.antimatter.gte(Number.MAX_VALUE)) giveAchievement("I don't have enough fuel!")
 	if (player.galaxies >= 900 && !hasDilStudy(1)) giveAchievement("No more tax fraud!")
