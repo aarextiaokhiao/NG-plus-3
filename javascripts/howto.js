@@ -537,45 +537,38 @@ let HOW_TO = [
 		layer: "fundament",
 		desc: `???`
 	}, {
-		mod: _ => ngp3,
-		req: _ => ghSave?.hb.unl,
+		mod: _ => false,
+		req: _ => false,
 
 		title: "Darkness",
 		layer: "fundament",
 		desc: `You can consume Spectral Ions for Darkness, which decreases Light cap. You'll unlock a Light (Vantablack), which boosts Neutrinos.`
 	}, {
-		mod: _ => ngp3,
-		req: _ => ghSave?.hb.unl,
+		mod: _ => false,
+		req: _ => false,
 
 		title: "Anti-Pilonius",
 		tab: "ant",
 		layer: "fundament",
 		desc: `A nerf feature coming back from NG+3.1...`
 	}, {
-		mod: _ => ngp3,
-		req: _ => ghSave?.hb.unl,
+		mod: _ => false,
+		req: _ => false,
 
 		title: "Endless Mirrors",
 		layer: "fundament",
 		desc: `NG+5 stuff.`
 	}, {
-		mod: _ => ngp3,
-		req: _ => ghSave?.hb.unl,
+		mod: _ => false,
+		req: _ => false,
 
 		title: "Duplicant Expansion",
 		tab: "ant",
 		layer: "fundament",
 		desc: `If Anti-Pilonius is an ant feature, as it is to Ghost Challenges... Why not make it another ant feature?`
 	}, {
-		mod: _ => ngp3,
-		req: _ => ghSave?.hb.unl,
-
-		title: "Temporality",
-		layer: "fundament",
-		desc: `Called Break Dilation in NG+5.`
-	}, {
-		mod: _ => ngp3,
-		req: _ => ghSave?.hb.unl,
+		mod: _ => false,
+		req: _ => false,
 
 		title: "Annihilation",
 		layer: "fundament",
