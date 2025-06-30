@@ -483,15 +483,22 @@ let HOW_TO = [
 		title: "Photons",
 		layer: "fundament",
 		desc: `
-			[WILL BE REVAMPED SOON!]
+			[IMPLEMENTATION SOON!]
 			<br><br>
 
-			Tachyonic Galaxies generate Photons, which strengthen all 8 colors of Lights. To unlock more colors, you must gain more Photons. However, going Fundament resets all Photons and Lights.
+			The Photons tab splits into 2 parts.
 			<br><br>
 
-			You must choose one of three features (Photons, Replicantis, and Decay) to slow down a feature while generating stored time for next Fundament.<br>
-			After going Fundament: You can click a respective button again, which causes a chosen feature to time skip.<br>
-			This only works if you stored time before this Fundament.
+			The first part is where Photons are generated.<br>
+			Photons strengthen all 8 colors of Lights.<br>
+			To unlock more colors, you must gain more Photons.<br>
+			Fundament resets all Photons and Lights.
+			<br><br>
+			
+			The second part is where you control time to 4 features.<br>
+			Slowing down a feature produces Experience Time.<br>
+			Speeding up a feature costs Experience Time. It is toggleable with another option.<br>
+			You can also gain Experience Time on Fundament.
 		`
 	}, {
 		mod: _ => ngp3,
