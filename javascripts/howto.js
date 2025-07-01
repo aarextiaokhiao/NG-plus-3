@@ -486,7 +486,7 @@ let HOW_TO = [
 			[IMPLEMENTATION SOON!]
 			<br><br>
 
-			The Photons tab splits into 2 parts.
+			The Photons feature splits into 2 parts.
 			<br><br>
 
 			The first part is where Photons are generated.<br>
