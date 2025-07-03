@@ -7,8 +7,8 @@ let PHOTON = {
 	setup() {
 		return {
 			amt: E(0),
-			sel: [0, -1],
-			slots: [[0, 0], [0, 0], [0, 0], [0, 0], [0, 0]]
+			exp_time: 0,
+			slowdown: {}
 		}
 	},
 
@@ -22,14 +22,26 @@ let PHOTON = {
 
 	//Calculation
 	calc(dt) {
-		ghSave.photons.amt = this.photon_prod().mul(dt * PHOTON.checkSpeed(0)).add(ghSave.photons.amt)
-		if (ghSave.photons.sel[1] != -1) ghSave.photons.slots[ghSave.photons.sel[1]][0] = Math.max(ghSave.photons.slots[ghSave.photons.sel[1]][0] + dt, getTreeUpgradeEffect(9))
+		ghSave.photons.amt = this.photon_prod().mul(PHOTON.get_tick(dt, "photon")).add(ghSave.photons.amt)
+
+		ghSave.photons.exp_time += tmp.funda.photon.et_prod * dt
+		if (ghSave.photons.exp_time < 0) {
+			ghSave.photons.exp_time = 0
+			ghSave.photons.speed = false
+		}
 	},
 	temp() {
 		if (!this.unlocked()) return
 
 		let data = tmp.funda.photon = {}
 		let lights = this.light.data
+
+		data.et_prod = 0
+		data.et_bonus = Math.max(player.meta.resets - 400, 0) * 5
+		for (var i in this.affected_features) {
+			if (ghSave.photons.slowdown[i]) data.et_prod += 1/3
+			else if (ghSave.photons.speed) data.et_prod -= 100
+		}
 
 		data.unls = 0, data.eff = []
 		for (let [i, light] of Object.entries(lights)) {
@@ -39,38 +51,33 @@ let PHOTON = {
 	},
 
 	/* Feature - Time */
-	sel(i) {
-		if (ghSave.photons.slots[i][1]) {
-			if (ghSave.photons.sel[0] == 2 && bigRipped()) return
-
-			if (ghSave.photons.sel[0] == 0) ghSave.photons.amt = this.photon_prod().mul(ghSave.photons.slots[i][0]).add(ghSave.photons.amt)
-			if (ghSave.photons.sel[0] == 1) replicantiIncrease(ghSave.photons.slots[i][0] * 10)
-			if (ghSave.photons.sel[0] == 2) treeOfDecayUpdating(ghSave.photons.slots[i][0])
-
-			ghSave.photons.slots[i][1]--
-			if (ghSave.photons.slots[i][1] == 0) ghSave.photons.slots[i] = [0, 0]
-		} else ghSave.photons.sel[1] = i
+	affected_features: {
+		rep: "Replicantis",
+		nf: "Nanofield",
+		decay: "Decay",
+		photon: "Photons",
 	},
-	emits() {
-		let r = 1
-		if (hasAch("ng3p75")) r++
-		if (hasAch("ng3p78")) r++
-		if (hasAch("ng3p82")) r++
-		return r
+	get_tick(x, feature) {
+		if (PHOTON.unlocked()) {
+			if (ghSave.photons.slowdown[feature]) x /= 100
+			else if (ghSave.photons.speed) x += Math.min(x, -ghSave.photons.exp_time / tmp.funda.photon.et_prod) * 99
+		}
+		return x
+	},
+	toggle_speed(i) {
+		ghSave.photons.slowdown[i] = !ghSave.photons.slowdown[i]
 	},
 
 	/* Feature - Lights */
 	photon_prod() {
-		let r = player.dilation.freeGalaxies / 1.5e3 - 27
-		if (r < 0) r /= 1.5
-		
+		let r = (player.meta.resets - 400) / 20
+
 		r = pow10(r)
 		if (hasNB(11))               r = r.mul(NT.eff("boost", 11))
 		if (hasNanoReward("photon")) r = r.mul(tmp.qu.nf.eff.photon)
 		if (PHANTOM.amt >= 1)        r = r.mul(pow2(PHANTOM.amt))
 		return r
 	},
-	checkSpeed(x) { return PHOTON.unlocked() && ghSave.photons.sel[0] == x && ghSave.photons.sel[1] != -1 ? .1 : 1 },
 	light: {
 		data: [
 			{
@@ -86,22 +93,22 @@ let PHOTON = {
 			}, {
 				name: "orange",
 				req: 300,
-				eff: exp => exp / 2,
+				eff: exp => exp / 3,
 				desc: e => `Nanorewards scale +${shorten(e)} later.`
 			}, {
 				name: "yellow",
 				req: 1e3,
-				eff: exp => Math.min(exp / 15 + 1, 2),
+				eff: exp => Math.min(exp / 50 + 1, 2),
 				desc: e => `Raise all non-Decay multipliers that speed up Decay by ^${shorten(e)}.`
 			}, {
 				name: "green",
-				req: 5e3,
+				req: 1e4,
 				eff: exp => E_pow(tmp.gal.ts || 1, Math.min(-exp / 10, 1)),
 				desc: e => `Tickspeed reduction multiplies per-ten Antimatter Dimension bonus by ${shorten(e)}x.`
 			}, {
 				name: "blue",
-				req: 1e100,
-				eff: exp => 1 + exp / 10,
+				req: 1e6,
+				eff: exp => Math.sqrt(1 + exp / 100),
 				desc: e => `Weaken Meta Dimension cost scaling by ${shorten((e-1)*100)}%.`
 			}, {
 				name: "violet",
@@ -129,6 +136,10 @@ let PHOTON = {
 			</div>`
 		}
 		el('light_table').innerHTML = html
+
+		html = ``
+		for (var i in this.affected_features) html += `<button id='ph_time_${i}' onclick='PHOTON.toggle_speed("${i}")' class='photon slot'></button>`
+		el('ph_speeds').innerHTML = html
 	},
 	update() {
 		let unl = this.unlocked()
@@ -140,18 +151,17 @@ let PHOTON = {
 		}
 
 		let pt = tmp.funda.photon, ps = ghSave.photons
+		el("ph_time").textContent = shortenMoney(ps.exp_time) + "s"
+		el("ph_speed").textContent = "Speedramp: " + (ps.speed ? "ON" : "OFF")
+		el("ph_gain").textContent = `(${(pt.et_prod < 0 ? "-" : "+") + shortenMoney(Math.abs(pt.et_prod))}/s, next fundament: +${shortenMoney(pt.et_bonus)}s)`
+		for (var [i, name] of Object.entries(this.affected_features)) {
+			el("ph_time_" + i).innerHTML = `<b>${name}</b><br>
+			${ps.slowdown[i] ? "STALLING<br>(0.01x speed)" : ps.speed ? "PASSING<br>(100x speed)" : "PASSING<br>(1x speed)"}`
+		}
+
 		let lights = this.light.data
 		el("ph_amt").textContent = shortenMoney(ghSave.photons.amt)
 		el("ph_prod").textContent = `(+${shorten(this.photon_prod())}/s)`
-
-		for (var i = 0; i < 3; i++) el("ph_fea_" + i).className = "photon " + (ps.sel[0] == i ? "choosed" : "")
-		for (var i = 0; i < 5; i++) {
-			el("ph_slot_" + i).innerHTML = ps.slots[i][0] ? (
-				(ps.slots[i][1] ? `<b>Emit</b> (${ps.slots[i][1] === true ? 1 : ps.slots[i][1]})<br>+` : "Energizing<br>") +
-				`${shorten(ps.slots[i][0])}s`
-			) : `Energize`
-			el("ph_slot_" + i).className = "photon slot " + (ps.sel[1] == i ? "choosed" : "")
-		}
 
 		for (var [i, light] of Object.entries(lights)) {
 			el("ph_light_" + i).className = `light ${light.name} ${pt.unls > i ? "" : "blank"}`

@@ -142,6 +142,7 @@ function resetPowers() {
 	setupNanoRewardTemp()
 
 	tmp.funda = {}
+	tmp.progress.reached = 0
 	updateInQCs()
 	updateTemp()
 }

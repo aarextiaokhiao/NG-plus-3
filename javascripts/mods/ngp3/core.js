@@ -1,6 +1,6 @@
 //VERSION: 2.31
 let ngp3_ver = 2.31
-let ngp3_build = 20250608
+let ngp3_build = 20250702
 function doNGP3Updates() {
 	if (!aarMod.ngp3_build) aarMod.ngp3_build = 0
 	if (aarMod.ngp3_build < 20221230) quSave.multPower = 0
@@ -35,21 +35,22 @@ function doNGP3Updates() {
 		if (aarMod.ngp3_build < 20240322 && E(ghSave.ghostParticles).gte(1e20)) {
 			alert("Due to massive balancing changes, you are sent back to e20 Spectral Particles!")
 
+			resetPowers()
 			resetGHPandNeutrinos()
 			ghSave.neutrinos.upgrades = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
 			ghSave.neutrinos.boosts = 9
 			beSave.upgrades = [1, 2, 3, 4, 5, 6]
 			ghSave.ghostParticles = E(1e20)
 		}
-		if (aarMod.ngp3_build < 20240325) {
+		if (aarMod.ngp3_build < 20250702) {
 			delete ghSave.wzb
 			delete ghSave.bl
 			delete ghSave.lab?.hf
 
 			ghSave.photons = PHOTON.setup()
 			ghSave.hb = HIGGS.setupSave()
+			ghSave.lab = blSave = WZ_FIELD.setup()
 		}
-		if (aarMod.ngp3_build < 20240331) ghSave.lab = blSave = WZ_FIELD.setup()
 
 		if (!ghSave.reached && !ghSave.times) {
 			delete player.ghostify
@@ -457,8 +458,8 @@ function quantumOverallUpdating(diff){
 	if (hasMasteryStudy("d7")) quSave.electrons.amount = getPositronGainFinalMult() * quSave.electrons.sacGals
 	if (hasMasteryStudy("d10")) replicantOverallUpdating(diff)
 	if (hasMasteryStudy("d11")) emperorDimUpdating(diff)
-	if (NF.unl()) nanofieldUpdating(diff)
-	if (hasDecay()) treeOfDecayUpdating(diff * PHOTON.checkSpeed(2))
+	if (NF.unl()) nanofieldUpdating(PHOTON.get_tick(diff, "nf"))
+	if (hasDecay()) treeOfDecayUpdating(PHOTON.get_tick(diff, "decay"))
 	if (bigRipped()) {
 		brSave.totalAntimatter = brSave.totalAntimatter.max(player.money)
 		brSave.bestThisRun = brSave.bestThisRun.max(player.money)

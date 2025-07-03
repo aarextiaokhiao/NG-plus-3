@@ -2174,7 +2174,7 @@ function gameLoop(diff, quick) {
 		gainDilationGalaxies()
 	}
 
-	replicantiIncrease(diff * 10 * PHOTON.checkSpeed(1))
+	replicantiIncrease(PHOTON.get_tick(diff, "rep"))
 	passiveIPperMUpdating(diff)
 	passiveIPupdating(diff)
 	passiveInfinitiesUpdating(diff)

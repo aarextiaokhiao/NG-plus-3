@@ -98,6 +98,8 @@ function ghostifyReset(force, gain) {
 		for (let i=ghSave.last10.length-1; i>0; i--) ghSave.last10[i] = ghSave.last10[i-1]
 		ghSave.last10[0] = [ghSave.time, gain]
 		ghSave.best = Math.min(ghSave.best, ghSave.time)
+
+		ghSave.photons.exp_time += tmp.funda.photon.et_bonus
 	}
 
 	//Brave Milestones & Achievements
@@ -280,6 +282,5 @@ function resetGHPandNeutrinos() {
 	ghSave.neutrinos.tau = E(0)
 	ghSave.neutrinos.multPower = 1
 
-	resetPowers()
 	doReset("funda")
 }
