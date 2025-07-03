@@ -1,6 +1,6 @@
 //VERSION: 2.31
 let ngp3_ver = 2.31
-let ngp3_build = 20250702
+let ngp3_build = 20250703
 function doNGP3Updates() {
 	if (!aarMod.ngp3_build) aarMod.ngp3_build = 0
 	if (aarMod.ngp3_build < 20221230) quSave.multPower = 0
@@ -31,17 +31,6 @@ function doNGP3Updates() {
 			if (ghSave.milestones) ghSave.low = BM_REQ[ghSave.milestones-1]
 			delete ghSave.milestones
 		}
-
-		if (aarMod.ngp3_build < 20240322 && E(ghSave.ghostParticles).gte(1e20)) {
-			alert("Due to massive balancing changes, you are sent back to e20 Spectral Particles!")
-
-			resetPowers()
-			resetGHPandNeutrinos()
-			ghSave.neutrinos.upgrades = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
-			ghSave.neutrinos.boosts = 9
-			beSave.upgrades = [1, 2, 3, 4, 5, 6]
-			ghSave.ghostParticles = E(1e20)
-		}
 		if (aarMod.ngp3_build < 20250702) {
 			delete ghSave.wzb
 			delete ghSave.bl
@@ -50,6 +39,20 @@ function doNGP3Updates() {
 			ghSave.photons = PHOTON.setup()
 			ghSave.hb = HIGGS.setupSave()
 			ghSave.lab = blSave = WZ_FIELD.setup()
+		}
+		if (aarMod.ngp3_build < 20250703 && (E(ghSave.ghostParticles).gte(1e20) || ghSave.photons.unl)) {
+			alert("Due to massive balancing changes, you are sent back to e20 Spectral Particles!")
+
+			player.dilation.best = E(0)
+			beSave.upgrades = [1, 2, 3, 4, 5, 6]
+
+			resetPowers()
+			resetGHPandNeutrinos()
+
+			ghSave.neutrinos.upgrades = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+			ghSave.neutrinos.boosts = 9
+			ghSave.ghostParticles = E(1e20)
+			ghSave.automatorGhosts.power = 0
 		}
 
 		if (!ghSave.reached && !ghSave.times) {

@@ -164,10 +164,10 @@ const NEUTRINO = NT = {
 				effDesc: e => `Outside of Big Rip, TS232 regains <b>${shorten(e*100)}%</b> of power.`,
 			}, {
 				cost: E(1e27),
-				eff: nt => Math.max((nt - 90) / 30, 1) ** 5,
+				eff: nt => Math.max((nt - 90) / 30, 1) ** 2,
 				effDesc: e => `Gain <b>${shorten(e)}x</b> more Photons.`,
 			}, {
-				cost: E(1e50),
+				cost: E(1e300),
 				eff: nt => Math.min(quSave.time / 1e3, nt / 100) + 1,
 				effDesc: e => `Outside of Big Rip, Quantum time scales Replicanti Slowdown by <b>^${shorten(e)}</b>.`
 			}

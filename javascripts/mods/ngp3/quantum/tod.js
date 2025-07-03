@@ -47,10 +47,10 @@ function updateTreeOfDecayTab(){
 	//Upgrades
 	for (var u = 1; u <= 3; u++) updateBranchUpgrade(u)
 
-	document.getElementById("decay_radio").style.display = ghostified ? "" : "none"
+	el("decay_radio").style.display = ghostified ? "" : "none"
 	if (ghostified) {
-		document.getElementById("decay_radio_req").innerHTML = "(requires "+shorten(pow10(Math.pow(2, 50))) + " " + getUQName("r") + " preons)"
-		document.getElementById("decay_radio_lvl").textContent = getFullExpansion(getRadioactiveDecays())
+		el("decay_radio_req").innerHTML = "(requires "+shorten(pow10(Math.pow(2, 40))) + " " + getUQName("r") + " preons)"
+		el("decay_radio_lvl").textContent = getFullExpansion(getRadioactiveDecays())
 	}
 
 	//Tree Upgrades
@@ -171,10 +171,10 @@ function getTreeUpgradeCost(upg, add=0) {
 	if (upg == 6) return E_pow(6, lvl).mul(1e21)
 	if (upg == 7) return pow2(lvl * 4).mul(4e22)
 	if (upg == 8) return pow2(lvl).mul(3e23)
-	if (upg == 9) return pow10(lvl + 35)
-	if (upg == 10) return pow10(lvl + 40)
-	if (upg == 11) return pow10(lvl + 50)
-	if (upg == 12) return pow10(lvl * 10 + 60)
+	if (upg == 9) return pow10(lvl + 60)
+	if (upg == 10) return pow10(lvl + 80)
+	if (upg == 11) return pow10(lvl + 100)
+	if (upg == 12) return pow10(lvl * 10 + 120)
 	return E(1/0)
 }
 
@@ -197,7 +197,7 @@ function getTreeUpgradeLevel(upg) {
 function getTreeUpgradeStrength(upg) {
 	let min = 1/0
 	if (upg == 12) return 1
-	if (upg == 1)  min =  4
+	if (upg == 1)  min =  3
 	if (upg == 2)  min =  6
 	if (upg == 6)  min =  4
 	return Math.min(tmp.qu.tree_str, min)
@@ -217,7 +217,7 @@ function getTreeUpgradeEffect(upg) {
 	if (upg == 6) return pow10(lvl / 2)
 	if (upg == 7) return lvl ? pow2(Math.sqrt(tmp.rep.eff.max(1).log10()) / 20 * Math.log10(lvl + 9)) : E(1)
 	if (upg == 8) return Math.log10(player.meta.bestAntimatter.add(10).log10()) * Math.sqrt(lvl)
-	if (upg == 9) return lvl * 30
+	if (upg == 9) return 0
 	if (upg == 10) return lvl * 1e4
 	if (upg == 11) return lvl / 150 + 1
 	if (upg == 12) return lvl / 3
@@ -397,7 +397,7 @@ function maxBranchUpg(branch, weak) {
 
 function radioactiveDecay() {
 	let data = todSave.r
-	if (!data.quarks.gte(pow10(Math.pow(2, 50)))) return
+	if (!data.quarks.gte(pow10(Math.pow(2, 40)))) return
 	data.quarks = E(0)
 	data.decays = data.decays === undefined ? 1 : data.decays + 1
 }

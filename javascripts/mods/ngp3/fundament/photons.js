@@ -70,7 +70,7 @@ let PHOTON = {
 
 	/* Feature - Lights */
 	photon_prod() {
-		let r = (player.meta.resets - 400) / 20
+		let r = (player.meta.resets - 400) / 30
 
 		r = pow10(r)
 		if (hasNB(11))               r = r.mul(NT.eff("boost", 11))
@@ -88,7 +88,7 @@ let PHOTON = {
 			}, {
 				name: "red",
 				req: 50,
-				eff: exp => Math.cbrt(1 + exp / 150),
+				eff: exp => Math.log2(exp + 1) / 200 + 1,
 				desc: e => `Gain ${shorten((e-1)*100)}% more Neutrinos per Big Rip galaxy.`
 			}, {
 				name: "orange",
@@ -109,7 +109,7 @@ let PHOTON = {
 				name: "blue",
 				req: 1e6,
 				eff: exp => Math.sqrt(1 + exp / 100),
-				desc: e => `Weaken Meta Dimension cost scaling by ${shorten((e-1)*100)}%.`
+				desc: e => `Meta Dimension cost scales ${shorten((e-1)*100)}% weaker.`
 			}, {
 				name: "violet",
 				req: 1e100,

@@ -90,15 +90,9 @@ var automators = {
 		(auto-forces Big Rip)`,
 		req: 1e4,
 		pow: 1,
-	},
-	19: {
-		title: "Photons",
-		html: `Generates Emissions: <input id="autoAnt19t" onchange="changeAutoGhost('19t')"/>s`,
-		req: 1e4,
-		pow: 1,
-	},
+	}
 }
-const automatorOrder = [1,5,6,7,8,9,10,11,13,14,15,18,2,16,12,17,19]
+const automatorOrder = [1,5,6,7,8,9,10,11,13,14,15,18,2,16,12,17]
 
 function setupAutomaticGhostsData() {
 	var data = {power: 0, ghosts: 3}
@@ -108,7 +102,6 @@ function setupAutomaticGhostsData() {
 	data[2].b = 3,   data[2].t = 5
 	data[13].o = 5,  data[13].u = 5,  data[13].t = 3
 	data[17].t = 5
-	data[19].t = 5
 	return data
 }
 
@@ -135,7 +128,6 @@ function updateAutoGhosts(load) {
 		el("autoAnt2b").value = data[2].b
 		el("autoAnt2t").value = data[2].t
 		el("autoAnt17t").value = data[17].t
-		el("autoAnt19t").value = data[19].t
 	}
 
 	isAutoGhostsSafe = data.power >= powerConsumed
@@ -230,14 +222,6 @@ function automatorTick(diff) {
 
 	//Ghostify Layer
 	if (isAutoGhostActive(15) && ghSave.time >= ghSave.automatorGhosts[15].a * 10) ghostify(true)
-	if (isAutoGhostActive(19)) {
-		for (var [i, s] of Object.entries(ghSave.photons.slots)) {
-			if (!s[1] && s[0] < ghSave.automatorGhosts[19].t) {
-				ghSave.photons.sel[1] = parseInt(i)
-				break
-			}
-		}
-	}
 
 	//Quantum Layer
 	let inRip = bigRipped(), paradigmalOn = isAutoGhostActive(17) && brSave.times > ghSave.automatorGhosts[17].t
@@ -256,7 +240,7 @@ function automatorTick(diff) {
 	}
 	if (NF.unl()) {
 		if (isAutoGhostActive(1) && quSave.usedQuarks.r.gt(0)) unstableQuarks("r")
-		if (isAutoGhostActive(12) && getUnstableGain("r").max(todSave.r.quarks).gte(Decimal.pow(10, Math.pow(2, 50)))) {
+		if (isAutoGhostActive(12) && getUnstableGain("r").max(todSave.r.quarks).gte(Decimal.pow(10, Math.pow(2, 40)))) {
 			unstableQuarks("r")
 			radioactiveDecay("r")
 		}
