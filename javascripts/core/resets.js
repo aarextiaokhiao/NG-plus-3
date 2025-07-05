@@ -389,7 +389,6 @@ let RESETS = {
 		},
 		resetPositrons(bm) {
 			if (bm >= 3) return
-			quSave.electrons.mult = 2
 			quSave.electrons.rebuyables = [0, 0, 0, 0]
 		},
 		resetQCs(bm) {

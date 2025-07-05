@@ -44,6 +44,7 @@ function doNGP3Updates() {
 			alert("Due to massive balancing changes, you are sent back to e20 Spectral Particles!")
 
 			player.dilation.best = E(0)
+			quSave.electrons.rebuyables = [0, 0, 0, 0]
 			beSave.upgrades = [1, 2, 3, 4, 5, 6]
 
 			resetPowers()
