@@ -483,9 +483,6 @@ let HOW_TO = [
 		title: "Photons",
 		layer: "fundament",
 		desc: `
-			[IMPLEMENTATION SOON!]
-			<br><br>
-
 			The Photons feature splits into 2 parts.
 			<br><br>
 
