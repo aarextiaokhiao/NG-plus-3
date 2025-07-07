@@ -138,7 +138,6 @@ function fillAll() {
 	var oldLength = player.timestudy.studies.length
 	for (var t = 0; t < all.length; t++) buyTimeStudy(all[t], 0, true)
 	if (player.timestudy.studies.length > oldLength) {
-		updateTheoremButtons()
 		updateTimeStudyButtons()
 		drawStudyTree()
 		if (player.timestudy.studies.length > 56) $.notify("All Studies in the Time Study tab are now filled.")

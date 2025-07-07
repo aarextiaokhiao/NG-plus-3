@@ -195,7 +195,7 @@ let PRESET_DIAL = {
 		el("preset_dial_info").innerHTML = `${shiftDown ? 'Save' : 'Load'} a dial preset (${PRESET_DATA[PRESET_DIAL.dial].name})`
 		for (var i = 0; i < 3; i++) {
 			let dial = this.data.dial[i]
-			let has = dial !== undefined
+			let has = dial !== undefined && dial !== null
 			el("preset_dial_" + i).className = has ? "timetheorembtn" : "storebtn"
 			el("preset_dial_" + i).textContent = has ? dial.title : "Empty"
 		}
@@ -253,7 +253,7 @@ let PRESET_BULK = {
 		}
 		if (!PRESET.loc.global) {
 			value = `-- MAIN --\n` + value + `\n-- DIAL --\n`
-			for (let main of data.dial) value += `"${main.title||''}" / "${main.str}"\n`
+			for (let main of data.dial) if (main != null) value += `"${main.title||''}" / "${main.str}"\n`
 		}
 		return value
 	},

@@ -86,11 +86,14 @@ function updateTheoremButtons() {
 		el("theoremam").innerHTML = "Buy Time Theorems <br>Cost: " + shortenCosts(player.timestudy.amcost)
 		el("theoremmax").innerHTML = (speedrunMilestones > 2 && player.masterystudies) ? ("Auto max: "+(player.autoEterOptions.tt ? "ON" : "OFF")) : "Buy max Theorems"
 	}
+
 	var tt = player.timestudy.theorem
+
 	var html = "<span style='display:inline' class=\"TheoremAmount\">" + (tt >= 1e5 ? shortenMoney(tt) : getFullExpansion(Math.floor(tt))) + "</span> "
 	if (tt >= 1e100) html += " Time Theorems" + (player.timestudy.theorem == 1e200 ? " (cap)" : "")
 	else if (tt == 1) html = "You have " + html + " Time Theorem."
 	else html = "You have " + html + " Time Theorems."
+
 	el("timetheorems").innerHTML = html
 }
 

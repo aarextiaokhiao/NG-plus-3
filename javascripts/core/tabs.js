@@ -50,7 +50,7 @@ let TABS = {
 	rep: { name: "Replicanti", update: _ => replicantiDisplay() },
 
 	eter: { name: "Eternity", class: "eternitybtn", stab: [ "ts", "ts_respec", "ts_master", "upg_eter", "dil", "bh", "mil_eter" ], unl: _ => meetEternityTabRequirement(), update() {
-		if (el("TTbuttons").style.display !== "none") updateTheoremButtons()
+		if (el("TTbuttons").style.display == "block") updateTheoremButtons()
 	} },
 	ts: { name: "Time Studies", unl: _ => !mod.rs, update: _ => mainTimeStudyDisplay() },
 	ts_respec: { name: "Time Studies", unl: _ => mod.rs, update: _ => updateERSTTDesc() },

@@ -19,7 +19,7 @@ const NGP3_FEATURES = {
 
 		met: _ => MTS.unl(),
 		req: _ => 1e100,
-		req_res: _ => player.timestudy.theorem,
+		req_res: _ => player.dilation.dilatedTime,
 		req_log: true,
 		req_disp: (amt, req) => `${shorten(amt)} / ${shorten(req)} dilated time`
 	},
