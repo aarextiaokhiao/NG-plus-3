@@ -99,7 +99,7 @@ function ghostifyReset(force, gain) {
 		ghSave.last10[0] = [ghSave.time, gain]
 		ghSave.best = Math.min(ghSave.best, ghSave.time)
 
-		ghSave.photons.exp_time += tmp.funda.photon.et_bonus
+		if (PHOTON.unlocked()) ghSave.photons.exp_time += tmp.funda.photon.et_bonus
 	}
 
 	//Brave Milestones & Achievements
