@@ -484,6 +484,7 @@ newsArray = [//always true
 ["There is no April Fools 2022 event for my incremental games. :)", "mod.ngp3", "am286"],
 ["Fly on. Altar awaits your adventure- oh wait. Is Spectraglow coming to get me? Whatever...", "mod.ngp3", "am288"],
 ["Number hell is my enemy ~ Aarex, Lightning Incrementalist", "mod.ngp3", "am289"],
+["Is NG+3 not the most influential mod of the pre-reality era? of course the great Pelle would make a NG+3 reference!", "mod.ngp3", "am290"],
 
 ["Softcaps are little compared to others. You can rebalance as much.", true, "am6"],
 ["Co-developer of Incremental Mass: Rewritten here...", "mod.ngp3", "am142"],
