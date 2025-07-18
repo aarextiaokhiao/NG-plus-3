@@ -492,7 +492,7 @@ let HOW_TO = [
 			Fundament resets all Photons and Lights.
 			<br><br>
 			
-			The passive part is where you control time to 4 features.<br>
+			The mechanical part is where you control time to 4 features.<br>
 			Slowing down a feature produces Experience Time.<br>
 			Speeding up a feature costs Experience Time. It is toggleable with another option.<br>
 			You can also gain Experience Time on Fundament, based on various factors.
