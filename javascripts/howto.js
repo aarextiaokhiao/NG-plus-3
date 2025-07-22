@@ -357,7 +357,7 @@ let HOW_TO = [
 		title: "Paired Challenges",
 		layer: "quantum",
 		desc: `Paired Challenges consist of two Quantum Challenges whose their conditions are applied at once.<br>
-		You can assign each of the four paired challenges to any pair of Quantum Challenges, though the same challenge can't be used twice.<br>
+		You can assign 2 Quantum Challenges to any pair of Quantum Challenges, though the same challenge can't be used twice.<br>
 		You can respec the assignments at any time, though you will lose the Paired Challenges you already completed.
 		<br><br>
 		
