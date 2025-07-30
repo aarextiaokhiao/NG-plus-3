@@ -517,7 +517,7 @@ let HOW_TO = [
 			<br><br>
 
 			Each type of hypercharges provides a set of milestones that are independent to other type.<br>
-			Milestones provide with a variety of effects. I recommend joining <a href="http://discord.gg/KsjcgskgTj" target="_newtab">the NG+3 Discord server</a> for sharing presets to the community.
+			Milestones provide with a variety of effects. I recommend joining <a href="http://discord.gg/KsjcgskgTj" target="_newtab">the NG+3 Discord server</a> for sharing presets.
 		`
 	}, {
 		mod: _ => ngp3,
