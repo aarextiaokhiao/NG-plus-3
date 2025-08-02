@@ -409,7 +409,7 @@ let HOW_TO = [
 			let msg = `You can turn one color of Colored Quarks into Free Preons, which gradually decay exponentially while generating Preonic Spin. Preonic Spins can be spent on a big set of upgrades.`
 
 			if (ghSave?.photons?.unl || SPOILERS) msg += `<b>Radioactive Decays</b><br>
-				When you have enough Free Preons, you will be able to sacrifice some Branch Upgrades and Free Preons in order to provide some boosts. However, each Decay nerfs Decay severally except the upgrades on the bottom!`
+				When you have enough Free Preons, you will be able to sacrifice some Branch Upgrades and Free Preons in order to provide some boosts. However, each Decay greatly nerfs Decay except the upgrades on the bottom!`
 			else msg += `<b>Unlock Photons to unlock a subfeature.</b>`
 
 			return msg
