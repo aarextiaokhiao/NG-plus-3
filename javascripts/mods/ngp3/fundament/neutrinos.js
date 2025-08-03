@@ -153,7 +153,7 @@ const NEUTRINO = NT = {
 					let r = Math.pow(nt / 30 + 1, exp)
 					return Math.min(r, 3)
 				},
-				effDesc: e => `Raise Big Rip Upgrade 1 by <b>^${shorten(e)}</b>.`,
+				effDesc: e => `Raise Big Rip Upgrade 1 effect by <b>^${shorten(e)}</b>.`,
 			}, {
 				cost: E(2e15),
 				eff: nt => pow10(Math.pow(nt / 40, 1.5)).max(nt),
