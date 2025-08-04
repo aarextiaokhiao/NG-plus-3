@@ -13,7 +13,7 @@ let PHOTON = {
 	},
 
 	//Unlock
-	req: _ => bigRipped() && player.money.gte(pow10(18e8)),
+	req: _ => bigRipped() && player.money.gte(pow10(19e8)),
 	unlocked: _ => ghSave?.photons.unl,
 	unlock() {
 		ghSave.photons.unl = true
@@ -82,27 +82,27 @@ let PHOTON = {
 		data: [
 			{
 				name: "infrared",
-				req: 1,
+				req: 10,
 				eff: exp => Math.min(Math.min(exp, exp ** 0.2) / 5, 1.5),
 				desc: e => `Raise Infinity Power effect by +^${shorten(e)}.`
 			}, {
 				name: "red",
-				req: 50,
+				req: 500,
 				eff: exp => Math.log2(exp + 1) / 200 + 1,
 				desc: e => `Gain ${shorten((e-1)*100)}% more Neutrinos per Big Rip galaxy.`
 			}, {
 				name: "orange",
-				req: 300,
+				req: 3e3,
 				eff: exp => exp / 3,
 				desc: e => `Nanorewards scale +${shorten(e)} later.`
 			}, {
 				name: "yellow",
-				req: 1e3,
+				req: 1e4,
 				eff: exp => Math.min(exp / 50 + 1, 2),
 				desc: e => `Raise all non-Decay multipliers that speed up Decay by ^${shorten(e)}.`
 			}, {
 				name: "green",
-				req: 1e4,
+				req: 1e5,
 				eff: exp => E_pow(tmp.gal.ts || 1, Math.min(-exp / 10, 1)),
 				desc: e => `Tickspeed reduction multiplies per-ten Antimatter Dimension bonus by ${shorten(e)}x.`
 			}, {
@@ -146,7 +146,7 @@ let PHOTON = {
 		el("gphUnl").style.display = unl ? "none" : ""
 		el("gphDiv").style.display = unl ? "" : "none"
 		if (!unl) {
-			el("gphUnl").textContent = "Get "+shortenCosts(pow10(18e8))+" antimatter in Big Rip to unlock Photons."
+			el("gphUnl").textContent = "Get "+shortenCosts(pow10(19e8))+" antimatter in Big Rip to unlock Photons."
 			return
 		}
 

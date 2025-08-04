@@ -1,6 +1,6 @@
 //VERSION: 2.31
 let ngp3_ver = 2.31
-let ngp3_build = 20250703
+let ngp3_build = 20250803
 function doNGP3Updates() {
 	if (!aarMod.ngp3_build) aarMod.ngp3_build = 0
 	if (aarMod.ngp3_build < 20221230) quSave.multPower = 0
@@ -213,12 +213,11 @@ function autoECToggle() {
 
 //v2.1
 function startEC10() {
-	if (canUnlockEC(10, 550, 181)) {
-		justImported = true
-		el("ec10unl").onclick()
-		justImported = false
+	if (canUnlockECFromNum(10)) {
+		player.timestudy.theorem -= ECCosts[10]
+		onUnlockEChall(10, true, true)
 	}
-	startEternityChallenge(10)
+	if (player.eternityChallUnlocked == 10) startEternityChallenge(10)
 }
 
 //v2.2
@@ -309,7 +308,7 @@ function doPerSecondNGP3Stuff(quick) {
 
 	//Automators
 	if (ghostified) automatorPerSec()
-	if (quSave.autoECN !== undefined) unlockEC(quSave.autoECN, true)
+	if (quSave.autoEC && quSave.autoECN) unlockEC(quSave.autoECN, true)
 	if (quSave.autoOptions.assignQK) assignAll(true) 
 
 	//Others

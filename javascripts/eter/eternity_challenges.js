@@ -5,12 +5,13 @@ function onChallengeFail() {
 	if (failureCount > 9) giveAchievement("You're a failure")
 }
 
-function onUnlockEChall(id, quick) {
+function onUnlockEChall(id, quick, no_notif) {
 	player.eternityChallUnlocked = player.etercreq = id
 	if (quantumed) quSave.autoECN = id
 
-	if (quick) $.notify(`Eternity Challenge ${id} has unlocked! Check in Eternity Challenges tab.`)
-	else {
+	if (quick) {
+		if (!no_notif) $.notify(`Eternity Challenge ${id} has unlocked! Check in Eternity Challenges tab.`)
+	} else {
 		TAB_CORE.open('chal_eter')
 		updateEternityChallenges()
 	}

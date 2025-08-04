@@ -68,7 +68,7 @@ var automators = {
 	2: {
 		title: "Eternal Challenger",
 		html: `(big rip only)<br>
-		Big Rip times: <input id="autoAnt2b" onchange="changeAutoGhost('2b')"/><br>
+		Begin at Big Rip #: <input id="autoAnt2b" onchange="changeAutoGhost('2b')"/><br>
 		EC10 Duration: <input id="autoAnt2t" onchange="changeAutoGhost('2t')"/>s`,
 		req: 12,
 		pow: 1.5,

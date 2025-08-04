@@ -1206,7 +1206,7 @@ function doCheckECCompletionStuff(){
 		player.timestudy.theorem += getTTSpentToECs()
 		player.eternityChallUnlocked = player.etercreq = 0
 		
-		if (!mod.ngp3 || !quSave.autoEC || ecs[ec] == 5) respecKey = ec_num
+		if (speedrunMilestones < 3 && (!mod.ngp3 || !quSave.autoEC || ecs[ec] == 5)) respecKey = ec_num
 	}
 
 	return respecKey

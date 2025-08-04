@@ -36,6 +36,9 @@ const NEUTRINO = NT = {
 	onGalaxy(bulk) {
 		NT_RES.addType(NT_RES.types[ghSave.neutrinos.generationGain - 1], NT_RES.gain().mul(bulk))
 	},
+	getAllPerGalaxy(galaxies) {
+		for (var i = 0; i < 3; i++) NT_RES.addType(NT_RES.types[i], NT_RES.gain().mul(galaxies))
+	},
 	onProd() {
 		let prod = ntProd
 		if (prod.total.length == 20) ntProd.total = ntProd.total.slice(1,20)
