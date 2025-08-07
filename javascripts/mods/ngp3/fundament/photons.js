@@ -70,7 +70,7 @@ let PHOTON = {
 
 	/* Feature - Lights */
 	photon_prod() {
-		let r = (player.meta.resets - 400) / 30
+		let r = (player.meta.resets - 390) / 30
 
 		r = pow10(r)
 		if (hasNB(11))               r = r.mul(NT.eff("boost", 11))
@@ -83,7 +83,7 @@ let PHOTON = {
 			{
 				name: "infrared",
 				req: 10,
-				eff: exp => Math.min(Math.min(exp, exp ** 0.2) / 5, 1.5),
+				eff: exp => Math.min((exp ** 0.2) / 3, 1.5),
 				desc: e => `Raise Infinity Power effect by +^${shorten(e)}.`
 			}, {
 				name: "red",

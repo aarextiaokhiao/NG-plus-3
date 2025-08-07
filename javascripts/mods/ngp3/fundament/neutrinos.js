@@ -162,8 +162,8 @@ const NEUTRINO = NT = {
 				eff: nt => pow10(Math.pow(nt / 40, 1.5)).max(nt),
 				effDesc: e => `Increase IC3 multiplier base by <b>${shorten(e)}x</b>.`,
 			}, {
-				cost: E(1e22),
-				eff: nt => Math.min(Math.max(nt / 90 - 1, 0), .5) / 100,
+				cost: E(1e19),
+				eff: nt => Math.max(nt - 80, 0) ** 0.5 / 2e3,
 				effDesc: e => `Outside of Big Rip, TS232 regains <b>${shorten(e*100)}%</b> of strength.`,
 			}, {
 				cost: E(1e27),
@@ -269,7 +269,7 @@ const NEUTRINO = NT = {
 				effDesc: e => `(hover)`
 			}, {
 				unl: _ => PHOTON.unlocked(),
-				cost: E(1e33),
+				cost: E(1e30),
 				desc: `Unlock Replicanti Warp. Replicanti interval cost scales slower.`
 			}, {
 				unl: _ => PHOTON.unlocked(),
