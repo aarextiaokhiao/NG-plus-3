@@ -96,8 +96,8 @@ var nanoRewards = {
 		pilon_charge: (x) => pow2(x * (hasNU(15) ? 4 : 2)),
 		per_10_power: (x) => x * 0.76,
 		pilon_energy: (x) => pow2(x),
-		decay_scale: (x) => Math.max(x * 5 - 15, 0),
-		photon: (x) => pow2(x * 2 - 7).max(1),
+		decay_scale: (x) => Math.max(x * 2 - 6, 0),
+		photon: (x) => pow2(x / 2).max(1),
 	},
 	effDisp: {
 		hatch_speed: (x) => "eggons hatch " + shorten(x) + "x faster",
@@ -138,7 +138,7 @@ function getNanoRewardReq(additional){
 }
 
 function getNanoRewardReqFixed(n){
-	let x = E_pow(4, n).mul(50), s = 15 + lightEff(2, 0)
+	let x = E_pow(4, n).mul(50), s = 15 + lightEff(4, 0)
 	if (n > s) x = x.mul(E_pow(2.0, (n - s) * (n - s + 3)))
 	return x
 }

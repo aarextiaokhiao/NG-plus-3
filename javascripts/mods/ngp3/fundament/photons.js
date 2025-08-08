@@ -83,33 +83,33 @@ let PHOTON = {
 			{
 				name: "infrared",
 				req: 10,
-				eff: exp => Math.min((exp ** 0.2) / 3, 1.5),
-				desc: e => `Raise Infinity Power effect by +^${shorten(e)}.`
+				eff: exp => Math.min(exp ** 0.5, 10) / 200,
+				desc: e => `Outside of Big Rip, TS232 regains ${shorten(e*100)}% of strength.`,
 			}, {
 				name: "red",
-				req: 500,
-				eff: exp => Math.log2(exp + 1) / 200 + 1,
-				desc: e => `Gain ${shorten((e-1)*100)}% more Neutrinos per Big Rip galaxy.`
+				req: 100,
+				eff: exp => Math.min(exp / 500 + 1, 1.01),
+				desc: e => `Gain ${shorten((e-1)*100)}% more Neutrinos per Big Rip galaxy starting at 2,000.`
 			}, {
 				name: "orange",
-				req: 3e3,
-				eff: exp => exp / 3,
-				desc: e => `Nanorewards scale +${shorten(e)} later.`
+				req: 500,
+				eff: exp => E_pow(tmp.gal.ts || 1, Math.min(-exp / 20, 1)),
+				desc: e => `Tickspeed reduction multiplies per-ten Antimatter Dimension bonus by ${shorten(e)}x.`
 			}, {
 				name: "yellow",
-				req: 1e4,
-				eff: exp => Math.min(exp / 50 + 1, 2),
-				desc: e => `Raise all non-Decay multipliers that speed up Decay by ^${shorten(e)}.`
+				req: 5e3,
+				eff: exp => Math.sqrt(1 + exp / 100),
+				desc: e => `Meta Dimension cost scales ${shorten((e-1)*100)}% weaker.`
 			}, {
 				name: "green",
 				req: 1e5,
-				eff: exp => E_pow(tmp.gal.ts || 1, Math.min(-exp / 10, 1)),
-				desc: e => `Tickspeed reduction multiplies per-ten Antimatter Dimension bonus by ${shorten(e)}x.`
+				eff: exp => exp / 3,
+				desc: e => `Nanorewards scale +${shorten(e)} later.`
 			}, {
 				name: "blue",
 				req: 1e6,
-				eff: exp => Math.sqrt(1 + exp / 100),
-				desc: e => `Meta Dimension cost scales ${shorten((e-1)*100)}% weaker.`
+				eff: exp => Math.min(exp / 50 + 1, 2),
+				desc: e => `Raise all non-Decay multipliers that speed up Decay by ^${shorten(e)}.`
 			}, {
 				name: "violet",
 				req: 1e100,

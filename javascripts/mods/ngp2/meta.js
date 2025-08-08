@@ -217,7 +217,7 @@ function getMetaCost(tier, boughtTen) {
 
 	let scalingStart = Math.ceil(Decimal.div(getMetaCostScalingStart(), initCost[tier]).log(costMults[tier]))
 	let scalingStr = 1
-	if (PHOTON.unlocked()) scalingStr /= lightEff(5, 0)
+	if (PHOTON.unlocked()) scalingStr /= lightEff(3, 0)
 	if (boughtTen >= scalingStart) cost = cost.mul(pow10((boughtTen - scalingStart + 1) * (boughtTen-scalingStart + 2) / 2 * scalingStr))
 
 	return cost

@@ -474,7 +474,7 @@ let tsMults = {
 		let pow = 0.001
 		if (!bigRipped()) {
 			if (hasGluonUpg("rg", 4)) pow = 0
-			if (hasNB(10)) pow = Math.max(NT.eff("boost", 10) * 0.001, pow)
+			if (PHOTON.unlocked()) pow = Math.max(lightEff(0, 0) * 0.001, pow)
 		}
 		return Math.pow(1 + player.galaxies * pow, 0.2)
 	}

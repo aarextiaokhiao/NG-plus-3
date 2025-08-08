@@ -67,7 +67,7 @@ const NEUTRINO = NT = {
 		},
 		gain() { 
 			let r = E_pow(getNeutrinoMultBase(), ghSave.neutrinos.multPower - 1)
-			r = E_pow(lightEff(1), brSave.bestGals).mul(r)
+			r = E_pow(lightEff(1), Math.max(brSave.bestGals - 2000, 0)).mul(r)
 			if (mod.p3ep) r = r.mul(pow10(player.galaxies / 1e5))
 			return r
 		},
@@ -147,8 +147,8 @@ const NEUTRINO = NT = {
 				effDesc: e => `Distant Antimatter Galaxies scale <b>${shorten(e)}x</b> slower.`,
 			}, {
 				cost: E(1e3),
-				eff: nt => (Math.pow(Math.log10(nt + 10), .5) - 1) * 5,
-				effDesc: e => `Strengthen Tree Upgrades by <b>${shorten(e*100-1)}%</b>.`,
+				eff: nt => Math.max(Math.pow(Math.log10(nt + 10, 0), .5) * 5 - 5, 1),
+				effDesc: e => `Strengthen Tree Upgrades by <b>${shorten(e*100-100)}%</b>.`,
 			}, {
 				cost: E(1e9),
 				eff(nt) {
@@ -163,11 +163,11 @@ const NEUTRINO = NT = {
 				effDesc: e => `Increase IC3 multiplier base by <b>${shorten(e)}x</b>.`,
 			}, {
 				cost: E(1e19),
-				eff: nt => Math.max(nt - 80, 0) ** 0.5 / 2e3,
-				effDesc: e => `Outside of Big Rip, TS232 regains <b>${shorten(e*100)}%</b> of strength.`,
+				eff: nt => Math.min(Math.max(nt - 80, 0) / 50, 1.5),
+				effDesc: e => `Raise Infinity Power effect by <b>+^${shorten(e)}</b>.`
 			}, {
-				cost: E(1e27),
-				eff: nt => Math.max((nt - 90) / 30, 1) ** 2,
+				cost: E(1e24),
+				eff: nt => Math.max(nt / 30 - 2, 1) ** 3,
 				effDesc: e => `Gain <b>${shorten(e)}x</b> more Photons.`,
 			}, {
 				cost: E(1e300),
@@ -269,7 +269,7 @@ const NEUTRINO = NT = {
 				effDesc: e => `(hover)`
 			}, {
 				unl: _ => PHOTON.unlocked(),
-				cost: E(1e30),
+				cost: E(1e29),
 				desc: `Unlock Replicanti Warp. Replicanti interval cost scales slower.`
 			}, {
 				unl: _ => PHOTON.unlocked(),

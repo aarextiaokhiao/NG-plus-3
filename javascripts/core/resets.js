@@ -479,12 +479,6 @@ let RESETS = {
 			this.resetRip(bm)
 
 			updateAutoQuantumMode()
-			if (bm < 7) {
-				ghSave.neutrinos.electron = E(0)
-				ghSave.neutrinos.mu = E(0)
-				ghSave.neutrinos.tau = E(0)
-				ntProd = { total: [], next: E(0), average: E(0) }
-			}
 			player.unstableThisGhostify = 0
 
 			GHPminpeak = E(0)
@@ -495,6 +489,10 @@ let RESETS = {
 			ghSave.under = true
 			ghSave.another = 10
 			ghSave.reference = 10
+			ghSave.neutrinos.electron = E(0)
+			ghSave.neutrinos.mu = E(0)
+			ghSave.neutrinos.tau = E(0)
+			ntProd = { total: [], next: E(0), average: E(0) }
 			ghSave.photons.amt = E(0)
 		}
 	}

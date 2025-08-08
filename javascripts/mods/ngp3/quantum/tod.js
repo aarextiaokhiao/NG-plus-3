@@ -117,7 +117,7 @@ function getBranchSpeedText(){
 	if (E(getTreeUpgradeEffect(5)).gt(1)) text += "Tree Upgrade 5: " + shorten(getTreeUpgradeEffect(5)) + "x, "
 	if (hasNU(4)) text += "Neutrino Upgrade 4: " + shorten(NT.eff("upg", 4)) + "x, "
 	if (hasAch("ng3p48") && player.meta.resets) text += "'Is this really worth it?' reward: " + shorten(Math.sqrt(player.meta.resets + 1)) + "x, "
-	if (PHOTON.unlocked()) text += "Yellow Light: ^" + shorten(lightEff(3, 1)) + ", "
+	if (PHOTON.unlocked()) text += "Yellow Light: ^" + shorten(lightEff(5)) + ", "
 
 	if (getBranchUpgMult(1).gt(1)) text += "Branch Upgrade 1: " + shorten(getBranchUpgMult(1)) + "x, "
 	if (text == "") return "No multipliers currently"
@@ -139,7 +139,7 @@ function getBranchSpeed() {
 	x = x.mul(getTreeUpgradeEffect(5))
 	if (hasNU(4)) x = x.mul(NT.eff("upg", 4))
 	if (hasAch("ng3p48")) x = x.mul(Math.sqrt(player.meta.resets + 1))
-	if (PHOTON.unlocked()) x = x.pow(lightEff(3, 1))
+	if (PHOTON.unlocked()) x = x.pow(lightEff(5))
 
 	x = x.mul(getBranchUpgMult(1))
 	return x
@@ -200,6 +200,7 @@ function getTreeUpgradeStrength(upg) {
 	if (upg == 1)  min =  3
 	if (upg == 2)  min =  6
 	if (upg == 6)  min =  4
+	if (upg == 10) min =  4
 	return Math.min(tmp.qu.tree_str, min)
 }
 

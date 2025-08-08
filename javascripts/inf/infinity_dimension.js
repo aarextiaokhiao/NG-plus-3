@@ -194,7 +194,7 @@ function getInfinityPowerEffect() {
 function getInfinityPowerEffectExp() {
 	let x = 7
 
-	if (PHOTON.unlocked()) x += lightEff(0, 0)
+	if (hasNB(10)) x += NT.eff("boost", 10, 0)
 	if (inNGM(2)) {
 		let galaxies = Math.max(player.galaxies, 0)
 		x = Math.pow(galaxies, 0.7)
