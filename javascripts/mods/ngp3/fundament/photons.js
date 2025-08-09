@@ -37,7 +37,7 @@ let PHOTON = {
 		let lights = this.light.data
 
 		data.et_prod = 0
-		data.et_bonus = Math.max(player.meta.resets - 400, 0) * 5
+		data.et_bonus = Math.max(player.meta.resets - 375, 0) * 5
 		for (var i in this.affected_features) {
 			if (ghSave.photons.slowdown[i]) data.et_prod += 1/3
 			else if (ghSave.photons.speed) data.et_prod -= 100
@@ -83,12 +83,12 @@ let PHOTON = {
 			{
 				name: "infrared",
 				req: 10,
-				eff: exp => Math.min(exp ** 0.5, 10) / 200,
+				eff: exp => Math.min(exp ** 0.5, 2) / 200,
 				desc: e => `Outside of Big Rip, TS232 regains ${shorten(e*100)}% of strength.`,
 			}, {
 				name: "red",
 				req: 100,
-				eff: exp => Math.min(exp / 500 + 1, 1.01),
+				eff: exp => Math.min(exp / 500 + 1, 1.005),
 				desc: e => `Gain ${shorten((e-1)*100)}% more Neutrinos per Big Rip galaxy starting at 2,000.`
 			}, {
 				name: "orange",
@@ -98,12 +98,12 @@ let PHOTON = {
 			}, {
 				name: "yellow",
 				req: 5e3,
-				eff: exp => Math.sqrt(1 + exp / 100),
+				eff: exp => Math.sqrt(1 + exp / 50),
 				desc: e => `Meta Dimension cost scales ${shorten((e-1)*100)}% weaker.`
 			}, {
 				name: "green",
 				req: 1e5,
-				eff: exp => exp / 3,
+				eff: exp => exp * 2,
 				desc: e => `Nanorewards scale +${shorten(e)} later.`
 			}, {
 				name: "blue",

@@ -126,7 +126,7 @@ const NEUTRINO = NT = {
 					if (!bigRipped()) a = Math.sqrt(a)
 					a = Math.min(a, 1.1)
 
-					let b = Math.max((nt - 80) / 20, 1)
+					let b = Math.max(nt / 90, 1)
 					return [a, b]
 				},
 				effDesc: e => `Raise Infinite Time by <b>^${shorten(e[0])}</b>.
@@ -167,7 +167,7 @@ const NEUTRINO = NT = {
 				effDesc: e => `Raise Infinity Power effect by <b>+^${shorten(e)}</b>.`
 			}, {
 				cost: E(1e24),
-				eff: nt => Math.max(nt / 30 - 2, 1) ** 3,
+				eff: nt => Math.max(nt / 30 - 1.5, 1) ** 3,
 				effDesc: e => `Gain <b>${shorten(e)}x</b> more Photons.`,
 			}, {
 				cost: E(1e300),
@@ -280,11 +280,11 @@ const NEUTRINO = NT = {
 				effDesc: e => `+${getFullExpansion(Math.round(e))}`
 			}, {
 				unl: _ => PHOTON.unlocked(),
-				cost: E(1e45),
+				cost: E(1e40),
 				desc: `Unlock new Nanobenefits. Improve 7th Nanobenefit.`
 			}, {
 				unl: _ => PHOTON.unlocked(),
-				cost: E(1e70),
+				cost: E(1e300),
 				desc: `Galaxies raise Meta-Antimatter effect.`,
 
 				eff: _ => player.galaxies / 6e3,
