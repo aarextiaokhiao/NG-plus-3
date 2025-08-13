@@ -107,7 +107,7 @@ let PHOTON = {
 				desc: e => `Nanorewards scale +${shorten(e)} later.`
 			}, {
 				name: "blue",
-				req: 1e6,
+				req: 1e100,
 				eff: exp => Math.min(exp / 50 + 1, 2),
 				desc: e => `Raise all non-Decay multipliers that speed up Decay by ^${shorten(e)}.`
 			}, {
