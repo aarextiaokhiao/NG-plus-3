@@ -126,7 +126,7 @@ const NEUTRINO = NT = {
 					if (!bigRipped()) a = Math.sqrt(a)
 					a = Math.min(a, 1.1)
 
-					let b = Math.max(nt / 90, 1)
+					let b = Math.max((nt - 100) / 150, 0) + 1
 					return [a, b]
 				},
 				effDesc: e => `Raise Infinite Time by <b>^${shorten(e[0])}</b>.
@@ -187,7 +187,7 @@ const NEUTRINO = NT = {
 			NT_RES.spend(NT.upgrades.data[x-1].cost)
 			ghSave.neutrinos.upgrades.push(x)
 
-			if (x == 15) resetNanoRewardEffects()
+			if (x == 14) resetNanoRewardEffects()
 		},
 		has(x) {
 			return ghSave?.neutrinos.upgrades.includes(x)
@@ -273,15 +273,15 @@ const NEUTRINO = NT = {
 				desc: `Unlock Replicanti Warp. Replicanti interval cost scales slower.`
 			}, {
 				unl: _ => PHOTON.unlocked(),
-				cost: E(1e45),
+				cost: E(1e39),
+				desc: `Unlock new Nanobenefits. Improve 7th Nanobenefit.`
+			}, {
+				unl: _ => PHOTON.unlocked(),
+				cost: E(1e50),
 				desc: `Tachyonic Galaxies scale Positrons later.`,
 
 				eff: _ => player.dilation.freeGalaxies * 2,
 				effDesc: e => `+${getFullExpansion(Math.round(e))}`
-			}, {
-				unl: _ => PHOTON.unlocked(),
-				cost: E(1e40),
-				desc: `Unlock new Nanobenefits. Improve 7th Nanobenefit.`
 			}, {
 				unl: _ => PHOTON.unlocked(),
 				cost: E(1e300),

@@ -2392,6 +2392,9 @@ div.lDe {
 	width: 120px;
 	height: 90px;
 }
+.photon.off {
+	background: #773;
+}
 .photon:hover {
 	background: white;
 	color: #330;

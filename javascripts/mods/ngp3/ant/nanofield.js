@@ -93,11 +93,11 @@ var nanoRewards = {
 			return x * 1.34 + y
 		},
 		remote_start: (x) => x * 2150,
-		pilon_charge: (x) => pow2(x * (hasNU(15) ? 4 : 2)),
+		pilon_charge: (x) => pow2(x * (hasNU(14) ? 4 : 2)),
 		per_10_power: (x) => x * 0.76,
 		pilon_energy: (x) => pow2(x),
 		decay_scale: (x) => Math.max(x * 2 - 6, 0),
-		photon: (x) => pow2(x / 2).max(1),
+		photon: (x) => pow2(x * 2 - 6).max(1),
 	},
 	effDisp: {
 		hatch_speed: (x) => "eggons hatch " + shorten(x) + "x faster",
@@ -114,13 +114,13 @@ var nanoRewards = {
 		photon: (x) => "gain " + shorten(x) + "x more Photons",
 	},
 	usage: {
-		1: _ => hasNU(15) ? ["photon"] : ["hatch_speed"],
+		1: _ => hasNU(14) ? ["photon"] : ["hatch_speed"],
 		2: _ => ["ma_eff_exp"],
 		3: _ => ["dil_gal_gain"],
 		4: _ => ["dt_to_ma_exp"],
 		5: _ => ["dil_exp"],
 		6: _ => ["md_boost"],
-		7: _ => hasNU(15) ? ["pilon_charge", "decay_scale"] : hasNU(6) ? ["pilon_charge"] : ["remote_start", "pilon_charge"],
+		7: _ => hasNU(14) ? ["pilon_charge", "decay_scale"] : hasNU(6) ? ["pilon_charge"] : ["remote_start", "pilon_charge"],
 		8: _ => ["per_10_power", "pilon_energy"],
 	},
 }

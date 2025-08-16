@@ -70,7 +70,7 @@ let PHOTON = {
 
 	/* Feature - Lights */
 	photon_prod() {
-		let r = (player.meta.resets - 390) / 30
+		let r = (player.meta.resets - 400) / 30
 
 		r = pow10(r)
 		if (hasNB(11))               r = r.mul(NT.eff("boost", 11))
@@ -92,18 +92,18 @@ let PHOTON = {
 				desc: e => `Gain ${shorten((e-1)*100)}% more Neutrinos per Big Rip galaxy starting at 2,000.`
 			}, {
 				name: "orange",
-				req: 500,
+				req: 300,
 				eff: exp => E_pow(tmp.gal.ts || 1, Math.min(-exp / 20, 1)),
 				desc: e => `Tickspeed reduction multiplies per-ten Antimatter Dimension bonus by ${shorten(e)}x.`
 			}, {
 				name: "yellow",
-				req: 5e3,
-				eff: exp => Math.sqrt(1 + exp / 50),
+				req: 2e3,
+				eff: exp => Math.sqrt(1 + exp / 10),
 				desc: e => `Meta Dimension cost scales ${shorten((e-1)*100)}% weaker.`
 			}, {
 				name: "green",
-				req: 1e5,
-				eff: exp => exp * 2,
+				req: 2e4,
+				eff: exp => exp,
 				desc: e => `Nanorewards scale +${shorten(e)} later.`
 			}, {
 				name: "blue",
@@ -138,7 +138,7 @@ let PHOTON = {
 		el('light_table').innerHTML = html
 
 		html = ``
-		for (var i in this.affected_features) html += `<button id='ph_time_${i}' onclick='PHOTON.toggle_speed("${i}")' class='photon slot'></button>`
+		for (var i in this.affected_features) html += `<button id='ph_time_${i}' onclick='PHOTON.toggle_speed("${i}")'></button>`
 		el('ph_speeds').innerHTML = html
 	},
 	update() {
@@ -152,12 +152,17 @@ let PHOTON = {
 
 		let pt = tmp.funda.photon, ps = ghSave.photons
 		el("ph_time").textContent = shortenMoney(ps.exp_time) + "s"
-		el("ph_speed").textContent = "Speedramp: " + (ps.speed ? "ON" : "OFF")
-		el("ph_gain").textContent = `(${(pt.et_prod < 0 ? "-" : "+") + shortenMoney(Math.abs(pt.et_prod))}/s, next fundament: +${shortenMoney(pt.et_bonus)}s)`
+		el("ph_speed").textContent = "▲ Speeding: " + (ps.speed ? "100x" : "1x")
 		for (var [i, name] of Object.entries(this.affected_features)) {
+			el("ph_time_" + i).className = "photon slot " + (ps.slowdown[i] ? "off" : "")
 			el("ph_time_" + i).innerHTML = `<b>${name}</b><br>
-			${ps.slowdown[i] ? "STALLING<br>(0.01x speed)" : ps.speed ? "PASSING<br>(100x speed)" : "PASSING<br>(1x speed)"}`
+			${ps.slowdown[i] ? "▼ STALLING<br>(0.01x speed)" : ps.speed ? "▲ SPEEDING<br>(100x speed)" : "▲ SPEEDING<br>(1x speed)"}`
 		}
+
+		let pg_html = `${(pt.et_prod < 0 ? "-" : "+") + shortenMoney(Math.abs(pt.et_prod))}/s, `
+		if (pt.et_prod) pg_html += `time left: ${timeDisplay(-ghSave.photons.exp_time / pt.et_prod * 10)}, `
+		pg_html += `next fundament: +${shortenMoney(pt.et_bonus)}s`
+		el("ph_gain").textContent = "(" + pg_html + ")"
 
 		let lights = this.light.data
 		el("ph_amt").textContent = shortenMoney(ghSave.photons.amt)
