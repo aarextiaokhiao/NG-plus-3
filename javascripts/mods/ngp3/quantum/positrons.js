@@ -3,7 +3,7 @@ function isPositronsOn() {
 }
 
 function updatePositronsTab() {
-	let mult = PHOTON.unlocked() ? 1 - lightEff(7, 0) : 1
+	let mult = PHOTON.unlocked() ? 1 - lightEff(6, 0) : 1
 	let gal = Math.max(player.galaxies - quSave.electrons.sacGals, 0)
 
 	el("normalGalaxies").textContent = getFullExpansion(player.galaxies) + (PHOTON.unlocked() ? ` (${formatPercentage(mult)}%)` : "")

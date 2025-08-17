@@ -37,7 +37,7 @@ let PHOTON = {
 		let lights = this.light.data
 
 		data.et_prod = 0
-		data.et_bonus = Math.max(player.meta.resets - 375, 0) * 5
+		data.et_bonus = Math.max(player.meta.resets - 375, 0) * 5 + getTreeUpgradeEffect(9)
 		for (var i in this.affected_features) {
 			if (ghSave.photons.slowdown[i]) data.et_prod += 1/3
 			else if (ghSave.photons.speed) data.et_prod -= 100
@@ -88,7 +88,7 @@ let PHOTON = {
 			}, {
 				name: "red",
 				req: 100,
-				eff: exp => Math.min(exp / 500 + 1, 1.005),
+				eff: exp => Math.min(exp, 2.5) / 500 + 1,
 				desc: e => `Gain ${shorten((e-1)*100)}% more Neutrinos per Big Rip galaxy starting at 2,000.`
 			}, {
 				name: "orange",
@@ -98,28 +98,28 @@ let PHOTON = {
 			}, {
 				name: "yellow",
 				req: 2e3,
-				eff: exp => Math.sqrt(1 + exp / 10),
+				eff: exp => Math.min(Math.sqrt(1 + exp / 10), 2),
 				desc: e => `Meta Dimension cost scales ${shorten((e-1)*100)}% weaker.`
 			}, {
 				name: "green",
 				req: 2e4,
-				eff: exp => exp,
+				eff: exp => Math.sqrt(exp) * 2,
 				desc: e => `Nanorewards scale +${shorten(e)} later.`
 			}, {
 				name: "blue",
-				req: 1e100,
-				eff: exp => Math.min(exp / 50 + 1, 2),
+				req: 1e7,
+				eff: exp => Math.min(exp / 20 + 1, 2),
 				desc: e => `Raise all non-Decay multipliers that speed up Decay by ^${shorten(e)}.`
 			}, {
 				name: "violet",
 				req: 1e100,
-				eff: exp => Math.min(1 + Math.sqrt(exp), 3),
-				desc: e => `Raise 2nd Neutrino Boost by ^${e.toFixed(3)}.`
+				eff: exp => Math.cbrt(exp) / 10,
+				desc: e => `Discharged Galaxies are ${(e*100).toFixed(1)}% efficient.`
 			}, {
 				name: "ultraviolet",
 				req: 1e100,
-				eff: exp => Math.min(exp / 1e4, .05),
-				desc: e => `Discharged Galaxies are ${(e*100).toFixed(1)}% efficient.`
+				eff: exp => Math.min(exp + 1, 3),
+				desc: e => `Raise 2nd Neutrino Boost by ^${e.toFixed(3)}.`
 			}
 		],
 		eff: (x, def = 1) => tmp.funda.photon?.eff[x] ?? def,

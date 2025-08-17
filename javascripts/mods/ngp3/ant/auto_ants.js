@@ -62,37 +62,37 @@ var automators = {
 	},
 	18: {
 		title: "Positron Upgrader",
-		req: 10,
-		pow: 1,
+		req: 9,
+		pow: .5,
 	},
 	2: {
 		title: "Eternal Challenger",
 		html: `(big rip only)<br>
 		Begin at Big Rip #: <input id="autoAnt2b" onchange="changeAutoGhost('2b')"/><br>
 		EC10 Duration: <input id="autoAnt2t" onchange="changeAutoGhost('2t')"/>s`,
-		req: 12,
-		pow: 1.5,
-	},
-	16: {
-		title: "Neutrino Upgrader",
-		req: 13.5,
+		req: 10,
 		pow: 1,
 	},
 	12: {
 		title: "Radioactive Decay",
-		req: 1e4,
-		pow: 2,
+		req: 12,
+		pow: 1,
+	},
+	16: {
+		title: "Neutrino Upgrader",
+		req: 13,
+		pow: .5,
 	},
 	17: {
 		title: "Paradigmic",
-		html: `Get Phantomal Paradigms at Big Rip run
+		html: `Get Phantomal Paradigms at Big Rip #:
 		<input id="autoAnt17t" onchange="changeAutoGhost('17t')"/><br>
 		(auto-forces Big Rip)`,
-		req: 1e4,
-		pow: 1,
+		req: 14,
+		pow: 2,
 	}
 }
-const automatorOrder = [1,5,6,7,8,9,10,11,13,14,15,18,2,16,12,17]
+const automatorOrder = [1,5,6,7,8,9,10,11,13,14,15,18,2,12,16,17]
 
 function setupAutomaticGhostsData() {
 	var data = {power: 0, ghosts: 3}

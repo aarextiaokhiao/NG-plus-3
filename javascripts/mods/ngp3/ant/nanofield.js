@@ -84,7 +84,10 @@ var nanoRewards = {
 	eff: {
 		hatch_speed: (x) => E_pow(30, x),
 		ma_eff_exp: (x) => x * 6.8,
-		dil_gal_gain: (x) => E(x / 1e3 + 1),
+		dil_gal_gain(x) {
+			if (x > 3) x = Math.sqrt(x - 2) + 2
+			return E(x / 1e3 + 1)
+		},
 		dt_to_ma_exp: (x) => Math.sqrt(x) * 0.021 + 1,
 		dil_exp: (x) => Math.min(x * 0.36 + 1, 2), 
 		md_boost: (x) => {
@@ -102,7 +105,7 @@ var nanoRewards = {
 	effDisp: {
 		hatch_speed: (x) => "eggons hatch " + shorten(x) + "x faster",
 		ma_eff_exp: (x) => "meta-antimatter effect is ^" + x.toFixed(2),
-		dil_gal_gain: (x) => "each Replicated Galaxy gives " + x.toFixed(3) + "x more Dilated Time",
+		dil_gal_gain: (x) => "each Replicated Galaxy gives " + x.toFixed(4) + "x more Dilated Time",
 		dt_to_ma_exp: (x) => "Dilated Time boosts Meta Dimensions by ^" + x.toFixed(3) + " more",
 		dil_exp: (x) => "Raise Antimatter Dimension production by ^" + x.toFixed(2) + " in dilation",
 		md_boost: (x) => "Meta-Dimension Boosts give " + x.toFixed(2) + "x multiplier per boost",

@@ -134,7 +134,7 @@ function initialGalaxies() {
 		let sac = quSave.electrons.sacGals
 		g = Math.max(g - sac, 0)
 		g *= Math.max(Math.min(10 - (quSave.electrons.amount + g * getPositronGainFinalMult()) / 16857, 1), 0)
-		g += Math.min(sac, player.galaxies) * lightEff(7, 0)
+		g += Math.min(sac, player.galaxies) * lightEff(6, 0)
 	}
 	if (inAnyQC() && !tmp.qu.be) g = 0
 	if ((inNC(15) || player.currentChallenge == "postc1") && inOnlyNGM(3)) g = 0

@@ -117,7 +117,7 @@ function getBranchSpeedText(){
 	if (E(getTreeUpgradeEffect(5)).gt(1)) text += "Tree Upgrade 5: " + shorten(getTreeUpgradeEffect(5)) + "x, "
 	if (hasNU(4)) text += "Neutrino Upgrade 4: " + shorten(NT.eff("upg", 4)) + "x, "
 	if (hasAch("ng3p48") && player.meta.resets) text += "'Is this really worth it?' reward: " + shorten(Math.sqrt(player.meta.resets + 1)) + "x, "
-	if (PHOTON.unlocked()) text += "Yellow Light: ^" + shorten(lightEff(5)) + ", "
+	if (PHOTON.unlocked()) text += "Blue Light: ^" + shorten(lightEff(5)) + ", "
 
 	if (getBranchUpgMult(1).gt(1)) text += "Branch Upgrade 1: " + shorten(getBranchUpgMult(1)) + "x, "
 	if (text == "") return "No multipliers currently"
@@ -171,7 +171,7 @@ function getTreeUpgradeCost(upg, add=0) {
 	if (upg == 6) return E_pow(6, lvl).mul(1e21)
 	if (upg == 7) return pow2(lvl * 4).mul(4e22)
 	if (upg == 8) return pow2(lvl).mul(3e23)
-	if (upg == 9) return pow10(lvl + 60)
+	if (upg == 9) return pow10(lvl + 30)
 	if (upg == 10) return pow10(lvl + 80)
 	if (upg == 11) return pow10(lvl + 100)
 	if (upg == 12) return pow10(lvl * 10 + 120)
@@ -218,7 +218,7 @@ function getTreeUpgradeEffect(upg) {
 	if (upg == 6) return pow10(lvl / 2)
 	if (upg == 7) return lvl ? pow2(Math.sqrt(tmp.rep.eff.max(1).log10()) / 20 * Math.log10(lvl + 9)) : E(1)
 	if (upg == 8) return Math.log10(player.meta.bestAntimatter.add(10).log10()) * Math.sqrt(lvl)
-	if (upg == 9) return 0
+	if (upg == 9) return lvl * 2.5
 	if (upg == 10) return lvl * 1e4
 	if (upg == 11) return lvl / 150 + 1
 	if (upg == 12) return lvl / 3

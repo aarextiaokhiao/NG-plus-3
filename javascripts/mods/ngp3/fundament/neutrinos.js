@@ -113,7 +113,7 @@ const NEUTRINO = NT = {
 				effDesc: e => `Increase TP gain exponent by <b>+^${shorten(e)}</b>.`,
 			}, {
 				cost: E(2),
-				eff: nt => Math.pow(nt, .25 * lightEff(6)) * 1.5,
+				eff: nt => Math.pow(nt, .25 * lightEff(7, 1)) * 1.5,
 				effDesc: e => `Replicate chance boosts itself more. (<b>+^${shorten(e)}</b>)`,
 			}, {
 				cost: E(4),
@@ -126,7 +126,7 @@ const NEUTRINO = NT = {
 					if (!bigRipped()) a = Math.sqrt(a)
 					a = Math.min(a, 1.1)
 
-					let b = Math.max((nt - 100) / 150, 0) + 1
+					let b = Math.max(nt - 100, 0) ** 0.5 / 30 + 1
 					return [a, b]
 				},
 				effDesc: e => `Raise Infinite Time by <b>^${shorten(e[0])}</b>.
@@ -273,7 +273,7 @@ const NEUTRINO = NT = {
 				desc: `Unlock Replicanti Warp. Replicanti interval cost scales slower.`
 			}, {
 				unl: _ => PHOTON.unlocked(),
-				cost: E(1e39),
+				cost: E(1e38),
 				desc: `Unlock new Nanobenefits. Improve 7th Nanobenefit.`
 			}, {
 				unl: _ => PHOTON.unlocked(),
