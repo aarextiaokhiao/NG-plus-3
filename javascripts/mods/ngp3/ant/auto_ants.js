@@ -75,20 +75,20 @@ var automators = {
 	},
 	12: {
 		title: "Radioactive Decay",
-		req: 12,
+		req: 15,
 		pow: 1,
 	},
 	16: {
 		title: "Neutrino Upgrader",
-		req: 13,
-		pow: .5,
+		req: 16,
+		pow: 1,
 	},
 	17: {
 		title: "Paradigmic",
 		html: `Get Phantomal Paradigms at Big Rip #:
 		<input id="autoAnt17t" onchange="changeAutoGhost('17t')"/><br>
 		(auto-forces Big Rip)`,
-		req: 14,
+		req: 17,
 		pow: 2,
 	}
 }
@@ -192,7 +192,7 @@ function getAutoCharge() {
 	if (hasWZMilestone(7)) r = Math.max(Math.pow(quantumWorth.add(1).log10() / 1e3 + 1, 8/9) - 1, r)
 
 	r += Math.max(brSave.spaceShards.add(1).log10() / 15 - 0.5, 0)
-	if (hasAch("ng3p78")) r += ghSave.ghostParticles.add(1).log10() / 100
+	if (hasAch("ng3p78")) r += ghSave.ghostParticles.add(1).log10() / 10
 	if (hasWZMilestone(15)) r += blEff(15, 0)
 	return r
 }

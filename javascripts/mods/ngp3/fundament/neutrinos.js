@@ -126,7 +126,7 @@ const NEUTRINO = NT = {
 					if (!bigRipped()) a = Math.sqrt(a)
 					a = Math.min(a, 1.1)
 
-					let b = Math.max(nt - 100, 0) ** 0.5 / 30 + 1
+					let b = Math.max(nt - 100, 0) / 150 + 1
 					return [a, b]
 				},
 				effDesc: e => `Raise Infinite Time by <b>^${shorten(e[0])}</b>.
@@ -171,7 +171,7 @@ const NEUTRINO = NT = {
 				effDesc: e => `Gain <b>${shorten(e)}x</b> more Photons.`,
 			}, {
 				cost: E(1e300),
-				eff: nt => Math.min(quSave.time / 1e3, nt / 100) + 1,
+				eff: nt => Math.min(quSave.time / 1e4, Math.log10(nt / 10 + 1)),
 				effDesc: e => `Outside of Big Rip, Quantum time scales Replicanti Slowdown by <b>^${shorten(e)}</b>.`
 			}
 		]
@@ -277,14 +277,14 @@ const NEUTRINO = NT = {
 				desc: `Unlock new Nanobenefits. Improve 7th Nanobenefit.`
 			}, {
 				unl: _ => PHOTON.unlocked(),
-				cost: E(1e50),
+				cost: E(1e44),
 				desc: `Tachyonic Galaxies scale Positrons later.`,
 
 				eff: _ => player.dilation.freeGalaxies * 2,
 				effDesc: e => `+${getFullExpansion(Math.round(e))}`
 			}, {
 				unl: _ => PHOTON.unlocked(),
-				cost: E(1e300),
+				cost: E(1e50),
 				desc: `Galaxies raise Meta-Antimatter effect.`,
 
 				eff: _ => player.galaxies / 6e3,

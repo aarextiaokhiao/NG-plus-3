@@ -93,27 +93,27 @@ let PHOTON = {
 			}, {
 				name: "orange",
 				req: 300,
-				eff: exp => E_pow(tmp.gal.ts || 1, Math.min(-exp / 20, 1)),
+				eff: exp => E(tmp.gal.ts || 1).pow(-Math.min(exp / 20, 1)),
 				desc: e => `Tickspeed reduction multiplies per-ten Antimatter Dimension bonus by ${shorten(e)}x.`
 			}, {
 				name: "yellow",
 				req: 2e3,
-				eff: exp => Math.min(Math.sqrt(1 + exp / 10), 2),
+				eff: exp => Math.min(1 + exp / 20, 2),
 				desc: e => `Meta Dimension cost scales ${shorten((e-1)*100)}% weaker.`
 			}, {
 				name: "green",
 				req: 2e4,
-				eff: exp => Math.sqrt(exp) * 2,
+				eff: exp => exp * 2,
 				desc: e => `Nanorewards scale +${shorten(e)} later.`
 			}, {
 				name: "blue",
-				req: 1e7,
-				eff: exp => Math.min(exp / 20 + 1, 2),
+				req: 5e6,
+				eff: exp => Math.min(exp / 5 + 1, 2),
 				desc: e => `Raise all non-Decay multipliers that speed up Decay by ^${shorten(e)}.`
 			}, {
 				name: "violet",
 				req: 1e100,
-				eff: exp => Math.cbrt(exp) / 10,
+				eff: exp => Math.min(Math.log10(exp / 3 + 1) / 3, 1),
 				desc: e => `Discharged Galaxies are ${(e*100).toFixed(1)}% efficient.`
 			}, {
 				name: "ultraviolet",

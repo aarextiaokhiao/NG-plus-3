@@ -207,7 +207,7 @@ function getTreeUpgradeStrength(upg) {
 function getTreeUpgradeEffect(upg) {
 	let lvl = getTreeUpgradeLevel(upg) * getTreeUpgradeStrength(upg)
 
-	if (upg == 1) return Math.floor(lvl * 30)
+	if (upg == 1) return Math.min(Math.floor(lvl * 30), 5e3)
 	if (upg == 2) return lvl * 0.25
 	if (upg == 3) return pow2(Math.sqrt(Math.max(lvl, 0) * 2))
 	if (upg == 4) return Math.sqrt(1 + Math.log10(lvl * 0.5 + 1) * 0.1)
@@ -215,7 +215,11 @@ function getTreeUpgradeEffect(upg) {
 		let MA = hasAch("ng3p87") ? player.meta.bestOverGhostifies : player.meta.bestOverQuantums
 		return E_pow(Math.log10(MA.add(1).log10() + 1) / 5 + 1, Math.sqrt(lvl) / 2)
 	}
-	if (upg == 6) return pow10(lvl / 2)
+	if (upg == 6) {
+		let exp = lvl / 2
+		if (exp > 30) exp = Math.sqrt(exp * 30)
+		return pow10(exp)
+	}
 	if (upg == 7) return lvl ? pow2(Math.sqrt(tmp.rep.eff.max(1).log10()) / 20 * Math.log10(lvl + 9)) : E(1)
 	if (upg == 8) return Math.log10(player.meta.bestAntimatter.add(10).log10()) * Math.sqrt(lvl)
 	if (upg == 9) return lvl * 2.5

@@ -179,6 +179,7 @@ function getGalaxyEff(bi) {
 		eff *= tmp.qu.color_eff.r
 		if (hasGluonUpg("rg", 2)) eff *= gluonEff("rg", 2)
 		if (hasGluonUpg("rg", 4)) eff *= 1.5
+		if (PHANTOM.amt) eff *= 1.1
 		if (tmp.qu.be) eff *= 0.4
 	}
 	return eff
