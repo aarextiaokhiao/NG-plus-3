@@ -490,7 +490,7 @@ let HOW_TO = [
 
 			The idle part is where Photons are generated, based on various factors.<br>
 			Photons strengthen all 8 colors of Lights.<br>
-			To unlock more colors, you must gain more Photons.<br>
+			To get more colors, you must gain more Photons.<br>
 			Fundament resets all Photons and Lights.
 			<br><br>
 			
