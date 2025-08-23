@@ -2287,6 +2287,8 @@ function simulateTime(seconds, amt, id) {
 	el("offlinetext").innerHTML = popupString
 }
 
+let simulateParts = {}
+
 let nonNGP3_simulateParts = {
 	am: {
 		amt: _ => player.money,
@@ -2401,35 +2403,15 @@ let NGP3_simulateParts = {
 		name: "Meta-Antimatter",
 		color: "#0bf"
 	},
-	pos: {
-		amt: _ => quSave?.electrons.amount,
-		name: "Positrons",
-		color: "#bb0"
-	},
-	ant: {
-		amt: _ => quSave?.replicants.amount,
-		name: "Duplicants",
-		color: "grey"
-	},
 	nr: {
 		amt: _ => nfSave?.rewards,
 		name: "Nanorewards",
 		color: "grey"
 	},
-	ps: {
-		amt: _ => todSave?.r.spin,
-		name: "Preonic Spin",
-		color: "brown"
-	},
-	le: {
+	ph: {
 		amt: _ => ghSave?.photons?.amt,
 		name: "Photons",
-		color: "#bb7"
-	},
-	bm: {
-		amt: _ => blSave?.bosons,
-		name: "Bosonic Matter",
-		color: "#f70"
+		color: "#993"
 	}
 }
 
@@ -2439,10 +2421,8 @@ function setupSimulateParts() {
 
 function getSimulateParts() {
 	if (mod.ngp3) return NGP3_simulateParts
-	else return nonNGP3_simulateParts
+	return nonNGP3_simulateParts
 }
-
-var simulateParts = getSimulateParts();
 
 function recordSimulationAmount() {
 	let ret = {}

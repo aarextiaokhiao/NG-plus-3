@@ -1533,6 +1533,7 @@ function onLoad(noOffline) {
 
 	//reload mods
 	cacheMods()
+	setupSimulateParts()
 
 	ghostifyDenied = 0
 	setEverythingPreNGp3onLoad()

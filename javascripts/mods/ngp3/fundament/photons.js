@@ -37,7 +37,7 @@ let PHOTON = {
 		let lights = this.light.data
 
 		data.et_prod = 0
-		data.et_bonus = Math.max(player.meta.resets - 375, 0) * 5 + getTreeUpgradeEffect(9)
+		data.et_bonus = Math.max(player.meta.resets - 375, 0) * 10 + getTreeUpgradeEffect(9)
 		for (var i in this.affected_features) {
 			if (ghSave.photons.slowdown[i]) data.et_prod += 1/3
 			else if (ghSave.photons.speed) data.et_prod -= 100
@@ -151,7 +151,7 @@ let PHOTON = {
 		}
 
 		let pt = tmp.funda.photon, ps = ghSave.photons
-		el("ph_time").textContent = shortenMoney(ps.exp_time) + "s"
+		el("ph_time").textContent = timeDisplayShort(ps.exp_time * 10)
 		el("ph_speed").textContent = "▲ Speeding: " + (ps.speed ? "100x" : "1x")
 		for (var [i, name] of Object.entries(this.affected_features)) {
 			el("ph_time_" + i).className = "photon slot " + (ps.slowdown[i] ? "off" : "")
@@ -160,7 +160,7 @@ let PHOTON = {
 		}
 
 		let pg_html = `${(pt.et_prod < 0 ? "-" : "+") + shortenMoney(Math.abs(pt.et_prod))}/s, `
-		if (pt.et_prod) pg_html += `time left: ${timeDisplay(-ghSave.photons.exp_time / pt.et_prod * 10)}, `
+		if (pt.et_prod < 0) pg_html += `time left: ${timeDisplayShort(-ghSave.photons.exp_time / pt.et_prod * 10)}, `
 		pg_html += `next fundament: +${shortenMoney(pt.et_bonus)}s`
 		el("ph_gain").textContent = "(" + pg_html + ")"
 
