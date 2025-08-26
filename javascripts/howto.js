@@ -506,7 +506,7 @@ let HOW_TO = [
 		title: "W & Z Bosons",
 		layer: "fundament",
 		desc: `
-			[PROBABLE REWORK SOON...]
+			[REWORK SOON...]
 			<br><br>
 
 			You can place down W+, W-, and Z Chargers on an customizible 7x7 grid.
@@ -526,6 +526,9 @@ let HOW_TO = [
 		title: "Higgs Field",
 		layer: "fundament",
 		desc: `
+			[PROBABLE REWORK SOON...]
+			<br><br>
+
 			At ??? Bosons, you can reset W & Z Bosons for Higgs. The first Higgs reset unlocks Higgs Field. Further Higgs resets require more Bosons. Unlike Dimensional Boosts and Galaxies, Higgs can be increased by any amount in one run.
 			<br><br>
 
