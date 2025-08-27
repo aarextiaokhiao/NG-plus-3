@@ -338,7 +338,7 @@ let HOW_TO = [
 		
 		Positrons provide a boost to your multiplier per 10 Antimatter Dimensions bought, but in order to use them, you have to sacrifice your Antimatter Galaxies.<br><br>
 		
-		The number of Positrons you get is equal to the number of Antimatter Galaxies you sacrificed times the number of Positrons per galaxy you currently have. This number starts at 2 Positrons per galaxy, and can be upgraded using either time theorems, dilated time, meta-antimatter, or meta-dimension boosts. Each upgrade increases the Positrons per galaxy by 0.25.`
+		You have a multiplier for Positrons per sacrificing a galaxy, starting at 2x. It can be upgraded using either time theorems, dilated time, meta-antimatter, or meta-dimension boosts. Each upgrade increases the Positrons per galaxy by 0.25.`
 	}, {
 		mod: _ => ngp3,
 		req: _ => player.masterystudies.includes("d8"),
