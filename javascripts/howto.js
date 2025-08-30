@@ -324,7 +324,7 @@ let HOW_TO = [
 
 		If you have two or more quark colors, some quarks will fuse to become gluons on next Quantum. There are three types of gluons: red-green, green-blue, and blue-red. T form them you must have both of the specified colors; when you Quantum, only the first color in the gluon's name will be removed, however.
 		<br>
-		For example, if you had 4 green quarks and 2 blue quarks, two green-blue gluons would form, and you'd have 2 green quarks left over. If you had 4 red, 3 green, and 2 blue, you'd end up with 3 red-green gluons, 2 green-blue gluons and 2 blue-red gluons, with 1 red and 1 green quark left.
+		For example, if you had 4 green quarks and 2 blue quarks, two green-blue gluons would form, and you'd have 2 green quarks left over. If you had 4 red, 3 green, and 2 blue, you'd end up with 3 red-green gluons, 2 green-blue gluons and 2 blue-red gluons, with 1 red and 1 green quarks left.
 		<br><br>
 
 		You can spend your accumulated gluons on various upgrades to increase your production further, as well as an upgrade that doubles the amount of quarks you gain on Quantum.`
