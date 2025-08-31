@@ -764,8 +764,10 @@ function doQuantumUpdates(){
 		if (oldLength > newMS.length) forceToQuantumAndRemove = true
 		quSave.replicants.quantumFoodCost = Decimal.mul(quSave.replicants.quantumFoodCost, 2)
 		quSave.replicants.limitDim=1
+
 		EDsave = quSave.emperorDimensions = setupEDSave()
 		EDsave[1] = { workers: E(quSave.replicants.workers), progress: E(quSave.replicants.workerProgress), perm: Math.round(parseFloat(quSave.replicants.workers)) }
+
 		player.dontWant = false
 		delete quSave.replicants.workers
 		delete quSave.replicants.workerProgress

@@ -1,6 +1,6 @@
 //VERSION: 2.31
 let ngp3_ver = 2.31
-let ngp3_build = 20250822
+let ngp3_build = 20250830
 function doNGP3Updates() {
 	if (!aarMod.ngp3_build) aarMod.ngp3_build = 0
 	if (aarMod.ngp3_build < 20221230) quSave.multPower = 0
@@ -54,6 +54,12 @@ function doNGP3Updates() {
 			ghSave.neutrinos.boosts = 9
 			ghSave.ghostParticles = E(1e20)
 			ghSave.automatorGhosts.power = 0
+		}
+		if (aarMod.ngp3_build < 20250830) {
+			for (let dim = 1; dim <= 8; dim++) {
+				let dim_data = EDsave[dim]
+				if (typeof dim_data.perm == "string") dim_data.perm = Math.round(dim_data.perm)
+			}
 		}
 
 		if (!ghSave.reached && !ghSave.times) {

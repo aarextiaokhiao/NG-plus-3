@@ -207,8 +207,8 @@ function updateAutomatorStuff(mode) {
 	if (mode != "quick") updateAutomatorUnlocks()
 
 	var order = automatorOrder
-	while (data.ghosts < automatorOrder.length && data.power >= getAutomatorReq()) {
-		el("autoAnt" + automatorOrder[data.ghosts]).style.display=""
+	while (data.ghosts < order.length && data.power >= getAutomatorReq()) {
+		el("autoAnt" + order[data.ghosts]).style.display = "table-cell"
 		data.ghosts++
 		updateAutomatorUnlocks()
 	}

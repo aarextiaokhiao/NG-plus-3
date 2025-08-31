@@ -196,7 +196,7 @@ function feedReplicant(tier, max) {
 		let max = quSave.replicants.limitDim > tier ? 10 : quSave.replicants.limit
 		let old = EDsave[tier].perm
 		EDsave[tier].workers = EDsave[tier].workers.add(max - old)
-		EDsave[tier].perm = E(max)
+		EDsave[tier].perm = max
 	} else {
 		var toFeed = max ? Math.min(quSave.replicants.quantumFood, quSave.replicants.limitDim > tier ? Math.round(getWorkerAmount(tier - 1).toNumber() * 3) : Math.round((quSave.replicants.limit - EDsave[tier].perm - EDsave[tier].progress.toNumber()) * 3)) : 1
 		if (quSave.replicants.limitDim > tier) quSave.replicants.quantumFoodCost = quSave.replicants.quantumFoodCost.div(E_pow(5, toFeed))
