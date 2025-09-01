@@ -85,7 +85,7 @@ function getPositronUpgCost(u) {
 
 	var base = amt * Math.max(amt - 1, 1) + 1
 	base = Math.pow(base, getPositronUpgCostScalingExp(u))
-	base + [null, 82, 153, 638, 26][u]
+	base += [null, 82, 153, 638, 26][u]
 
 	if (u != 4) return pow10(base)
 	return Math.floor(base)
