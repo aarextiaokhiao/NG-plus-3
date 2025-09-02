@@ -434,7 +434,7 @@ let HOW_TO = [
 				 Break Eternity is a subfeature exclusive to all Big Rip runs.
 				 <br><br>
 				 
-				 On Breaking Eternity: Galaxies and Time Dimensions will work, but scale faster. On Eternity, you gain Eternal Matter based on your time shards. You can spend Eternal Matter to buy 7 new Big Rip-exclusive upgrades (one of which is repeatable).
+				 On Breaking Eternity: Antimatter Galaxies and Time Dimensions work again, but their costs are harshly scaled. On Eternity, you gain Eternal Matter based on your time shards. You can spend Eternal Matter to buy 7 new Big Rip-exclusive upgrades (one of which is repeatable).
 				 <br><br>`
 			else msg += `<b>Get e1,215 Eternity Points while Big Rip to unlock Break Eternity.</b>`
 
