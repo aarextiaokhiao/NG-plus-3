@@ -489,15 +489,15 @@ let HOW_TO = [
 			The Photons feature splits into 2 parts.
 			<br><br>
 
-			The idle part is where Photons are generated.<br>
+			The first part is where Photons are generated.<br>
 			Photons strengthen 8 colors of Lights.<br>
 			To get more colors, you must gain more Photons.<br>
 			Fundament resets all Photons and Lights.
 			<br><br>
 			
-			The passive part is where you control speed to 4 features.<br>
+			The second part is where you control speed to 4 features.<br>
 			Slowing down a feature produces Experience Time.<br>
-			Speeding up a feature passively consumes Experience Time. It is toggleable with another option.<br>
+			Speeding up a feature consumes Experience Time. It is toggleable with another option.<br>
 			You can also gain Experience Time on Fundament, based on various factors.
 		`
 	}, {
