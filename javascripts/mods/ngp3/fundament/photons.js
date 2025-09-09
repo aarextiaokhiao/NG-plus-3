@@ -89,7 +89,7 @@ let PHOTON = {
 				name: "red",
 				req: 100,
 				eff: exp => Math.min(exp, 2.5) / 500 + 1,
-				desc: e => `Gain ${shorten((e-1)*100)}% more Neutrinos per Big Rip galaxy starting at 2,000.`
+				desc: e => `Starting at 2,000: Gain ${shorten((e-1)*100)}% more Neutrinos per a Big Rip galaxy gained in this Fundament.`
 			}, {
 				name: "orange",
 				req: 300,
@@ -99,7 +99,7 @@ let PHOTON = {
 				name: "yellow",
 				req: 2e3,
 				eff: exp => Math.min(1 + exp / 20, 2),
-				desc: e => `Meta Dimension cost scales ${shorten((e-1)*100)}% weaker.`
+				desc: e => `Meta Dimensions scale ${shorten((e-1)*100)}% weaker.`
 			}, {
 				name: "green",
 				req: 2e4,
