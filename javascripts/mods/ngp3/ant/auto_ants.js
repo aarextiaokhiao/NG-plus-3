@@ -85,9 +85,8 @@ var automators = {
 	},
 	17: {
 		title: "Paradigmic",
-		html: `Get Phantomal Paradigms at Big Rip #:
-		<input id="autoAnt17t" onchange="changeAutoGhost('17t')"/><br>
-		(auto-forces Big Rip)`,
+		html: `At antimatter threshold in Big Rip:
+		<input id="autoAnt17t" onchange="changeAutoGhost('17t')"/><br>`,
 		req: 17,
 		pow: 2,
 	}
@@ -101,7 +100,7 @@ function setupAutomaticGhostsData() {
 	data[15].a = 1
 	data[2].b = 3,   data[2].t = 5
 	data[13].o = 5,  data[13].u = 5,  data[13].t = 3
-	data[17].t = 5
+	data[17].t = pow10(2e10)
 	return data
 }
 
@@ -127,7 +126,7 @@ function updateAutoGhosts(load) {
 		el("autoAnt15a").value = data[15].a
 		el("autoAnt2b").value = data[2].b
 		el("autoAnt2t").value = data[2].t
-		el("autoAnt17t").value = data[17].t
+		el("autoAnt17t").value = shorten(data[17].t)
 	}
 
 	isAutoGhostsSafe = data.power >= powerConsumed
@@ -169,17 +168,14 @@ function changeAutoGhost(o) {
 		var num = parseFloat(el("autoAnt15a").value)
 		if (!isNaN(num) && num > 0) ghSave.automatorGhosts[13].u = num
 	} else if (o == "2t") {
-		var num = fromValue(el("autoAnt2t").value)
+		var num = parseFloat(el("autoAnt15a").value)
 		if (!isNaN(num) && num > 0) ghSave.automatorGhosts[2].t = num
 	} else if (o == "2b") {
-		var num = fromValue(el("autoAnt2b").value)
+		var num = parseInt(getEl("autoAnt13o").value)
 		if (!isNaN(num) && num >= 0) ghSave.automatorGhosts[2].b = num
 	} else if (o == "17t") {
 		var num = fromValue(el("autoAnt17t").value)
-		if (!isNaN(num) && num > 0) ghSave.automatorGhosts[17].t = num
-	} else if (o == "19t") {
-		var num = fromValue(el("autoAnt19t").value)
-		if (!isNaN(num) && num > 0) ghSave.automatorGhosts[19].t = num
+		if (!isNaN(break_infinity_js ? num : num.l)) ghSave.automatorGhosts[17].t = num
 	}
 }
 
@@ -224,7 +220,7 @@ function automatorTick(diff) {
 	if (isAutoGhostActive(15) && ghSave.time >= ghSave.automatorGhosts[15].a * 10) ghostify(true)
 
 	//Quantum Layer
-	let inRip = bigRipped(), paradigmalOn = isAutoGhostActive(17) && brSave.times > ghSave.automatorGhosts[17].t
+	let inRip = bigRipped(), paradigmalOn = isAutoGhostActive(17) && player.money.gt(ghSave.automatorGhosts[17].t)
 	if (inRip) {
 		if (paradigmalOn) PHANTOM.click()
 		if (isAutoGhostActive(2) && brSave.times >= ghSave.automatorGhosts[2].b) {
