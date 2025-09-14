@@ -220,7 +220,7 @@ function automatorTick(diff) {
 	if (isAutoGhostActive(15) && ghSave.time >= ghSave.automatorGhosts[15].a * 10) ghostify(true)
 
 	//Quantum Layer
-	let inRip = bigRipped(), paradigmalOn = isAutoGhostActive(17) && player.money.gt(ghSave.automatorGhosts[17].t)
+	let inRip = bigRipped(), paradigmalOn = PHANTOM.amt || isAutoGhostActive(17) && player.money.gt(ghSave.automatorGhosts[17].t)
 	if (inRip) {
 		if (paradigmalOn) PHANTOM.click()
 		if (isAutoGhostActive(2) && brSave.times >= ghSave.automatorGhosts[2].b) {
