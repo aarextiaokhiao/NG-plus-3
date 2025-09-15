@@ -634,7 +634,7 @@ let iroha_log = function (x) {return 'ログ' + x}
 let iroha_special = 'いろはにほへとちりぬるをわかよたれそつねならむうゐのおくやまけふこえてあさきゆめみしゑひもせアイウエオカキクケコ';
 
 function iroha (n, depth) {
-	if (!break_infinity_js) if (n instanceof Decimal) n = n.toString()
+	if (!break_infinity_js && n instanceof Decimal) n = n.toString()
 	n = E_BI(n);
 	if (isNaN(n.e)) {
 		return '今';
