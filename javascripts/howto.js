@@ -530,7 +530,7 @@ let HOW_TO = [
 			[REWORK SOON...]
 			<br><br>
 
-			At ??? Bosons, you can reset W & Z Bosons for Higgs. The first Higgs reset unlocks Higgs Field. Further Higgs resets require more Bosons. Unlike Dimensional Boosts and Galaxies, Higgs can be increased by any amount in one run.
+			At ??? Bosons, you can reset "W & Z Bosons" feature for Higgs. The first Higgs reset unlocks Higgs Field. Further Higgs resets require more Bosons. Unlike Dimensional Boosts and Galaxies, Higgs can be increased by any amount in one run.
 			<br><br>
 
 			Higgs Field has a grid of swappable boosts. You produce Higgs Mass which strengthens all boosts from Higgs Field. Lowermost rows start as weak, but gradually strengthen up to the first row on gaining more Higgs Mass.
