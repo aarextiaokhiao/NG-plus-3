@@ -477,7 +477,7 @@ let HOW_TO = [
 
 			You can spend Spectral Particles to boost all 3 kinds of Neutrinos.<br>
 			Neutrinos are used to boost things dependent on all kinds, and can be spent for upgrades or a rebuyable which gives 3x Spectral Particles per purchase.<br>
-			More Neutrino upgrades can be unlocked between 3rd Fundament and 10th Fundament.
+			More Neutrino upgrades can be unlocked between 3rd Fundament and 10th Fundament. Further upgrades are unlocked in later progression.
 		`
 	}, {
 		mod: _ => ngp3,
