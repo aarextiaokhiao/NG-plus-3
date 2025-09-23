@@ -462,7 +462,9 @@ let HOW_TO = [
 			<br><br>
 
 			<b>Automators</b><br>
-			Automator Charge is based on net Quarks and other stuff you'll gain later. Automator Power is your best-ever Automator Charge, but is used on enabling an Automator. Automators automate various features such as Nanofield and Big Rips, as long the your used power doesn't exceed the cap. You unlock an Automator on passing a certain threshold of Automator Power.
+			Automator Charge is based on net Quarks and other stuff you'll gain later. Automator Power is your best-ever Automator Charge, but is spent on enabling an Automator.<br>
+			
+			Automators automate various features such as Nanofield and Big Rips. They are toggleable as long the your spent power doesn't exceed the cap. You unlock an Automator on passing a certain threshold of Automator Power.
 		`
 	}, {
 		mod: _ => ngp3,
