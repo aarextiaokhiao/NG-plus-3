@@ -512,7 +512,7 @@ let HOW_TO = [
 			[REWORK SOON...]
 			<br><br>
 
-			You can place down W+, W-, and Z Chargers on an customizible 7x7 grid.
+			You can place down W+, W-, and Z Chargers on an 7x7 grid.
 			<br><br>
 
 			An charger provides strength onto chargers adjacent to it. W+ Chargers add strength, but W- Chargers reduce strength.<br>
