@@ -488,7 +488,7 @@ let HOW_TO = [
 		title: "Photons",
 		layer: "fundament",
 		desc: `
-			The Photons feature splits into 2 parts.
+			Photons split into 2 parts.
 			<br><br>
 
 			The first part is where Photons are generated.<br>
