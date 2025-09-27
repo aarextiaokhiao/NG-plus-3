@@ -488,16 +488,13 @@ let HOW_TO = [
 		title: "Photons",
 		layer: "fundament",
 		desc: `
-			Photons split into 2 parts.
-			<br><br>
-
-			The first part is where Photons are generated.<br>
+			Photons are passively generated based on various resources.<br>
 			Photons strengthen 8 colors of Lights.<br>
 			To get more colors, you must gain more Photons.<br>
 			Fundament resets all Photons and Lights.
 			<br><br>
 			
-			The second part is where you control speed to 4 features.<br>
+			There is another feature where you control speed to 4 features.<br>
 			Slowing down a feature produces Experience Time.<br>
 			Speeding up a feature consumes Experience Time. That is toggleable with another option.<br>
 			You can also gain Experience Time on Fundament, based on various factors.
