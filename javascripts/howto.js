@@ -431,7 +431,7 @@ let HOW_TO = [
 			let feature = ghSave?.photons?.unl || SPOILERS ? 3 : ghSave?.times ? 2 : player.achievements.includes("ng3p65") ? 1 : 0
 
 			if (feature >= 1) msg += `<b>Break Eternity</b><br>
-				 Break Eternity is a subfeature exclusive to all Big Rip runs.
+				 Break Eternity is a exclusive subfeature in Big Rip.
 				 <br><br>
 				 
 				 On Breaking Eternity: Antimatter Galaxies and Time Dimensions work again, but their costs are harshly scaled. On Eternity, you gain Eternal Matter based on your time shards. You can spend Eternal Matter to buy 7 new Big Rip-exclusive upgrades (one of which is repeatable).
@@ -439,7 +439,7 @@ let HOW_TO = [
 			else msg += `<b>Get e1,215 Eternity Points while Big Rip to unlock Break Eternity.</b>`
 
 			if (feature == 3) msg += `<b>Phantomal Paradigms</b><br>
-				Phantomal Paradigms are a replacement to Dimensional Shifts in Big Rip. Each Phantomal Paradigm removes the cost scaling of a Antimatter Dimension tier (except the 8th), but apply a constant per-ten bonus to that tier.<br>
+				Phantomal Paradigms are a exclusive replacement to Dimensional Shifts in Big Rip. Each Phantomal Paradigm removes the cost scaling of a Antimatter Dimension tier (except the 8th), but apply a constant per-ten bonus to that tier.<br>
 				Additionally, one of each Infinity & Time Dimensions will be removed and you will be stuck in Big Rips until next Fundament.<br><br>
 
 				Like other Big Rip features, they reset on Fundament.`
