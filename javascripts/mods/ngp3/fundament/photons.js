@@ -118,8 +118,8 @@ let PHOTON = {
 			}, {
 				name: "ultraviolet",
 				eff: exp => Math.min(exp + 1, 3),
-				desc: e => `Raise 2nd Neutrino Boost by ^${e.toFixed(3)}.`
-				req: 1/0,
+				desc: e => `Raise 2nd Neutrino Boost by ^${e.toFixed(3)}.`,
+				req: 1/0
 			}
 		],
 		eff: (x, def = 1) => tmp.funda.photon?.eff[x] ?? def,
