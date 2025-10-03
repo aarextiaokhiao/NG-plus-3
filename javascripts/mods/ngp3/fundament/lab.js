@@ -9,7 +9,7 @@ function wzEff(type, i) {
 const WZ_FIELD = {
 	/* CORE */
 	//Unlock
-	req: _ => tmp.funda.photon?.unls >= 8,
+	req: _ => false,
 	unlocked: _ => blSave?.unl,
 	unlock() {
 		blSave.unl = true

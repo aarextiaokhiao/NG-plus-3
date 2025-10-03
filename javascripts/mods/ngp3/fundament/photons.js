@@ -117,9 +117,9 @@ let PHOTON = {
 				desc: e => `Discharged Galaxies are ${(e*100).toFixed(1)}% efficient.`
 			}, {
 				name: "ultraviolet",
-				req: 1e100,
 				eff: exp => Math.min(exp + 1, 3),
 				desc: e => `Raise 2nd Neutrino Boost by ^${e.toFixed(3)}.`
+				req: 1/0,
 			}
 		],
 		eff: (x, def = 1) => tmp.funda.photon?.eff[x] ?? def,
