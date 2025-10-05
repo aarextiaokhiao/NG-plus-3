@@ -306,7 +306,7 @@ let HOW_TO = [
 		You gain Anti-Quarks based on your best meta-antimatter on this Quantum.<br><br>
 
 		<b>Speedrun Milestones</b><br>
-		On going Quantum under a specific time, you also unlock Speedrun Milestones. Speedrun Milestones provide you with a reward that greatly boosts progress and makes Quantums much faster and more efficient.`
+		On going Quantum under a specific time, you unlock certain Speedrun Milestones. Speedrun Milestones provide you with a reward that greatly boosts progress and makes Quantums much faster and more efficient.`
 	}, {
 		mod: _ => ngp3,
 		req: _ => player.quantum?.times,
