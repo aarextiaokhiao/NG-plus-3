@@ -489,8 +489,8 @@ let HOW_TO = [
 		layer: "fundament",
 		desc: `
 			Photons are passively generated based on various resources.<br>
-			Photons strengthen 8 colors of Lights.<br>
-			To get more colors, you must gain more Photons.<br>
+			Photons strengthen 8 colors of Lights which provide boosts.<br>
+			To unlock more colors, you must gain more Photons.<br>
 			Fundament resets all Photons and Lights.
 			<br><br>
 			
