@@ -443,7 +443,7 @@ let HOW_TO = [
 				Additionally, one of each Infinity & Time Dimensions will be removed and you will be stuck in Big Rips until next Fundament.<br><br>
 
 				Like other Big Rip features, they reset on Fundament.`
-			else if (feature == 2) msg += `<b>Unlock Photons to unlock a new subfeature.</b>`
+			else if (feature == 2) msg += `<b>Unlock Photons to unlock Phantomal Paradigms.</b>`
 
 			return msg
 		}
