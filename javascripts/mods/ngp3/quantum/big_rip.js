@@ -274,7 +274,7 @@ function updateBreakEternityUpgrade1Temp(){
 	var em = beSave.eternalMatter
 	var log1 = ep.div("1e1280").add(1).log10()
 	var log2 = em.mul(10).max(1).log10()
-	var exp = isBreakUpgActive(9) ? Math.pow(log1, 0.5) / 15 + Math.pow(log2, 2) / 400 :
+	var exp = isBreakUpgActive(9) ? Math.pow(log1, 0.5) / 20 + Math.pow(log2, 2) / 500 :
 		Math.pow(log1, 1/3) * 0.5 + Math.pow(log2, 1/3)
 	tmp.qu.beu[1] = pow10(exp)
 }
@@ -298,7 +298,7 @@ function updateBreakEternityUpgrade4Temp(){
 	var ss = brSave && brSave.spaceShards
 	var log1 = ep.div("1e1860").add(1).log10()
 	var log2 = ss.div("7e19").add(1).log10()
-	var exp = isBreakUpgActive(9) ? Math.pow(log1, 0.5) / 15 + Math.pow(log2, 1.5) / 8 :
+	var exp = isBreakUpgActive(9) ? Math.pow(log1, 0.5) / 30 + Math.pow(log2, 1.5) / 16 :
 		Math.pow(log1, 1/3) + Math.pow(log2, 1/3) * 8
 	tmp.qu.beu[4] = pow10(exp)
 }
@@ -343,7 +343,7 @@ function getBEUnls() {
 	return x
 }
 
-var breakUpgCosts = [1, 1e3, 2e6, 2e11, 8e17, 1e45, null, 1e140, 1e175, 1e300]
+var breakUpgCosts = [1, 1e3, 2e6, 2e11, 8e17, 1e45, null, 1e140, 1e175, 1e200]
 function getBreakUpgCost(id) {
 	if (id == 7) return pow2(beSave.epMultPower).mul(1e5)
 	return breakUpgCosts[id - 1]
@@ -427,7 +427,7 @@ function breakEternityDisplay(){
 /* PHANTOMAL PARADIGMS */
 let PHANTOM = {
 	get amt() { return tmp.qu.phantoms },
-	get req() { return this.amt == 7 ? 1/0 : 1.15 ** this.amt * 1.9e6 },
+	get req() { return this.amt == 7 ? 1/0 : 1.1 ** this.amt * 1.9e6 },
 	get can() { return bigRipped() && ghostified && this.amt < 8 && player.eightBought >= this.req },
 
 	boosted(dim) { return dim != 8 && dim >= 8 - this.amt },

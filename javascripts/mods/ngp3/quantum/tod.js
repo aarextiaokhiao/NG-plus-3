@@ -172,9 +172,8 @@ function getTreeUpgradeCost(upg, add=0) {
 	if (upg == 7) return pow2(lvl * 4).mul(4e22)
 	if (upg == 8) return pow2(lvl).mul(3e23)
 	if (upg == 9) return pow10(lvl + 30)
-	if (upg == 10) return pow10(lvl + 80)
-	if (upg == 11) return pow10(lvl + 100)
-	if (upg == 12) return pow10(lvl * 10 + 120)
+	if (upg == 10) return pow10(lvl + 34)
+	if (upg == 11) return pow10(lvl + 60)
 	return E(1/0)
 }
 
@@ -196,36 +195,31 @@ function getTreeUpgradeLevel(upg) {
 
 function getTreeUpgradeStrength(upg) {
 	let min = 1/0
-	if (upg == 12) return 1
-	if (upg == 1)  min =  3
-	if (upg == 2)  min =  6
-	if (upg == 6)  min =  4
-	if (upg == 10) min =  4
+	if (upg == 1) min = 3
 	return Math.min(tmp.qu.tree_str, min)
 }
 
 function getTreeUpgradeEffect(upg) {
 	let lvl = getTreeUpgradeLevel(upg) * getTreeUpgradeStrength(upg)
 
-	if (upg == 1) return Math.min(Math.floor(lvl * 30), 5e3)
+	if (upg == 1) {
+		let r = Math.floor(lvl * 30)
+		if (r > 5e3) r = (r + 5e3) / 2
+		return r
+	}
 	if (upg == 2) return lvl * 0.25
-	if (upg == 3) return pow2(Math.sqrt(Math.max(lvl, 0) * 2))
+	if (upg == 3) return pow2(Math.sqrt(lvl * 2))
 	if (upg == 4) return Math.sqrt(1 + Math.log10(lvl * 0.5 + 1) * 0.1)
 	if (upg == 5) {
 		let MA = hasAch("ng3p87") ? player.meta.bestOverGhostifies : player.meta.bestOverQuantums
 		return E_pow(Math.log10(MA.add(1).log10() + 1) / 5 + 1, Math.sqrt(lvl) / 2)
 	}
-	if (upg == 6) {
-		let exp = lvl / 2
-		if (exp > 30) exp = Math.sqrt(exp * 30)
-		return pow10(exp)
-	}
-	if (upg == 7) return lvl ? pow2(Math.sqrt(tmp.rep.eff.max(1).log10()) / 20 * Math.log10(lvl + 9)) : E(1)
+	if (upg == 6) return pow10(Math.min(lvl / 2, 30))
+	if (upg == 7) return lvl ? pow2(Math.sqrt(tmp.rep.eff.max(1).log10()) * Math.log10(lvl + 9) / 20) : E(1)
 	if (upg == 8) return Math.log10(player.meta.bestAntimatter.add(10).log10()) * Math.sqrt(lvl)
-	if (upg == 9) return lvl * 2.5
-	if (upg == 10) return lvl * 1e4
-	if (upg == 11) return lvl / 150 + 1
-	if (upg == 12) return lvl / 3
+	if (upg == 9) return lvl * 5
+	if (upg == 10) return Math.log10(lvl / 4 + 1) + 1
+	if (upg == 11) return 1
 	return 0
 }
 
@@ -236,7 +230,10 @@ function getTreeUpgradeEffectDesc(upg) {
 	if (upg == 2) return getDilExp("TU3").toFixed(2) + " → " + getDilExp().toFixed(2)
 	if (upg == 4) return "^" + getFullExpansion(Math.round(getPositronBoost("noTree"))) + " → ^" + getFullExpansion(Math.round(tmp.mpte))
 	if (upg == 8) return eff.toFixed(2)
-	return shortenMoney(eff)
+	if (upg == 11) return eff.toFixed(2)
+	if (upg == 12) return "???"
+
+	return shorten(eff)
 }
 
 var branchUpgCostScales = [[300, 15, 2], [50, 8, 1], [4e7, 7, 1]]
@@ -416,10 +413,9 @@ function getTreeUpgradeEfficiencyText(){
 
 	let text = ""
 	if (todSave.r.decays) {
-		text += "Radioactive Decays: +" + (todSave.r.decays / 4).toFixed(1) + "x, "
+		text += "Radioactive Decays: +" + shorten(Math.sqrt(todSave.r.decays) / 4) + "x, "
 		if (hasWZMilestone(14)) text += "Bosonic Milestone 15: " + shorten(blEff(14)) + "x to prior, "
 	}
-	if (getTreeUpgradeLevel(12) > 0) text += "Tree Upgrade 12: +" + shorten(getTreeUpgradeEffect(12)) + "x, "
 	if (PHANTOM.amt > 0) text += "Phantomal Paradigms: +" + shorten(PHANTOM.amt / 5) + "x, "
 	if (hasNB(7)) text += "Neutrino Boost 7: +" + shorten(NT.eff("boost", 7)) + "x, "
 	if (hasAch("ng3p62")) text += "'Finite Time' Reward: +0.1x, "

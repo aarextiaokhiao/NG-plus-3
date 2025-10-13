@@ -113,7 +113,7 @@ const NEUTRINO = NT = {
 				effDesc: e => `Increase TP gain exponent by <b>+^${shorten(e)}</b>.`,
 			}, {
 				cost: E(2),
-				eff: nt => Math.pow(nt, .25 * lightEff(7, 1)) * 1.5,
+				eff: nt => hasNU(15) ? Math.pow(nt, .75) / 3 :  Math.pow(nt, .25) * 1.5,
 				effDesc: e => `Replicate chance boosts itself more. (<b>+^${shorten(e)}</b>)`,
 			}, {
 				cost: E(4),
@@ -148,7 +148,7 @@ const NEUTRINO = NT = {
 			}, {
 				cost: E(1e3),
 				eff: nt => Math.max(Math.pow(Math.log10(nt + 10, 0), .5) * 5 - 5, 1),
-				effDesc: e => `Strengthen Tree Upgrades by <b>${shorten(e*100-100)}%</b>.`,
+				effDesc: e => `Strengthen Tree Upgrades by <b>+${shorten(e*100-100)}%</b>.`,
 			}, {
 				cost: E(1e9),
 				eff(nt) {
@@ -169,10 +169,6 @@ const NEUTRINO = NT = {
 				cost: E(1e24),
 				eff: nt => Math.max(nt / 30 - 1.5, 1) ** 3,
 				effDesc: e => `Gain <b>${shorten(e)}x</b> more Photons.`,
-			}, {
-				cost: E(1e300),
-				eff: nt => Math.min(quSave.time / 1e4, Math.log10(nt / 10 + 1)),
-				effDesc: e => `Outside of Big Rip, Quantum time scales Replicanti Slowdown by <b>^${shorten(e)}</b>.`
 			}
 		]
 	},
@@ -277,14 +273,11 @@ const NEUTRINO = NT = {
 				desc: `Unlock new Nanobenefits. Improve 7th Nanobenefit.`
 			}, {
 				unl: _ => PHOTON.unlocked(),
-				cost: E(1e44),
-				desc: `Tachyonic Galaxies scale Positrons later.`,
-
-				eff: _ => player.dilation.freeGalaxies * 2,
-				effDesc: e => `+${getFullExpansion(Math.round(e))}`
+				cost: E(1e47),
+				desc: `Improve 2nd Neutrino Boost.`
 			}, {
-				unl: _ => PHOTON.unlocked(),
-				cost: E(1e50),
+				unl: _ => false,
+				cost: E(1/0),
 				desc: `Galaxies raise Meta-Antimatter effect.`,
 
 				eff: _ => player.galaxies / 6e3,

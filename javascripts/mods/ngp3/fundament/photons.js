@@ -53,7 +53,7 @@ let PHOTON = {
 	/* Feature - Time */
 	affected_features: {
 		rep: "Replicantis",
-		nf: "Nanofield",
+		ed: "Emperors",
 		decay: "Decay",
 		photon: "Photons",
 	},
@@ -70,12 +70,9 @@ let PHOTON = {
 
 	/* Feature - Lights */
 	photon_prod() {
-		let r = (player.meta.resets - 400) / 30
-
-		r = pow10(r)
+		let r = pow10((player.meta.resets - 400) / 25)
 		if (hasNB(11))               r = r.mul(NT.eff("boost", 11))
 		if (hasNanoReward("photon")) r = r.mul(tmp.qu.nf.eff.photon)
-		if (PHANTOM.amt >= 1)        r = r.mul(pow2(PHANTOM.amt))
 		return r
 	},
 	light: {
@@ -107,19 +104,19 @@ let PHOTON = {
 				desc: e => `Nanorewards scale +${shorten(e)} later.`
 			}, {
 				name: "blue",
-				req: 5e6,
-				eff: exp => Math.min(exp / 5 + 1, 2),
+				req: 2e6,
+				eff: exp => Math.log10(exp / 10 + 1) + 1,
 				desc: e => `Raise all non-Decay multipliers that speed up Decay by ^${shorten(e)}.`
 			}, {
 				name: "violet",
-				req: 1e100,
-				eff: exp => Math.min(Math.log10(exp / 3 + 1) / 3, 1),
+				req: 2e8,
+				eff: exp => Math.min(Math.log10(exp / 7.5 + 1), 1),
 				desc: e => `Discharged Galaxies are ${(e*100).toFixed(1)}% efficient.`
 			}, {
 				name: "ultraviolet",
-				eff: exp => Math.min(exp + 1, 3),
-				desc: e => `Raise 2nd Neutrino Boost by ^${e.toFixed(3)}.`,
-				req: 1/0
+				req: 5e9,
+				eff: exp => 0,
+				desc: e => `The endgame point.`
 			}
 		],
 		eff: (x, def = 1) => tmp.funda.photon?.eff[x] ?? def,

@@ -162,7 +162,7 @@ function getEmperorDimensionMultiplier(dim) {
 	if (!tmp.qu.ant.global_mult) return E(1)
 
 	let ret = tmp.qu.ant.global_mult //Global multiplier of all Emperor Dimensions
-	if (dim == 8) ret = ret.mul(E_pow(1.1, quSave.emperorDimensions[8].perm - 8).max(1))
+	if (dim == 8) ret = ret.mul(E_pow(1.05, quSave.emperorDimensions[8].perm - 8).max(1))
 	if (dim == 1 && hasAch("ng3p54")) ret = ret.mul(Math.pow(todSave.r.spin.add(10).log10(), 3))
 	if (hasNU(7) && dim % 2 == 1) ret = ret.mul(NT.eff("upg", 7))
 	return ret

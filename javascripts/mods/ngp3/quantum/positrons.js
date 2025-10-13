@@ -52,11 +52,10 @@ function sacrificeGalaxy() {
 }
 
 function getPositronBoost(mod) {
-	var r = quSave.electrons.amount
 	var ss = 8e4
-	var ss_speed = 8e4
-	if (hasNU(15)) ss += NT.eff("upg", 15, 0)
-	if (r > ss) r = Math.sqrt((r - ss + ss_speed) * ss_speed) + ss - ss_speed
+
+	var r = quSave.electrons.amount
+	if (r > ss) r = Math.sqrt(r * ss)
 
 	if (hasGluonUpg("rg", 4) && mod != "no-rg4") r *= 0.7
 	if (hasDecay() && mod != "noTree") r *= getTreeUpgradeEffect(4)

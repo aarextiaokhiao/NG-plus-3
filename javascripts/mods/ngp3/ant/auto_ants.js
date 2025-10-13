@@ -12,7 +12,7 @@ var automators = {
 	6: {
 		title: "Tree Upgrader",
 		req: 4,
-		pow: 1.5,
+		pow: 1,
 	},
 	7: {
 		title: "Quantum Multiplier",
@@ -39,7 +39,7 @@ var automators = {
 		html: `Wait: <input id="autoAnt11pw" onchange="changeAutoGhost('11pw')"/>s<br>
 		Produce: <input id="autoAnt11cw" type="text" onchange="changeAutoGhost('11cw')"/>s`,
 		req: 6.5,
-		pow: 0.5
+		pow: 2
 	},
 	13: {
 		title: "Big Rip",
@@ -47,31 +47,31 @@ var automators = {
 		Undo: <input id="autoAnt13u" onchange="changeAutoGhost('13u')"/>s<br>
 		Stop: <input id="autoAnt13o" onchange="changeAutoGhost('13o')"/> times<br>(0 = always)`,
 		req: 7,
-		pow: 3,
+		pow: 2,
 	},
 	14: {
 		title: "EP Multiplier II",
 		req: 7.5,
+		pow: 2,
+	},
+	2: {
+		title: "Challenger",
+		html: `(big rip only)<br>
+		Begin EC10 at Big Rip #: <input id="autoAnt2b" onchange="changeAutoGhost('2b')"/><br>
+		Duration: <input id="autoAnt2t" onchange="changeAutoGhost('2t')"/>s`,
+		req: 11,
 		pow: 1,
 	},
 	15: {
 		title: "Fundament",
 		html: `Seconds until reset: <input id="autoAnt15a" onchange="changeAutoGhost('15a')"/>`,
-		req: 8,
-		pow: 3,
+		req: 12,
+		pow: 2,
 	},
 	18: {
 		title: "Positron Upgrader",
-		req: 9,
-		pow: .5,
-	},
-	2: {
-		title: "Eternal Challenger",
-		html: `(big rip only)<br>
-		Begin at Big Rip #: <input id="autoAnt2b" onchange="changeAutoGhost('2b')"/><br>
-		EC10 Duration: <input id="autoAnt2t" onchange="changeAutoGhost('2t')"/>s`,
-		req: 10,
-		pow: 1,
+		req: 13,
+		pow: 2,
 	},
 	12: {
 		title: "Radioactive Decay",
@@ -86,12 +86,12 @@ var automators = {
 	17: {
 		title: "Paradigmic",
 		html: `At antimatter threshold in Big Rip:
-		<input id="autoAnt17t" onchange="changeAutoGhost('17t')"/><br>`,
+		<input id="autoAnt17t" onchange="changeAutoGhost('17t')"/>`,
 		req: 17,
 		pow: 2,
 	}
 }
-const automatorOrder = [1,5,6,7,8,9,10,11,13,14,15,18,2,12,16,17]
+const automatorOrder = [1,5,6,7,8,9,10,11,13,14,2,15,12,18,16,17]
 
 function setupAutomaticGhostsData() {
 	var data = {power: 0, ghosts: 3}
@@ -220,20 +220,23 @@ function automatorTick(diff) {
 	if (isAutoGhostActive(15) && ghSave.time >= ghSave.automatorGhosts[15].a * 10) ghostify(true)
 
 	//Quantum Layer
-	let inRip = bigRipped(), paradigmalOn = PHANTOM.amt || isAutoGhostActive(17) && player.money.gt(ghSave.automatorGhosts[17].t)
+	let inRip = bigRipped()
 	if (inRip) {
-		if (paradigmalOn) PHANTOM.click()
 		if (isAutoGhostActive(2) && brSave.times >= ghSave.automatorGhosts[2].b) {
 			if (quSave.time < ghSave.automatorGhosts[2].t * 10 && player.currentEternityChall != "eterc10") startEC10()
 			if (quSave.time >= ghSave.automatorGhosts[2].t * 10 && player.currentEternityChall == "eterc10") eternity(true)
 		}
 	}
-	if (hasMasteryStudy("d14") && isAutoGhostActive(13)) {
+
+	let inParadigm = PHANTOM.amt || inRip && player.money.gt(ghSave.automatorGhosts[17].t) && isAutoGhostActive(17)
+	if (inParadigm && isAutoGhostActive(17)) PHANTOM.click()
+	else if (hasMasteryStudy("d14") && isAutoGhostActive(13) && !inParadigm) {
 		let limit = ghSave.automatorGhosts[13].o || 1 / 0
 		if (inRip) {
-			if (quSave.time >= ghSave.automatorGhosts[13].u * 10 && !paradigmalOn && brSave.times <= limit) doQuantum(true, true)
-		} else if (quSave.time >= ghSave.automatorGhosts[13].t * 10 && (brSave.times < limit || paradigmalOn)) bigRip(true)
+			if (quSave.time >= ghSave.automatorGhosts[13].u * 10 && brSave.times <= limit) doQuantum(true, true)
+		} else if (quSave.time >= ghSave.automatorGhosts[13].t * 10 && brSave.times < limit) bigRip(true)
 	}
+
 	if (NF.unl()) {
 		if (isAutoGhostActive(1) && quSave.usedQuarks.r.gt(0)) unstableQuarks("r")
 		if (isAutoGhostActive(12) && getUnstableGain("r").max(todSave.r.quarks).gte(Decimal.pow(10, Math.pow(2, 40)))) {

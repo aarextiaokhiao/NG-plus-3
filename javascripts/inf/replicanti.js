@@ -240,7 +240,6 @@ function getReplSpeed() {
 	}
 	inc = inc + 1
 	if (hasGluonUpg("gb", 2)) exp *= 2
-	if (hasNB(12) && !bigRipped()) exp *= NT.eff("boost", 12)
 	return { inc, exp }
 }
 

@@ -1,6 +1,6 @@
 //VERSION: 2.31
 let ngp3_ver = 2.31
-let ngp3_build = 20251002
+let ngp3_build = 20251012
 function doNGP3Updates() {
 	if (!aarMod.ngp3_build) aarMod.ngp3_build = 0
 	if (aarMod.ngp3_build < 20221230) quSave.multPower = 0
@@ -40,6 +40,7 @@ function doNGP3Updates() {
 			ghSave.hb = HIGGS.setupSave()
 			ghSave.lab = blSave = WZ_FIELD.setup()
 		}
+
 		if (aarMod.ngp3_build < 20250703 && (E(ghSave.ghostParticles).gte(1e20) || ghSave.photons.unl)) {
 			alert("Due to massive balancing changes, you are sent back to e20 Spectral Particles!")
 
@@ -55,11 +56,26 @@ function doNGP3Updates() {
 			ghSave.ghostParticles = E(1e20)
 			ghSave.automatorGhosts.power = 0
 		}
+
 		if (aarMod.ngp3_build < 20250830) {
 			for (let dim = 1; dim <= 8; dim++) {
 				let dim_data = EDsave[dim]
 				if (typeof dim_data.perm == "string") dim_data.perm = Math.round(dim_data.perm)
 			}
+		}
+
+		if (aarMod.ngp3_build < 20251012 && E(ghSave.ghostParticles).gte(1e30)) {
+			alert("Due to balancing changes, you are sent back to e30 Spectral Particles!")
+
+			player.dilation.best = E(0)
+			quSave.electrons.rebuyables = [0, 0, 0, 0]
+			beSave.upgrades = [1, 2, 3, 4, 5, 6]
+
+			resetPowers()
+			resetGHPandNeutrinos()
+
+			ghSave.ghostParticles = E(1e30)
+			ghSave.automatorGhosts.power = 0
 		}
 
 		if (!ghSave.reached && !ghSave.times) {
@@ -277,7 +293,7 @@ function updateNGP3Temp() {
 		if (beSave && beSave.unlocked) updateBreakEternityUpgradesTemp()
 		if (hasMasteryStudy("d14")) updateBigRipUpgradesTemp()
 		if (hasDecay()) {
-			tmp.qu.tree_unls = Math.min(8 + getRadioactiveDecays(), 12)
+			tmp.qu.tree_unls = Math.min(8 + getRadioactiveDecays() * 2, 12)
 			tmp.qu.tree_str = getTreeUpgradeEfficiency()
 		}
 		if (hasMasteryStudy("d12")) updateNanofieldTemp()
@@ -398,7 +414,7 @@ function ngP3AchieveCheck() {
 	if (getRadioactiveDecays() >= 1) giveAchievement("Radioactive Decaying to the max!")
 	if (ghSave.best <= 30) giveAchievement("Running through Big Rips")
 	if (MTS.bought >= 48) giveAchievement("The Theory of Ultimate Studies")
-	if (tmp.funda.photon?.unls >= 5) giveAchievement("Here comes the light")
+	if (tmp.funda.photon?.unls >= 6) giveAchievement("Here comes the light")
 
 	if (WZ_FIELD.unlocked()) giveAchievement("Even Ghostlier than before")
 	if (PHANTOM.amt >= 7) giveAchievement("Here lies dimensions")
@@ -465,8 +481,8 @@ function quantumOverallUpdating(diff){
 
 	if (hasMasteryStudy("d7")) quSave.electrons.amount = getPositronGainFinalMult() * quSave.electrons.sacGals
 	if (hasMasteryStudy("d10")) replicantOverallUpdating(diff)
-	if (hasMasteryStudy("d11")) emperorDimUpdating(diff)
-	if (NF.unl()) nanofieldUpdating(PHOTON.get_tick(diff, "nf"))
+	if (hasMasteryStudy("d11")) emperorDimUpdating(PHOTON.get_tick(diff, "ed"))
+	if (NF.unl()) nanofieldUpdating(diff)
 	if (hasDecay()) treeOfDecayUpdating(PHOTON.get_tick(diff, "decay"))
 	if (bigRipped()) {
 		brSave.totalAntimatter = brSave.totalAntimatter.max(player.money)

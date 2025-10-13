@@ -139,7 +139,7 @@ function getSupersonicStart() {
 	if (inQC(5)) return 0
 	if (inNGM(2) || !mod.ngp3) return 1/0
 
-	let r = 56e4 + getTreeUpgradeEffect(10)
+	let r = 56e4
 	if (hasMasteryStudy("t331")) r += 24e4
 	return r
 }

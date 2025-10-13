@@ -142,7 +142,7 @@ function getNanoRewardReq(additional){
 
 function getNanoRewardReqFixed(n){
 	let x = E_pow(4, n).mul(50), s = 15 + lightEff(4, 0)
-	if (n > s) x = x.mul(E_pow(2.0, (n - s) * (n - s + 3)))
+	if (n > s) x = x.mul(E_pow(2.0, (n - s) * (n - s + 3) / getTreeUpgradeEffect(10)))
 	return x
 }
 
