@@ -9,7 +9,7 @@ function wzEff(type, i) {
 const WZ_FIELD = {
 	/* CORE */
 	//Unlock
-	req: _ => false,
+	req: _ => tmp.funda.photon?.unls >= 8 && ghSave.ghostParticles.gte(1e38),
 	unlocked: _ => blSave?.unl,
 	unlock() {
 		blSave.unl = true
@@ -177,7 +177,10 @@ const WZ_FIELD = {
 	updateTab() {
 		el("wz_req").style.display = !WZ_FIELD.unlocked() ? "" : "none"
 		el("wz_div").style.display = WZ_FIELD.unlocked() ? "" : "none"
-		if (!WZ_FIELD.unlocked()) return
+		if (!WZ_FIELD.unlocked()) {
+			el("wz_req").innerHTML = `Reach Ultraviolet Light and ${shorten(1e38)} Spectral Particles to unlock W & Z Field.`
+			return
+		}
 
 		el("bl_amt").textContent = shorten(blSave.bosons)
 		el("bl_prod").textContent = shorten(this.prod()) + "/s"

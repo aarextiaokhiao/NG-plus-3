@@ -1,6 +1,6 @@
 //VERSION: 2.31
 let ngp3_ver = 2.31
-let ngp3_build = 20251012
+let ngp3_build = 20251013
 function doNGP3Updates() {
 	if (!aarMod.ngp3_build) aarMod.ngp3_build = 0
 	if (aarMod.ngp3_build < 20221230) quSave.multPower = 0
@@ -545,7 +545,6 @@ function setupNGP3HTMLAndData() {
 	NT.setupTab()
 	PHOTON.setupTab()
 	WZ_FIELD.setupTab()
-	HIGGS.setupTab()
 	setupNGP3ProgressTab()
 
 	//META

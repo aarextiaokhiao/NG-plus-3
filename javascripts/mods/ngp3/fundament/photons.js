@@ -116,7 +116,7 @@ let PHOTON = {
 				name: "ultraviolet",
 				req: 5e9,
 				eff: exp => 0,
-				desc: e => `The endgame point.`
+				desc: e => `Placeholder boost.`
 			}
 		],
 		eff: (x, def = 1) => tmp.funda.photon?.eff[x] ?? def,
