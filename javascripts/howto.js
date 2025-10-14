@@ -505,20 +505,7 @@ let HOW_TO = [
 
 		title: "W & Z Bosons",
 		layer: "fundament",
-		desc: `
-			[REWORK SOON AFTER GHOSTIFY RESPECCED: PART 1...]
-			<br><br>
-
-			You can place down W+, W-, and Z Chargers on an 7x7 grid.
-			<br><br>
-
-			An charger provides strength onto chargers adjacent to it. W+ Chargers add strength, but W- Chargers reduce strength.<br>
-			Chargers with positive strength provide positive hypercharge, but chargers with negative strength provide negative hypercharge.
-			<br><br>
-
-			Every type of hypercharges provides milestones that are independent to each other.<br>
-			All milestones provide a variety of effects. I recommend joining <a href="http://discord.gg/KsjcgskgTj" target="_newtab">the NG+3 Discord server</a> for sharing presets.
-		`
+		desc: `On rework...`
 	}, {
 		mod: _ => ngp3,
 		req: _ => ghSave?.hb?.unl,
