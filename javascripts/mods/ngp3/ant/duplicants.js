@@ -322,7 +322,7 @@ function updateEmperorDimensions() {
 			el("empFeedMax" + d).className = (canFeedReplicant(d) ? "stor" : "unavailabl") + "ebtn"
 
 			el("empQuarks" + d).style.display = showDetails ? "" : "none"
-			if (showDetails) el("empQuarks" + d).textContent = shorten(production.workers[d]) + "pilons/s"
+			if (showDetails) el("empQuarks" + d).textContent = shorten(production.workers[d]) + " pilons/s"
 		}
 	}
 
