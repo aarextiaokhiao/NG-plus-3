@@ -31,7 +31,7 @@ function quantum(auto, force, qc, bigRip = false) {
 			if (!hasAch("ng3p41")) conf = true
 			if (conf) {
 				if (bigRip && !confirm("Big Ripping the universe starts PC6+8, but with various changes. You can give your Time Theorems and Time Studies back by undoing Big Rip. If you can beat this, you will be able to unlock the next layer.")) return
-				if (!bigRip && !confirm("You will start a Quantum Challenge, but as a Paired Challenge, there will be two challenges at once. Completing it boosts the rewards of the Quantum Challenges that you chose in this Paired Challenge. You will keep positrons & sacrificed galaxies, but they don't work in this Challenge.")) return
+				if (!bigRip && !hasMasteryStudy("d10") && !confirm("You will start a Quantum Challenge, but as a Paired Challenge, there will be two challenges at once. Completing it boosts the rewards of the Quantum Challenges that you chose in this Paired Challenge. You will keep positrons & sacrificed galaxies, but they don't work in this Challenge.")) return
 			}
 		} else {
 			if (QCIntensity(1) == 0 && !ghostified) conf = true
