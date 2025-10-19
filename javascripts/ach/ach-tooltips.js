@@ -429,7 +429,7 @@ function setR20Tooltip(){
 	really.setAttribute('ach-tooltip', "Get " + shortenCosts(pow10(4e7)) + " antimatter in QC6+8.")
 	willenough.setAttribute('ach-tooltip', "Reach " + shortenCosts(pow10(mod.udp ? 268435456 : 36000000))+" replicanti." + (willenoughReward != "" ? " Reward: " + willenoughReward + "." : ""))
 	oppose.setAttribute('ach-tooltip', "Fundament with at most 1x Quantumed. Reward: Quantumed stat boosts anti-Quarks.")
-	pls.setAttribute('ach-tooltip', "Reach " + shortenCosts(pow10(9.5e5)) + " IP in Big Rip while Dilated, with no EP multiplier upgrades, Time Studies, and Break Eternity within this Fundament. Reward: Gain "+shortenDimensions(2e3)+" galaxies worth of Neutrinos on Fundament, multiplied by your best galaxies in Big Rip.")
+	pls.setAttribute('ach-tooltip', "Reach " + shortenCosts(pow10(9.5e5)) + " IP in Big Rip while Dilated, with no EP multiplier upgrades, Time Studies, and Break Eternity within this Fundament.")
 }
 
 function setR21Tooltip(){

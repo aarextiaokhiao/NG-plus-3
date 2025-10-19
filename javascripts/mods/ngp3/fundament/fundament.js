@@ -65,7 +65,7 @@ function ghostify(auto, force) {
 		implosionCheck = 1
 		ghostifyAni(gain, amt, seconds)
 		setTimeout(function(){
-			TAB_CORE.open("none")
+			TAB_CORE.open()
 		}, seconds * 250)
 		setTimeout(function(){
 			if (Math.random()<1e-3) giveAchievement("Boo!")
