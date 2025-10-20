@@ -505,7 +505,9 @@ let HOW_TO = [
 
 		title: "W & Z Bosons",
 		layer: "fundament",
-		desc: `On rework...`
+		desc: `[ON REWORK]
+			<br><br>
+			Description will be made when the rework is done.`
 	}, {
 		mod: _ => ngp3,
 		req: _ => ghSave?.hb?.unl,
