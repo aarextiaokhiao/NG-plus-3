@@ -507,7 +507,7 @@ let HOW_TO = [
 		layer: "fundament",
 		desc: `[ON REWORK]
 			<br><br>
-			Description will be made when the rework is done.`
+			Instructions will be made when the rework is done.`
 	}, {
 		mod: _ => ngp3,
 		req: _ => ghSave?.hb?.unl,
