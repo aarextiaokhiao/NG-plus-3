@@ -427,7 +427,7 @@ function breakEternityDisplay(){
 /* PHANTOMAL PARADIGMS */
 let PHANTOM = {
 	get amt() { return tmp.qu.phantoms },
-	get req() { return this.amt == 7 ? 1/0 : 1.1 ** this.amt * 1.9e6 },
+	get req() { return this.amt == 7 ? 1/0 : 1.15 ** this.amt * 1.85e6 },
 	get can() { return bigRipped() && ghostified && this.amt < 8 && player.eightBought >= this.req },
 
 	boosted(dim) { return dim != 8 && dim >= 8 - this.amt },

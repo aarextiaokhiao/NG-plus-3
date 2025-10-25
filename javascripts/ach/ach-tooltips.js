@@ -428,7 +428,7 @@ function setR20Tooltip(){
 	finite.setAttribute('ach-tooltip', "Get " + shortenCosts(1e33) + " Space Shards without Breaking Eternity in this Fundament. Reward: Outside of Big Rips, Tree Upgrades are 10% stronger.")
 	really.setAttribute('ach-tooltip', "Get " + shortenCosts(pow10(4e7)) + " antimatter in QC6+8.")
 	willenough.setAttribute('ach-tooltip', "Reach " + shortenCosts(pow10(mod.udp ? 268435456 : 36000000))+" replicanti." + (willenoughReward != "" ? " Reward: " + willenoughReward + "." : ""))
-	oppose.setAttribute('ach-tooltip', "Fundament with at most 1x Quantumed. Reward: Quantumed stat boosts anti-Quarks.")
+	oppose.setAttribute('ach-tooltip', "Fundament with at most 1x Quantumed.")
 	pls.setAttribute('ach-tooltip', "Reach " + shortenCosts(pow10(9.5e5)) + " IP in Big Rip while Dilated, with no EP multiplier upgrades, Time Studies, and Break Eternity within this Fundament.")
 }
 

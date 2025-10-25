@@ -43,10 +43,13 @@ let PHOTON = {
 			else if (ghSave.photons.speed) data.et_prod -= 100
 		}
 
+		data.eff_amt = ghSave.photons.amt
+		if (data.eff_amt.gt(1e10)) data.eff_amt = data.eff_amt.sqrt().mul(1e5)
+
 		data.unls = 0, data.eff = []
 		for (let [i, light] of Object.entries(lights)) {
 			if (ghSave.photons.amt.gte(light.req)) data.unls++
-			data.eff[i] = light.eff(data.unls > i ? ghSave.photons.amt.div(light.req).log10() : 0)
+			data.eff[i] = light.eff(data.unls > i ? data.eff_amt.div(light.req).log10() : 0)
 		}
 	},
 
