@@ -1,15 +1,12 @@
 function isPositronsOn() {
-	return hasMasteryStudy("d7") && notInQC()
+	return hasMasteryStudy("d7") && notInQC() && quSave.electrons.on
 }
 
 function updatePositronsTab() {
-	let mult = PHOTON.unlocked() ? 1 - lightEff(6, 0) : 1
-	let gal = Math.max(player.galaxies - quSave.electrons.sacGals, 0)
+	let isOn = isPositronsOn()
+	el("sacrificeGal").className = isOn ? "unavailablebtn" : "storebtn positron"
+	el("sacrificeGal").innerHTML = isOn ? "Discharging Antimatter Galaxies..." : "Start discharging Antimatter Galaxies"
 
-	el("normalGalaxies").textContent = getFullExpansion(player.galaxies) + (PHOTON.unlocked() ? ` (${formatPercentage(mult)}%)` : "")
-	el("sacrificeGal").className = canSacrificeGalaxies() ? "storebtn positron" : "unavailablebtn"
-	el("sacrificeGals").textContent = getFullExpansion(Math.floor(gal * mult))
-	el("positronsGain").textContent = getFullExpansion(Math.floor(gal * getPositronGainFinalMult()))
 	for (var u = 1; u <= 4; u++) el("positronupg" + u).className = canBuyPositronUpg(u) ? "storebtn positron" : "unavailablebtn"
 
 	updatePositrons()
@@ -17,10 +14,8 @@ function updatePositronsTab() {
 }
 
 function updatePositrons() {
-	if (!isPositronsOn()) return
-
 	var mult = getPositronGainFinalMult()
-	el("positronsGainMult").textContent = mult.toFixed(2)
+	el("positronsGainMult").textContent = `(${mult.toFixed(2)} per galaxy)`
 
 	for (var u = 1; u <= 4; u++) {
 		var cost = getPositronUpgCost(u)
@@ -33,22 +28,11 @@ function updatePositrons() {
 function updatePositronsEffect() {
 	if (!quSave.autoOptions.sacrifice) tmp.mpte = getPositronBoost()
 
-	el("sacrificedGals").textContent = getFullExpansion(quSave.electrons.sacGals)
+	el("sacrificedGals").textContent = getFullExpansion(quSave.electrons.sacGals) + (PHOTON.unlocked() ? ` (${formatPercentage(1 - lightEff(6, 0))}%)` : "")
 	el("positronsAmount").textContent = shorten(quSave.electrons.amount)
 	el("positronsTranslation").textContent = "^"+shorten(tmp.mpte)
 	el("positronsEffect").textContent = shorten(getDimensionPowerMultiplier("positrons"))+"x"
 	el("linearPerTenMult").textContent = shorten(getDimensionPowerMultiplier("linear"))+"x"
-}
-
-function canSacrificeGalaxies() {
-	return isPositronsOn() && player.galaxies > quSave.electrons.sacGals && getPositronGainMult() > 0
-}
-
-function sacrificeGalaxy() {
-	if (!canSacrificeGalaxies()) return
-
-	quSave.electrons.sacGals = player.galaxies
-	if (!quSave.autoOptions.sacrifice) galaxyReset(0)
 }
 
 function getPositronBoost(mod) {
