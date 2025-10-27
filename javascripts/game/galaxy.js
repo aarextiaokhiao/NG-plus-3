@@ -6,10 +6,8 @@ function galaxyReset(bulk) {
 	player.galaxies += bulk
 	if (player.options.notation == "Emojis") player.spreadingCancer += bulk
 	checkOnGalaxyReset()
-	if (mod.ngp3 && bulk) {
-		if (quSave.autoOptions.sacrifice) sacrificeGalaxy()
-		if (hasNB(1)) NT.onGalaxy(bulk)
-	}
+
+	if (mod.ngp3 && bulk && hasNB(1)) NT.onGalaxy(bulk)
 
 	doReset("gal")
 }
@@ -130,7 +128,7 @@ function getRemoteScalingStart(galaxies) {
 /* EFF */
 function initialGalaxies() {
 	let g = player.galaxies
-	if (isPositronsOn()) {
+	if (hasMasteryStudy("d7") && notInQC()) {
 		let sac = quSave.electrons.sacGals
 		g = Math.max(g - sac, 0)
 		g *= Math.max(Math.min(10 - (quSave.electrons.amount + g * getPositronGainFinalMult()) / 16857, 1), 0)

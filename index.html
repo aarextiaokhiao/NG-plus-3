@@ -3485,7 +3485,7 @@
 						<td><div id="speedrunMilestone13" style="background-image: url(images/quantum_speedruns/13.png)" ach-tooltip="Reward: Unlock the Seventh Meta Dimension autobuyer."></div></td>
 						<td><div id="speedrunMilestone14" style="background-image: url(images/quantum_speedruns/14.png)" ach-tooltip="Reward: Unlock the Eighth Meta Dimension autobuyer."></div></td>
 						<td><div id="speedrunMilestone15" style="background-image: url(images/quantum_speedruns/15.png)" ach-tooltip="Reward: Unlock the Meta-Dimension Boost autobuyer."></div></td>
-						<td><div id="speedrunMilestone16" style="background-image: url(images/quantum_speedruns/16.png)" ach-tooltip="Reward: You keep all your Mastery Studies."></div></td>
+						<td><div id="speedrunMilestone16" style="background-image: url(images/quantum_speedruns/16.png)" ach-tooltip="Reward: Keep all your Mastery Studies and Discharge."></div></td>
 					</tr>
 					<tr id="speedrunRow3">
 						<td><div id="speedrunMilestone17" style="background-image: url(images/quantum_speedruns/17.png)" ach-tooltip="Reward: All Meta Dimensions are available for purchase on Quantum."></div></td>
@@ -3495,25 +3495,25 @@
 						<td><div id="speedrunMilestone21" style="background-image: url(images/quantum_speedruns/21.png)" ach-tooltip="Reward: The rebuyable Dilation upgrade and Meta Dimension autobuyers are 3x faster."></div></td>
 						<td><div id="speedrunMilestone22" style="background-image: url(images/quantum_speedruns/22.png)"></div></td>
 						<td><div id="speedrunMilestone23" style="background-image: url(images/quantum_speedruns/23.png)" ach-tooltip="Reward: Unlock the Quantum autobuyer."></div></td>
-						<td><div id="speedrunMilestone24" style="background-image: url(images/quantum_speedruns/24.png)" ach-tooltip="Reward: Replicanti does not reset on Eternity."></div></td>
+						<td><div id="speedrunMilestone24" style="background-image: url(images/quantum_speedruns/24.png)" ach-tooltip="Reward: Keep Replicantis on Eternity."></div></td>
 					</tr>
 					<tr id="speedrunRow4">
 						<td colspan=2></td>
-						<td><div id="speedrunMilestone25" style="background-image: url(images/quantum_speedruns/25.png)" ach-tooltip="Reward: Unlock the manual option for the Eternity autobuyer, and Quantum doesn't disable auto-Discharge."></div></td>
+						<td><div id="speedrunMilestone25" style="background-image: url(images/quantum_speedruns/25.png)" ach-tooltip="Reward: Unlock the manual option for the Eternity autobuyer."></div></td>
 						<td><div id="speedrunMilestone26" style="background-image: url(images/quantum_speedruns/26.png)" ach-tooltip="Reward: The rebuyable Dilation upgrade autobuyer can buy the maximum upgrades possible."></div></td>
 						<td><div id="speedrunMilestone27" style="background-image: url(images/quantum_speedruns/27.png)" ach-tooltip="Reward: You can buy max Meta-Dimension Boosts, and start with 4 Meta-Dimension Boosts."></div></td>
-						<td><div id="speedrunMilestone28" style="background-image: url(images/quantum_speedruns/28.png)" ach-tooltip="Reward: You can gain banked infinities without Big Crunching, and Replicated Galaxies don't reset on Big Crunch."></div></td>
+						<td><div id="speedrunMilestone28" style="background-image: url(images/quantum_speedruns/28.png)" ach-tooltip="Reward: Gain banked infinities without Big Crunching, and keep Replicated Galaxies on Big Crunch."></div></td>
 						<td colspan=2></td>
 					</tr>
 				</table>
 			</div>
 			<div id='tab_pos'>
-				<button class='gluonupgrade storebtn' id='sacrificeGal' onclick='sacrificeGalaxy()'>Discharge <span id='sacrificeGals'>0</span> galaxies for <span id="positronsGain"></span> Positrons<br>(+<span id='positronsGainMult'>2</span> per galaxy)</button><br>
-				<button class='storebtn' id='sacrificeAuto' onclick='toggleAutoQuantumContent("sacrifice")' style='height: 24px'></button><br>
-				<span id='sacrificedGals'>0</span> / <span id="normalGalaxies">0</span> Antimatter Galaxies discharged
+				<button class='gluonupgrade storebtn' id='sacrificeGal' onclick='quSave.electrons.on = true'></button><br>
+				<span id='sacrificedGals'>0</span> Antimatter Galaxies discharged
 				<br><br>
 
 				<span id="positronsAmount" style="font-size:35px">0</span> Positrons<br>
+				<span id="positronsGainMult"></span><br>
 				Multiplier per ten dimensions: <span id="linearPerTenMult" style="font-size:15px">2.00</span>, <span id="positronsTranslation" style="font-size:15px">1.00</span> → <span id="positronsEffect" style="font-size:25px">2.00</span>
 				<table class="table" style="margin: auto">
 					<tr>
@@ -3825,7 +3825,7 @@
 			<br>
 
 			<b>(NG+3 v2.31: Ghostify Respecced)</b><br>
-			<b class="red">(Beta: 10/23/25 Build)</b><br>
+			<b class="red">(Beta: 10/25/25 Build)</b><br>
 			By <a href="https://tehaarex.straw.page/">Aarex</a>, pg132, and usavictor.
 			<br><br>
 

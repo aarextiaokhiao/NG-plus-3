@@ -1479,7 +1479,6 @@ function updateNGp3DisplayStuff(){
 	el('dilUpgsAuto').textContent="Auto: "+(player.autoEterOptions.dilUpgs?"ON":"OFF")
 	el('metaboostAuto').textContent="Auto: "+(player.autoEterOptions.metaboost?"ON":"OFF")
 	el('priorityquantum').value=formatValue("Scientific", E(quSave.autobuyer.limit), 2, 0)
-	el('sacrificeAuto').textContent="Auto: "+(quSave.autoOptions.sacrifice?"ON":"OFF")
 	el("ratio_r").value = quSave.assignAllRatios.r
 	el("ratio_g").value = quSave.assignAllRatios.g
 	el("ratio_b").value = quSave.assignAllRatios.b

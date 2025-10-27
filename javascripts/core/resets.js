@@ -330,7 +330,7 @@ let RESETS = {
 			ipMultPower = hasGluonUpg("gb", 3) ? 2.3 : hasMasteryStudy("t241") ? 2.2 : 2
 			quSave.electrons.amount = 0
 			quSave.electrons.sacGals = 0
-			if (speedrunMilestones < 25 && player.quantum.autoOptions.sacrifice) toggleAutoQuantumContent('sacrifice')
+			if (speedrunMilestones < 16) quSave.electrons.on = false
 			duplicantsResetOnQuantum(qc)
 			nanofieldResetOnQuantum()
 

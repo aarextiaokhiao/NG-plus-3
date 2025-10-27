@@ -1,6 +1,6 @@
 //VERSION: 2.31
 let ngp3_ver = 2.31
-let ngp3_build = 20251023
+let ngp3_build = 20251026
 function doNGP3Updates() {
 	if (!aarMod.ngp3_build) aarMod.ngp3_build = 0
 	if (aarMod.ngp3_build < 20221230) quSave.multPower = 0
@@ -133,10 +133,6 @@ function respecOptions() {
 //v1.998
 function toggleAutoQuantumContent(id) {
 	quSave.autoOptions[id]=!quSave.autoOptions[id]
-	if (id=='sacrifice') {
-		el('sacrificeAuto').textContent = "Auto: " + (quSave.autoOptions.sacrifice ? "ON" : "OFF")
-		if (quSave.autoOptions.sacrifice) sacrificeGalaxy()
-	}
 }
 
 //v1.9986
@@ -479,7 +475,10 @@ function quantumOverallUpdating(diff){
 	//Color Powers
 	for (var c of QUARK_COLORS) quSave.colorPowers[c]=quSave.colorPowers[c].add(getColorPowerProduction(c).mul(diff))
 
-	if (hasMasteryStudy("d7")) quSave.electrons.amount = getPositronGainFinalMult() * quSave.electrons.sacGals
+	if (isPositronsOn()) {
+		quSave.electrons.sacGals = Math.max(player.galaxies, quSave.electrons.sacGals)
+		quSave.electrons.amount = getPositronGainFinalMult() * quSave.electrons.sacGals
+	}
 	if (hasMasteryStudy("d10")) replicantOverallUpdating(diff)
 	if (hasMasteryStudy("d11")) emperorDimUpdating(PHOTON.get_tick(diff, "ed"))
 	if (NF.unl()) nanofieldUpdating(diff)
