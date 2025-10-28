@@ -245,7 +245,7 @@ function getIDReplMult() {
 function getEU2Mult() {
 	var e = E(getEternitied())
 	if (mod.rs) return e.pow(e.mul(2).add(1).log(4))
-	if (hasAch("ngpp15")) return pow10(Math.min(e.log10() ** 4.75, 1e13))
+	if (hasAch("ngpp15")) return pow10(Math.min(Math.pow(e.log10(), 4.75), 1e13))
 
 	var cap = e.min(1e5).toNumber()
 	var soft = e.max(cap).sub(cap)

@@ -49,7 +49,7 @@ function getDTMultNGP3() {
 		if (hasMasteryStudy("t341")) gain = gain.mul(getMTSMult(341))
 
 		gain = gain.mul(tmp.qu.color_eff.b)
-		if (hasGluonUpg("br", 2)) gain = gain.mul(gluonEff("br", 2))
+		if (hasGluonUpg("br", 1)) gain = gain.mul(gluonEff("br", 1))
 		gain = gain.mul(tmp.qu.chal.reward[1])
 		gain = gain.mul(getReplDilBonus())
 
@@ -97,7 +97,7 @@ function getDilPower() {
 	if (mod.ngp3) {
 		if (hasAch("ng3p11")) ret = ret.mul(Math.max(getTotalRG() / 125, 1))
 		if (hasMasteryStudy("t264")) ret = ret.mul(getMTSMult(264))
-		if (hasGluonUpg("br", 1)) ret = ret.mul(gluonEff("br", 1))
+		if (hasGluonUpg("rg", 1)) ret = ret.mul(gluonEff("rg", 1))
 	}
 	return ret
 }
@@ -327,7 +327,7 @@ function buyDilationUpgrade(id, max) {
 		player.dilation.rebuyables[id] = (player.dilation.rebuyables[id] || 0) + 1
 
 		if (id == 2) {
-			if (speedrunMilestones < 22) player.dilation.dilatedTime = E(0)
+			if (speedrunMilestones < 26) player.dilation.dilatedTime = E(0)
 			resetDilationGalaxies()
 		} else player.dilation.dilatedTime = player.dilation.dilatedTime.sub(cost)
 		
@@ -472,7 +472,7 @@ function resetDilation(order = "qu") {
 	player.dilation.active = false
 
 	let unl = hasDilStudy(1)
-	let keepUpg = unl && (bigRip ? hasRipUpg(12) : isRewardEnabled(6))
+	let keepUpg = unl && (bigRip ? hasRipUpg(12) : speedrunMilestones >= 16)
 	if (!keepUpg) player.dilation.upgrades = []
 	for (var i in player.dilation.rebuyables) player.dilation.rebuyables[i] = 0
 
@@ -482,7 +482,7 @@ function resetDilation(order = "qu") {
 			if (bigRip ? hasRipUpg(11) : hasAch("ng3p37")) keepTP = 0.5
 			if (bigRip ? hasRipUpg(18) : notInQC() && hasBraveMilestone(4)) keepTP = 1
 		}
-		player.dilation.dilatedTime = !bigRip && speedrunMilestones >= 22 ? E(1e100) : E(0)
+		player.dilation.dilatedTime = !bigRip && speedrunMilestones >= 20 ? E(1e100) : E(0)
 	}
 	if (mod.ngp3) {
 		if (order == "qu" && !hasBraveMilestone(2)) player.dilation.best = E(0)

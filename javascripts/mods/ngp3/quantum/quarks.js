@@ -16,7 +16,7 @@ function updateQuantumWorth(mode) {
 	if (mode != "notation") {
 		if (mode != "display") {
 			quantumWorth = quSave.quarks.add(quSave.usedQuarks.r).add(quSave.usedQuarks.g).add(quSave.usedQuarks.b).add(quSave.gluons.rg).add(quSave.gluons.gb).add(quSave.gluons.br).round()
-			colorCharge.qwBonus = quantumWorth.add(1).pow(0.9).div(50)
+			colorCharge.qwBonus = quantumWorth.add(1).div(1e3)
 		}
 		if (ghostified) updateAutomatorStuff(mode)
 	}
@@ -30,11 +30,11 @@ function getQuantumWorthMsg() {
 }
 
 function getQuarkMultReq() {
-	return E_pow(10, quSave.multPower).mul(5)
+	return E_pow(10, quSave.multPower).mul(2)
 }
 
 function getQuarkMultBulk() {
-	let bulk = E(quantumWorth).max(1).div(5).log(10)
+	let bulk = E(quantumWorth).max(1).div(2).log(10)
 	if (bulk < 0) return 0
 	return Math.floor(bulk + 1)
 }
@@ -220,7 +220,7 @@ function updateColorPowers(log) {
 	if (log == undefined) log = getCPLogs()
 
 	//Red
-	let red = Math.pow(log.r, player.dilation.active ? 2/3 : .5) / 10 + 1
+	let red = Math.pow(log.r + 1, player.dilation.active ? 2/3 : .5) / 10 + .9
 	if (red > 1.3) red = Math.sqrt(red * 1.3)
 	if (red > 2.3) {
 		let exp = 0.5
@@ -239,7 +239,7 @@ function updateColorPowers(log) {
 	tmp.qu.color_eff.g = (Math.pow(log.g + 1, 1/3) - 1) * mult + 1
 
 	//Blue
-	var bLog = Math.sqrt(log.b + 1.5) - Math.sqrt(1.5)
+	var bLog = Math.sqrt(log.b + 4) - 2
 	if (bLog > 3) bLog = Math.sqrt(bLog * 3)
 	if (dev.testZone) bLog = Math.pow(log.b, 2/3) / 5
 

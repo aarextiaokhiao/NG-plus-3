@@ -127,7 +127,7 @@ function canGetReplicatedGalaxy() {
 }
 
 function canAutoReplicatedGalaxy() {
-	return getEternitied() >= 3 && (!hasTimeStudy(131) || speedrunMilestones >= 4 || mod.ngp3 && hasAch("ngpp16"))
+	return getEternitied() >= 3 && (!hasTimeStudy(131) || speedrunMilestones >= 5 || mod.ngp3 && hasAch("ngpp16"))
 }
 
 function getMaxRG() {
@@ -246,7 +246,7 @@ function getReplSpeed() {
 function getReplicantiInterval() {
 	let interval = 1
 	if (hasTimeStudy(62)) interval /= tsMults[62]()
-	if (player.replicanti.amount.gt(Number.MAX_VALUE) || hasTimeStudy(133) && speedrunMilestones < 4) interval *= 10
+	if (player.replicanti.amount.gt(Number.MAX_VALUE) || hasTimeStudy(133) && speedrunMilestones < 5) interval *= 10
 	if (hasTimeStudy(213)) interval /= 20
 	if (hasGluonUpg("gb", 1)) interval /= gluonEff("gb", 1)
 	if (player.replicanti.amount.lt(Number.MAX_VALUE) && hasAch("r134")) interval /= 2

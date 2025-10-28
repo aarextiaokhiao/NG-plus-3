@@ -35,7 +35,7 @@ const MTS = MASTERY_STUDIES = {
 			return quantumWorth.gte(50)
 		},
 		8() {
-			return quSave.electrons.amount >= 16750 && speedrunMilestones >= 16
+			return quSave.electrons.amount >= 16750
 		},
 		9() {
 			return QCIntensity(8) >= 1
@@ -58,7 +58,7 @@ const MTS = MASTERY_STUDIES = {
 	},
 	unlockReqDisplays: {
 		7:  () => shortenDimensions(quantumWorth) + " / " + shortenDimensions(50) + " net Quarks",
-		8:  () => getFullExpansion(quSave.electrons.amount) + " / " + getFullExpansion(16750) + " positrons and 5 minute Speedrun Milestone",
+		8:  () => getFullExpansion(quSave.electrons.amount) + " / " + getFullExpansion(16750) + " positrons",
 		9:  () => "Complete Quantum Challenge 8",
 		10: () => "Complete Paired Challenge 4",
 		11: () => getFullExpansion(EDsave[1].perm) + " / " + getFullExpansion(10) + " worker limit",

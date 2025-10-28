@@ -262,7 +262,7 @@ function doQuantum(force, auto, qc = {}) {
 				player.infmultbuyer = true
 				for (var d=0;d<8;d++) player.infDimBuyers[d] = true
 			}
-			if (isRewardEnabled(11)) unstoreTT()
+			if (isRewardEnabled(9)) unstoreTT()
 		}
 		switchAB(bigRip)
 	}

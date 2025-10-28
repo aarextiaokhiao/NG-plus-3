@@ -1,6 +1,6 @@
 //VERSION: 2.31
 let ngp3_ver = 2.31
-let ngp3_build = 20251026
+let ngp3_build = 20251027
 function doNGP3Updates() {
 	if (!aarMod.ngp3_build) aarMod.ngp3_build = 0
 	if (aarMod.ngp3_build < 20221230) quSave.multPower = 0
@@ -90,9 +90,9 @@ function doNGP3Updates() {
 
 //v1.5
 function toggleAutoTT() {
-	if (speedrunMilestones < 2) maxTheorems()
+	if (speedrunMilestones < 3) maxTheorems()
 	else player.autoEterOptions.tt = !player.autoEterOptions.tt
-	el("theoremmax").innerHTML = speedrunMilestones > 1 ? ("Auto max: "+(player.autoEterOptions.tt ? "ON" : "OFF")) : "Buy max Theorems"
+	el("theoremmax").innerHTML = speedrunMilestones >= 3 ? ("Auto max: "+(player.autoEterOptions.tt ? "ON" : "OFF")) : "Buy max Theorems"
 }
 
 //v1.8
@@ -100,28 +100,28 @@ const MAX_DIL_UPG_PRIORITIES = [4, 3, 1, 2]
 function doAutoMetaTick() {
 	if (!mod.ngp3) return
 
-	if (player.autoEterOptions.rebuyupg && speedrunMilestones > 6) {
-		if (speedrunMilestones > 25) maxAllDilUpgs()
+	if (player.autoEterOptions.rebuyupg && speedrunMilestones >= 12) {
+		if (speedrunMilestones >= 22) maxAllDilUpgs()
 		else for (var i = 0; i < MAX_DIL_UPG_PRIORITIES.length; i++) {
 			var id = "r" + MAX_DIL_UPG_PRIORITIES[i]
 			buyDilationUpgrade(id)
 		}
 	}
-	for (var d = 1; d <= 8; d++) if (player.autoEterOptions["md" + d] && speedrunMilestones >= 6 + d) buyMaxMetaDimension(d)
-	if (player.autoEterOptions.metaboost && speedrunMilestones > 14) metaBoost()
+	for (var d = 1; d <= 8; d++) if (player.autoEterOptions["md" + d] && speedrunMilestones >= 15) buyMaxMetaDimension(d)
+	if (player.autoEterOptions.metaboost && speedrunMilestones >= 15) metaBoost()
 }
 
 function toggleAllMetaDims() {
 	var turnOn
 	var id = 1
-	var stop = Math.min(speedrunMilestones - 5, 9)
-	while (id < stop&&turnOn === undefined) {
+	var stop = 9
+	while (id <= 8 && turnOn === undefined) {
 		if (!player.autoEterOptions["md" + id]) turnOn = true
-		else if (id > stop-2) turnOn = false
+		else if (id == 8) turnOn = false
 		id++
 	}
-	for (id = 1; id < stop; id++) player.autoEterOptions["md" + id] = turnOn
-	el("metaMaxAll").style.display = turnOn && stop > 7 && speedrunMilestones > 27 ? "none" : ""
+	for (id = 1; id <= 8; id++) player.autoEterOptions["md" + id] = turnOn
+	el("metaMaxAll").style.display = turnOn ? "none" : ""
 }
 
 //v1.99799
@@ -171,7 +171,7 @@ function maxAllDilUpgs() {
 
 		let amt = player.dilation.rebuyables[i] || 0
 		let start = Math.floor(getRebuyableDilUpgScaleStart(i))
-		if ((i != 2 || speedrunMilestones >= 22) && amt < start) {
+		if ((i != 2 || speedrunMilestones >= 20) && amt < start) {
 			let cost = getRebuyableDilUpgCost(i)
 			let scale = DIL_UPG_COSTS[id][1]
 			if (player.dilation.dilatedTime.lt(cost)) continue
@@ -314,10 +314,10 @@ function doPerSecondNGP3Stuff(quick) {
 		updateQuarkDisplay()
 		updateNetTop()
 		el('toggleautoquantummode').style.display = quSave?.reachedInfQK ? "" : "none"
-		el('dilationmode').style.display=speedrunMilestones > 4?"":"none"
-		el('rebuyupgmax').style.display=speedrunMilestones < 26?"":"none"
-		el('toggleallmetadims').style.display=speedrunMilestones > 7?"":"none"
-		el('metaboostAuto').style.display=speedrunMilestones > 14?"":"none"
+		el('dilationmode').style.display=speedrunMilestones >= 6 ? "" : "none"
+		el('rebuyupgmax').style.display=speedrunMilestones <= 26 ? "" : "none"
+		el('toggleallmetadims').style.display=speedrunMilestones >= 15 ? "" : "none"
+		el('metaboostAuto').style.display=speedrunMilestones >= 15 ? "" : "none"
 		el("autoBuyerQuantum").style.display = speedrunMilestones >= 23 ? "" : "none"
 		updateBreakEternity()
 		updateNGP3Progress()
@@ -489,9 +489,9 @@ function quantumOverallUpdating(diff){
 		brSave.bestGals = Math.max(brSave.bestGals, player.galaxies)
 	}
 	
-	if (speedrunMilestones>5) {
+	if (speedrunMilestones >= 15) {
 		quSave.metaAutobuyerWait+=diff*10
-		var speed=speedrunMilestones>20?10/3:10
+		var speed=speedrunMilestones>=21?10/3:10
 		if (quSave.metaAutobuyerWait>speed) {
 			quSave.metaAutobuyerWait=quSave.metaAutobuyerWait%speed
 			doAutoMetaTick()
@@ -509,7 +509,7 @@ TABS = Object.assign(TABS, {
 	aq: { name: "Anti-Quarks", update: _ => updateQuarksTab() },
 	gl: { name: "Gluons", update: _ => GLUON.update() },
 	pos: { name: "Positrons", unl: _ => hasMasteryStudy("d7") && !inAnyQC(), update: _ => updatePositronsTab() },
-	chal_qu: { name: "Quantum", class: "quantumbtn", unl: _ => hasMasteryStudy("d8") && speedrunMilestones >= 16, update() {
+	chal_qu: { name: "Quantum", class: "quantumbtn", unl: _ => hasMasteryStudy("d8"), update() {
 		el("qcDisclaimer").innerHTML = (isQCFree() ? "" : "Spend Positrons to start Quantum Challenges.<br>You have " + getFullExpansion(Math.round(quSave.electrons.amount)) + " Positrons.<br>") + "<b class='red'>Positrons are disabled in Quantum Challenges!</b>"
 		for (var c = 1; c <= 8; c++) el("qc" + c + "reward").textContent = QC[c].reward_eff_disp(tmp.qu.chal.reward[c])
 	} },

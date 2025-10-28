@@ -72,7 +72,7 @@ function getGalaxyRequirement(offset = 0, display) {
 			if (hasGluonUpg("rg", 7)) speed2 *= 0.9
 			if (hasGluonUpg("gb", 7)) speed2 /= gluonEff("gb", 7)
 			if (hasGluonUpg("br", 7)) speed2 /= gluonEff("br", 7)
-			amount *= Math.pow(1 + (hasGluonUpg("rg", 1) ? 1 : 2) / (inNGM(4) ? 10 : 1e3), (total - remoteStart + 1) * speed2)
+			amount *= Math.pow(1 + (hasGluonUpg("rg", 3) ? 1 : 2) / (inNGM(4) ? 10 : 1e3), (total - remoteStart + 1) * speed2)
 			scaling = Math.max(scaling, 3)
 		}
 	}
@@ -175,7 +175,7 @@ function getGalaxyEff(bi) {
 	if (mod.udsp && player.dilation.active) eff *= exDilationBenefit() + 1
 	if (mod.ngp3) {
 		eff *= tmp.qu.color_eff.r
-		if (hasGluonUpg("rg", 2)) eff *= gluonEff("rg", 2)
+		if (hasGluonUpg("br", 4)) eff *= gluonEff("br", 4)
 		if (hasGluonUpg("rg", 4)) eff *= 1.5
 		if (PHANTOM.amt) eff *= 1.1
 		if (tmp.qu.be) eff *= 0.4
