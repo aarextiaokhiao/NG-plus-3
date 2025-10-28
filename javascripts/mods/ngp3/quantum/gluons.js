@@ -15,11 +15,11 @@ const GLUON = {
 		rg: [
 			{
 				disp: "Dilated Time boosts Tachyon Particles.",
-				eff: _ => Math.sqrt(player.dilation.dilatedTime.add(1).log10() + 4) / 2,
+				eff: _ => player.dilation.dilatedTime.add(1).log10() / 10 + 1,
 				eff_desc: e => shorten(e) + "x"
 			}, {
 				disp: "Dimension Boosts boost 1st Meta Dimensions.",
-				eff: () => E_pow(player.resets + 1, player.resets / 1e6),
+				eff: () => E_pow(player.resets + 1, player.resets / 1e6 + .1),
 				eff_desc: e => shorten(e) + "x"
 			}, {
 				disp: "Remote Antimatter Galaxies scale approximately 2x slower."
@@ -67,14 +67,7 @@ const GLUON = {
 		br: [
 			{
 				disp: "Sacrifice boosts Dilated Time.",
-				eff: _ => E_pow(2.2, Math.pow(tmp.sacPow.log10() / 1e6, .25)),
-				eff_desc: e => shorten(e) + "x"
-			}, {
-				disp: "Multiplier per ten dimensions boosts Meta Dimensions.",
-				eff() {
-					let log = E(getDimensionPowerMultiplier(hasNU(13) && "no-rg4")).log10() * 0.0003
-					return pow10(log).max(1)
-				},
+				eff: _ => E_pow(2.4, Math.pow(tmp.sacPow.log10() / 1e6, .25)),
 				eff_desc: e => shorten(e) + "x"
 			}, {
 				disp: "Tachyon Particles slightly boost Dilated Time production."
@@ -82,6 +75,13 @@ const GLUON = {
 				disp: "Tachyonic Galaxies strengthen Galaxies.",
 				eff: _ => Math.pow(player.dilation.freeGalaxies / 5e3 + 1, .25),
 				eff_desc: e => formatPercentage(e-1)+"%"
+			}, {
+				disp: "Multiplier per ten dimensions boosts Meta Dimensions.",
+				eff() {
+					let log = E(getDimensionPowerMultiplier(hasNU(13) && "no-rg4")).log10() * 0.0003
+					return pow10(log).max(1)
+				},
+				eff_desc: e => shorten(e) + "x"
 			}, {
 				disp: "Meta Dimensions produce 3x faster."
 			}, {

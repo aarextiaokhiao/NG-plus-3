@@ -175,7 +175,7 @@ function getGalaxyEff(bi) {
 	if (mod.udsp && player.dilation.active) eff *= exDilationBenefit() + 1
 	if (mod.ngp3) {
 		eff *= tmp.qu.color_eff.r
-		if (hasGluonUpg("br", 4)) eff *= gluonEff("br", 4)
+		if (hasGluonUpg("br", 3)) eff *= gluonEff("br", 3)
 		if (hasGluonUpg("rg", 4)) eff *= 1.5
 		if (PHANTOM.amt) eff *= 1.1
 		if (tmp.qu.be) eff *= 0.4

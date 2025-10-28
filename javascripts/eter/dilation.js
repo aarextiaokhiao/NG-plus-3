@@ -28,7 +28,7 @@ function getDilatedTimeGainPerSecond(){
 }
 
 function getDTGainExp(){
-	return hasGluonUpg("br", 3) ? 1.1 : 1
+	return hasGluonUpg("br", 2) ? 1.1 : 1
 }
 
 function getEternitiesAndDTBoostExp() {

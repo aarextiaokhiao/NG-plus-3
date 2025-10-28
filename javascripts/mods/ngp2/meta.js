@@ -64,7 +64,7 @@ function getMetaDimensionGlobalMultiplier() {
 		if (hasMasteryStudy("t393")) ret = ret.mul(getMTSMult(393))
 
 		//Quantum Upgrades
-		if (hasGluonUpg("br", 2)) ret = ret.mul(gluonEff("br", 2))
+		if (hasGluonUpg("br", 4)) ret = ret.mul(gluonEff("br", 4))
 		if (hasGluonUpg("br", 5)) ret = ret.mul(3)
 
 		//QC Rewards
