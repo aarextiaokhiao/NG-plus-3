@@ -68,5 +68,5 @@ function doAutoEterTick() {
 			feedBlackholeMax()
 		}
 	}
-	if (player.autoEterOptions.tt && speedrunMilestones >+ 3) maxTheorems()
+	if (player.autoEterOptions.tt && speedrunMilestones >= 3) maxTheorems()
 }
