@@ -1206,7 +1206,7 @@ function doCheckECCompletionStuff(){
 		player.timestudy.theorem += getTTSpentToECs()
 		player.eternityChallUnlocked = player.etercreq = 0
 		
-		if (speedrunMilestones < 3 && (!mod.ngp3 || !quSave.autoEC || ecs[ec] == 5)) respecKey = ec_num
+		if (speedrunMilestones < 4 && (!mod.ngp3 || !quSave.autoEC || ecs[ec] == 5)) respecKey = ec_num
 	}
 
 	return respecKey
@@ -1311,7 +1311,8 @@ function challengesCompletedOnEternity() {
 
 function gainEternitiedStat() {
 	let ret = 1
-	if (quantumed && getEternitied() < 1e5) ret = 20
+	if (quantumed && getEternitied() < 1e4) ret = 5
+	if (speedrunMilestones >= 2) ret *= 5
 	if (hasNU(9)) ret = nM(ret, pow10(Math.pow(brSave.spaceShards.max(1).log10(), 3/4) / 3))
 	let exp = getEternitiesAndDTBoostExp()
 	if (exp > 0) ret = nM(player.dilation.dilatedTime.max(1).pow(exp), ret)
@@ -1322,7 +1323,7 @@ function gainEternitiedStat() {
 function gainBankedInf() {
 	let ret = 0 
 	let numerator = player.infinitied
-	if (speedrunMilestones > 27 || hasAch("ng3p73")) numerator = nA(getInfinitiedGain(), player.infinitied)
+	if (speedrunMilestones >= 28 || hasAch("ng3p73")) numerator = nA(getInfinitiedGain(), player.infinitied)
 	let frac = 0.05
 	if (hasTimeStudy(191)) ret = nM(numerator, frac)
 	if (hasAch("r131")) ret = nA(nM(numerator, frac), ret)
@@ -1449,7 +1450,7 @@ function updateNGpp16Reward(){
 }
 
 function dilationStuffABTick(){
-	el('rebuyupgAuto').style.display = speedrunMilestones>6?"":"none"
+	el('rebuyupgAuto').style.display = speedrunMilestones>=16?"":"none"
 	el('dilUpgsAuto').style.display = hasAch("ngpp13") && mod.udsp ? "" : "none"
 	el('distribEx').style.display = hasAch("ngud14") ? "" : "none"
 	if (player?.autoEterOptions?.dilUpgs) autoBuyDilUpgs()
@@ -2122,7 +2123,7 @@ function TTpassiveGain(diff){
 }
 
 function thisQuantumTimeUpdating(){
-	setAndMaybeShow("quantumClock", (quSave.times >= 2 || ghostified) && speedrunMilestones < 28, '"Quantum time: <b class=\'QKAmount\'>"+timeDisplayShort(quSave.time)+"</b>"')
+	setAndMaybeShow("quantumClock", quantumed && speedrunMilestones < 28, '"Quantum time: <b class=\'QKAmount\'>"+timeDisplayShort(quSave.time)+"</b>"')
 }
 
 function fixInfinityTimes(){
@@ -2581,7 +2582,7 @@ function dimBoostABTick(){
 var timer = 0
 function autoBuyerTick() {
 	if (tmp.onReset) return
-	if (mod.ngp3 && speedrunMilestones>22&&quSave.autobuyer.enabled&&!bigRipped()) autoQuantumABTick()
+	if (mod.ngp3 && speedrunMilestones>=23&&quSave.autobuyer.enabled&&!bigRipped()) autoQuantumABTick()
 	
 	if (getEternitied() >= 100 && isEterBuyerOn()) autoEternityABTick()
 

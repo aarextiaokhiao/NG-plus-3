@@ -3,7 +3,7 @@ const GLUON = {
 	mixes: ["rg", "gb", "br"],
 
 	//Upgrades
-	upg_costs: [1, 2, 4, 100, 7e15, 4e19, 3e28, E("1e570")],
+	upg_costs: [1, 3, 10, 100, 7e15, 4e19, 3e28, E("1e570")],
 	upg_len: 8,
 	upg_unls: {
 		5: _ => hasMasteryStudy("d9"),
@@ -14,15 +14,15 @@ const GLUON = {
 	upg_data: {
 		rg: [
 			{
-				disp: "Remote Antimatter Galaxies scale approximately 2x slower."
-			}, {
-				disp: "Tachyonic Galaxies strengthen Galaxies.",
-				eff: _ => Math.pow(player.dilation.freeGalaxies / 5e3 + 1, 0.25),
-				eff_desc: e => formatPercentage(e-1)+"%"
+				disp: "Dilated Time boosts Tachyon Particles.",
+				eff: _ => player.dilation.dilatedTime.add(1).log10() / 10 + 1,
+				eff_desc: e => shorten(e) + "x"
 			}, {
 				disp: "Dimension Boosts boost 1st Meta Dimensions.",
-				eff: () => E_pow(player.resets, player.resets / 1e6 + .25),
+				eff: () => E_pow(player.resets + 1, player.resets / 1e6 + .1),
 				eff_desc: e => shorten(e) + "x"
+			}, {
+				disp: "Remote Antimatter Galaxies scale approximately 2x slower."
 			}, {
 				disp: "Galaxies are 50% stronger, but positrons are 30% weaker and disable Time Study 232."
 			}, {
@@ -40,7 +40,7 @@ const GLUON = {
 		gb: [
 			{
 				disp: "Tickspeed reduction speeds up Replicantis.",
-				eff: _ => 1-tmp.gal.ts.min(1).log10(),
+				eff: _ => 1-tmp.gal.ts.min(1).log10()/50,
 				eff_desc: e => shorten(e) + "x"
 			}, {
 				disp: "Replicate interval scales 2x slower."
@@ -66,20 +66,19 @@ const GLUON = {
 		],
 		br: [
 			{
-				disp: "Dilated Time boosts Tachyon Particles.",
-				eff: _ => Math.sqrt(player.dilation.dilatedTime.add(10).log10()) / 2,
-				eff_desc: e => shorten(e) + "x"
-			}, {
 				disp: "Sacrifice boosts Dilated Time.",
-				eff: _ => E_pow(2.2, Math.pow(tmp.sacPow.log10() / 1e6, 0.25)),
+				eff: _ => E_pow(2.4, Math.pow(tmp.sacPow.log10() / 1e6, .25)),
 				eff_desc: e => shorten(e) + "x"
 			}, {
 				disp: "Tachyon Particles slightly boost Dilated Time production."
 			}, {
+				disp: "Tachyonic Galaxies strengthen Galaxies.",
+				eff: _ => Math.pow(player.dilation.freeGalaxies / 5e3 + 1, .25),
+				eff_desc: e => formatPercentage(e-1)+"%"
+			}, {
 				disp: "Multiplier per ten dimensions boosts Meta Dimensions.",
 				eff() {
 					let log = E(getDimensionPowerMultiplier(hasNU(13) && "no-rg4")).log10() * 0.0003
-					if (log > 1e3) log = Math.sqrt(log * 1e3)
 					return pow10(log).max(1)
 				},
 				eff_desc: e => shorten(e) + "x"

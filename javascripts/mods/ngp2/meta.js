@@ -1,8 +1,7 @@
 //meta dimensions
 function getMetaAntimatterStart(bigRip) {
 	let x = 10
-	if (speedrunMilestones >= 19 && !bigRip) x = 1e25
-	else if (hasAch("ngpp12")) x = 100
+	if (hasAch("ngpp12")) x = 100
 	return E(x)
 }
 
@@ -35,7 +34,7 @@ function getMetaDimensionMultiplier(tier) {
 	ret = ret.mul(tmp.mdgm) //Global multiplier of all Meta Dimensions
 
 	//Quantum upgrades
-	if (tier == 1 && hasGluonUpg("rg", 3)) ret = ret.mul(gluonEff("rg", 3))
+	if (tier == 1 && hasGluonUpg("rg", 2)) ret = ret.mul(gluonEff("rg", 2))
 
 	//QC Rewards:
 	if (tier % 2 > 0) ret = ret.mul(tmp.qu.chal.reward[4])
@@ -121,7 +120,7 @@ function getMetaDimensionRateOfChange(tier) {
 
 function canBuyMetaDimension(tier) {
 	if (tier > player.meta.resets + 4) return false;
-	if (speedrunMilestones < 17 && tier > 1 && player.meta[tier - 1].amount.eq(0)) return false;
+	if (speedrunMilestones < 8 && tier > 1 && player.meta[tier - 1].amount.eq(0)) return false;
 	return true;
 }
 
@@ -300,9 +299,9 @@ function setupMetaDimensions() {
 
 	for (let i = 1; i <= 8; i++) {
 		el("meta" + i).onclick = function () {
-			if (speedrunMilestones > i + 5) player.autoEterOptions["md" + i] = !player.autoEterOptions["md" + i]
+			if (speedrunMilestones >= 15) player.autoEterOptions["md" + i] = !player.autoEterOptions["md" + i]
 			else metaBuyOneDimension(i);
-			if (speedrunMilestones > 27) {
+			if (speedrunMilestones >= 28) {
 				var removeMaxAll=false
 				for (var d = 1; d < 9; d++) {
 					if (player.autoEterOptions["md" + d]) {
@@ -313,7 +312,7 @@ function setupMetaDimensions() {
 			}
 		}
 		el("metaMax" + i).onclick = function () {
-			if (shiftDown && speedrunMilestones > i + 5) metaBuyOneDimension(i)
+			if (shiftDown && speedrunMilestones >= 15) metaBuyOneDimension(i)
 			else metaBuyManyDimension(i);
 		}
 	}
@@ -393,10 +392,10 @@ function updateMetaDimensions () {
 		if (showDim) {
 			el(tier + "MetaD").textContent = dimNames[tier] + " Meta Dimension x" + formatValue(player.options.notation, getMetaDimensionMultiplier(tier), 2, 1)
 			el("meta" + tier + "Amount").textContent = getMetaDimensionDescription(tier)
-			el("meta" + tier).textContent = speedrunMilestones > tier + 5 ? "Auto: " + (player.autoEterOptions["md" + tier] ? "ON" : "OFF") : shortenCosts(player.meta[tier].cost) + " MA"
-			el('meta' + tier).className = speedrunMilestones > tier + 5 ? "storebtn" : canAffordMetaDimension(player.meta[tier].cost) ? 'storebtn' : 'unavailablebtn'
-			el("metaMax"+tier).textContent = (speedrunMilestones > tier + 5 ? (shiftDown ? "Singles: " : ghostified ? "":"Cost: ") : "Until 10: ") + formatValue(player.options.notation, ((shiftDown && speedrunMilestones > tier + 5) ? player.meta[tier].cost : getMetaMaxCost(tier)), useTwo, 0) + " MA"
-			el('metaMax' + tier).className = canAffordMetaDimension((shiftDown && speedrunMilestones > tier + 5) ? player.meta[tier].cost : getMetaMaxCost(tier)) ? 'storebtn' : 'unavailablebtn'
+			el("meta" + tier).textContent = speedrunMilestones >= 15 ? "Auto: " + (player.autoEterOptions["md" + tier] ? "ON" : "OFF") : shortenCosts(player.meta[tier].cost) + " MA"
+			el('meta' + tier).className = speedrunMilestones >= 15 ? "storebtn" : canAffordMetaDimension(player.meta[tier].cost) ? 'storebtn' : 'unavailablebtn'
+			el("metaMax"+tier).textContent = (speedrunMilestones >= 15 ? (shiftDown ? "Singles: " : ghostified ? "":"Cost: ") : "Until 10: ") + formatValue(player.options.notation, ((shiftDown && speedrunMilestones >= 15) ? player.meta[tier].cost : getMetaMaxCost(tier)), useTwo, 0) + " MA"
+			el('metaMax' + tier).className = canAffordMetaDimension((shiftDown && speedrunMilestones >= 15) ? player.meta[tier].cost : getMetaMaxCost(tier)) ? 'storebtn' : 'unavailablebtn'
 		}
 	}
 	var isMetaShift = player.meta.resets < 4

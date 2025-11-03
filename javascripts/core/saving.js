@@ -982,6 +982,8 @@ function doNGPlusFourPlayer(){
 	quSave.nanofield.rewards = 19
 	quSave.reachedInfQK = true
 
+	quSave.tod.r.spin = E(1e25)
+
 	player.achievements.push("ng3p18")
 	player.achievements.push("ng3p28")
 	player.achievements.push("ng3p37")

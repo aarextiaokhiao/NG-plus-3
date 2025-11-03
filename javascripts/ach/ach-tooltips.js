@@ -500,7 +500,6 @@ function setVanillaAchievementTooltip() {
 
 function setNGP3AchievementTooltip() {
 	// ng+3 achievements
-	setQSRTooltip()
 	setR15Tooltip()
 	setR16Tooltip()
 	setR17Tooltip()

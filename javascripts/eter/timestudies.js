@@ -84,7 +84,7 @@ function updateTheoremButtons() {
 		el("theoremep").innerHTML = "Buy Time Theorems <br>Cost: " + shortenDimensions(player.timestudy.epcost) + " EP"
 		el("theoremip").innerHTML = "Buy Time Theorems <br>Cost: " + shortenCosts(player.timestudy.ipcost) + " IP"
 		el("theoremam").innerHTML = "Buy Time Theorems <br>Cost: " + shortenCosts(player.timestudy.amcost)
-		el("theoremmax").innerHTML = (speedrunMilestones > 2 && player.masterystudies) ? ("Auto max: "+(player.autoEterOptions.tt ? "ON" : "OFF")) : "Buy max Theorems"
+		el("theoremmax").innerHTML = (speedrunMilestones >= 3 && player.masterystudies) ? ("Auto max: "+(player.autoEterOptions.tt ? "ON" : "OFF")) : "Buy max Theorems"
 	}
 
 	var tt = player.timestudy.theorem
@@ -110,7 +110,7 @@ function buyTimeStudy(name, check, quickBuy) {
 		player.timestudy.theorem -= cost
 		updateTimeStudyClass(name, "bought")
 
-		if (name == 131 && speedrunMilestones < 20) {
+		if (name == 131 && speedrunMilestones < 5) {
 			if (player.replicanti.galaxybuyer) el("replicantiresettoggle").textContent = "Auto galaxy ON (disabled)"
 			else el("replicantiresettoggle").textContent = "Auto galaxy OFF (disabled)"
 		}
@@ -450,8 +450,8 @@ let tsMults = {
 	42: () => (mod.ngep ? 12 : 13) / 15,
 	61: () => mod.ngep ? 100 : 10,
 	62: () => mod.ngep ? 4 : 3,
-	121: () => (speedrunMilestones >= 4 ? 50 : (253 - averageEp.div(player.epmult).div(10).min(248).max(3)) / 5),
-	141: () => (speedrunMilestones >= 4 ? E(1e45) : E(1e45).dividedBy(E_pow(15, Math.log(player.thisInfinityTime)*Math.pow(player.thisInfinityTime, 0.125))).max(1)),
+	121: () => (speedrunMilestones >= 5 ? 50 : (253 - averageEp.div(player.epmult).div(10).min(248).max(3)) / 5),
+	141: () => (speedrunMilestones >= 5 ? E(1e45) : E(1e45).dividedBy(E_pow(15, Math.log(player.thisInfinityTime)*Math.pow(player.thisInfinityTime, 0.125))).max(1)),
 	211: () => !inNGM(2) ? 5 : 1,
 	212() {
 		let log = player.timeShards.max(2).log2()
