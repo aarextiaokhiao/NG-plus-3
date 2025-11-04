@@ -503,7 +503,7 @@ let HOW_TO = [
 
 		title: "W & Z Bosons",
 		layer: "fundament",
-		desc: `[ON REWORK]
+		desc: `[WILL BE REWORKED SOON]
 			<br><br>
 			Instructions will be made when the rework is done.`
 	}, {
