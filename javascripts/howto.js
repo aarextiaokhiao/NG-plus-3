@@ -504,7 +504,8 @@ let HOW_TO = [
 		title: "W & Z Bosons",
 		layer: "fundament",
 		desc: `
-			[REWORK SOON AFTER GHOSTIFY RESPECCED: PART 1...]
+			[REWORK SOON AFTER GHOSTIFY RESPECCED: PART 1...]<br>
+			[OLD MECHANIC]
 			<br><br>
 
 			You can place down W+, W-, and Z Chargers on an 7x7 grid.
