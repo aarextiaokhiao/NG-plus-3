@@ -461,8 +461,8 @@ let HOW_TO = [
 
 			<b>Automators</b><br>
 			Automator Charge is based on net Quarks and other stuff you'll gain later. You unlock an Automator on passing a certain threshold of Automator Power.<br>
-			
-			Automators automate various features such as Nanofield and Big Rips. They are toggleable as long the your spent power doesn't exceed the cap. Some in which have options.
+
+			Automators automate various features. They are toggleable as long the your spent power doesn't exceed the cap. Some in which have options, but none have modes.
 		`
 	}, {
 		mod: _ => ngp3,
