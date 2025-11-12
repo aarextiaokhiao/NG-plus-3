@@ -452,7 +452,7 @@ let HOW_TO = [
 		title: "Fundament",
 		layer: "fundament",
 		desc: `
-			Fundament is the fourth major layer of NG+3 that unlocks on reaching the goal in Big Rip runs. You can perform a Fundament only if you're in Big Rip. This resets all prior progress as well as all Quantum features and Speedrun Milestones, and gives you Spectral Particles based on your current antimatter during this Big Rip. Like the Quantum layer, you'll also keep some quality-of-life features.
+			Fundament is the fourth major layer of NG+3 that unlocks on reaching the goal in Big Rip runs. You can perform a Fundament only if you're in Big Rip. This resets all prior progress as well as all Quantum features and Speedrun Milestones, and gives you Spectral Particles based on your current antimatter during this Big Rip. Like the Quantum layer, you'll also keep QoL features.
 			<br><br>
 
 			<b>Brave Milestones</b><br>
