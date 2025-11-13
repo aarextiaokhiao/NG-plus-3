@@ -524,7 +524,7 @@ let HOW_TO = [
 		title: "Higgs Field",
 		layer: "fundament",
 		desc: `
-			[REWORK AFTER GHOSTIFY RESPECCED: PART 2...]
+			[REWORK IN GHOSTIFY RESPECCED: PART 3...]
 			<br><br>
 
 			At ??? Bosons, you can reset "W & Z Bosons" feature for Higgs. The first Higgs reset unlocks Higgs Field. Further Higgs resets require more Bosons. Unlike Dimensional Boosts and Galaxies, Higgs can be increased by any amount in one run.
