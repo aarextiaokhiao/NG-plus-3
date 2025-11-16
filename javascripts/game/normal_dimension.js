@@ -12,11 +12,12 @@ function getNormalDimensions(uncapped = false) {
 }
 
 function getMaxNormalDimensions() {
-	return player.currentEternityChall == "eterc3" ? 4 : inNC(4) || player.currentChallenge == "postc1" ? 6 : 8
+	return inNC(4) || player.currentChallenge == "postc1" ? 6 : 8
 }
 
 function getDimensionProductionPerSecond(tier) {
 	if (inQC(1) && tier > 2) return E(0)
+	if (player.currentEternityChall == "eterc3" && tier > 4) return E(0)
 
 	let ret = player[dimTiers[tier] + 'Amount'].floor()
 	if (aarMod.newGame4MinusRespeccedVersion) ret = player[dimTiers[tier] + 'Amount']
