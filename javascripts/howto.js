@@ -456,7 +456,7 @@ let HOW_TO = [
 			<br><br>
 
 			<b>Brave Milestones</b><br>
-			Brave Milestones can be achieved by going Fundament while going least Quantums as you can. Like Speedrun Milestones, each Brave Milestone provides you with a reward that greatly boosts progress and makes Fundaments more efficient.
+			Brave Milestones can be achieved by going Fundament while having least Quantums as possible. Like Speedrun Milestones, each Brave Milestone provides you with a reward that greatly boosts progress and makes Fundaments more efficient.
 			<br><br>
 
 			<b>Automators</b><br>
