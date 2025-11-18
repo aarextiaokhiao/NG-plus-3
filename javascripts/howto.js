@@ -367,7 +367,7 @@ let HOW_TO = [
 		title: "Duplicants",
 		tab: "ant",
 		layer: "quantum",
-		desc: `You can make Duplicants by resetting your Replicanti amount after reaching certain requirements (starts at e3,000,000, increases by e100,000x per purchase).<br>
+		desc: `After reaching a certain threshold of Replicantis (starts at e3,000,000, increases by e100,000x per purchase), you can make Duplicants by resetting your Replicantis.<br>
 		Duplicants gather Pilons which provide an additive boost to Green Power effect (allowing to gain more extra Replicated Galaxies).
 		<br><br>
 
