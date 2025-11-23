@@ -177,7 +177,6 @@ let RESETS = {
 
 			completelyResetInfinityDimensions()
 
-			if (getEternitied() < 7) player.autoSacrifice = 1
 			player.postC4Tier = 1
 			player.postC8Mult = E(1)
 
@@ -234,7 +233,7 @@ let RESETS = {
 
 		resetEC(order) {
 			let bigRip = bigRipped()
-			if (bigRip ? !hasRipUpg(2) : !isRewardEnabled(9)) player.eternityChalls = {}
+			if (bigRip ? !hasRipUpg(2) : speedrunMilestones < 10) player.eternityChalls = {}
 
 			player.eternityChallGoal = E(Number.MAX_VALUE)
 			player.currentEternityChall = ""
@@ -339,7 +338,7 @@ let RESETS = {
 			ipMultPower = hasGluonUpg("gb", 3) ? 2.3 : hasMasteryStudy("t241") ? 2.2 : 2
 			quSave.electrons.amount = 0
 			quSave.electrons.sacGals = 0
-			if (speedrunMilestones < 18) quSave.electrons.on = false
+			if (!isRewardEnabled(18)) quSave.electrons.on = false
 			duplicantsResetOnQuantum(qc)
 			nanofieldResetOnQuantum()
 

@@ -1471,7 +1471,7 @@ function updateNGp3DisplayStuff(){
 		el("ts"+t+"Desc").innerHTML=(typeof(d)=="function"?d():d)||"Unknown desc."
 	}
 	updateMasteryStudyCosts()
-	for (var id of [7,9,11,27]) el("reward" + id + "disable").textContent = timeDisplayShort(SM_LIST[id-1].req * 10) + " reward: " + (quSave.disabledRewards[id] ? "OFF" : "ON")
+	for (var id of [7,9,11,18,27]) el("reward" + id + "disable").textContent = timeDisplayShort(SM_LIST[id-1].req * 10) + " reward: " + (quSave.disabledRewards[id] ? "OFF" : "ON")
 
 	el('rebuyupgAuto').textContent="Auto"+(mod.udsp?" (repeatable): ":": ")+(player.autoEterOptions.rebuyupg?"ON":"OFF")
 	el('dilUpgsAuto').textContent="Auto: "+(player.autoEterOptions.dilUpgs?"ON":"OFF")

@@ -329,7 +329,9 @@ function buyDilationUpgrade(id, max) {
 		if (id == 2) {
 			if (speedrunMilestones < 22) player.dilation.dilatedTime = E(0)
 			resetDilationGalaxies()
-		} else player.dilation.dilatedTime = player.dilation.dilatedTime.sub(cost)
+		} else if (speedrunMilestones < 20) {
+			player.dilation.dilatedTime = player.dilation.dilatedTime.sub(cost)
+		}
 		
 		if (id >= 3) player.eternityBuyer.tpUpgraded = true
 	} else {

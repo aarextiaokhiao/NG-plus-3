@@ -793,7 +793,7 @@ function updateAutobuyers() {
 		ab.priority = i
 
 		var unl = player.challenges.includes("challenge" + challOrder[i])
-		if (i == 13) unl = unl || player.challenges.includes("postc2")
+		if (i == 13) unl = unl || player.challenges.includes("postc2") || getEternitied() > 7
 
 		//Player
 		var ret = i

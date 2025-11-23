@@ -107,7 +107,7 @@ function getIPGain(next) {
 	var ret = pow10(player.money.e / div - 0.75).mul(getIPMult())
 	if (hasTimeStudy(41)) ret = ret.mul(E_pow(tsMults[41](), player.galaxies + player.replicanti.galaxies))
 	if (hasTimeStudy(51)) ret = ret.mul(mod.ngep?1e30:1e15)
-	if (hasTimeStudy(141)) ret = ret.mul(E(1e45).dividedBy(E_pow(15, Math.log(player.thisInfinityTime+1)*Math.pow(player.thisInfinityTime+1, 0.125))).max(1))
+	if (hasTimeStudy(141)) ret = ret.mul(tsMults[141]())
 	if (hasTimeStudy(142)) ret = ret.mul(1e25)
 	if (hasTimeStudy(143)) ret = ret.mul(E_pow(15, Math.log(player.thisInfinityTime+1)*Math.pow(player.thisInfinityTime+1, 0.125)))
 	if (hasAch("r116")) ret = ret.mul(Decimal.add(getInfinitied(), 1).pow(Math.log10(2)))

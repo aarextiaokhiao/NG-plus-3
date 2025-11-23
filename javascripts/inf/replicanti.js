@@ -291,12 +291,13 @@ function runRandomReplicanti(chance){
 
 function notContinuousReplicantiUpdating() {
 	var chance = tmp.rep.chance
-	var interval = Decimal.div(tmp.rep.interval, 100)
+	var interval = Decimal.div(tmp.rep.interval, 1e3)
+	var lim = getReplicantiLimit()
 	if (typeof(chance) !== "number") chance = chance.toNumber()
 
-	if (interval <= replicantiTicks && player.replicanti.unl) {
+	while (interval <= replicantiTicks && player.replicanti.unl) {
 		if (player.replicanti.amount.lte(100)) runRandomReplicanti(chance) //chance should be a decimal
-		else if (player.replicanti.amount.lt(getReplicantiLimit())) {
+		else {
 			var temp = Decimal.round(player.replicanti.amount.dividedBy(100))
 			if (chance < 1) {
 				let counter = 0
@@ -304,8 +305,13 @@ function notContinuousReplicantiUpdating() {
 				player.replicanti.amount = temp.mul(counter).add(player.replicanti.amount)
 				counter = 0
 			} else player.replicanti.amount = player.replicanti.amount.mul(2)
-			if (!hasTimeStudy(192)) player.replicanti.amount = player.replicanti.amount.min(getReplicantiLimit())
+
+			if (player.replicanti.amount.gte(lim)) {
+				player.replicanti.amount = E(lim)
+				replicantiTicks = 0
+			}
 		}
+
 		replicantiTicks -= interval
 	}
 }

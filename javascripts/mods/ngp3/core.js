@@ -1,6 +1,6 @@
 //VERSION: 2.31
 let ngp3_ver = 2.31
-let ngp3_build = 20251028
+let ngp3_build = 20251122
 function doNGP3Updates() {
 	if (!aarMod.ngp3_build) aarMod.ngp3_build = 0
 	if (aarMod.ngp3_build < 20221230) quSave.multPower = 0
@@ -177,7 +177,7 @@ function maxAllDilUpgs() {
 			if (player.dilation.dilatedTime.lt(cost)) continue
 
 			let toBuy = Math.min(Math.floor(player.dilation.dilatedTime.div(cost).mul(scale - 1).add(1).log(scale)), start - amt)
-			let toSpend = E_pow(scale, toBuy).sub(1).div(scale - 1).mul(cost)
+			let toSpend = speedrunMilestones >= 20 ? E(0) : E_pow(scale, toBuy).sub(1).div(scale - 1).mul(cost)
 			player.dilation.dilatedTime = player.dilation.dilatedTime.sub(player.dilation.dilatedTime.min(cost))
 			player.dilation.rebuyables[i] += toBuy
 			update = true

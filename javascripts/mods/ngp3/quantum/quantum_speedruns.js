@@ -84,7 +84,7 @@ let SM_LIST = [
 	},
 	{
 		req: 3*60,
-		desc: () => "Start with " + shortenCosts(1e100) + " Dilated Time."
+		desc: () => "Start with " + shortenCosts(1e100) + " Dilated Time and Rebuyable Dilation Upgrades don't spend anything."
 	},
 	{
 		req: 2*60,
