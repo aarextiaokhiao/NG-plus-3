@@ -317,9 +317,9 @@ function notContinuousReplicantiUpdating() {
 }
 
 function continuousReplicantiUpdating(diff){
-	if (hasTimeStudy(192) && tmp.rep.est.toNumber() > 0 && tmp.rep.est.toNumber() < 1/0) player.replicanti.amount = E_pow(Math.E, tmp.rep.ln +Math.log((diff*tmp.rep.est/10) * (Math.log10(tmp.rep.speeds.inc)/tmp.rep.speeds.exp)+1) / (Math.log10(tmp.rep.speeds.inc)/tmp.rep.speeds.exp))
-	else if (hasTimeStudy(192)) player.replicanti.amount = E_pow(Math.E, tmp.rep.ln + tmp.rep.est.mul(diff * Math.log10(tmp.rep.speeds.inc) / tmp.rep.speeds.exp / 10).add(1).log(Math.E) / (Math.log10(tmp.rep.speeds.inc)/tmp.rep.speeds.exp))
-	else player.replicanti.amount = E_pow(Math.E, tmp.rep.ln +(diff*tmp.rep.est/10)).min(getReplicantiLimit())
+	if (hasTimeStudy(192) && tmp.rep.est.toNumber() > 0 && tmp.rep.est.toNumber() < 1/0) player.replicanti.amount = E_pow(Math.E, tmp.rep.ln +Math.log((diff*tmp.rep.est) * (Math.log10(tmp.rep.speeds.inc)/tmp.rep.speeds.exp)+1) / (Math.log10(tmp.rep.speeds.inc)/tmp.rep.speeds.exp))
+	else if (hasTimeStudy(192)) player.replicanti.amount = E_pow(Math.E, tmp.rep.ln + tmp.rep.est.mul(diff * Math.log10(tmp.rep.speeds.inc) / tmp.rep.speeds.exp).add(1).log(Math.E) / (Math.log10(tmp.rep.speeds.inc)/tmp.rep.speeds.exp))
+	else player.replicanti.amount = E_pow(Math.E, tmp.rep.ln +(diff*tmp.rep.est)).min(getReplicantiLimit())
 	replicantiTicks = 0
 }
 
