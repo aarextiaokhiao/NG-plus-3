@@ -294,7 +294,7 @@ let HOW_TO = [
 
 		title: "Mastery Studies",
 		layer: "eternity",
-		desc: `Mastery Studies are a new type of Time Studies, but all costs increase on every purchase. Additionally, you can't buy Mastery Studies above the lowermost row you recently bought. There are also Eternity Challenges and feature unlocks like in the Time Study tree.`
+		desc: `Mastery Studies are a new type of Time Studies, where all costs increase on each purchase. Additionally, you can't buy Mastery Studies above the lowermost row where any study is bought there. Like Time Studies, there are also Eternity Challenges and feature unlocks.`
 	}, {
 		mod: _ => ngp3,
 		req: _ => player.quantum?.times,
