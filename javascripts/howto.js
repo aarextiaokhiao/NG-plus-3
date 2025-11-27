@@ -391,12 +391,13 @@ let HOW_TO = [
 		title: "Nanofield",
 		tab: "ant",
 		layer: "quantum",
-		desc: `Nanofield allows you to gain bonuses by getting Pilon Anti-Energy, produced by Pilon Charge. You can enable the production of Pilon Charge, but also Pilon Anti-Energy will be produced and Pilons will be stalled.<br>	
+		desc: `You can enable the production of Pilon Charge, but also Pilon Anti-Energy will be produced and Pilons will be stalled.<br>	
 		You can get rewards based on your Pilon Energy, with the first one requiring 50 Pilon Energy.<br><br>
 
-		Pilon Anti-Energy slows down Pilon Anti-Energy production until a cap of Anti-Energy is reached, where Pilon Anti-Energy production completely stops. When this happens, the only way to get more Pilon Anti-Energy is to get more Pilon Charge or go quantum.<br><br>
-		
-		Note: Pilon Charge, Energy, and Anti-Energy reset on Quantum. You keep all rewards you already earned.`
+		When a cap of Anti-Energy is reached,  Pilon Energy production completely stops.<br>
+		When this happens, the only way to get more Pilon Energy is to get more Pilon Charge or go quantum.<br><br>
+
+		Note: Pilon Charge, Energy, and Anti-Energy reset on Quantum. You keep all rewards you earned.`
 	}, {
 		mod: _ => ngp3,
 		req: _ => player.masterystudies.includes("d13"),
