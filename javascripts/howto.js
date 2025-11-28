@@ -394,7 +394,7 @@ let HOW_TO = [
 		desc: `You can enable the production of Pilon Charge, but also Pilon Anti-Energy will be produced and Pilons will be stalled.<br>	
 		You can get rewards based on your Pilon Energy, with the first one requiring 50 Pilon Energy.<br><br>
 
-		When a cap of Anti-Energy is reached,  Pilon Energy production completely stops.<br>
+		When a cap of Anti-Energy is reached, Pilon Energy production completely stops.<br>
 		When this happens, the only way to get more Pilon Energy is to get more Pilon Charge or go quantum.<br><br>
 
 		Note: Pilon Charge, Energy, and Anti-Energy reset on Quantum. You keep all rewards you earned.`
