@@ -397,7 +397,7 @@ let HOW_TO = [
 		When a cap of Anti-Energy is reached, Pilon Energy production completely stops.<br>
 		When this happens, the only way to get more Pilon Energy is to get more Pilon Charge or go quantum.<br><br>
 
-		Note: Pilon Charge, Energy, and Anti-Energy reset on Quantum. You keep all rewards you earned.`
+		Note: Pilon Charge, Energy, and Anti-Energy reset on Quantum. You keep all your rewards.`
 	}, {
 		mod: _ => ngp3,
 		req: _ => player.masterystudies.includes("d13"),
