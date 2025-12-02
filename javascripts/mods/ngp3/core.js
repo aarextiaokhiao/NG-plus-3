@@ -20,7 +20,7 @@ function doNGP3Updates() {
 	}
 	if (aarMod.ngp3_build < 20230215) player.dilation.freeGalaxies = 0
 	if (aarMod.ngp3_build < 20230514 && todSave) todSave.chosen = "r"
-	if (aarMod.ngp3_build < 20230721.01 && hasMasteryStudy("d8") && quSave.best > 3e3) alert("Quantum Challenges are now relocked until you get a 5-minute Speedrun Milestone!")
+
 	if (ghSave !== undefined) {
 		if (aarMod.ngp3_build < 20230201) delete ghSave.ghostlyPhotons
 		if (aarMod.ngp3_build < 20230204) {
