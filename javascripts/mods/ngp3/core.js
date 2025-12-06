@@ -1,6 +1,6 @@
 //VERSION: 2.31
 let ngp3_ver = 2.31
-let ngp3_build = 20251028
+let ngp3_build = 20251122
 function doNGP3Updates() {
 	if (!aarMod.ngp3_build) aarMod.ngp3_build = 0
 	if (aarMod.ngp3_build < 20221230) quSave.multPower = 0
@@ -20,7 +20,7 @@ function doNGP3Updates() {
 	}
 	if (aarMod.ngp3_build < 20230215) player.dilation.freeGalaxies = 0
 	if (aarMod.ngp3_build < 20230514 && todSave) todSave.chosen = "r"
-	if (aarMod.ngp3_build < 20230721.01 && hasMasteryStudy("d8") && quSave.best > 3e3) alert("Quantum Challenges are now relocked until you get a 5-minute Speedrun Milestone!")
+
 	if (ghSave !== undefined) {
 		if (aarMod.ngp3_build < 20230201) delete ghSave.ghostlyPhotons
 		if (aarMod.ngp3_build < 20230204) {
@@ -177,7 +177,7 @@ function maxAllDilUpgs() {
 			if (player.dilation.dilatedTime.lt(cost)) continue
 
 			let toBuy = Math.min(Math.floor(player.dilation.dilatedTime.div(cost).mul(scale - 1).add(1).log(scale)), start - amt)
-			let toSpend = E_pow(scale, toBuy).sub(1).div(scale - 1).mul(cost)
+			let toSpend = speedrunMilestones >= 20 ? E(0) : E_pow(scale, toBuy).sub(1).div(scale - 1).mul(cost)
 			player.dilation.dilatedTime = player.dilation.dilatedTime.sub(player.dilation.dilatedTime.min(cost))
 			player.dilation.rebuyables[i] += toBuy
 			update = true
@@ -345,7 +345,7 @@ function ngP3AchieveCheck() {
 	if (mod.ngp3) for (id = 0; id < player.masterystudies.length; id++) if (player.masterystudies[id].split("t")[1]) checkEmpty = false
 
 	let ableToGetRid2 = checkEmpty && player.dilation.active
-	let ableToGetRid3 = ableToGetRid2 && quSave.electrons.amount == 0	
+	let ableToGetRid3 = ableToGetRid2 && quSave.electrons.amount == 0
 	let ableToGetRid4 = ableToGetRid2 && inQC(2)
 	let ableToGetRid5 = ableToGetRid4 && player.dontWant
 	let ableToGetRid6 = ableToGetRid2 && inQC(6) && inQC(8)

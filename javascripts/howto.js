@@ -294,16 +294,16 @@ let HOW_TO = [
 
 		title: "Mastery Studies",
 		layer: "eternity",
-		desc: `Mastery Studies are a new type of Time Studies, but all costs increase on every purchase. Additionally, you can't buy Mastery Studies above the lowermost row you recently bought. There are also Eternity Challenges and feature unlocks like in the Time Study tree.`
+		desc: `Mastery Studies are a new type of Time Studies, where all costs increase on each purchase. Additionally, you can't buy Mastery Studies above the lowermost row where any study is bought there. Like Time Studies, there are also Eternity Challenges and feature unlocks.`
 	}, {
 		mod: _ => ngp3,
 		req: _ => player.quantum?.times,
 
 		title: "Quantum",
 		layer: "quantum",
-		desc: `Quantum is the third major layer of NG+3 that unlocks on reaching 9.32e446 meta-antimatter and completing Eternity Challenge 14 once. This layer resets all prior progress as well as all Eternity features. It is also the first layer where you keep a bit of pre-Quantum features.<br><br>
-
-		You gain Anti-Quarks based on your best meta-antimatter on this Quantum.<br><br>
+		desc: `Quantum is the third major layer of NG+3 that unlocks on reaching 9.32e446 meta-antimatter and completing Eternity Challenge 14 once. It is also the first layer where you keep a bit of pre-Quantum features.<br>
+		This layer resets all prior progress as well as all Eternity features. You gain Anti-Quarks based on your best meta-antimatter on this Quantum.<br><br>
+		<br><br>
 
 		<b>Speedrun Milestones</b><br>
 		On going Quantum under a specific time, you unlock certain Speedrun Milestones. Speedrun Milestones provide you with a reward that greatly boosts progress and makes Quantums much faster and more efficient.`
@@ -367,7 +367,7 @@ let HOW_TO = [
 		title: "Duplicants",
 		tab: "ant",
 		layer: "quantum",
-		desc: `You can make Duplicants by resetting your Replicanti amount after reaching certain requirements (starts at e3,000,000, increases by e100,000x per purchase).<br>
+		desc: `After reaching a certain threshold of Replicantis (starts at e3,000,000, increases by e100,000x per purchase), you can make Duplicants by resetting your Replicantis.<br>
 		Duplicants gather Pilons which provide an additive boost to Green Power effect (allowing to gain more extra Replicated Galaxies).
 		<br><br>
 
@@ -391,12 +391,13 @@ let HOW_TO = [
 		title: "Nanofield",
 		tab: "ant",
 		layer: "quantum",
-		desc: `Nanofield allows you to gain bonuses by getting Pilon Anti-Energy, produced by Pilon Charge. You can enable the production of Pilon Charge, but also Pilon Anti-Energy will be produced and Pilons will be stalled.<br>	
+		desc: `You can enable the production of Pilon Charge, but also Pilon Anti-Energy will be produced and Pilons will be stalled.<br>	
 		You can get rewards based on your Pilon Energy, with the first one requiring 50 Pilon Energy.<br><br>
 
-		Pilon Anti-Energy slows down Pilon Anti-Energy production until a cap of Anti-Energy is reached, where Pilon Anti-Energy production completely stops. When this happens, the only way to get more Pilon Anti-Energy is to get more Pilon Charge or go quantum.<br><br>
-		
-		Note: Pilon Charge, Energy, and Anti-Energy reset on Quantum. You keep all rewards you already earned.`
+		When a cap of Anti-Energy is reached, Pilon Energy production completely stops.<br>
+		When this happens, the only way to get more Pilon Energy is to get more Pilon Charge or go quantum.<br><br>
+
+		Note: Pilon Charge, Energy, and Anti-Energy reset on Quantum. You keep all your rewards.`
 	}, {
 		mod: _ => ngp3,
 		req: _ => player.masterystudies.includes("d13"),
@@ -407,7 +408,7 @@ let HOW_TO = [
 			let msg = `You can turn one color of Colored Quarks into Free Preons, which gradually decay exponentially while generating Preonic Spin. Preonic Spins can be spent on a big set of upgrades.`
 
 			if (ghSave?.photons?.unl || SPOILERS) msg += `<b>Radioactive Decays</b><br>
-				When you have enough Free Preons, you will be able to sacrifice some Branch Upgrades and Free Preons in order to provide some boosts and unlock new upgrades. However, each Radioactive Decay greatly nerfs Decay except the upgrades on the bottom!`
+				When you have enough Free Preons, you will be able to sacrifice these for boosts and upgrades. However, each Radioactive Decay nerfs Decay!`
 			else msg += `<b>Unlock Photons to unlock a subfeature.</b>`
 
 			return msg
@@ -419,7 +420,7 @@ let HOW_TO = [
 		title: "Big Rip",
 		layer: "quantum",
 		desc() {
-			let msg = `Once you beat 24 Paired Challenges and buy the last Mastery Study at the very bottom, you can big rip the universe.<br>
+			let msg = `Once you beat 24 Paired Challenges and buy the last Mastery Study, you can big rip the universe.<br>
 			To do this, you must have one of your Paired Challenges assigned to be QC6+QC8, which is the hardest paired challenge to complete.<br><br>
 
 			When you Big Rip the universe: You start a new Quantum run, but trapping you inside QC6 and QC8 with only your Quantum mechanics working (from quarks and gluons on), but nothing before that (it all comes back upon exiting the Big Rip). Additionally, many Speedrun Milestones do not work in Big Rips unless reactivated.<br>
@@ -437,7 +438,7 @@ let HOW_TO = [
 			else msg += `<b>Get e1,215 Eternity Points while Big Rip to unlock Break Eternity.</b>`
 
 			if (feature == 3) msg += `<b>Phantomal Paradigms</b><br>
-				Phantomal Paradigms are a exclusive replacement to Dimensional Shifts in Big Rip. Each Phantomal Paradigm removes the cost scaling of a Antimatter Dimension tier (except the 8th), but apply a constant per-ten bonus to that tier.<br>
+				Phantomal Paradigms are a replacement to Dimensional Shifts in Big Rip. Each Phantomal Paradigm removes the cost scaling of a Antimatter Dimension tier (except the 8th), but apply a constant per-ten bonus as a penalty.<br>
 				Additionally, one of each Infinity & Time Dimensions will be removed and you will be stuck in Big Rips until next Fundament.<br><br>
 
 				Like other Big Rip features, they reset on Fundament.`
@@ -452,17 +453,16 @@ let HOW_TO = [
 		title: "Fundament",
 		layer: "fundament",
 		desc: `
-			Fundament is the fourth major layer of NG+3 that unlocks on reaching the goal in Big Rip runs. You can perform a Fundament only if you're in Big Rip. This resets all prior progress as well as all Quantum features and Speedrun Milestones, and gives you Spectral Particles based on your current antimatter during this Big Rip. Like the Quantum layer, you'll also keep some quality-of-life features.
+			Fundament is the fourth major layer of NG+3 that can be performed by reaching the challenge goal in Big Rip. This resets all prior progress as well as all Quantum features and Speedrun Milestones, and gives you Spectral Particles based on your current antimatter during this Big Rip. Like the Quantum layer, you'll also keep QoL features.
 			<br><br>
 
 			<b>Brave Milestones</b><br>
-			Brave Milestones can be achieved by going Fundament while going least Quantums as you can. Like Speedrun Milestones, each Brave Milestone provides you with a reward that greatly boosts progress and makes Fundaments more efficient.
+			Brave Milestones can be achieved by going Fundament while having least Quantums as possible. Like Speedrun Milestones, each Brave Milestone provides you with a reward that greatly boosts progress and makes Fundaments more efficient.
 			<br><br>
 
 			<b>Automators</b><br>
 			Automator Charge is based on net Quarks and other stuff you'll gain later. You unlock an Automator on passing a certain threshold of Automator Power.<br>
-			
-			Automators automate various features such as Nanofield and Big Rips. They are toggleable as long the your spent power doesn't exceed the cap. Some in which have options.
+			Automators automate various features. They are toggleable as long the your spent power doesn't exceed the cap. Some in which have options, but none have modes.
 		`
 	}, {
 		mod: _ => ngp3,
@@ -476,7 +476,7 @@ let HOW_TO = [
 			<br><br>
 
 			You can spend Spectral Particles to boost all 3 kinds of Neutrinos.<br>
-			Neutrinos are used to boost things dependent on all kinds, and can be spent for upgrades or a rebuyable which gives 3x Spectral Particles per purchase.<br>
+			All Neutrinos boost things, and can be spent for upgrades or a rebuyable which gives 3x Spectral Particles per purchase.<br>
 			More Neutrino upgrades can be unlocked between 3rd Fundament and 10th Fundament. Further upgrades are unlocked in later progression.
 		`
 	}, {
@@ -487,15 +487,15 @@ let HOW_TO = [
 		layer: "fundament",
 		desc: `
 			Photons are passively generated based on various resources.<br>
-			Photons strengthen 8 colors of Lights which provide boosts.<br>
-			To unlock more colors, you must gain more Photons.<br>
-			Fundament resets all Photons and Lights.
+			Photons strengthen Lights which provide boosts.<br>
+			To unlock more Lights, you must gain more Photons.<br>
+			Going Fundament resets all Photons and Lights.
 			<br><br>
 			
 			There is a mechanic where you control speed to 4 features.<br>
 			Slowing down a feature produces Experience Time.<br>
-			Speeding up a feature consumes Experience Time. That is toggleable with another option.<br>
-			You can also gain Experience Time on Fundament, based on various factors.
+			Speeding up a feature consumes Experience Time. Sped up features are toggleable with a single option.<br>
+			You can gain Experience Time on Fundament, based on various factors.
 		`
 	}, {
 		mod: _ => ngp3,
@@ -503,9 +503,7 @@ let HOW_TO = [
 
 		title: "W & Z Bosons",
 		layer: "fundament",
-		desc: `[WILL BE REWORKED SOON]
-			<br><br>
-			Instructions will be made when the rework is done.`
+		desc: `[WILL BE REWORKED SOON]`
 	}, {
 		mod: _ => ngp3,
 		req: _ => ghSave?.hb?.unl,
@@ -513,7 +511,7 @@ let HOW_TO = [
 		title: "Higgs Field",
 		layer: "fundament",
 		desc: `
-			[REWORK SOON AFTER GHOSTIFY RESPECCED: PART 2...]
+			[REWORK IN GHOSTIFY RESPECCED: PART 3...]
 			<br><br>
 
 			At ??? Bosons, you can reset "W & Z Bosons" feature for Higgs. The first Higgs reset unlocks Higgs Field. Further Higgs resets require more Bosons. Unlike Dimensional Boosts and Galaxies, Higgs can be increased by any amount in one run.
