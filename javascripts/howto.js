@@ -489,7 +489,7 @@ let HOW_TO = [
 			Photons are passively generated based on various resources.<br>
 			Photons strengthen Lights which provide boosts.<br>
 			To unlock more Lights, you must gain more Photons.<br>
-			Fundament resets all Photons and Lights.
+			Going Fundament resets all Photons and Lights.
 			<br><br>
 			
 			There is a mechanic where you control speed to 4 features.<br>
