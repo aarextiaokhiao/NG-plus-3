@@ -503,7 +503,7 @@ let HOW_TO = [
 
 		title: "W & Z Bosons",
 		layer: "fundament",
-		desc: `[WILL BE REWORKED SOON]`
+		desc: `[WILL BE REWORKED]`
 	}, {
 		mod: _ => ngp3,
 		req: _ => ghSave?.hb?.unl,
