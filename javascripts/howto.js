@@ -506,7 +506,7 @@ let HOW_TO = [
 		desc: `[WILL BE REWORKED]
 			<br><br>
 			
-			A idea has came up, which will be revealed on development.`
+			A idea has recently came up, which will be revealed on development.`
 	}, {
 		mod: _ => ngp3,
 		req: _ => ghSave?.hb?.unl,
