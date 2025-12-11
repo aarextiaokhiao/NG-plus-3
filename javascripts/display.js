@@ -103,7 +103,10 @@ function updateCosts() {
 function tickspeedDisplay(){
 	let unl = canBuyDimension(3) || player.resets >= 1 || gSacrificed() || player.infinitied > 0 || player.eternities !== 0 || quantumed || player.currentEternityChall == "eterc9"
 	el("tickSpeedRow").style.visibility = unl ? "visible" : "hidden"
-	if (!unl) return
+	if (!unl) {
+		tmp.tickUpdate = true
+		return
+	}
 
 	var tickmult = tmp.gal.ts
 	var tickmultNum = tickmult.toNumber()
