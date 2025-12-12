@@ -505,7 +505,7 @@ let HOW_TO = [
 		layer: "fundament",
 		desc: `[WILL BE REWORKED]
 			<br><br>
-			
+
 			A idea has recently came up, which will be revealed on development.`
 	}, {
 		mod: _ => ngp3,
