@@ -9,7 +9,7 @@ function updateNanoverseTab() {
 	el("preonEnergy").textContent = shortenMoney(nfSave.energy)
 	el("quarkEnergyRate").textContent = shortenMoney(getQuarkEnergyProduction())
 
-	let noCharge = hasWZMilestone(3) // right now BL milestones do not consider the possibility of being locked out of pilon boost
+	let noCharge = false // right now BL milestones do not consider the possibility of being locked out of pilon boost
 	el("quarkChargeDiv").style.display = noCharge ? "none" : ""
 	el("quarkAntienergyDiv").style.display = noCharge ? "none" : ""
 	if (!noCharge) {
@@ -63,7 +63,7 @@ function getQuarkLossProduction() {
 }
 
 function getQuarkEnergyProduction() {
-	let ret = hasWZMilestone(3) ? getQuarkChargeProduction() : nfSave.charge
+	let ret = false ? getQuarkChargeProduction() : nfSave.charge //no requirement for an upgrade yet
 	ret = ret.mul(5).sqrt()
 	if (hasNanoReward("pilon_energy")) ret = ret.mul(tmp.qu.nf.eff.pilon_energy)
 	if (hasMasteryStudy("t411")) ret = ret.mul(getMTSMult(411))
@@ -228,7 +228,7 @@ function setupNanofieldHTML() {
 }
 
 function nanofieldUpdating(diff){
-	if (hasWZMilestone(3)) nfSave.energy = nfSave.energy.add(getQuarkEnergyProduction().mul(diff))
+	if (false) nfSave.energy = nfSave.energy.add(getQuarkEnergyProduction().mul(diff)) //no requirement for an upgrade yet
 	else {
 		var AErate = getQuarkAntienergyProduction()
 		var toAddAE = AErate.mul(diff).min(getQuarkChargeProductionCap().sub(nfSave.antienergy))

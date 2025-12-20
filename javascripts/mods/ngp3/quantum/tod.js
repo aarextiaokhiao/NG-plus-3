@@ -412,10 +412,7 @@ function getTreeUpgradeEfficiencyText(){
 	if (!shiftDown) return "Tree upgrade efficiency: "+(tmp.qu.tree_str * 100).toFixed(1)+"%"
 
 	let text = ""
-	if (todSave.r.decays) {
-		text += "Radioactive Decays: +" + shorten(Math.sqrt(todSave.r.decays) / 4) + "x, "
-		if (hasWZMilestone(14)) text += "Bosonic Milestone 15: " + shorten(blEff(14)) + "x to prior, "
-	}
+	if (todSave.r.decays) text += "Radioactive Decays: +" + shorten(Math.sqrt(todSave.r.decays) / 4) + "x, "
 	if (PHANTOM.amt > 0) text += "Phantomal Paradigms: +" + shorten(PHANTOM.amt / 5) + "x, "
 	if (hasNB(7)) text += "Neutrino Boost 7: +" + shorten(NT.eff("boost", 7)) + "x, "
 	if (hasAch("ng3p62")) text += "'Finite Time' Reward: +0.1x, "
@@ -429,7 +426,6 @@ function getTreeUpgradeEfficiency(mod) {
 	r += getTreeUpgradeEffect(12)
 
 	r += PHANTOM.amt / 5
-	if (hasWZMilestone(14)) r *= blEff(14)
 	if (hasNB(7) && mod != "noNB") r += NT.eff("boost", 7, 0)
 	if (hasAch("ng3p62")) r += 0.1
 	return r + 1
@@ -441,7 +437,6 @@ function getRDNerf() {
 
 function getBU1Power() {
 	let x = getBranchUpgLevel(1)
-	if (hasWZMilestone(2)) x *= blEff(2)
 	let s = Math.floor(Math.sqrt(0.25 + 2 * x / 120) - 0.5)
 	return s * 120 + (x - s * (s + 1) * 60) / (s + 1)
 }

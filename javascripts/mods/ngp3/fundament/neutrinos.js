@@ -66,7 +66,7 @@ const NEUTRINO = NT = {
 			return r.round()
 		},
 		gain() { 
-			let r = E_pow(getNeutrinoMultBase(), ghSave.neutrinos.multPower - 1)
+			let r = E_pow(5, ghSave.neutrinos.multPower - 1)
 			r = E_pow(lightEff(1), Math.max(brSave.bestGals - 2000, 0)).mul(r)
 			if (mod.p3ep) r = r.mul(pow10(player.galaxies / 1e5))
 			return r
@@ -336,8 +336,7 @@ const NEUTRINO = NT = {
 		)
 
 		el("neutrinoMultUpg").className = "qu_upg " + (ghSave.ghostParticles.gte(getNeutrinoMultCost()) ? "storebtn" : "unavailablebtn")
-		el("neutrinoMultBase").textContent = shorten(getNeutrinoMultBase())
-		el("neutrinoMult").textContent = shortenDimensions(E_pow(getNeutrinoMultBase(), ghSave.neutrinos.multPower - 1))
+		el("neutrinoMult").textContent = shortenDimensions(E_pow(5, ghSave.neutrinos.multPower - 1))
 		el("neutrinoMultUpgCost").textContent = shortenDimensions(getNeutrinoMultCost())
 		el("ghpMultUpg").className = "qu_upg " + (NT_RES.total().gte(getGHPMultCost()) ? "storebtn" : "unavailablebtn")
 		el("ghpMult").textContent = shortenDimensions(getGHPBaseMult())
@@ -369,12 +368,6 @@ function buyNeutrinoMult(max) {
 
 	el("neutrinoMult").textContent=shortenDimensions(E_pow(5, ghSave.neutrinos.multPower - 1))
 	el("neutrinoMultUpgCost").textContent=shortenDimensions(getNeutrinoMultCost())
-}
-
-function getNeutrinoMultBase() {
-	let r = 5
-	if (hasWZMilestone(10)) r += blEff(10)
-	return r
 }
 
 function maxNeutrinoMult() {

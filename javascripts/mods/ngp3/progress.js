@@ -140,16 +140,16 @@ const NGP3_FEATURES = {
 		req_log: true,
 		req_disp: (amt, req) => `${getFullExpansion(amt)} / ${getFullExpansion(req)} Photons`
 	},
-	hb: {
+	/*hb: {
 		name: "Higgs Field",
 		tab: _ => TAB_CORE.open("hb"),
 
 		met: _ => false,
 		req: _ => 1e7,
-		req_res: _ => blSave.best_bosons,
+		req_res: _ => play,
 		req_log: true,
 		req_disp: (amt, req) => `???`
-	},
+	},*/
 
 	//Special
 	end: {

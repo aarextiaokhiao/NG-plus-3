@@ -43,7 +43,7 @@ function getSpaceShardsGain() {
 		if (isBreakUpgActive(6)) ret = ret.mul(tmp.qu.beu[6])
 	}
 	if (hasNU(9)) {
-		if (hasWZMilestone(4)) ret = ret.mul(pow10(Math.pow(Decimal.max(getEternitied(), 1).log10(), 4/3) / 40))
+		if (false) ret = ret.mul(pow10(Math.pow(Decimal.max(getEternitied(), 1).log10(), 4/3) / 40)) //no requirement for an upgrade yet
 		else ret = ret.mul(Decimal.max(getEternitied(), 1).pow(0.1))
 	}
 

@@ -255,9 +255,6 @@ function doQuantum(force, auto, qc = {}) {
 			brSave.bestThisRun = E(0)
 			if (brokeEternity()) beSave.did = true
 		} else {
-			brSave.banked_replicanti = E(1)
-			if (hasWZMilestone(0)) brSave.banked_replicanti = player.replicanti.amount
-
 			if (!hasRipUpg(1)) {
 				player.infmultbuyer = true
 				for (var d=0;d<8;d++) player.infDimBuyers[d] = true
@@ -318,7 +315,7 @@ function doQuantum(force, auto, qc = {}) {
 	//Post-Quantum
 	if (bigRip) {
 		for (var u = 0; u < brSave.upgrades.length; u++) tweakBigRip(brSave.upgrades[u])
-		player.replicanti.amount = E(brSave.banked_replicanti || 1)
+		player.replicanti.amount = E(1)
 	}
 	if (ghostified) ghSave.neutrinos.generationGain = ghSave.neutrinos.generationGain % 3 + 1
 }

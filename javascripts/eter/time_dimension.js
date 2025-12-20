@@ -7,7 +7,7 @@ function getBreakEternityTDMult(tier){
 	if (isBreakUpgActive(4) && tier > 3 && tier < 7) ret = ret.mul(tmp.qu.beu[4])
 	if (hasRipUpg(13)) ret = ret.mul(player.replicanti.amount.max(1).pow(1e-6))
 	if (tier == 7 && hasRipUpg(16)) ret = ret.mul(tmp.qu.bru[16])
-	if (hasWZMilestone(9)) ret = ret.mul(player["timeDimension"+tier].power.pow(0.01))
+	if (false) ret = ret.mul(player["timeDimension"+tier].power.pow(0.01)) //no requirement yet
 	if (ret.lt(0)) ret = E(0)
 	return dilates(ret)
 }
@@ -64,7 +64,7 @@ function getTimeDimensionPower(tier) {
 
 	if (ECComps("eterc10") !== 0) ret = ret.mul(getECReward(10))
 	if (hasAch("r128")) ret = ret.mul(Math.max(player.timestudy.studies.length, 1))
-	if (player.dilation.upgrades.includes(5)) ret = ret.mul(tmp.rep.eff.pow(hasWZMilestone(8) ? .3 : .1))
+	if (player.dilation.upgrades.includes(5)) ret = ret.mul(tmp.rep.eff.pow(false ? .3 : .1)) //no requirement for an upgrade yet
 
 	ret = dilates(ret, 2)
 	if (inNGM(2)) ret = ret.mul(ret2)

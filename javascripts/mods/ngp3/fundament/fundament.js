@@ -33,7 +33,6 @@ function loadFundament(unl) {
 
 	updateBraveMilestones()
 	updateAutoGhosts(true)
-	delete WZ_FIELD.hypo_chosen
 }
 
 function unlockFundament() {

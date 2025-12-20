@@ -172,7 +172,6 @@ function getEmperorDimensionGlobalMultiplier() {
 	let ret = E(1)
 	if (hasMasteryStudy("t392")) ret = getMTSMult(392)
 	if (hasMasteryStudy("t402")) ret = ret.mul(30)
-	if (hasWZMilestone(13)) ret = ret.mul(blEff(13))
 	if (hasDecay()) ret = ret.mul(getTreeUpgradeEffect(6))
 	return ret
 }

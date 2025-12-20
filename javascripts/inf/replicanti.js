@@ -22,7 +22,7 @@ function getReplMult(next) {
 	if (hasTimeStudy(21)) replmult = replmult.add(E_pow(player.replicanti.amount, 0.032))
 	if (hasTimeStudy(102)) {
 		let gal = player.replicanti.galaxies
-		if (hasWZMilestone(17)) gal *= blEff(17)
+		if (false) gal *= blEff(17) //no requirement yet
 		replmult = replmult.mul(E_pow(5, gal))
 	}
 	return replmult;
