@@ -542,22 +542,6 @@ strong { color: #0072e5 }
 .ultraviolet {
 	color: #ac00e5
 }
-.bosonic_btn {
-	background: repeating-linear-gradient(#620d65, transparent 50%, #620d65 100%), repeating-linear-gradient(90deg, transparent, #c73415 50%, transparent 100%), #191919 !important;
-	background-size: 200% 200% !important;
-	border: 2px solid #b70b !important;
-	color: #e5e5e5 !important;
-}
-.bosonic_btn:hover {
-    border-color: #b70 !important;
-}
-.hypo_btn {
-	border: 1px solid #fff7 !important;
-	background: #e5e5e51f
-}
-.hypo_btn:hover {
-	background: #e5e5e57f
-}
 .chosen {
     background-color: #00e500 !important;
     color: #191919 !important

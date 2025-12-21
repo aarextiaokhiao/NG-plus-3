@@ -265,8 +265,8 @@ TABS = Object.assign(TABS, {
 
 	nt: { name: "Neutrinos", update: _ => NT.update() },
 	ph: { name: "Photons", update: _ => PHOTON.update() },
-	wz: { name: "W & Z Field", class: "bosonic_btn", unl: _ => PHOTON.unlocked(), update: _ => WZ_FIELD.updateTab() },
-	hb: { name: "???", class: "bosonic_btn", unl: _ => WZ_FIELD.unlocked() },
+	wz: { name: "W & Z Bosons", unl: _ => PHOTON.unlocked(), update: _ => WZ_FIELD.updateTab() },
+	hb: { name: "Higgs", unl: _ => WZ_FIELD.unlocked() },
 
 	auto_ant: { name: "Automator Ants", update: _ => updateAutomatorHTML() },
 	mil_brave: { name: "Brave Milestones" }
