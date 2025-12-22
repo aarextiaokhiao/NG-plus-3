@@ -46,7 +46,7 @@ const WZ_FIELD = {
 		el("wz_req").style.display = !WZ_FIELD.unlocked() ? "" : "none"
 		el("wz_div").style.display = WZ_FIELD.unlocked() ? "" : "none"
 		if (!WZ_FIELD.unlocked()) {
-			el("wz_req").innerHTML = `Reach Ultraviolet Light and ${shorten(1e38)} Spectral Particles to unlock W & Z Field.`
+			el("wz_req").innerHTML = `Reach Ultraviolet Light and ${shorten(1e38)} Spectral Particles to unlock W & Z Bosons.`
 			return
 		}
 	},
