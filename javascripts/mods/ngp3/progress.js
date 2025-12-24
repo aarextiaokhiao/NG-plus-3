@@ -134,7 +134,7 @@ const NGP3_FEATURES = {
 		badge_id: "p3_bl",
 		tab: _ => TAB_CORE.open("wz"),
 
-		met: _ => WZ_FIELD.unlocked(),
+		met: _ => WZ_BOSONS.unlocked(),
 		req: _ => PHOTON.light.data[7].req,
 		req_res: _ => ghSave.photons.amt,
 		req_log: true,

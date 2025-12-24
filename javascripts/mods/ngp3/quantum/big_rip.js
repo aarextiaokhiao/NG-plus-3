@@ -401,7 +401,7 @@ function updateBreakEternity() {
 	el("breakUpgRow3").style.display = getBEUnls() > 7 ? "" : "none"
 	el("breakUpg7").style.visibility = broke ? "visible" : "hidden"
 	el("breakUpg7Max").style.visibility = broke ? "visible" : "hidden"
-	el("beShortcut").style.display = broke && !WZ_FIELD.unlocked() ? "" : "none"
+	el("beShortcut").style.display = broke && !WZ_BOSONS.unlocked() ? "" : "none"
 	if (broke) {
 		for (var u = 1; u <= getBEUnls(); u++) el("breakUpg" + u + "Cost").textContent = shortenDimensions(getBreakUpgCost(u))
 		el("breakUpg7MultIncrease").textContent = shortenDimensions(getBEEPMultBase())

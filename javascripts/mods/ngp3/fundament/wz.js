@@ -3,7 +3,7 @@ function hasWZMilestone(type, i) {
 	return false
 }
 
-const WZ_FIELD = {
+const WZ_BOSONS = {
 	/* CORE */
 	//Unlock
 	req: _ => tmp.funda.photon?.unls >= 8 && ghSave.ghostParticles.gte(1e38),
@@ -43,9 +43,9 @@ const WZ_FIELD = {
 		//placeholder
 	},
 	updateTab() {
-		el("wz_req").style.display = !WZ_FIELD.unlocked() ? "" : "none"
-		el("wz_div").style.display = WZ_FIELD.unlocked() ? "" : "none"
-		if (!WZ_FIELD.unlocked()) {
+		el("wz_req").style.display = !WZ_BOSONS.unlocked() ? "" : "none"
+		el("wz_div").style.display = WZ_BOSONS.unlocked() ? "" : "none"
+		if (!WZ_BOSONS.unlocked()) {
 			el("wz_req").innerHTML = `Reach Ultraviolet Light and ${shorten(1e38)} Spectral Particles to unlock W & Z Bosons.`
 			return
 		}

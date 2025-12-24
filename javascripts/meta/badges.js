@@ -135,7 +135,7 @@ function obtainBadges() {
 		if (quantumed) onObtainBadgeCheck("p3_qu")
 		if (hasMasteryStudy("d10")) onObtainBadgeCheck("p3_ant")
 		if (ghostified) onObtainBadgeCheck("p3_fu")
-		if (WZ_FIELD.unlocked()) onObtainBadgeCheck("p3_bl")
+		if (WZ_BOSONS.unlocked()) onObtainBadgeCheck("p3_bl")
 		if (hasAch('ng3p98')) onObtainBadgeCheck("p3_end")
 	}
 	if (mod.ngud == 3) {

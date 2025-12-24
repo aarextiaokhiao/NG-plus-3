@@ -13,7 +13,7 @@ function setupFundament() {
 		neutrinos: NT.setup(),
 
 		photons: PHOTON.setup(),
-		lab: WZ_FIELD.setup(),
+		lab: WZ_BOSONS.setup(),
 		hb: HIGGS.setupSave()
 	}
 }
@@ -127,7 +127,7 @@ function updateGhostifyTempStuff() {
 	if (!ghostified) return
 	if (tmp.funda == undefined) tmp.funda = {}
 	HIGGS.temp()
-	WZ_FIELD.temp()
+	WZ_BOSONS.temp()
 	PHOTON.temp()
 	NT.temp()
 }
@@ -265,8 +265,8 @@ TABS = Object.assign(TABS, {
 
 	nt: { name: "Neutrinos", update: _ => NT.update() },
 	ph: { name: "Photons", update: _ => PHOTON.update() },
-	wz: { name: "W & Z Bosons", unl: _ => PHOTON.unlocked(), update: _ => WZ_FIELD.updateTab() },
-	hb: { name: "Higgs", unl: _ => WZ_FIELD.unlocked() },
+	wz: { name: "W & Z Bosons", unl: _ => PHOTON.unlocked(), update: _ => WZ_BOSONS.updateTab() },
+	hb: { name: "Higgs", unl: _ => WZ_BOSONS.unlocked() },
 
 	auto_ant: { name: "Automator Ants", update: _ => updateAutomatorHTML() },
 	mil_brave: { name: "Brave Milestones" }

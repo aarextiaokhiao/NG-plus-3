@@ -38,7 +38,7 @@ function doNGP3Updates() {
 
 			ghSave.photons = PHOTON.setup()
 			ghSave.hb = HIGGS.setupSave()
-			ghSave.lab = blSave = WZ_FIELD.setup()
+			ghSave.lab = blSave = WZ_BOSONS.setup()
 		}
 
 		if (aarMod.ngp3_build < 20250703 && (E(ghSave.ghostParticles).gte(1e20) || ghSave.photons.unl)) {
@@ -412,7 +412,7 @@ function ngP3AchieveCheck() {
 	if (MTS.bought >= 48) giveAchievement("The Theory of Ultimate Studies")
 	if (tmp.funda.photon?.unls >= 6) giveAchievement("Here comes the light")
 
-	if (WZ_FIELD.unlocked()) giveAchievement("Even Ghostlier than before")
+	if (WZ_BOSONS.unlocked()) giveAchievement("Even Ghostlier than before")
 	if (PHANTOM.amt >= 7) giveAchievement("Here lies dimensions")
 	if (PHANTOM.amt >= 8) giveAchievement("Impending Doom")
 	if (nG(getEternitied(), Number.MAX_VALUE)) giveAchievement("Everlasting Eternities")
@@ -439,7 +439,7 @@ function doNGP3UnlockStuff() {
 
 	if (ghostified) {
 		if (!PHOTON.unlocked() && PHOTON.req()) PHOTON.unlock()
-		if (!WZ_FIELD.unlocked() && WZ_FIELD.req()) WZ_FIELD.unlock()
+		if (!WZ_BOSONS.unlocked() && WZ_BOSONS.req()) WZ_BOSONS.unlock()
 	}
 	if (quantumed) {
 		let MAbool = player.meta.bestAntimatter.lt(getQuantumReq())
@@ -543,7 +543,7 @@ function setupNGP3HTMLAndData() {
 	setupAutomatorHTML()
 	NT.setupTab()
 	PHOTON.setupTab()
-	WZ_FIELD.setupTab()
+	WZ_BOSONS.setupTab()
 	setupNGP3ProgressTab()
 
 	//META

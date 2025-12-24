@@ -53,7 +53,7 @@ const REDISCOVER = {
 		}, {
 			to: "Bosonic Lab",
 			unl: _ => hasBadge("p3_bl"),
-			goal: _ => WZ_FIELD.unlocked(),
+			goal: _ => WZ_BOSONS.unlocked(),
 			preload() {
 				player.ghostify = { times: 1 }
 				loadFundament(true)
