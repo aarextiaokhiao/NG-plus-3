@@ -481,8 +481,8 @@ newsArray = [//always true
 ["Number hell is my enemy. ~ Aarex, Lightning Incrementalist", "mod.ngp3", "am289"],
 ["Is NG+3 not the most influential mod of the pre-reality era? of course the great Pelle would make a NG+3 reference!", "mod.ngp3", "am290"],
 
-["Softcaps are little compared to others. You can rebalance as much.", true, "am6"],
-["For Aarex, he rather to balance stuff by a little cap.", "mod.ngp3", "am53"],
+["Softcaps are little compared to others. You can rebalance as much as you could for good balancing.", true, "am6"],
+["For Aarex, he rather to balance stuff by a little bit.", "mod.ngp3", "am53"],
 ["Co-developer of Incremental Mass: Rewritten here...", "mod.ngp3", "am142"],
 ["Imagine Aarex happy after all of rebalancing...", "mod.ngp3", "am149"],
 ["As we get closer, more ideas come up to him.", "mod.ngp3", "am151"],
