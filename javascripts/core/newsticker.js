@@ -476,7 +476,6 @@ newsArray = [//always true
 ["It's 2023. Aarex managed to release an content update, but inflation seems to force him to reduce the formulas or underestimate the growth rate.", "mod.ngp3", "am283"],
 ["We are getting close to the true nature of Quantum. More to seem soon...", "ghostified", "am284"],
 ["~<: NEXTA COMMUNINC: CONSTELLA' THE STARS ~:> It seems that Higgs Field are messing up our Nanofield...", "hasAch('ng3p91')", "am285"],
-["There is no April Fools 2022 event for my incremental games. :)", "mod.ngp3", "am286"],
 ["Fly on. Altar awaits your adventure- oh wait. Is Spectraglow coming to get me? Whatever...", "mod.ngp3", "am288"],
 ["Number hell is my enemy. ~ Aarex, Lightning Incrementalist", "mod.ngp3", "am289"],
 ["Is NG+3 not the most influential mod of the pre-reality era? of course the great Pelle would make a NG+3 reference!", "mod.ngp3", "am290"],
@@ -501,6 +500,7 @@ newsArray = [//always true
 ["[placeholder]", false, "am263"],
 ["[placeholder]", false, "am269"],
 ["[placeholder]", false, "am270"],
+["[placeholder]", false, "am286"],
 ["[placeholder]", false, "am287"],
 
 Post-NG+3R: 300 - ???
