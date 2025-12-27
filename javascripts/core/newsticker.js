@@ -487,7 +487,7 @@ newsArray = [//always true
 ["As we get closer, more ideas come up to him.", "mod.ngp3", "am151"],
 ["How we suddenly got infinite ghosts?!", "ghostified && ghSave.ghostParticles.gte(Number.MAX_VALUE)", "am195"],
 ["Infinite creativity is a key to an unique, endless incremental game.", true, "am97"],
-["Bosonic Lab has been disestablished due to overpolishing.", "WZ_BOSONS.unlocked()", "am140"],
+["Bosonic Lab has been disestablished due to complications.", "WZ_BOSONS.unlocked()", "am140"],
 
 /* PLACEHOLDER
 ["[placeholder]", false, "am143"],
