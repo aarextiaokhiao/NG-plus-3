@@ -503,10 +503,10 @@ let HOW_TO = [
 
 		title: "W & Z Bosons",
 		layer: "fundament",
-		desc: `[WILL BE REWORKED]
+		desc: `[ON REWORK]
 			<br><br>
 
-			A idea has recently came up, which will be revealed on development soon.`
+			A idea has recently came up, which will be revealed soon.`
 	}, {
 		mod: _ => ngp3,
 		req: _ => ghSave?.hb?.unl,
