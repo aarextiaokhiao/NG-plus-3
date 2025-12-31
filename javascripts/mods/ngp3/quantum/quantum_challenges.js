@@ -366,12 +366,17 @@ PRESET_DATA.pc = {
 		let has = []
 		str = str.split("+")
 		for (var pc = 1; pc <= 4; pc++) {
-			check[pc] = [str[pc-1][0], str[pc-1][1]]
-			for (var qc of check[pc]) {
-				if (parseInt(qc) != qc) return
+			check[pc] = []
+			for (var i = 0; i < str[pc-1].length; i++) {
+				var qc = parseInt(str[pc-1][i])
+
+				if (i == 2) return
+				if (isNaN(qc)) return
 				if (qc == 0 || qc == 9) return
+
 				if (has.includes(qc)) return
 				has.push(qc)
+				check[pc].push(qc)
 			}
 		}
 
