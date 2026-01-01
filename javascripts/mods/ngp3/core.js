@@ -1,6 +1,6 @@
 //VERSION: 2.31
 let ngp3_ver = 2.31
-let ngp3_build = 20251227
+let ngp3_build = 20251230
 function doNGP3Updates() {
 	if (!aarMod.ngp3_build) aarMod.ngp3_build = 0
 	if (aarMod.ngp3_build < 20221230) quSave.multPower = 0
@@ -76,6 +76,11 @@ function doNGP3Updates() {
 
 			ghSave.ghostParticles = E(1e30)
 			ghSave.automatorGhosts.power = 0
+		}
+		if (aarMod.ngp3_build < 20251230) {
+			for (var i of Object.values(quSave.pairedChallenges.order)) {
+				for (var [j, k] of Object.entries(i)) i[j] = parseInt(k)
+			}
 		}
 
 		if (!ghSave.reached && !ghSave.times) {
