@@ -27,6 +27,7 @@ const WZ_BOSONS = {
 		let data = tmp.funda.wz || {}
 		tmp.funda.wz = data
 
+		data.potential_z = 0
 		data.eff = {
 			pos: [],
 			neg: []
