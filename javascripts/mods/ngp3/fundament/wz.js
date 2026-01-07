@@ -28,13 +28,14 @@ const WZ_BOSONS = {
 		tmp.funda.wz = data
 
 		data.potential_z = 0
+		data.potential_w = 0
 		data.eff = {
 			pos: [],
 			neg: []
 		}
 		
-		for (var i of WZ_BOSONS.milestones.pos) data.eff.pos.push(i.eff())
-		for (var i of WZ_BOSONS.milestones.neg) data.eff.neg.push(i.eff())
+		if (data.potential_w > 0) for (var i of WZ_BOSONS.milestones.pos) data.eff.pos.push(i.eff())
+		if (data.potential_w < 0) for (var i of WZ_BOSONS.milestones.neg) data.eff.neg.push(i.eff())
 	},
 
 	milestones: {
