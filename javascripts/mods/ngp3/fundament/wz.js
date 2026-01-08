@@ -58,5 +58,7 @@ const WZ_BOSONS = {
 			el("wz_req").innerHTML = `Reach Ultraviolet Light and ${shorten(1e38)} Spectral Particles to unlock W & Z Bosons.`
 			return
 		}
+
+		//placeholder
 	},
 }
