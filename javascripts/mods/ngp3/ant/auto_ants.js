@@ -2,105 +2,124 @@ var automators = {
 	1: {
 		title: "Quark Decay",
 		req: 0,
-		pow: 1.5,
+		pow: 1.5
 	},
 	5: {
 		title: "Branch Upgrader",
 		req: 4,
-		pow: 2,
+		pow: 2
 	},
 	6: {
 		title: "Tree Upgrader",
 		req: 4,
-		pow: 1,
+		pow: 1
 	},
 	7: {
 		title: "Quantum Multiplier",
 		req: 4.5,
-		pow: 0.5,
+		pow: 0.5
 	},
 	8: {
 		title: "Food Giver",
 		req: 5,
-		pow: 0.5,
+		pow: 0.5
 	},
 	9: {
 		title: "Worker Promoter",
 		req: 5,
-		pow: 0.5,
+		pow: 0.5
 	},
 	10: {
 		title: "Worker Capacity",
 		req: 6,
-		pow: 1,
+		pow: 1
 	},
 	11: {
 		title: "Nanocharger",
-		html: `Wait: <input id="autoAnt11pw" onchange="changeAutoGhost('11pw')"/>s<br>
-		Produce: <input id="autoAnt11cw" type="text" onchange="changeAutoGhost('11cw')"/>s`,
+		html: `Wait: <input id="autoAnt11pw" onchange="changeAutoGhost(11, 'pw')"/>s<br>
+		Produce: <input id="autoAnt11cw" type="text" onchange="changeAutoGhost(11, 'cw')"/>s`,
 		req: 6.5,
-		pow: 2
+		pow: 2,
+		configs: {
+			pw: 1,
+			cw: 1
+		}
 	},
 	13: {
 		title: "Big Rip",
-		html: `Rip in: <input id="autoAnt13t" onchange="changeAutoGhost('13t')"/>s<br>
-		Undo: <input id="autoAnt13u" onchange="changeAutoGhost('13u')"/>s<br>
-		Stop: <input id="autoAnt13o" onchange="changeAutoGhost('13o')"/> times<br>(0 = always)`,
+		html: `Rip in: <input id="autoAnt13t" onchange="changeAutoGhost(13, 't')"/>s<br>
+		Undo: <input id="autoAnt13u" onchange="changeAutoGhost(13, 'u')"/>s<br>
+		Stop: <input id="autoAnt13o" onchange="changeAutoGhost(13, 'o')"/> times<br>(0 = always)`,
 		req: 7,
 		pow: 2,
+		configs: {
+			o: 5,
+			u: 5,
+			t: 3
+		}
 	},
 	14: {
 		title: "EP Multiplier II",
 		req: 7.5,
-		pow: 2,
+		pow: 2
 	},
 	2: {
 		title: "Challenger",
 		html: `(big rip only)<br>
-		Begin EC10 at Big Rip #: <input id="autoAnt2b" onchange="changeAutoGhost('2b')"/><br>
-		Duration: <input id="autoAnt2t" onchange="changeAutoGhost('2t')"/>s`,
+		Begin EC10 at Big Rip #: <input id="autoAnt2b" onchange="changeAutoGhost(2, 'b')"/><br>
+		Duration: <input id="autoAnt2t" onchange="changeAutoGhost(2, 't')"/>s`,
 		req: 11,
 		pow: 1,
+		configs: {
+			b: 3,
+			t: 5
+		}
 	},
 	15: {
 		title: "Fundament",
-		html: `Seconds until reset: <input id="autoAnt15a" onchange="changeAutoGhost('15a')"/>`,
+		html: `Seconds until reset: <input id="autoAnt15a" onchange="changeAutoGhost(15, 'a')"/>`,
 		req: 12,
 		pow: 2,
+		configs: {
+			a: 1
+		}
 	},
 	18: {
 		title: "Positron Upgrader",
 		req: 13,
-		pow: 2,
+		pow: 2
 	},
 	12: {
 		title: "Radioactive Decay",
 		req: 15,
-		pow: 1,
+		pow: 1
 	},
 	16: {
 		title: "Neutrino Upgrader",
 		req: 16,
-		pow: 1,
+		pow: 1
 	},
 	17: {
 		title: "Paradigmic",
 		html: `At antimatter threshold in Big Rip:
-		<input id="autoAnt17t" onchange="changeAutoGhost('17t')"/>`,
+		<input id="autoAnt17t" onchange="changeAutoGhost(17, 't')"/>`,
 		req: 17,
 		pow: 2,
+		configs: {
+			t: pow10(2e10)
+		}
 	}
 }
-const automatorOrder = [1,5,6,7,8,9,10,11,13,14,2,15,12,18,16,17]
+const automatorOrder = Object.keys(automators)
+const automatorIntConfigs = ["2b", "13o"]
 
 function setupAutomaticGhostsData() {
 	var data = {power: 0, ghosts: 3}
-	for (var g of automatorOrder) data[g] = {}
-	data[11].pw = 1, data[11].lw = 1, data[11].cw = 1
-	data[15].a = 1
-	data[2].b = 3,   data[2].t = 5
-	data[13].o = 5,  data[13].u = 5,  data[13].t = 3
-	data[17].t = pow10(2e10)
+	for (var [g, d] of Object.entries(automators)) {
+		data[g] = {}
+		if (d.configs) for (var [i, val] of Object.entries(d.configs)) data[g][i] = val
+	}
+
 	return data
 }
 
@@ -118,15 +137,14 @@ function updateAutoGhosts(load) {
 		if (data[id].on) powerConsumed += automators[id].pow
 	}
 	if (load) {
-		el("autoAnt11pw").value = data[11].pw
-		el("autoAnt11cw").value = data[11].cw
-		el("autoAnt13t").value = data[13].t
-		el("autoAnt13u").value = data[13].u
-		el("autoAnt13o").value = data[13].o
-		el("autoAnt15a").value = data[15].a
-		el("autoAnt2b").value = data[2].b
-		el("autoAnt2t").value = data[2].t
-		el("autoAnt17t").value = shorten(data[17].t)
+		for (var [g, d] of Object.entries(automators)) {
+			if (d.configs) {
+				for (var i of Object.keys(d.configs)) {
+					console.log(g, i)
+					el("autoAnt" + g + i).value = data[g][i] instanceof Decimal ? shorten(data[g][i]) : data[g][i]
+				}
+			}
+		}
 	}
 
 	isAutoGhostsSafe = data.power >= powerConsumed
@@ -148,34 +166,16 @@ function toggleAutoGhost(id) {
 	updateAutoGhosts()
 }
 
-function changeAutoGhost(o) {
-	if (o == "11pw") {
-		var num = parseFloat(el("autoAnt11pw").value)
-		if (!isNaN(num) && num > 0) ghSave.automatorGhosts[11].pw = num
-	} else if (o == "11cw") {
-		var num = parseFloat(el("autoAnt11cw").value)
-		if (!isNaN(num) && num > 0) ghSave.automatorGhosts[11].cw = num
-	} else if (o == "13t") {
-		var num = parseFloat(el("autoAnt13t").value)
-		if (!isNaN(num) && num >= 0) ghSave.automatorGhosts[13].t = num
-	} else if (o == "13u") {
-		var num = parseFloat(el("autoAnt13u").value)
-		if (!isNaN(num) && num > 0) ghSave.automatorGhosts[13].u = num
-	} else if (o == "13o") {
-		var num = parseInt(getEl("autoAnt13o").value)
-		if (!isNaN(num) && num >= 0) ghSave.automatorGhosts[13].o = num
-	} else if (o == "15a") {
-		var num = parseFloat(el("autoAnt15a").value)
-		if (!isNaN(num) && num > 0) ghSave.automatorGhosts[13].u = num
-	} else if (o == "2t") {
-		var num = parseFloat(el("autoAnt15a").value)
-		if (!isNaN(num) && num > 0) ghSave.automatorGhosts[2].t = num
-	} else if (o == "2b") {
-		var num = parseInt(getEl("autoAnt13o").value)
-		if (!isNaN(num) && num >= 0) ghSave.automatorGhosts[2].b = num
-	} else if (o == "17t") {
-		var num = fromValue(el("autoAnt17t").value)
-		if (!isNaN(break_infinity_js ? num : num.l)) ghSave.automatorGhosts[17].t = num
+function changeAutoGhost(g, i) {
+	var configs = automators[g].configs
+	var val = el("autoAnt" + g + i).value
+
+	if (configs[i] instanceof Decimal) {
+		val = fromValue(val)
+		if (!isNaN(val.l)) ghSave.automatorGhosts[g][i] = val
+	} else {
+		val = automatorIntConfigs.includes(g + i) ? parseInt(val) : parseFloat(val)
+		if (!isNaN(val) && val >= 0) ghSave.automatorGhosts[g][i] = val
 	}
 }
 
