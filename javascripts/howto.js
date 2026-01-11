@@ -503,7 +503,7 @@ let HOW_TO = [
 
 		title: "W & Z Bosons",
 		layer: "fundament",
-		desc: `[ON REWORK, NO DESCRIPTION]
+		desc: `[ON DEVELOPMENT]
 			<br><br>
 
 			A idea has recently came up, which will be revealed soon.`
