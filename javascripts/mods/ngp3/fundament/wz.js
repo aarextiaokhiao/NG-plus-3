@@ -16,7 +16,8 @@ const WZ_BOSONS = {
 	setup() {
 		return {
 			total_z: 0,
-			w_used: 0
+			z_used: 0,
+			z_next: 0
 		}
 	},
 
