@@ -60,6 +60,7 @@ const WZ_BOSONS = {
 			return
 		}
 
-		//placeholder
+		let w_html = '(insert effects here)'
+		el("w_eff").innerHTML = w_html
 	},
 }
