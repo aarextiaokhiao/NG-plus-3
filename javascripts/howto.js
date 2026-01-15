@@ -503,10 +503,8 @@ let HOW_TO = [
 
 		title: "W & Z Bosons",
 		layer: "fundament",
-		desc: `[ON HEAVY DEVELOPMENT]
-			<br><br>
-
-			A idea has recently came up, which will be revealed soon.`
+		desc: `You start with 1 Z Bosons, which can be converted into W- Bosons for next Fundament run.<br>
+			[WIP]`
 	}, {
 		mod: _ => ngp3,
 		req: _ => ghSave?.hb?.unl,
