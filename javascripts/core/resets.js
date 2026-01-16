@@ -50,8 +50,6 @@ let RESETS = {
 				player.sacrificed = E(0)
 				if (inNGM(4)) resetNGM4TDs()
 				if (inNGM(2)) reduceDimCosts()
-			} else {
-				player.money = player.money.max(am)
 			}
 
 			player.chall3Pow = E(0.01)
