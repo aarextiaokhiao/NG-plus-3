@@ -61,13 +61,11 @@ function checkForEndMe() {
 }
 
 function checkYoDawg(){
-	if (!hasAch("r111") && player.lastTenRuns[9][1].neq(0)) {
-		var n = 0;
-		for (i = 0; i < 9; i++) {
-			if (player.lastTenRuns[i][1].gte(player.lastTenRuns[i+1][1].mul(Number.MAX_VALUE))) n++
-		}
-		if (n == 9) giveAchievement("Yo dawg, I heard you liked infinities...")
+	if (hasAch("r111") || player.lastTenRuns[9][1].eq(0)) return
+	for (let i = 0; i < 9; i++) {
+		if (player.lastTenRuns[i][1].div(player.lastTenRuns[i+1][1]).lt(Number.MAX_VALUE)) return
 	}
+	giveAchievement("Yo dawg, I heard you liked infinities...")
 }
 
 function checkUniversalHarmony() {

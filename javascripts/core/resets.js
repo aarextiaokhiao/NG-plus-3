@@ -37,9 +37,7 @@ let RESETS = {
 			let mustReset = !firstReset || !postBoostMilestone()
 
 			// Reset Antimatter
-			let am = player.money
-			this.startingAM()
-			if (firstReset && hasAch("r111")) player.money = player.money.max(am)
+			if (!firstReset || !hasAch("r111")) this.startingAM()
 
 			// Reset Tickspeed
 			if (mustReset || isNaN(player.tickSpeedPurchases)) this.startingTickspeed()
