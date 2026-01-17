@@ -3821,7 +3821,7 @@
 			<br>
 
 			<b>(NG+3 v2.31: Ghostify Respecced)</b><br>
-			<b class="red">(Beta: 11/22/25 Build)</b><br>
+			<b class="red">(Beta: 1/16/26 Build)</b><br>
 			By <a href="https://tehaarex.straw.page/">Aarex</a>, pg132, and usavictor.
 			<br><br>
 
@@ -3849,13 +3849,14 @@
 	</div>
 	<div id="preset_buttons" style="display:none;">
 		<p id="preset_dial_info"></p>
-		<div style='position: relative'>
-			<button class="storebtn" id="preset_dial_0" style='position: absolute; left: 0px' onclick="PRESET_DIAL.click(0)"></button>
-			<button class="storebtn" id="preset_dial_1" style='position: absolute; left: 80px' onclick="PRESET_DIAL.click(1)"></button>
-			<button class="storebtn" id="preset_dial_2" style='position: absolute; left: 160px' onclick="PRESET_DIAL.click(2)"></button>
-			<br><br>
-			<button class="timetheorembtn" onclick="PRESET_DIAL.open()">Presets</button>
+		<div style='position: relative; height: 45px'>
+			<button class="storebtn" id="preset_dial_0" style='position: absolute; left: 0px; height: 45px' onclick="PRESET_DIAL.click(0)"></button>
+			<button class="storebtn" id="preset_dial_1" style='position: absolute; left: 80px; height: 45px' onclick="PRESET_DIAL.click(1)"></button>
+			<button class="storebtn" id="preset_dial_2" style='position: absolute; left: 160px; height: 45px' onclick="PRESET_DIAL.click(2)"></button>
 		</div>
+
+		<button class="storebtn" id="preset_dial_save" onclick="PRESET_DIAL.save_mode = !PRESET_DIAL.save_mode">Save</button>
+		<button class="storebtn" onclick="PRESET_DIAL.open()">Presets</button>
 	</div>
 
 	<!-- OPTIONS -->

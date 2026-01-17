@@ -192,7 +192,8 @@ let PRESET_DIAL = {
 		el("preset_buttons").style.display = this.dial ? "" : "none"
 	},
 	update() {
-		el("preset_dial_info").innerHTML = `${shiftDown ? 'Save' : 'Load'} a dial preset (${PRESET_DATA[PRESET_DIAL.dial].name})`
+		el("preset_dial_info").innerHTML = `${shiftDown || PRESET_DIAL.save_mode ? 'Save' : 'Load'} a dial preset (${PRESET_DATA[PRESET_DIAL.dial].name})`
+		el("preset_dial_save").className = "storebtn " + (PRESET_DIAL.save_mode ? "chosen" : "")
 		for (var i = 0; i < 3; i++) {
 			let dial = this.data.dial[i]
 			let has = dial !== undefined && dial !== null
@@ -201,7 +202,7 @@ let PRESET_DIAL = {
 		}
 	},
 	click(i) {
-		PRESET_DIAL[shiftDown || !PRESET_DIAL.data.dial[i] ? "save" : "load"](i)
+		PRESET_DIAL[shiftDown || PRESET_DIAL.save_mode || !PRESET_DIAL.data.dial[i] ? "save" : "load"](i)
 	},
 	open() {
 		PRESET.open("preset", this.dial)
