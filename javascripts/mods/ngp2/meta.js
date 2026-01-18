@@ -410,7 +410,7 @@ function updateMetaDimensions () {
 	var bigRip = bigRipped()
 	var req = getQuantumReq()
 	var reqGotten = isQuantumReached()
-	var newClassName = reqGotten ? (bigRip && player.options.theme == "Aarex's Modifications" ? "" : "storebtn ") + (bigRip ? "aarexmodsghostifybtn" : "") : 'unavailablebtn'
+	var newClassName = reqGotten ? (bigRip ? "ghostifybtn" : "storebtn") : 'unavailablebtn'
 	el("quantumResetLabel").textContent = (bigRip ? 'Fundament' : 'Quantum') + ': requires ' + shorten(req) + ' meta-antimatter ' + (inAnyQC() ? "and " + shortenCosts(getQCGoal()) + " antimatter" : player.masterystudies ? "and an EC14 completion" : "")
 
 	var message = 'Lose all your prior progress'

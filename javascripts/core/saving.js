@@ -80,7 +80,7 @@ function setupSaveDisp() {
 		<button class='storebtn' onclick='change_save_placement(${i})'>Load</button>
 		<button class='storebtn' onclick='rename_save(${i})'>Rename</button>
 		<button class='storebtn' onclick='export_save(${i})'>Export</button>
-		<button class='storebtn' onclick='import_save(${i})'>Import</button>
+		<button class='storebtn' onclick='open_import_save(${i})'>Import</button>
 		<button class='storebtn' onclick='overwrite_save(${i})'>Overwrite</button>
 		<span class='metaOpts'>
 			<button class='storebtn' onclick='swap_save(${i}, ${i-1})'>⭡</button>
@@ -97,8 +97,12 @@ function changeSaveDesc(i, exit) {
 
 	let isCurrent = savePlacement == i
 	let data = isCurrent ? player : get_save(meta.save.saveOrder[i])
-	el("save_"+i+"_title").textContent = (data?.aarexModifications?.save_name || "Save #" + (i + 1)) + (isCurrent && !exit ? " (selected)" : "")
 
+	el("save_"+i+"_title").textContent = (data?.aarexModifications?.save_name || "Save #" + (i + 1)) + (isCurrent && !exit ? " (selected)" : "")
+	element.innerHTML = getSaveStatus(data)
+}
+
+function getSaveStatus(data) {
 	try {
 		if (data.aarexModifications == null) data.aarexModifications = {}
 		let msg = modAbbs(checkMods(data)) + "<br>"
@@ -159,10 +163,10 @@ function changeSaveDesc(i, exit) {
 			else if (data?.galacticSacrifice?.times) msg+="Antimatter: "+shortenMoney(E(data.money))+", Galaxy Points: "+shortenDimensions(E(data.galacticSacrifice.galaxyPoints))
 			else msg+="Antimatter: "+shortenMoney(E(data.money))+", Dimension Shifts/Boosts: "+data.resets+((data.tickspeedBoosts != undefined ? (data.resets > 0 || data.tickspeedBoosts > 0 || data.galaxies > 0 || data.infinitied > 0 || data.eternities != 0 || isSaveQuantumed) : false)?", Tickspeed Boosts: "+getFullExpansion(data.tickspeedBoosts):"")+", Galaxies: "+data.galaxies
 		}
-		element.innerHTML = msg
+		return msg
 	} catch (e) {
 		console.error(e)
-		element.innerHTML = "New game"
+		return "New game"
 	}
 }
 
@@ -235,16 +239,47 @@ function exportData(encoded, success) {
 	}
 };
 
-var onImport = false
-function import_save(i = savePlacement) {
+var importSaveLoc
+function open_import_save(i = savePlacement) {
 	if (i == -1) {
 		$.notify("Importing saves is disabled during a Rediscovery to prevent cheating.")
 		return
 	}
 
-	onImport = true
-	var save_data = prompt("Input your save. " + (i == "new" ? "(the save file will be placed as the last entry of your savefile list)" : "("+(i==savePlacement?"your current save file":"save #"+(i+1))+" will be overwritten!)"));
-	onImport = false
+	closeToolTip()
+	el('import_menu').style.display="flex"
+
+	importSaveLoc = i
+	if (i == "new") {
+		el("import_save_title").innerHTML = "Create save"
+		el("import_save_warning").innerHTML = "The save file will be placed as the last entry of your savefile list."
+	} else if (i != savePlacement) {
+		el("import_save_title").innerHTML = "Import save #" + (i + 1)
+		el("import_save_warning").innerHTML = "The save #" + (i + 1) + " will be overwritten!"
+	} else {
+		el("import_save_title").innerHTML = "Import save"
+		el("import_save_warning").innerHTML = "The save will be overwritten!"
+	}
+}
+
+function import_save_change() {
+	var dimensionSave = el("import_save_prompt").value
+	if (dimensionSave !== "") {
+		try {
+			dimensionSave = JSON.parse(atob(dimensionSave, function(k, v) { return (v === Infinity) ? "Infinity" : v; }))
+			el("import_save_status").innerHTML = getSaveStatus(dimensionSave)
+		} catch (e) {
+			el("import_save_status").innerHTML = "Invalid save!"
+		}
+	} else {
+		el("import_save_status").innerHTML = "Empty save"
+	}
+}
+
+var onImport = false
+function import_save() {
+	var save_data = el("import_save_prompt").value
+	console.log(save_data, "checking")
 
 	// current reality version update number is 19
 	if (save_data?.version > 12.2 && save_data.split("AntimatterDimensions")[1] && save_data.split("EndOf")[1]) {
@@ -298,7 +333,7 @@ function import_save(i = savePlacement) {
 			$.notify("The Reality Update is incompatible with Aarex's mods.", "error")
 			return
 		}
-		if (i == savePlacement) {
+		if (importSaveLoc == savePlacement) {
 			clearInterval(gameLoopIntervalId)
 			infiniteCheck2 = false
 			player = decoded_save_data;
@@ -315,17 +350,18 @@ function import_save(i = savePlacement) {
 				el("welcomeMessage").innerHTML = "Because you imported a save that has an Infinite bug in it, saving is disabled. Most functionality is disabled to prevent further damage. It is highly recommended that you report this occurrence to the #bugs_and_glitches channel on the Discord server, so the bug can be looked into and fixed. It is not recommended to modify the save as it may result in undesirable effects, and will be hard reset after you switch saves or refresh the game."
 			}
 			startInterval()
-		} else if (i == "new") {
+		} else if (importSaveLoc == "new") {
 			var new_id=1
 			while (meta.save.saveOrder.includes(new_id)) new_id++
 			meta.save.saveOrder.push(new_id)
 			set_save(new_id, decoded_save_data)
 
-			setupSaveDisp()
+			load_saves()
 			meta.mustSave = true
 		} else {
 			set_save(meta.save.saveOrder[i], decoded_save_data)
 			changeSaveDesc(i)
+			load_saves()
 		}
 	}
 }
