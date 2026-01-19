@@ -1200,7 +1200,7 @@ function doCheckECCompletionStuff(){
 		//Record completions
 		ecs[ec] = Math.min((ecs[ec] || 0) + 1, 5)
 		if (ec_num == 12 && hasAch("ng3p51")) ecs.eterc11 = Math.min((ecs.eterc11 || 0) + 1, 5)
-		if (ecs[ec] == 5) aarMod.eternityChallRecords[ec_num] = Math.max(aarMod.eternityChallRecords[ec_num] || 1e10, player.thisEternity)
+		if (ecs[ec] == 5) aarMod.eternityChallRecords[ec_num] = Math.min(aarMod.eternityChallRecords[ec_num] || 1e10, player.thisEternity)
 
 		//Refund
 		player.timestudy.theorem += getTTSpentToECs()
