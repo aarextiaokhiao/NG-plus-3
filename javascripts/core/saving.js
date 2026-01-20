@@ -276,6 +276,13 @@ function import_save_change() {
 	}
 }
 
+el("import_save_prompt").addEventListener("keypress", function(event) {
+	if (event.key === "Enter") {
+		event.preventDefault();
+		import_save()
+	}
+});
+
 var onImport = false
 function import_save() {
 	var save_data = el("import_save_prompt").value
