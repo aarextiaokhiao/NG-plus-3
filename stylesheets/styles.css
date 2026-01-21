@@ -1,12 +1,4 @@
 @font-face {
-    font-family: 'Open Sans Condensed';
-    font-style: normal;
-    font-weight: 300;
-    src: local('Open Sans Cond Light'), local('OpenSans-CondensedLight'), url(https://fonts.gstatic.com/s/opensanscondensed/v10/gk5FxslNkTTHtojXrkp-xBEur64QvLD-0IbiAdTUNXE.woff2) format('woff2');
-    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
-}
-
-@font-face {
     font-family: Typewriter;
     src: url('MonospaceTypewriter.ttf');
 }
@@ -607,6 +599,7 @@ button b, button span {
 .eternitybtn:hover {
     color: #511568;
     background: white;
+    border: 2px solid #b341e0;
 }
 
 .quantumbtn {
@@ -630,8 +623,7 @@ button.quantumbtn:hover {
 
 .ghostifybtn {
 	background: linear-gradient(#00002f, #0f002f), linear-gradient(45deg, black, transparent 25%, transparent), linear-gradient(-45deg, black, transparent 25%, transparent);
-	box-shadow: inset 0px 0px 24px 0px black;
-	border: 2px solid;
+	border: 2px solid transparent;
 	font-weight: bold;
 	border-radius: 4px;
 	transition-duration: 0.2s;
@@ -641,13 +633,9 @@ button.quantumbtn:hover {
 	}
 }
 
-button.ghostifybtn:hover {
-	box-shadow: inset 0px 0px 12px 0px #420072;
-	cursor: pointer
-}
-
-.aarexmodsghostifybtn {
-	cursor: pointer
+.ghostifybtn:hover {
+	border: 2px solid #b7f;
+    cursor: pointer
 }
 
 #galaxyPoints { color: #4169E1 !important; }
@@ -1504,9 +1492,8 @@ body {
     background-color: #fff;
     padding: 1px 7px;
     margin: 0;
-    font: 14px/1.5 "Noto Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font: 14px/1.5 sans-serif;
     color: #727272;
-    font-weight: 300;
 }
 
 h1,
@@ -1789,7 +1776,6 @@ br {
     z-index: 1;
 
 	width: 240px;
-	height: 75px;
 
 	font-size: 10px;
 	text-align: center
@@ -2710,17 +2696,14 @@ screen and (max-width: 480px) {
 
 @keyframes ghostifytext { 
 	0%{
-		border-color: #3f007f;
 		color: #bfbfdf;
 		text-shadow: 0px 0px 5px white, 0px 0px 6px #1f00ff;
 	}
 	50% {
-		border-color: #1f007f;
 		color: #efbfdf;
 		text-shadow: 0px 0px 6px white, 0px 0px 6px #3f00ff;
 	}
 	100%{
-		border-color: #3f007f;
 		color: #bfbfdf;
 		text-shadow: 0px 0px 5px white, 0px 0px 6px #1f00ff;
 	}

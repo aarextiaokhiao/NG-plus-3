@@ -16,7 +16,7 @@
 		If this loading screen appears for longer than expected, consider doing the following below.<br>
 		<button class="storebtn" style="font-size: 15px" onclick="document.location.reload(true)">Reload</button>
 		<button class="storebtn" style="font-size: 15px" onclick="export_save()">Export</button>
-		<button class="storebtn" style="font-size: 15px" onclick="import_save()">Import</button><br>
+		<button class="storebtn" style="font-size: 15px" onclick="open_import_save()">Import</button><br>
 		<button class="storebtn" style="font-size: 15px" onclick="load_saves()">Load</button>
 		<button class="storebtn" style="font-size: 15px" onclick="reset_game()">Reset</button><br>
 		An error may have been outputted in the console (press F12 to view them). If there are any errors, the game won't load. Please hard reload (Ctrl+F5) if a new patch releases.
@@ -199,7 +199,7 @@
 					<tr>
 						<td><div><button id="save" class="storebtn" style="color:black; width: 200px; height: 55px"></button></div></td>
 						<td><div><button id="exportbtn" class="storebtn" onclick='export_save()' style="color:black; width: 200px; height: 55px; font-size: 20px">Export</button></div></td>
-						<td><div><button id="importbtn" class="storebtn" onclick='import_save()' style="color:black; width: 200px; height: 55px; font-size: 20px">Import</button></div></td>
+						<td><div><button id="importbtn" class="storebtn" onclick='open_import_save()' style="color:black; width: 200px; height: 55px; font-size: 20px">Import</button></div></td>
 					</tr><tr>
 						<td><div class="storebtn" id="autoSaveIntDiv" style="color:black; width: 198px; height: 55px; font-size: 130%; text-align: center;"><b id="autoSaveInterval">Auto-save interval: 30s</b><input id="autoSaveIntervalSlider" style="width: 170px;" type="range" min="14" max="120" value="30" class="slider" oninput="changeAutoSaveInterval(true)"></div></td>
 						<td><div><button id="exportybtn" class="storebtn" onclick='export_file()' style="color:black; width: 200px; height: 55px; font-size: 20px">Save to file</button></div></td>
@@ -3818,7 +3818,7 @@
 			<br>
 
 			<b>(NG+3 v2.31: Ghostify Respecced)</b><br>
-			<b class="red">(Beta: 12/27/25 Build)</b><br>
+			<b class="red">(Beta: 1/19/26 Build)</b><br>
 			By <a href="https://tehaarex.straw.page/">Aarex</a>, pg132, and usavictor.
 			<br><br>
 
@@ -3846,20 +3846,21 @@
 	</div>
 	<div id="preset_buttons" style="display:none;">
 		<p id="preset_dial_info"></p>
-		<div style='position: relative'>
-			<button class="storebtn" id="preset_dial_0" style='position: absolute; left: 0px' onclick="PRESET_DIAL.click(0)"></button>
-			<button class="storebtn" id="preset_dial_1" style='position: absolute; left: 80px' onclick="PRESET_DIAL.click(1)"></button>
-			<button class="storebtn" id="preset_dial_2" style='position: absolute; left: 160px' onclick="PRESET_DIAL.click(2)"></button>
-			<br><br>
-			<button class="timetheorembtn" onclick="PRESET_DIAL.open()">Presets</button>
+		<div style='position: relative; height: 45px'>
+			<button class="storebtn" id="preset_dial_0" style='position: absolute; left: 0px; height: 45px' onclick="PRESET_DIAL.click(0)"></button>
+			<button class="storebtn" id="preset_dial_1" style='position: absolute; left: 80px; height: 45px' onclick="PRESET_DIAL.click(1)"></button>
+			<button class="storebtn" id="preset_dial_2" style='position: absolute; left: 160px; height: 45px' onclick="PRESET_DIAL.click(2)"></button>
 		</div>
+
+		<button class="storebtn" id="preset_dial_save" onclick="PRESET_DIAL.save_mode = !PRESET_DIAL.save_mode">Save</button>
+		<button class="storebtn" onclick="PRESET_DIAL.open()">Presets</button>
 	</div>
 
 	<!-- OPTIONS -->
 	<div class="popup loadmenu" id="loadmenu" style="overflow-y: hidden; height: 360px">
 		<button class="closebtn storebtn" onclick="closeToolTip(true)">&times;</button>
 		<button id="newSaveBtn" class="storebtn" style="font-size: 15px" onclick="show_mods(true)">New</button>
-		<button id="newImportBtn" class="storebtn" style="font-size: 15px" onclick="import_save('new')">Import</button>
+		<button id="newImportBtn" class="storebtn" style="font-size: 15px" onclick="open_import_save('new')">Import</button>
 		<button id="cancelNewSaveBtn" class="storebtn" style="font-size: 15px; display: none" onclick="show_mods()">Saves</button>
 		<br>
 		<div id="savesTab" style="height:320px;overflow-y:auto">
@@ -4034,6 +4035,18 @@
 		<div id='preset_types'></div>
 		<div class="scrollablemenu">
 			<table id='preset_list'></table>
+		</div>
+	</div>
+	<div class="popup optionmenu" id="import_menu" style='width: 500px; height: inherit'>
+		<button class="closebtn storebtn" onclick="closeToolTip()">&times;</button>
+		<div>
+			<h2 id="import_save_title">Import save here</h2>
+			<b id="import_save_warning" style='color: red'>Your save will be overwritten!</b>
+			<br>
+
+			<input id="import_save_prompt" type="text" style='width: 500px' onchange="import_save_change()"></input>
+			<span id="import_save_status">Empty save</span>
+			<button class='storebtn' onclick="import_save()">Import</button>
 		</div>
 	</div>
 	<div class="popup loadmenu" id="preset_bulk">

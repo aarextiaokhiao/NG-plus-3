@@ -37,9 +37,7 @@ let RESETS = {
 			let mustReset = !firstReset || !postBoostMilestone()
 
 			// Reset Antimatter
-			let am = player.money
-			this.startingAM()
-			if (firstReset && hasAch("r111")) player.money = player.money.max(am)
+			if (!firstReset || !hasAch("r111")) this.startingAM()
 
 			// Reset Tickspeed
 			if (mustReset || isNaN(player.tickSpeedPurchases)) this.startingTickspeed()
@@ -52,8 +50,6 @@ let RESETS = {
 				player.sacrificed = E(0)
 				if (inNGM(4)) resetNGM4TDs()
 				if (inNGM(2)) reduceDimCosts()
-			} else {
-				player.money = player.money.max(am)
 			}
 
 			player.chall3Pow = E(0.01)
