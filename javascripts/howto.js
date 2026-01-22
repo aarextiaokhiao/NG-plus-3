@@ -504,7 +504,8 @@ let HOW_TO = [
 		title: "W & Z Bosons",
 		layer: "fundament",
 		desc: `You start with 1 Z Bosons, which can be converted into W- Bosons for next Fundament run.<br>
-			[WIP]`
+			W- Bosons provide nerfs at first, but can be cancelled out by having potential Z. On cancellation, you will start producing spare W+ Bosons which provide buffs.<br>
+			Z Bosons can be increased by attaining more Potential Z.`
 	}, {
 		mod: _ => ngp3,
 		req: _ => ghSave?.hb?.unl,
