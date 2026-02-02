@@ -83,12 +83,12 @@ let PHOTON = {
 			{
 				name: "infrared",
 				req: 10,
-				eff: exp => Math.min(exp ** 0.5, 2) / 200,
+				eff: exp => Math.min(Math.sqrt(exp) / 200, .01),
 				desc: e => `Outside of Big Rip, TS232 regains ${shorten(e*100)}% of strength.`,
 			}, {
 				name: "red",
 				req: 100,
-				eff: exp => Math.min(exp, 2.5) / 500 + 1,
+				eff: exp => Math.min(exp / 500 + 1, 1.005),
 				desc: e => `Starting at 2,000: Gain ${shorten((e-1)*100)}% more Neutrinos per a Big Rip galaxy gained in this Fundament.`
 			}, {
 				name: "orange",
