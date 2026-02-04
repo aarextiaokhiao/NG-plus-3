@@ -507,6 +507,7 @@ let HOW_TO = [
 			<br><br>
 
 			W- Bosons provide nerfs at first, but can be reduced by gaining potential Z.<br>
+			Further nerfs push you back through sections of progression. However, the run can be cancelled but you won't gain rewards.<br>
 			When you absorb all W-, you gain spare W+ Bosons which provide buffs.<br>
 			Z Bosons can be increased by increasing your best-ever Potential Z.`
 	}, {
