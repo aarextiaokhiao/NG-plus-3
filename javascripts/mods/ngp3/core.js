@@ -1,6 +1,6 @@
 //VERSION: 2.31
 let ngp3_ver = 2.31
-let ngp3_build = 20260204
+let ngp3_build = 20260205
 function doNGP3Updates() {
 	if (!aarMod.ngp3_build) aarMod.ngp3_build = 0
 	if (aarMod.ngp3_build < 20221230) quSave.multPower = 0
@@ -38,7 +38,6 @@ function doNGP3Updates() {
 
 			ghSave.photons = PHOTON.setup()
 			ghSave.hb = HIGGS.setupSave()
-			ghSave.lab = blSave = WZ_BOSONS.setup()
 		}
 
 		if (aarMod.ngp3_build < 20250703 && (E(ghSave.ghostParticles).gte(1e20) || ghSave.photons.unl)) {
@@ -81,6 +80,9 @@ function doNGP3Updates() {
 			for (var i of Object.values(quSave.pairedChallenges.order)) {
 				for (var [j, k] of Object.entries(i)) i[j] = parseInt(k)
 			}
+		}
+		if (aarMod.ngp3_build < 20260205) {
+			ghSave.lab = blSave = WZ_BOSONS.setup()
 		}
 
 		if (!ghSave.reached && !ghSave.times) {

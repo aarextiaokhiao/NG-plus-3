@@ -498,6 +498,8 @@ let RESETS = {
 			ghSave.neutrinos.tau = E(0)
 			ntProd = { total: [], next: E(0), average: E(0) }
 			ghSave.photons.amt = E(0)
+
+			blSave.w_used = blSave.w_next
 		}
 	}
 }

@@ -3760,13 +3760,16 @@
 		<div id="tab_wz">
 			<b id='wz_req'></b>
 			<div id="wz_div" style='display: none'>
-				<span style="font-size:25px">0.0 / 0.0</span> Z Bosons<br>
-				<button class='storebtn' style='height: 50px'>Revert to 0 W.</button>
-				<button class='storebtn' style='height: 50px'>Add W-.</button>
+				<span style="font-size:25px" id="z_amt">0.0 / 0.0</span> Z Bosons<br>
+				<button class='storebtn' style='height: 50px' onclick="WZ_BOSONS.remove_w()">Reset your W.</button>
+				<button class='storebtn' style='height: 50px' onclick="WZ_BOSONS.insert_w()">Add W-.</button>
 				<br><br>
 
-				You applied <span style="font-size:25px">0-</span> W Bosons to your current Fundament.<br>
-				You have <span style="font-size:25px">0+</span> W Bosons, which applies to the following:
+				You applied <span style="font-size:25px" id="w_applied"></span> W Bosons to your current Fundament.<br>
+				(<span id="w_next"></span> W on your next Fundament)
+				<br><br>
+
+				You have <span style="font-size:25px" id="w_cur">0+</span> W Bosons, which applies to the following:
 				<br>
 				<span id="w_eff">(insert effects here)</span>
 			</div>
