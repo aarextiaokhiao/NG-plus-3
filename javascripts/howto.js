@@ -503,13 +503,15 @@ let HOW_TO = [
 
 		title: "W & Z Bosons",
 		layer: "fundament",
-		desc: `You start with 1 Z Bosons, which can be converted into W- Bosons for next Fundament run.
+		desc: `
+			You start with 1 Z Bosons, which can be converted into W- Bosons for next Fundament run.
 			<br><br>
 
 			W- Bosons provide nerfs at first, but can be reduced by gaining potential Z.<br>
 			Further nerfs push you back through sections of progression. However, the run can be reverted but you will also lose benefits on pushing Z.<br>
 			When you absorb all W-, you gain spare W+ Bosons which provide buffs.<br>
-			Z Bosons can be increased by increasing your best-ever Potential Z.`
+			Z Bosons can be increased by increasing your best-ever Potential Z.
+		`
 	}, {
 		mod: _ => ngp3,
 		req: _ => ghSave?.hb?.unl,
