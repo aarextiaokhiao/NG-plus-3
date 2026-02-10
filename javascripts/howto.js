@@ -504,10 +504,10 @@ let HOW_TO = [
 		title: "W & Z Bosons",
 		layer: "fundament",
 		desc: `
-			You start with 1 Z Bosons, which can be converted into W- Bosons for next Fundament run.
+			You start with 1 Z Bosons. Z Bosons can be converted into W- Bosons for your next Fundament.
 			<br><br>
 
-			W- Bosons provide nerfs at first, but can be reduced by gaining potential Z.<br>
+			W- Bosons provide nerfs, but can be reduced by gaining potential Z or progression.<br>
 			Further nerfs push you back through sections of progression. However, the run can be reverted but you will also lose benefits on pushing Z.
 			<br><br>
 
