@@ -44,7 +44,8 @@ const WZ_BOSONS = {
 	},
 
 	insert_w() {
-		blSave.w_next += Math.min(blSave.z_best - blSave.w_next, 1)
+		if (blSave.z_best - blSave.w_next < 1) blSave.w_next = blSave.z_best
+		else blSave.w_next++
 	},
 	remove_w() {
 		if (blSave.w_used > 0 && !confirm("This will cancel your W- Bosons on your current run! Are you sure?")) return
@@ -82,6 +83,8 @@ const WZ_BOSONS = {
 		el("w_applied").innerHTML = this.format_w(tmp.funda.wz.potential_w)
 		el("w_next").innerHTML = this.format_w(-blSave.w_next)
 		el("w_cur").innerHTML = this.format_w(-blSave.w_used)
+		el("w_add").className = blSave.z_best > blSave.w_next ? "storebtn" : "unavailablebtn"
+		el("w_sub").className = blSave.w_next > 0 ? "storebtn" : "unavailablebtn"
 
 		let w_html = ''
 		let group = tmp.funda.wz.potential_w > 0 ? "pos" : "neg"
