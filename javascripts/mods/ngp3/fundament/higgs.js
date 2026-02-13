@@ -31,10 +31,10 @@ let HIGGS = {
 
 	//Prestige
 	pres: {
-		req: i => E(100).pow(i + 8),
-		bulk: bm => Math.floor(E(bm).log(100) - 7),
+		req: i => E(1/0),
+		bulk: bm => 0,
 		reset(force) {
-			let bulk = this.bulk(blSave.best_bosons)
+			let bulk = 0
 			if (!force && ghSave.hb.amt >= bulk) return
 
 			if (ghSave.hb.amt == 0) notifyFeature("hb")
@@ -153,6 +153,8 @@ let HIGGS = {
 		el("hb_field").innerHTML = html
 	},
 	updateTab() {
+		return
+
 		let hb = ghSave.hb.amt
 		el("hb_amt").innerHTML = getFullExpansion(hb)
 		el("hb_btn").innerHTML = `
