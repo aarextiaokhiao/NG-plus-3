@@ -40,8 +40,8 @@ let HIGGS = {
 			if (ghSave.hb.amt == 0) notifyFeature("hb")
 			ghSave.hb.amt = Math.max(ghSave.hb.amt, bulk)
 			ghSave.hb.mass = E(0)
-			blSave.bosons = E(0)
-			blSave.wz_capacitors = WEAK_FORCE.setup()
+
+			//Thinking about not resetting Bosonic Lab...
 		}
 	},
 
