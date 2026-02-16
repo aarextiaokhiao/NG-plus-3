@@ -37,7 +37,7 @@ const WZ_BOSONS = {
 
 		let group = data.potential_w > 0 ? "pos" : "neg"
 		for (var i of WZ_BOSONS.milestones[group]) {
-			if (Math.abs(data.potential_w) >= Math.abs(i.req)) {
+			if (Math.abs(data.potential_w) > Math.abs(i.req)) {
 				data.eff[group].push(i.eff())
 			}
 		}
@@ -56,10 +56,10 @@ const WZ_BOSONS = {
 
 	milestones: {
 		pos: [
-			{ req: 1, eff: _ => 1, desc: _ => "Testing..." }
+			{ req: 0, eff: _ => 1, desc: _ => "Testing..." }
 		],
 		neg: [
-			{ req: -1, eff: _ => 1, desc: _ => "Testing..." }
+			{ req: 0, eff: _ => 1, desc: _ => "Testing..." }
 		]
 	},
 
