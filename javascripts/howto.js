@@ -507,12 +507,12 @@ let HOW_TO = [
 			You start with 1 Z Bosons. Z Bosons can be converted into W- Bosons for your next Fundament.
 			<br><br>
 
-			W- Bosons provide nerfs, but can be reduced by gaining potential Z or progression.<br>
+			W- Bosons provide nerfs, but can be reduced by progression while gaining potential Z.<br>
 			Further nerfs push you back through sections of progression. However, the run can be reverted but you will also lose benefits on pushing Z.
 			<br><br>
 
 			When you absorb all W-, you gain spare W+ Bosons which provide buffs.<br>
-			Z Bosons can be increased by increasing your best-ever Potential Z.
+			Z Bosons can be increased by getting your new best Potential Z.
 		`
 	}, {
 		mod: _ => ngp3,
