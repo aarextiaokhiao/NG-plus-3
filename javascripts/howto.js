@@ -508,7 +508,7 @@ let HOW_TO = [
 			<br><br>
 
 			W- Bosons provide nerfs, but can be reduced by progression while gaining potential Z.<br>
-			Further nerfs push you back through sections of progression. However, the run can be reverted but you will also lose benefits on pushing Z.
+			Further nerfs push you back through sections of progression. These can be reverted but you would lose benefits.
 			<br><br>
 
 			When you absorb all W-, you gain spare W+ Bosons which provide buffs.<br>
