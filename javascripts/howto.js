@@ -477,7 +477,7 @@ let HOW_TO = [
 
 			You can spend Spectral Particles to boost all 3 kinds of Neutrinos.<br>
 			All Neutrinos boost things, and can be spent for upgrades or a rebuyable which gives 3x Spectral Particles per purchase.<br>
-			More Neutrino upgrades are unlocked between 3rd Fundament and 10th Fundament runs. Further upgrades are unlocked in later progression.
+			More upgrades can be unlocked from 3rd Fundament to 10th Fundament runs.
 		`
 	}, {
 		mod: _ => ngp3,
@@ -491,7 +491,7 @@ let HOW_TO = [
 			To unlock more Lights, you must gain more Photons.<br>
 			Going Fundament resets all Photons and Lights.
 			<br><br>
-			
+
 			There is a mechanic where you control speed to 4 features.<br>
 			Slowing down a feature produces Experience Time.<br>
 			Speeding up a feature consumes Experience Time. Sped up features are toggleable with a single option.<br>
