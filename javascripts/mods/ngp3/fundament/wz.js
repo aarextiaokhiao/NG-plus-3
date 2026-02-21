@@ -79,7 +79,7 @@ const WZ_BOSONS = {
 			return
 		}
 
-		el("z_amt").innerHTML = shortenMoney(blSave.z_best - blSave.w_next) + " / " + shortenMoney(blSave.z_best)
+		el("z_amt").innerHTML = shorten(blSave.z_best - blSave.w_next) + " / " + shorten(blSave.z_best)
 		el("w_applied").innerHTML = this.format_w(tmp.funda.wz.potential_w)
 		el("w_next").innerHTML = this.format_w(-blSave.w_next)
 		el("w_cur").innerHTML = this.format_w(-blSave.w_used)
@@ -93,7 +93,7 @@ const WZ_BOSONS = {
 			w_html += `<br>`
 		}
 
-		w_html += `<b>0.00</b> potential Z Bosons`
+		w_html += `<b>${shorten(tmp.funda.wz.potential_z)}</b> potential Z Bosons`
 
 		el("w_eff").innerHTML = w_html
 	},
