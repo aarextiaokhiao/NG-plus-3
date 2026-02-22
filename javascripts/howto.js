@@ -511,7 +511,7 @@ let HOW_TO = [
 			Further nerfs push you back through sections of progression. These can be reverted but you would lose benefits.
 			<br><br>
 
-			When you absorb all W-, you gain spare W+ Bosons which provide buffs.<br>
+			When you get rid of all of W- Bosons, you gain spare W+ Bosons which provide buffs.<br>
 			Z Bosons can be increased by getting your new best Potential Z.
 		`
 	}, {
