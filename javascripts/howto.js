@@ -494,7 +494,7 @@ let HOW_TO = [
 			
 			There is a mechanic where you control speed to 4 features.<br>
 			Slowing down a feature produces Experience Time.<br>
-			Speeding up a feature consumes Experience Time. Sped up features are toggleable with a single option.<br>
+			Speeding up a feature consumes Experience Time. Sped up features are toggleable with a single option.<br><br>
 			You can gain Experience Time on Fundament, based on various factors.
 		`
 	}, {
@@ -504,7 +504,7 @@ let HOW_TO = [
 		title: "W & Z Bosons",
 		layer: "fundament",
 		desc: `
-			[REWORK IN THE NEXT PART...]
+			[ON REWORK. OLD FEATURE.]
 			<br><br>
 
 			You can place down W+, W-, and Z Chargers on an 7x7 grid.
