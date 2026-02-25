@@ -489,7 +489,7 @@ newsArray = [//always true
 ["Softcaps are little compared to others. You can rebalance as much.", true, "am6"],
 ["Co-developer of Incremental Mass: Rewritten here...", "mod.ngp3", "am142"],
 ["Imagine Aarex happy after all of rebalancing...", "mod.ngp3", "am149"],
-["As we get closer, more ideas come up to him.", "mod.ngp3", "am151"],
+["As we get closer, more ideas came up from him.", "mod.ngp3", "am151"],
 ["How we suddenly got infinite ghosts?!", "ghostified && ghSave.ghostParticles.gte(Number.MAX_VALUE)", "am195"],
 
 /* PLACEHOLDER
