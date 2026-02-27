@@ -286,7 +286,6 @@ el("import_save_prompt").addEventListener("keypress", function(event) {
 var onImport = false
 function import_save() {
 	var save_data = el("import_save_prompt").value
-	console.log(save_data, "checking")
 
 	// current reality version update number is 19
 	if (save_data?.version > 12.2 && save_data.split("AntimatterDimensions")[1] && save_data.split("EndOf")[1]) {
@@ -366,8 +365,8 @@ function import_save() {
 			load_saves()
 			meta.mustSave = true
 		} else {
-			set_save(meta.save.saveOrder[i], decoded_save_data)
-			changeSaveDesc(i)
+			set_save(meta.save.saveOrder[importSaveLoc], decoded_save_data)
+			changeSaveDesc(importSaveLoc)
 			load_saves()
 		}
 	}

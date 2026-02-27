@@ -218,27 +218,26 @@ function getTimeDimStartCost(tier, ngm4) {
 }
 
 function timeDimCost(tier, bought, ngm4) {
-	if(ngm4){
-		var cost = E_pow(getTimeDimCostMult(tier, ngm4), bought).mul(getTimeDimStartCost(tier, ngm4))
-		if(!inNGM4Respec()){
-			return cost;
+	var mult = getTimeDimCostMult(tier, ngm4)
+	var start = getTimeDimStartCost(tier, ngm4)
+	var cost = E_pow(mult, bought).mul(start)
+
+	if (ngm4) {
+		if (inNGM4Respec()) {
+			if (cost.gte(Number.MAX_VALUE)) cost = E_pow(mult*1.5, bought).mul(start)
+			if (cost.gte("1e5000")) cost = E_pow(mult*2, bought).mul(start)
+			if (cost.gte("1e50000")) cost = E_pow(mult*Math.max(3,bought*bought*[1.7e-10,2.4e-10,3.1e-10,3.8e-10,6.25e-10,1.25e-9,2.5e-9,5e-9][tier-1]), bought).mul(start)
 		}
-		if (cost.gte(Number.MAX_VALUE)) cost = E_pow(getTimeDimCostMult(tier, ngm4)*1.5, bought).mul(getTimeDimStartCost(tier, ngm4))
-		if (cost.gte("1e5000")) cost = E_pow(getTimeDimCostMult(tier, ngm4)*2, bought).mul(getTimeDimStartCost(tier, ngm4))
-		if (cost.gte("1e50000")) cost = E_pow(getTimeDimCostMult(tier, ngm4)*Math.max(3,bought*bought*[1.7e-10,2.4e-10,3.1e-10,3.8e-10,6.25e-10,1.25e-9,2.5e-9,5e-9][tier-1]), bought).mul(getTimeDimStartCost(tier, ngm4))
-		return cost;
-	}
-	
-	var cost = E_pow(getTimeDimCostMult(tier), bought).mul(getTimeDimStartCost(tier))
-	//if (inNGM(2)) return cost
-	if (cost.gte(Number.MAX_VALUE)) cost = E_pow(getTimeDimCostMult(tier)*1.5, bought).mul(getTimeDimStartCost(tier))
-	if (cost.gte("1e1300")) cost = E_pow(getTimeDimCostMult(tier)*2.2, bought).mul(getTimeDimStartCost(tier))
-	if (tier > 4) cost = E_pow(getTimeDimCostMult(tier)*100, bought).mul(getTimeDimStartCost(tier))
-	if (cost.gte(tier > 4 ? "1e300000" : "1e20000")) {
-		// rather than fixed cost scaling as before, quadratic cost scaling
-		// to avoid exponential growth
-		cost = cost.mul(E_pow(E('1e1000'),
-		Math.pow(cost.log(10) / 1000 - (tier > 4 ? 300 : 20), 2)));
+	} else {
+		if (cost.gte(Number.MAX_VALUE)) cost = E_pow(mult*1.5, bought).mul(start)
+		if (cost.gte("1e1300")) cost = E_pow(mult*2.2, bought).mul(start)
+
+		if (tier > 4) cost = E_pow(mult*100, bought).mul(start)
+		if (cost.gte(tier > 4 ? "1e300000" : "1e20000")) {
+			// rather than fixed cost scaling as before, quadratic cost scaling
+			// to avoid exponential growth
+			cost = cost.mul(pow10(Math.pow(cost.log(10) / 1000 - (tier > 4 ? 300 : 20), 2) * 1000));
+		}
 	}
 	return cost
 }
