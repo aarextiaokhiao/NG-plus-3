@@ -308,19 +308,19 @@ function drawQuarkAnimation(ts){
 
 		qkctx.clearRect(0, 0, qkc.width, qkc.height)
 
-		let amt = Math.min(Math.log10(quantumWorth.add(1).log10() + 10) * 100, 300)
+		let amt = Math.min(Math.log10(quantumWorth.add(1).log10() + 10) * 50, 300)
 		for (let i = 0; i < amt; i++) {
 			let data = quarks[i] ?? {
 				deg: i,
-				delta: Math.floor(Math.random() * 4) + 1,
-				speed: Math.random() * .1 + .2
+				delta: Math.random() * 4 + 1,
+				speed: Math.random() * .5 + .2
 			}
 			quarks[i] = data
 			data.deg += delta * data.speed
 
 			let actualDeg = (data.deg / Math.PI) % 1
-			let dist = offset * (0.4 + Math.cos(data.deg / data.delta + ts / 5e3) * 0.3)
-			qkctx.fillStyle = actualDeg > 2/3 ? "#00f" : actualDeg > 1/3 ? "#0f0" : "#f00"
+			let dist = offset * (0.6 + Math.cos(data.deg / data.delta + ts / 5e3) * 0.35)
+			qkctx.fillStyle = actualDeg > 2/3 ? "#007" : actualDeg > 1/3 ? "#070" : "#700"
 			point(centerX + Math.sin(data.deg) * dist, centerY + Math.cos(data.deg) * dist, qkctx)
 		}
 
