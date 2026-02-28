@@ -287,7 +287,7 @@ let HOW_TO = [
 		layer: "eternity",
 		desc: `Meta Dimensions are a new type of Dimensions that resemble Antimatter Dimensions. They can be unlocked by buying 1e24 TT dilation study. Meta-Dimension 1 produces meta-antimatter, which makes dimension boosts more powerful.<br><br>
 
-		Unlike the normal counterpart, Meta-Dimension Boosts do not affect anything prior to Meta Dimensions. There are no Meta-Tickspeed and Meta-Galaxies.`
+		There is also a counterpart of Dimension Boosts called Meta-Dimension Boosts which work identical but to Meta Dimensions. Unlike the normal counterpart, there are no Meta-Tickspeed and Meta-Galaxies.`
 	}, {
 		mod: _ => ngp3,
 		req: _ => player.dilation.upgrades.includes("ngpp6"),
