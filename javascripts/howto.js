@@ -358,8 +358,8 @@ let HOW_TO = [
 		The cost to start a Paired Challenge is based on the sum of costs for the component challenges, and the goal is also based on the goals of the component challenges.
 		<br><br>
 
-		You can assign 2 Quantum Challenges to any pair of Quantum Challenges, though the same challenge can't be assigned twice.<br>
-		You can respec the assignments at any time, though you will lose Paired Challenges you already completed.`
+		You can assign 2 Quantum Challenges to any pair of Quantum Challenges. The same challenge can't be assigned twice.<br>
+		You can respec the assignments at any time, but you will lose Paired Challenges you already completed.`
 	}, {
 		mod: _ => ngp3,
 		req: _ => player.masterystudies.includes("d10"),
