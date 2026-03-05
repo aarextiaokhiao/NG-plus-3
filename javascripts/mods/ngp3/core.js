@@ -1,6 +1,6 @@
 //VERSION: 2.31
 let ngp3_ver = 2.31
-let ngp3_build = 20260226
+let ngp3_build = 20260304
 function doNGP3Updates() {
 	if (!aarMod.ngp3_build) aarMod.ngp3_build = 0
 	if (aarMod.ngp3_build < 20221230) quSave.multPower = 0
@@ -81,6 +81,9 @@ function doNGP3Updates() {
 			for (var i of Object.values(quSave.pairedChallenges.order)) {
 				for (var [j, k] of Object.entries(i)) i[j] = parseInt(k)
 			}
+		}
+		if (aarMod.ngp3_build < 20260304) {
+			quSave.electrons.rebuyables[3] = 0
 		}
 
 		if (!ghSave.reached && !ghSave.times) {

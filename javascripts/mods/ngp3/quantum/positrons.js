@@ -75,7 +75,7 @@ function getPositronUpgCost(u) {
 }
 
 function getPositronUpgCostScalingExp(u) {
-	return [null, 1, 2, 2, 1][u]
+	return [null, 1, 2, 2, 1.5][u]
 }
 
 function buyPositronUpg(u, quick) {
