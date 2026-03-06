@@ -310,8 +310,8 @@ function toggleChallengeRetry() {
 }
 
 function updateTabAmount(update) {
-	if (update) player.options.tabAmount = (player.options.tabAmount + 1) % 3
-	else if (typeof player.options.tabAmount == "boolean") player.options.tabAmount = player.options.tabAmount ? 1 : 0
+	if (update) player.options.tabAmount = ((player.options.tabAmount || 0) + 1) % 3
+	else player.options.tabAmount = player.options.tabAmount === undefined ? 0 : player.options.tabAmount === true ? 1 : player.options.tabAmount
 
 	el("tabAmount").textContent = "Tab title: " + ["None", "Antimatter", "Highest major resource"][player.options.tabAmount]
 }
