@@ -334,9 +334,9 @@ let HOW_TO = [
 
 		title: "Positrons",
 		layer: "quantum",
-		desc: `Positrons provide a boost to your multiplier per 10 Antimatter Dimensions bought, but in order to use them, you have to discharge all of your Antimatter Galaxies. Discharging lasts until next Quantum.<br><br>
+		desc: `Positrons provide a boost to your multiplier per 10 Antimatter Dimensions bought. But in order to gain them, you have to discharge all of your Antimatter Galaxies. Discharging lasts until next Quantum.<br><br>
 		
-		You have a multiplier for Positrons, which can be upgraded by spending either time theorems, dilated time, meta-antimatter, or meta-dimension boosts.`
+		You have a multiplier, which can be upgraded by spending either time theorems, dilated time, meta-antimatter, or meta-dimension boosts.`
 	}, {
 		mod: _ => ngp3,
 		req: _ => player.masterystudies.includes("d8"),
