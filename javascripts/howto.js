@@ -359,7 +359,7 @@ let HOW_TO = [
 		<br><br>
 
 		You can assign 2 Quantum Challenges to any pair of Quantum Challenges. The same challenge can't be assigned twice.<br>
-		You can respec the assignments at any time, but you will lose Paired Challenges you already completed.`
+		You can respec the pairs anytime, but you will lose your completions of all Paired Challenges`
 	}, {
 		mod: _ => ngp3,
 		req: _ => player.masterystudies.includes("d10"),
