@@ -391,7 +391,7 @@ let HOW_TO = [
 		title: "Nanofield",
 		tab: "ant",
 		layer: "quantum",
-		desc: `You can enable the production of Pilon Charge, but also Pilon Anti-Energy will be produced and Pilons will be stalled.<br>	
+		desc: `You can enable the production of Pilon Charge and Pilon Energy, but you will also produce Pilon Anti-Energy. Additionally, you will stop producing Pilons.<br>	
 		You can get rewards based on your Pilon Energy, with the first one requiring 50 Pilon Energy.<br><br>
 
 		When a cap of Anti-Energy is reached, Pilon Energy production completely stops.<br>
