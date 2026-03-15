@@ -367,13 +367,13 @@ let HOW_TO = [
 		title: "Duplicants",
 		tab: "ant",
 		layer: "quantum",
-		desc: `After reaching a certain threshold of Replicantis (starts at e3,000,000, increases by e100,000x per purchase), you can make Duplicants by resetting your Replicantis.<br>
+		desc: `After reaching a certain threshold of Replicantis (starts at e3,000,000, increases by e100,000x per purchase), you can convert all your Replicantis into Duplicants.<br>
 		Duplicants gather Pilons which provide an additive boost to Green Power effect (allowing to gain more extra Replicated Galaxies).
 		<br><br>
 
 		You can spend Gluons to buy Quantum Food, which, when used few times, turns normal Duplicants into worker Duplicants.<br>
 		Worker Duplicants gather more Pilons and produce eggons, which will later hatch into baby Duplicants.<br>
-		Baby Duplicants will eventually become normal Duplicants. You can also spend gluons to make eggons hatch faster.`
+		Baby Duplicants will eventually become normal Duplicants. You can also spend Gluons to make Eggons hatch faster.`
 	}, {
 		mod: _ => ngp3,
 		req: _ => player.masterystudies.includes("d11"),
