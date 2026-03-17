@@ -354,12 +354,12 @@ let HOW_TO = [
 
 		title: "Paired Challenges",
 		layer: "quantum",
-		desc: `Paired Challenges consist of two Quantum Challenges whose their conditions are applied at once.<br>
+		desc: `Paired Challenges consist of two Quantum Challenges where all of their effects applied at once.<br>
 		The cost to start a Paired Challenge is based on the sum of costs for the component challenges, and the goal is also based on the goals of the component challenges.
 		<br><br>
 
 		You can assign 2 Quantum Challenges to any pair of Quantum Challenges. The same challenge can't be assigned twice.<br>
-		You can respec the pairs anytime, but you will lose your completions of all Paired Challenges`
+		You can respec the pairs anytime, but you will lose your completions of all Paired Challenges.`
 	}, {
 		mod: _ => ngp3,
 		req: _ => player.masterystudies.includes("d10"),
@@ -367,13 +367,13 @@ let HOW_TO = [
 		title: "Duplicants",
 		tab: "ant",
 		layer: "quantum",
-		desc: `After reaching a certain threshold of Replicantis (starts at e3,000,000, increases by e100,000x per purchase), you can make Duplicants by resetting your Replicantis.<br>
+		desc: `After reaching a certain threshold of Replicantis (starts at e3,000,000, increases by e100,000x per purchase), you can convert all your Replicantis into Duplicants.<br>
 		Duplicants gather Pilons which provide an additive boost to Green Power effect (allowing to gain more extra Replicated Galaxies).
 		<br><br>
 
 		You can spend Gluons to buy Quantum Food, which, when used few times, turns normal Duplicants into worker Duplicants.<br>
 		Worker Duplicants gather more Pilons and produce eggons, which will later hatch into baby Duplicants.<br>
-		Baby Duplicants will eventually become normal Duplicants. You can also spend gluons to make eggons hatch faster.`
+		Baby Duplicants will eventually become normal Duplicants. You can also spend Gluons to make Eggons hatch faster.`
 	}, {
 		mod: _ => ngp3,
 		req: _ => player.masterystudies.includes("d11"),
@@ -381,7 +381,7 @@ let HOW_TO = [
 		title: "Emperor Dimensions",
 		tab: "ant",
 		layer: "quantum",
-		desc: `Each Emperor Dimension produces the one below it, but however each Dimension works like Workers. Second Emperor Dimensions produce Worker Duplicants, Third Emperor Dimensions produce Second Emperor Dimensions, etc.<br><br>
+		desc: `Each Emperor Dimension works like Workers that produce Emperor Dimensions of the previous tier. Second Emperor Dimensions produce workers, Third Emperor Dimensions produce Second Emperor Dimensions, etc.<br><br>
 		
 		To get the highest Emperor Dimension available, you must spend Quantum Food (similar to promoting a normal duplicant to a worker). You can increase the amount of the highest dimension you can attain, as well as unlocking the ability to buy higher dimensions, by spending Gluons.`
 	}, {
@@ -391,7 +391,7 @@ let HOW_TO = [
 		title: "Nanofield",
 		tab: "ant",
 		layer: "quantum",
-		desc: `You can enable the production of Pilon Charge, but also Pilon Anti-Energy will be produced and Pilons will be stalled.<br>	
+		desc: `You can enable the production of Pilon Charge and Pilon Energy, but you will also produce Pilon Anti-Energy. Additionally, you will stop producing Pilons.<br>	
 		You can get rewards based on your Pilon Energy, with the first one requiring 50 Pilon Energy.<br><br>
 
 		When a cap of Anti-Energy is reached, Pilon Energy production completely stops.<br>
@@ -405,7 +405,7 @@ let HOW_TO = [
 		title: "Decay",
 		layer: "quantum",
 		desc() {
-			let msg = `You can turn one color of Colored Quarks into Free Preons, which gradually decay exponentially while generating Preonic Spin. Preonic Spins can be spent on a big set of upgrades.`
+			let msg = `You can turn one color of Colored Quarks into Free Preons, which gradually decay exponentially in exchange of Preonic Spin. Preonic Spins can be spent on upgrades.`
 
 			if (ghSave?.photons?.unl || SPOILERS) msg += `<b>Radioactive Decays</b><br>
 				When you have enough Free Preons, you will be able to sacrifice these for boosts and upgrades. However, each Radioactive Decay nerfs Decay!`
@@ -420,8 +420,8 @@ let HOW_TO = [
 		title: "Big Rip",
 		layer: "quantum",
 		desc() {
-			let msg = `Once you beat 24 Paired Challenges and buy the last Mastery Study, you can big rip the universe.<br>
-			To do this, you must have one of your Paired Challenges assigned to be QC6+QC8, which is the hardest paired challenge to complete. Additionally, all Paired Challenges must be completed beforehand.<br><br>
+			let msg = `To unlock Big Rip, you need beat 24 unique Paired Challenges and buy the last Mastery Study.<br>
+			To Big Rip, you must have one of your Paired Challenges assigned to be QC6+QC8, which is the hardest paired challenge to complete.<br><br>
 
 			When you Big Rip the universe: You start a new Quantum run, but trapping you inside QC6 and QC8 with only your Quantum mechanics working (from quarks and gluons on), but nothing before that (it all comes back upon exiting the Big Rip). Additionally, many Speedrun Milestones do not work in Big Rips unless reactivated.<br>
 
