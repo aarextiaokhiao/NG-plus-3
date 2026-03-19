@@ -347,7 +347,7 @@ let HOW_TO = [
 		To start a QC, you must spend a certain number of Positrons, increasing from one challenge to the next. In addition to the conditions of each individual challenge, Positrons don't do anything during a Quantum Challenge.
 		<br><br>
 		
-		Unlike other Challenges, you unlock the next Quantum Challenge upon completing a Quantum Challenge for the first time.`
+		Unlike other Challenges, you unlock the next Quantum Challenge when you complete a prior Quantum Challenge.`
 	}, {
 		mod: _ => ngp3,
 		req: _ => player.masterystudies.includes("d9"),
