@@ -347,7 +347,7 @@ let HOW_TO = [
 		To start a QC, you must spend a certain number of Positrons, increasing from one challenge to the next. In addition to the conditions of each individual challenge, Positrons don't do anything during a Quantum Challenge.
 		<br><br>
 		
-		Unlike other Challenges, you unlock the next Quantum Challenge upon completing a Quantum Challenge for the first time.`
+		Unlike other Challenges, you unlock the next Quantum Challenge when you complete a prior Quantum Challenge.`
 	}, {
 		mod: _ => ngp3,
 		req: _ => player.masterystudies.includes("d9"),
@@ -391,12 +391,13 @@ let HOW_TO = [
 		title: "Nanofield",
 		tab: "ant",
 		layer: "quantum",
-		desc: `You can enable the production of Pilon Charge and Pilon Energy, but you will also produce Pilon Anti-Energy. Additionally, you will stop producing Pilons.<br>	
-		You can get rewards based on your Pilon Energy, with the first one requiring 50 Pilon Energy.<br><br>
+		desc: `You can enable the production of Pilon Charge, but you will stop producing Pilons.<br>	
+		Preon Charge provides you to produce Pilon Energy, but also Pilon Anti-Energy.<br><br>
 
 		When a cap of Anti-Energy is reached, Pilon Energy production completely stops.<br>
 		When this happens, the only way to get more Pilon Energy is to get more Pilon Charge or go quantum.<br><br>
 
+		You can get rewards based on your Pilon Energy, with the first one requiring 50 Pilon Energy.<br>
 		Note: Pilon Charge, Energy, and Anti-Energy reset on Quantum. You keep all your rewards.`
 	}, {
 		mod: _ => ngp3,
