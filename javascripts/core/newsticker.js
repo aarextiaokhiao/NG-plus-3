@@ -414,7 +414,6 @@ newsArray = [//always true
 ["Pfft, screw Gravity Dimensions! *slide whistle effect*", "hasAch('ng3p88')", "am211"],
 ["NG-5 is being worked on! Now with 100% less matter.", "inNGM(3)", "am212"],
 ["The Anti-Grind Research Lab is currently looking for another exploit. The estimated amount of time will be about 7 months. Why can’t they just play the game normally? Nobody knows.", true, "am213"],
-["[placeholder]", false, "am214"],
 ["How come NG++ and NG+++ add content, while NG+4 is simply a boost?", "aarMod.ngp4V != undefined", "am215"],
 ["You know, scientifically a big crunch would result in much more antimatter than a big rip.",	"hasAch('ng3p51')", "am216"],
 ["I will not develop any news tickers at the time of writing, sorry everyone!", true, "am217"],
@@ -497,6 +496,7 @@ newsArray = [//always true
 ["[placeholder]", false, "am197"],
 ["[placeholder]", false, "am202"],
 ["[placeholder]", false, "am203"],
+["[placeholder]", false, "am214"],
 ["[placeholder]", false, "am234"],
 ["[placeholder]", false, "am255"],
 ["[placeholder]", false, "am269"],
@@ -621,7 +621,6 @@ function updateGhostlyNewsArray() {
 	["Ghosts discovered that some particles, including bosons, are ghostly!", true, "gn31"],
 	["Ghosts don't know how to write more news. They decided to stop it for today.", true, "gn32"],
 	["The Anti-Preonius is getting closer. He will destroy your Nanofield. Stay away from him.", "hasBU(13)", "gn33"],
-	["WARNING! The Anti-Preonius will control over your Nanofield! Be careful! Oh. Worker duplicants are warned of that Ghost too.", "false && hasBU(21)", "gn34"],
 	["A ghost tried to take Anti-Preons out, but Bosonic Lab workers decided to ban them out because an Anti-Preon is a resource of Bosonic Lab.", "hasAch('ng3p81')", "gn35"],
 	["You got one ghostly particle, whatever that means.", "ghostified", "gn36"],
 	['"Welcome, a new ghost, to Ghostify! Kee-hee-hee!" - Aarex', true, "gn37"],
@@ -656,13 +655,16 @@ function updateGhostlyNewsArray() {
 	["We found out that ghosts are made of ghostly foam!", true, "gn66"],
 	["Did ghosts transform themselves to keep their lives? Oh, come on! We are immortal!", true, "gn67"],
 	["Hey. GhostSauce's Here.", "true", "gn68"],
-	["[placeholder]", false, "gn69"],
 	["A ghost has retired from a haunted office to work on Bosonic Lab!", "hasAch('ng3p81')", "gn70"],
 	["Ghosts are hiding for a secret plan on ghost transformation curses to the developers.", true, "gn71"],
 	["A detective ghost, Ms. Koolka, has gone recently at a basement of Bosonic Lab. The team of Bosonic Lab is investigating that scenario to see he's alive or not.", "hasAch('ng3p81')", "gn72"],
 	["I have a infamous secret on my base. It's about ghosts living in the afterlife after normal gho- *get paralyzed.*", true, "gn73"],
 	["Bosonic Lab staff realized that the ghost bodies of developers aren't real.", true, "gn74"],
 	["Note: I wonder the end of gravitional physics leads into...", true, "gn75"],
+
+	//Placeholder.
+	["[placeholder]", false, "gn34"],
+	["[placeholder]", false, "gn69"],
 	]
 }
 
