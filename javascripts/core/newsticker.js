@@ -510,10 +510,8 @@ Post-NG+3R: 300 - ???
 ["By now, you might have Gamma Rays infested inside.", "ghSave?.photons.lighten >= 10", "am303"],
 ["Player, it seems that you have been before. Or not... Whatever.", "!aarMod.ngp4V", "am305"],
 ["You have scrolled through 600 news-tickers! You might setup a lighthouse library really soon...", "player.newsArray.length >= 600", "am306"],
-["Soon, this game will have a lot of layers with NG-5 and NG+Pi...", "true", "am307"],
 ["This news ticker has 'am308' id on it! Meta^-1-Infinity, or Preludity?", "true", "am308"],
 ["Pata-Infinity when? (ee1.79e308)", "true", "am309"],
-["This might be extended by a lot, to disthrone 'The Longest Incremental.'", "true", "am310"],
 ["This isn't the longest game you are looking for.", "true", "am311"],*/
 ];}
 
