@@ -478,13 +478,13 @@ newsArray = [//always true
 ["~<: NEXTA COMMUNINC: CONSTELLA' THE STARS ~:> It seems that Higgs Field are messing up our Nanofield...", "hasAch('ng3p91')", "am285"],
 ["Fly on. Altar awaits your adventure- oh wait. Is Spectraglow coming to get me? Whatever...", "mod.ngp3", "am288"],
 ["Number hell is my enemy. ~ Aarex, Lightning Incrementalist", "mod.ngp3", "am289"],
-["Is NG+3 not the most influential mod of the pre-reality era? of course the great Pelle would make a NG+3 reference!", "mod.ngp3", "am290"],
+["Is NG+3 not the most influential mod of the pre-reality era? Of course the great Pelle would make a NG+3 reference!", "mod.ngp3", "am290"],
 
 ["Softcaps are little compared to others. You can rebalance as much as you could for good balancing.", true, "am6"],
 ["For Aarex, he rather to balance stuff by a little bit.", "mod.ngp3", "am53"],
 ["Co-developer of Incremental Mass: Rewritten here...", "mod.ngp3", "am142"],
-["Imagine Aarex happy after all of rebalancing...", "mod.ngp3", "am149"],
-["As we get closer, more ideas came up from him.", "mod.ngp3", "am151"],
+["Imagine Aarex happy after all of these rebalancing...", "mod.ngp3", "am149"],
+["As we get closer to the end, he came up more ideas.", "mod.ngp3", "am151"],
 ["How we suddenly got infinite ghosts?!", "ghostified && ghSave.ghostParticles.gte(Number.MAX_VALUE)", "am195"],
 ["Infinite creativity is a key to an unique, endless incremental game.", true, "am97"],
 ["Bosonic Lab has been disestablished due to complications.", "WZ_BOSONS.unlocked()", "am140"],
@@ -510,10 +510,8 @@ Post-NG+3R: 300 - ???
 ["By now, you might have Gamma Rays infested inside.", "ghSave?.photons.lighten >= 10", "am303"],
 ["Player, it seems that you have been before. Or not... Whatever.", "!aarMod.ngp4V", "am305"],
 ["You have scrolled through 600 news-tickers! You might setup a lighthouse library really soon...", "player.newsArray.length >= 600", "am306"],
-["Soon, this game will have a lot of layers with NG-5 and NG+Pi...", "true", "am307"],
 ["This news ticker has 'am308' id on it! Meta^-1-Infinity, or Preludity?", "true", "am308"],
 ["Pata-Infinity when? (ee1.79e308)", "true", "am309"],
-["This might be extended by a lot, to disthrone 'The Longest Incremental.'", "true", "am310"],
 ["This isn't the longest game you are looking for.", "true", "am311"],*/
 ];}
 
@@ -621,8 +619,7 @@ function updateGhostlyNewsArray() {
 	["Ghosts discovered that some particles, including bosons, are ghostly!", true, "gn31"],
 	["Ghosts don't know how to write more news. They decided to stop it for today.", true, "gn32"],
 	["The Anti-Preonius is getting closer. He will destroy your Nanofield. Stay away from him.", "hasBU(13)", "gn33"],
-	["WARNING! The Anti-Preonius will control over your Nanofield! Be careful! Oh. Worker duplicants are warned of that Ghost too.", "false && hasBU(21)", "gn34"],
-	["A ghost tried to take Pilons out, but they get caught by ants.", "hasAch('ng3p81')", "gn35"],
+	["A ghost tried to take Anti-Preons out, but Bosonic Lab workers decided to ban them out because an Anti-Preon is a resource of Bosonic Lab.", "hasAch('ng3p81')", "gn35"],
 	["You got one ghostly particle, whatever that means.", "ghostified", "gn36"],
 	['"Welcome, a new ghost, to Ghostify! Kee-hee-hee!" - Aarex', true, "gn37"],
 	["And then the guy turned himself into a pickle ghost. Funniest moment I've ever seen.", true, "gn38"],
@@ -656,13 +653,16 @@ function updateGhostlyNewsArray() {
 	["We found out that ghosts are made of ghostly foam!", true, "gn66"],
 	["Did ghosts transform themselves to keep their lives? Oh, come on! We are immortal!", true, "gn67"],
 	["Hey. GhostSauce's Here.", "true", "gn68"],
-	["[placeholder]", false, "gn69"],
-	["A ghost has retired from a haunted office!", "hasAch('ng3p81')", "gn70"],
+	["A ghost has retired from a haunted office to work on Bosonic Lab!", "hasAch('ng3p81')", "gn70"],
 	["Ghosts are hiding for a secret plan on ghost transformation curses to the developers.", true, "gn71"],
 	["A detective ghost, Ms. Koolka, has gone recently. The team is investigating that scenario to see he's alive or not.", "hasAch('ng3p81')", "gn72"],
 	["I have a infamous secret on my base. It's about ghosts living in the afterlife after normal gho- *get paralyzed.*", true, "gn73"],
 	["Staff realized that the ghost bodies of developers aren't real.", true, "gn74"],
 	["Note: I wonder the end of gravitional physics leads into...", true, "gn75"],
+
+	//Placeholder.
+	["[placeholder]", false, "gn34"],
+	["[placeholder]", false, "gn69"],
 	]
 }
 
