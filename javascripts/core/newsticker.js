@@ -486,13 +486,13 @@ newsArray = [//always true
 ["Is NG+3 not the most influential mod of the pre-reality era? Of course the great Pelle would make a NG+3 reference!", "mod.ngp3", "am290"],
 
 ["Softcaps are little compared to others. You can rebalance as much.", true, "am6"],
+["ANTIMATTER DIMENSIONS // THE META CONTINUATION", true, "am53"],
 ["Co-developer of Incremental Mass: Rewritten here...", "mod.ngp3", "am142"],
 ["Imagine Aarex happy after all of these rebalancing...", "mod.ngp3", "am149"],
 ["As we get closer to the end, he came up more ideas.", "mod.ngp3", "am151"],
 ["How we suddenly got infinite ghosts?!", "ghostified && ghSave.ghostParticles.gte(Number.MAX_VALUE)", "am195"],
 
 /* PLACEHOLDER
-["[placeholder]", false, "am53"],
 ["[placeholder]", false, "am197"],
 ["[placeholder]", false, "am202"],
 ["[placeholder]", false, "am203"],
