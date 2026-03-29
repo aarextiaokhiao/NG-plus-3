@@ -492,9 +492,9 @@ newsArray = [//always true
 ["As we get closer to the end, he came up more ideas.", "mod.ngp3", "am151"],
 ["How we suddenly got infinite ghosts?!", "ghostified && ghSave.ghostParticles.gte(Number.MAX_VALUE)", "am195"],
 ["The player has passed away. Fly high.", "ghostified", "am197"],
+["In the alternate timeline, we rather to go deeper to Fundament instead of transforming into a ghost.", "ghostified", "am202"],
 
 /* PLACEHOLDER
-["[placeholder]", false, "am202"],
 ["[placeholder]", false, "am203"],
 ["[placeholder]", false, "am214"],
 ["[placeholder]", false, "am234"],
