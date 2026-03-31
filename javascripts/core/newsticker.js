@@ -600,6 +600,7 @@ function updateGhostlyNewsArray() {
 	["Are your ghost particles ghostly? If not, talk to your ghostly boss.", true, "gn14"],
 	["What's a ghostify? -some new person that joined the discord server", true, "gn15"],
 	["BREAKING NEWS: Because of antimatter, someone has been turned into a basketball. The news ticker writers are baffled.", true, "gn16"],
+	["A ghost has went on a vacation to explore the ghost town.", true, "gn17"],
 	["WARNING: Do not interact evil ghosts. They can scare you out.", true, "gn18"],
 	["Do you know that ghosts are proved to be undead?", true, "gn19"],
 	["I got Spectral Particles. I got Neutrinos. That makes me a ghost.", true, "gn20"],
@@ -659,7 +660,6 @@ function updateGhostlyNewsArray() {
 	["Note: I wonder the end of gravitional physics leads into...", true, "gn75"],
 
 	//Placeholder.
-	["[placeholder]", false, "gn17"],
 	["[placeholder]", false, "gn69"],
 	]
 }
