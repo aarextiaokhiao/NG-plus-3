@@ -486,7 +486,7 @@ newsArray = [//always true
 ["Is NG+3 not the most influential mod of the pre-reality era? Of course the great Pelle would make a NG+3 reference!", "mod.ngp3", "am290"],
 
 ["Softcaps are little compared to others. You can rebalance as much.", true, "am6"],
-["ANTIMATTER DIMENSIONS // THE META CONTINUATION", true, "am53"],
+["For Aarex, he rather to balance stuff by a little bit.", "mod.ngp3", "am53"],
 ["Co-developer of Incremental Mass: Rewritten here...", "mod.ngp3", "am142"],
 ["Imagine Aarex happy after all of these rebalancing...", "mod.ngp3", "am149"],
 ["As we get closer to the end, he came up more ideas.", "mod.ngp3", "am151"],
@@ -494,9 +494,9 @@ newsArray = [//always true
 ["The player has passed away. Fly high.", "ghostified", "am197"],
 ["In the alternate timeline, we rather to go deeper to Fundament instead of transforming into a ghost.", "ghostified", "am202"],
 ["Player, it seems that you have been before. Or not... Whatever.", "aarMod.ngp4V != undefined", "am203"],
+["ANTIMATTER DIMENSIONS // THE META CONTINUATION", true, "am214"],
 
 /* PLACEHOLDER
-["[placeholder]", false, "am214"],
 ["[placeholder]", false, "am234"],
 ["[placeholder]", false, "am255"],
 ["[placeholder]", false, "am269"],
