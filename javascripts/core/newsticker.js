@@ -346,7 +346,7 @@ newsArray = [//always true
 ["Hi, Billy Mays here for the Antimatter Dimensions game, the new easier way to waste time!", true, "am145"],
 ["When does the 0th dimension come out", true, "am146"],
 ["I was in a wrong laboratory. Then I found a better laboratory that actually boosts for good.", "hasAch('ng3p81')", "am147"],
-["I was stuck in a grinding section. Thanks to gods, I can finally get out of here.", false, "am148"],
+["I was stuck in a grinding section. Thanks to gods, I can finally get out of here.", true, "am148"],
 ["We have updated our Terms of Service to comply with COPPA Act.", true, "am150"],
 ["ELECTRONS CONSUME YOUR STARS", "mod.ngp3 && hasMasteryStudy('d7')", "am152"],
 ['"New game dammit" - GrayStillPlays', "mod.ngp3", "am153"],
@@ -480,21 +480,20 @@ newsArray = [//always true
 ["Number hell is my enemy. ~ Aarex, Lightning Incrementalist", "mod.ngp3", "am289"],
 ["Is NG+3 not the most influential mod of the pre-reality era? Of course the great Pelle would make a NG+3 reference!", "mod.ngp3", "am290"],
 
-["Softcaps are little compared to others. You can rebalance as much as you could for good balancing.", true, "am6"],
+["Softcaps are little compared to others. You can rebalance as much.", true, "am6"],
 ["For Aarex, he rather to balance stuff by a little bit.", "mod.ngp3", "am53"],
+["Infinite creativity is a key to an unique, endless incremental game.", true, "am97"],
+["Bosonic Lab has been disestablished due to complications.", "WZ_BOSONS.unlocked()", "am140"],
 ["Co-developer of Incremental Mass: Rewritten here...", "mod.ngp3", "am142"],
 ["Imagine Aarex happy after all of these rebalancing...", "mod.ngp3", "am149"],
 ["As we get closer to the end, he came up more ideas.", "mod.ngp3", "am151"],
 ["How we suddenly got infinite ghosts?!", "ghostified && ghSave.ghostParticles.gte(Number.MAX_VALUE)", "am195"],
-["Infinite creativity is a key to an unique, endless incremental game.", true, "am97"],
-["Bosonic Lab has been disestablished due to complications.", "WZ_BOSONS.unlocked()", "am140"],
+["The player has passed away. Fly high.", "ghostified", "am197"],
+["In the alternate timeline, we rather to go deeper to Fundament instead of transforming into a ghost.", "ghostified", "am202"],
+["Player, it seems that you have been before. Or not... Whatever.", "aarMod.ngp4V != undefined", "am203"],
+["ANTIMATTER DIMENSIONS // THE META CONTINUATION", true, "am214"],
 
 /* PLACEHOLDER
-["[placeholder]", false, "am143"],
-["[placeholder]", false, "am197"],
-["[placeholder]", false, "am202"],
-["[placeholder]", false, "am203"],
-["[placeholder]", false, "am214"],
 ["[placeholder]", false, "am234"],
 ["[placeholder]", false, "am255"],
 ["[placeholder]", false, "am263"],
@@ -504,15 +503,12 @@ newsArray = [//always true
 ["[placeholder]", false, "am287"],
 
 Post-NG+3R: 300 - ???
-["[placeholder]", false, "am301"],
 ["There's a rumor that Study 999 is darkness.", "ghostified", "am302"],
 ["NG+Pi: The continuation fork of NG+3.1. It seems like underworldly for NG+3R players.", "mod.ngp3", "am303"],
 ["By now, you might have Gamma Rays infested inside.", "ghSave?.photons.lighten >= 10", "am303"],
-["Player, it seems that you have been before. Or not... Whatever.", "!aarMod.ngp4V", "am305"],
 ["You have scrolled through 600 news-tickers! You might setup a lighthouse library really soon...", "player.newsArray.length >= 600", "am306"],
 ["This news ticker has 'am308' id on it! Meta^-1-Infinity, or Preludity?", "true", "am308"],
-["Pata-Infinity when? (ee1.79e308)", "true", "am309"],
-["This isn't the longest game you are looking for.", "true", "am311"],*/
+["Pata-Infinity when? (ee1.79e308)", "true", "am309"],*/
 ];}
 
 document.addEventListener("visibilitychange", function() {if (!document.hidden) {scrollNextMessage();}}, false);
@@ -602,7 +598,7 @@ function updateGhostlyNewsArray() {
 	["Are your ghost particles ghostly? If not, talk to your ghostly boss.", true, "gn14"],
 	["What's a ghostify? -some new person that joined the discord server", true, "gn15"],
 	["BREAKING NEWS: Because of antimatter, someone has been turned into a basketball. The news ticker writers are baffled.", true, "gn16"],
-	["[placeholder]", false, "gn17"],
+	["A ghost has went on a vacation to explore the ghost town.", true, "gn17"],
 	["WARNING: Do not interact evil ghosts. They can scare you out.", true, "gn18"],
 	["Do you know that ghosts are proved to be undead?", true, "gn19"],
 	["I got Spectral Particles. I got Neutrinos. That makes me a ghost.", true, "gn20"],
@@ -619,6 +615,7 @@ function updateGhostlyNewsArray() {
 	["Ghosts discovered that some particles, including bosons, are ghostly!", true, "gn31"],
 	["Ghosts don't know how to write more news. They decided to stop it for today.", true, "gn32"],
 	["The Anti-Preonius is getting closer. He will destroy your Nanofield. Stay away from him.", "hasBU(13)", "gn33"],
+	["Ghosts discovered the lost layer in the deep depths of graveyard.", true, "gn34"],
 	["A ghost tried to take Anti-Preons out, but Bosonic Lab workers decided to ban them out because an Anti-Preon is a resource of Bosonic Lab.", "hasAch('ng3p81')", "gn35"],
 	["You got one ghostly particle, whatever that means.", "ghostified", "gn36"],
 	['"Welcome, a new ghost, to Ghostify! Kee-hee-hee!" - Aarex', true, "gn37"],
@@ -649,20 +646,17 @@ function updateGhostlyNewsArray() {
 	["We found an anomaly that allows ghosts to resize themselves in their worlds.", true, "gn62"],
 	["Getting tired of finding through small holes? Introducing Planckizer! A tool which allows ghosts to become planck-scale!", true, "gn63"],
 	["Gonna transform to a Planck Scale ghost!", true, "gn64"],
-	["The flow of time has messed up thanks to you! Our bosons blew up.", false, "gn65"],
+	["The flow of time has messed up thanks to you! Our bosons blew up.", true, "gn65"],
 	["We found out that ghosts are made of ghostly foam!", true, "gn66"],
 	["Did ghosts transform themselves to keep their lives? Oh, come on! We are immortal!", true, "gn67"],
-	["Hey. GhostSauce's Here.", "true", "gn68"],
-	["A ghost has retired from a haunted office to work on Bosonic Lab!", "hasAch('ng3p81')", "gn70"],
+	["Hey. GhostSauce's Here.", true, "gn68"],
+	["GHOST // ACT I: THE UNDEAD", true, "gn69"],
+	["A ghost has retired from a haunted office to research on Bosons!", "hasAch('ng3p81')", "gn70"],
 	["Ghosts are hiding for a secret plan on ghost transformation curses to the developers.", true, "gn71"],
 	["A detective ghost, Ms. Koolka, has gone recently. The team is investigating that scenario to see he's alive or not.", "hasAch('ng3p81')", "gn72"],
 	["I have a infamous secret on my base. It's about ghosts living in the afterlife after normal gho- *get paralyzed.*", true, "gn73"],
 	["Staff realized that the ghost bodies of developers aren't real.", true, "gn74"],
 	["Note: I wonder the end of gravitional physics leads into...", true, "gn75"],
-
-	//Placeholder.
-	["[placeholder]", false, "gn34"],
-	["[placeholder]", false, "gn69"],
 	]
 }
 
