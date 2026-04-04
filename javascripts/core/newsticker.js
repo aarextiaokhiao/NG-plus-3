@@ -657,6 +657,7 @@ function updateGhostlyNewsArray() {
 	["I have a infamous secret on my base. It's about ghosts living in the afterlife after normal gho- *get paralyzed.*", true, "gn73"],
 	["Staff realized that the ghost bodies of developers aren't real.", true, "gn74"],
 	["Note: I wonder the end of gravitional physics leads into...", true, "gn75"],
+	["Ghosty has been eliminated with 2,763 votes.", true, "gn76"],
 	]
 }
 
