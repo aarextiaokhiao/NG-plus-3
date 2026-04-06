@@ -614,7 +614,6 @@ function updateGhostlyNewsArray() {
 	["Ghosts found a ghostly kind of Radioactive Decays!", "getRadioactiveDecays() >= 1", "gn30"],
 	["Ghosts discovered that some particles, including bosons, are ghostly!", true, "gn31"],
 	["Ghosts don't know how to write more news. They decided to stop it for today.", true, "gn32"],
-	["The Anti-Preonius is getting closer. He will destroy your Nanofield. Stay away from him.", "hasBU(13)", "gn33"],
 	["Ghosts discovered the lost layer in the deep depths of graveyard.", true, "gn34"],
 	["A ghost tried to take Anti-Preons out, but Bosonic Lab workers decided to ban them out because an Anti-Preon is a resource of Bosonic Lab.", "hasAch('ng3p81')", "gn35"],
 	["You got one ghostly particle, whatever that means.", "ghostified", "gn36"],
@@ -659,6 +658,9 @@ function updateGhostlyNewsArray() {
 	["Note: I wonder the end of gravitional physics leads into...", true, "gn75"],
 	["Ghosty has been eliminated with 2,763 votes.", true, "gn76"],
 	["A ghost truck has crashed due to not seeing visible debris.", true, "gn77"],
+
+	//Placeholder
+	["[placeholder]", false, "gn33"],
 	]
 }
 
