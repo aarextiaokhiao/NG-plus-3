@@ -454,7 +454,7 @@ newsArray = [//always true
 ["NG+3 Starter Pack: Creative mechanics, ideal dump, focuses on balancing a lot, a bit of development every day.", "mod.ngp3", "am257"],
 ["I bet you can't see the reference: An astronaut wearing the red suit.", true, "am258"],
 ['"Our world would be deadly as matter, if there are holes leading into matter cultists..." ~ Antimatter cultist', true, "am259"],
-['"Get me out of my head... I can\'t control myself..." ~ Kids after seeing matter apocalypses', true, "am260"],
+[`"Get me out of my head... I can't control myself..." ~ Kids after seeing matter apocalypses`, true, "am260"],
 ['"Spacetime generators? Eh, more like Dimensions!"', true, "am261"],
 ["For no reason, duplicants and ghosts have been censored in this news ticker.", "ghostified", "am262"],
 ["Florida man reports that duplicants and ghosts were erdiciated by Aarex!", "mod.ngp3", "am264"],
