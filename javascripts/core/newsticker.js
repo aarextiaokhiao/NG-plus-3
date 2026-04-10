@@ -657,7 +657,7 @@ function updateGhostlyNewsArray() {
 	["Staff realized that the ghost bodies of developers aren't real.", true, "gn74"],
 	["Note: I wonder the end of gravitional physics leads into...", true, "gn75"],
 	["Ghosty has been eliminated with 2,763 votes.", true, "gn76"],
-	["A ghost truck has crashed due to not seeing visible debris.", true, "gn77"],
+	["A ghost truck has crashed due to not being visible enough to see debris.", true, "gn77"],
 
 	//Placeholder
 	["[placeholder]", false, "gn33"],
