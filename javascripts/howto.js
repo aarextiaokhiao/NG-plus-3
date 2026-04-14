@@ -505,7 +505,7 @@ let HOW_TO = [
 		title: "W & Z Bosons",
 		layer: "fundament",
 		desc: `
-			You start with 1 Z Boson. Z Bosons can be converted into W- Bosons which will take effect on next Fundament.
+			You start with 1 Z Boson. Z Bosons can be converted into W- Bosons which will take effect on next Fundament. Z Bosons are also used for further boosts.
 			<br><br>
 
 			W- Bosons provide nerfs, but can be reduced by progression while gaining potential Z.<br>
