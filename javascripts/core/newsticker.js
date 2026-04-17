@@ -659,6 +659,7 @@ function updateGhostlyNewsArray() {
 	["Note: I wonder the end of gravitional physics leads into...", true, "gn75"],
 	["Ghosty has been eliminated with 2,763 votes.", true, "gn76"],
 	["A ghost truck has crashed due to not being visible enough to see debris.", true, "gn77"],
+	["Ghost bosons are discovered during the experiment led by fundamental-level ghosts.", true, "gn78"],
 	]
 }
 
