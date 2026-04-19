@@ -1,8 +1,3 @@
-function hasWZMilestone(type, i) {
-	//to-do: Replace this function with something else.
-	return false
-}
-
 const WZ_BOSONS = {
 	/* CORE */
 	//Unlock
@@ -59,7 +54,7 @@ const WZ_BOSONS = {
 			{ req: 0, eff: _ => 1, desc: _ => "Testing..." }
 		],
 		neg: [
-			{ req: 0, eff: _ => 1, desc: _ => "Testing..." }
+			{ req: 0, eff: _ => 1, desc: x => `^${shorten(x)} neutrino gain. (not implemented)` }
 		]
 	},
 
