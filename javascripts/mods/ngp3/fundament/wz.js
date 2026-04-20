@@ -57,6 +57,9 @@ const WZ_BOSONS = {
 			{ req: 0, eff: _ => 1, desc: x => `^${shorten(x)} neutrino gain. (not implemented)` }
 		]
 	},
+	eff(type, x) {
+		return false //to be implemented
+	},
 
 	format_w(x) {
 		return shortenMoney(Math.abs(x)) + (x > 0 ? "+" : x < 0 ? "-" : "")
