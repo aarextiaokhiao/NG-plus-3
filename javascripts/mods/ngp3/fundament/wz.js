@@ -18,18 +18,18 @@ const WZ_BOSONS = {
 
 	/* CALCULATION */
 	temp() {
-		if (!this.unlocked()) return
-
 		let data = tmp.funda.wz || {}
 		tmp.funda.wz = data
 
-		data.potential_z = 0
-		data.potential_w = 0 - blSave.w_used
 		data.eff = {
 			pos: [],
 			neg: []
 		}
 
+		if (!this.unlocked()) return
+
+		data.potential_z = 0
+		data.potential_w = 0 - blSave.w_used
 		let group = data.potential_w > 0 ? "pos" : "neg"
 		for (var i of WZ_BOSONS.milestones[group]) {
 			if (Math.abs(data.potential_w) > Math.abs(i.req)) {
