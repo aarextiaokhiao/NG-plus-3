@@ -69,7 +69,7 @@ const NEUTRINO = NT = {
 			let r = E_pow(5, ghSave.neutrinos.multPower - 1)
 			r = E_pow(lightEff(1), Math.max(brSave.bestGals - 2000, 0)).mul(r)
 			if (mod.p3ep) r = r.mul(pow10(player.galaxies / 1e5))
-			if (false) r = r.pow(BL.eff("neg", 0)) //to be implemented
+			if (WZ_BOSONS.unlocked()) r = r.pow(WZ_BOSONS.eff("neg", 0))
 			return r
 		},
 		spend(x) {
