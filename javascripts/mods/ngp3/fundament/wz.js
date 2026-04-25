@@ -29,7 +29,7 @@ const WZ_BOSONS = {
 		if (!this.unlocked()) return
 
 		data.potential_z = 0
-		data.potential_w = 0 - blSave.w_used
+		data.potential_w = data.potential_z - blSave.w_used
 
 		let group = data.potential_w > 0 ? "pos" : "neg"
 		for (var i of WZ_BOSONS.milestones[group]) {
