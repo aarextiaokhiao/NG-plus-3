@@ -196,7 +196,7 @@ const MTS = MASTERY_STUDIES = {
 		411: "Duplicants boost Nanoenergy.",
 		412: "Pilon effect softcaps weaker again.",
 		421: "Tickspeed boosts Nanocharge.",
-		431: "Tachyonic Galaxies speed up Branches."
+		431: "Tachyonic Galaxies speed up Decay."
 	},
 	hasStudyEffect: [251, 252, 253, 262, 263, 264, 273, 281, 282, 301, 303, 322, 332, 341, 344, 351, 361, 371, 372, 373, 381, 382, 383, 391, 392, 393, 401, 411, 421, 431],
 	studyEffectDisplays: {
