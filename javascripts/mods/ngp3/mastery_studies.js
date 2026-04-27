@@ -189,7 +189,7 @@ const MTS = MASTERY_STUDIES = {
 		382: "Eighth Antimatter Dimensions boost Meta Dimensions.",
 		383: "Blue power boosts Meta Dimensions.",
 		391: "Meta-antimatter speeds up hatching.",
-		392: "Pilons boost all Emperor Dimensions.",
+		392: "Pilons boost Emperor Dimensions.",
 		393: "Workers boost Meta Dimensions.",
 		401: "Pilons reduce anti-Nanoenergy.",
 		402: "Emperor Dimensions and hatch speed are 30x faster.",
