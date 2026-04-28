@@ -76,6 +76,7 @@ let PHOTON = {
 		let r = pow10((player.meta.resets - 400) / 25)
 		if (hasNB(11))               r = r.mul(NT.eff("boost", 11))
 		if (hasNanoReward("photon")) r = r.mul(tmp.qu.nf.eff.photon)
+		if (WZ_BOSONS.unlocked())    r = r.mul(WZ_BOSONS.eff("pos", 0))
 		return r
 	},
 	light: {
