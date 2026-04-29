@@ -52,10 +52,11 @@ const WZ_BOSONS = {
 
 	milestones: {
 		pos: [
-			{ req: 0, eff: _ => 1, desc: x => `${shorten(x)}x Photons gain.` }
+			{ req: 0, eff: _ => 1, desc: x => `<b>${shorten(x)}x</b> Photons gain.` }
 		],
 		neg: [
-			{ req: 0, eff: _ => 1, desc: x => `^${shorten(x)} neutrino gain.` }
+			{ req: 0, eff: _ => 1, desc: x => `<b>^${shorten(x)}</b> neutrino gain.` },
+			{ req: 0, eff: _ => 1, desc: x => `<b>/${shorten(x)}</b> Photons gain.` },
 		]
 	},
 	eff(type, x, def = 1) {
@@ -92,7 +93,7 @@ const WZ_BOSONS = {
 			w_html += `<br>`
 		}
 
-		w_html += `<b>${shorten(tmp.funda.wz.potential_z)}</b> potential Z Bosons`
+		w_html += `<b>${shorten(tmp.funda.wz.potential_z)}</b> potential Z Bosons (based on your progress)`
 
 		el("w_eff").innerHTML = w_html
 	},
