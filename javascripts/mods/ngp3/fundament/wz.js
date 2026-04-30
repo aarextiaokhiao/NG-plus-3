@@ -52,11 +52,11 @@ const WZ_BOSONS = {
 
 	milestones: {
 		pos: [
-			{ req: 0, eff: _ => 1, desc: x => `<b>${shorten(x)}x</b> Photons gain.` }
+			{ req: 0, eff: _ => 1, desc: x => `<b>${shorten(x)}x</b> Photons.` }
 		],
 		neg: [
-			{ req: 0, eff: _ => 1, desc: x => `<b>^${shorten(x)}</b> neutrino gain.` },
-			{ req: 0, eff: _ => 1, desc: x => `<b>/${shorten(x)}</b> Photons gain.` },
+			{ req: 0, eff: _ => 1, desc: x => `<b>^${shorten(x)}</b> Neutrinos.` },
+			{ req: 0, eff: _ => 1, desc: x => `<b>/${shorten(x)}</b> Photonss.` },
 		]
 	},
 	eff(type, x, def = 1) {
