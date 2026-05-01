@@ -492,7 +492,7 @@ newsArray = [//always true
 ["In the alternate timeline, we rather to go deeper to Fundament instead of transforming into a ghost.", "ghostified", "am202"],
 ["Player, it seems that you have been before. Or not... Whatever.", "aarMod.ngp4V != undefined", "am203"],
 ["ANTIMATTER DIMENSIONS // THE META CONTINUATION", true, "am214"],
-["META-ANTIMATTER DIMENSIONS", "mod.ngp3", "am234"],
+["META-ANTIMATTER DIMENSIONS: DIMENSIONS OF LOWER DIMENSIONS", "mod.ngp3", "am234"],
 
 /* PLACEHOLDER
 ["[placeholder]", false, "am255"],
