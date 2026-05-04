@@ -654,7 +654,7 @@ function updateGhostlyNewsArray() {
 	["A ghost has retired from a haunted office to research on Bosons!", "hasAch('ng3p81')", "gn70"],
 	["Ghosts are hiding for a secret plan on ghost transformation curses to the developers.", true, "gn71"],
 	["A detective ghost, Ms. Koolka, has gone recently. The team is investigating that scenario to see he's alive or not.", "hasAch('ng3p81')", "gn72"],
-	["I have a infamous secret on my base. It's about ghosts living in the afterlife after normal gho- *get paralyzed.*", true, "gn73"],
+	["I have a secret. It's about ghosts living in the afterlife after normal gho- *get paralyzed.*", true, "gn73"],
 	["Staff realized that the ghost bodies of developers aren't real.", true, "gn74"],
 	["Note: I wonder the end of gravitional physics leads into...", true, "gn75"],
 	["Ghosty has been eliminated with 2,763 votes.", true, "gn76"],
