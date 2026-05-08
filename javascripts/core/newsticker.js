@@ -638,7 +638,7 @@ function updateGhostlyNewsArray() {
 	["I wonder where all the news gets broadcasted from...", true, "gn54"],
 	["'now i know why i can't get access to the ghostly news!' - usavictor", true, "gn55"],
 	["Ghostify is just Quantum but spooky.", true, "gn56"],
-	["Ghosts lie forever. They are in a obscure zone we couldn't observe.", true, "gn57"],
+	["Ghosts lie forever in an invisible zone. Humans couldn't observe of ghosts.", true, "gn57"],
 	["GHOST IS YOU", true, "gn58"],
 	["Error 404: Ghost Matter not found", true, "gn59"],
 	["A ghost forget how to read a invisible paper!", true, "gn60"],
