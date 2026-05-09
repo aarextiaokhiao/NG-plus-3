@@ -387,7 +387,7 @@ newsArray = [//always true
 ["The next news ticker is sponsored by the anti-store. Get your daily anti-cinnamon toast crunch!", true, "am190"],
 ["The Photonic Wall seems to be gone, but there's only the bricks of it left. We should maybe do stuff with those bricks, except they might be made out of concentrated time, so that's a bad idea...", "PHOTON.unlocked()", "am191"],
 ["3000 patches ahead of the main branch, 6 different reset layers, and an additional half year of content", true, "am192"],
-["Remember the good old days with no softcaps... well the new devs came in and put in too many!", true, "am193"],
+["Remember the good old days with no softcaps... well,the new devs came in and put in too many!", true, "am193"],
 
 /* v2.31 */
 ["There's now a NG+ Reality mod: https://toilet45.github.io/ADRedemption/", true, "am1"],
@@ -490,7 +490,7 @@ newsArray = [//always true
 ["How we suddenly got infinite ghosts?!", "ghostified && ghSave.ghostParticles.gte(Number.MAX_VALUE)", "am195"],
 ["The player has passed away. Fly high.", "ghostified", "am197"],
 ["In the alternate timeline, we rather to go deeper to Fundament instead of transforming into a ghost.", "ghostified", "am202"],
-["Player, it seems that you have been before. Or not... Whatever.", "aarMod.ngp4V != undefined", "am203"],
+["Player, it seems that you have been here before. Or not... Whatever.", "aarMod.ngp4V != undefined", "am203"],
 ["ANTIMATTER DIMENSIONS // THE META CONTINUATION", true, "am214"],
 ["META-ANTIMATTER DIMENSIONS: DIMENSIONS OF LOWER DIMENSIONS", "mod.ngp3", "am234"],
 ["Defeated against the antimatter explosion, the man was physically annihilated before a blink of the eye.", true, "am255"],
