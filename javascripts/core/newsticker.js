@@ -488,7 +488,7 @@ newsArray = [//always true
 ["Imagine Aarex happy after all of these rebalancing...", "mod.ngp3", "am149"],
 ["As we get closer to the end, he came up more ideas.", "mod.ngp3", "am151"],
 ["How we suddenly got infinite ghosts?!", "ghostified && ghSave.ghostParticles.gte(Number.MAX_VALUE)", "am195"],
-["The player has passed away. Fly high.", "ghostified", "am197"],
+["The player has passed away. Fly high and godspeed.", "ghostified", "am197"],
 ["In the alternate timeline, we rather to go deeper to Fundament instead of transforming into a ghost.", "ghostified", "am202"],
 ["Player, it seems that you have been here before. Or not... Whatever.", "aarMod.ngp4V != undefined", "am203"],
 ["ANTIMATTER DIMENSIONS // THE META CONTINUATION", true, "am214"],
