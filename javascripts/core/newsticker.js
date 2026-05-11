@@ -485,7 +485,7 @@ newsArray = [//always true
 ["Infinite creativity is a key to an unique, endless incremental game.", true, "am97"],
 ["Bosonic Lab has been disestablished due to complications.", "WZ_BOSONS.unlocked()", "am140"],
 ["Co-developer of Incremental Mass: Rewritten here...", "mod.ngp3", "am142"],
-["Imagine Aarex happy after all of these rebalancing...", "mod.ngp3", "am149"],
+["Imagine Aarex happy after all of rebalancing...", "mod.ngp3", "am149"],
 ["As we get closer to the end, he came up more ideas.", "mod.ngp3", "am151"],
 ["How we suddenly got infinite ghosts?!", "ghostified && ghSave.ghostParticles.gte(Number.MAX_VALUE)", "am195"],
 ["The player has passed away. Fly high and godspeed.", "ghostified", "am197"],
