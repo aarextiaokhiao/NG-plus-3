@@ -663,6 +663,7 @@ function updateGhostlyNewsArray() {
 	["If a ghost is completely invisible, would they have no sense of sight?", true, "gn79"],
 	["A paranormal event is currently happening. We are experiencing the intervention with ghosts and humans.", true, "gn80"],
 	["Once you are a ghost, you cannot turn back into your soul.", true, "gn81"],
+	["In a century, Aarex (the developer of NG+3) would be Ghosty.", true, "gn82"],
 	]
 }
 
