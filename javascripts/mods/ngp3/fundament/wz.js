@@ -56,7 +56,7 @@ const WZ_BOSONS = {
 		],
 		neg: [
 			{ req: 0, eff: _ => 1, desc: x => `<b>^${shorten(x)}</b> Neutrinos.` },
-			{ req: 0, eff: _ => 1, desc: x => `<b>/${shorten(x)}</b> Photonss.` },
+			{ req: 0, eff: _ => 1, desc: x => `<b>/${shorten(x)}</b> Photons.` },
 		]
 	},
 	eff(type, x, def = 1) {
