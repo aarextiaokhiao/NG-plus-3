@@ -493,7 +493,7 @@ newsArray = [//always true
 ["Player, it seems that you have been here before. Or not... Whatever.", "aarMod.ngp4V != undefined", "am203"],
 ["ANTIMATTER DIMENSIONS // THE META CONTINUATION", true, "am214"],
 ["META-ANTIMATTER DIMENSIONS: DIMENSIONS OF LOWER DIMENSIONS", "mod.ngp3", "am234"],
-["Defeated against the antimatter explosion, the man was physically annihilated before a blink of the eye.", true, "am255"],
+["Before a blink of the eye, the man was physically annihilated by an antimatter explosion.", true, "am255"],
 
 /* PLACEHOLDER
 ["[placeholder]", false, "am263"],
