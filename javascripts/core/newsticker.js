@@ -581,7 +581,8 @@ function scrollNextMessage() {
 
 //NG+3
 function updateGhostlyNewsArray() {
-	ghostlyNewsArray = [//Ghostly news ticker messages
+	ghostlyNewsArray = [
+	//Ghostly news ticker messages
 	["Kee-hee-hee!", true, "gn1"],
 	["Every ghostly antimatter is safe.", true, "gn2"],
 	["Are you a ghost and want to use computers? Get Ghostified Hands! This stuff makes your hands feel like a human again! To order, you need to pay Spectral Particles and pass through your universe.", true, "gn3"],
@@ -662,7 +663,7 @@ function updateGhostlyNewsArray() {
 	["Spectrons are discovered during the experiment led by fundamental-level ghosts.", true, "gn78"],
 	["If a ghost is completely invisible, would they have no sense of sight?", true, "gn79"],
 	["A paranormal event is currently happening. We are experiencing the intervention with ghosts and humans.", true, "gn80"],
-	["Once you are a ghost, you cannot turn back into your soul.", true, "gn81"],
+	["Once you are a ghost, you cannot resurrect back into your human soul.", true, "gn81"],
 	["In a century, Aarex (the developer of NG+3) would be Ghosty.", true, "gn82"],
 	]
 }
