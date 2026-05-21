@@ -627,7 +627,7 @@ function updateGhostlyNewsArray() {
 	["New matter discovered. Ghostly Matter! The scientists who discovered it were already dead.", true, "gn43"],
 	["Florida man attempts to write down his antimatter. When finishes, he finds out he's a ghost.", true, "gn44"],
 	["Do you know that ghosts came from Ghostify? Absolutely not.", true, "gn45"],
-	["Ghostly news company has become partners with us. They are made entirely of ghostly matter.", true, "gn46"],
+	["Ghostly news company has become partners with us. This brings more news to all ghosts.", true, "gn46"],
 	["Antimatter ghosts do not exist. Just like matter ghosts. But Ghostly Matter Ghosts do.", true, "gn47"],
 	["I am a ghost, and I will do science for all eternity!", "hasAch('ng3p81')", "gn48"],
 	["Ghosts have created their own periodic tables. It looks pretty sophisticated, but the origin of this is unknown.", true, "gn49"],
