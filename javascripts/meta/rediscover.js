@@ -58,24 +58,22 @@ const REDISCOVER = {
 				player.ghostify = { times: 1 }
 				loadFundament(true)
 			},
-		}
-		/*, {
+		}, {
 			to: "End",
-			unl: _ => false,
+			unl: _ => hasBadge("p3_end"),
 			goal: _ => false,
 			preload() {
-				player.masterystudies.push("d13")
-				beSave.unlocked = true
-				for (var x = 1; x <= 8; x++) beSave.upgrades.push(x)
-
-				ghSave.times = 20
-				ghSave.low = 0
-				ghSave.neutrinos.boosts = 12
-				for (var x = 1; x <= 16; x++) ghSave.neutrinos.upgrades.push(x)
-				ghSave.photons.unl = true
-				blSave.unl = true
+				player.ghostify = ghSave = setupFundament()
+				ghSave.times = 50
+				ghSave.neutrinos.boosts = 11
+				ghSave.neutrinos.upgrades = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
+				ghSave.automatorGhosts.power = 15
+				ghSave.ghostParticles = E(1e30)
+				ghSave.photons.unl = 1
+				ghSave.lab.unl = 1
+				loadFundament(true)
 			},
-		}*/
+		}
 	],
 	in: _ => meta.save.current == "rediscover",
 	start(x) {
