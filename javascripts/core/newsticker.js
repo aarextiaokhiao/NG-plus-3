@@ -495,9 +495,9 @@ newsArray = [//always true
 ["META-ANTIMATTER DIMENSIONS: DIMENSIONS OF LOWER DIMENSIONS", "mod.ngp3", "am234"],
 ["Before a blink of the eye, the man got physically obliterated by an antimatter explosion.", true, "am255"],
 ["The winner is you!", "hasBadge('p3_end')", "am263"],
+["Grass got obliterated with antimatter grass. Seems like you couldn't made time to touch grass...", true, "am269"],
 
 /* PLACEHOLDER
-["[placeholder]", false, "am269"],
 ["[placeholder]", false, "am270"],
 ["[placeholder]", false, "am286"],
 ["[placeholder]", false, "am287"],
