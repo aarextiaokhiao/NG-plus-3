@@ -481,7 +481,7 @@ newsArray = [//always true
 ["Is NG+3 not the most influential mod of the pre-reality era? Of course the great Pelle would make a NG+3 reference!", "mod.ngp3", "am290"],
 
 ["Softcaps are little compared to others. You can rebalance as much.", true, "am6"],
-["For Aarex, he rather to balance stuff by a little bit.", "mod.ngp3", "am53"],
+["For Aarex, he rather to balance stuff carefully to ensure near perfection.", "mod.ngp3", "am53"],
 ["Infinite creativity is a key to an unique, endless incremental game.", true, "am97"],
 ["Bosonic Lab has been disestablished due to complications.", "WZ_BOSONS.unlocked()", "am140"],
 ["Co-developer of Incremental Mass: Rewritten here...", "mod.ngp3", "am142"],
