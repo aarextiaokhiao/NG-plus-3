@@ -486,7 +486,7 @@ newsArray = [//always true
 ["Bosonic Lab has been disestablished due to complications.", "WZ_BOSONS.unlocked()", "am140"],
 ["Co-developer of Incremental Mass: Rewritten here...", "mod.ngp3", "am142"],
 ["Imagine Aarex happy after all of rebalancing...", "mod.ngp3", "am149"],
-["As we get closer to the end, he came up more ideas.", "mod.ngp3", "am151"],
+["As we get closer to the end, Aarex came up more ideas.", "mod.ngp3", "am151"],
 ["How we suddenly got infinite ghosts?!", "ghostified && ghSave.ghostParticles.gte(Number.MAX_VALUE)", "am195"],
 ["The player has passed away. Fly high and godspeed.", "ghostified", "am197"],
 ["In the alternate timeline, we rather to go deeper to Fundament instead of transforming into a ghost.", "ghostified", "am202"],
