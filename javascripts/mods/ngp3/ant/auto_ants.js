@@ -140,7 +140,6 @@ function updateAutoGhosts(load) {
 		for (var [g, d] of Object.entries(automators)) {
 			if (d.configs) {
 				for (var i of Object.keys(d.configs)) {
-					console.log(g, i)
 					el("autoAnt" + g + i).value = data[g][i] instanceof Decimal ? shorten(data[g][i]) : data[g][i]
 				}
 			}

@@ -282,7 +282,6 @@ newsArray = [//always true
 ["In the beginning, there was only the abyss of Matter. But then, an antimatter singularity rose and created the god Hevipelle, and he said, \"Let there be antimatter.\" And so there was. Hevipelle then said, \"Let there be Infinity Points.\" And so there was, creating the stars, planets, dimensions, and galaxies. Then, the first day passed, and there was the second day. Hevipelle said, \"Seperate the normal dimensions and infinity dimensions from each other, and let there be tickspeed upgrades, to measure the time.\" So the normal dimensions and infinity dimensions were seperated, and there were tickspeed upgrades. Then Hevipelle said, \"Let there be Eternity Points to sew the fabric of time together, and let there be time studies and time theorems, to let humanity progress.\" And so there were Eternity Points, time theorems, and time stuides. Then, the second day passed and the third day began. \"Let there be life,\" Hevipelle said, creating humanity and other intelligent species. Then, he said, \"Let there be Time Dimensions, and let them be a different dimension than the others.\" And so there were time dimensions, speeding up tickspeed upgrades. Then Hevipelle snapped his fingers and created a computer. \"With this, I will be able to update my universe,\" he said. But as he was working on making break_infinity.js up to 1e1e1e308 instead of 1e1e308, a rift opened to the 9th dimension, and the serpent Slabdrill, the lord of all Unhevi, slithered out. \"I will cause an apocalypse for humanity with Cancer mode,\" Slabdrill said. And so, the world became imperfect, leading to war. If only there was break_eternity.js...", "hasDilStudy(6)", "am74"],
 ["If you find cancer in your computer, please call 119", true, "am75"],
 ["Breaking news! News is broken!", true, "am76"],
-["There are a lot of news tickers, how did you find this one?", true, "am77"],
 ["The universe should have been destroyed long ago and is somehow still here", "hasAch('r51')", "am79"],
 ["Skididdle skidadder, you are now antimatter", true, "am80"],
 ["Turn the 9 upside down, and you got 6. The square root of 9 is three, and three sixes make 666, the number of the beast. This number can symbolize hell, and some people believe hell is fake, while some believe hell is real. The 9th dimension is real and fake, but isn't. Also, A normal 9 and a 9 upside-down makes 69, and 69 is kind of a joke. The 9th dimension is a joke. But does that mean hell is a joke? No. Hell and the ninth dimension are two different things because 2+4=x, and the square root of x times two is your mom. That proves that hell and the ninth dimension are two different things. But what about the 10th dimension? F#ck the 10th dimension, we're not talking about it. Anyway, the 9th dimension was created by Slabdrill, and the 9th dimension is a joke, so does that mean Slabdrill is a joke? Yeah, no sh#t sherlock. Also, Slabdrill is one and the same as the 9th dimension, because Slabdrill is the lord of all Unhevi, which stands for \"UH\", and \"uh\" is the sound that the letter U makes, and U is the 21st letter in the alphabet, and 9+10=21, and 9 is an addend, making the 9th dimension connected to Slabdrill. So it is proven that the 9th dimension and Slabdrill are real or fake, and they are both a joke, depending on your opinion. I f#cking solved the question everyone wanted to know.", "(player.resets >= 5 || player.galaxies > 0)", "am81"],
@@ -499,6 +498,7 @@ newsArray = [//always true
 ["Developer of Ranks here...", true, "am270"],
 
 /* PLACEHOLDER
+["[placeholder]", false, "am77"],
 ["[placeholder]", false, "am286"],
 ["[placeholder]", false, "am287"],
 
@@ -506,7 +506,7 @@ Post-NG+3R: 300 - ???
 ["There's a rumor that Study 999 is darkness.", "ghostified", "am302"],
 ["NG+Pi: The continuation fork of NG+3.1. It seems like underworldly for NG+3R players.", "mod.ngp3", "am303"],
 ["By now, you might have Gamma Rays infested inside.", "ghSave?.photons.lighten >= 10", "am303"],
-["You have scrolled through 600 news-tickers! You might setup a lighthouse library really soon...", "player.newsArray.length >= 600", "am306"],
+["You have scrolled through 500 news-tickers! You might setup a lighthouse library really soon...", "player.newsArray.length >= 500", "am306"],
 ["This news ticker has 'am308' id on it! Meta^-1-Infinity, or Preludity?", "true", "am308"],
 ["Pata-Infinity when? (ee1.79e308)", "true", "am309"],*/
 ];}
