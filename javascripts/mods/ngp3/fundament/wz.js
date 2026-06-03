@@ -52,7 +52,8 @@ const WZ_BOSONS = {
 
 	milestones: {
 		pos: [
-			{ req: 0, eff: _ => x + 1, desc: x => `<b>${shorten(x)}x</b> Photons.` }
+			{ req: 0, eff: _ => x + 1, desc: x => `<b>${shorten(x)}x</b> Photons.` },
+			{ req: 1, eff: _ => x, desc: x => `Nanorewards scale <b>+${shorten(x)}x</b> later. (not implemented)` },
 		],
 		neg: [
 			{ req: 0, eff: _ => 1 / (x * 0.2 + 1), desc: x => `<b>^${shorten(x)}</b> Neutrinos.` },
