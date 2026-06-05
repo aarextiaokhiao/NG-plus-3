@@ -491,7 +491,7 @@ newsArray = [//always true
 ["In the alternate timeline, we rather to go deeper to Fundament instead of transforming into a ghost.", "ghostified", "am202"],
 ["Player, it seems that you have been here before. Or not... Whatever.", "meta.save.rediscover.in != undefined", "am203"],
 ["ANTIMATTER DIMENSIONS // THE META CONTINUATION", true, "am214"],
-["META-ANTIMATTER DIMENSIONS: DIMENSIONS OF LOWER DIMENSIONS", "mod.ngp3", "am234"],
+["META-ANTIMATTER DIMENSIONS: DIMENSIONS OF LOWER DIMENSIONS", "mod.ngpp && hasDilStudy(6)", "am234"],
 ["Before a blink of the eye, the man got physically obliterated by an antimatter explosion.", true, "am255"],
 ["The winner is you!", "hasBadge('p3_end')", "am263"],
 ["Grass got obliterated with antimatter grass. Seems like you couldn't made it on time.", true, "am269"],
