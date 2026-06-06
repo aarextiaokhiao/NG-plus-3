@@ -587,6 +587,7 @@ function updateGhostlyNewsArray() {
 	["Every ghostly antimatter is safe.", true, "gn2"],
 	["Are you a ghost and want to use computers? Get Ghostified Hands! This stuff makes your hands feel like a human again! To order, you need to pay Spectral Particles and pass through your universe.", true, "gn3"],
 	["Ghosts can't actually pass through walls because they're stuck in space.", true, "gn4"],
+	["There were no purpose for experiencing an afterlife... But ghosts said otherwise.", true, "gn5"],
 	["Ghostly news tickers are dead... they also serve no purpose... right..?", "player.newsArray.includes('am32')", "gn6"],
 	["Did you forgot to read this message? You read too much messages of your normal news ticker. Because of this, you became a ghost for wasting your time too much.", "player.newsArray.length >= 215", "gn7"],
 	["Ghosts can't die. So why humans can't be immortal?", true, "gn8"],
@@ -664,7 +665,6 @@ function updateGhostlyNewsArray() {
 	["Once you are a ghost, you cannot resurrect back into your human soul.", true, "gn81"],
 	["In a century, Aarex (the developer of NG+3) would be Ghosty.", true, "gn82"],
 
-	//['placeholder', false, "gn5"],
 	//['placeholder', false, "gn29"],
 	]
 }
