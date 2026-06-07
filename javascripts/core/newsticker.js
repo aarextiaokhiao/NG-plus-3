@@ -606,7 +606,6 @@ function updateGhostlyNewsArray() {
 	["Photons can now emit light, due to normalcy process of Ghostify.", "hasAch('ng3p71')", "gn21"],
 	["You got Lights? That means you have a gloomy light inside! Kee-hee-hee!", "PHOTONS.unlocked()", "gn22"],
 	["Ghosts can experiment and discover some unknown Bosons.", "hasAch('ng3p81')", "gn23"],
-	["Some ghosts were injured due to the annihilation of pilons and anti-pilons.", "hasAch('ng3p81')", "gn24"],
 	["A new study shows that ghosts can do extreme work.", true, "gn25"],
 	["A new evidence states that mortal ghosts could exist through decay.", true, "gn26"],
 	["Ghosts have dominated some universes!", true, "gn27"],
@@ -665,6 +664,7 @@ function updateGhostlyNewsArray() {
 	["Once you are a ghost, you cannot resurrect back into your human soul.", true, "gn81"],
 	["In a century, Aarex (the developer of NG+3) would be Ghosty.", true, "gn82"],
 
+	//['placeholder', false, "gn24"],
 	//['placeholder', false, "gn29"],
 	]
 }
