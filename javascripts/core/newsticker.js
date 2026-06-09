@@ -457,7 +457,7 @@ newsArray = [//always true
 ['"Spacetime generators? Eh, more like Dimensions!"', true, "am261"],
 ["For no reason, duplicants and ghosts have been censored in this news ticker.", "ghostified", "am262"],
 ["Florida man reports that duplicants and ghosts were erdiciated by Aarex!", "mod.ngp3", "am264"],
-["Strings are for smart nerds.", "ghostified", "am265"],
+["Dare to go deeper than antimatter? Cosmic strings are for you.", true, "am265"],
 ["Sorry, but we actually made of strings. That's what everything does.", "ghostified", "am266"],
 ["Strings can't fold like that! It actually become complex shapes!", "ghostified", "am267"],
 ["There was a modder legend who added a missing feature between Neutrinos and Photons to virtually jump over.", "PHOTON.unlocked()", "am268"],
