@@ -396,7 +396,7 @@ newsArray = [//always true
 ['NG+3R witnesses say that Fluctuate should be here. Here, just wind blows.', "mod.ngp3", "am187"],
 ["I hope Hevipelle doesn't find out that he has e308 matter in his basement because he left his challenge uncompleted.", true, "am194"],
 ["'The Power of Relativity'", "bigRipped()", "am196"],
-["Can you please stop having too many types of Dimensions?", "quantumed", "am198"],
+["Can you please stop having too many types of Dimensions?", 'hasMasteryStudy("d11")', "am198"],
 ["As you go deeper in scale, we don't see you anymore.", "quantumed", "am199"],
 ["You have played this game for a really long time. Congratulations!", "player.totalTimePlayed >= 1e7", "am200"],
 ["Scientists discovered a brand new universe which is made of Replicantis!", "hasMasteryStudy('d11')", "am201"],
