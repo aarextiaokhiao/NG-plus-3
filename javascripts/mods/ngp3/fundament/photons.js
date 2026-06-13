@@ -122,8 +122,8 @@ let PHOTON = {
 			}, {
 				name: "ultraviolet",
 				req: 5e9,
-				eff: exp => 0,
-				desc: e => `Fourth Positron upgrade scale at ^1.50 power. (not implemented)`
+				eff: exp => 1 + .5 / (exp / 10 + 1),
+				desc: e => `Fourth Positron upgrade scale at ^${shorten(x)} power.`
 			}
 		],
 		eff: (x, def = 1) => tmp.funda.photon?.eff[x] ?? def,

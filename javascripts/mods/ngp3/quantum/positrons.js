@@ -75,6 +75,7 @@ function getPositronUpgCost(u) {
 }
 
 function getPositronUpgCostScalingExp(u) {
+	if (u == 4 && PHOTON.unlocked()) return lightEff(7, 1.5)
 	return [null, 1, 2, 2, 1.5][u]
 }
 
