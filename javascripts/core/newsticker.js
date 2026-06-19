@@ -611,6 +611,7 @@ function updateGhostlyNewsArray() {
 	["A new evidence states that mortal ghosts could exist through decay.", true, "gn26"],
 	["Ghosts have dominated some universes!", true, "gn27"],
 	["Boo! Kee-hee-hee!", "Math.random() <= 0.001", "gn28"],
+	["Sorry, but ghosts can't touch grass... Only a feeling.", true, "gn29"],
 	["Ghosts found a ghostly kind of Radioactive Decays!", "getRadioactiveDecays() >= 1", "gn30"],
 	["Ghosts discovered that some particles are ghostly!", true, "gn31"],
 	["Ghosts don't know how to write more news. They decided to stop it for today.", true, "gn32"],
@@ -665,8 +666,6 @@ function updateGhostlyNewsArray() {
 	["Once you are a ghost, you cannot resurrect back into your human soul.", true, "gn81"],
 	["In half a century, Aarex (the developer of NG+3) would be Ghosty.", true, "gn82"],
 	["A ghost got a new powerscaling record through ghost-conceptual analysis.", true, "gn83"],
-
-	//['placeholder', false, "gn29"],
 	]
 }
 
