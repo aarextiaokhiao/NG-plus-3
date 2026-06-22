@@ -665,7 +665,7 @@ function updateGhostlyNewsArray() {
 	["A paranormal event is currently happening. We are experiencing the intervention with ghosts and humans.", true, "gn80"],
 	["Once you are a ghost, you cannot resurrect back into your human soul.", true, "gn81"],
 	["In a half century, Aarex (the developer of NG+3) would be Ghosty.", true, "gn82"],
-	["A ghost got a new powerscaling record through ghost-conceptual analysis.", true, "gn83"],
+	["A ghost got a new powerscaling record through ghost-matter analysis.", true, "gn83"],
 	]
 }
 
