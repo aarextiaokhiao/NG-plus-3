@@ -53,7 +53,7 @@ const WZ_BOSONS = {
 	milestones: {
 		pos: [
 			{ req: 0, eff: _ => x + 1, desc: x => `<b>${shorten(x)}x</b> Photons.` },
-			{ req: 1, eff: _ => x, desc: x => `Nanorewards scale <b>+${shorten(x)}x</b> later.` },
+			{ req: 1, eff: _ => x - 1, desc: x => `Nanorewards scale <b>+${shorten(x)}x</b> later.` },
 			{ req: 1, eff: _ => x / 10 + .9, desc: x => `Replicantis slow down <b>${shorten(x)}x</b> slower.` },
 		],
 		neg: [
