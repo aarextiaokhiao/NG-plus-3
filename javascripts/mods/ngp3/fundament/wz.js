@@ -30,6 +30,7 @@ const WZ_BOSONS = {
 
 		data.potential_z = 0
 		data.potential_w = data.potential_z - blSave.w_used
+		//will be reimplemented
 
 		let group = data.potential_w > 0 ? "pos" : "neg"
 		for (var i of WZ_BOSONS.milestones[group]) {

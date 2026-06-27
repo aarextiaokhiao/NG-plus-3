@@ -512,8 +512,8 @@ let HOW_TO = [
 			Further nerfs push you back through sections of progression. These can be reverted but you would lose benefits.
 			<br><br>
 
-			When you get rid of all of W- Bosons, you gain spare W+ Bosons which provide buffs.<br>
-			Z Bosons can be increased by getting your new best Potential Z.
+			When you get rid of all of W- Bosons, you gain spare W+ Bosons.<br>
+			Z Bosons can be increased by getting your new best Potential Z, which provide buffs.
 		`
 	}, {
 		mod: _ => ngp3,
