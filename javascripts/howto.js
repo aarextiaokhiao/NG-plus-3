@@ -509,7 +509,7 @@ let HOW_TO = [
 			<br><br>
 
 			W- Bosons provide nerfs at first, but can be reduced by progression. This also gives potential Z.<br>
-			Further nerfs push you back through sections of progression. These can be reverted but you would lose benefits.
+			Some nerfs push you back through sections of progression. So, you have to make a run back. These can be reverted, but you would lose benefits.
 			<br><br>
 
 			When you get rid of all of W- Bosons, you gain spare W+ Bosons.<br>
