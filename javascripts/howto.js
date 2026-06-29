@@ -508,7 +508,7 @@ let HOW_TO = [
 			You start with 1 Z Boson. Z Bosons can be converted into W- Bosons which will provide nerfs on next Fundament. Z Bosons are also used for further boosts.
 			<br><br>
 
-			W- Bosons provide nerfs at first, but can be reduced by progression. This also gives potential Z.<br>
+			W- Bosons provide nerfs at first. On progression, your W- Bosons are being transfered to potential Z.<br>
 			Some nerfs push you back through sections of progression. So, you have to make a run back. These can be reverted, but you would lose benefits.
 			<br><br>
 
