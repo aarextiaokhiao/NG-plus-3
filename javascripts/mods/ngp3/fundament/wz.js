@@ -28,7 +28,7 @@ const WZ_BOSONS = {
 
 		if (!this.unlocked()) return
 
-		data.potential_z = 0
+		data.potential_z = this.get_potential_z()
 		data.potential_w = data.potential_z - blSave.w_used
 		//will be reimplemented
 
@@ -38,6 +38,10 @@ const WZ_BOSONS = {
 				data.eff[group].push(i.eff())
 			}
 		}
+	},
+
+	get_potential_z() {
+		return 0
 	},
 
 	insert_w() {
