@@ -495,8 +495,8 @@ let HOW_TO = [
 
 			There is a mechanic where you control speed to 4 features.<br>
 			Slowing down a feature produces Experience Time.<br>
-			Speeding up a feature consumes Experience Time. Sped up features are toggleable with a single option.<br><br>
-			You can gain Experience Time on Fundament, based on various factors.
+			Speeding up a feature consumes Experience Time. All sped up features are toggleable with a single option.<br><br>
+			You can gain bonus Experience Time on Fundament, based on various factors.
 		`
 	}, {
 		mod: _ => ngp3,
