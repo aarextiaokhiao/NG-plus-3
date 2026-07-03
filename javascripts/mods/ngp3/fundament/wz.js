@@ -41,7 +41,8 @@ const WZ_BOSONS = {
 	},
 
 	get_potential_z() {
-		return 0
+		let offset = 0 //less antimatter, negative stuff
+		return Math.max(blSave.w_used - offset, 0)
 	},
 
 	insert_w() {
