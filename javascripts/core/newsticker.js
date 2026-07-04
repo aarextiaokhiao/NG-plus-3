@@ -661,7 +661,7 @@ function updateGhostlyNewsArray() {
 	["Ghosty has been eliminated with 2,763 votes.", true, "gn76"],
 	["A ghost truck has crashed due to not being visible enough to see debris.", true, "gn77"],
 	["Spectrons are discovered during the experiment led by fundamental-level ghosts.", true, "gn78"],
-	["If a ghost is completely invisible, would they have no sense of sight?", true, "gn79"],
+	["If a ghost is completely invisible, would they have no sense of light?", true, "gn79"],
 	["A paranormal event is currently happening. We are experiencing the intervention with ghosts and humans.", true, "gn80"],
 	["Once you are a ghost, you cannot resurrect back into your human soul.", true, "gn81"],
 	["In a half century, Aarex (the developer of NG+3) would be Ghosty.", true, "gn82"],
