@@ -666,6 +666,7 @@ function updateGhostlyNewsArray() {
 	["Once you are a ghost, you cannot resurrect back into your human soul.", true, "gn81"],
 	["In a half century, Aarex (the developer of NG+3) would be Ghosty.", true, "gn82"],
 	["A ghost got a new powerscaling record through ghost-matter analysis.", true, "gn83"],
+	["Happy 250th anniversary to Ghostify Independence!", true, "gn84"],
 	]
 }
 
