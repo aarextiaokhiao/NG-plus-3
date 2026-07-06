@@ -447,7 +447,7 @@ newsArray = [//always true
 ["250th Aarex's Modifications newsticker. That's not even close to have infinite storage. Silly!", true, "am250"],
 ["Do you know Omnisity? It is an actual layer for NG+3 contributors, where golden and diamond intrastructures side together in a island.", true, "am251"],
 ["Lightning loves NG+3! He even recommend World Restoration players with it! Have fun!", "mod.ngp3", "am252"],
-["The year is 2028. Aarex has released Hadronize. But due to a lot of uprising competition, NG+3 became unfairly popular. NG+3 will be likely to be at least dead. He has finally moved on.", true, "am253"],
+["The year is 2028. Aarex has released Hadronize. But due to a lot of uproaring, NG+3 became unpopular. NG+3 will be likely to be at least dead. He has finally moved on.", true, "am253"],
 ["antimatter dimensions NG+3! Now with 100% more balancing! + less boosts that become useless. + hyperexponential upgrades.", "mod.ngp3", "am254"],
 ["According to the lore, we can confirm that Omnisity is going to be the last layer.", "mod.ngp3", "am256"],
 ["NG+3 Starter Pack: Creative mechanics, ideal dump, focuses on balancing a lot, a bit of development every day.", "mod.ngp3", "am257"],
