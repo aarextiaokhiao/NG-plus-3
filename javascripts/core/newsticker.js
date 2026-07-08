@@ -485,7 +485,6 @@ newsArray = [//always true
 ["Co-developer of Incremental Mass: Rewritten here...", "mod.ngp3", "am142"],
 ["Imagine Aarex happy after all of reworking and rebalancing...", "mod.ngp3", "am149"],
 ["As we get closer to the end, Aarex came up more ideas.", "mod.ngp3", "am151"],
-["How we suddenly got infinite ghosts?!", "ghostified && ghSave.ghostParticles.gte(Number.MAX_VALUE)", "am195"],
 ["The player has passed away. Fly high and godspeed.", "ghostified", "am197"],
 ["In the alternate timeline, we rather to go deeper to Fundament instead of transforming into a ghost.", "ghostified", "am202"],
 ["Player, it seems that you have been here before. Or not... Whatever.", "meta.save.rediscover.in != undefined", "am203"],
@@ -498,6 +497,7 @@ newsArray = [//always true
 
 /* PLACEHOLDER
 ["[placeholder]", false, "am77"],
+["[placeholder]", false, "am195"],
 ["[placeholder]", false, "am286"],
 ["[placeholder]", false, "am287"],
 ["[placeholder]", false, "am288"],
@@ -667,6 +667,7 @@ function updateGhostlyNewsArray() {
 	["In a half century, Aarex (the developer of NG+3) would be Ghosty.", true, "gn82"],
 	["A ghost got a new powerscaling record through ghost-matter analysis.", true, "gn83"],
 	["Happy 250th anniversary to Ghostify Independence!", true, "gn84"],
+	["How we suddenly got infinite ghosts?!", "ghostified && ghSave.ghostParticles.gte(Number.MAX_VALUE)", "gn85"],
 	]
 }
 
