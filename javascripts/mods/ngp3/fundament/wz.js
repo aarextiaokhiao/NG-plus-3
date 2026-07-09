@@ -83,7 +83,7 @@ const WZ_BOSONS = {
 		el("wz_req").style.display = !WZ_BOSONS.unlocked() ? "" : "none"
 		el("wz_div").style.display = WZ_BOSONS.unlocked() ? "" : "none"
 		if (!WZ_BOSONS.unlocked()) {
-			el("wz_req").innerHTML = `Reach Ultraviolet Light and ${shorten(1e38)} Spectral Particles to unlock W & Z Bosons.`
+			el("wz_req").innerHTML = `Get ${shorten(PHOTON.light.data[7].req)} Photons and ${shorten(1e38)} Spectral Particles to unlock W & Z Bosons.`
 			return
 		}
 
