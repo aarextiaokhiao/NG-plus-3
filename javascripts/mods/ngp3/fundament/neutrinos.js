@@ -277,7 +277,7 @@ const NEUTRINO = NT = {
 				cost: E(1e47),
 				desc: `Improve 2nd Neutrino Boost.`
 			}, {
-				unl: _ => false,
+				unl: _ => WZ_BOSONS.unlocked(),
 				cost: E(1/0),
 				desc: `Galaxies raise Meta-Antimatter effect.`,
 
