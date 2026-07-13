@@ -170,6 +170,10 @@ const NEUTRINO = NT = {
 				cost: E(1e24),
 				eff: nt => Math.max(nt / 30 - 1.5, 1) ** 3,
 				effDesc: e => `Gain <b>${shorten(e)}x</b> more Photons.`,
+			}, {
+				cost: E(1/0),
+				eff: nt => nt / 100 + 1,
+				effDesc: e => `Gain <b>${shorten(e * 100 - 1)}%</b> more Tachyonic Galaxies.`,
 			}
 		]
 	},

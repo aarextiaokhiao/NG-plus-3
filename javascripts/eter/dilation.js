@@ -438,6 +438,7 @@ function gainDilationGalaxies() {
 function getFreeGalaxyGainMult() {
 	let galaxyMult = player.dilation.upgrades.includes(4) ? 2 : 1
 	if (mod.udp && !aarMod.nguepV) galaxyMult /= 1.5
+	if (hasNB(12)) galaxyMult *= NT.eff("boost", 12)
 	galaxyMult *= tmp.qu.chal.reward[2]
 	return galaxyMult
 }
