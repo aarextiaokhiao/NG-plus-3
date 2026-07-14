@@ -187,7 +187,7 @@ function getAutoCharge() {
 
 	r += Math.max(brSave.spaceShards.add(1).log10() / 15 - 0.5, 0)
 	if (hasAch("ng3p78")) r += ghSave.ghostParticles.add(1).log10() / 10
-	if (WZ_BOSONS.unlocked()) r += WZ_BOSONS.eff("pos", 3, 0)
+	if (WZ_BOSONS.unlocked()) r += WZ_BOSONS.eff("pos", 2, 0)
 	return r
 }
 

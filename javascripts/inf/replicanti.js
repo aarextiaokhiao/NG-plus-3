@@ -240,7 +240,7 @@ function getReplSpeed() {
 	}
 	inc = inc + 1
 	if (hasGluonUpg("gb", 2)) exp *= 2
-	if (WZ_BOSONS.unlocked()) exp *= WZ_BOSONS.eff("pos", 2, 1)
+	if (WZ_BOSONS.unlocked()) exp *= WZ_BOSONS.eff("pos", 4, 1)
 	return { inc, exp }
 }
 

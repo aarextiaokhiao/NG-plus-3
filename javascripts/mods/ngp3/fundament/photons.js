@@ -77,7 +77,7 @@ let PHOTON = {
 		if (hasNB(11))               r = r.mul(NT.eff("boost", 11))
 		if (hasNanoReward("photon")) r = r.mul(tmp.qu.nf.eff.photon)
 		if (WZ_BOSONS.unlocked()) {
-			r = r.mul(WZ_BOSONS.eff("pos", 0))
+			r = r.mul(WZ_BOSONS.eff("pos", 1))
 			r = r.div(WZ_BOSONS.eff("neg", 1))
 		}
 		return r
