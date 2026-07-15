@@ -61,7 +61,7 @@ const WZ_BOSONS = {
 			{ req: 0, eff: _ => Math.pow(x + 1, 2), desc: x => `<b>${shorten(x)}x</b> Neutrinos.` },
 			{ req: 0, eff: _ => x + 1, desc: x => `<b>${shorten(x)}x</b> Photons.` },
 			{ req: 0, eff: _ => Math.log2(x + 1), desc: x => `+<b>${shorten(x)}</b> Antpower Potency.` },
-			{ req: 1, eff: _ => x - 1, desc: x => `Nanorewards scale <b>+${shorten(x)}x</b> later.` },
+			{ req: 1, eff: _ => x - 1, desc: x => `Nanorewards scale <b>+${shorten(x)}</b> later.` },
 			{ req: 1, eff: _ => Math.log10(x + 10), desc: x => `Replicantis slow down <b>${shorten(x)}x</b> slower.` },
 		],
 		neg: [
