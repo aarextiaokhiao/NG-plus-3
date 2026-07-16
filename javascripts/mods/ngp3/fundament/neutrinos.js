@@ -290,6 +290,22 @@ const NEUTRINO = NT = {
 
 				eff: _ => player.galaxies / 6e3,
 				effDesc: e => `+^${shorten(e)}`
+			}, {
+				unl: _ => WZ_BOSONS.unlocked(),
+				cost: E(1/0),
+				desc: `Placeholder boost.`
+			}, {
+				unl: _ => WZ_BOSONS.unlocked(),
+				cost: E(1/0),
+				desc: `Placeholder boost.`
+			}, {
+				unl: _ => WZ_BOSONS.unlocked(),
+				cost: E(1/0),
+				desc: `Placeholder boost.`
+			}, {
+				unl: _ => WZ_BOSONS.unlocked(),
+				cost: E(1/0),
+				desc: `Placeholder boost.`
 			}
 		]
 	},
