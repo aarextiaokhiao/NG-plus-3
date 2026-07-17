@@ -119,7 +119,7 @@ const MTS = MASTERY_STUDIES = {
 		361: () => player.dilation.tachyonParticles.max(1).pow(0.015),
 		371: () => Math.pow(tmp.rep.extra+1,mod.p3ep?.5:.3),
 		372: () => Math.sqrt(player.timeShards.add(1).log10())/20+1,
-		373: () => dev.testZone ? pow10(Math.pow(player.galaxies, 4/3) / 5e5) : Math.pow(player.galaxies+1,0.55),
+		373: () => hasNU(14) ? pow10(Math.pow(player.galaxies, 4/3) / 5e5) : Math.pow(player.galaxies+1,0.55),
 		381: () => Decimal.min(tmp.gal.ts, 1).log10() / -135 + 1,
 		382: () => player.eightAmount.max(1).pow(Math.PI),
 		383: () => E(tmp.qu.color_eff.b || 1).max(1).pow(.5),

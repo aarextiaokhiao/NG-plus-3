@@ -293,11 +293,14 @@ const NEUTRINO = NT = {
 			}, {
 				unl: _ => WZ_BOSONS.unlocked(),
 				cost: E(1/0),
-				desc: `Placeholder boost.`
+				desc: `Galaxies scale Dimension Supersonic later.`,
+
+				eff: _ => player.galaxies / 10,
+				effDesc: e => `+${getFullExpansion(Math.floor(e))}`
 			}, {
 				unl: _ => WZ_BOSONS.unlocked(),
 				cost: E(1/0),
-				desc: `Placeholder boost.`
+				desc: `Improve Mastery Study 373.`
 			}, {
 				unl: _ => WZ_BOSONS.unlocked(),
 				cost: E(1/0),

@@ -98,7 +98,6 @@ TEST ZONE
 - Antimatter Galaxies contribute to 3rd Nanobenefit but weaker.
 
 - Improve TS226.
-- Improve Mastery Study 373.
 - Improve Blue Power Effect.
 
 - Unsoftcap extra RGs.
