@@ -141,7 +141,7 @@ function getSupersonicStart() {
 
 	let r = 56e4
 	if (hasMasteryStudy("t331")) r += 24e4
-	if (hasNU(13)) r += NT.eff("upg", 13, 0)
+	if (hasNU(17)) r += NT.eff("upg", 17, 0)
 	return r
 }
 

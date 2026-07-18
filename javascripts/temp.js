@@ -54,6 +54,8 @@ function updateIntergalacticTemp() {
 
 	var gal = player.galaxies
 	var exp = Math.min(Math.sqrt(Math.log10(Math.max(gal, 1))) * 2, 2.5)
+	if (hasNU(19)) exp += NT.eff("upg", 19, 0)
+
 	tmp.qu.intergal = {
 		gal: gal,
 		eff: pow10(Math.pow(gal, exp))
