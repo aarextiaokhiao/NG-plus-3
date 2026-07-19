@@ -175,7 +175,7 @@ const NEUTRINO = NT = {
 				effDesc: e => `Gain <b>${shorten(e)}x</b> more Photons.`,
 			}, {
 				cost: E(1/0),
-				eff: nt => nt / 100 + 1,
+				eff: nt => Math.log10(nt / 1e3 + 10),
 				effDesc: e => `Gain <b>${shorten(e * 100 - 1)}%</b> more Tachyonic Galaxies.`,
 			}
 		]
@@ -306,7 +306,7 @@ const NEUTRINO = NT = {
 				cost: E(1/0),
 				desc: `Replicantis raise Intergalactic's exponent.`,
 
-				eff: _ => Math.log10(Math.max(tmp.rep.eff.log10() / 1e5, 1)),
+				eff: _ => Math.log10(Math.max(tmp.rep.eff.log10() / 1.5e6, 1)),
 				effDesc: e => `+${shorten(e)}`
 			}, {
 				unl: _ => WZ_BOSONS.unlocked(),
