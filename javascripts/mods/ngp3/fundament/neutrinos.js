@@ -311,7 +311,10 @@ const NEUTRINO = NT = {
 			}, {
 				unl: _ => WZ_BOSONS.unlocked(),
 				cost: E(1/0),
-				desc: `Placeholder boost.`
+				desc: `Galaxies scale Positron Upgrades later.`,
+
+				eff: _ => Math.max(player.galaxies / 5e4 - 3, 0),
+				effDesc: e => `+${shorten(e)}`
 			}
 		]
 	},

@@ -310,7 +310,7 @@ function getRebuyableDilUpgScaleStart(id, add=0) {
 	let r = E(scale[2]).div(scale[0]).log(scale[1])
 
 	if (!mod.udsp) r = Math.floor(r)
-	if (dev.testZone) r += player.galaxies / 5e4
+	if (hasNB(16)) r += NT.eff("upg", 16, 0)
 	return r
 }
 
