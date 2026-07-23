@@ -494,9 +494,9 @@ newsArray = [//always true
 ["The winner is you!", "hasBadge('p3_end')", "am263"],
 ["Due to annihilation between matter and antimatter, all grass got eradicated against antimatter grass. Seems like you couldn't made it on time.", true, "am269"],
 ["Developer of Ranks here...", true, "am270"],
+["Matter is going down against our domination.", true, "am77"],
 
 /* PLACEHOLDER
-["[placeholder]", false, "am77"],
 ["[placeholder]", false, "am195"],
 ["[placeholder]", false, "am286"],
 ["[placeholder]", false, "am287"],
