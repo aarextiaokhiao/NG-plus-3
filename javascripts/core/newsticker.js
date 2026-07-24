@@ -337,7 +337,6 @@ newsArray = [//always true
 ["U is the new M", "hasAch('ng3p45')", "am134"],
 ["Antimatter has just declared war on Matter. We are no longer safe. We are no longer free.", true, "am135"],
 ["Which one looks different? Preons or anti-pilons?", 'hasAch("ng3p81")', "am136"],
-['"Anti-pilons are coming. They will destroy our Nanofield work. We are doomed." ~ Worker duplicant #179,769,308.', 'hasAch("ng3p81")', "am137"],
 ["GET A FREE PASS TO A GHOST TRANSFORMATION MACHINE NOW! IT IS TOTALLY WORTH IT!", 'ghostified', "am138"],
 ['I told you "don\'t click that news" or else you will get a useless achievement.', "hasAch('ng3ps12')", "am139"],
 ['"Anti-preons destroyed our rewards. We should take revenge and steal their rewards back." ~ Worker duplicant #247,273,145.', 'ghostified', "am141"],
@@ -494,9 +493,10 @@ newsArray = [//always true
 ["The winner is you!", "hasBadge('p3_end')", "am263"],
 ["Due to annihilation between matter and antimatter, all grass got eradicated against antimatter grass. Seems like you couldn't made it on time.", true, "am269"],
 ["Developer of Ranks here...", true, "am270"],
-["Matter is going down against our domination.", true, "am77"],
+["Matter is going down against our duplicant domination.", "hasAch('ng3p35')", "am77"],
 
 /* PLACEHOLDER
+["[placeholder]", false, "am137"],
 ["[placeholder]", false, "am195"],
 ["[placeholder]", false, "am286"],
 ["[placeholder]", false, "am287"],
