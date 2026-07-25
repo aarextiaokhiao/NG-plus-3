@@ -426,7 +426,7 @@ function ngP3AchieveCheck() {
 	if (PHANTOM.amt >= 7) giveAchievement("Here lies dimensions")
 	if (PHANTOM.amt >= 8) giveAchievement("Impending Doom")
 	if (nG(getEternitied(), Number.MAX_VALUE)) giveAchievement("Everlasting Eternities")
-	if (ghSave.time < 6000 && player.money.e > 1/0) giveAchievement("That's a Mach!")
+	if (ghSave.time < 6000 && PHANTOM.amt >= 1/0) giveAchievement("That's a Mach!")
 
 	let underCircum = true
 	for (var i = 1; i < 12; i++) if (getTreeUpgradeLevel(i) > 1) underCircum = false
