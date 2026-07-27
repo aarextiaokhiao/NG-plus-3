@@ -494,9 +494,9 @@ newsArray = [//always true
 ["Due to annihilation between matter and antimatter, all grass got eradicated against antimatter grass. Seems like you couldn't made it on time.", true, "am269"],
 ["Developer of Ranks here...", true, "am270"],
 ["Matter is going down against our duplicant domination.", "hasAch('ng3p35')", "am77"],
+["In 1,752 AD, the Nanofield soliders have declared war against Mattertopia's ant colony.", "hasAch('ng3p35')", "am137"],
 
 /* PLACEHOLDER
-["[placeholder]", false, "am137"],
 ["[placeholder]", false, "am195"],
 ["[placeholder]", false, "am286"],
 ["[placeholder]", false, "am287"],
