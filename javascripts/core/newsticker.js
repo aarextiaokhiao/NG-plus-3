@@ -477,6 +477,7 @@ newsArray = [//always true
 ["Number hell is my enemy. ~ Aarex, Lightning Incrementalist", "mod.ngp3", "am289"],
 ["Is NG+3 not the most influential mod of the pre-reality era? Of course the great Pelle would make a NG+3 reference!", "mod.ngp3", "am290"],
 
+//Placement
 ["Softcaps are little compared to a perfect balancing. You can rebalance as much.", true, "am6"],
 ["For Aarex, he rather to balance stuff carefully to ensure near perfection.", "mod.ngp3", "am53"],
 ["Infinite creativity is a key to an unique, endless incremental game.", true, "am97"],
