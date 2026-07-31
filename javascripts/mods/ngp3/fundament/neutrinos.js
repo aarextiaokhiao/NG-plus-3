@@ -306,7 +306,7 @@ const NEUTRINO = NT = {
 				cost: E(1/0),
 				desc: `Replicantis raise Intergalactic's exponent.`,
 
-				eff: _ => Math.log10(Math.max(tmp.rep.eff.log10() / 1e6, 1)) / 5,
+				eff: _ => Math.log10(Math.max(tmp.rep.eff.log10() / 1e6, 1)) / 10,
 				effDesc: e => `+${shorten(e)}`
 			}, {
 				unl: _ => WZ_BOSONS.unlocked(),
