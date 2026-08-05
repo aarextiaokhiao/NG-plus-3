@@ -497,16 +497,15 @@ newsArray = [//always true
 ["Matter is going down against the duplicant domination.", "hasAch('ng3p35')", "am77"],
 ["In 1,752 AAD, the Nanofield solider ants declared war against Mattertopia's ant colony. One year later, Mattertopia won the battle.", "hasAch('ng3p35')", "am137"],
 ["7/27 WHEN YOU SEE ANTIMATTER", true, "am195"],
+["By now, you might have Gamma Rays infested inside.", "PHOTON.unlocked() && ghSave.photons.amt.gte(1e100)", "am286"],
 
 /* PLACEHOLDER
-["[placeholder]", false, "am286"],
 ["[placeholder]", false, "am287"],
 ["[placeholder]", false, "am288"],
 
 Post-NG+3R: 300 - ???
 ["There's a rumor that Study 999 is darkness.", "ghostified", "am302"],
 ["NG+Pi: The continuation fork of NG+3.1. It seems like underworldly for NG+3R players.", "mod.ngp3", "am303"],
-["By now, you might have Gamma Rays infested inside.", "ghSave?.photons.lighten >= 10", "am303"],
 ["You have scrolled through 500 news-tickers! You might setup a lighthouse library really soon...", "player.newsArray.length >= 500", "am306"],
 ["This news ticker has 'am308' id on it! Meta^-1-Infinity, or Preludity?", "true", "am308"],
 ["Pata-Infinity when? (ee1.79e308)", "true", "am309"],*/
