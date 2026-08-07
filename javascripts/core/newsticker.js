@@ -479,7 +479,7 @@ newsArray = [//always true
 
 //Replacement
 ["Softcaps are little compared to a perfect balancing. You can rebalance as much.", true, "am6"],
-["For Aarex, he rather to balance stuff carefully to ensure near perfection.", "mod.ngp3", "am53"],
+["For Aarex, he rather to balance stuff carefully to ensure near perfection. Unfortunately, mechanics need creativity.", "mod.ngp3", "am53"],
 ["Infinite creativity is a key to an unique, endless incremental game.", true, "am97"],
 ["Bosonic Lab has been disestablished due to complications.", "WZ_BOSONS.unlocked()", "am140"],
 ["Co-developer of Incremental Mass: Rewritten here...", "mod.ngp3", "am142"],
