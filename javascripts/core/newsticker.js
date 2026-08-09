@@ -507,8 +507,7 @@ Post-NG+3R: 300 - ???
 ["There's a rumor that Study 999 is darkness.", "ghostified", "am302"],
 ["NG+Pi: The continuation fork of NG+3.1. It seems like underworldly for NG+3R players.", "mod.ngp3", "am303"],
 ["You have scrolled through 500 news-tickers! You might setup a lighthouse library really soon...", "player.newsArray.length >= 500", "am306"],
-["This news ticker has 'am308' id on it! Meta^-1-Infinity, or Preludity?", "true", "am308"],
-["Pata-Infinity when? (ee1.79e308)", "true", "am309"],*/
+["This news ticker has 'am308' id on it! Meta^-1-Infinity, or Preludity?", "true", "am308"],*/
 ];}
 
 document.addEventListener("visibilitychange", function() {if (!document.hidden) {scrollNextMessage();}}, false);
