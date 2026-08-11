@@ -122,7 +122,7 @@ let PHOTON = {
 			}, {
 				name: "ultraviolet",
 				req: 5e9,
-				eff: exp => 1 + .5 / (exp / 10 + 1),
+				eff: exp => 1 + .5 / (exp / 15 + 1),
 				desc: e => `Fourth Positron upgrade scales at ^${shorten(e)} power.`
 			}
 		],
