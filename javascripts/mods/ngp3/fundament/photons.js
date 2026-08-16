@@ -118,7 +118,7 @@ let PHOTON = {
 				name: "violet",
 				req: 2e8,
 				eff: exp => Math.min(Math.log10(exp / 7.5 + 1), 1),
-				desc: e => `Discharged Galaxies are ${(e*100).toFixed(1)}% efficient.`
+				desc: e => `Discharged Galaxies are ${(e*100).toFixed(1)}% efficient as Galaxies.`
 			}, {
 				name: "ultraviolet",
 				req: 5e9,
