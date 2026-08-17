@@ -648,7 +648,7 @@ function updateGhostlyNewsArray() {
 	["Gonna transform to a Planck Scale ghost!", true, "gn64"],
 	["The flow of time has messed up thanks to you! Our bosons blew up.", true, "gn65"],
 	["We found out that ghosts are made of ghostly foam!", true, "gn66"],
-	["Did ghosts transform themselves to keep their lives? Oh, come on! We are immortal!", true, "gn67"],
+	["Did ghosts transform themselves to keep their lives? Oh, come on! They are immortal!", true, "gn67"],
 	["Hey. GhostSauce's Here.", true, "gn68"],
 	["GHOST // ACT I: THE UNDEAD", true, "gn69"],
 	["A ghost has retired from a haunted office to research on Bosons!", "hasAch('ng3p81')", "gn70"],
