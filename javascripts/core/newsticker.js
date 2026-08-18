@@ -652,7 +652,7 @@ function updateGhostlyNewsArray() {
 	["Hey. GhostSauce's Here.", true, "gn68"],
 	["GHOST // ACT I: THE UNDEAD", true, "gn69"],
 	["A ghost has retired from a haunted office to research on Bosons!", "hasAch('ng3p81')", "gn70"],
-	["Ghosts are hiding for a secret plan on ghost transformation curses to the developers.", true, "gn71"],
+	["Ghosts are hiding for a secret plan about ghost transformation curses to the developers.", true, "gn71"],
 	["A detective ghost, Ms. Koolka, has gone missing recently. The team is currently investigating to see he's reincarnated as a human.", "hasAch('ng3p81')", "gn72"],
 	["I have a secret. It's about ghosts living in the afterlife after normal gho- *get paralyzed.*", true, "gn73"],
 	["Staff realized that the ghost bodies of developers aren't real.", true, "gn74"],
