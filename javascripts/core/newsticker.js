@@ -646,7 +646,7 @@ function updateGhostlyNewsArray() {
 	["We found an anomaly that allows ghosts to resize themselves in their worlds.", true, "gn62"],
 	["Getting tired of finding through small holes? Introducing Planckizer! A tool which allows ghosts to become planck-scale!", true, "gn63"],
 	["Gonna transform to a Planck Scale ghost!", true, "gn64"],
-	["The flow of time has messed up thanks to you! Our bosons blew up.", true, "gn65"],
+	["The flow of time has messed up, thanks to breaking dilation! Our bosons blew up.", true, "gn65"],
 	["We found out that ghosts are made of ghostly foam!", true, "gn66"],
 	["Did ghosts transform themselves to keep their lives? Oh, come on! They are immortal!", true, "gn67"],
 	["Hey. GhostSauce's Here.", true, "gn68"],
