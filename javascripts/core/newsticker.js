@@ -659,7 +659,7 @@ function updateGhostlyNewsArray() {
 	["Ghost's note: I wonder the end of gravitional physics leads into...", true, "gn75"],
 	["Ghosty has been eliminated with 2,763 votes.", true, "gn76"],
 	["A ghost truck has crashed due to not being visible enough to see debris.", true, "gn77"],
-	["Spectrons are discovered during the experiment led by fundamental-level ghosts.", true, "gn78"],
+	["Spectrons are discovered during the experiment led by ghost scientists.", true, "gn78"],
 	["If a ghost is completely invisible, would they have no sense of light?", true, "gn79"],
 	["A paranormal event is currently happening. We are experiencing the intervention with ghosts and humans.", true, "gn80"],
 	["Once you are a ghost, you cannot resurrect back into a human.", true, "gn81"],
