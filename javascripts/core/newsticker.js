@@ -497,7 +497,7 @@ newsArray = [//always true
 ["Matter ants are most wanted in the duplicant domination.", "hasAch('ng3p35')", "am77"],
 ["In 1,752 AAD, the Nanofield solider ants declared war against Mattertopia's ant colony. One big crunch later, Mattertopia won the battle.", "hasAch('ng3p35')", "am137"],
 ["7/27 WHEN YOU SEE ANTIMATTER", true, "am195"],
-["By then, Gamma Rays would pass through your body.", "PHOTON.unlocked() && ghSave.photons.amt.gte(1e100)", "am286"],
+["By then, Gamma Rays would pass through your body.", "PHOTON.unlocked() && ghSave.photons.amt.gte(1e10)", "am286"],
 
 /* PLACEHOLDER
 ["[placeholder]", false, "am287"],
