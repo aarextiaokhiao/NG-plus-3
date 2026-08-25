@@ -485,7 +485,7 @@ newsArray = [//always true
 ["Co-developer of Incremental Mass: Rewritten here...", "mod.ngp3", "am142"],
 ["Imagine Aarex happy after all of reworking, rebalancing, and creativity...", "mod.ngp3", "am149"],
 ["As we get closer to the end, Aarex came up more ideas.", "mod.ngp3", "am151"],
-["The player has passed away. Fly high and godspeed.", "ghostified", "am197"],
+["The player has passed away due to being ghostified. Fly high and godspeed.", "ghostified", "am197"],
 ["In the alternate timeline, we rather to go deeper to Fundament instead of transforming into a ghost.", "ghostified", "am202"],
 ["Player, it seems that you have been here before. Or not... Whatever.", "meta.save.rediscover.in != undefined", "am203"],
 ["ANTIMATTER DIMENSIONS - PLUS // THE HEADSTART", true, "am214"],
