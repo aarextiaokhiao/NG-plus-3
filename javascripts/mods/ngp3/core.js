@@ -553,7 +553,6 @@ function setupNGP3HTMLAndData() {
 	setupAutomatorHTML()
 	NT.setupTab()
 	PHOTON.setupTab()
-	WZ_BOSONS.setupTab()
 	setupNGP3ProgressTab()
 
 	//META

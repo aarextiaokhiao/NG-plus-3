@@ -78,9 +78,6 @@ const WZ_BOSONS = {
 	},
 
 	/* HTML */
-	setupTab() {
-		//placeholder
-	},
 	updateTab() {
 		el("wz_req").style.display = !WZ_BOSONS.unlocked() ? "" : "none"
 		el("wz_div").style.display = WZ_BOSONS.unlocked() ? "" : "none"
