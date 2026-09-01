@@ -635,7 +635,7 @@ function updateGhostlyNewsArray() {
 	["Florida ghost breaks the universe, and goes beyond the limits.", true, "gn51"],
 	["You still read this news? I thought you wouldn't be interested in our news after reading it for so long...", true, "gn52"],
 	["Ghosts just accidentally discovered a new particle!", true, "gn53"],
-	["I wonder where all the news gets broadcasted from...", true, "gn54"],
+	["I wonder where all of lost news were broadcasted from...", true, "gn54"],
 	["'now i know why i can't get access to the ghostly news!' - usavictor", true, "gn55"],
 	["Ghostify is just Quantum but spooky.", true, "gn56"],
 	["Ghosts lie forever in an invisible zone. Humans couldn't observe of ghosts.", true, "gn57"],
