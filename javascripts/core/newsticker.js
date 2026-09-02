@@ -634,7 +634,7 @@ function updateGhostlyNewsArray() {
 	["There's a ghost society somewhere in these universes. It seems they're talking to each other using strange communication.", true, "gn50"],
 	["Florida ghost breaks the universe, and goes beyond the limits.", true, "gn51"],
 	["You still read this news? I thought you wouldn't be interested in our news after reading it for so long...", true, "gn52"],
-	["Ghosts just accidentally discovered a new particle!", true, "gn53"],
+	["Ghosts accidentally discovered a new particle: Invisiblon!", true, "gn53"],
 	["I wonder where all of lost news were broadcasted from...", true, "gn54"],
 	["'now i know why i can't get access to the ghostly news!' - usavictor", true, "gn55"],
 	["Ghostify is just Quantum but spooky.", true, "gn56"],
