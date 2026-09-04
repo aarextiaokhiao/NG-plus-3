@@ -426,7 +426,6 @@ newsArray = [//always true
 ["Meta-antimatter decays particles for quantum energy. That means we can decay anything for quantum energy?", "hasMasteryStudy('d10')", "am229"],
 ["You have e3.523 DCe unmeta-antimatter, which causes a e1.762 DCex expansion to real-life.", "mod.ngp3", "am230"],
 ["You have unlocked infinite Microdimensions! That's cool, because Microdimensions expand Dimensions with Blueprint Particles!", true, "am231"],
-["All Dimensions = AD = Antimatter Dimensions", true, "am232"],
 ["Did you realize that this is not just about large numbers? You might see more small numbers soon, while your antimatter grows faster than superexponential rate.", "ghostified", "am233"],
 ["Local duplicant paralyzed after eating 413 quantum food", "hasMasteryStudy('d10')", "am235"],
 ["Hey, yeah you. You're playing this game right? And you're seeing this newsticker right now right? There are prbably many hundreds of news tickers, maybe even thousands. A news ticker does take like half a minute to scroll past the screen AT A MINIMUM, and if we say there are 1000 news, it would take you about 1000 news for you to get this one. So multiply half a minute with 1000, and you get 500 minutes. That's a huge chunk of your day, that could be spent doing something else. Also, consider the fact that you'll probably miss this news like 99% of the time, it would most probably take you like a week on average to find this news. All this time, you played a simple game, instead of doing anything else. In one week you could have learned how to make your own idle game, and many other things. So stop playing now, and do something else for once.", true, "am236"],
@@ -498,6 +497,7 @@ newsArray = [//always true
 ["By then, Gamma Rays would pass through your body.", "PHOTON.unlocked() && ghSave.photons.amt.gte(1e10)", "am286"],
 
 /* PLACEHOLDER
+["[placeholder]", false, "am232"],
 ["[placeholder]", false, "am256"],
 ["[placeholder]", false, "am285"],
 ["[placeholder]", false, "am287"],
