@@ -465,7 +465,6 @@ newsArray = [//always true
 ["Does any of the news here actually get added into the game?", true, "am275"],
 ["Meanwhile in a computable number competition: Writes the code that looks like snaky lines, which contains functions that are more powerful than Loader's Number. He is trying to not make interpreters and turing machines, just to follow rules.", true, "am276"],
 ["In September 2020, I suddenly lost my interest on Numberblocks, and even left the community dedicated to it. At the time when I wrote this, It's been 1 year. Don't worry, I will use BAN and SAN for googological numbers in this game, if I want to go beyond ee308.", true, "am277"],
-["τεμΩαrεx", "mod.ngp3", "am278"],
 ["Although the number on the only posted 9/18/2021 news ticker number is probably in the range of 120 <= x <= 600", true, "am280"],
 ["In an alternate universe, @TruthNotScam9 convinced Aarex to add Scamify, leaving many sparks of outrage from the players. Both of them died soon afterward.", "mod.ngp3", "am281"],
 ["~<: NEXTA COMMUNINC: CONSTELLA' THE STARS ~:> Stellarika Aarex's speaking to Sollings: The infamous \"Kibb's Point\" [<.>] has been disintegrated! aSAN~1,318,273^{*.*++} has been landed in release, featuring unseen methods extending to Kibb's Axioms! Be warned! Monstrous Xaliens pulled a nefarious abduct against aSAN~1,318,271! One is that -=>> is a numerous burst to (1,(((1,1,2),2)),2) arrays! Our megalo-arithmetic lab is working tediously for a drone evaluating their n...", "mod.ngp3", "am282"],
@@ -499,6 +498,7 @@ newsArray = [//always true
 /* PLACEHOLDER
 ["[placeholder]", false, "am232"],
 ["[placeholder]", false, "am256"],
+["[placeholder]", false, "am278"],
 ["[placeholder]", false, "am285"],
 ["[placeholder]", false, "am287"],
 ["[placeholder]", false, "am288"],
