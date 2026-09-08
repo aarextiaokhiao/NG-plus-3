@@ -403,7 +403,6 @@ newsArray = [//always true
 ["When quarks have gone radioactive, the atom becomes a level that goes beyond radioactivity. Scientists call this level 'quarkfusey.'", "hasAch('ng3p75')", "am205"],
 ["Scientific fact: The hotter the atom gets, the more radioactive it gets. Wait... Is this proven by the reactor?", "hasAch('ng3p75')", "am206"],
 ["To do for the next update: Procrastinate, procrastinate, procrastinate, do a small development build, ...", "mod.ngp3", "am207"],
-["Maybe we haven't ask ghosts nicely enough...", "ghostified", "am208"],
 ['In NG+3.1, everyone is a speed runner', "mod.ngp3", "am209"],
 ["Coming soon: NG+Pi. ETA: We don't have a release date. There is a possibility that it takes infinite time.", "mod.ngp3", "am210"],
 ["Pfft, screw Gravity Dimensions! *slide whistle effect*", "hasAch('ng3p88')", "am211"],
@@ -495,6 +494,7 @@ newsArray = [//always true
 ["By then, Gamma Rays would pass through your body.", "PHOTON.unlocked() && ghSave.photons.amt.gte(1e10)", "am286"],
 
 /* PLACEHOLDER
+["[placeholder]", false, "am208"],
 ["[placeholder]", false, "am232"],
 ["[placeholder]", false, "am256"],
 ["[placeholder]", false, "am271"],
@@ -667,6 +667,7 @@ function updateGhostlyNewsArray() {
 	["A ghost got a new powerscaling record through ghost-matter analysis.", true, "gn83"],
 	["Happy 250th anniversary to Ghostify Independence from Fundament!", true, "gn84"],
 	["How we suddenly got infinite ghosts?!", "ghostified && ghSave.ghostParticles.gte(Number.MAX_VALUE)", "gn85"],
+	["Maybe we haven't ask ghosts nicely enough...", "ghostified", "gn86"],
 	]
 }
 
