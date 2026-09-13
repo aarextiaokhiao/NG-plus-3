@@ -492,9 +492,9 @@ newsArray = [//always true
 ["7/27 WHEN YOU SEE ANTIMATTER", true, "am195"],
 ["By then, Gamma Rays would pass through your body.", "PHOTON.unlocked() && ghSave.photons.amt.gte(1e10)", "am286"],
 ["Does it even matters when nothing is matter?", true, "am208"],
+["Does the perfect form of antimatter exist?", false, "am232"],
 
 /* PLACEHOLDER
-["[placeholder]", false, "am232"],
 ["[placeholder]", false, "am256"],
 ["[placeholder]", false, "am271"],
 ["[placeholder]", false, "am278"],
