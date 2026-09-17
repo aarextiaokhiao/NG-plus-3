@@ -442,7 +442,7 @@ newsArray = [//always true
 ["o+<| help im in a horizontal autoscroller videogame", true, "am248"],
 ["That awkward moment when you play antimatter dimensions on a computer made of matter", true, "am249"],
 ["250th Aarex's Modifications newsticker. That's not even close to have infinite storage. Silly!", true, "am250"],
-["Do you know Omnisity? It is an actual layer for NG+3 contributors, where golden and diamond intrastructures side together in a island.", true, "am251"],
+["Do you know Omnisity? It is an actual layer for NG+3 contributors, where authors reside together in a island.", true, "am251"],
 ["Lightning loves NG+3! He even recommend World Restoration players with it! Have fun!", "mod.ngp3", "am252"],
 ["The year is 2028. Aarex has released Hadronize. But due to a lot of uproaring, NG+3 became unpopular. NG+3 will be likely to be at least dead. He has finally moved on.", true, "am253"],
 ["Antimatter Dimensions: NG+3! Now with 100% more balancing! + Less useless boosts! + Hyperexponential upgrades!", "mod.ngp3", "am254"],
