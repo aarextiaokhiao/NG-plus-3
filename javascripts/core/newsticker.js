@@ -656,7 +656,7 @@ function updateGhostlyNewsArray() {
 	["A detective ghost, Ms. Koolka, has gone missing recently. The team is currently investigating to see he's reincarnated as a human.", "hasAch('ng3p81')", "gn72"],
 	["I have a secret. It's about ghosts living in the afterlife after normal gho- *get paralyzed.*", true, "gn73"],
 	["Staff realized that the ghost bodies of developers aren't real.", true, "gn74"],
-	["Ghost's note: I wonder the end of gravitional physics leads into...", true, "gn75"],
+	["Ghost's note: Research how ghosts are formed.", true, "gn75"],
 	["Ghosty has been eliminated with 2,763 votes.", true, "gn76"],
 	["A ghost truck has crashed due to not being visible enough to see debris.", true, "gn77"],
 	["Spectrons are discovered during the experiment led by ghost scientists.", true, "gn78"],
