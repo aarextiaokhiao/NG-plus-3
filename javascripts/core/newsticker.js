@@ -667,7 +667,7 @@ function updateGhostlyNewsArray() {
 	["A ghost got a new powerscaling record through ghost-matter analysis.", true, "gn83"],
 	["Happy 250th anniversary to Ghostify Independence from Fundament!", true, "gn84"],
 	["How we suddenly got infinite ghosts?!", "ghostified && ghSave.ghostParticles.gte(Number.MAX_VALUE)", "gn85"],
-	["Maybe we haven't ask ghosts nicely enough...", "ghostified", "gn86"],
+	["Maybe we haven't ask ghosts nicely enough...", "ghostified", true, "gn86"],
 	]
 }
 
