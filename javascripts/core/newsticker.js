@@ -616,7 +616,7 @@ function updateGhostlyNewsArray() {
 	["Ghosts don't know how to write more news. They decided to stop it for today.", true, "gn32"],
 	["Ghosts aren't fooling you. They scare you.", true, "gn33"],
 	["Ghosts discovered the lost layer in the deep depths of graveyard.", true, "gn34"],
-	["A ghost tried to take Anti-Preons out, but Bosonic Lab workers decided to ban them out because an Anti-Preon is a resource of Bosonic Lab.", "hasAch('ng3p81')", "gn35"],
+	//["[placeholder]", "false", "gn35"],
 	["You got one ghostly particle, whatever that means.", "ghostified", "gn36"],
 	['"Welcome, a new ghost, to Ghostify! Kee-hee-hee!" - Aarex', true, "gn37"],
 	["And then the guy turned himself into a pickle ghost. Funniest moment I've ever seen.", true, "gn38"],
