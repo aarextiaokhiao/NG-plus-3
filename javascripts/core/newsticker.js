@@ -456,7 +456,7 @@ newsArray = [//always true
 ["Dare to go deeper than antimatter? Cosmic strings are for you.", true, "am265"],
 ["Sorry, but antimatter is made of strings. That's what everything does.", true, "am266"],
 ["Strings can't fold like that! It actually become complex shapes!", true, "am267"],
-["There was a modder legend who added a missing feature between Neutrinos and Photons to virtually jump over.", "PHOTON.unlocked()", "am268"],
+["There was a modder legend who added a missing feature between Neutrinos and Photons.", "PHOTON.unlocked()", "am268"],
 ["It is year 2077. We haven't eliminated matter bots, but we are trying to outsmart them. We are developing a brain transplant technology which detects if you are a human by nanobots for resources and materials.", true, "am272"],
 ["For the first time, I saw a interesting moment for the first time. This moment shows people standing on the extractor, which can safely move on dark matter goo.", true, "am273"],
 ["You ever think how messed up AD is? You're shredding through countless realities, turning them to nothing and annihilating them completely, only to rebuild them out of antimatter and then tear them down in one final crunch Thousands upon thousands of dimensions are destroyed each second, parallel universes like our own, universes that could harbor life, turned into nothing but antimatter in a matter of moments and then collapsed completely. Even multiverses aren't enough, and the spacetime continuum eventually rips as we dilate time itself to satiate our bloodlust.", true, "am274"],
