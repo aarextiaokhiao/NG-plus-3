@@ -453,8 +453,7 @@ newsArray = [//always true
 ['"Spacetime generators? Eh, more like Dimensions!"', true, "am261"],
 ["For no reason, duplicants and ghosts have been censored in this news ticker.", "ghostified", "am262"],
 ["Florida man reports that duplicants and ghosts were erdiciated by Aarex!", "mod.ngp3", "am264"],
-["Dare to go deeper than antimatter? Cosmic strings are for you.", true, "am265"],
-["Sorry, but antimatter is made of strings. That's what everything does.", true, "am266"],
+["Dare to go deeper than antimatter? Anti-strings are for you.", true, "am265"],
 ["Strings can't fold like that! It actually become complex shapes!", true, "am267"],
 ["There was a modder legend who added a missing feature between Neutrinos and Photons.", "PHOTON.unlocked()", "am268"],
 ["It is year 2077. We haven't eliminated matter bots, but we are trying to outsmart them. We are developing a brain transplant technology which detects if you are a human by nanobots for resources and materials.", true, "am272"],
@@ -496,6 +495,7 @@ newsArray = [//always true
 ["This anti-news has been [REDACTED] due to being conflicted against the news.", true, "am256"],
 
 /* PLACEHOLDER
+["[placeholder]", false, "am266"],
 ["[placeholder]", false, "am271"],
 ["[placeholder]", false, "am278"],
 ["[placeholder]", false, "am285"],
