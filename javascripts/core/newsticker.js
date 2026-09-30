@@ -451,7 +451,6 @@ newsArray = [//always true
 ['"Our world would be deadly as matter, if there are holes leading into matter cultists..." ~ Antimatter cultist', true, "am259"],
 [`"Get me out of my head..." ~ Antimatterists after seeing matter apocalypses`, true, "am260"],
 ['"Spacetime generators? Eh, more like Dimensions!"', true, "am261"],
-["For no reason, duplicants and ghosts have been censored in this news ticker.", "ghostified", "am262"],
 ["Florida man reports that duplicants and ghosts were erdiciated by Aarex!", "mod.ngp3", "am264"],
 ["Dare to go deeper than antimatter? Anti-strings are for you.", "quantumed", "am265"],
 ["Strings can't fold like that! It actually become complex shapes!", "quantumed", "am267"],
@@ -495,6 +494,7 @@ newsArray = [//always true
 ["This anti-news has been [REDACTED] due to being conflicted against the news.", true, "am256"],
 
 /* PLACEHOLDER
+["[placeholder]", false, "am262"],
 ["[placeholder]", false, "am266"],
 ["[placeholder]", false, "am271"],
 ["[placeholder]", false, "am278"],
