@@ -483,7 +483,7 @@ newsArray = [//always true
 ["META-ANTIMATTER DIMENSIONS - PLUS PLUS // DIMENSIONS OF DIMENSIONS", "mod.ngpp && hasDilStudy(6)", "am234"],
 ["Before a blink of the eye, the man got physically obliterated by an antimatter explosion.", true, "am255"],
 ["The winner is you!", "hasBadge('p3_end')", "am263"],
-["Due to annihilation between matter and antimatter, all grass got eradicated against antimatter grass. Seems like you couldn't made it on time.", true, "am269"],
+["Due to annihilation between matter and antimatter, all grass got eradicated. You didn't made it on time.", true, "am269"],
 ["Developer of Ranks here...", true, "am270"],
 ["Matter ants are most wanted in the duplicant domination.", "hasAch('ng3p35')", "am77"],
 ["In 1,752 AM.A, the Nanofield solider ants declared war against Mattertopia's ant colony. One big crunch later, Mattertopia won the battle.", "hasAch('ng3p35')", "am137"],
