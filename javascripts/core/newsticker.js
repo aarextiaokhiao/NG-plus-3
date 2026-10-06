@@ -441,7 +441,6 @@ newsArray = [//always true
 ['"noooooooooo!!!!!! you can\'t just merge two different memes out of two different games like that!!! that\'s nonsense and less people will actually understand it!!!! you are making us have a copyright strike noooooooo" "haha ⑨th dimensions go brrr"', true, "am247"],
 ["o+<| help im in a horizontal autoscroller videogame", true, "am248"],
 ["That awkward moment when you play antimatter dimensions on a computer made of matter", true, "am249"],
-["250th Aarex's Modifications newsticker. That's not even close to have infinite storage. Silly!", true, "am250"],
 ["Do you know Omnisity? It is an actual layer for NG+3 contributors, where authors reside together in a island.", true, "am251"],
 ["Lightning loves NG+3! He even recommend World Restoration players with it! Have fun!", "mod.ngp3", "am252"],
 ["The year is 2028. Aarex has released Hadronize. But due to a lot of uproaring, NG+3 became unpopular. NG+3 will be likely to be at least dead. He has finally moved on.", true, "am253"],
@@ -494,6 +493,7 @@ newsArray = [//always true
 ["This anti-news has been [OBLITERATED] due to being conflicted against the news.", true, "am256"],
 
 /* PLACEHOLDER
+["[placeholder]", false, "am250"],
 ["[placeholder]", false, "am262"],
 ["[placeholder]", false, "am266"],
 ["[placeholder]", false, "am271"],
