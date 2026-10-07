@@ -422,7 +422,6 @@ newsArray = [//always true
 ["Alright. Time for you to become a ghost, kiddo. You have enough power in Big Rips. With the power of my permafrost bones, because I am Dry Bo- Wait. Why can't I use that anymore? *Looks at mirror.* You gonna kidding me... I got transformed permanently, yet again... When this transformation chaos has to stop?!?!", true, "am226"],
 ["With a lot of variations mixed up, the Replicanti disease begins to grow superexponentially. Our predictions were wrong. Replicantis will invade us in about a minute, causing a ZK-Type Omniverse Destruction scenario. We must hide into our bunkers.", "player.replicanti.unl", "am227"],
 ["We the people, declare independence on matters.", true, "am221"],
-["Meta-antimatter decays particles for quantum energy. That means we can decay anything for quantum energy?", "hasMasteryStudy('d10')", "am229"],
 ["You have e3.523 DCe unmeta-antimatter, which causes a e1.762 DCex expansion to real-life.", "mod.ngp3", "am230"],
 ["You have unlocked infinite Microdimensions! That's cool, because Microdimensions expand Dimensions with Blueprint Particles!", true, "am231"],
 ["Did you realize that this is not just about large numbers? You might see more small numbers soon, while your antimatter grows faster than superexponential rate.", "ghostified", "am233"],
@@ -493,6 +492,7 @@ newsArray = [//always true
 ["This anti-news has been [OBLITERATED] due to being conflicted against the news.", true, "am256"],
 
 /* PLACEHOLDER
+["[placeholder]", false, "am229"],
 ["[placeholder]", false, "am250"],
 ["[placeholder]", false, "am262"],
 ["[placeholder]", false, "am266"],
