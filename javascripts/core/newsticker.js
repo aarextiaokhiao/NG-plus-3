@@ -490,9 +490,9 @@ newsArray = [//always true
 ["Does something matters when nothing is matter?", true, "am208"],
 ["Does the perfect form of antimatter exist?", true, "am232"],
 ["This anti-news has been [OBLITERATED] due to being conflicted against the news.", true, "am256"],
+["After one antimatter cycle, the world got physically obliterated.", true, "am229"],
 
 /* PLACEHOLDER
-["[placeholder]", false, "am229"],
 ["[placeholder]", false, "am250"],
 ["[placeholder]", false, "am262"],
 ["[placeholder]", false, "am266"],
