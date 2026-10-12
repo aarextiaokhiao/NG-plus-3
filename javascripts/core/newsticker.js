@@ -471,7 +471,7 @@ newsArray = [//always true
 ["For Aarex, he rather to balance stuff carefully to ensure near perfection. Unfortunately, mechanics need creativity.", "mod.ngp3", "am53"],
 ["Infinite creativity is a key to an unique, endless incremental game.", true, "am97"],
 ["Bosonic Lab has been disestablished due to complications.", "WZ_BOSONS.unlocked()", "am140"],
-["Co-developer of Incremental Mass: Rewritten here... ~ Aarex", "mod.ngp3", "am142"],
+["Co-developer of Incremental Mass (not classic) here... ~ Aarex", "mod.ngp3", "am142"],
 ["Imagine Aarex happy after all of reworking, rebalancing, and creativity...", "mod.ngp3", "am149"],
 ["As we get closer to the end, Aarex came up more ideas.", "mod.ngp3", "am151"],
 ["The player has passed away due to being ghostified. Fly high and godspeed.", "ghostified", "am197"],
