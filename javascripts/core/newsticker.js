@@ -590,7 +590,7 @@ function updateGhostlyNewsArray() {
 	["Ghostly news tickers are dead... they also serve no purpose... right..?", "player.newsArray.includes('am32')", "gn6"],
 	["Did you forgot to read this message? You read too much messages of your normal news ticker. Because of this, you became a ghost for wasting your time too much.", "player.newsArray.length >= 215", "gn7"],
 	["Ghosts can't die. So why humans can't be immortal?", true, "gn8"],
-	["Because neutrinos are ghostly particles, you are made of ghost particles and neutrinos.", true, "gn9"],
+	["Because neutrinos are ghost particles, you are made of ghost particles and neutrinos.", true, "gn9"],
 	["How do you play this when you became a real ghost?", true, "gn10"],
 	["R.I.P.	------	You	------	Died to Ghostify ------ xxxx-", true, "gn11"],
 	["Spooky scary ghosts send neutrinos down your spine", true, "gn12"],
