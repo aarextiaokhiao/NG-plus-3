@@ -666,7 +666,7 @@ function updateGhostlyNewsArray() {
 	["In almost a century, Aarex (the developer of NG+3) would be another object character: Ghosty.", true, "gn82"],
 	["A ghost got a new record of invisibility by ghostification.", true, "gn83"],
 	["Happy 250th anniversary to Ghostify Independence from Fundament!", true, "gn84"],
-	["How we suddenly got infinite ghosts?!", "ghostified && ghSave.ghostParticles.gte(Number.MAX_VALUE)", "gn85"],
+	["How did infinite ghosts suddenly manifest?!", "ghostified && ghSave.ghostParticles.gte(Number.MAX_VALUE)", "gn85"],
 	["Maybe we haven't ask ghosts nicely enough...", "ghostified", true, "gn86"],
 	]
 }
