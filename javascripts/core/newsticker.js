@@ -667,7 +667,8 @@ function updateGhostlyNewsArray() {
 	["A ghost got a new record of invisibility by ghostification.", true, "gn83"],
 	["Happy 250th anniversary to Ghostify Independence from Fundament!", true, "gn84"],
 	["How did infinite ghosts suddenly manifest?!", "ghostified && ghSave.ghostParticles.gte(Number.MAX_VALUE)", "gn85"],
-	["Maybe we haven't ask ghosts nicely enough...", "ghostified", true, "gn86"],
+	["Maybe we haven't ask ghosts nicely enough...", true, "gn86"],
+	["Our lives ever change since we turn into ghosts.", true, "gn87"],
 	]
 }
 
