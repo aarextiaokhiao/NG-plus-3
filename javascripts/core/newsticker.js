@@ -669,6 +669,7 @@ function updateGhostlyNewsArray() {
 	["How did infinite ghosts suddenly manifest?!", "ghostified && ghSave.ghostParticles.gte(Number.MAX_VALUE)", "gn85"],
 	["Maybe we haven't ask ghosts nicely enough...", true, "gn86"],
 	["Our lives ever change since we turn into ghosts.", true, "gn87"],
+	["Ghosts have discovered a new fear: being caught by photons!", "PHOTON.unlocked()", "gn88"],
 	]
 }
 
