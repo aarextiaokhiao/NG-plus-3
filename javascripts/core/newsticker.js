@@ -618,7 +618,7 @@ function updateGhostlyNewsArray() {
 	["Ghosts discovered the lost layer in the deep depths of graveyard.", true, "gn34"],
 	["Are you afraid of a big ghost monster?", true, "gn35"],
 	["You got one ghostly particle, whatever that means.", true, "gn36"],
-	['"Welcome, a new ghost, to Ghostify! Kee-hee-hee!" - Aarex', true, "gn37"],
+	['Welcome, a new ghost, to Ghostify! Kee-hee-hee!', true, "gn37"],
 	["And then the guy turned himself into a pickle ghost. Funniest moment I've ever seen.", true, "gn38"],
 	["Wait a second. This new laboratory isn't anti-Nanofield...", "hasAch('ng3p81')", "gn39"],
 	['"ghosts arent scary" ~ Aaron Cook', true, "gn40"],
