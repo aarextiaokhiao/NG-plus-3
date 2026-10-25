@@ -670,6 +670,7 @@ function updateGhostlyNewsArray() {
 	["Maybe we haven't ask ghosts nicely enough...", true, "gn86"],
 	["Our lives ever change since we turn into ghosts.", true, "gn87"],
 	["Ghosts have discovered a new fear: being caught by photons!", "PHOTON.unlocked()", "gn88"],
+	["Billions of people have passed away due to the invasion of ghostification.", true, "gn89"],
 	]
 }
 
