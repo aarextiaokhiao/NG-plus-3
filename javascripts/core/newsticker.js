@@ -673,6 +673,7 @@ function updateGhostlyNewsArray() {
 	["Billions of people have passed away due to the invasion of ghostification.", true, "gn89"],
 	["Medical ghosts reported that a new pill curing ghostification is on market. They panicked.", true, "gn90"],
 	["I'm sorry, but ghosts have been diagonsed with invisibosis.", true, "gn91"],
+	["Happy Ghostoween! Kee-hee-hee!", true, "gn92"],
 	]
 }
 
