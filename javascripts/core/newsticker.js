@@ -664,7 +664,7 @@ function updateGhostlyNewsArray() {
 	["A paranormal event is currently happening. We are experiencing the intervention between ghosts and humans.", true, "gn80"],
 	["Once you are a ghost, you cannot resurrect back into a human.", true, "gn81"],
 	["In almost a century, Aarex (the developer of NG+3) would be another object character: Ghosty.", true, "gn82"],
-	["A ghost got a new record of invisibility by ghostification.", true, "gn83"],
+	["A ghost got a new record of invisibility by true ghostification.", true, "gn83"],
 	["Happy 250th anniversary to Ghostify Independence from Fundament!", true, "gn84"],
 	["How did infinite ghosts suddenly manifest?!", "ghostified && ghSave.ghostParticles.gte(Number.MAX_VALUE)", "gn85"],
 	["Maybe we haven't ask ghosts nicely enough...", true, "gn86"],
