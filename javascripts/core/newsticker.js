@@ -615,7 +615,7 @@ function updateGhostlyNewsArray() {
 	["Ghosts discovered that some particles are ghostly!", true, "gn31"],
 	["Ghosts don't know how to write more news. They decided to stop it for today.", true, "gn32"],
 	["Ghosts aren't fooling you. They scare you.", true, "gn33"],
-	["Ghosts discovered the lost layer in the deep depths of graveyard.", true, "gn34"],
+	["Ghosts discovered the lost realm underneath the graveyard.", true, "gn34"],
 	["Are you afraid of a big ghost monster?", true, "gn35"],
 	["You got one ghostly particle, whatever that means.", true, "gn36"],
 	['Welcome, a new ghost, to Ghostify! Kee-hee-hee!', true, "gn37"],
