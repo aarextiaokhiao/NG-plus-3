@@ -676,7 +676,7 @@ function updateGhostlyNewsArray() {
 	["Happy Ghostoween! Kee-hee-hee!", true, "gn92"],
 	["Ghosts have protested due to the exclusion.", true, "gn93"],
 	["give me liberty, give me fire, let me be a ghost or i retire", true, "gn94"],
-	["Do ghosts made of invisibility?", true, "gn95"],
+	["Do ghosts made of invisibility or ghost particles?", true, "gn95"],
 	]
 }
 
