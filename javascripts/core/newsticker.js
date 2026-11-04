@@ -674,7 +674,7 @@ function updateGhostlyNewsArray() {
 	["Medical ghosts reported that a new pill curing ghostification is on market. They panicked as like they vanish.", true, "gn90"],
 	["I'm sorry, but ghosts have been diagonsed with invisibosis.", true, "gn91"],
 	["Happy Ghostoween! Kee-hee-hee!", true, "gn92"],
-	["Ghosts have protested due to the exclusion.", true, "gn93"],
+	["Ghosts have protested due to the exclusion from society.", true, "gn93"],
 	["give me liberty, give me fire, let me be a ghost or i retire", true, "gn94"],
 	["Do ghosts made of invisibility or ghost particles?", true, "gn95"],
 	]
