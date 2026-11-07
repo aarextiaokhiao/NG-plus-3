@@ -678,7 +678,7 @@ function updateGhostlyNewsArray() {
 	["give me liberty, give me fire, let me be a ghost or i retire", true, "gn94"],
 	["Do ghosts made of invisibility or ghost particles?", true, "gn95"],
 	["Are you getting spooked afterwards?", true, "gn96"],
-	["oooooooooooooOOOOOOOOOO", true, "gn97"],
+	["oooOOOoooOOOoooOOOoooOOOoooOOOoooOOOoooOOOoooOOO", true, "gn97"],
 	]
 }
 
