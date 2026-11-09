@@ -679,6 +679,7 @@ function updateGhostlyNewsArray() {
 	["Do ghosts made of invisibility, nothingness, or ghost particles?", true, "gn95"],
 	["Are you getting spooked afterwards?", true, "gn96"],
 	["oooOOOoooOOOoooOOOoooOOOoooOOOoooOOOoooOOOoooOOO", true, "gn97"],
+	["Scientists predicted after billions of years, ghosts will silently inhabit our world.", true, "gn98"],
 	]
 }
 
