@@ -631,7 +631,7 @@ function updateGhostlyNewsArray() {
 	["Antimatter ghosts do not exist. Just like matter ghosts. But Ghostly Matter Ghosts do.", true, "gn47"],
 	["I am a ghost, and I will do science for all eternity!", "hasAch('ng3p81')", "gn48"],
 	["Ghosts have created their own periodic tables. It looks pretty sophisticated, but the origin of this is unknown.", true, "gn49"],
-	["There's a ghost society somewhere in these universes. It seems they're talking to each other using strange communication.", true, "gn50"],
+	["There's a ghost society somewhere in alternate universes. It seems they're talking.", true, "gn50"],
 	["Florida ghost breaks the universe, and goes beyond the limits.", true, "gn51"],
 	["You still read this news? I thought you wouldn't be interested in our news after reading it for so long...", true, "gn52"],
 	["Ghosts accidentally discovered a new particle: Invisiblon!", true, "gn53"],
