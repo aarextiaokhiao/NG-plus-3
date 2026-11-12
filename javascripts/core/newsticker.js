@@ -620,7 +620,6 @@ function updateGhostlyNewsArray() {
 	["You got one ghostly particle, whatever that means.", true, "gn36"],
 	['Welcome, a new ghost, to Ghostify! Kee-hee-hee!', true, "gn37"],
 	["And then the guy turned himself into a pickle ghost. Funniest moment I've ever seen.", true, "gn38"],
-	["Wait a second. This new laboratory isn't anti-Nanofield...", "hasAch('ng3p81')", "gn39"],
 	['"ghosts arent scary" ~ Aaron Cook', true, "gn40"],
 	["There are actually no anti-ghosts because ghosts are made of ghostly matter.", true, "gn41"],
 	["Are we living in ghostly universe or anti-ghostly universe?", true, "gn42"],
@@ -680,6 +679,8 @@ function updateGhostlyNewsArray() {
 	["Are you getting spooked afterwards?", true, "gn96"],
 	["oooOOOoooOOOoooOOOoooOOOoooOOOoooOOOoooOOOoooOOO", true, "gn97"],
 	["Scientists predicted after billions of years, ghosts will silently inhabit our world.", true, "gn98"],
+
+	//["placeholder", false, "gn39"],
 	]
 }
 
