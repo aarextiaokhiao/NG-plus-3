@@ -628,7 +628,6 @@ function updateGhostlyNewsArray() {
 	["Do you know that ghosts came from Ghostify? Absolutely not.", true, "gn45"],
 	["Ghostly news company has become partners with us. This brings more news to all ghosts.", true, "gn46"],
 	["Like matter ghosts, antimatter ghosts do not exist. But Ghostly Matter Ghosts do.", true, "gn47"],
-	["I am a ghost, and I will do science for all eternity!", "hasAch('ng3p81')", "gn48"],
 	["Ghosts have created their own periodic tables. It looks pretty sophisticated, but the origin of this is unknown.", true, "gn49"],
 	["There's a ghost society somewhere in alternate universes. It seems they're talking.", true, "gn50"],
 	["Florida ghost breaks the universe, and goes beyond the limits.", true, "gn51"],
@@ -681,6 +680,7 @@ function updateGhostlyNewsArray() {
 	["Scientists predicted after billions of years, ghosts will silently inhabit our world.", true, "gn98"],
 
 	//["placeholder", false, "gn39"],
+	//["placeholder", false, "gn48"],
 	]
 }
 
