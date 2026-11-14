@@ -606,7 +606,7 @@ function updateGhostlyNewsArray() {
 	["You got Lights? That means you have a gloomy light inside! Kee-hee-hee!", "PHOTONS.unlocked()", "gn22"],
 	["Ghosts can experiment and discover some unknown Bosons.", "hasAch('ng3p81')", "gn23"],
 	['Look around your screen. Are you a ghost or a human?', true, "gn24"],
-	["A new study shows that ghosts can do extreme work.", true, "gn25"],
+	["A new study shows that ghosts can do extreme work due to a lack of body.", true, "gn25"],
 	["A new evidence states that mortal ghosts could exist through decay.", true, "gn26"],
 	["Ghosts have dominated some universes!", true, "gn27"],
 	["Boo! Kee-hee-hee!", "Math.random() <= 0.001", "gn28"],
