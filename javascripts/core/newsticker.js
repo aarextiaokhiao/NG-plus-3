@@ -611,7 +611,7 @@ function updateGhostlyNewsArray() {
 	["Ghosts have dominated some universes!", true, "gn27"],
 	["Boo! Kee-hee-hee!", "Math.random() <= 0.001", "gn28"],
 	["Sorry, but ghosts can't touch grass... Only a feeling.", true, "gn29"],
-	["Ghosts found a ghostly kind of Radioactive Decays!", "getRadioactiveDecays() >= 1", "gn30"],
+	["Ghosts found out that Radioactive Decays are immune to ghosts!", "getRadioactiveDecays() >= 1", "gn30"],
 	["Ghosts discovered that some particles are ghostly!", true, "gn31"],
 	["Ghosts don't know how to write more news. They decided to stop it for today.", true, "gn32"],
 	["Ghosts aren't fooling you. They scare you.", true, "gn33"],
