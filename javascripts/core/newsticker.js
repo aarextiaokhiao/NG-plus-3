@@ -489,7 +489,7 @@ newsArray = [//always true
 ["By then, antimatter rays would pass through your body.", "PHOTON.unlocked() && ghSave.photons.amt.gte(1e10)", "am286"],
 ["Does something matters when nothing is matter?", true, "am208"],
 ["Does the perfect form of antimatter exist?", true, "am232"],
-["This anti-news has been [OBLITERATED] due to being conflicted against the news.", true, "am256"],
+["This anti-news has been [OBLITERATED] due to being reported with news.", true, "am256"],
 ["After one antimatter cycle, the world got physically obliterated.", true, "am229"],
 ["Antimattery has joined the game. ~ Anti-Announcer", true, "am250"],
 ["Antimattery, you have been eliminated. ~ Anti-Announcer", true, "am262"],
