@@ -491,7 +491,7 @@ newsArray = [//always true
 ["Does the perfect form of antimatter exist?", true, "am232"],
 ["This anti-news has been [OBLITERATED] due to being reported with news.", true, "am256"],
 ["After one antimatter cycle, the world got physically obliterated.", true, "am229"],
-["Antimattery has joined the game. ~ Anti-Announcer", true, "am250"],
+["Antimattery has joined the competition. ~ Anti-Announcer", true, "am250"],
 ["Antimattery, you have been eliminated. ~ Anti-Announcer", true, "am262"],
 ["Does something doesn't exist, as it is antimatter?", true, "am266"],
 ["When antimatter is really anti to all matterkind.", true, "am271"],
