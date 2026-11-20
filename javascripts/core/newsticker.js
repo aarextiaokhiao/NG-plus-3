@@ -495,9 +495,9 @@ newsArray = [//always true
 ["Antimattery, you have been eliminated. ~ Anti-Announcer", true, "am262"],
 ["Does something doesn't exist, as it is antimatter?", true, "am266"],
 ["When antimatter is really anti to all matterkind.", true, "am271"],
+["Mattery is up for elimination. Vote to eliminate one contestant. ~ Anti-Announcer", true, "am278"],
 
 /* PLACEHOLDER
-["[placeholder]", false, "am278"],
 ["[placeholder]", false, "am285"],
 ["[placeholder]", false, "am287"],
 ["[placeholder]", false, "am288"],
